@@ -213,9 +213,6 @@ abstract class Button {
       return;
     }
     boolean prev_hover = this.hovered;
-    if (this.clicked) {
-      println(this.mouseOn(mX, mY));
-    }
     this.hovered = this.mouseOn(mX, mY);
     if (prev_hover && !this.hovered) {
       this.dehover();
@@ -258,6 +255,7 @@ abstract class Button {
 }
 
 
+
 abstract class RectangleButton extends Button {
   private float xi;
   private float yi;
@@ -294,6 +292,54 @@ abstract class RectangleButton extends Button {
     return false;
   }
 }
+
+
+
+abstract class EllipseButton extends Button {
+  private float xc;
+  private float yc;
+  private float xr;
+  private float yr;
+
+  EllipseButton(float xc, float yc, float xr, float yr) {
+    super();
+    this.xc = xc;
+    this.yc = yc;
+    this.xr = xr;
+    this.yr = yr;
+  }
+
+   public void drawButton() {
+    this.setFill();
+    ellipseMode(RADIUS);
+    ellipse(this.xc, this.yc, this.xr, this.yr);
+  }
+
+   public void moveButton(float xMove, float yMove) {
+    this.xc += xMove;
+    this.yc += yMove;
+  }
+
+   public boolean mouseOn(float mX, float mY) {
+    if (this.xr == 0 || this.yr == 0) {
+      return false;
+    }
+    float xRatio = (mX - this.xc) / this.xr;
+    float yRatio = (mY - this.yc) / this.yr;
+    if (xRatio * xRatio + yRatio * yRatio <= 1) {
+      return true;
+    }
+    return false;
+  }
+}
+
+
+
+abstract class CircleButton extends EllipseButton {
+  CircleButton(float xc, float yc, float r) {
+    super(xc, yc, r, r);
+  }
+}
 class Global {
   private float lastFPS = Constants.maxFPS;
   private int frameTimer = millis();
@@ -312,9 +358,9 @@ abstract class InterfaceLNZ {
 }
 
 class InitialInterface extends InterfaceLNZ {
-  abstract class InitialInterfaceButton extends RectangleButton {
+  abstract class InitialInterfaceButton extends CircleButton {
     InitialInterfaceButton(float xi, float yi, float xf, float yf) {
-      super(xi, yi, xf, yf);
+      super(xi, yi, xf);
     }
 
      public void hover() {
@@ -329,7 +375,7 @@ class InitialInterface extends InterfaceLNZ {
 
   class InitialInterfaceButton1 extends InitialInterfaceButton {
     InitialInterfaceButton1() {
-      super(10, 10, 100, 100);
+      super(100, 100, 20, 30);
     }
   }
 
