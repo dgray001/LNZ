@@ -2,14 +2,15 @@ import processing.javafx.*;
 
 Global global = new Global();
 
-InterfaceLNZ menu = new InitialInterface();
+InterfaceLNZ menu;
 
 void setup() {
   fullScreen();
-  surface.setSize(Constants.initialInterfaceSize, Constants.initialInterfaceSize);
-  surface.setLocation(int(0.5 * (displayWidth - Constants.initialInterfaceSize)),
-    int(0.5 * (displayHeight - Constants.initialInterfaceSize)));
+  surface.setSize(Constants.initialInterface_size, Constants.initialInterface_size);
+  surface.setLocation(int(0.5 * (displayWidth - Constants.initialInterface_size)),
+    int(0.5 * (displayHeight - Constants.initialInterface_size)));
   frameRate(Constants.maxFPS);
+  menu = new InitialInterface();
 }
 
 void draw() {

@@ -2,11 +2,16 @@ static class Constants {
 
   // Program constants
   static final String credits =
-  "Liberal Nazi Zombies v0.6.0a" +
+  "Liberal Nazi Zombies" +
+  "20220301: v0.6.0g" +
   "Created by Daniel Gray" +
   "";
-  static final int initialInterfaceSize = 400;
   static final int frameUpdateTime = 100;
   static final int frameAverageCache = 5;
   static final int maxFPS = 120;
+
+  // Initial Interface
+  static final int initialInterface_size = 400;
+  static final int initialInterface_buttonWidth = 80;
+  static final int initialInterface_buttonGap = 25;
 }
