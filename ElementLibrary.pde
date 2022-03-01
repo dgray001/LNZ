@@ -97,6 +97,7 @@ abstract class Button {
 }
 
 
+
 abstract class RectangleButton extends Button {
   private float xi;
   private float yi;
@@ -131,5 +132,53 @@ abstract class RectangleButton extends Button {
       return true;
     }
     return false;
+  }
+}
+
+
+
+abstract class EllipseButton extends Button {
+  private float xc;
+  private float yc;
+  private float xr;
+  private float yr;
+
+  EllipseButton(float xc, float yc, float xr, float yr) {
+    super();
+    this.xc = xc;
+    this.yc = yc;
+    this.xr = xr;
+    this.yr = yr;
+  }
+
+  void drawButton() {
+    this.setFill();
+    ellipseMode(RADIUS);
+    ellipse(this.xc, this.yc, this.xr, this.yr);
+  }
+
+  void moveButton(float xMove, float yMove) {
+    this.xc += xMove;
+    this.yc += yMove;
+  }
+
+  boolean mouseOn(float mX, float mY) {
+    if (this.xr == 0 || this.yr == 0) {
+      return false;
+    }
+    float xRatio = (mX - this.xc) / this.xr;
+    float yRatio = (mY - this.yc) / this.yr;
+    if (xRatio * xRatio + yRatio * yRatio <= 1) {
+      return true;
+    }
+    return false;
+  }
+}
+
+
+
+abstract class CircleButton extends EllipseButton {
+  CircleButton(float xc, float yc, float r) {
+    super(xc, yc, r, r);
   }
 }

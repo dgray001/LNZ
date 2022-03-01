@@ -11,7 +11,7 @@ abstract class InterfaceLNZ {
 class InitialInterface extends InterfaceLNZ {
   abstract class InitialInterfaceButton extends RectangleButton {
     InitialInterfaceButton(float xi, float yi, float xf, float yf) {
-      super(xi, yi, xf, yf);
+      super(xi, yi, xf);
     }
 
     void hover() {
@@ -26,7 +26,7 @@ class InitialInterface extends InterfaceLNZ {
 
   class InitialInterfaceButton1 extends InitialInterfaceButton {
     InitialInterfaceButton1() {
-      super(10, 10, 100, 100);
+      super(100, 100, 20, 30);
     }
   }
 
