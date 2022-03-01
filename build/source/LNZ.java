@@ -19,14 +19,25 @@ public class LNZ extends PApplet {
 
 
 
+Global global = new Global();
+
  public void setup() {
   /* size commented out by preprocessor */;
   surface.setSize(Constants.initialInterfaceSize, Constants.initialInterfaceSize);
   surface.setLocation(PApplet.parseInt(0.5f * (displayWidth - Constants.initialInterfaceSize)),
     PApplet.parseInt(0.5f * (displayHeight - Constants.initialInterfaceSize)));
+  frameRate(Constants.maxFPS);
 }
 
  public void draw() {
+  // FPS counter
+  if (millis() - global.frameTimer > Constants.frameUpdateTime) {
+    global.lastFPS = (Constants.frameAverageCache * global.lastFPS + PApplet.parseFloat(frameCount - global.frameCounter) *
+      (1000.0f / Constants.frameUpdateTime)) / (Constants.frameAverageCache + 1);
+    global.frameCounter = frameCount + 1;
+    global.frameTimer = millis();
+    println(PApplet.parseInt(global.lastFPS) + " FPS");
+  }
 }
 static class Constants {
 
@@ -36,6 +47,16 @@ static class Constants {
   "Created by Daniel Gray" +
   "";
   static final int initialInterfaceSize = 400;
+  static final int frameUpdateTime = 100;
+  static final int frameAverageCache = 5;
+  static final int maxFPS = 120;
+}
+class Global {
+  private float lastFPS = Constants.maxFPS;
+  private int frameTimer = millis();
+  private int frameCounter = frameCount;
+
+  Global() {}
 }
 
 
