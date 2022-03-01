@@ -14,7 +14,7 @@ class InitialInterface extends InterfaceLNZ {
     InitialInterfaceButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
       this.noStroke();
-      this.setColors(color(0, 129, 50, 255), color(0, 129, 50, 120), color(0, 129, 50, 170), color(0, 129, 50, 220), color(0));
+      this.setColors(color(0, 100, 30, 200), color(0, 129, 50, 150), color(0, 129, 50, 190), color(0, 129, 50, 230), color(255));
       this.show_message = true;
       this.text_size = 15;
     }
@@ -101,7 +101,8 @@ class InitialInterface extends InterfaceLNZ {
   }
 
   void update() {
-    background(170);
+    imageMode(CORNERS);
+    image(global.images.getImage("logo.png"), 0, 0, Constants.initialInterface_size, Constants.initialInterface_size);
     for (InitialInterfaceButton button : this.buttons) {
       button.update();
     }
