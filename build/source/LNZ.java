@@ -21,6 +21,8 @@ public class LNZ extends PApplet {
 
 Global global = new Global();
 
+InterfaceLNZ menu = new InitialInterface();
+
  public void setup() {
   /* size commented out by preprocessor */;
   surface.setSize(Constants.initialInterfaceSize, Constants.initialInterfaceSize);
@@ -36,8 +38,25 @@ Global global = new Global();
       (1000.0f / Constants.frameUpdateTime)) / (Constants.frameAverageCache + 1);
     global.frameCounter = frameCount + 1;
     global.frameTimer = millis();
-    println(PApplet.parseInt(global.lastFPS) + " FPS");
+    //println(int(global.lastFPS) + " FPS");
   }
+  // Program
+  menu.update();
+}
+
+ public void mouseDragged() {
+  menu.mouseMove(mouseX, mouseY);
+}
+ public void mouseMoved() {
+  menu.mouseMove(mouseX, mouseY);
+}
+
+ public void mousePressed() {
+  menu.mousePress();
+}
+
+ public void mouseReleased() {
+  menu.mouseRelease();
 }
 static class Constants {
 
@@ -51,12 +70,290 @@ static class Constants {
   static final int frameAverageCache = 5;
   static final int maxFPS = 120;
 }
+class DImg {
+
+  PImage img = null;
+  int imgMode = CORNERS;
+  int gridX = 0;
+  int gridY = 0;
+
+  // Constructor for blank image
+  DImg(int x, int y) {
+    this.img = createImage(x, y, RGB);
+  }
+
+   public void mode(int imgMode) {
+    switch(imgMode) {
+      case CORNERS:
+      case CORNER:
+      case CENTER:
+        this.imgMode = imgMode;
+        break;
+      default:
+        print("ERROR: imgMode invalid");
+        break;
+    }
+  }
+
+   public void setGrid(int x, int y) {
+    this.gridX = x;
+    this.gridY = y;
+  }
+
+  // Display functions
+   public void display(float x, float y) {
+    imageMode(this.imgMode);
+    image(this.img, x, y);
+  }
+   public void display(float xi, float yi, float xf, float yf) {
+    imageMode(this.imgMode);
+    image(this.img, xi, yi, xf, yf);
+  }
+
+  // Return part of an image
+   public PImage getImageSection(PImage img, int x, int y, int w, int h) {
+    return img.get(x, y, w, h);
+  }
+
+  // Add image to part of this using width / height
+   public void addImage(PImage newImg, int x, int y, int w, int h) {
+   this.img.copy(newImg, 0, 0, newImg.width, newImg.height, x, y, w, h);
+  }
+  // Add image to part of this using percent of width / height
+   public void addImagePercent(PImage newImg, float xP, float yP, float wP, float hP) {
+    if (xP < 0.0f || yP < 0.0f || wP < 0.0f || hP < 0.0f || xP > 1.0f || yP > 1.0f || wP > 1.0f || hP > 1.0f) {
+      println("ERROR: addImagePercent coordinates out of range");
+      return;
+    }
+    this.img.copy(newImg, 0, 0, newImg.width, newImg.height,
+      round(this.img.width * xP), round(this.img.height * yP),
+      round(this.img.width * wP), round(this.img.height * hP));
+  }
+  // Add image to grid square
+   public void addImageGrid(PImage newImg, int x, int y) {
+    if (x < 0 || y < 0 || x >= this.gridX || y >= this.gridY) {
+      println("ERROR: addImageGrid coordinate out of range");
+      return;
+    }
+    this.img.copy(newImg, 0, 0, newImg.width, newImg.height,
+      round(this.img.width * (PApplet.parseFloat(x) / this.gridX)),
+      round(this.img.height * (PApplet.parseFloat(y) / this.gridY)),
+      this.img.width / this.gridX, this.img.height / this.gridY);
+  }
+   public void addImageGrid(PImage newImg, int x, int y, int w, int h) {
+    if (x < 0 || y < 0 || x >= this.gridX || y >= this.gridY) {
+      println("ERROR: addImageGrid coordinate out of range");
+      return;
+    }
+    if (w < 1 || h < 1 || x + w >= this.gridX || y + h >= this.gridY) {
+      print("ERROR: addImageGrid coordinate our of range");
+      return;
+    }
+    this.img.copy(newImg, 0, 0, newImg.width, newImg.height,
+      round(this.img.width * (PApplet.parseFloat(x) / this.gridX)),
+      round(this.img.height * (PApplet.parseFloat(y) / this.gridY)),
+      w * (this.img.width / this.gridX), h * (this.img.height / this.gridY));
+  }
+
+}
+abstract class Button {
+  // state
+  private boolean hidden = false;
+  private boolean disabled = false;
+  private boolean hovered = false;
+  private boolean clicked = false;
+  // colors
+  private int color_disabled = color(220, 180);
+  private int color_default = color(220);
+  private int color_hover = color(170);
+  private int color_click = color(120);
+  private int color_text = color(0);
+  private int color_stroke = color(0);
+  // config
+  private String message = "";
+  private boolean show_message = false;
+  private int text_size = 14;
+  private boolean show_stroke = true;
+  private float stroke_weight = 0.5f;
+  private boolean show_hover_message = false;
+
+  Button() {
+  }
+
+   public void setFill() {
+    if (this.disabled) {
+      fill(this.color_disabled);
+    }
+    else if (this.clicked) {
+      fill(this.color_click);
+    }
+    else if (this.hovered) {
+      fill(this.color_hover);
+    }
+    else {
+      fill(this.color_default);
+    }
+    if (this.show_stroke) {
+      stroke(this.color_stroke);
+      strokeWeight(this.stroke_weight);
+    }
+    else {
+      noStroke();
+    }
+  }
+
+   public void update() {
+    if (!this.hidden) {
+      drawButton();
+    }
+  }
+
+   public void mouseMove(float mX, float mY) {
+    if (this.disabled) {
+      return;
+    }
+    boolean prev_hover = this.hovered;
+    if (this.clicked) {
+      println(this.mouseOn(mX, mY));
+    }
+    this.hovered = this.mouseOn(mX, mY);
+    if (prev_hover && !this.hovered) {
+      this.dehover();
+    }
+    else if (!prev_hover && this.hovered) {
+      this.hover();
+    }
+  }
+
+   public void mousePress() {
+    if (this.disabled) {
+      return;
+    }
+    if (this.hovered) {
+      this.clicked = true;
+      this.click();
+    }
+    else {
+      this.clicked = false;
+    }
+  }
+
+   public void mouseRelease() {
+    if (this.disabled) {
+      return;
+    }
+    if (this.clicked) {
+      this.release();
+    }
+    this.clicked = false;
+  }
+
+   public abstract void drawButton();
+   public abstract void moveButton(float xMove, float yMove);
+   public abstract boolean mouseOn(float mX, float mY);
+   public abstract void hover();
+   public abstract void dehover();
+   public abstract void click();
+   public abstract void release();
+}
+
+
+abstract class RectangleButton extends Button {
+  private float xi;
+  private float yi;
+  private float xf;
+  private float yf;
+  private int roundness = 8;
+
+  RectangleButton(float xi, float yi, float xf, float yf) {
+    super();
+    this.xi = xi;
+    this.yi = yi;
+    this.xf = xf;
+    this.yf = yf;
+  }
+
+   public void drawButton() {
+    this.setFill();
+    rectMode(CORNERS);
+    rect(this.xi, this.yi, this.xf, this.yf, this.roundness);
+  }
+
+   public void moveButton(float xMove, float yMove) {
+    this.xi += xMove;
+    this.yi += yMove;
+    this.xf += xMove;
+    this.yf += yMove;
+  }
+
+   public boolean mouseOn(float mX, float mY) {
+    if (mX >= this.xi && mY >= this.yi &&
+      mX <= this.xf && mY <= this.yf) {
+      return true;
+    }
+    return false;
+  }
+}
 class Global {
   private float lastFPS = Constants.maxFPS;
   private int frameTimer = millis();
   private int frameCounter = frameCount;
 
   Global() {}
+}
+abstract class InterfaceLNZ {
+  InterfaceLNZ() {
+  }
+
+   public abstract void update();
+   public abstract void mouseMove(float mX, float mY);
+   public abstract void mousePress();
+   public abstract void mouseRelease();
+}
+
+class InitialInterface extends InterfaceLNZ {
+  abstract class InitialInterfaceButton extends RectangleButton {
+    InitialInterfaceButton(float xi, float yi, float xf, float yf) {
+      super(xi, yi, xf, yf);
+    }
+
+     public void hover() {
+    }
+     public void dehover() {
+    }
+     public void click() {
+    }
+     public void release() {
+    }
+  }
+
+  class InitialInterfaceButton1 extends InitialInterfaceButton {
+    InitialInterfaceButton1() {
+      super(10, 10, 100, 100);
+    }
+  }
+
+  private InitialInterfaceButton1 button = new InitialInterfaceButton1();
+
+  InitialInterface() {
+    super();
+  }
+
+   public void update() {
+    this.button.update();
+  }
+
+   public void mouseMove(float mX, float mY) {
+    this.button.mouseMove(mX, mY);
+  }
+
+   public void mousePress() {
+    this.button.mousePress();
+  }
+
+   public void mouseRelease() {
+    this.button.mouseRelease();
+  }
 }
 
 

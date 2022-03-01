@@ -2,6 +2,8 @@ import processing.javafx.*;
 
 Global global = new Global();
 
+InterfaceLNZ menu = new InitialInterface();
+
 void setup() {
   fullScreen();
   surface.setSize(Constants.initialInterfaceSize, Constants.initialInterfaceSize);
@@ -17,6 +19,23 @@ void draw() {
       (1000.0 / Constants.frameUpdateTime)) / (Constants.frameAverageCache + 1);
     global.frameCounter = frameCount + 1;
     global.frameTimer = millis();
-    println(int(global.lastFPS) + " FPS");
+    //println(int(global.lastFPS) + " FPS");
   }
+  // Program
+  menu.update();
+}
+
+void mouseDragged() {
+  menu.mouseMove(mouseX, mouseY);
+}
+void mouseMoved() {
+  menu.mouseMove(mouseX, mouseY);
+}
+
+void mousePressed() {
+  menu.mousePress();
+}
+
+void mouseReleased() {
+  menu.mouseRelease();
 }
