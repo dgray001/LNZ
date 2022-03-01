@@ -1,6 +1,6 @@
 class Images {
-  HashMap<String, PImage> imgs = new HashMap<String, PImage>();
-  String basePath = "data/images/";
+  private HashMap<String, PImage> imgs = new HashMap<String, PImage>();
+  private String basePath = sketchPath("data/images/");
 
   Images() {}
 
@@ -11,6 +11,7 @@ class Images {
     else {
       PImage img = loadImage(this.basePath + filePath);
       if (img == null) {
+        println("ERROR: Missing image " + filePath + ".");
         return this.getBlackPixel();
       }
       else {

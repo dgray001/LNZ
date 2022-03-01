@@ -4,7 +4,10 @@ import processing.data.*;
 import processing.event.*;
 import processing.opengl.*;
 
+import java.io.*;
 import processing.javafx.*;
+import ddf.minim.*;
+import ddf.minim.ugens.*;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -19,7 +22,10 @@ public class LNZ extends PApplet {
 
 
 
-Global global = new Global();
+
+
+
+Global global;
 
 InterfaceLNZ menu;
 
@@ -29,6 +35,7 @@ InterfaceLNZ menu;
   surface.setLocation(PApplet.parseInt(0.5f * (displayWidth - Constants.initialInterface_size)),
     PApplet.parseInt(0.5f * (displayHeight - Constants.initialInterface_size)));
   frameRate(Constants.maxFPS);
+  global = new Global(this);
   menu = new InitialInterface();
 }
 
@@ -80,13 +87,13 @@ static class Constants {
   // Program constants
   static final String credits =
   "Liberal Nazi Zombies" +
-  "20220301: v0.6.0g" +
+  "20220301: v0.6.0i" +
   "Created by Daniel Gray" +
   "";
   static final int frameUpdateTime = 100;
   static final int frameAverageCache = 5;
   static final int maxFPS = 120;
-  static final int exit_delay = 1000;
+  static final int exit_delay = 300;
 
   // Initial Interface
   static final int initialInterface_size = 400;
@@ -240,6 +247,7 @@ abstract class Button {
     }
     else {
       strokeWeight(0);
+      noStroke();
     }
   }
 
@@ -499,9 +507,9 @@ class Global {
   private Images images;
   private Sounds sounds;
 
-  Global() {
-    images = new Images();
-    sounds = new Sounds();
+  Global(LNZ thisInstance) {
+    this.images = new Images();
+    this.sounds = new Sounds(thisInstance);
   }
 
    public int frame() {
@@ -515,8 +523,8 @@ class Global {
   }
 }
 class Images {
-  HashMap<String, PImage> imgs = new HashMap<String, PImage>();
-  String basePath = "data/images/";
+  private HashMap<String, PImage> imgs = new HashMap<String, PImage>();
+  private String basePath = sketchPath("data/images/");
 
   Images() {}
 
@@ -527,6 +535,7 @@ class Images {
     else {
       PImage img = loadImage(this.basePath + filePath);
       if (img == null) {
+        println("ERROR: Missing image " + filePath + ".");
         return this.getBlackPixel();
       }
       else {
@@ -567,13 +576,14 @@ class InitialInterface extends InterfaceLNZ {
   abstract class InitialInterfaceButton extends RectangleButton {
     InitialInterfaceButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
+      this.setColors(color(0, 100, 30, 200), color(0, 129, 50, 150), color(0, 129, 50, 190), color(0, 129, 50, 230), color(255));
       this.noStroke();
-      this.setColors(color(0, 129, 50, 255), color(0, 129, 50, 120), color(0, 129, 50, 170), color(0, 129, 50, 220), color(255));
       this.show_message = true;
       this.text_size = 15;
     }
 
      public void hover() {
+      global.sounds.trigger("interfaces/buttonOn1");
     }
      public void dehover() {
       this.clicked = false;
@@ -593,6 +603,11 @@ class InitialInterface extends InterfaceLNZ {
         Constants.initialInterface_buttonGap + buttonHeight);
       this.message = "Launch";
     }
+
+    @Override public 
+    void release() {
+      global.sounds.trigger("interfaces/buttonClick4");
+    }
   }
 
   class InitialInterfaceButton2 extends InitialInterfaceButton {
@@ -602,6 +617,11 @@ class InitialInterface extends InterfaceLNZ {
         width - Constants.initialInterface_buttonGap,
         2 * Constants.initialInterface_buttonGap + 2 * buttonHeight);
       this.message = "Uninstall";
+    }
+
+    @Override public 
+    void release() {
+      global.sounds.trigger("interfaces/buttonClick3");
     }
   }
 
@@ -613,6 +633,11 @@ class InitialInterface extends InterfaceLNZ {
         3 * Constants.initialInterface_buttonGap + 3 * buttonHeight);
       this.message = "Reset\nGame";
     }
+
+    @Override public 
+    void release() {
+      global.sounds.trigger("interfaces/buttonClick3");
+    }
   }
 
   class InitialInterfaceButton4 extends InitialInterfaceButton {
@@ -622,6 +647,11 @@ class InitialInterface extends InterfaceLNZ {
         width - Constants.initialInterface_buttonGap,
         4 * Constants.initialInterface_buttonGap + 4 * buttonHeight);
       this.message = "Version\nHistory";
+    }
+
+    @Override public 
+    void release() {
+      global.sounds.trigger("interfaces/buttonClick3");
     }
   }
 
@@ -636,6 +666,7 @@ class InitialInterface extends InterfaceLNZ {
 
     @Override public 
     void release() {
+      global.sounds.trigger("interfaces/buttonClick3");
       super.release();
       global.exit();
     }
@@ -681,7 +712,34 @@ class InitialInterface extends InterfaceLNZ {
   }
 }
 class Sounds {
-  Sounds() {}
+  private Minim minim;
+  private AudioOutput out;
+  private HashMap<String, Sampler> soundEffects = new HashMap<String, Sampler>();
+  private String basePath = sketchPath("data/sounds/");
+
+  Sounds(LNZ thisInstance) {
+    this.minim = new Minim(thisInstance);
+    this.out = this.minim.getLineOut();
+  }
+
+   public void trigger(String soundPath) {
+    if (this.soundEffects.containsKey(soundPath)) {
+      this.soundEffects.get(soundPath).trigger();
+    }
+    else {
+      String filePath = this.basePath + soundPath + ".wav";
+      File f = new File(filePath);
+      if (f.exists()) {
+        Sampler s = new Sampler(filePath, 2, this.minim);
+        s.patch(this.out);
+        this.soundEffects.put(soundPath, s);
+        s.trigger();
+      }
+      else {
+        println("ERROR: Missing sound " + filePath + ".");
+      }
+    }
+  }
 }
 
 
