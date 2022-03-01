@@ -6,4 +6,7 @@ static class Constants {
   "Created by Daniel Gray" +
   "";
   static final int initialInterfaceSize = 400;
+  static final int frameUpdateTime = 100;
+  static final int frameAverageCache = 5;
+  static final int maxFPS = 120;
 }
