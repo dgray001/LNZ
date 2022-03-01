@@ -21,14 +21,15 @@ public class LNZ extends PApplet {
 
 Global global = new Global();
 
-InterfaceLNZ menu = new InitialInterface();
+InterfaceLNZ menu;
 
  public void setup() {
   /* size commented out by preprocessor */;
-  surface.setSize(Constants.initialInterfaceSize, Constants.initialInterfaceSize);
-  surface.setLocation(PApplet.parseInt(0.5f * (displayWidth - Constants.initialInterfaceSize)),
-    PApplet.parseInt(0.5f * (displayHeight - Constants.initialInterfaceSize)));
+  surface.setSize(Constants.initialInterface_size, Constants.initialInterface_size);
+  surface.setLocation(PApplet.parseInt(0.5f * (displayWidth - Constants.initialInterface_size)),
+    PApplet.parseInt(0.5f * (displayHeight - Constants.initialInterface_size)));
   frameRate(Constants.maxFPS);
+  menu = new InitialInterface();
 }
 
  public void draw() {
@@ -62,13 +63,18 @@ static class Constants {
 
   // Program constants
   static final String credits =
-  "Liberal Nazi Zombies v0.6.0a" +
+  "Liberal Nazi Zombies" +
+  "20220301: v0.6.0g" +
   "Created by Daniel Gray" +
   "";
-  static final int initialInterfaceSize = 400;
   static final int frameUpdateTime = 100;
   static final int frameAverageCache = 5;
   static final int maxFPS = 120;
+
+  // Initial Interface
+  static final int initialInterface_size = 400;
+  static final int initialInterface_buttonWidth = 80;
+  static final int initialInterface_buttonGap = 25;
 }
 class DImg {
 
@@ -158,26 +164,44 @@ class DImg {
 }
 abstract class Button {
   // state
-  private boolean hidden = false;
-  private boolean disabled = false;
-  private boolean hovered = false;
-  private boolean clicked = false;
+  protected boolean hidden = false;
+  protected boolean disabled = false;
+  protected boolean hovered = false;
+  protected boolean clicked = false;
   // colors
-  private int color_disabled = color(220, 180);
-  private int color_default = color(220);
-  private int color_hover = color(170);
-  private int color_click = color(120);
-  private int color_text = color(0);
-  private int color_stroke = color(0);
+  protected int color_disabled = color(220, 180);
+  protected int color_default = color(220);
+  protected int color_hover = color(170);
+  protected int color_click = color(120);
+  protected int color_text = color(0);
+  protected int color_stroke = color(0);
   // config
-  private String message = "";
-  private boolean show_message = false;
-  private int text_size = 14;
-  private boolean show_stroke = true;
-  private float stroke_weight = 0.5f;
-  private boolean show_hover_message = false;
+  protected String message = "";
+  protected boolean show_message = false;
+  protected int text_size = 14;
+  protected boolean show_stroke = true;
+  protected float stroke_weight = 0.5f;
+  protected boolean show_hover_message = false;
+  protected boolean stay_dehovered = false;
 
   Button() {
+  }
+
+   public void setColors(int c_dis, int c_def, int c_hov, int c_cli, int c_tex) {
+    this.color_disabled = c_dis;
+    this.color_default = c_def;
+    this.color_hover = c_hov;
+    this.color_click = c_cli;
+    this.color_text = c_tex;
+  }
+
+   public void setStroke(int c_str, float stroke_weight) {
+    this.color_stroke = c_str;
+    this.stroke_weight = stroke_weight;
+    this.show_stroke = true;
+  }
+   public void noStroke() {
+    this.show_stroke = false;
   }
 
    public void setFill() {
@@ -198,8 +222,14 @@ abstract class Button {
       strokeWeight(this.stroke_weight);
     }
     else {
-      noStroke();
+      strokeWeight(0);
     }
+  }
+
+
+   public void stayDehovered() {
+    this.stay_dehovered = true;
+    this.hovered = false;
   }
 
    public void update() {
@@ -214,6 +244,14 @@ abstract class Button {
     }
     boolean prev_hover = this.hovered;
     this.hovered = this.mouseOn(mX, mY);
+    if (this.stay_dehovered) {
+      if (this.hovered) {
+        this.hovered = false;
+      }
+      else {
+        this.stay_dehovered = false;
+      }
+    }
     if (prev_hover && !this.hovered) {
       this.dehover();
     }
@@ -257,11 +295,11 @@ abstract class Button {
 
 
 abstract class RectangleButton extends Button {
-  private float xi;
-  private float yi;
-  private float xf;
-  private float yf;
-  private int roundness = 8;
+  protected float xi;
+  protected float yi;
+  protected float xf;
+  protected float yf;
+  protected int roundness = 8;
 
   RectangleButton(float xi, float yi, float xf, float yf) {
     super();
@@ -296,10 +334,10 @@ abstract class RectangleButton extends Button {
 
 
 abstract class EllipseButton extends Button {
-  private float xc;
-  private float yc;
-  private float xr;
-  private float yr;
+  protected float xc;
+  protected float yc;
+  protected float xr;
+  protected float yr;
 
   EllipseButton(float xc, float yc, float xr, float yr) {
     super();
@@ -340,6 +378,63 @@ abstract class CircleButton extends EllipseButton {
     super(xc, yc, r, r);
   }
 }
+
+
+
+abstract class TriangleButton extends Button {
+  protected float x1;
+  protected float y1;
+  protected float x2;
+  protected float y2;
+  protected float x3;
+  protected float y3;
+  protected float dotvv;
+  protected float dotuu;
+  protected float dotvu;
+  protected float constant;
+
+  TriangleButton(float x1, float y1, float x2, float y2, float x3, float y3) {
+    this.x1 = x1;
+    this.y1 = y1;
+    this.x2 = x2;
+    this.y2 = y2;
+    this.x3 = x3;
+    this.y3 = y3;
+    this.dotvv = (x3 - x1) * (x3 - x1) + (y3 - y1) * (y3 - y1);
+    this.dotuu = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
+    this.dotvu = (x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1);
+    this.constant = this.dotvv * this.dotuu - this.dotvu * this.dotvu;
+  }
+
+   public void drawButton() {
+    this.setFill();
+    triangle(this.x1, this.y1, this.x2, this.y2, this.x3, this.y3);
+  }
+
+   public void moveButton(float xMove, float yMove) {
+    this.x1 += xMove;
+    this.y1 += yMove;
+    this.x2 += xMove;
+    this.y2 += yMove;
+    this.x3 += xMove;
+    this.y3 += yMove;
+  }
+
+   public boolean mouseOn(float mX, float mY) {
+    float dotvp = (this.x3 - this.x1) * (mX - this.x1) + (this.y3 - this.y1) * (mY - this.y1);
+    float dotup = (this.x2 - this.y1) * (mX - this.x1) + (this.y2 - this.y1) * (mY - this.y1);
+    if (this.constant == 0) {
+      return false;
+    }
+    float t1 = (this.dotuu * dotvp - this.dotvu * dotup) / this.constant;
+    float t2 = (this.dotvv * dotup - this.dotvu * dotvp) / this.constant;
+    println(t1, t2);
+    if (t1 >= 0 && t2 >= 0 && t1 + t2 < 1) {
+      return true;
+    }
+    return false;
+  }
+}
 class Global {
   private float lastFPS = Constants.maxFPS;
   private int frameTimer = millis();
@@ -358,47 +453,107 @@ abstract class InterfaceLNZ {
 }
 
 class InitialInterface extends InterfaceLNZ {
-  abstract class InitialInterfaceButton extends CircleButton {
+
+  abstract class InitialInterfaceButton extends RectangleButton {
     InitialInterfaceButton(float xi, float yi, float xf, float yf) {
-      super(xi, yi, xf);
+      super(xi, yi, xf, yf);
+      this.noStroke();
+      this.setColors(color(0, 129, 50, 255), color(0, 129, 50, 120), color(0, 129, 50, 170), color(0, 129, 50, 220), color(0));
     }
 
      public void hover() {
     }
      public void dehover() {
+      this.clicked = false;
     }
      public void click() {
     }
      public void release() {
+      this.stayDehovered();
     }
   }
 
   class InitialInterfaceButton1 extends InitialInterfaceButton {
-    InitialInterfaceButton1() {
-      super(100, 100, 20, 30);
+    InitialInterfaceButton1(float buttonHeight) {
+      super(width - Constants.initialInterface_buttonWidth - Constants.initialInterface_buttonGap,
+        Constants.initialInterface_buttonGap,
+        width - Constants.initialInterface_buttonGap,
+        Constants.initialInterface_buttonGap + buttonHeight);
     }
   }
 
-  private InitialInterfaceButton1 button = new InitialInterfaceButton1();
+  class InitialInterfaceButton2 extends InitialInterfaceButton {
+    InitialInterfaceButton2(float buttonHeight) {
+      super(width - Constants.initialInterface_buttonWidth - Constants.initialInterface_buttonGap,
+        2 * Constants.initialInterface_buttonGap + buttonHeight,
+        width - Constants.initialInterface_buttonGap,
+        2 * Constants.initialInterface_buttonGap + 2 * buttonHeight);
+    }
+  }
+
+  class InitialInterfaceButton3 extends InitialInterfaceButton {
+    InitialInterfaceButton3(float buttonHeight) {
+      super(width - Constants.initialInterface_buttonWidth - Constants.initialInterface_buttonGap,
+        3 * Constants.initialInterface_buttonGap + 2 * buttonHeight,
+        width - Constants.initialInterface_buttonGap,
+        3 * Constants.initialInterface_buttonGap + 3 * buttonHeight);
+    }
+  }
+
+  class InitialInterfaceButton4 extends InitialInterfaceButton {
+    InitialInterfaceButton4(float buttonHeight) {
+      super(width - Constants.initialInterface_buttonWidth - Constants.initialInterface_buttonGap,
+        4 * Constants.initialInterface_buttonGap + 3 * buttonHeight,
+        width - Constants.initialInterface_buttonGap,
+        4 * Constants.initialInterface_buttonGap + 4 * buttonHeight);
+    }
+  }
+
+  class InitialInterfaceButton5 extends InitialInterfaceButton {
+    InitialInterfaceButton5(float buttonHeight) {
+      super(width - Constants.initialInterface_buttonWidth - Constants.initialInterface_buttonGap,
+        5 * Constants.initialInterface_buttonGap + 4 * buttonHeight,
+        width - Constants.initialInterface_buttonGap,
+        5 * Constants.initialInterface_buttonGap + 5 * buttonHeight);
+    }
+  }
+
+  private InitialInterfaceButton[] buttons = new InitialInterfaceButton[5];
 
   InitialInterface() {
     super();
+    float buttonHeight = (Constants.initialInterface_size - (this.buttons.length + 1) *
+      Constants.initialInterface_buttonGap) / this.buttons.length;
+    this.buttons[0] = new InitialInterfaceButton1(buttonHeight);
+    this.buttons[1] = new InitialInterfaceButton2(buttonHeight);
+    this.buttons[2] = new InitialInterfaceButton3(buttonHeight);
+    this.buttons[3] = new InitialInterfaceButton4(buttonHeight);
+    this.buttons[4] = new InitialInterfaceButton5(buttonHeight);
   }
 
    public void update() {
-    this.button.update();
+    background(170);
+    for (InitialInterfaceButton button : this.buttons) {
+      button.update();
+    }
   }
 
    public void mouseMove(float mX, float mY) {
-    this.button.mouseMove(mX, mY);
+    for (InitialInterfaceButton button : this.buttons) {
+      button.mouseMove(mX, mY);
+    }
   }
 
    public void mousePress() {
-    this.button.mousePress();
+    for (InitialInterfaceButton button : this.buttons) {
+      button.mousePress();
+    }
   }
 
    public void mouseRelease() {
-    this.button.mouseRelease();
+    for (InitialInterfaceButton button : this.buttons) {
+      button.mouseRelease();
+    }
   }
 }
 
