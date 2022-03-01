@@ -1,0 +1,3 @@
+class Sounds {
+  Sounds() {}
+}

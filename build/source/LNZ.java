@@ -44,7 +44,9 @@ InterfaceLNZ menu;
     //println(int(global.lastFPS) + " FPS");
   }
   // Program
-  menu.update();
+  if (menu != null) {
+    menu.update();
+  }
   switch(global.state) {
     case INITIAL_INTERFACE:
       break;
@@ -90,6 +92,7 @@ static class Constants {
   static final int initialInterface_size = 400;
   static final int initialInterface_buttonWidth = 80;
   static final int initialInterface_buttonGap = 25;
+
 }
 class DImg {
 
@@ -493,8 +496,13 @@ class Global {
   private int lastFrameTime = millis();
   private ProgramState state = ProgramState.INITIAL_INTERFACE;
   private int timer_exiting = Constants.exit_delay;
+  private Images images;
+  private Sounds sounds;
 
-  Global() {}
+  Global() {
+    images = new Images();
+    sounds = new Sounds();
+  }
 
    public int frame() {
     int elapsed = millis() - this.lastFrameTime;
@@ -504,6 +512,44 @@ class Global {
 
    public void exit() {
     this.state = ProgramState.EXITING;
+  }
+}
+class Images {
+  HashMap<String, PImage> imgs = new HashMap<String, PImage>();
+  String basePath = "data/images/";
+
+  Images() {}
+
+   public PImage getImage(String filePath) {
+    if (this.imgs.containsKey(filePath)) {
+      return this.imgs.get(filePath);
+    }
+    else {
+      PImage img = loadImage(this.basePath + filePath);
+      if (img == null) {
+        return this.getBlackPixel();
+      }
+      else {
+        this.imgs.put(filePath, img);
+        return img;
+      }
+    }
+  }
+
+   public PImage getBlackPixel() {
+    PImage img = new PImage(1, 1, RGB);
+    img.loadPixels();
+    img.pixels[0] = color(0);
+    img.updatePixels();
+    return img;
+  }
+
+   public PImage getTransparentPixel() {
+    PImage img = new PImage(1, 1, RGB);
+    img.loadPixels();
+    img.pixels[0] = color(255, 1);
+    img.updatePixels();
+    return img;
   }
 }
 abstract class InterfaceLNZ {
@@ -522,7 +568,7 @@ class InitialInterface extends InterfaceLNZ {
     InitialInterfaceButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
       this.noStroke();
-      this.setColors(color(0, 129, 50, 255), color(0, 129, 50, 120), color(0, 129, 50, 170), color(0, 129, 50, 220), color(0));
+      this.setColors(color(0, 129, 50, 255), color(0, 129, 50, 120), color(0, 129, 50, 170), color(0, 129, 50, 220), color(255));
       this.show_message = true;
       this.text_size = 15;
     }
@@ -609,7 +655,8 @@ class InitialInterface extends InterfaceLNZ {
   }
 
    public void update() {
-    background(170);
+    imageMode(CORNERS);
+    image(global.images.getImage("logo.png"), 0, 0, Constants.initialInterface_size, Constants.initialInterface_size);
     for (InitialInterfaceButton button : this.buttons) {
       button.update();
     }
@@ -632,6 +679,9 @@ class InitialInterface extends InterfaceLNZ {
       button.mouseRelease();
     }
   }
+}
+class Sounds {
+  Sounds() {}
 }
 
 

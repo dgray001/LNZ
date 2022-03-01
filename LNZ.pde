@@ -25,7 +25,9 @@ void draw() {
     //println(int(global.lastFPS) + " FPS");
   }
   // Program
-  menu.update();
+  if (menu != null) {
+    menu.update();
+  }
   switch(global.state) {
     case INITIAL_INTERFACE:
       break;

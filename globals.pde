@@ -11,8 +11,13 @@ class Global {
   private int lastFrameTime = millis();
   private ProgramState state = ProgramState.INITIAL_INTERFACE;
   private int timer_exiting = Constants.exit_delay;
+  private Images images;
+  private Sounds sounds;
 
-  Global() {}
+  Global() {
+    images = new Images();
+    sounds = new Sounds();
+  }
 
   int frame() {
     int elapsed = millis() - this.lastFrameTime;
