@@ -17,7 +17,6 @@ abstract class Button {
   protected int text_size = 14;
   protected boolean show_stroke = true;
   protected float stroke_weight = 0.5;
-  protected boolean show_hover_message = false;
   protected boolean stay_dehovered = false;
 
   Button() {
@@ -145,10 +144,25 @@ abstract class RectangleButton extends Button {
     this.yf = yf;
   }
 
+  float xCenter() {
+    return this.xi + 0.5 * (this.xf - this.xi);
+  }
+
+  float yCenter() {
+    return this.yi + 0.5 * (this.yf - this.yi);
+  }
+
   void drawButton() {
     this.setFill();
     rectMode(CORNERS);
+    if (this.show_message)
     rect(this.xi, this.yi, this.xf, this.yf, this.roundness);
+    if (this.show_message) {
+      fill(this.color_text);
+      textAlign(CENTER, CENTER);
+      textSize(this.text_size);
+      text(this.message, this.xCenter(), this.yCenter());
+    }
   }
 
   void moveButton(float xMove, float yMove) {
@@ -187,6 +201,12 @@ abstract class EllipseButton extends Button {
     this.setFill();
     ellipseMode(RADIUS);
     ellipse(this.xc, this.yc, this.xr, this.yr);
+    if (this.show_message) {
+      fill(this.color_text);
+      textAlign(CENTER, CENTER);
+      textSize(this.text_size);
+      text(this.message, this.xc, this.yc);
+    }
   }
 
   void moveButton(float xMove, float yMove) {
@@ -228,6 +248,8 @@ abstract class TriangleButton extends Button {
   protected float dotuu;
   protected float dotvu;
   protected float constant;
+  protected float xCenter;
+  protected float yCenter;
 
   TriangleButton(float x1, float y1, float x2, float y2, float x3, float y3) {
     this.x1 = x1;
@@ -240,11 +262,19 @@ abstract class TriangleButton extends Button {
     this.dotuu = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
     this.dotvu = (x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1);
     this.constant = this.dotvv * this.dotuu - this.dotvu * this.dotvu;
+    this.xCenter = (x1 + x2 + x3) / 3.0;
+    this.yCenter = (y1 + y2 + y3) / 3.0;
   }
 
   void drawButton() {
     this.setFill();
     triangle(this.x1, this.y1, this.x2, this.y2, this.x3, this.y3);
+    if (this.show_message) {
+      fill(this.color_text);
+      textAlign(CENTER, CENTER);
+      textSize(this.text_size);
+      text(this.message, this.xCenter, this.yCenter);
+    }
   }
 
   void moveButton(float xMove, float yMove) {

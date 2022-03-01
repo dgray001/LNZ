@@ -15,6 +15,8 @@ class InitialInterface extends InterfaceLNZ {
       super(xi, yi, xf, yf);
       this.noStroke();
       this.setColors(color(0, 129, 50, 255), color(0, 129, 50, 120), color(0, 129, 50, 170), color(0, 129, 50, 220), color(0));
+      this.show_message = true;
+      this.text_size = 15;
     }
 
     void hover() {
@@ -35,6 +37,7 @@ class InitialInterface extends InterfaceLNZ {
         Constants.initialInterface_buttonGap,
         width - Constants.initialInterface_buttonGap,
         Constants.initialInterface_buttonGap + buttonHeight);
+      this.message = "Launch";
     }
   }
 
@@ -44,6 +47,7 @@ class InitialInterface extends InterfaceLNZ {
         2 * Constants.initialInterface_buttonGap + buttonHeight,
         width - Constants.initialInterface_buttonGap,
         2 * Constants.initialInterface_buttonGap + 2 * buttonHeight);
+      this.message = "Uninstall";
     }
   }
 
@@ -53,6 +57,7 @@ class InitialInterface extends InterfaceLNZ {
         3 * Constants.initialInterface_buttonGap + 2 * buttonHeight,
         width - Constants.initialInterface_buttonGap,
         3 * Constants.initialInterface_buttonGap + 3 * buttonHeight);
+      this.message = "Reset\nGame";
     }
   }
 
@@ -62,6 +67,7 @@ class InitialInterface extends InterfaceLNZ {
         4 * Constants.initialInterface_buttonGap + 3 * buttonHeight,
         width - Constants.initialInterface_buttonGap,
         4 * Constants.initialInterface_buttonGap + 4 * buttonHeight);
+      this.message = "Version\nHistory";
     }
   }
 
@@ -71,6 +77,13 @@ class InitialInterface extends InterfaceLNZ {
         5 * Constants.initialInterface_buttonGap + 4 * buttonHeight,
         width - Constants.initialInterface_buttonGap,
         5 * Constants.initialInterface_buttonGap + 5 * buttonHeight);
+      this.message = "Exit";
+    }
+
+    @Override
+    void release() {
+      super.release();
+      global.exit();
     }
   }
 

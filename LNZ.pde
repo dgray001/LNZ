@@ -14,16 +14,30 @@ void setup() {
 }
 
 void draw() {
+  int timeElapsed = global.frame();
   // FPS counter
-  if (millis() - global.frameTimer > Constants.frameUpdateTime) {
+  global.timer_FPS -= timeElapsed;
+  if (global.timer_FPS < 0) {
+    global.timer_FPS = Constants.frameUpdateTime;
     global.lastFPS = (Constants.frameAverageCache * global.lastFPS + float(frameCount - global.frameCounter) *
       (1000.0 / Constants.frameUpdateTime)) / (Constants.frameAverageCache + 1);
     global.frameCounter = frameCount + 1;
-    global.frameTimer = millis();
     //println(int(global.lastFPS) + " FPS");
   }
   // Program
   menu.update();
+  switch(global.state) {
+    case INITIAL_INTERFACE:
+      break;
+    case EXITING:
+      global.timer_exiting -= timeElapsed;
+      if (global.timer_exiting < 0) {
+        exit();
+      }
+      break;
+    default:
+      break;
+  }
 }
 
 void mouseDragged() {
