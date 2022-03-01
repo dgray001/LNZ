@@ -9,6 +9,7 @@ static class Constants {
   static final int frameUpdateTime = 100;
   static final int frameAverageCache = 5;
   static final int maxFPS = 120;
+  static final int exit_delay = 1000;
 
   // Initial Interface
   static final int initialInterface_size = 400;

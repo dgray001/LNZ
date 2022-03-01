@@ -33,16 +33,30 @@ InterfaceLNZ menu;
 }
 
  public void draw() {
+  int timeElapsed = global.frame();
   // FPS counter
-  if (millis() - global.frameTimer > Constants.frameUpdateTime) {
+  global.timer_FPS -= timeElapsed;
+  if (global.timer_FPS < 0) {
+    global.timer_FPS = Constants.frameUpdateTime;
     global.lastFPS = (Constants.frameAverageCache * global.lastFPS + PApplet.parseFloat(frameCount - global.frameCounter) *
       (1000.0f / Constants.frameUpdateTime)) / (Constants.frameAverageCache + 1);
     global.frameCounter = frameCount + 1;
-    global.frameTimer = millis();
     //println(int(global.lastFPS) + " FPS");
   }
   // Program
   menu.update();
+  switch(global.state) {
+    case INITIAL_INTERFACE:
+      break;
+    case EXITING:
+      global.timer_exiting -= timeElapsed;
+      if (global.timer_exiting < 0) {
+        exit();
+      }
+      break;
+    default:
+      break;
+  }
 }
 
  public void mouseDragged() {
@@ -70,6 +84,7 @@ static class Constants {
   static final int frameUpdateTime = 100;
   static final int frameAverageCache = 5;
   static final int maxFPS = 120;
+  static final int exit_delay = 1000;
 
   // Initial Interface
   static final int initialInterface_size = 400;
@@ -181,7 +196,6 @@ abstract class Button {
   protected int text_size = 14;
   protected boolean show_stroke = true;
   protected float stroke_weight = 0.5f;
-  protected boolean show_hover_message = false;
   protected boolean stay_dehovered = false;
 
   Button() {
@@ -309,10 +323,25 @@ abstract class RectangleButton extends Button {
     this.yf = yf;
   }
 
+   public float xCenter() {
+    return this.xi + 0.5f * (this.xf - this.xi);
+  }
+
+   public float yCenter() {
+    return this.yi + 0.5f * (this.yf - this.yi);
+  }
+
    public void drawButton() {
     this.setFill();
     rectMode(CORNERS);
+    if (this.show_message)
     rect(this.xi, this.yi, this.xf, this.yf, this.roundness);
+    if (this.show_message) {
+      fill(this.color_text);
+      textAlign(CENTER, CENTER);
+      textSize(this.text_size);
+      text(this.message, this.xCenter(), this.yCenter());
+    }
   }
 
    public void moveButton(float xMove, float yMove) {
@@ -351,6 +380,12 @@ abstract class EllipseButton extends Button {
     this.setFill();
     ellipseMode(RADIUS);
     ellipse(this.xc, this.yc, this.xr, this.yr);
+    if (this.show_message) {
+      fill(this.color_text);
+      textAlign(CENTER, CENTER);
+      textSize(this.text_size);
+      text(this.message, this.xc, this.yc);
+    }
   }
 
    public void moveButton(float xMove, float yMove) {
@@ -392,6 +427,8 @@ abstract class TriangleButton extends Button {
   protected float dotuu;
   protected float dotvu;
   protected float constant;
+  protected float xCenter;
+  protected float yCenter;
 
   TriangleButton(float x1, float y1, float x2, float y2, float x3, float y3) {
     this.x1 = x1;
@@ -404,11 +441,19 @@ abstract class TriangleButton extends Button {
     this.dotuu = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
     this.dotvu = (x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1);
     this.constant = this.dotvv * this.dotuu - this.dotvu * this.dotvu;
+    this.xCenter = (x1 + x2 + x3) / 3.0f;
+    this.yCenter = (y1 + y2 + y3) / 3.0f;
   }
 
    public void drawButton() {
     this.setFill();
     triangle(this.x1, this.y1, this.x2, this.y2, this.x3, this.y3);
+    if (this.show_message) {
+      fill(this.color_text);
+      textAlign(CENTER, CENTER);
+      textSize(this.text_size);
+      text(this.message, this.xCenter, this.yCenter);
+    }
   }
 
    public void moveButton(float xMove, float yMove) {
@@ -435,12 +480,31 @@ abstract class TriangleButton extends Button {
     return false;
   }
 }
+enum ProgramState {
+  INITIAL_INTERFACE, EXITING;
+}
+
 class Global {
+  // FPS
   private float lastFPS = Constants.maxFPS;
-  private int frameTimer = millis();
   private int frameCounter = frameCount;
+  private int timer_FPS = Constants.frameUpdateTime;
+  // Program
+  private int lastFrameTime = millis();
+  private ProgramState state = ProgramState.INITIAL_INTERFACE;
+  private int timer_exiting = Constants.exit_delay;
 
   Global() {}
+
+   public int frame() {
+    int elapsed = millis() - this.lastFrameTime;
+    this.lastFrameTime = millis();
+    return elapsed;
+  }
+
+   public void exit() {
+    this.state = ProgramState.EXITING;
+  }
 }
 abstract class InterfaceLNZ {
   InterfaceLNZ() {
@@ -459,6 +523,8 @@ class InitialInterface extends InterfaceLNZ {
       super(xi, yi, xf, yf);
       this.noStroke();
       this.setColors(color(0, 129, 50, 255), color(0, 129, 50, 120), color(0, 129, 50, 170), color(0, 129, 50, 220), color(0));
+      this.show_message = true;
+      this.text_size = 15;
     }
 
      public void hover() {
@@ -479,6 +545,7 @@ class InitialInterface extends InterfaceLNZ {
         Constants.initialInterface_buttonGap,
         width - Constants.initialInterface_buttonGap,
         Constants.initialInterface_buttonGap + buttonHeight);
+      this.message = "Launch";
     }
   }
 
@@ -488,6 +555,7 @@ class InitialInterface extends InterfaceLNZ {
         2 * Constants.initialInterface_buttonGap + buttonHeight,
         width - Constants.initialInterface_buttonGap,
         2 * Constants.initialInterface_buttonGap + 2 * buttonHeight);
+      this.message = "Uninstall";
     }
   }
 
@@ -497,6 +565,7 @@ class InitialInterface extends InterfaceLNZ {
         3 * Constants.initialInterface_buttonGap + 2 * buttonHeight,
         width - Constants.initialInterface_buttonGap,
         3 * Constants.initialInterface_buttonGap + 3 * buttonHeight);
+      this.message = "Reset\nGame";
     }
   }
 
@@ -506,6 +575,7 @@ class InitialInterface extends InterfaceLNZ {
         4 * Constants.initialInterface_buttonGap + 3 * buttonHeight,
         width - Constants.initialInterface_buttonGap,
         4 * Constants.initialInterface_buttonGap + 4 * buttonHeight);
+      this.message = "Version\nHistory";
     }
   }
 
@@ -515,6 +585,13 @@ class InitialInterface extends InterfaceLNZ {
         5 * Constants.initialInterface_buttonGap + 4 * buttonHeight,
         width - Constants.initialInterface_buttonGap,
         5 * Constants.initialInterface_buttonGap + 5 * buttonHeight);
+      this.message = "Exit";
+    }
+
+    @Override public 
+    void release() {
+      super.release();
+      global.exit();
     }
   }
 
