@@ -13,13 +13,14 @@ class InitialInterface extends InterfaceLNZ {
   abstract class InitialInterfaceButton extends RectangleButton {
     InitialInterfaceButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
-      this.noStroke();
       this.setColors(color(0, 100, 30, 200), color(0, 129, 50, 150), color(0, 129, 50, 190), color(0, 129, 50, 230), color(255));
+      this.noStroke();
       this.show_message = true;
       this.text_size = 15;
     }
 
     void hover() {
+      global.sounds.trigger("interfaces/buttonOn1");
     }
     void dehover() {
       this.clicked = false;
@@ -39,6 +40,11 @@ class InitialInterface extends InterfaceLNZ {
         Constants.initialInterface_buttonGap + buttonHeight);
       this.message = "Launch";
     }
+
+    @Override
+    void release() {
+      global.sounds.trigger("interfaces/buttonClick4");
+    }
   }
 
   class InitialInterfaceButton2 extends InitialInterfaceButton {
@@ -48,6 +54,11 @@ class InitialInterface extends InterfaceLNZ {
         width - Constants.initialInterface_buttonGap,
         2 * Constants.initialInterface_buttonGap + 2 * buttonHeight);
       this.message = "Uninstall";
+    }
+
+    @Override
+    void release() {
+      global.sounds.trigger("interfaces/buttonClick3");
     }
   }
 
@@ -59,6 +70,11 @@ class InitialInterface extends InterfaceLNZ {
         3 * Constants.initialInterface_buttonGap + 3 * buttonHeight);
       this.message = "Reset\nGame";
     }
+
+    @Override
+    void release() {
+      global.sounds.trigger("interfaces/buttonClick3");
+    }
   }
 
   class InitialInterfaceButton4 extends InitialInterfaceButton {
@@ -68,6 +84,11 @@ class InitialInterface extends InterfaceLNZ {
         width - Constants.initialInterface_buttonGap,
         4 * Constants.initialInterface_buttonGap + 4 * buttonHeight);
       this.message = "Version\nHistory";
+    }
+
+    @Override
+    void release() {
+      global.sounds.trigger("interfaces/buttonClick3");
     }
   }
 
@@ -82,6 +103,7 @@ class InitialInterface extends InterfaceLNZ {
 
     @Override
     void release() {
+      global.sounds.trigger("interfaces/buttonClick3");
       super.release();
       global.exit();
     }

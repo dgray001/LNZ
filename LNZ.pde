@@ -1,6 +1,9 @@
+import java.io.*;
 import processing.javafx.*;
+import ddf.minim.*;
+import ddf.minim.ugens.*;
 
-Global global = new Global();
+Global global;
 
 InterfaceLNZ menu;
 
@@ -10,6 +13,7 @@ void setup() {
   surface.setLocation(int(0.5 * (displayWidth - Constants.initialInterface_size)),
     int(0.5 * (displayHeight - Constants.initialInterface_size)));
   frameRate(Constants.maxFPS);
+  global = new Global(this);
   menu = new InitialInterface();
 }
 

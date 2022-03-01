@@ -14,9 +14,9 @@ class Global {
   private Images images;
   private Sounds sounds;
 
-  Global() {
-    images = new Images();
-    sounds = new Sounds();
+  Global(LNZ thisInstance) {
+    this.images = new Images();
+    this.sounds = new Sounds(thisInstance);
   }
 
   int frame() {

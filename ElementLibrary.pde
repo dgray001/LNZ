@@ -58,6 +58,7 @@ abstract class Button {
     }
     else {
       strokeWeight(0);
+      noStroke();
     }
   }
 
