@@ -3,7 +3,7 @@ static class Constants {
   // Program constants
   static final String credits =
   "Liberal Nazi Zombies" +
-  "20220301: v0.6.0j" +
+  "20220301: v0.6.0k" +
   "Created by Daniel Gray" +
   "";
   static final int frameUpdateTime = 100;

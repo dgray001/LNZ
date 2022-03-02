@@ -4,6 +4,7 @@ import processing.data.*;
 import processing.event.*;
 import processing.opengl.*;
 
+import java.util.*;
 import java.io.*;
 import processing.javafx.*;
 import ddf.minim.*;
@@ -19,6 +20,7 @@ import java.io.OutputStream;
 import java.io.IOException;
 
 public class LNZ extends PApplet {
+
 
 
 
@@ -87,7 +89,7 @@ static class Constants {
   // Program constants
   static final String credits =
   "Liberal Nazi Zombies" +
-  "20220301: v0.6.0i" +
+  "20220301: v0.6.0j" +
   "Created by Daniel Gray" +
   "";
   static final int frameUpdateTime = 100;
@@ -111,6 +113,9 @@ class DImg {
   // Constructor for blank image
   DImg(int x, int y) {
     this.img = createImage(x, y, RGB);
+  }
+  DImg(PImage img) {
+    this.img = img;
   }
 
    public void mode(int imgMode) {
@@ -186,6 +191,31 @@ class DImg {
       w * (this.img.width / this.gridX), h * (this.img.height / this.gridY));
   }
 
+  // color pixels
+   public void colorPixels(int c) {
+    /*float ref_r = c >> 16 & 0xFF;
+    float ref_g = c >> 8 & 0xFF;
+    float ref_b = c & 0xFF;
+    float ref_a = alpha(c);*/
+    this.img.loadPixels();
+    for (int i = 0; i < this.img.height; i++) {
+      for (int j = 0; j < this.img.width; j++) {
+        int index = i + this.img.width * j;
+        this.img.pixels[index] = c;//color(ref_r, ref_g, ref_b, ref_a);
+      }
+    }
+    this.img.updatePixels();
+  }
+
+   public void colorPixel(int x, int y, int c) {
+    this.img.loadPixels();
+    int index = x + y * this.img.width;
+    if (index < 0 || index >= this.img.pixels.length) {
+      return;
+    }
+    this.img.pixels[index] = c;
+    this.img.updatePixels();
+  }
 }
 abstract class Button {
   // state
@@ -228,19 +258,23 @@ abstract class Button {
     this.show_stroke = false;
   }
 
-   public void setFill() {
+   public int fillColor() {
     if (this.disabled) {
-      fill(this.color_disabled);
+      return this.color_disabled;
     }
     else if (this.clicked) {
-      fill(this.color_click);
+      return this.color_click;
     }
     else if (this.hovered) {
-      fill(this.color_hover);
+      return this.color_hover;
     }
     else {
-      fill(this.color_default);
+      return this.color_default;
     }
+  }
+
+   public void setFill() {
+    fill(this.fillColor());
     if (this.show_stroke) {
       stroke(this.color_stroke);
       strokeWeight(this.stroke_weight);
@@ -248,6 +282,15 @@ abstract class Button {
     else {
       strokeWeight(0);
       noStroke();
+    }
+  }
+
+   public void writeText() {
+    if (this.show_message) {
+      fill(this.color_text);
+      textAlign(CENTER, CENTER);
+      textSize(this.text_size);
+      text(this.message, this.xCenter(), this.yCenter());
     }
   }
 
@@ -303,11 +346,16 @@ abstract class Button {
       return;
     }
     if (this.clicked) {
+      this.clicked = false;
       this.release();
     }
     this.clicked = false;
   }
 
+   public abstract float xCenter();
+   public abstract float yCenter();
+   public abstract float button_width();
+   public abstract float button_height();
    public abstract void drawButton();
    public abstract void moveButton(float xMove, float yMove);
    public abstract boolean mouseOn(float mX, float mY);
@@ -325,6 +373,8 @@ abstract class RectangleButton extends Button {
   protected float xf;
   protected float yf;
   protected int roundness = 8;
+  protected float xCenter;
+  protected float yCenter;
 
   RectangleButton(float xi, float yi, float xf, float yf) {
     super();
@@ -332,14 +382,24 @@ abstract class RectangleButton extends Button {
     this.yi = yi;
     this.xf = xf;
     this.yf = yf;
+    this.xCenter = this.xi + 0.5f * (this.xf - this.xi);
+    this.yCenter = this.yi + 0.5f * (this.yf - this.yi);
   }
 
    public float xCenter() {
-    return this.xi + 0.5f * (this.xf - this.xi);
+    return this.xCenter;
   }
 
    public float yCenter() {
-    return this.yi + 0.5f * (this.yf - this.yi);
+    return this.yCenter;
+  }
+
+   public float button_width() {
+    return this.xf - this.xi;
+  }
+
+   public float button_height() {
+    return this.yf - this.yi;
   }
 
    public void drawButton() {
@@ -347,12 +407,7 @@ abstract class RectangleButton extends Button {
     rectMode(CORNERS);
     if (this.show_message)
     rect(this.xi, this.yi, this.xf, this.yf, this.roundness);
-    if (this.show_message) {
-      fill(this.color_text);
-      textAlign(CENTER, CENTER);
-      textSize(this.text_size);
-      text(this.message, this.xCenter(), this.yCenter());
-    }
+    this.writeText();
   }
 
    public void moveButton(float xMove, float yMove) {
@@ -372,6 +427,145 @@ abstract class RectangleButton extends Button {
 }
 
 
+abstract class ImageButton extends RectangleButton {
+  protected PImage img;
+  protected int color_tint = color(255);
+
+  ImageButton(PImage img, float xi, float yi, float xf, float yf) {
+    super(xi, yi, xf, yf);
+    this.img = img;
+  }
+
+  @Override public 
+  void drawButton() {
+    tint(this.color_tint);
+    imageMode(CORNERS);
+    image(this.img, this.xi, this.yi, this.xf, this.yf);
+    noTint();
+    super.drawButton();
+  }
+}
+
+
+abstract class RippleRectangleButton extends ImageButton {
+  class Pixel {
+    private int x;
+    private int y;
+    private float x_pixel;
+    private float y_pixel;
+    Pixel(int x, int y, float x_pixel, float y_pixel) {
+      this.x = x;
+      this.y = y;
+      this.x_pixel = x_pixel;
+      this.y_pixel = y_pixel;
+    }
+     public float distance(float mX, float mY) {
+      return sqrt((mX - this.x_pixel) * (mX - this.x_pixel) +
+        (mY - this.y_pixel) * (mY - this.y_pixel));
+    }
+  }
+
+  protected int rippleTime = 250;
+  protected int rippleTimer = 0;
+  protected int lastUpdateTime = millis();
+  protected int number_buckets = 50;
+  protected HashMap<Integer, ArrayList<Pixel>> buckets;
+  protected float clickX = 0;
+  protected float clickY = 0;
+  protected float maxRippleDistance;
+
+  RippleRectangleButton(float xi, float yi, float xf, float yf) {
+    super(createImage(PApplet.parseInt(xf - xi), PApplet.parseInt(yf - yi), RGB), xi, yi, xf, yf);
+    this.refreshColor();
+    this.maxRippleDistance = max(this.button_width(), this.button_height());
+  }
+
+  @Override public 
+  void update() {
+    super.update();
+    int timeElapsed = millis() - this.lastUpdateTime;
+    this.lastUpdateTime = millis();
+    if (this.rippleTimer > 0) {
+      this.rippleTimer -= timeElapsed;
+      if (this.rippleTimer <= 0) {
+        this.refreshColor();
+      }
+      else {
+        this.colorPixels();
+      }
+    }
+  }
+
+  @Override public 
+  void drawButton() {
+    tint(this.color_tint);
+    imageMode(CORNERS);
+    image(this.img, this.xi, this.yi, this.xf, this.yf);
+    noTint();
+  }
+
+   public void refreshColor() {
+    DImg dimg = new DImg(this.img);
+    dimg.colorPixels(this.fillColor());
+    this.img = dimg.img;
+    this.rippleTimer = 0;
+  }
+
+   public void initializeRipple() {
+    this.buckets = new HashMap<Integer, ArrayList<Pixel>>();
+    for (int i = 0; i < this.number_buckets; i++) {
+      this.buckets.put(i, new ArrayList<Pixel>());
+    }
+    float keyMultiplier = PApplet.parseFloat(this.rippleTime) / this.number_buckets;
+    for (int i = 0; i < this.img.height; i++) {
+      for (int j = 0; j < this.img.width; j++) {
+        float x = this.xi + this.button_width() * j / this.img.width;
+        float y = this.yi + this.button_height() * i / this.img.height;
+        Pixel p = new Pixel(j, i, x, y);
+        float distance = p.distance(this.clickX, this.clickY);
+        int timer = PApplet.parseInt(floor(this.rippleTime * (1 - distance / this.maxRippleDistance) / keyMultiplier));
+        if (this.buckets.containsKey(timer)) {
+          this.buckets.get(timer).add(p);
+        }
+      }
+    }
+    this.rippleTimer = this.rippleTime;
+  }
+
+   public void colorPixels() {
+    DImg dimg = new DImg(this.img);
+    float currDistance = this.maxRippleDistance * (this.rippleTime - this.rippleTimer) / this.rippleTime;
+    float keyMultiplier = PApplet.parseFloat(this.rippleTime) / this.number_buckets;
+    for (Map.Entry<Integer, ArrayList<Pixel>> entry : this.buckets.entrySet()) {
+      if (entry.getKey() * keyMultiplier > this.rippleTimer) {
+        for (Pixel p : entry.getValue()) {
+          dimg.colorPixel(p.x, p.y, this.color_click);
+        }
+        entry.getValue().clear();
+      }
+    }
+  }
+
+   public void hover() {
+    this.refreshColor();
+  }
+
+   public void dehover() {
+    this.refreshColor();
+  }
+
+   public void click() {
+    this.clickX = mouseX;
+    this.clickY = mouseY;
+    this.initializeRipple();
+  }
+
+   public void release() {
+    this.refreshColor();
+  }
+}
+
+
 
 abstract class EllipseButton extends Button {
   protected float xc;
@@ -387,16 +581,27 @@ abstract class EllipseButton extends Button {
     this.yr = yr;
   }
 
+   public float xCenter() {
+    return this.xc;
+  }
+
+   public float yCenter() {
+    return this.yc;
+  }
+
+   public float button_width() {
+    return 2 * this.xr;
+  }
+
+   public float button_height() {
+    return 2 * this.yr;
+  }
+
    public void drawButton() {
     this.setFill();
     ellipseMode(RADIUS);
     ellipse(this.xc, this.yc, this.xr, this.yr);
-    if (this.show_message) {
-      fill(this.color_text);
-      textAlign(CENTER, CENTER);
-      textSize(this.text_size);
-      text(this.message, this.xc, this.yc);
-    }
+    this.writeText();
   }
 
    public void moveButton(float xMove, float yMove) {
@@ -456,15 +661,18 @@ abstract class TriangleButton extends Button {
     this.yCenter = (y1 + y2 + y3) / 3.0f;
   }
 
+   public float xCenter() {
+    return this.xCenter;
+  }
+
+   public float yCenter() {
+    return this.yCenter;
+  }
+
    public void drawButton() {
     this.setFill();
     triangle(this.x1, this.y1, this.x2, this.y2, this.x3, this.y3);
-    if (this.show_message) {
-      fill(this.color_text);
-      textAlign(CENTER, CENTER);
-      textSize(this.text_size);
-      text(this.message, this.xCenter, this.yCenter);
-    }
+    this.writeText();
   }
 
    public void moveButton(float xMove, float yMove) {
@@ -584,14 +792,18 @@ class InitialInterface extends InterfaceLNZ {
 
      public void hover() {
       global.sounds.trigger("interfaces/buttonOn1");
+      InitialInterface.this.logo.release();
     }
      public void dehover() {
       this.clicked = false;
     }
      public void click() {
+      InitialInterface.this.logo.release();
     }
      public void release() {
       this.stayDehovered();
+      InitialInterface.this.logo.release();
+      InitialInterface.this.logo.release();
     }
   }
 
@@ -672,7 +884,25 @@ class InitialInterface extends InterfaceLNZ {
     }
   }
 
+  class LogoImageButton extends ImageButton {
+    LogoImageButton() {
+      super(global.images.getImage("logo.png"), 0, 0, 400, 400);
+    }
+
+     public void hover() {
+    }
+     public void dehover() {
+    }
+     public void click() {
+      this.color_tint = color(255, 200, 200);
+    }
+     public void release() {
+      this.color_tint = color(255);
+    }
+  }
+
   private InitialInterfaceButton[] buttons = new InitialInterfaceButton[5];
+  private LogoImageButton logo = new LogoImageButton();
 
   InitialInterface() {
     super();
@@ -686,31 +916,35 @@ class InitialInterface extends InterfaceLNZ {
   }
 
    public void update() {
-    imageMode(CORNERS);
-    image(global.images.getImage("logo.png"), 0, 0, Constants.initialInterface_size, Constants.initialInterface_size);
+    this.logo.update();
     for (InitialInterfaceButton button : this.buttons) {
       button.update();
     }
   }
 
    public void mouseMove(float mX, float mY) {
+    this.logo.mouseMove(mX, mY);
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseMove(mX, mY);
     }
   }
 
    public void mousePress() {
+    this.logo.mousePress();
     for (InitialInterfaceButton button : this.buttons) {
       button.mousePress();
     }
   }
 
    public void mouseRelease() {
+    this.logo.mouseRelease();
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseRelease();
     }
   }
 }
+
+
 class Sounds {
   private Minim minim;
   private AudioOutput out;

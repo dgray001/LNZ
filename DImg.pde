@@ -9,6 +9,9 @@ class DImg {
   DImg(int x, int y) {
     this.img = createImage(x, y, RGB);
   }
+  DImg(PImage img) {
+    this.img = img;
+  }
 
   void mode(int imgMode) {
     switch(imgMode) {
@@ -83,4 +86,29 @@ class DImg {
       w * (this.img.width / this.gridX), h * (this.img.height / this.gridY));
   }
 
+  // color pixels
+  void colorPixels(color c) {
+    /*float ref_r = c >> 16 & 0xFF;
+    float ref_g = c >> 8 & 0xFF;
+    float ref_b = c & 0xFF;
+    float ref_a = alpha(c);*/
+    this.img.loadPixels();
+    for (int i = 0; i < this.img.height; i++) {
+      for (int j = 0; j < this.img.width; j++) {
+        int index = i + this.img.width * j;
+        this.img.pixels[index] = c;//color(ref_r, ref_g, ref_b, ref_a);
+      }
+    }
+    this.img.updatePixels();
+  }
+
+  void colorPixel(int x, int y, color c) {
+    this.img.loadPixels();
+    int index = x + y * this.img.width;
+    if (index < 0 || index >= this.img.pixels.length) {
+      return;
+    }
+    this.img.pixels[index] = c;
+    this.img.updatePixels();
+  }
 }

@@ -39,19 +39,23 @@ abstract class Button {
     this.show_stroke = false;
   }
 
-  void setFill() {
+  color fillColor() {
     if (this.disabled) {
-      fill(this.color_disabled);
+      return this.color_disabled;
     }
     else if (this.clicked) {
-      fill(this.color_click);
+      return this.color_click;
     }
     else if (this.hovered) {
-      fill(this.color_hover);
+      return this.color_hover;
     }
     else {
-      fill(this.color_default);
+      return this.color_default;
     }
+  }
+
+  void setFill() {
+    fill(this.fillColor());
     if (this.show_stroke) {
       stroke(this.color_stroke);
       strokeWeight(this.stroke_weight);
@@ -59,6 +63,15 @@ abstract class Button {
     else {
       strokeWeight(0);
       noStroke();
+    }
+  }
+
+  void writeText() {
+    if (this.show_message) {
+      fill(this.color_text);
+      textAlign(CENTER, CENTER);
+      textSize(this.text_size);
+      text(this.message, this.xCenter(), this.yCenter());
     }
   }
 
@@ -114,11 +127,16 @@ abstract class Button {
       return;
     }
     if (this.clicked) {
+      this.clicked = false;
       this.release();
     }
     this.clicked = false;
   }
 
+  abstract float xCenter();
+  abstract float yCenter();
+  abstract float button_width();
+  abstract float button_height();
   abstract void drawButton();
   abstract void moveButton(float xMove, float yMove);
   abstract boolean mouseOn(float mX, float mY);
@@ -136,6 +154,8 @@ abstract class RectangleButton extends Button {
   protected float xf;
   protected float yf;
   protected int roundness = 8;
+  protected float xCenter;
+  protected float yCenter;
 
   RectangleButton(float xi, float yi, float xf, float yf) {
     super();
@@ -143,14 +163,24 @@ abstract class RectangleButton extends Button {
     this.yi = yi;
     this.xf = xf;
     this.yf = yf;
+    this.xCenter = this.xi + 0.5 * (this.xf - this.xi);
+    this.yCenter = this.yi + 0.5 * (this.yf - this.yi);
   }
 
   float xCenter() {
-    return this.xi + 0.5 * (this.xf - this.xi);
+    return this.xCenter;
   }
 
   float yCenter() {
-    return this.yi + 0.5 * (this.yf - this.yi);
+    return this.yCenter;
+  }
+
+  float button_width() {
+    return this.xf - this.xi;
+  }
+
+  float button_height() {
+    return this.yf - this.yi;
   }
 
   void drawButton() {
@@ -158,12 +188,7 @@ abstract class RectangleButton extends Button {
     rectMode(CORNERS);
     if (this.show_message)
     rect(this.xi, this.yi, this.xf, this.yf, this.roundness);
-    if (this.show_message) {
-      fill(this.color_text);
-      textAlign(CENTER, CENTER);
-      textSize(this.text_size);
-      text(this.message, this.xCenter(), this.yCenter());
-    }
+    this.writeText();
   }
 
   void moveButton(float xMove, float yMove) {
@@ -183,6 +208,145 @@ abstract class RectangleButton extends Button {
 }
 
 
+abstract class ImageButton extends RectangleButton {
+  protected PImage img;
+  protected color color_tint = color(255);
+
+  ImageButton(PImage img, float xi, float yi, float xf, float yf) {
+    super(xi, yi, xf, yf);
+    this.img = img;
+  }
+
+  @Override
+  void drawButton() {
+    tint(this.color_tint);
+    imageMode(CORNERS);
+    image(this.img, this.xi, this.yi, this.xf, this.yf);
+    noTint();
+    super.drawButton();
+  }
+}
+
+
+abstract class RippleRectangleButton extends ImageButton {
+  class Pixel {
+    private int x;
+    private int y;
+    private float x_pixel;
+    private float y_pixel;
+    Pixel(int x, int y, float x_pixel, float y_pixel) {
+      this.x = x;
+      this.y = y;
+      this.x_pixel = x_pixel;
+      this.y_pixel = y_pixel;
+    }
+    float distance(float mX, float mY) {
+      return sqrt((mX - this.x_pixel) * (mX - this.x_pixel) +
+        (mY - this.y_pixel) * (mY - this.y_pixel));
+    }
+  }
+
+  protected int rippleTime = 250;
+  protected int rippleTimer = 0;
+  protected int lastUpdateTime = millis();
+  protected int number_buckets = 50;
+  protected HashMap<Integer, ArrayList<Pixel>> buckets;
+  protected float clickX = 0;
+  protected float clickY = 0;
+  protected float maxRippleDistance;
+
+  RippleRectangleButton(float xi, float yi, float xf, float yf) {
+    super(createImage(int(xf - xi), int(yf - yi), RGB), xi, yi, xf, yf);
+    this.refreshColor();
+    this.maxRippleDistance = max(this.button_width(), this.button_height());
+  }
+
+  @Override
+  void update() {
+    super.update();
+    int timeElapsed = millis() - this.lastUpdateTime;
+    this.lastUpdateTime = millis();
+    if (this.rippleTimer > 0) {
+      this.rippleTimer -= timeElapsed;
+      if (this.rippleTimer <= 0) {
+        this.refreshColor();
+      }
+      else {
+        this.colorPixels();
+      }
+    }
+  }
+
+  @Override
+  void drawButton() {
+    tint(this.color_tint);
+    imageMode(CORNERS);
+    image(this.img, this.xi, this.yi, this.xf, this.yf);
+    noTint();
+  }
+
+  void refreshColor() {
+    DImg dimg = new DImg(this.img);
+    dimg.colorPixels(this.fillColor());
+    this.img = dimg.img;
+    this.rippleTimer = 0;
+  }
+
+  void initializeRipple() {
+    this.buckets = new HashMap<Integer, ArrayList<Pixel>>();
+    for (int i = 0; i < this.number_buckets; i++) {
+      this.buckets.put(i, new ArrayList<Pixel>());
+    }
+    float keyMultiplier = float(this.rippleTime) / this.number_buckets;
+    for (int i = 0; i < this.img.height; i++) {
+      for (int j = 0; j < this.img.width; j++) {
+        float x = this.xi + this.button_width() * j / this.img.width;
+        float y = this.yi + this.button_height() * i / this.img.height;
+        Pixel p = new Pixel(j, i, x, y);
+        float distance = p.distance(this.clickX, this.clickY);
+        int timer = int(floor(this.rippleTime * (1 - distance / this.maxRippleDistance) / keyMultiplier));
+        if (this.buckets.containsKey(timer)) {
+          this.buckets.get(timer).add(p);
+        }
+      }
+    }
+    this.rippleTimer = this.rippleTime;
+  }
+
+  void colorPixels() {
+    DImg dimg = new DImg(this.img);
+    float currDistance = this.maxRippleDistance * (this.rippleTime - this.rippleTimer) / this.rippleTime;
+    float keyMultiplier = float(this.rippleTime) / this.number_buckets;
+    for (Map.Entry<Integer, ArrayList<Pixel>> entry : this.buckets.entrySet()) {
+      if (entry.getKey() * keyMultiplier > this.rippleTimer) {
+        for (Pixel p : entry.getValue()) {
+          dimg.colorPixel(p.x, p.y, this.color_click);
+        }
+        entry.getValue().clear();
+      }
+    }
+  }
+
+  void hover() {
+    this.refreshColor();
+  }
+
+  void dehover() {
+    this.refreshColor();
+  }
+
+  void click() {
+    this.clickX = mouseX;
+    this.clickY = mouseY;
+    this.initializeRipple();
+  }
+
+  void release() {
+    this.refreshColor();
+  }
+}
+
+
 
 abstract class EllipseButton extends Button {
   protected float xc;
@@ -198,16 +362,27 @@ abstract class EllipseButton extends Button {
     this.yr = yr;
   }
 
+  float xCenter() {
+    return this.xc;
+  }
+
+  float yCenter() {
+    return this.yc;
+  }
+
+  float button_width() {
+    return 2 * this.xr;
+  }
+
+  float button_height() {
+    return 2 * this.yr;
+  }
+
   void drawButton() {
     this.setFill();
     ellipseMode(RADIUS);
     ellipse(this.xc, this.yc, this.xr, this.yr);
-    if (this.show_message) {
-      fill(this.color_text);
-      textAlign(CENTER, CENTER);
-      textSize(this.text_size);
-      text(this.message, this.xc, this.yc);
-    }
+    this.writeText();
   }
 
   void moveButton(float xMove, float yMove) {
@@ -267,15 +442,18 @@ abstract class TriangleButton extends Button {
     this.yCenter = (y1 + y2 + y3) / 3.0;
   }
 
+  float xCenter() {
+    return this.xCenter;
+  }
+
+  float yCenter() {
+    return this.yCenter;
+  }
+
   void drawButton() {
     this.setFill();
     triangle(this.x1, this.y1, this.x2, this.y2, this.x3, this.y3);
-    if (this.show_message) {
-      fill(this.color_text);
-      textAlign(CENTER, CENTER);
-      textSize(this.text_size);
-      text(this.message, this.xCenter, this.yCenter);
-    }
+    this.writeText();
   }
 
   void moveButton(float xMove, float yMove) {
