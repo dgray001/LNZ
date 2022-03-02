@@ -159,12 +159,7 @@ abstract class RectangleButton extends Button {
 
   RectangleButton(float xi, float yi, float xf, float yf) {
     super();
-    this.xi = xi;
-    this.yi = yi;
-    this.xf = xf;
-    this.yf = yf;
-    this.xCenter = this.xi + 0.5 * (this.xf - this.xi);
-    this.yCenter = this.yi + 0.5 * (this.yf - this.yi);
+    this.setLocation(xi, yi, xf, yf);
   }
 
   float xCenter() {
@@ -191,11 +186,41 @@ abstract class RectangleButton extends Button {
     this.writeText();
   }
 
+  void setLocation(float xi, float yi, float xf, float yf) {
+    this.xi = xi;
+    this.yi = yi;
+    this.xf = xf;
+    this.yf = yf;
+    this.xCenter = this.xi + 0.5 * (this.xf - this.xi);
+    this.yCenter = this.yi + 0.5 * (this.yf - this.yi);
+  }
+
   void moveButton(float xMove, float yMove) {
     this.xi += xMove;
     this.yi += yMove;
     this.xf += xMove;
     this.yf += yMove;
+    this.xCenter = this.xi + 0.5 * (this.xf - this.xi);
+    this.yCenter = this.yi + 0.5 * (this.yf - this.yi);
+  }
+
+  void stretchButton(float amount, int direction) {
+    switch(direction) {
+      case UP:
+        this.setLocation(this.xi, this.yi - amount, this.xf, this.yf);
+        break;
+      case DOWN:
+        this.setLocation(this.xi, this.yi, this.xf, this.yf + amount);
+        break;
+      case LEFT:
+        this.setLocation(this.xi - amount, this.yi, this.xf, this.yf);
+        break;
+      case RIGHT:
+        this.setLocation(this.xi, this.yi, this.xf + amount, this.yf);
+        break;
+      default:
+        break;
+    }
   }
 
   boolean mouseOn(float mX, float mY) {
@@ -345,6 +370,7 @@ abstract class RippleRectangleButton extends ImageButton {
     this.refreshColor();
   }
 }
+
 
 
 

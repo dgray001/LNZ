@@ -8,6 +8,8 @@ abstract class InterfaceLNZ {
   abstract void mouseRelease();
 }
 
+
+
 class InitialInterface extends InterfaceLNZ {
 
   abstract class InitialInterfaceButton extends RectangleButton {
@@ -48,6 +50,11 @@ class InitialInterface extends InterfaceLNZ {
     @Override
     void release() {
       global.sounds.trigger("interfaces/buttonClick4");
+      global.state = ProgramState.ENTERING_MAINMENU;
+      background(global.color_background);
+      surface.setSize(displayWidth, displayHeight);
+      surface.setLocation(0, 0);
+      global.menu = null;
     }
   }
 

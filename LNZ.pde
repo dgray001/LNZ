@@ -6,8 +6,6 @@ import ddf.minim.ugens.*;
 
 Global global;
 
-InterfaceLNZ menu;
-
 void setup() {
   fullScreen();
   surface.setSize(Constants.initialInterface_size, Constants.initialInterface_size);
@@ -15,7 +13,8 @@ void setup() {
     int(0.5 * (displayHeight - Constants.initialInterface_size)));
   frameRate(Constants.maxFPS);
   global = new Global(this);
-  menu = new InitialInterface();
+  background(global.color_background);
+  global.menu = new InitialInterface();
 }
 
 void draw() {
@@ -30,11 +29,17 @@ void draw() {
     //println(int(global.lastFPS) + " FPS");
   }
   // Program
-  if (menu != null) {
-    menu.update();
+  if (global.menu != null) {
+    global.menu.update();
   }
   switch(global.state) {
     case INITIAL_INTERFACE:
+      break;
+    case ENTERING_MAINMENU:
+      global.state = ProgramState.MAINMENU_INTERFACE;
+      global.menu = new MainMenuInterface();
+      break;
+    case MAINMENU_INTERFACE:
       break;
     case EXITING:
       global.timer_exiting -= timeElapsed;
@@ -48,16 +53,24 @@ void draw() {
 }
 
 void mouseDragged() {
-  menu.mouseMove(mouseX, mouseY);
+  if (global.menu != null) {
+    global.menu.mouseMove(mouseX, mouseY);
+  }
 }
 void mouseMoved() {
-  menu.mouseMove(mouseX, mouseY);
+  if (global.menu != null) {
+    global.menu.mouseMove(mouseX, mouseY);
+  }
 }
 
 void mousePressed() {
-  menu.mousePress();
+  if (global.menu != null) {
+    global.menu.mousePress();
+  }
 }
 
 void mouseReleased() {
-  menu.mouseRelease();
+  if (global.menu != null) {
+    global.menu.mouseRelease();
+  }
 }
