@@ -21,14 +21,18 @@ class InitialInterface extends InterfaceLNZ {
 
     void hover() {
       global.sounds.trigger("interfaces/buttonOn1");
+      InitialInterface.this.logo.release();
     }
     void dehover() {
       this.clicked = false;
     }
     void click() {
+      InitialInterface.this.logo.release();
     }
     void release() {
       this.stayDehovered();
+      InitialInterface.this.logo.release();
+      InitialInterface.this.logo.release();
     }
   }
 
@@ -109,7 +113,25 @@ class InitialInterface extends InterfaceLNZ {
     }
   }
 
+  class LogoImageButton extends ImageButton {
+    LogoImageButton() {
+      super(global.images.getImage("logo.png"), 0, 0, 400, 400);
+    }
+
+    void hover() {
+    }
+    void dehover() {
+    }
+    void click() {
+      this.color_tint = color(255, 200, 200);
+    }
+    void release() {
+      this.color_tint = color(255);
+    }
+  }
+
   private InitialInterfaceButton[] buttons = new InitialInterfaceButton[5];
+  private LogoImageButton logo = new LogoImageButton();
 
   InitialInterface() {
     super();
@@ -123,26 +145,28 @@ class InitialInterface extends InterfaceLNZ {
   }
 
   void update() {
-    imageMode(CORNERS);
-    image(global.images.getImage("logo.png"), 0, 0, Constants.initialInterface_size, Constants.initialInterface_size);
+    this.logo.update();
     for (InitialInterfaceButton button : this.buttons) {
       button.update();
     }
   }
 
   void mouseMove(float mX, float mY) {
+    this.logo.mouseMove(mX, mY);
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseMove(mX, mY);
     }
   }
 
   void mousePress() {
+    this.logo.mousePress();
     for (InitialInterfaceButton button : this.buttons) {
       button.mousePress();
     }
   }
 
   void mouseRelease() {
+    this.logo.mouseRelease();
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseRelease();
     }
