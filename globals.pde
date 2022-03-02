@@ -1,18 +1,21 @@
 enum ProgramState {
-  INITIAL_INTERFACE, EXITING;
+  INITIAL_INTERFACE, EXITING, ENTERING_MAINMENU, MAINMENU_INTERFACE;
 }
 
 class Global {
-  // FPS
-  private float lastFPS = Constants.maxFPS;
-  private int frameCounter = frameCount;
-  private int timer_FPS = Constants.frameUpdateTime;
   // Program
-  private int lastFrameTime = millis();
+  private InterfaceLNZ menu;
   private ProgramState state = ProgramState.INITIAL_INTERFACE;
   private int timer_exiting = Constants.exit_delay;
   private Images images;
   private Sounds sounds;
+  // FPS
+  private int lastFrameTime = millis();
+  private float lastFPS = Constants.maxFPS;
+  private int frameCounter = frameCount;
+  private int timer_FPS = Constants.frameUpdateTime;
+  // Colors
+  private color color_background = color(180);
 
   Global(LNZ thisInstance) {
     this.images = new Images();
