@@ -182,9 +182,7 @@ abstract class RectangleButton extends Button {
     this.setFill();
     rectMode(CORNERS);
     rect(this.xi, this.yi, this.xf, this.yf, this.roundness);
-    if (this.show_message) {
-      this.writeText();
-    }
+    this.writeText();
   }
 
   void setLocation(float xi, float yi, float xf, float yf) {
@@ -249,6 +247,7 @@ abstract class ImageButton extends RectangleButton {
     imageMode(CORNERS);
     image(this.img, this.xi, this.yi, this.xf, this.yf);
     noTint();
+    this.writeText();
   }
 }
 
@@ -281,7 +280,7 @@ abstract class RippleRectangleButton extends ImageButton {
   protected float maxRippleDistance;
 
   RippleRectangleButton(float xi, float yi, float xf, float yf) {
-    super(createImage(int(xf - xi), int(yf - yi), RGB), xi, yi, xf, yf);
+    super(createImage(int(xf - xi), int(yf - yi), ARGB), xi, yi, xf, yf);
     this.refreshColor();
     this.maxRippleDistance = max(this.button_width(), this.button_height());
   }
@@ -300,14 +299,6 @@ abstract class RippleRectangleButton extends ImageButton {
         this.colorPixels();
       }
     }
-  }
-
-  @Override
-  void drawButton() {
-    tint(this.color_tint);
-    imageMode(CORNERS);
-    image(this.img, this.xi, this.yi, this.xf, this.yf);
-    noTint();
   }
 
   void refreshColor() {
