@@ -1,17 +1,25 @@
 
 class MainMenuInterface extends InterfaceLNZ {
 
-  class MainMenuGrowButton extends RippleRectangleButton {
+  abstract class MainMenuGrowButton extends RippleRectangleButton {
     protected float xf_grow;
     protected float ratio; // ratio when shrunk (can have it be > 1 to make it shrink when hovered)
     protected float grow_speed = 0.7; // pixels / ms
+    protected PImage icon;
 
     MainMenuGrowButton(float xi, float yi, float xf, float yf, float ratio) {
       super(xi, yi, xf * ratio, yf);
       this.xf_grow = xf;
       this.ratio = ratio;
       this.maxRippleDistance = xf - xi;
+      this.icon = this.getIcon();
+      this.text_size = 24;
+      this.noStroke();
+      this.setColors(color(170), color(100, 50, 50, 10), color(150, 90, 90, 150), color(240, 180, 180), color(255));
+      this.refreshColor();
     }
+
+    abstract PImage getIcon();
 
     @Override
     void update() {
@@ -34,8 +42,80 @@ class MainMenuInterface extends InterfaceLNZ {
           this.stretchButton(pixelsToMove, RIGHT);
         }
       }
+      if (!this.hovered && pixelsLeft > -1) {
+        imageMode(CENTER);
+        image(this.icon, this.xCenter(), this.yCenter(), this.button_width(), this.button_height());
+      }
+    }
+
+    void hover() {
+      super.hover();
+      this.show_message = true;
+    }
+
+    void dehover() {
+      super.dehover();
+      this.show_message = false;
+    }
+
+    void click() {
+      super.click();
+      this.color_text = color(0);
+    }
+
+    void release() {
+      super.release();
+      this.color_text = color(255);
     }
   }
+
+
+  class MainMenuGrowButton1 extends MainMenuGrowButton {
+    MainMenuGrowButton1() {
+      super(0, height - 60, 200, height, 0.3);
+      this.message = "Exit";
+    }
+    PImage getIcon() {
+      return global.images.getImage("icons/power.png");
+    }
+
+    @Override
+    void release() {
+      super.release();
+      global.exit();
+    }
+  }
+
+  class MainMenuGrowButton2 extends MainMenuGrowButton {
+    MainMenuGrowButton2() {
+      super(0, height - 160, 200, height - 100, 0.3);
+      this.message = "Options";
+    }
+    PImage getIcon() {
+      return global.images.getImage("icons/gear.png");
+    }
+  }
+
+  class MainMenuGrowButton3 extends MainMenuGrowButton {
+    MainMenuGrowButton3() {
+      super(0, height - 260, 200, height - 200, 0.3);
+      this.message = "Achievements";
+    }
+    PImage getIcon() {
+      return global.images.getImage("icons/achievements.png");
+    }
+  }
+
+  class MainMenuGrowButton4 extends MainMenuGrowButton {
+    MainMenuGrowButton4() {
+      super(0, height - 360, 200, height - 300, 0.3);
+      this.message = "???";
+    }
+    PImage getIcon() {
+      return global.images.getImage("icons/?.png");
+    }
+  }
+
 
 
   class backgroundImageThread extends Thread {
@@ -53,18 +133,23 @@ class MainMenuInterface extends InterfaceLNZ {
       DImg dimg = new DImg(this.img);
       dimg.makeTransparent(255);
       dimg.addImagePercent(global.images.getImage("hillary.png"), 0, 0, 1, 1);
-      dimg.brightenGradient(0, this.distance_threshhold, this.mX, this.mY);
+      dimg.brightenGradient(0.02, this.distance_threshhold, this.mX, this.mY);
       this.img = dimg.img;
     }
   }
 
-  private MainMenuGrowButton test = new MainMenuGrowButton(0, 500, 200, 560, 0.3);
+
+  private MainMenuGrowButton[] growButtons = new MainMenuGrowButton[4];
   private PImage backgroundImage;
   backgroundImageThread thread = new backgroundImageThread();
 
   MainMenuInterface() {
     super();
-    this.backgroundImage = createImage(width, height, ARGB);
+    this.backgroundImage = createImage(width, height, RGB);
+    this.growButtons[0] = new MainMenuGrowButton1();
+    this.growButtons[1] = new MainMenuGrowButton2();
+    this.growButtons[2] = new MainMenuGrowButton3();
+    this.growButtons[3] = new MainMenuGrowButton4();
   }
 
   void update() {
@@ -72,7 +157,9 @@ class MainMenuInterface extends InterfaceLNZ {
     imageMode(CORNER);
     image(this.backgroundImage, 0, 0);
     // update elements
-    test.update();
+    for (MainMenuGrowButton button : this.growButtons) {
+      button.update();
+    }
     // restart thread
     if (!this.thread.isAlive()) {
       this.backgroundImage = this.thread.img;
@@ -82,14 +169,20 @@ class MainMenuInterface extends InterfaceLNZ {
   }
 
   void mouseMove(float mX, float mY) {
-    test.mouseMove(mX, mY);
+    for (MainMenuGrowButton button : this.growButtons) {
+      button.mouseMove(mX, mY);
+    }
   }
 
   void mousePress() {
-    test.mousePress();
+    for (MainMenuGrowButton button : this.growButtons) {
+      button.mousePress();
+    }
   }
 
   void mouseRelease() {
-    test.mouseRelease();
+    for (MainMenuGrowButton button : this.growButtons) {
+      button.mouseRelease();
+    }
   }
 }

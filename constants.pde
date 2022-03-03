@@ -3,7 +3,7 @@ static class Constants {
   // Program constants
   static final String credits =
   "Liberal Nazi Zombies" +
-  "20220302: v0.6.0n" +
+  "20220303: v0.6.0o" +
   "Created by Daniel Gray" +
   "";
   static final String version_history =

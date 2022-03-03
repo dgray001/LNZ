@@ -218,6 +218,9 @@ class DImg {
     for (int i = 0; i < this.img.height; i++) {
       for (int j = 0; j < this.img.width; j++) {
         int index = i * this.img.width + j;
+        if (index == 0) {
+          continue;
+        }
         this.img.pixels[index] = c; //color(ref_r, ref_g, ref_b, ref_a);
       }
     }
@@ -227,7 +230,7 @@ class DImg {
   void colorPixel(int x, int y, color c) {
     this.img.loadPixels();
     int index = x + y * this.img.width;
-    if (index < 0 || index >= this.img.pixels.length) {
+    if (index < 1 || index >= this.img.pixels.length) {
       return;
     }
     this.img.pixels[index] = c;
