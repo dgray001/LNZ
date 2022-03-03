@@ -13,8 +13,10 @@ abstract class InterfaceLNZ {
 class InitialInterface extends InterfaceLNZ {
 
   abstract class InitialInterfaceButton extends RectangleButton {
-    InitialInterfaceButton(float xi, float yi, float xf, float yf) {
-      super(xi, yi, xf, yf);
+    InitialInterfaceButton(float yi, float yf) {
+      super(Constants.initialInterface_size - Constants.initialInterface_buttonWidth -
+        Constants.initialInterface_buttonGap, yi, Constants.initialInterface_size -
+        Constants.initialInterface_buttonGap, yf);
       this.setColors(color(0, 100, 30, 200), color(0, 129, 50, 150), color(0, 129, 50, 190), color(0, 129, 50, 230), color(255));
       this.noStroke();
       this.show_message = true;
@@ -40,9 +42,7 @@ class InitialInterface extends InterfaceLNZ {
 
   class InitialInterfaceButton1 extends InitialInterfaceButton {
     InitialInterfaceButton1(float buttonHeight) {
-      super(width - Constants.initialInterface_buttonWidth - Constants.initialInterface_buttonGap,
-        Constants.initialInterface_buttonGap,
-        width - Constants.initialInterface_buttonGap,
+      super(Constants.initialInterface_buttonGap,
         Constants.initialInterface_buttonGap + buttonHeight);
       this.message = "Launch";
     }
@@ -60,9 +60,7 @@ class InitialInterface extends InterfaceLNZ {
 
   class InitialInterfaceButton2 extends InitialInterfaceButton {
     InitialInterfaceButton2(float buttonHeight) {
-      super(width - Constants.initialInterface_buttonWidth - Constants.initialInterface_buttonGap,
-        2 * Constants.initialInterface_buttonGap + buttonHeight,
-        width - Constants.initialInterface_buttonGap,
+      super(2 * Constants.initialInterface_buttonGap + buttonHeight,
         2 * Constants.initialInterface_buttonGap + 2 * buttonHeight);
       this.message = "Uninstall";
     }
@@ -75,9 +73,7 @@ class InitialInterface extends InterfaceLNZ {
 
   class InitialInterfaceButton3 extends InitialInterfaceButton {
     InitialInterfaceButton3(float buttonHeight) {
-      super(width - Constants.initialInterface_buttonWidth - Constants.initialInterface_buttonGap,
-        3 * Constants.initialInterface_buttonGap + 2 * buttonHeight,
-        width - Constants.initialInterface_buttonGap,
+      super(3 * Constants.initialInterface_buttonGap + 2 * buttonHeight,
         3 * Constants.initialInterface_buttonGap + 3 * buttonHeight);
       this.message = "Reset\nGame";
     }
@@ -90,9 +86,7 @@ class InitialInterface extends InterfaceLNZ {
 
   class InitialInterfaceButton4 extends InitialInterfaceButton {
     InitialInterfaceButton4(float buttonHeight) {
-      super(width - Constants.initialInterface_buttonWidth - Constants.initialInterface_buttonGap,
-        4 * Constants.initialInterface_buttonGap + 3 * buttonHeight,
-        width - Constants.initialInterface_buttonGap,
+      super(4 * Constants.initialInterface_buttonGap + 3 * buttonHeight,
         4 * Constants.initialInterface_buttonGap + 4 * buttonHeight);
       this.message = "Version\nHistory";
     }
@@ -105,9 +99,7 @@ class InitialInterface extends InterfaceLNZ {
 
   class InitialInterfaceButton5 extends InitialInterfaceButton {
     InitialInterfaceButton5(float buttonHeight) {
-      super(width - Constants.initialInterface_buttonWidth - Constants.initialInterface_buttonGap,
-        5 * Constants.initialInterface_buttonGap + 4 * buttonHeight,
-        width - Constants.initialInterface_buttonGap,
+      super(5 * Constants.initialInterface_buttonGap + 4 * buttonHeight,
         5 * Constants.initialInterface_buttonGap + 5 * buttonHeight);
       this.message = "Exit";
     }

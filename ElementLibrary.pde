@@ -61,7 +61,7 @@ abstract class Button {
       strokeWeight(this.stroke_weight);
     }
     else {
-      strokeWeight(0);
+      strokeWeight(0.0001);
       noStroke();
     }
   }
@@ -181,9 +181,10 @@ abstract class RectangleButton extends Button {
   void drawButton() {
     this.setFill();
     rectMode(CORNERS);
-    if (this.show_message)
     rect(this.xi, this.yi, this.xf, this.yf, this.roundness);
-    this.writeText();
+    if (this.show_message) {
+      this.writeText();
+    }
   }
 
   void setLocation(float xi, float yi, float xf, float yf) {
@@ -248,7 +249,6 @@ abstract class ImageButton extends RectangleButton {
     imageMode(CORNERS);
     image(this.img, this.xi, this.yi, this.xf, this.yf);
     noTint();
-    super.drawButton();
   }
 }
 

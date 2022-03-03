@@ -102,7 +102,7 @@ static class Constants {
   // Program constants
   static final String credits =
   "Liberal Nazi Zombies" +
-  "20220301: v0.6.0m" +
+  "20220302: v0.6.0m" +
   "Created by Daniel Gray" +
   "";
   static final String version_history =
@@ -134,7 +134,7 @@ class DImg {
 
   // Constructor for blank image
   DImg(int x, int y) {
-    this.img = createImage(x, y, RGB);
+    this.img = createImage(x, y, ARGB);
   }
   DImg(PImage img) {
     this.img = img;
@@ -213,6 +213,128 @@ class DImg {
       w * (this.img.width / this.gridX), h * (this.img.height / this.gridY));
   }
 
+  // convolution
+   public void convolution(float[][] matrix) {
+    if (matrix.length % 2 != 1 || matrix[0].length % 2 != 1) {
+      println("ERROR: convolution matrix invalid size.");
+      return;
+    }
+    this.img.loadPixels();
+    for (int i = 0; i < this.img.height; i++) {
+      for (int j = 0; j < this.img.width; j++) {
+        int index = i * this.img.width + j;
+        float r_total = 0;
+        float g_total = 0;
+        float b_total = 0;
+        for (int i_offset = 0; i_offset < matrix[0].length; i_offset++) {
+          for (int j_offset = 0; j_offset < matrix.length; j_offset++) {
+            int i_corrected = constrain(i + i_offset - matrix[0].length / 2, 0, this.img.height);
+            int j_corrected = constrain(j + j_offset - matrix.length / 2, 0, this.img.width);
+            int index_offset = constrain(i_corrected * this.img.width + j_corrected, 0, this.img.pixels.length - 1);
+            float factor = matrix[i_offset][j_offset];
+            r_total += factor * (this.img.pixels[index_offset] >> 16 & 0xFF);
+            g_total += factor * (this.img.pixels[index_offset] >> 8 & 0xFF);
+            b_total += factor * (this.img.pixels[index_offset] & 0xFF);
+          }
+        }
+        r_total = constrain(r_total, 0, 255);
+        g_total = constrain(g_total, 0, 255);
+        b_total = constrain(b_total, 0, 255);
+        this.img.pixels[index] = color(r_total, g_total, b_total);
+      }
+    }
+    this.img.updatePixels();
+  }
+   public void blur() {
+    this.convolution(new float[][]{{1.0f/9, 1.0f/9, 1.0f/9}, {1.0f/9, 1.0f/9, 1.0f/9}, {1.0f/9, 1.0f/9, 1.0f/9}});
+  }
+   public void sharpen() {
+    this.convolution(new float[][]{{-1, -1, -1}, {-1, 9, -1}, {-1, -1, -1}});
+  }
+
+  // Brighten
+   public void brighten(float factor) {
+    this.img.loadPixels();
+    for (int i = 0; i < this.img.height; i++) {
+      for (int j = 0; j < this.img.width; j++) {
+        int index = i * this.img.width + j;
+        if (index == 0) {
+          continue;
+        }
+        int c = this.img.pixels[index];
+        float r = constrain((c >> 16 & 0xFF) * factor, 0, 255);
+        float g = constrain((c >> 8 & 0xFF) * factor, 0, 255);
+        float b = constrain((c & 0xFF) * factor, 0, 255);
+        float a = alpha(c);
+        this.img.pixels[index] = color(r, g, b, a);
+      }
+    }
+    this.img.updatePixels();
+  }
+
+   public void brightenGradient(float factor, float gradientDistance, float x, float y) {
+    this.img.loadPixels();
+    for (int i = 0; i < this.img.height; i++) {
+      for (int j = 0; j < this.img.width; j++) {
+        int index = i * this.img.width + j;
+        float distance = sqrt((i - y) * (i - y) + (j - x) * (j - x));
+        float curr_factor = factor;
+        if (distance < gradientDistance) {
+          curr_factor = 1 + (factor - 1) * distance / gradientDistance;
+        }
+        int c = this.img.pixels[index];
+        float r = constrain((c >> 16 & 0xFF) * curr_factor, 0, 255);
+        float g = constrain((c >> 8 & 0xFF) * curr_factor, 0, 255);
+        float b = constrain((c & 0xFF) * curr_factor, 0, 255);
+        int col = ccolor(PApplet.parseInt(r), PApplet.parseInt(g), PApplet.parseInt(b), 254);
+        this.img.pixels[index] = col;
+      }
+    }
+    this.img.updatePixels();
+  }
+
+  // transparent
+   public void makeTransparent() {
+    this.makeTransparent(0);
+  }
+   public void makeTransparent(int alpha) {
+    this.img.loadPixels();
+    for (int i = 0; i < this.img.height; i++) {
+      for (int j = 0; j < this.img.width; j++) {
+        int index = i * this.img.width + j;
+        if (index == 0) {
+          continue;
+        }
+        float r = this.img.pixels[index] >> 16 & 0xFF;
+        float g = this.img.pixels[index] >> 8 & 0xFF;
+        float b = this.img.pixels[index] & 0xFF;
+        this.img.pixels[index] = ccolor(PApplet.parseInt(r), PApplet.parseInt(g), PApplet.parseInt(b), alpha);
+      }
+    }
+    this.img.updatePixels();
+  }
+   public void transparencyGradientFromPoint(float x, float y, float distance) {
+    this.img.loadPixels();
+    for (int i = 0; i < this.img.height; i++) {
+      for (int j = 0; j < this.img.width; j++) {
+        int index = i * this.img.width + j;
+        if (index == 0) {
+          continue;
+        }
+        float r = this.img.pixels[index] >> 16 & 0xFF;
+        float g = this.img.pixels[index] >> 8 & 0xFF;
+        float b = this.img.pixels[index] & 0xFF;
+        float curr_distance = sqrt((i - y) * (i - y) + (j - x) * (j - x));
+        float alpha = 0;
+        if (curr_distance < distance) {
+          alpha = 255 * (1 - curr_distance / distance);
+        }
+        this.img.pixels[index] = color(r, g, b, alpha);
+      }
+    }
+    this.img.updatePixels();
+  }
+
   // color pixels
    public void colorPixels(int c) {
     /*float ref_r = c >> 16 & 0xFF;
@@ -222,8 +344,8 @@ class DImg {
     this.img.loadPixels();
     for (int i = 0; i < this.img.height; i++) {
       for (int j = 0; j < this.img.width; j++) {
-        int index = i + this.img.width * j;
-        this.img.pixels[index] = c;//color(ref_r, ref_g, ref_b, ref_a);
+        int index = i * this.img.width + j;
+        this.img.pixels[index] = c; //color(ref_r, ref_g, ref_b, ref_a);
       }
     }
     this.img.updatePixels();
@@ -302,7 +424,7 @@ abstract class Button {
       strokeWeight(this.stroke_weight);
     }
     else {
-      strokeWeight(0);
+      strokeWeight(0.0001f);
       noStroke();
     }
   }
@@ -422,9 +544,10 @@ abstract class RectangleButton extends Button {
    public void drawButton() {
     this.setFill();
     rectMode(CORNERS);
-    if (this.show_message)
     rect(this.xi, this.yi, this.xf, this.yf, this.roundness);
-    this.writeText();
+    if (this.show_message) {
+      this.writeText();
+    }
   }
 
    public void setLocation(float xi, float yi, float xf, float yf) {
@@ -489,7 +612,6 @@ abstract class ImageButton extends RectangleButton {
     imageMode(CORNERS);
     image(this.img, this.xi, this.yi, this.xf, this.yf);
     noTint();
-    super.drawButton();
   }
 }
 
@@ -781,6 +903,21 @@ class Global {
     this.state = ProgramState.EXITING;
   }
 }
+ public int ccolor(int gray) {
+  return ccolor(gray, gray, gray, 255);
+}
+ public int ccolor(int gray, int a) {
+  return ccolor(gray, gray, gray, a);
+}
+ public int ccolor(int r, int g, int b) {
+  return ccolor(r, g, b, 255);
+}
+ public int ccolor(int r, int g, int b, int a) {
+  int max = 256;
+  return max*max*max*a + max*max*r + max*g + b;
+}
+
+
 class Images {
   private HashMap<String, PImage> imgs = new HashMap<String, PImage>();
   private String basePath = sketchPath("data/images/");
@@ -835,8 +972,10 @@ abstract class InterfaceLNZ {
 class InitialInterface extends InterfaceLNZ {
 
   abstract class InitialInterfaceButton extends RectangleButton {
-    InitialInterfaceButton(float xi, float yi, float xf, float yf) {
-      super(xi, yi, xf, yf);
+    InitialInterfaceButton(float yi, float yf) {
+      super(Constants.initialInterface_size - Constants.initialInterface_buttonWidth -
+        Constants.initialInterface_buttonGap, yi, Constants.initialInterface_size -
+        Constants.initialInterface_buttonGap, yf);
       this.setColors(color(0, 100, 30, 200), color(0, 129, 50, 150), color(0, 129, 50, 190), color(0, 129, 50, 230), color(255));
       this.noStroke();
       this.show_message = true;
@@ -862,9 +1001,7 @@ class InitialInterface extends InterfaceLNZ {
 
   class InitialInterfaceButton1 extends InitialInterfaceButton {
     InitialInterfaceButton1(float buttonHeight) {
-      super(width - Constants.initialInterface_buttonWidth - Constants.initialInterface_buttonGap,
-        Constants.initialInterface_buttonGap,
-        width - Constants.initialInterface_buttonGap,
+      super(Constants.initialInterface_buttonGap,
         Constants.initialInterface_buttonGap + buttonHeight);
       this.message = "Launch";
     }
@@ -882,9 +1019,7 @@ class InitialInterface extends InterfaceLNZ {
 
   class InitialInterfaceButton2 extends InitialInterfaceButton {
     InitialInterfaceButton2(float buttonHeight) {
-      super(width - Constants.initialInterface_buttonWidth - Constants.initialInterface_buttonGap,
-        2 * Constants.initialInterface_buttonGap + buttonHeight,
-        width - Constants.initialInterface_buttonGap,
+      super(2 * Constants.initialInterface_buttonGap + buttonHeight,
         2 * Constants.initialInterface_buttonGap + 2 * buttonHeight);
       this.message = "Uninstall";
     }
@@ -897,9 +1032,7 @@ class InitialInterface extends InterfaceLNZ {
 
   class InitialInterfaceButton3 extends InitialInterfaceButton {
     InitialInterfaceButton3(float buttonHeight) {
-      super(width - Constants.initialInterface_buttonWidth - Constants.initialInterface_buttonGap,
-        3 * Constants.initialInterface_buttonGap + 2 * buttonHeight,
-        width - Constants.initialInterface_buttonGap,
+      super(3 * Constants.initialInterface_buttonGap + 2 * buttonHeight,
         3 * Constants.initialInterface_buttonGap + 3 * buttonHeight);
       this.message = "Reset\nGame";
     }
@@ -912,9 +1045,7 @@ class InitialInterface extends InterfaceLNZ {
 
   class InitialInterfaceButton4 extends InitialInterfaceButton {
     InitialInterfaceButton4(float buttonHeight) {
-      super(width - Constants.initialInterface_buttonWidth - Constants.initialInterface_buttonGap,
-        4 * Constants.initialInterface_buttonGap + 3 * buttonHeight,
-        width - Constants.initialInterface_buttonGap,
+      super(4 * Constants.initialInterface_buttonGap + 3 * buttonHeight,
         4 * Constants.initialInterface_buttonGap + 4 * buttonHeight);
       this.message = "Version\nHistory";
     }
@@ -927,9 +1058,7 @@ class InitialInterface extends InterfaceLNZ {
 
   class InitialInterfaceButton5 extends InitialInterfaceButton {
     InitialInterfaceButton5(float buttonHeight) {
-      super(width - Constants.initialInterface_buttonWidth - Constants.initialInterface_buttonGap,
-        5 * Constants.initialInterface_buttonGap + 4 * buttonHeight,
-        width - Constants.initialInterface_buttonGap,
+      super(5 * Constants.initialInterface_buttonGap + 4 * buttonHeight,
         5 * Constants.initialInterface_buttonGap + 5 * buttonHeight);
       this.message = "Exit";
     }
@@ -1007,7 +1136,7 @@ class MainMenuInterface extends InterfaceLNZ {
   class MainMenuGrowButton extends RippleRectangleButton {
     protected float xf_grow;
     protected float ratio; // ratio when shrunk (can have it be > 1 to make it shrink when hovered)
-    protected float grow_speed = 0.8f; // pixels / ms
+    protected float grow_speed = 0.7f; // pixels / ms
 
     MainMenuGrowButton(float xi, float yi, float xf, float yf, float ratio) {
       super(xi, yi, xf * ratio, yf);
@@ -1041,16 +1170,47 @@ class MainMenuInterface extends InterfaceLNZ {
   }
 
 
+  class backgroundImageThread extends Thread {
+    private PImage img = createImage(width, height, ARGB);
+    private float distance_threshhold = 150;
+    private float mX = mouseX;
+    private float mY = mouseY;
+
+    backgroundImageThread() {
+      super("backgroundImageThread");
+    }
+
+    @Override public 
+    void run() {
+      DImg dimg = new DImg(this.img);
+      dimg.makeTransparent(255);
+      dimg.addImagePercent(global.images.getImage("hillary.png"), 0, 0, 1, 1);
+      dimg.brightenGradient(0, this.distance_threshhold, this.mX, this.mY);
+      this.img = dimg.img;
+    }
+  }
+
   private MainMenuGrowButton test = new MainMenuGrowButton(0, 500, 200, 560, 0.3f);
+  private PImage backgroundImage;
+  backgroundImageThread thread = new backgroundImageThread();
 
   MainMenuInterface() {
     super();
+    this.backgroundImage = createImage(width, height, ARGB);
   }
 
    public void update() {
     // draw background
-    background(global.color_background);
+    imageMode(CORNER);
+    image(this.backgroundImage, 0, 0);
+    // update elements
     test.update();
+    // restart thread
+    if (!this.thread.isAlive()) {
+      this.backgroundImage = this.thread.img;
+      this.thread = new backgroundImageThread();
+      this.thread.start();
+    }
   }
 
    public void mouseMove(float mX, float mY) {
@@ -1098,7 +1258,7 @@ class Sounds {
 }
 
 
-  public void settings() { fullScreen(); }
+  public void settings() { fullScreen(FX2D); }
 
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "LNZ" };
