@@ -1,5 +1,6 @@
 import java.util.*;
 import java.io.*;
+import java.nio.file.*;
 import processing.javafx.*;
 import ddf.minim.*;
 import ddf.minim.ugens.*;
@@ -15,6 +16,8 @@ void setup() {
   global = new Global(this);
   background(global.color_background);
   global.menu = new InitialInterface();
+  deleteFolder("data/maps");
+  //mkdir("data/maps", true);
 }
 
 void draw() {
