@@ -102,7 +102,7 @@ static class Constants {
   // Program constants
   static final String credits =
   "Liberal Nazi Zombies" +
-  "20220302: v0.6.0n" +
+  "20220303: v0.6.0p" +
   "Created by Daniel Gray" +
   "";
   static final String version_history =
@@ -1132,6 +1132,7 @@ class MainMenuInterface extends InterfaceLNZ {
     protected float ratio; // ratio when shrunk (can have it be > 1 to make it shrink when hovered)
     protected float grow_speed = 0.7f; // pixels / ms
     protected PImage icon;
+    protected boolean collapsing = false;
 
     MainMenuGrowButton(float xi, float yi, float xf, float yf, float ratio) {
       super(xi, yi, xf * ratio, yf);
@@ -1141,7 +1142,7 @@ class MainMenuInterface extends InterfaceLNZ {
       this.icon = this.getIcon();
       this.text_size = 24;
       this.noStroke();
-      this.setColors(color(170), color(100, 50, 50, 10), color(150, 90, 90, 150), color(240, 180, 180), color(255));
+      this.setColors(color(170), color(0, 1), color(150, 90, 90, 150), color(240, 180, 180), color(255));
       this.refreshColor();
     }
 
@@ -1154,34 +1155,61 @@ class MainMenuInterface extends InterfaceLNZ {
       super.update();
       float pixelsLeft = 0;
       int pixelsToMove = 0;
-      if (this.hovered) {
-        pixelsLeft = this.xf_grow - this.xf;
-        pixelsToMove = PApplet.parseInt(ceil(min(pixelsLeft, pixelsMoved)));
-        if (pixelsToMove > 0) {
-          this.stretchButton(pixelsToMove, RIGHT);
+      if (this.collapsing) {
+        if (this.hovered) {
+          pixelsLeft = this.xf_grow - this.xf;
+          pixelsToMove = PApplet.parseInt(ceil(min(pixelsLeft, pixelsMoved)));
+          if (pixelsToMove > 0) {
+            this.stretchButton(pixelsToMove, RIGHT);
+          }
+          else {
+            this.collapsing = false;
+            this.refreshColor();
+          }
+        }
+        else {
+          pixelsLeft = this.xf_grow * this.ratio - this.xf;
+          pixelsToMove = PApplet.parseInt(floor(max(pixelsLeft, -pixelsMoved)));
+          if (pixelsToMove < 0) {
+            this.stretchButton(pixelsToMove, RIGHT);
+          }
+          else {
+            this.collapsing = false;
+            this.refreshColor();
+          }
         }
       }
-      else {
-        pixelsLeft = this.xf_grow * this.ratio - this.xf;
-        pixelsToMove = PApplet.parseInt(floor(max(pixelsLeft, -pixelsMoved)));
-        if (pixelsToMove < 0) {
-          this.stretchButton(pixelsToMove, RIGHT);
-        }
-      }
-      if (!this.hovered && pixelsLeft > -1) {
+      if (!this.hovered && !this.collapsing) {
         imageMode(CENTER);
         image(this.icon, this.xCenter(), this.yCenter(), this.button_width(), this.button_height());
       }
     }
 
+    @Override public 
+    int fillColor() {
+      if (this.collapsing) {
+        if (this.clicked) {
+          return this.color_click;
+        }
+        else {
+          return this.color_hover;
+        }
+      }
+      return super.fillColor();
+    }
+
      public void hover() {
+      this.collapsing = true;
       super.hover();
       this.show_message = true;
     }
 
      public void dehover() {
+      this.collapsing = true;
       super.dehover();
       this.show_message = false;
+      this.clicked = false;
+      this.color_text = color(255);
     }
 
      public void click() {
