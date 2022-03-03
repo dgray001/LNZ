@@ -137,10 +137,10 @@ class MainMenuInterface extends InterfaceLNZ {
   class MainMenuGrowButton4 extends MainMenuGrowButton {
     MainMenuGrowButton4() {
       super(0, height - 360, 200, height - 300, 0.3);
-      this.message = "???";
+      this.message = "Map Editor";
     }
     PImage getIcon() {
-      return global.images.getImage("icons/?.png");
+      return global.images.getImage("icons/map.png");
     }
   }
 
