@@ -7,7 +7,7 @@ class DImg {
 
   // Constructor for blank image
   DImg(int x, int y) {
-    this.img = createImage(x, y, RGB);
+    this.img = createImage(x, y, ARGB);
   }
   DImg(PImage img) {
     this.img = img;
@@ -86,6 +86,128 @@ class DImg {
       w * (this.img.width / this.gridX), h * (this.img.height / this.gridY));
   }
 
+  // convolution
+  void convolution(float[][] matrix) {
+    if (matrix.length % 2 != 1 || matrix[0].length % 2 != 1) {
+      println("ERROR: convolution matrix invalid size.");
+      return;
+    }
+    this.img.loadPixels();
+    for (int i = 0; i < this.img.height; i++) {
+      for (int j = 0; j < this.img.width; j++) {
+        int index = i * this.img.width + j;
+        float r_total = 0;
+        float g_total = 0;
+        float b_total = 0;
+        for (int i_offset = 0; i_offset < matrix[0].length; i_offset++) {
+          for (int j_offset = 0; j_offset < matrix.length; j_offset++) {
+            int i_corrected = constrain(i + i_offset - matrix[0].length / 2, 0, this.img.height);
+            int j_corrected = constrain(j + j_offset - matrix.length / 2, 0, this.img.width);
+            int index_offset = constrain(i_corrected * this.img.width + j_corrected, 0, this.img.pixels.length - 1);
+            float factor = matrix[i_offset][j_offset];
+            r_total += factor * (this.img.pixels[index_offset] >> 16 & 0xFF);
+            g_total += factor * (this.img.pixels[index_offset] >> 8 & 0xFF);
+            b_total += factor * (this.img.pixels[index_offset] & 0xFF);
+          }
+        }
+        r_total = constrain(r_total, 0, 255);
+        g_total = constrain(g_total, 0, 255);
+        b_total = constrain(b_total, 0, 255);
+        this.img.pixels[index] = color(r_total, g_total, b_total);
+      }
+    }
+    this.img.updatePixels();
+  }
+  void blur() {
+    this.convolution(new float[][]{{1.0/9, 1.0/9, 1.0/9}, {1.0/9, 1.0/9, 1.0/9}, {1.0/9, 1.0/9, 1.0/9}});
+  }
+  void sharpen() {
+    this.convolution(new float[][]{{-1, -1, -1}, {-1, 9, -1}, {-1, -1, -1}});
+  }
+
+  // Brighten
+  void brighten(float factor) {
+    this.img.loadPixels();
+    for (int i = 0; i < this.img.height; i++) {
+      for (int j = 0; j < this.img.width; j++) {
+        int index = i * this.img.width + j;
+        if (index == 0) {
+          continue;
+        }
+        color c = this.img.pixels[index];
+        float r = constrain((c >> 16 & 0xFF) * factor, 0, 255);
+        float g = constrain((c >> 8 & 0xFF) * factor, 0, 255);
+        float b = constrain((c & 0xFF) * factor, 0, 255);
+        float a = alpha(c);
+        this.img.pixels[index] = color(r, g, b, a);
+      }
+    }
+    this.img.updatePixels();
+  }
+
+  void brightenGradient(float factor, float gradientDistance, float x, float y) {
+    this.img.loadPixels();
+    for (int i = 0; i < this.img.height; i++) {
+      for (int j = 0; j < this.img.width; j++) {
+        int index = i * this.img.width + j;
+        float distance = sqrt((i - y) * (i - y) + (j - x) * (j - x));
+        float curr_factor = factor;
+        if (distance < gradientDistance) {
+          curr_factor = 1 + (factor - 1) * distance / gradientDistance;
+        }
+        color c = this.img.pixels[index];
+        float r = constrain((c >> 16 & 0xFF) * curr_factor, 0, 255);
+        float g = constrain((c >> 8 & 0xFF) * curr_factor, 0, 255);
+        float b = constrain((c & 0xFF) * curr_factor, 0, 255);
+        int col = ccolor(int(r), int(g), int(b), 254);
+        this.img.pixels[index] = col;
+      }
+    }
+    this.img.updatePixels();
+  }
+
+  // transparent
+  void makeTransparent() {
+    this.makeTransparent(0);
+  }
+  void makeTransparent(int alpha) {
+    this.img.loadPixels();
+    for (int i = 0; i < this.img.height; i++) {
+      for (int j = 0; j < this.img.width; j++) {
+        int index = i * this.img.width + j;
+        if (index == 0) {
+          continue;
+        }
+        float r = this.img.pixels[index] >> 16 & 0xFF;
+        float g = this.img.pixels[index] >> 8 & 0xFF;
+        float b = this.img.pixels[index] & 0xFF;
+        this.img.pixels[index] = ccolor(int(r), int(g), int(b), alpha);
+      }
+    }
+    this.img.updatePixels();
+  }
+  void transparencyGradientFromPoint(float x, float y, float distance) {
+    this.img.loadPixels();
+    for (int i = 0; i < this.img.height; i++) {
+      for (int j = 0; j < this.img.width; j++) {
+        int index = i * this.img.width + j;
+        if (index == 0) {
+          continue;
+        }
+        float r = this.img.pixels[index] >> 16 & 0xFF;
+        float g = this.img.pixels[index] >> 8 & 0xFF;
+        float b = this.img.pixels[index] & 0xFF;
+        float curr_distance = sqrt((i - y) * (i - y) + (j - x) * (j - x));
+        float alpha = 0;
+        if (curr_distance < distance) {
+          alpha = 255 * (1 - curr_distance / distance);
+        }
+        this.img.pixels[index] = color(r, g, b, alpha);
+      }
+    }
+    this.img.updatePixels();
+  }
+
   // color pixels
   void colorPixels(color c) {
     /*float ref_r = c >> 16 & 0xFF;
@@ -95,8 +217,8 @@ class DImg {
     this.img.loadPixels();
     for (int i = 0; i < this.img.height; i++) {
       for (int j = 0; j < this.img.width; j++) {
-        int index = i + this.img.width * j;
-        this.img.pixels[index] = c;//color(ref_r, ref_g, ref_b, ref_a);
+        int index = i * this.img.width + j;
+        this.img.pixels[index] = c; //color(ref_r, ref_g, ref_b, ref_a);
       }
     }
     this.img.updatePixels();

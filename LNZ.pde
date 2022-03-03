@@ -7,7 +7,7 @@ import ddf.minim.ugens.*;
 Global global;
 
 void setup() {
-  fullScreen();
+  fullScreen(FX2D);
   surface.setSize(Constants.initialInterface_size, Constants.initialInterface_size);
   surface.setLocation(int(0.5 * (displayWidth - Constants.initialInterface_size)),
     int(0.5 * (displayHeight - Constants.initialInterface_size)));
