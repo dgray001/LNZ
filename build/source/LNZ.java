@@ -102,7 +102,7 @@ static class Constants {
   // Program constants
   static final String credits =
   "Liberal Nazi Zombies" +
-  "20220303: v0.6.0p" +
+  "20220303: v0.6.0q" +
   "Created by Daniel Gray" +
   "";
   static final String version_history =
@@ -1263,10 +1263,10 @@ class MainMenuInterface extends InterfaceLNZ {
   class MainMenuGrowButton4 extends MainMenuGrowButton {
     MainMenuGrowButton4() {
       super(0, height - 360, 200, height - 300, 0.3f);
-      this.message = "???";
+      this.message = "Map Editor";
     }
      public PImage getIcon() {
-      return global.images.getImage("icons/?.png");
+      return global.images.getImage("icons/map.png");
     }
   }
 
