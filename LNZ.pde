@@ -33,7 +33,7 @@ void draw() {
   }
   // Program
   if (global.menu != null) {
-    global.menu.update();
+    global.menu.update(millis());
   }
   switch(global.state) {
     case INITIAL_INTERFACE:
