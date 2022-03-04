@@ -6,6 +6,7 @@ abstract class InterfaceLNZ {
   abstract void mouseMove(float mX, float mY);
   abstract void mousePress();
   abstract void mouseRelease();
+  abstract void scroll(int amount);
 }
 
 
@@ -132,7 +133,7 @@ class InitialInterface extends InterfaceLNZ {
   private InitialInterfaceButton[] buttons = new InitialInterfaceButton[5];
   private LogoImageButton logo = new LogoImageButton();
 
-  private ScrollBar test = new ScrollBar(10, 30, 300, 60, false);
+  private TextBox test = new TextBox(10, 10, 280, 360);
 
   InitialInterface() {
     super();
@@ -143,7 +144,7 @@ class InitialInterface extends InterfaceLNZ {
     this.buttons[2] = new InitialInterfaceButton3(buttonHeight);
     this.buttons[3] = new InitialInterfaceButton4(buttonHeight);
     this.buttons[4] = new InitialInterfaceButton5(buttonHeight);
-    this.test.updateMaxValue(1000);
+    test.setText("THIS IS SOME TEXT WITH S O M E WO");
   }
 
   void update(int millis) {
@@ -176,5 +177,9 @@ class InitialInterface extends InterfaceLNZ {
       button.mouseRelease();
     }
     test.mouseRelease();
+  }
+
+  void scroll(int amount) {
+    test.scroll(amount);
   }
 }

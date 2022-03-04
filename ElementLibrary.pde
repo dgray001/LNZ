@@ -550,8 +550,43 @@ class ScrollBar {
   }
 
   class ScrollBarUpButton extends ScrollBarButton {
+    float arrowWidth = 0;
+    float arrowRatio = 0.1;
+    float cushionRatio = 1.5;
     ScrollBarUpButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
+      refreshArrowWidth();
+    }
+    @Override
+    void setLocation(float xi, float yi, float xf, float yf) {
+      super.setLocation(xi, yi, xf, yf);
+      this.refreshArrowWidth();
+    }
+    void refreshArrowWidth() {
+      if (ScrollBar.this.vertical) {
+        this.arrowWidth = this.arrowRatio * this.button_height();
+      }
+      else {
+        this.arrowWidth = this.arrowRatio * this.button_width();
+      }
+    }
+    @Override
+    void drawButton() {
+      super.drawButton();
+      stroke(0);
+      strokeWeight(this.arrowWidth);
+      if (ScrollBar.this.vertical) {
+        line(this.xi + this.cushionRatio * this.arrowWidth, this.yf - this.cushionRatio * this.arrowWidth,
+          this.xCenter(), this.yi + this.cushionRatio * this.arrowWidth);
+        line(this.xf - this.cushionRatio * this.arrowWidth, this.yf - this.cushionRatio * this.arrowWidth,
+          this.xCenter(), this.yi + this.cushionRatio * this.arrowWidth);
+      }
+      else {
+        line(this.xf - this.cushionRatio * this.arrowWidth, this.yi + this.cushionRatio * this.arrowWidth,
+          this.xi + this.cushionRatio * this.arrowWidth, this.yCenter());
+        line(this.xf - this.cushionRatio * this.arrowWidth, this.yf - this.cushionRatio * this.arrowWidth,
+          this.xi + this.cushionRatio * this.arrowWidth, this.yCenter());
+      }
     }
     @Override
     void dehover() {
@@ -563,8 +598,43 @@ class ScrollBar {
   }
 
   class ScrollBarDownButton extends ScrollBarButton {
+    float arrowWidth = 0;
+    float arrowRatio = 0.1;
+    float cushionRatio = 1.5;
     ScrollBarDownButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
+      refreshArrowWidth();
+    }
+    @Override
+    void setLocation(float xi, float yi, float xf, float yf) {
+      super.setLocation(xi, yi, xf, yf);
+      this.refreshArrowWidth();
+    }
+    void refreshArrowWidth() {
+      if (ScrollBar.this.vertical) {
+        this.arrowWidth = this.arrowRatio * this.button_height();
+      }
+      else {
+        this.arrowWidth = this.arrowRatio * this.button_width();
+      }
+    }
+    @Override
+    void drawButton() {
+      super.drawButton();
+      stroke(0);
+      strokeWeight(this.arrowWidth);
+      if (ScrollBar.this.vertical) {
+        line(this.xi + this.cushionRatio * this.arrowWidth, this.yi + this.cushionRatio * this.arrowWidth,
+          this.xCenter(), this.yf - this.cushionRatio * this.arrowWidth);
+        line(this.xf - this.cushionRatio * this.arrowWidth, this.yi + this.cushionRatio * this.arrowWidth,
+          this.xCenter(), this.yf - this.cushionRatio * this.arrowWidth);
+      }
+      else {
+        line(this.xi + this.cushionRatio * this.arrowWidth, this.yi + this.cushionRatio * this.arrowWidth,
+          this.xf - this.cushionRatio * this.arrowWidth, this.yCenter());
+        line(this.xi + this.cushionRatio * this.arrowWidth, this.yf - this.cushionRatio * this.arrowWidth,
+          this.xf - this.cushionRatio * this.arrowWidth, this.yCenter());
+      }
     }
     @Override
     void dehover() {
@@ -578,7 +648,7 @@ class ScrollBar {
   class ScrollBarUpSpaceButton extends ScrollBarButton {
     ScrollBarUpSpaceButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
-      this.setColors(color(170, 0), color(170, 0), color(170, 0), color(0), color(0));
+      this.setColors(color(180), color(235), color(235), color(0), color(0));
     }
     void click() {
       ScrollBar.this.decreaseValuePercent(0.1);
@@ -588,7 +658,7 @@ class ScrollBar {
   class ScrollBarDownSpaceButton extends ScrollBarButton {
     ScrollBarDownSpaceButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
-      this.setColors(color(170, 0), color(170, 0), color(170, 0), color(0), color(0));
+      this.setColors(color(180), color(235), color(235), color(0), color(0));
     }
     void click() {
       ScrollBar.this.increaseValuePercent(0.1);
@@ -604,7 +674,7 @@ class ScrollBar {
     void update(int millis) {
       if (!this.hidden) {
         drawButton();
-        if (this.clicked) {
+        if (this.clicked && ScrollBar.this.value_size != 0) {
           this.hold_timer += millis - this.lastUpdateTime;
           if (ScrollBar.this.vertical) {
             ScrollBar.this.increaseValue((mouseY - this.val) / ScrollBar.this.value_size);
@@ -647,6 +717,9 @@ class ScrollBar {
   protected float value_size = 0;
   protected float step_size = 10; // constant
 
+  ScrollBar(boolean vertical) {
+    this(0, 0, 0, 0, vertical);
+  }
   ScrollBar(float xi, float yi, float xf, float yf, boolean vertical) {
     this.vertical = vertical;
     this.setLocation(xi, yi, xf, yf);
@@ -795,5 +868,203 @@ class ScrollBar {
     this.button_upspace.mouseRelease();
     this.button_downspace.mouseRelease();
     this.button_bar.mouseRelease();
+  }
+}
+
+
+
+class TextBox {
+  protected float xi = 0;
+  protected float yi = 0;
+  protected float xf = 0;
+  protected float yf = 0;
+
+  protected ScrollBar scrollbar = new ScrollBar(true);
+  protected float scrollbar_max_width = 60;
+  protected float scrollbar_min_width = 30;
+
+  protected String text_ref = "";
+  protected ArrayList<String> text_lines = new ArrayList<String>();
+  protected float text_size = 15;
+  protected float text_leading = 0;
+
+  protected String text_title_ref = null;
+  protected String text_title = null;
+  protected float title_size = 22;
+
+  protected color color_background = color(250);
+  protected color color_header = color(200);
+  protected color color_stroke = color(0);
+  protected color color_text = color(0);
+  protected color color_title = color(0);
+
+  TextBox() {
+    this(0, 0, 0, 0);
+  }
+  TextBox(float xi, float yi, float xf, float yf) {
+    this.setLocation(xi, yi, xf, yf);
+  }
+
+  void setLocation(float xi, float yi, float xf, float yf) {
+    this.xi = xi;
+    this.yi = yi;
+    this.xf = xf;
+    this.yf = yf;
+    this.refreshTitle();
+  }
+
+  void setTextSize(float text_size) {
+    this.text_size = text_size;
+    this.refreshText();
+  }
+
+  void setTitleSize(float title_size) {
+    this.title_size = title_size;
+    this.refreshTitle();
+  }
+
+  void refreshTitle() {
+    this.setTitleText(this.text_title_ref);
+  }
+
+  void setTitleText(String title) {
+    this.text_title_ref = title;
+    float scrollbar_width = min(this.scrollbar_max_width, 0.1 * (xf - xi));
+    scrollbar_width = max(this.scrollbar_min_width, scrollbar_width);
+    scrollbar_width = min(0.1 * (xf - xi), scrollbar_width);
+    if (title == null) {
+      this.text_title = null;
+      this.scrollbar.setLocation(xf - scrollbar_width, yi, xf, yf);
+    }
+    else {
+      this.text_title = "";
+      textSize(this.title_size);
+      for (int i = 0; i < title.length(); i++) {
+        char nextChar = title.charAt(i);
+        if (textWidth(this.text_title + nextChar) < this.xf - this.xi - 3) {
+          this.text_title += nextChar;
+        }
+        else {
+          break;
+        }
+      }
+      this.scrollbar.setLocation(xf - scrollbar_width, yi + this.title_size + textAscent() + textDescent(), xf, yf);
+    }
+    this.refreshText();
+  }
+
+  void refreshText() {
+    this.setText(this.text_ref);
+  }
+
+  void setText(String text) {
+    this.text_ref = text;
+    this.text_lines.clear();
+    float currY = this.yi + 1;
+    if (this.text_title_ref != null) {
+      textSize(this.title_size);
+      currY += textAscent() + textDescent() + 2;
+    }
+    textSize(this.text_size);
+    float text_height = textAscent() + textDescent();
+    float effective_xf = this.xf - this.xi - 3 - this.scrollbar.bar_size;
+    int lines_above = 0;
+    String[] lines = split(text, '\n');
+    String currLine = "";
+    boolean firstWord = true;
+    for (int i = 0; i < lines.length; i++) {
+      String[] words = split(lines[i], ' ');
+      for (int j = 0; j < words.length; j++) {
+        String word = " ";
+        if (firstWord) {
+          word = "";
+        }
+        word += words[j];
+        if (textWidth(currLine + word) < effective_xf) {
+          currLine += word;
+          firstWord = false;
+        }
+        else if (firstWord) {
+          for (int k = 0; k < word.length(); k++) {
+            char nextChar = word.charAt(j);
+            if (textWidth(currLine + nextChar) < effective_xf) {
+              currLine += nextChar;
+            }
+            else {
+              this.text_lines.add(currLine);
+              currLine = "" + nextChar;
+              firstWord = true;
+              currY += text_height + this.text_leading;
+              if (currY + text_height + 1 > this.yf) {
+                lines_above++;
+              }
+            }
+          }
+          firstWord = false;
+        }
+        else {
+          this.text_lines.add(currLine);
+          currLine = word;
+          firstWord = true;
+          currY += text_height + this.text_leading;
+          if (currY + text_height + 1 > this.yf) {
+            lines_above++;
+          }
+        }
+      }
+      this.text_lines.add(currLine);
+      currLine = "";
+      firstWord = true;
+      currY += text_height + this.text_leading;
+      if (currY + text_height + 1 > this.yf) {
+        lines_above++;
+      }
+    }
+    this.scrollbar.updateMaxValue(lines_above);
+  }
+
+  void update(int millis) {
+    rectMode(CORNERS);
+    fill(this.color_background);
+    stroke(this.color_stroke);
+    strokeWeight(1);
+    rect(this.xi, this.yi, this.xf, this.yf);
+    float currY = this.yi + 1;
+    if (this.text_title_ref != null) {
+      fill(this.color_header);
+      textSize(this.title_size);
+      rect(this.xi, this.yi, this.xf, this.yi + this.title_size);
+      fill(this.color_title);
+      textAlign(CENTER, TOP);
+      text(this.text_title, currY + textAscent(), this.xi + 0.5 * (this.xf - this.xi));
+      currY += textAscent() + textDescent() + 2;
+    }
+    fill(this.color_text);
+    textAlign(LEFT, TOP);
+    textSize(this.text_size);
+    float text_height = textAscent() + textDescent();
+    for (int i = int(floor(this.scrollbar.value)); i < this.text_lines.size(); i++, currY += text_height + this.text_leading) {
+      if (currY + text_height + 1 > this.yf) {
+        break;
+      }
+      text(this.text_lines.get(i), this.xi + 2, currY);
+    }
+    this.scrollbar.update(millis);
+  }
+
+  void mouseMove(float mX, float mY) {
+    this.scrollbar.mouseMove(mX, mY);
+  }
+
+  void mousePress() {
+    this.scrollbar.mousePress();
+  }
+
+  void mouseRelease() {
+    this.scrollbar.mouseRelease();
+  }
+
+  void scroll(int amount) {
+    this.scrollbar.increaseValue(amount);
   }
 }
