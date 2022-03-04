@@ -57,7 +57,7 @@ Global global;
   }
   // Program
   if (global.menu != null) {
-    global.menu.update();
+    global.menu.update(millis());
   }
   switch(global.state) {
     case INITIAL_INTERFACE:
@@ -106,7 +106,7 @@ static class Constants {
   // Program constants
   static final String credits =
   "Liberal Nazi Zombies" +
-  "20220303: v0.6.0q" +
+  "20220303: v0.6.0r" +
   "Created by Daniel Gray" +
   "";
   static final String version_history =
@@ -388,6 +388,9 @@ abstract class Button {
   protected boolean show_stroke = true;
   protected float stroke_weight = 0.5f;
   protected boolean stay_dehovered = false;
+  // timer
+  protected int hold_timer = 0;
+  protected int lastUpdateTime = millis();
 
   Button() {
   }
@@ -451,10 +454,14 @@ abstract class Button {
     this.hovered = false;
   }
 
-   public void update() {
+   public void update(int millis) {
     if (!this.hidden) {
       drawButton();
+      if (this.clicked) {
+        this.hold_timer += millis - this.lastUpdateTime;
+      }
     }
+    this.lastUpdateTime = millis;
   }
 
    public void mouseMove(float mX, float mY) {
@@ -498,6 +505,7 @@ abstract class Button {
     }
     if (this.clicked) {
       this.clicked = false;
+      this.hold_timer = 0;
       this.release();
     }
     this.clicked = false;
@@ -642,7 +650,6 @@ abstract class RippleRectangleButton extends ImageButton {
 
   protected int rippleTime = 250;
   protected int rippleTimer = 0;
-  protected int lastUpdateTime = millis();
   protected int number_buckets = 50;
   protected HashMap<Integer, ArrayList<Pixel>> buckets;
   protected float clickX = 0;
@@ -656,10 +663,9 @@ abstract class RippleRectangleButton extends ImageButton {
   }
 
   @Override public 
-  void update() {
-    super.update();
-    int timeElapsed = millis() - this.lastUpdateTime;
-    this.lastUpdateTime = millis();
+  void update(int millis) {
+    int timeElapsed = millis - this.lastUpdateTime;
+    super.update(millis);
     if (this.rippleTimer > 0) {
       this.rippleTimer -= timeElapsed;
       if (this.rippleTimer <= 0) {
@@ -865,6 +871,231 @@ abstract class TriangleButton extends Button {
       return true;
     }
     return false;
+  }
+}
+
+
+
+
+
+
+class ScrollBar {
+  class ScrollBarUpButton extends RectangleButton {
+    ScrollBarUpButton(float xi, float yi, float xf, float yf) {
+      super(xi, yi, xf, yf);
+      this.roundness = 0;
+    }
+     public void hover() {
+    }
+     public void dehover() {
+    }
+     public void click() {
+    }
+     public void release() {
+    }
+  }
+
+  class ScrollBarDownButton extends RectangleButton {
+    ScrollBarDownButton(float xi, float yi, float xf, float yf) {
+      super(xi, yi, xf, yf);
+      this.roundness = 0;
+    }
+     public void hover() {
+    }
+     public void dehover() {
+    }
+     public void click() {
+    }
+     public void release() {
+    }
+  }
+
+  class ScrollBarUpSpaceButton extends RectangleButton {
+    ScrollBarUpSpaceButton(float xi, float yi, float xf, float yf) {
+      super(xi, yi, xf, yf);
+      this.roundness = 0;
+    }
+     public void hover() {
+    }
+     public void dehover() {
+    }
+     public void click() {
+    }
+     public void release() {
+    }
+  }
+
+  class ScrollBarDownSpaceButton extends RectangleButton {
+    ScrollBarDownSpaceButton(float xi, float yi, float xf, float yf) {
+      super(xi, yi, xf, yf);
+      this.roundness = 0;
+    }
+     public void hover() {
+    }
+     public void dehover() {
+    }
+     public void click() {
+    }
+     public void release() {
+    }
+  }
+
+  class ScrollBarBarButton extends RectangleButton {
+    ScrollBarBarButton(float xi, float yi, float xf, float yf) {
+      super(xi, yi, xf, yf);
+      this.roundness = 0;
+    }
+     public void hover() {
+    }
+     public void dehover() {
+    }
+     public void click() {
+    }
+     public void release() {
+    }
+  }
+
+  protected ScrollBarUpButton button_up = new ScrollBarUpButton(0, 0, 0, 0);
+  protected ScrollBarDownButton button_down = new ScrollBarDownButton(0, 0, 0, 0);
+  protected ScrollBarUpSpaceButton button_upspace = new ScrollBarUpSpaceButton(0, 0, 0, 0);
+  protected ScrollBarDownSpaceButton button_downspace = new ScrollBarDownSpaceButton(0, 0, 0, 0);
+  protected ScrollBarBarButton button_bar = new ScrollBarBarButton(0, 0, 0, 0);
+
+  protected float minValue = 0;
+  protected float maxValue = 0;
+  protected float value = 0;
+
+  protected float xi;
+  protected float yi;
+  protected float xf;
+  protected float yf;
+  protected boolean vertical;
+  protected float bar_size = 0;
+  protected float min_size = 0;
+  protected float value_size = 0;
+  protected float step_size = 10; // constant
+
+  ScrollBar(float xi, float yi, float xf, float yf, boolean vertical) {
+    this.vertical = vertical;
+    this.setLocation(xi, yi, xf, yf);
+  }
+
+   public void setLocation(float xi, float yi, float xf, float yf) {
+    this.xi = xi;
+    this.yi = yi;
+    this.xf = xf;
+    this.yf = yf;
+    if (this.vertical) {
+      this.bar_size = this.xf - this.xi;
+      if (3 * this.bar_size > this.yf - this.yi) {
+        this.bar_size = (this.yf - this.yi) / 3.0f;
+        this.min_size = 0.5f * this.bar_size;
+      }
+      else {
+        this.min_size = min(this.bar_size, (this.yf - this.yi) / 9.0f);
+      }
+      this.button_up.setLocation(this.xi, this.yi, this.xf, this.yi + this.bar_size);
+      this.button_down.setLocation(this.xi, this.yf - this.bar_size, this.xf, this.yf);
+    }
+    else {
+      //
+    }
+    this.refreshBarButtonSizes();
+  }
+
+   public void refreshBarButtonSizes() {
+    if (this.vertical) {
+      float bar_height = this.yf - this.yi - 2 * this.bar_size;
+      float bar_button_size = max(this.min_size, bar_height - this.step_size * (this.maxValue - this.minValue));
+      if (this.maxValue == this.minValue) {
+        this.value_size = 0;
+      }
+      else {
+        this.value_size = (bar_height - bar_button_size) / (this.maxValue - this.minValue);
+      }
+    }
+    else {
+      //
+    }
+    this.refreshBarButtons();
+  }
+
+   public void refreshBarButtons() {
+    if (this.vertical) {
+      float cut_one = this.yi + this.bar_size + this.value_size * (this.value - this.minValue);
+      float cut_two = this.yf - this.bar_size - this.value_size * (this.maxValue - this.value);
+      this.button_upspace.setLocation(this.xi, this.yi + this.bar_size, this.xf, cut_one);
+      this.button_downspace.setLocation(this.xi, cut_two, this.xf, this.yf - this.bar_size);
+      this.button_bar.setLocation(this.xi, cut_one, this.xf, cut_two);
+    }
+    else {
+      //
+    }
+  }
+
+   public void updateMinValue(float minValue) {
+    this.minValue = minValue;
+    if (this.minValue > this.maxValue) {
+      this.minValue = this.maxValue;
+    }
+    if (this.value < this.minValue) {
+      this.value = this.minValue;
+    }
+    this.refreshBarButtonSizes();
+  }
+
+   public void updateMaxValue(float maxValue) {
+    this.maxValue = maxValue;
+    if (this.maxValue < this.minValue) {
+      this.maxValue = this.minValue;
+    }
+    if (this.value > this.maxValue) {
+      this.value = this.maxValue;
+    }
+    this.refreshBarButtonSizes();
+  }
+
+   public void updateValue(float value) {
+    this.value = value;
+    if (this.value < this.minValue) {
+      this.value = this.minValue;
+    }
+    else if (this.value > this.maxValue) {
+      this.value = this.maxValue;
+    }
+    this.refreshBarButtons();
+  }
+
+   public void update(int millis) {
+    this.button_up.update(millis);
+    this.button_down.update(millis);
+    this.button_upspace.update(millis);
+    this.button_downspace.update(millis);
+    this.button_bar.update(millis);
+  }
+
+   public void mouseMove(float mX, float mY) {
+    this.button_up.mouseMove(mX, mY);
+    this.button_down.mouseMove(mX, mY);
+    this.button_upspace.mouseMove(mX, mY);
+    this.button_downspace.mouseMove(mX, mY);
+    this.button_bar.mouseMove(mX, mY);
+  }
+
+   public void mousePress() {
+    this.button_up.mousePress();
+    this.button_down.mousePress();
+    this.button_upspace.mousePress();
+    this.button_downspace.mousePress();
+    this.button_bar.mousePress();
+  }
+
+   public void mouseRelease() {
+    this.button_up.mouseRelease();
+    this.button_down.mouseRelease();
+    this.button_upspace.mouseRelease();
+    this.button_downspace.mouseRelease();
+    this.button_bar.mouseRelease();
   }
 }
 // default to if file does not exist create file
@@ -1088,7 +1319,7 @@ abstract class InterfaceLNZ {
   InterfaceLNZ() {
   }
 
-   public abstract void update();
+   public abstract void update(int millis);
    public abstract void mouseMove(float mX, float mY);
    public abstract void mousePress();
    public abstract void mouseRelease();
@@ -1218,6 +1449,8 @@ class InitialInterface extends InterfaceLNZ {
   private InitialInterfaceButton[] buttons = new InitialInterfaceButton[5];
   private LogoImageButton logo = new LogoImageButton();
 
+  private ScrollBar test = new ScrollBar(10, 10, 80, 380, true);
+
   InitialInterface() {
     super();
     float buttonHeight = (Constants.initialInterface_size - (this.buttons.length + 1) *
@@ -1229,11 +1462,12 @@ class InitialInterface extends InterfaceLNZ {
     this.buttons[4] = new InitialInterfaceButton5(buttonHeight);
   }
 
-   public void update() {
-    this.logo.update();
+   public void update(int millis) {
+    this.logo.update(millis);
     for (InitialInterfaceButton button : this.buttons) {
-      button.update();
+      button.update(millis);
     }
+    test.update(millis);
   }
 
    public void mouseMove(float mX, float mY) {
@@ -1241,6 +1475,7 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseMove(mX, mY);
     }
+    test.mouseMove(mX, mY);
   }
 
    public void mousePress() {
@@ -1248,6 +1483,9 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mousePress();
     }
+    test.mousePress();
+    this.test.updateMaxValue(this.test.maxValue + 1);
+    this.test.updateMinValue(this.test.minValue - 1);
   }
 
    public void mouseRelease() {
@@ -1255,6 +1493,7 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseRelease();
     }
+    test.mouseRelease();
   }
 }
 
@@ -1282,10 +1521,10 @@ class MainMenuInterface extends InterfaceLNZ {
      public abstract PImage getIcon();
 
     @Override public 
-    void update() {
-      int timeElapsed = millis() - this.lastUpdateTime;
+    void update(int millis) {
+      int timeElapsed = millis - this.lastUpdateTime;
       float pixelsMoved = timeElapsed * this.grow_speed;
-      super.update();
+      super.update(millis);
       float pixelsLeft = 0;
       int pixelsToMove = 0;
       if (this.collapsing) {
@@ -1439,13 +1678,13 @@ class MainMenuInterface extends InterfaceLNZ {
     this.growButtons[3] = new MainMenuGrowButton4();
   }
 
-   public void update() {
+   public void update(int millis) {
     // draw background
     imageMode(CORNER);
     image(this.backgroundImage, 0, 0);
     // update elements
     for (MainMenuGrowButton button : this.growButtons) {
-      button.update();
+      button.update(millis);
     }
     // restart thread
     if (!this.thread.isAlive()) {
@@ -1473,6 +1712,7 @@ class MainMenuInterface extends InterfaceLNZ {
     }
   }
 }
+
 
 class Sounds {
   private Minim minim;

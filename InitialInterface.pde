@@ -2,7 +2,7 @@ abstract class InterfaceLNZ {
   InterfaceLNZ() {
   }
 
-  abstract void update();
+  abstract void update(int millis);
   abstract void mouseMove(float mX, float mY);
   abstract void mousePress();
   abstract void mouseRelease();
@@ -132,6 +132,8 @@ class InitialInterface extends InterfaceLNZ {
   private InitialInterfaceButton[] buttons = new InitialInterfaceButton[5];
   private LogoImageButton logo = new LogoImageButton();
 
+  private ScrollBar test = new ScrollBar(10, 10, 80, 380, true);
+
   InitialInterface() {
     super();
     float buttonHeight = (Constants.initialInterface_size - (this.buttons.length + 1) *
@@ -143,11 +145,12 @@ class InitialInterface extends InterfaceLNZ {
     this.buttons[4] = new InitialInterfaceButton5(buttonHeight);
   }
 
-  void update() {
-    this.logo.update();
+  void update(int millis) {
+    this.logo.update(millis);
     for (InitialInterfaceButton button : this.buttons) {
-      button.update();
+      button.update(millis);
     }
+    test.update(millis);
   }
 
   void mouseMove(float mX, float mY) {
@@ -155,6 +158,7 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseMove(mX, mY);
     }
+    test.mouseMove(mX, mY);
   }
 
   void mousePress() {
@@ -162,6 +166,9 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mousePress();
     }
+    test.mousePress();
+    this.test.updateMaxValue(this.test.maxValue + 1);
+    this.test.updateMinValue(this.test.minValue - 1);
   }
 
   void mouseRelease() {
@@ -169,5 +176,6 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseRelease();
     }
+    test.mouseRelease();
   }
 }

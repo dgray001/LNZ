@@ -23,10 +23,10 @@ class MainMenuInterface extends InterfaceLNZ {
     abstract PImage getIcon();
 
     @Override
-    void update() {
-      int timeElapsed = millis() - this.lastUpdateTime;
+    void update(int millis) {
+      int timeElapsed = millis - this.lastUpdateTime;
       float pixelsMoved = timeElapsed * this.grow_speed;
-      super.update();
+      super.update(millis);
       float pixelsLeft = 0;
       int pixelsToMove = 0;
       if (this.collapsing) {
@@ -180,13 +180,13 @@ class MainMenuInterface extends InterfaceLNZ {
     this.growButtons[3] = new MainMenuGrowButton4();
   }
 
-  void update() {
+  void update(int millis) {
     // draw background
     imageMode(CORNER);
     image(this.backgroundImage, 0, 0);
     // update elements
     for (MainMenuGrowButton button : this.growButtons) {
-      button.update();
+      button.update(millis);
     }
     // restart thread
     if (!this.thread.isAlive()) {
