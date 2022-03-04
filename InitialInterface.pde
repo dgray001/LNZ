@@ -132,7 +132,7 @@ class InitialInterface extends InterfaceLNZ {
   private InitialInterfaceButton[] buttons = new InitialInterfaceButton[5];
   private LogoImageButton logo = new LogoImageButton();
 
-  private ScrollBar test = new ScrollBar(10, 10, 80, 380, true);
+  private ScrollBar test = new ScrollBar(10, 30, 300, 60, false);
 
   InitialInterface() {
     super();
@@ -143,6 +143,7 @@ class InitialInterface extends InterfaceLNZ {
     this.buttons[2] = new InitialInterfaceButton3(buttonHeight);
     this.buttons[3] = new InitialInterfaceButton4(buttonHeight);
     this.buttons[4] = new InitialInterfaceButton5(buttonHeight);
+    this.test.updateMaxValue(1000);
   }
 
   void update(int millis) {
@@ -167,8 +168,6 @@ class InitialInterface extends InterfaceLNZ {
       button.mousePress();
     }
     test.mousePress();
-    this.test.updateMaxValue(this.test.maxValue + 1);
-    this.test.updateMinValue(this.test.minValue - 1);
   }
 
   void mouseRelease() {
