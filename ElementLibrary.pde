@@ -510,78 +510,120 @@ abstract class TriangleButton extends Button {
 
 
 class ScrollBar {
-  class ScrollBarUpButton extends RectangleButton {
+  abstract class ScrollBarButton extends RectangleButton {
+    protected int time_hold = 350;
+    protected int time_click = 80;
+    protected boolean held = false;
+
+    ScrollBarButton(float xi, float yi, float xf, float yf) {
+      super(xi, yi, xf, yf);
+      this.roundness = 0;
+    }
+
+    @Override
+    void update(int millis) {
+      super.update(millis);
+      if (this.clicked) {
+        if (this.held) {
+          if (this.hold_timer > this.time_click) {
+            this.hold_timer -= this.time_click;
+            this.click();
+          }
+        }
+        else {
+          if (this.hold_timer > this.time_hold) {
+            this.hold_timer -= this.time_hold;
+            this.held = true;
+            this.click();
+          }
+        }
+      }
+    }
+
+    void hover() {
+    }
+    void dehover() {
+    }
+    void release() {
+      this.held = false;
+    }
+  }
+
+  class ScrollBarUpButton extends ScrollBarButton {
     ScrollBarUpButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
-      this.roundness = 0;
     }
-    void hover() {
-    }
+    @Override
     void dehover() {
+      this.clicked = false;
     }
     void click() {
-    }
-    void release() {
+      ScrollBar.this.decreaseValue(1);
     }
   }
 
-  class ScrollBarDownButton extends RectangleButton {
+  class ScrollBarDownButton extends ScrollBarButton {
     ScrollBarDownButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
-      this.roundness = 0;
     }
-    void hover() {
-    }
+    @Override
     void dehover() {
+      this.clicked = false;
     }
     void click() {
-    }
-    void release() {
+      ScrollBar.this.increaseValue(1);
     }
   }
 
-  class ScrollBarUpSpaceButton extends RectangleButton {
+  class ScrollBarUpSpaceButton extends ScrollBarButton {
     ScrollBarUpSpaceButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
-      this.roundness = 0;
-    }
-    void hover() {
-    }
-    void dehover() {
+      this.setColors(color(170, 0), color(170, 0), color(170, 0), color(0), color(0));
     }
     void click() {
-    }
-    void release() {
+      ScrollBar.this.decreaseValuePercent(0.1);
     }
   }
 
-  class ScrollBarDownSpaceButton extends RectangleButton {
+  class ScrollBarDownSpaceButton extends ScrollBarButton {
     ScrollBarDownSpaceButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
-      this.roundness = 0;
-    }
-    void hover() {
-    }
-    void dehover() {
+      this.setColors(color(170, 0), color(170, 0), color(170, 0), color(0), color(0));
     }
     void click() {
-    }
-    void release() {
+      ScrollBar.this.increaseValuePercent(0.1);
     }
   }
 
-  class ScrollBarBarButton extends RectangleButton {
+  class ScrollBarBarButton extends ScrollBarButton {
+    protected float val = 0;
     ScrollBarBarButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
-      this.roundness = 0;
     }
-    void hover() {
-    }
-    void dehover() {
+    @Override
+    void update(int millis) {
+      if (!this.hidden) {
+        drawButton();
+        if (this.clicked) {
+          this.hold_timer += millis - this.lastUpdateTime;
+          if (ScrollBar.this.vertical) {
+            ScrollBar.this.increaseValue((mouseY - this.val) / ScrollBar.this.value_size);
+          }
+          else {
+            ScrollBar.this.increaseValue((mouseX - this.val) / ScrollBar.this.value_size);
+          }
+          this.click();
+        }
+      }
+      this.lastUpdateTime = millis;
     }
     void click() {
-    }
-    void release() {
+      if (ScrollBar.this.vertical) {
+        this.val = mouseY;
+      }
+      else {
+        this.val = mouseX;
+      }
     }
   }
 
@@ -628,24 +670,34 @@ class ScrollBar {
       this.button_down.setLocation(this.xi, this.yf - this.bar_size, this.xf, this.yf);
     }
     else {
-      //
+      this.bar_size = this.yf - this.yi;
+      if (3 * this.bar_size > this.xf - this.xi) {
+        this.bar_size = (this.xf - this.xi) / 3.0;
+        this.min_size = 0.5 * this.bar_size;
+      }
+      else {
+        this.min_size = min(this.bar_size, (this.xf - this.xi) / 9.0);
+      }
+      this.button_up.setLocation(this.xi, this.yi, this.xi + this.bar_size, this.yf);
+      this.button_down.setLocation(this.xf - this.bar_size, this.yi, this.xf, this.yf);
     }
     this.refreshBarButtonSizes();
   }
 
   void refreshBarButtonSizes() {
+    float bar_height = 0;
     if (this.vertical) {
-      float bar_height = this.yf - this.yi - 2 * this.bar_size;
-      float bar_button_size = max(this.min_size, bar_height - this.step_size * (this.maxValue - this.minValue));
-      if (this.maxValue == this.minValue) {
-        this.value_size = 0;
-      }
-      else {
-        this.value_size = (bar_height - bar_button_size) / (this.maxValue - this.minValue);
-      }
+      bar_height = this.yf - this.yi - 2 * this.bar_size;
     }
     else {
-      //
+      bar_height = this.xf - this.xi - 2 * this.bar_size;
+    }
+    float bar_button_size = max(this.min_size, bar_height - this.step_size * (this.maxValue - this.minValue));
+    if (this.maxValue == this.minValue) {
+      this.value_size = 0;
+    }
+    else {
+      this.value_size = (bar_height - bar_button_size) / (this.maxValue - this.minValue);
     }
     this.refreshBarButtons();
   }
@@ -659,7 +711,11 @@ class ScrollBar {
       this.button_bar.setLocation(this.xi, cut_one, this.xf, cut_two);
     }
     else {
-      //
+      float cut_one = this.xi + this.bar_size + this.value_size * (this.value - this.minValue);
+      float cut_two = this.xf - this.bar_size - this.value_size * (this.maxValue - this.value);
+      this.button_upspace.setLocation(this.xi + this.bar_size, this.yi, cut_one, this.yf);
+      this.button_downspace.setLocation(cut_two, this.yi, this.xf - this.bar_size, this.yf);
+      this.button_bar.setLocation(cut_one, this.yi, cut_two, this.yf);
     }
   }
 
@@ -694,6 +750,19 @@ class ScrollBar {
       this.value = this.maxValue;
     }
     this.refreshBarButtons();
+  }
+
+  void increaseValue(float amount) {
+    this.updateValue(this.value + amount);
+  }
+  void decreaseValue(float amount) {
+    this.updateValue(this.value - amount);
+  }
+  void increaseValuePercent(float percent) {
+    this.updateValue(this.value + percent * (this.maxValue - this.minValue));
+  }
+  void decreaseValuePercent(float percent) {
+    this.updateValue(this.value - percent * (this.maxValue - this.minValue));
   }
 
   void update(int millis) {
