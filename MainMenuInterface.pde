@@ -213,4 +213,7 @@ class MainMenuInterface extends InterfaceLNZ {
       button.mouseRelease();
     }
   }
+
+  void scroll(int amount) {
+  }
 }

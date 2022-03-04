@@ -77,3 +77,9 @@ void mouseReleased() {
     global.menu.mouseRelease();
   }
 }
+
+void mouseWheel(MouseEvent e) {
+  if (global.menu != null) {
+    global.menu.scroll(e.getCount());
+  }
+}
