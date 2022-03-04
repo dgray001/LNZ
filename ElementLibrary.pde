@@ -436,6 +436,14 @@ abstract class CircleButton extends EllipseButton {
 
 
 
+abstract class RadioButton extends CircleButton {
+  RadioButton(float xc, float yc, float r) {
+    super(xc, yc, r);
+  }
+}
+
+
+
 abstract class TriangleButton extends Button {
   protected float x1;
   protected float y1;
@@ -802,6 +810,12 @@ class ScrollBar {
     }
     this.refreshBarButtonSizes();
   }
+  void increaseMinValue(float amount) {
+    this.updateMinValue(this.minValue + amount);
+  }
+  void decreaseMinValue(float amount) {
+    this.updateMinValue(this.minValue - amount);
+  }
 
   void updateMaxValue(float maxValue) {
     this.maxValue = maxValue;
@@ -812,6 +826,12 @@ class ScrollBar {
       this.value = this.maxValue;
     }
     this.refreshBarButtonSizes();
+  }
+  void increaseMaxValue(float amount) {
+    this.updateMaxValue(this.maxValue + amount);
+  }
+  void decreaseMaxValue(float amount) {
+    this.updateMaxValue(this.maxValue - amount);
   }
 
   void updateValue(float value) {
@@ -878,10 +898,11 @@ class TextBox {
   protected float yi = 0;
   protected float xf = 0;
   protected float yf = 0;
+  protected boolean hovered = false;
 
   protected ScrollBar scrollbar = new ScrollBar(true);
-  protected float scrollbar_max_width = 60;
-  protected float scrollbar_min_width = 30;
+  protected float scrollbar_max_width = 50;
+  protected float scrollbar_min_width = 25;
 
   protected String text_ref = "";
   protected ArrayList<String> text_lines = new ArrayList<String>();
@@ -929,9 +950,9 @@ class TextBox {
 
   void setTitleText(String title) {
     this.text_title_ref = title;
-    float scrollbar_width = min(this.scrollbar_max_width, 0.1 * (xf - xi));
+    float scrollbar_width = min(this.scrollbar_max_width, 0.05 * (xf - xi));
     scrollbar_width = max(this.scrollbar_min_width, scrollbar_width);
-    scrollbar_width = min(0.1 * (xf - xi), scrollbar_width);
+    scrollbar_width = min(0.05 * (xf - xi), scrollbar_width);
     if (title == null) {
       this.text_title = null;
       this.scrollbar.setLocation(xf - scrollbar_width, yi, xf, yf);
@@ -948,13 +969,17 @@ class TextBox {
           break;
         }
       }
-      this.scrollbar.setLocation(xf - scrollbar_width, yi + this.title_size + textAscent() + textDescent(), xf, yf);
+      this.scrollbar.setLocation(xf - scrollbar_width, yi + 1 + textAscent() + textDescent(), xf, yf);
     }
     this.refreshText();
   }
 
   void refreshText() {
     this.setText(this.text_ref);
+  }
+
+  void addText(String text) {
+    this.setText(this.text_ref + text);
   }
 
   void setText(String text) {
@@ -1033,10 +1058,10 @@ class TextBox {
     if (this.text_title_ref != null) {
       fill(this.color_header);
       textSize(this.title_size);
-      rect(this.xi, this.yi, this.xf, this.yi + this.title_size);
+      rect(this.xi, this.yi, this.xf, this.yi + textAscent() + textDescent() + 1);
       fill(this.color_title);
       textAlign(CENTER, TOP);
-      text(this.text_title, currY + textAscent(), this.xi + 0.5 * (this.xf - this.xi));
+      text(this.text_title, this.xi + 0.5 * (this.xf - this.xi), currY);
       currY += textAscent() + textDescent() + 2;
     }
     fill(this.color_text);
@@ -1049,11 +1074,19 @@ class TextBox {
       }
       text(this.text_lines.get(i), this.xi + 2, currY);
     }
-    this.scrollbar.update(millis);
+    if (this.scrollbar.maxValue != this.scrollbar.minValue) {
+      this.scrollbar.update(millis);
+    }
   }
 
   void mouseMove(float mX, float mY) {
     this.scrollbar.mouseMove(mX, mY);
+    if (mX > this.xi && mX < this.xf && mY > this.yi && mY < this.yf) {
+      this.hovered = true;
+    }
+    else {
+      this.hovered = false;
+    }
   }
 
   void mousePress() {
@@ -1065,6 +1098,175 @@ class TextBox {
   }
 
   void scroll(int amount) {
-    this.scrollbar.increaseValue(amount);
+    if (this.hovered) {
+      this.scrollbar.increaseValue(amount);
+    }
+  }
+}
+
+
+
+
+abstract class FormField {
+  FormField() {
+  }
+
+  abstract float getWidth();
+  abstract void setWidth(float new_width);
+  abstract float getHeight();
+}
+
+
+
+abstract class Form {
+  protected float xi = 0;
+  protected float yi = 0;
+  protected float xf = 0;
+  protected float yf = 0;
+  protected boolean hovered = false;
+
+  protected ScrollBar scrollbar = new ScrollBar(0, 0, 0, 0, true);
+  protected float scrollbar_max_width = 60;
+  protected float scrollbar_min_width = 30;
+
+  protected ArrayList<FormField> fields = new ArrayList<FormField>();
+  protected float fieldCushion = 20;
+
+  protected String text_title_ref = null;
+  protected String text_title = null;
+  protected float title_size = 26;
+
+  protected color color_background = color(210);
+  protected color color_header = color(170);
+  protected color color_stroke = color(0);
+  protected color color_title = color(0);
+
+  Form() {
+    this(0, 0, 0, 0);
+  }
+  Form(float xi, float yi, float xf, float yf) {
+    this.setLocation(xi, yi, xf, yf);
+  }
+
+  void setLocation(float xi, float yi, float xf, float yf) {
+    this.xi = xi;
+    this.yi = yi;
+    this.xf = xf;
+    this.yf = yf;
+    this.refreshTitle();
+    for (FormField field : this.fields) {
+      field.setWidth(this.xf - this.xi - 3 - this.scrollbar.bar_size);
+    }
+  }
+
+  void refreshTitle() {
+    this.setTitleText(this.text_title_ref);
+  }
+  void setTitleText(String title) {
+    this.text_title_ref = title;
+    float scrollbar_width = min(this.scrollbar_max_width, 0.08 * (xf - xi));
+    scrollbar_width = max(this.scrollbar_min_width, scrollbar_width);
+    scrollbar_width = min(0.08 * (xf - xi), scrollbar_width);
+    if (title == null) {
+      this.text_title = null;
+      this.scrollbar.setLocation(xf - scrollbar_width, yi, xf, yf);
+    }
+    else {
+      this.text_title = "";
+      textSize(this.title_size);
+      for (int i = 0; i < title.length(); i++) {
+        char nextChar = title.charAt(i);
+        if (textWidth(this.text_title + nextChar) < this.xf - this.xi - 3) {
+          this.text_title += nextChar;
+        }
+        else {
+          break;
+        }
+      }
+      this.scrollbar.setLocation(xf - scrollbar_width, yi + 1 + textAscent() + textDescent(), xf, yf);
+    }
+  }
+
+
+  void addField(FormField field) {
+    field.setWidth(this.xf - this.xi - 3 - this.scrollbar.bar_size);
+    this.fields.add(field);
+    this.refreshScrollbar();
+  }
+
+  void removeField(int index) {
+    if (index < 0 || index >= this.fields.size()) {
+      return;
+    }
+    this.fields.remove(index);
+    this.refreshScrollbar();
+  }
+
+  void refreshScrollbar() {
+    int maxValue = 0;
+    float currY = this.yi + 1;
+    if (this.text_title_ref != null) {
+      textSize(this.title_size);
+      currY += textAscent() + textDescent() + 2;
+    }
+    for (int i = 0; i < this.fields.size(); i++) {
+      currY += this.fields.get(i).getHeight();
+      if (currY + 2 > this.yf) {
+        maxValue++;
+      }
+    }
+    this.scrollbar.updateMaxValue(maxValue);
+  }
+
+
+  void update(int millis) {
+    rectMode(CORNERS);
+    fill(this.color_background);
+    stroke(this.color_stroke);
+    strokeWeight(1);
+    rect(this.xi, this.yi, this.xf, this.yf);
+    float currY = this.yi + 1;
+    if (this.text_title_ref != null) {
+      fill(this.color_header);
+      textSize(this.title_size);
+      rect(this.xi, this.yi, this.xf, this.yi + textAscent() + textDescent() + 1);
+      fill(this.color_title);
+      textAlign(CENTER, TOP);
+      text(this.text_title, this.xi + 0.5 * (this.xf - this.xi), currY);
+      currY += textAscent() + textDescent() + 2;
+    }
+    for (int i = int(floor(this.scrollbar.value)); i < this.fields.size(); i++) {
+      if (currY + this.fields.get(i).getHeight() + 2 > this.yf) {
+        break;
+      }
+      currY += this.fields.get(i).getHeight();
+    }
+    if (this.scrollbar.maxValue != this.scrollbar.minValue) {
+      this.scrollbar.update(millis);
+    }
+  }
+
+  void mouseMove(float mX, float mY) {
+    this.scrollbar.mouseMove(mX, mY);
+    if (mX > this.xi && mX < this.xf && mY > this.yi && mY < this.yf) {
+      this.hovered = true;
+    }
+    else {
+      this.hovered = false;
+    }
+  }
+
+  void mousePress() {
+    this.scrollbar.mousePress();
+  }
+
+  void mouseRelease() {
+    this.scrollbar.mouseRelease();
+  }
+
+  void scroll(int amount) {
+    if (this.hovered) {
+      this.scrollbar.increaseValue(amount);
+    }
   }
 }

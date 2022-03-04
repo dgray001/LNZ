@@ -16,8 +16,6 @@ void setup() {
   global = new Global(this);
   background(global.color_background);
   global.menu = new InitialInterface();
-  deleteFolder("data/maps");
-  //mkdir("data/maps", true);
 }
 
 void draw() {
@@ -33,7 +31,7 @@ void draw() {
   }
   // Program
   if (global.menu != null) {
-    global.menu.update(millis());
+    global.menu.LNZ_update(millis());
   }
   switch(global.state) {
     case INITIAL_INTERFACE:
@@ -57,29 +55,29 @@ void draw() {
 
 void mouseDragged() {
   if (global.menu != null) {
-    global.menu.mouseMove(mouseX, mouseY);
+    global.menu.LNZ_mouseMove(mouseX, mouseY);
   }
 }
 void mouseMoved() {
   if (global.menu != null) {
-    global.menu.mouseMove(mouseX, mouseY);
+    global.menu.LNZ_mouseMove(mouseX, mouseY);
   }
 }
 
 void mousePressed() {
   if (global.menu != null) {
-    global.menu.mousePress();
+    global.menu.LNZ_mousePress();
   }
 }
 
 void mouseReleased() {
   if (global.menu != null) {
-    global.menu.mouseRelease();
+    global.menu.LNZ_mouseRelease();
   }
 }
 
 void mouseWheel(MouseEvent e) {
   if (global.menu != null) {
-    global.menu.scroll(e.getCount());
+    global.menu.LNZ_scroll(e.getCount());
   }
 }

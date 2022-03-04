@@ -40,8 +40,6 @@ Global global;
   global = new Global(this);
   background(global.color_background);
   global.menu = new InitialInterface();
-  deleteFolder("data/maps");
-  //mkdir("data/maps", true);
 }
 
  public void draw() {
@@ -57,7 +55,7 @@ Global global;
   }
   // Program
   if (global.menu != null) {
-    global.menu.update(millis());
+    global.menu.LNZ_update(millis());
   }
   switch(global.state) {
     case INITIAL_INTERFACE:
@@ -81,30 +79,30 @@ Global global;
 
  public void mouseDragged() {
   if (global.menu != null) {
-    global.menu.mouseMove(mouseX, mouseY);
+    global.menu.LNZ_mouseMove(mouseX, mouseY);
   }
 }
  public void mouseMoved() {
   if (global.menu != null) {
-    global.menu.mouseMove(mouseX, mouseY);
+    global.menu.LNZ_mouseMove(mouseX, mouseY);
   }
 }
 
  public void mousePressed() {
   if (global.menu != null) {
-    global.menu.mousePress();
+    global.menu.LNZ_mousePress();
   }
 }
 
  public void mouseReleased() {
   if (global.menu != null) {
-    global.menu.mouseRelease();
+    global.menu.LNZ_mouseRelease();
   }
 }
 
  public void mouseWheel(MouseEvent e) {
   if (global.menu != null) {
-    global.menu.scroll(e.getCount());
+    global.menu.LNZ_scroll(e.getCount());
   }
 }
 static class Constants {
@@ -112,7 +110,7 @@ static class Constants {
   // Program constants
   static final String credits =
   "Liberal Nazi Zombies" +
-  "20220304: v0.6.0u" +
+  "20220304: v0.6.0v" +
   "Created by Daniel Gray" +
   "";
   static final String version_history =
@@ -812,6 +810,14 @@ abstract class CircleButton extends EllipseButton {
 
 
 
+abstract class RadioButton extends CircleButton {
+  RadioButton(float xc, float yc, float r) {
+    super(xc, yc, r);
+  }
+}
+
+
+
 abstract class TriangleButton extends Button {
   protected float x1;
   protected float y1;
@@ -1178,6 +1184,12 @@ class ScrollBar {
     }
     this.refreshBarButtonSizes();
   }
+   public void increaseMinValue(float amount) {
+    this.updateMinValue(this.minValue + amount);
+  }
+   public void decreaseMinValue(float amount) {
+    this.updateMinValue(this.minValue - amount);
+  }
 
    public void updateMaxValue(float maxValue) {
     this.maxValue = maxValue;
@@ -1188,6 +1200,12 @@ class ScrollBar {
       this.value = this.maxValue;
     }
     this.refreshBarButtonSizes();
+  }
+   public void increaseMaxValue(float amount) {
+    this.updateMaxValue(this.maxValue + amount);
+  }
+   public void decreaseMaxValue(float amount) {
+    this.updateMaxValue(this.maxValue - amount);
   }
 
    public void updateValue(float value) {
@@ -1254,10 +1272,11 @@ class TextBox {
   protected float yi = 0;
   protected float xf = 0;
   protected float yf = 0;
+  protected boolean hovered = false;
 
   protected ScrollBar scrollbar = new ScrollBar(true);
-  protected float scrollbar_max_width = 60;
-  protected float scrollbar_min_width = 30;
+  protected float scrollbar_max_width = 50;
+  protected float scrollbar_min_width = 25;
 
   protected String text_ref = "";
   protected ArrayList<String> text_lines = new ArrayList<String>();
@@ -1305,9 +1324,9 @@ class TextBox {
 
    public void setTitleText(String title) {
     this.text_title_ref = title;
-    float scrollbar_width = min(this.scrollbar_max_width, 0.1f * (xf - xi));
+    float scrollbar_width = min(this.scrollbar_max_width, 0.05f * (xf - xi));
     scrollbar_width = max(this.scrollbar_min_width, scrollbar_width);
-    scrollbar_width = min(0.1f * (xf - xi), scrollbar_width);
+    scrollbar_width = min(0.05f * (xf - xi), scrollbar_width);
     if (title == null) {
       this.text_title = null;
       this.scrollbar.setLocation(xf - scrollbar_width, yi, xf, yf);
@@ -1324,13 +1343,17 @@ class TextBox {
           break;
         }
       }
-      this.scrollbar.setLocation(xf - scrollbar_width, yi + this.title_size + textAscent() + textDescent(), xf, yf);
+      this.scrollbar.setLocation(xf - scrollbar_width, yi + 1 + textAscent() + textDescent(), xf, yf);
     }
     this.refreshText();
   }
 
    public void refreshText() {
     this.setText(this.text_ref);
+  }
+
+   public void addText(String text) {
+    this.setText(this.text_ref + text);
   }
 
    public void setText(String text) {
@@ -1409,10 +1432,10 @@ class TextBox {
     if (this.text_title_ref != null) {
       fill(this.color_header);
       textSize(this.title_size);
-      rect(this.xi, this.yi, this.xf, this.yi + this.title_size);
+      rect(this.xi, this.yi, this.xf, this.yi + textAscent() + textDescent() + 1);
       fill(this.color_title);
       textAlign(CENTER, TOP);
-      text(this.text_title, currY + textAscent(), this.xi + 0.5f * (this.xf - this.xi));
+      text(this.text_title, this.xi + 0.5f * (this.xf - this.xi), currY);
       currY += textAscent() + textDescent() + 2;
     }
     fill(this.color_text);
@@ -1425,11 +1448,19 @@ class TextBox {
       }
       text(this.text_lines.get(i), this.xi + 2, currY);
     }
-    this.scrollbar.update(millis);
+    if (this.scrollbar.maxValue != this.scrollbar.minValue) {
+      this.scrollbar.update(millis);
+    }
   }
 
    public void mouseMove(float mX, float mY) {
     this.scrollbar.mouseMove(mX, mY);
+    if (mX > this.xi && mX < this.xf && mY > this.yi && mY < this.yf) {
+      this.hovered = true;
+    }
+    else {
+      this.hovered = false;
+    }
   }
 
    public void mousePress() {
@@ -1441,7 +1472,176 @@ class TextBox {
   }
 
    public void scroll(int amount) {
-    this.scrollbar.increaseValue(amount);
+    if (this.hovered) {
+      this.scrollbar.increaseValue(amount);
+    }
+  }
+}
+
+
+
+
+abstract class FormField {
+  FormField() {
+  }
+
+   public abstract float getWidth();
+   public abstract void setWidth(float new_width);
+   public abstract float getHeight();
+}
+
+
+
+abstract class Form {
+  protected float xi = 0;
+  protected float yi = 0;
+  protected float xf = 0;
+  protected float yf = 0;
+  protected boolean hovered = false;
+
+  protected ScrollBar scrollbar = new ScrollBar(0, 0, 0, 0, true);
+  protected float scrollbar_max_width = 60;
+  protected float scrollbar_min_width = 30;
+
+  protected ArrayList<FormField> fields = new ArrayList<FormField>();
+  protected float fieldCushion = 20;
+
+  protected String text_title_ref = null;
+  protected String text_title = null;
+  protected float title_size = 26;
+
+  protected int color_background = color(210);
+  protected int color_header = color(170);
+  protected int color_stroke = color(0);
+  protected int color_title = color(0);
+
+  Form() {
+    this(0, 0, 0, 0);
+  }
+  Form(float xi, float yi, float xf, float yf) {
+    this.setLocation(xi, yi, xf, yf);
+  }
+
+   public void setLocation(float xi, float yi, float xf, float yf) {
+    this.xi = xi;
+    this.yi = yi;
+    this.xf = xf;
+    this.yf = yf;
+    this.refreshTitle();
+    for (FormField field : this.fields) {
+      field.setWidth(this.xf - this.xi - 3 - this.scrollbar.bar_size);
+    }
+  }
+
+   public void refreshTitle() {
+    this.setTitleText(this.text_title_ref);
+  }
+   public void setTitleText(String title) {
+    this.text_title_ref = title;
+    float scrollbar_width = min(this.scrollbar_max_width, 0.08f * (xf - xi));
+    scrollbar_width = max(this.scrollbar_min_width, scrollbar_width);
+    scrollbar_width = min(0.08f * (xf - xi), scrollbar_width);
+    if (title == null) {
+      this.text_title = null;
+      this.scrollbar.setLocation(xf - scrollbar_width, yi, xf, yf);
+    }
+    else {
+      this.text_title = "";
+      textSize(this.title_size);
+      for (int i = 0; i < title.length(); i++) {
+        char nextChar = title.charAt(i);
+        if (textWidth(this.text_title + nextChar) < this.xf - this.xi - 3) {
+          this.text_title += nextChar;
+        }
+        else {
+          break;
+        }
+      }
+      this.scrollbar.setLocation(xf - scrollbar_width, yi + 1 + textAscent() + textDescent(), xf, yf);
+    }
+  }
+
+
+   public void addField(FormField field) {
+    field.setWidth(this.xf - this.xi - 3 - this.scrollbar.bar_size);
+    this.fields.add(field);
+    this.refreshScrollbar();
+  }
+
+   public void removeField(int index) {
+    if (index < 0 || index >= this.fields.size()) {
+      return;
+    }
+    this.fields.remove(index);
+    this.refreshScrollbar();
+  }
+
+   public void refreshScrollbar() {
+    int maxValue = 0;
+    float currY = this.yi + 1;
+    if (this.text_title_ref != null) {
+      textSize(this.title_size);
+      currY += textAscent() + textDescent() + 2;
+    }
+    for (int i = 0; i < this.fields.size(); i++) {
+      currY += this.fields.get(i).getHeight();
+      if (currY + 2 > this.yf) {
+        maxValue++;
+      }
+    }
+    this.scrollbar.updateMaxValue(maxValue);
+  }
+
+
+   public void update(int millis) {
+    rectMode(CORNERS);
+    fill(this.color_background);
+    stroke(this.color_stroke);
+    strokeWeight(1);
+    rect(this.xi, this.yi, this.xf, this.yf);
+    float currY = this.yi + 1;
+    if (this.text_title_ref != null) {
+      fill(this.color_header);
+      textSize(this.title_size);
+      rect(this.xi, this.yi, this.xf, this.yi + textAscent() + textDescent() + 1);
+      fill(this.color_title);
+      textAlign(CENTER, TOP);
+      text(this.text_title, this.xi + 0.5f * (this.xf - this.xi), currY);
+      currY += textAscent() + textDescent() + 2;
+    }
+    for (int i = PApplet.parseInt(floor(this.scrollbar.value)); i < this.fields.size(); i++) {
+      if (currY + this.fields.get(i).getHeight() + 2 > this.yf) {
+        break;
+      }
+      currY += this.fields.get(i).getHeight();
+    }
+    if (this.scrollbar.maxValue != this.scrollbar.minValue) {
+      this.scrollbar.update(millis);
+    }
+  }
+
+   public void mouseMove(float mX, float mY) {
+    this.scrollbar.mouseMove(mX, mY);
+    if (mX > this.xi && mX < this.xf && mY > this.yi && mY < this.yf) {
+      this.hovered = true;
+    }
+    else {
+      this.hovered = false;
+    }
+  }
+
+   public void mousePress() {
+    this.scrollbar.mousePress();
+  }
+
+   public void mouseRelease() {
+    this.scrollbar.mouseRelease();
+  }
+
+   public void scroll(int amount) {
+    if (this.hovered) {
+      this.scrollbar.increaseValue(amount);
+    }
   }
 }
 // default to if file does not exist create file
@@ -1662,7 +1862,54 @@ class Images {
   }
 }
 abstract class InterfaceLNZ {
+  protected Form form = null;
+
   InterfaceLNZ() {
+  }
+
+   public void LNZ_update(int millis) {
+    if (this.form == null) {
+      this.update(millis);
+    }
+    else {
+      this.form.update(millis);
+    }
+  }
+
+   public void LNZ_mouseMove(float mX, float mY) {
+    if (this.form == null) {
+      this.mouseMove(mX, mY);
+    }
+    else {
+      this.form.mouseMove(mX, mY);
+    }
+  }
+
+   public void LNZ_mousePress() {
+    if (this.form == null) {
+      this.mousePress();
+    }
+    else {
+      this.form.mousePress();
+    }
+  }
+
+   public void LNZ_mouseRelease() {
+    if (this.form == null) {
+      this.mouseRelease();
+    }
+    else {
+      this.form.mouseRelease();
+    }
+  }
+
+   public void LNZ_scroll(int amount) {
+    if (this.form == null) {
+      this.scroll(amount);
+    }
+    else {
+      this.form.scroll(amount);
+    }
   }
 
    public abstract void update(int millis);
@@ -1796,8 +2043,6 @@ class InitialInterface extends InterfaceLNZ {
   private InitialInterfaceButton[] buttons = new InitialInterfaceButton[5];
   private LogoImageButton logo = new LogoImageButton();
 
-  private TextBox test = new TextBox(10, 10, 280, 360);
-
   InitialInterface() {
     super();
     float buttonHeight = (Constants.initialInterface_size - (this.buttons.length + 1) *
@@ -1807,7 +2052,6 @@ class InitialInterface extends InterfaceLNZ {
     this.buttons[2] = new InitialInterfaceButton3(buttonHeight);
     this.buttons[3] = new InitialInterfaceButton4(buttonHeight);
     this.buttons[4] = new InitialInterfaceButton5(buttonHeight);
-    test.setText("THIS IS SOME TEXT WITH S O M E WO");
   }
 
    public void update(int millis) {
@@ -1815,7 +2059,6 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.update(millis);
     }
-    test.update(millis);
   }
 
    public void mouseMove(float mX, float mY) {
@@ -1823,7 +2066,6 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseMove(mX, mY);
     }
-    test.mouseMove(mX, mY);
   }
 
    public void mousePress() {
@@ -1831,7 +2073,6 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mousePress();
     }
-    test.mousePress();
   }
 
    public void mouseRelease() {
@@ -1839,11 +2080,9 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseRelease();
     }
-    test.mouseRelease();
   }
 
    public void scroll(int amount) {
-    test.scroll(amount);
   }
 }
 
