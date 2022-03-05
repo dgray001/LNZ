@@ -128,7 +128,7 @@ static class Constants {
   // Program constants
   static final String credits =
   "Liberal Nazi Zombies" +
-  "20220305: v0.6.0y" +
+  "20220305: v0.6.0aa" +
   "Created by Daniel Gray" +
   "";
   static final String version_history =
@@ -1501,6 +1501,8 @@ class TextBox {
 
 class InputBox extends RectangleButton {
   protected String text = "";
+  protected String hint_text = "";
+  protected int hint_color = color(80);
   protected boolean typing = false;
   protected String display_text = "";
 
@@ -1518,14 +1520,15 @@ class InputBox extends RectangleButton {
     this.setColors(color(170), color(220), color(220), color(255), color(0));
   }
 
+   public void refreshText() {
+    this.setText(this.text);
+  }
    public void setText(String text) {
     if (text == null) {
       text = "";
     }
     this.text = text;
-    println("1: " + this.location_display);
     this.updateDisplayText();
-    println("2: " + this.location_display + "\n");
     if (this.location_cursor > this.text.length()) {
       this.location_cursor = this.text.length();
     }
@@ -1533,6 +1536,11 @@ class InputBox extends RectangleButton {
       this.location_display = this.location_cursor - this.display_text.length();
       this.updateDisplayText();
     }
+  }
+
+   public void setTextSize(float text_size) {
+    this.text_size = text_size;
+    this.refreshText();
   }
 
   @Override public 
@@ -1569,6 +1577,12 @@ class InputBox extends RectangleButton {
         this.display_text = this.text.charAt(this.location_display) + this.display_text;
       }
     }
+    // if say increased text size
+    else if (this.location_cursor - this.location_display > this.display_text.length()) {
+      int dif = this.location_cursor - this.location_display - this.display_text.length();
+      this.location_display += dif;
+      this.display_text = this.display_text.substring(dif);
+    }
   }
 
    public void resetBlink() {
@@ -1592,10 +1606,17 @@ class InputBox extends RectangleButton {
   @Override public 
   void drawButton() {
     super.drawButton();
-    textSize(this.text_size);
     textAlign(LEFT, TOP);
-    fill(this.color_text);
-    text(this.display_text, this.xi + 2, this.yi + 1);
+    if (this.text.equals("")) {
+      textSize(this.text_size - 2);
+      fill(this.hint_color);
+      text(this.hint_text, this.xi + 2, this.yi + 1);
+    }
+    else {
+      textSize(this.text_size);
+      fill(this.color_text);
+      text(this.display_text, this.xi + 2, this.yi + 1);
+    }
     if (this.typing && this.cursor_blinking) {
       strokeWeight(this.cursor_weight);
       fill(this.color_stroke);
@@ -1702,7 +1723,6 @@ class InputBox extends RectangleButton {
         default:
           this.location_cursor++;
           if (this.location_cursor > this.location_display + this.display_text.length()) {
-            println(this.location_cursor, this.location_display + this.display_text.length());
             this.location_display++;
           }
           this.setText(this.text.substring(0, this.location_cursor - 1) + key +
@@ -1868,20 +1888,26 @@ class TextBoxFormField extends FormField {
 }
 
 
-// Input string
+// String input
 class StringFormField extends FormField {
   protected InputBox input = new InputBox(0, 0, 0, 0);
 
   StringFormField(String message) {
+    this(message, "");
+  }
+  StringFormField(String message, String hint) {
     super(message);
     if (message != null) {
       this.input.setText(message);
+    }
+    if (hint != null) {
+      this.input.hint_text = hint;
     }
     this.setTextSize(20);
   }
 
    public void setTextSize(float text_size) {
-    this.input.text_size = text_size;
+    this.input.setTextSize(text_size);
     textSize(text_size);
     this.input.yf = textAscent() + textDescent() + 2;
   }
@@ -1929,16 +1955,21 @@ class IntegerFormField extends FormField {
   protected InputBox input = new InputBox(0, 0, 0, 0);
 
   IntegerFormField(String message) {
+    this(message, "");
+  }
+  IntegerFormField(String message, String hint) {
     super(message);
     if (message != null) {
       this.input.setText(message);
     }
-    this.input.display_text = message;
+    if (hint != null) {
+      this.input.hint_text = hint;
+    }
     this.setTextSize(20);
   }
 
    public void setTextSize(float text_size) {
-    this.input.text_size = text_size;
+    this.input.setTextSize(text_size);
     textSize(text_size);
     this.input.yf = textAscent() + textDescent() + 2;
   }
@@ -1986,11 +2017,16 @@ class FloatFormField extends FormField {
   protected InputBox input = new InputBox(0, 0, 0, 0);
 
   FloatFormField(String message) {
+    this(message, "");
+  }
+  FloatFormField(String message, String hint) {
     super(message);
     if (message != null) {
       this.input.setText(message);
     }
-    this.input.display_text = message;
+    if (hint != null) {
+      this.input.hint_text = hint;
+    }
     this.setTextSize(20);
   }
 
@@ -2040,38 +2076,64 @@ class FloatFormField extends FormField {
 
 
 class BooleanFormField extends FormField {
+  protected InputBox input = new InputBox(0, 0, 0, 0);
+
   BooleanFormField(String message) {
+    this(message, "");
+  }
+  BooleanFormField(String message, String hint) {
     super(message);
+    if (message != null) {
+      this.input.setText(message);
+    }
+    if (hint != null) {
+      this.input.hint_text = hint;
+    }
+    this.setTextSize(20);
+  }
+
+   public void setTextSize(float text_size) {
+    this.input.text_size = text_size;
+    textSize(text_size);
+    this.input.yf = textAscent() + textDescent() + 2;
   }
 
    public void updateWidthDependencies() {
-    //
+    this.input.setLocation(0, 0, this.field_width, this.getHeight());
   }
    public float getHeight() {
-    return 0;
+    return this.input.yf - this.input.yi;
   }
 
    public String getValue() {
-    return this.message;
+    return this.input.text;
   }
 
    public void update(int millis) {
+    this.input.update(millis);
   }
 
    public void mouseMove(float mX, float mY) {
+    this.input.mouseMove(mX, mY);
   }
 
    public void mousePress() {
+    this.input.mousePress();
   }
 
    public void mouseRelease() {
+    this.input.mouseRelease();
   }
 
    public void scroll(int amount) {
   }
 
-   public void keyPress() {}
-   public void keyRelease() {}
+   public void keyPress() {
+    this.input.keyPress();
+  }
+   public void keyRelease() {
+    this.input.keyRelease();
+  }
 }
 
 
@@ -2727,6 +2789,7 @@ class InitialInterface extends InterfaceLNZ {
     @Override public 
     void release() {
       global.sounds.trigger("interfaces/buttonClick3");
+      InitialInterface.this.form = new InitialInterfaceForm("Uninstall Game", "Just delete it ya dip");
     }
   }
 
@@ -2740,6 +2803,7 @@ class InitialInterface extends InterfaceLNZ {
     @Override public 
     void release() {
       global.sounds.trigger("interfaces/buttonClick3");
+      InitialInterface.this.form = new InitialInterfaceForm("Reset Game", "Why would you want to reinstall a test version?");
     }
   }
 
@@ -2753,7 +2817,7 @@ class InitialInterface extends InterfaceLNZ {
     @Override public 
     void release() {
       global.sounds.trigger("interfaces/buttonClick3");
-      InitialInterface.this.form = new InitialInterfaceForm("Version History", "This is a version history message.");
+      InitialInterface.this.form = new InitialInterfaceForm("Version History", Constants.version_history);
     }
   }
 
@@ -2794,7 +2858,7 @@ class InitialInterface extends InterfaceLNZ {
       super(0.5f * Constants.initialInterface_size - 120, 0.5f * Constants.initialInterface_size - 120,
         0.5f * Constants.initialInterface_size + 120, 0.5f * Constants.initialInterface_size + 120);
       this.setTitleText(title);
-      this.addField(new StringFormField("test"));
+      this.addField(new TextBoxFormField(message, 120));
     }
   }
 
@@ -3094,6 +3158,55 @@ class Sounds {
         println("ERROR: Missing sound " + filePath + ".");
       }
     }
+  }
+}
+// String to primitive casts
+ public boolean isInt(String str) {
+  try {
+    int i = Integer.parseInt(str);
+    return true;
+  } catch(NumberFormatException e) {
+    return false;
+  }
+}
+ public int toInt(String str) {
+  int i = -1;
+  try {
+    i = Integer.parseInt(str);
+  } catch(NumberFormatException e) {}
+  return i;
+}
+
+ public boolean isFloat(String str) {
+  try {
+    float i = Float.parseFloat(str);
+    return true;
+  } catch(NumberFormatException e) {
+    return false;
+  }
+}
+ public float toFloat(String str) {
+  float i = -1;
+  try {
+    i = Float.parseFloat(str);
+  } catch(NumberFormatException e) {}
+  return i;
+}
+
+ public boolean isBoolean(String str) {
+  if (str.equals(Boolean.toString(true)) || str.equals(Boolean.toString(false))) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+ public boolean toBoolean(String str) {
+  if (str.equals(Boolean.toString(true))) {
+    return true;
+  }
+  else {
+    return false;
   }
 }
 
