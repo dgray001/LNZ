@@ -105,12 +105,24 @@ Global global;
     global.menu.LNZ_scroll(e.getCount());
   }
 }
+
+ public void keyPressed() {
+  if (global.menu != null) {
+    global.menu.LNZ_keyPress();
+  }
+}
+
+ public void keyReleased() {
+  if (global.menu != null) {
+    global.menu.LNZ_keyRelease();
+  }
+}
 static class Constants {
 
   // Program constants
   static final String credits =
   "Liberal Nazi Zombies" +
-  "20220305: v0.6.0x" +
+  "20220305: v0.6.0y" +
   "Created by Daniel Gray" +
   "";
   static final String version_history =
@@ -388,7 +400,7 @@ abstract class Button {
   // config
   protected String message = "";
   protected boolean show_message = false;
-  protected int text_size = 14;
+  protected float text_size = 14;
   protected boolean show_stroke = true;
   protected float stroke_weight = 0.5f;
   protected boolean stay_dehovered = false;
@@ -1481,13 +1493,99 @@ class TextBox {
 
 
 
-abstract class InputBox extends RectangleButton {
-  String text = "";
+class InputBox extends RectangleButton {
+  protected String text = "";
+  protected boolean typing = false;
+  protected String display_text = "";
+
+  protected int location_display = 0;
+  protected int location_cursor = 0;
+
+  protected float cursor_weight = 1;
+  protected int cursor_blink_time = 450;
+  protected int cursor_blink_timer = 0;
+  protected boolean cursor_blinking = true;
 
   InputBox(float xi, float yi, float xf, float yf) {
     super(xi, yi, xf, yf);
     this.roundness = 0;
-    this.setColors(color(170), color(200), color(200), color(255), color(0));
+    this.setColors(color(170), color(220), color(220), color(255), color(0));
+  }
+
+   public void setText(String text) {
+    this.text = text;
+  }
+
+   public void resetBlink() {
+    this.cursor_blinking = true;
+    this.cursor_blink_timer = 0;
+  }
+
+  @Override public 
+  int fillColor() {
+    if (this.disabled) {
+      return this.color_disabled;
+    }
+    else if (this.typing) {
+      return this.color_click;
+    }
+    else {
+      return this.color_default;
+    }
+  }
+
+  @Override public 
+  void drawButton() {
+    super.drawButton();
+    textSize(this.text_size);
+    textAlign(LEFT, TOP);
+    fill(this.color_text);
+    text(this.display_text, this.xi + 2, this.yi + 1);
+    if (this.typing && this.cursor_blinking) {
+      strokeWeight(this.cursor_weight);
+      fill(this.color_stroke);
+      float x_cursor = this.xi + 2 + textWidth(this.display_text.substring(
+        0, this.location_cursor));
+      line(x_cursor, this.yi + 2, x_cursor, this.yf - 2);
+    }
+  }
+
+  @Override public 
+  void update(int millis) {
+    int timeElapsed = millis - this.lastUpdateTime;
+    super.update(millis);
+    if (this.typing) {
+      this.cursor_blink_timer += timeElapsed;
+      if (this.cursor_blink_timer > this.cursor_blink_time) {
+        this.cursor_blink_timer -= this.cursor_blink_time;
+        this.cursor_blinking = !this.cursor_blinking;
+      }
+    }
+  }
+
+   public void dehover() {
+  }
+
+   public void hover() {
+  }
+
+  @Override public 
+  void mousePress() {
+    this.typing = false;
+    super.mousePress();
+  }
+   public void click() {
+    this.typing = true;
+    this.resetBlink();
+  }
+
+   public void release() {
+  }
+
+   public void keyPress() {
+  }
+
+   public void keyRelease() {
   }
 }
 
@@ -1518,6 +1616,8 @@ abstract class FormField {
    public abstract void mouseMove(float mX, float mY);
    public abstract void mousePress();
    public abstract void mouseRelease();
+   public abstract void keyPress();
+   public abstract void keyRelease();
    public abstract void scroll(int amount);
 }
 
@@ -1579,14 +1679,11 @@ class MessageFormField extends FormField {
    public void mouseMove(float mX, float mY) {
   }
 
-   public void mousePress() {
-  }
-
-   public void mouseRelease() {
-  }
-
-   public void scroll(int amount) {
-  }
+   public void mousePress() {}
+   public void mouseRelease() {}
+   public void scroll(int amount) {}
+   public void keyPress() {}
+   public void keyRelease() {}
 }
 
 
@@ -1633,104 +1730,180 @@ class TextBoxFormField extends FormField {
    public void scroll(int amount) {
     this.textbox.scroll(amount);
   }
+
+   public void keyPress() {}
+   public void keyRelease() {}
 }
 
 
+// Input string
 class StringFormField extends FormField {
+  protected InputBox input = new InputBox(0, 0, 0, 0);
+
   StringFormField(String message) {
     super(message);
+    if (message != null) {
+      this.input.setText(message);
+    }
+    this.input.display_text = message;
+    this.setTextSize(20);
+  }
+
+   public void setTextSize(float text_size) {
+    this.input.text_size = text_size;
+    textSize(text_size);
+    this.input.yf = textAscent() + textDescent() + 2;
   }
 
    public void updateWidthDependencies() {
-    //
+    this.input.setLocation(0, 0, this.field_width, this.getHeight());
   }
    public float getHeight() {
-    return 0;
+    return this.input.yf - this.input.yi;
   }
 
    public String getValue() {
-    return this.message;
+    return this.input.text;
   }
 
    public void update(int millis) {
+    this.input.update(millis);
   }
 
    public void mouseMove(float mX, float mY) {
+    this.input.mouseMove(mX, mY);
   }
 
    public void mousePress() {
+    this.input.mousePress();
   }
 
    public void mouseRelease() {
+    this.input.mouseRelease();
   }
 
    public void scroll(int amount) {
+  }
+
+   public void keyPress() {
+    this.input.keyPress();
+  }
+   public void keyRelease() {
+    this.input.keyRelease();
   }
 }
 
 
 class IntegerFormField extends FormField {
+  protected InputBox input = new InputBox(0, 0, 0, 0);
+
   IntegerFormField(String message) {
     super(message);
+    if (message != null) {
+      this.input.setText(message);
+    }
+    this.input.display_text = message;
+    this.setTextSize(20);
+  }
+
+   public void setTextSize(float text_size) {
+    this.input.text_size = text_size;
+    textSize(text_size);
+    this.input.yf = textAscent() + textDescent() + 2;
   }
 
    public void updateWidthDependencies() {
-    //
+    this.input.setLocation(0, 0, this.field_width, this.getHeight());
   }
    public float getHeight() {
-    return 0;
+    return this.input.yf - this.input.yi;
   }
 
    public String getValue() {
-    return this.message;
+    return this.input.text;
   }
 
    public void update(int millis) {
+    this.input.update(millis);
   }
 
    public void mouseMove(float mX, float mY) {
+    this.input.mouseMove(mX, mY);
   }
 
    public void mousePress() {
+    this.input.mousePress();
   }
 
    public void mouseRelease() {
+    this.input.mouseRelease();
   }
 
    public void scroll(int amount) {
+  }
+
+   public void keyPress() {
+    this.input.keyPress();
+  }
+   public void keyRelease() {
+    this.input.keyRelease();
   }
 }
 
 
 class FloatFormField extends FormField {
+  protected InputBox input = new InputBox(0, 0, 0, 0);
+
   FloatFormField(String message) {
     super(message);
+    if (message != null) {
+      this.input.setText(message);
+    }
+    this.input.display_text = message;
+    this.setTextSize(20);
+  }
+
+   public void setTextSize(float text_size) {
+    this.input.text_size = text_size;
+    textSize(text_size);
+    this.input.yf = textAscent() + textDescent() + 2;
   }
 
    public void updateWidthDependencies() {
-    //
+    this.input.setLocation(0, 0, this.field_width, this.getHeight());
   }
    public float getHeight() {
-    return 0;
+    return this.input.yf - this.input.yi;
   }
 
    public String getValue() {
-    return this.message;
+    return this.input.text;
   }
 
    public void update(int millis) {
+    this.input.update(millis);
   }
 
    public void mouseMove(float mX, float mY) {
+    this.input.mouseMove(mX, mY);
   }
 
    public void mousePress() {
+    this.input.mousePress();
   }
 
    public void mouseRelease() {
+    this.input.mouseRelease();
   }
 
    public void scroll(int amount) {
+  }
+
+   public void keyPress() {
+    this.input.keyPress();
+  }
+   public void keyRelease() {
+    this.input.keyRelease();
   }
 }
 
@@ -1765,6 +1938,9 @@ class BooleanFormField extends FormField {
 
    public void scroll(int amount) {
   }
+
+   public void keyPress() {}
+   public void keyRelease() {}
 }
 
 
@@ -1798,6 +1974,9 @@ class RadiosFormField extends FormField {
 
    public void scroll(int amount) {
   }
+
+   public void keyPress() {}
+   public void keyRelease() {}
 }
 
 
@@ -1831,6 +2010,9 @@ class CheckboxFormField extends FormField {
 
    public void scroll(int amount) {
   }
+
+   public void keyPress() {}
+   public void keyRelease() {}
 }
 
 
@@ -1864,6 +2046,9 @@ class SubmitFormField extends FormField {
 
    public void scroll(int amount) {
   }
+
+   public void keyPress() {}
+   public void keyRelease() {}
 }
 
 
@@ -2041,6 +2226,18 @@ abstract class Form {
     }
     for (FormField field : this.fields) {
       field.scroll(amount);
+    }
+  }
+
+   public void keyPress() {
+    for (FormField field : this.fields) {
+      field.keyPress();
+    }
+  }
+
+   public void keyRelease() {
+    for (FormField field : this.fields) {
+      field.keyRelease();
     }
   }
 }
@@ -2312,10 +2509,30 @@ abstract class InterfaceLNZ {
     }
   }
 
+   public void LNZ_keyPress() {
+    if (this.form == null) {
+      this.keyPress();
+    }
+    else {
+      this.form.keyPress();
+    }
+  }
+
+   public void LNZ_keyRelease() {
+    if (this.form == null) {
+      this.keyRelease();
+    }
+    else {
+      this.form.keyRelease();
+    }
+  }
+
    public abstract void update(int millis);
    public abstract void mouseMove(float mX, float mY);
    public abstract void mousePress();
    public abstract void mouseRelease();
+   public abstract void keyPress();
+   public abstract void keyRelease();
    public abstract void scroll(int amount);
 }
 
@@ -2446,6 +2663,7 @@ class InitialInterface extends InterfaceLNZ {
       super(0.5f * Constants.initialInterface_size - 120, 0.5f * Constants.initialInterface_size - 120,
         0.5f * Constants.initialInterface_size + 120, 0.5f * Constants.initialInterface_size + 120);
       this.setTitleText(title);
+      this.addField(new StringFormField("test"));
     }
   }
 
@@ -2491,8 +2709,9 @@ class InitialInterface extends InterfaceLNZ {
     }
   }
 
-   public void scroll(int amount) {
-  }
+   public void scroll(int amount) {}
+   public void keyPress() {}
+   public void keyRelease() {}
 }
 
 class MainMenuInterface extends InterfaceLNZ {
@@ -2710,8 +2929,9 @@ class MainMenuInterface extends InterfaceLNZ {
     }
   }
 
-   public void scroll(int amount) {
-  }
+   public void scroll(int amount) {}
+   public void keyPress() {}
+   public void keyRelease() {}
 }
 
 

@@ -81,3 +81,15 @@ void mouseWheel(MouseEvent e) {
     global.menu.LNZ_scroll(e.getCount());
   }
 }
+
+void keyPressed() {
+  if (global.menu != null) {
+    global.menu.LNZ_keyPress();
+  }
+}
+
+void keyReleased() {
+  if (global.menu != null) {
+    global.menu.LNZ_keyRelease();
+  }
+}
