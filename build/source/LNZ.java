@@ -7,6 +7,7 @@ import processing.opengl.*;
 import java.util.*;
 import java.io.*;
 import java.nio.file.*;
+import java.awt.event.KeyEvent;
 import processing.javafx.*;
 import ddf.minim.*;
 import ddf.minim.ugens.*;
@@ -21,6 +22,7 @@ import java.io.OutputStream;
 import java.io.IOException;
 
 public class LNZ extends PApplet {
+
 
 
 
@@ -109,6 +111,10 @@ Global global;
  public void keyPressed() {
   if (global.menu != null) {
     global.menu.LNZ_keyPress();
+  }
+  // Prevent sketch from exiting on ESC
+  if (key == ESC) {
+    //key = 0;
   }
 }
 
@@ -1513,7 +1519,56 @@ class InputBox extends RectangleButton {
   }
 
    public void setText(String text) {
+    if (text == null) {
+      text = "";
+    }
     this.text = text;
+    println("1: " + this.location_display);
+    this.updateDisplayText();
+    println("2: " + this.location_display + "\n");
+    if (this.location_cursor > this.text.length()) {
+      this.location_cursor = this.text.length();
+    }
+    if (this.location_cursor > this.location_display + this.display_text.length()) {
+      this.location_display = this.location_cursor - this.display_text.length();
+      this.updateDisplayText();
+    }
+  }
+
+  @Override public 
+  void setLocation(float xi, float yi, float xf, float yf) {
+    super.setLocation(xi, yi, xf, yf);
+    this.updateDisplayText();
+  }
+
+  @Override public 
+  void stretchButton(float amount, int direction) {
+    super.stretchButton(amount, direction);
+    this.updateDisplayText();
+  }
+
+   public void updateDisplayText() {
+    if (this.text == null) {
+      this.text = "";
+    }
+    this.display_text = "";
+    textSize(this.text_size);
+    float maxWidth = this.xf - this.xi - 2 - textWidth(' ');
+    boolean decreaseDisplayLocation = true;
+    for (int i = this.location_display; i < this.text.length(); i++ ) {
+      if (textWidth(this.display_text + this.text.charAt(i)) > maxWidth) {
+        decreaseDisplayLocation = false;
+        break;
+      }
+      this.display_text += this.text.charAt(i);
+    }
+    if (decreaseDisplayLocation) {
+      while(this.location_display > 0 && textWidth(this.text.charAt(
+        this.location_display - 1) + this.display_text) <= maxWidth) {
+        this.location_display--;
+        this.display_text = this.text.charAt(this.location_display) + this.display_text;
+      }
+    }
   }
 
    public void resetBlink() {
@@ -1545,7 +1600,7 @@ class InputBox extends RectangleButton {
       strokeWeight(this.cursor_weight);
       fill(this.color_stroke);
       float x_cursor = this.xi + 2 + textWidth(this.display_text.substring(
-        0, this.location_cursor));
+        0, this.location_cursor - this.location_display));
       line(x_cursor, this.yi + 2, x_cursor, this.yf - 2);
     }
   }
@@ -1583,9 +1638,86 @@ class InputBox extends RectangleButton {
   }
 
    public void keyPress() {
+    if (!this.typing) {
+      return;
+    }
+    if (key == CODED) {
+      switch(keyCode) {
+        case LEFT:
+          this.location_cursor--;
+          if (this.location_cursor < 0) {
+            this.location_cursor = 0;
+          }
+          else if (this.location_cursor < this.location_display) {
+            this.location_display--;
+            this.updateDisplayText();
+          }
+          break;
+        case RIGHT:
+          this.location_cursor++;
+          if (this.location_cursor > this.text.length()) {
+            this.location_cursor = this.text.length();
+          }
+          else if (this.location_cursor > this.location_display + this.display_text.length()) {
+            this.location_display++;
+            this.updateDisplayText();
+          }
+          break;
+        case KeyEvent.VK_HOME:
+          this.location_cursor = 0;
+          this.location_display = 0;
+          this.updateDisplayText();
+          break;
+        case KeyEvent.VK_END:
+          this.location_cursor = this.text.length();
+          this.location_display = this.text.length();
+          this.updateDisplayText();
+          break;
+        default:
+          break;
+      }
+    }
+    else {
+      switch(key) {
+        case BACKSPACE:
+          if (this.location_cursor > 0) {
+            this.location_cursor--;
+            if (this.location_cursor < this.location_display) {
+              this.location_display--;
+            }
+            this.setText(this.text.substring(0, this.location_cursor) +
+              this.text.substring(this.location_cursor + 1, this.text.length()));
+          }
+          break;
+        case TAB:
+          break;
+        case ENTER:
+        case RETURN:
+          break;
+        case ESC:
+          this.typing = false;
+          break;
+        case DELETE:
+          break;
+        default:
+          this.location_cursor++;
+          if (this.location_cursor > this.location_display + this.display_text.length()) {
+            println(this.location_cursor, this.location_display + this.display_text.length());
+            this.location_display++;
+          }
+          this.setText(this.text.substring(0, this.location_cursor - 1) + key +
+            this.text.substring(this.location_cursor - 1, this.text.length()));
+          break;
+      }
+    }
+    this.resetBlink();
   }
 
    public void keyRelease() {
+    if (!this.typing) {
+      return;
+    }
+    this.resetBlink();
   }
 }
 
@@ -1745,7 +1877,6 @@ class StringFormField extends FormField {
     if (message != null) {
       this.input.setText(message);
     }
-    this.input.display_text = message;
     this.setTextSize(20);
   }
 

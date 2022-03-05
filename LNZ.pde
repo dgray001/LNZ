@@ -1,6 +1,7 @@
 import java.util.*;
 import java.io.*;
 import java.nio.file.*;
+import java.awt.event.KeyEvent;
 import processing.javafx.*;
 import ddf.minim.*;
 import ddf.minim.ugens.*;
@@ -85,6 +86,10 @@ void mouseWheel(MouseEvent e) {
 void keyPressed() {
   if (global.menu != null) {
     global.menu.LNZ_keyPress();
+  }
+  // Prevent sketch from exiting on ESC
+  if (key == ESC) {
+    //key = 0;
   }
 }
 
