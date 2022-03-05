@@ -47,3 +47,18 @@ boolean toBoolean(String str) {
     return false;
   }
 }
+
+
+// color functions
+color brighten(color c) {
+  return adjust_color_brightness(c, 1.4);
+}
+color darken(color c) {
+  return adjust_color_brightness(c, 0.6);
+}
+color adjust_color_brightness(color c, float factor) {
+  float r = constrain(factor * (c >> 16 & 0xFF), 0, 255);
+  float g = constrain(factor * (c >> 8 & 0xFF), 0, 255);
+  float b = constrain(factor * (c & 0xFF), 0, 255);
+  return color(r, g, b, alpha(c));
+}

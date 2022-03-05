@@ -206,6 +206,7 @@ class InitialInterface extends InterfaceLNZ {
         0.5 * Constants.initialInterface_size + 120, 0.5 * Constants.initialInterface_size + 120);
       this.setTitleText(title);
       this.addField(new TextBoxFormField(message, 120));
+      this.addField(new SubmitFormField("  Ok  "));
     }
   }
 
