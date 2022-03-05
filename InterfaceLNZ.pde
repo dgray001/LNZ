@@ -183,10 +183,6 @@ class InitialInterface extends InterfaceLNZ {
       super(0.5 * Constants.initialInterface_size - 120, 0.5 * Constants.initialInterface_size - 120,
         0.5 * Constants.initialInterface_size + 120, 0.5 * Constants.initialInterface_size + 120);
       this.setTitleText(title);
-      this.addField(new MessageFormField(message));
-      this.addField(new MessageFormField(message));
-      this.addField(new MessageFormField(message));
-      this.addField(new MessageFormField(message));
     }
   }
 
