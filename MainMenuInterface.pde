@@ -214,6 +214,7 @@ class MainMenuInterface extends InterfaceLNZ {
     }
   }
 
-  void scroll(int amount) {
-  }
+  void scroll(int amount) {}
+  void keyPress() {}
+  void keyRelease() {}
 }

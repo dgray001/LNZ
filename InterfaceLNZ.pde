@@ -49,10 +49,30 @@ abstract class InterfaceLNZ {
     }
   }
 
+  void LNZ_keyPress() {
+    if (this.form == null) {
+      this.keyPress();
+    }
+    else {
+      this.form.keyPress();
+    }
+  }
+
+  void LNZ_keyRelease() {
+    if (this.form == null) {
+      this.keyRelease();
+    }
+    else {
+      this.form.keyRelease();
+    }
+  }
+
   abstract void update(int millis);
   abstract void mouseMove(float mX, float mY);
   abstract void mousePress();
   abstract void mouseRelease();
+  abstract void keyPress();
+  abstract void keyRelease();
   abstract void scroll(int amount);
 }
 
@@ -183,6 +203,7 @@ class InitialInterface extends InterfaceLNZ {
       super(0.5 * Constants.initialInterface_size - 120, 0.5 * Constants.initialInterface_size - 120,
         0.5 * Constants.initialInterface_size + 120, 0.5 * Constants.initialInterface_size + 120);
       this.setTitleText(title);
+      this.addField(new StringFormField("test"));
     }
   }
 
@@ -228,6 +249,7 @@ class InitialInterface extends InterfaceLNZ {
     }
   }
 
-  void scroll(int amount) {
-  }
+  void scroll(int amount) {}
+  void keyPress() {}
+  void keyRelease() {}
 }
