@@ -1385,7 +1385,7 @@ class TextBox {
         }
         else if (firstWord) {
           for (int k = 0; k < word.length(); k++) {
-            char nextChar = word.charAt(j);
+            char nextChar = word.charAt(k);
             if (textWidth(currLine + nextChar) < effective_xf) {
               currLine += nextChar;
             }
@@ -1482,12 +1482,335 @@ class TextBox {
 
 
 abstract class FormField {
-  FormField() {
+  protected String message;
+  protected float field_width = 0;
+
+  FormField(String message) {
+    this.message = message;
   }
 
-   public abstract float getWidth();
-   public abstract void setWidth(float new_width);
+   public float getWidth() {
+    return this.field_width;
+  }
+   public void setWidth(float new_width) {
+    this.field_width = new_width;
+    this.updateWidthDependencies();
+  }
+
+   public abstract void updateWidthDependencies();
    public abstract float getHeight();
+   public abstract String getValue();
+
+   public abstract void update(int millis);
+   public abstract void mouseMove(float mX, float mY);
+   public abstract void mousePress();
+   public abstract void mouseRelease();
+   public abstract void scroll(int amount);
+}
+
+
+class MessageFormField extends FormField {
+  protected float default_text_size = 16;
+  protected float text_size = 0;
+
+  MessageFormField(String message) {
+    super(message);
+  }
+
+   public void updateWidthDependencies() {
+    // find text_size
+  }
+
+   public float getHeight() {
+    return this.default_text_size + 2;
+  }
+
+   public String getValue() {
+    return this.message;
+  }
+
+   public void update(int millis) {
+  }
+
+   public void mouseMove(float mX, float mY) {
+  }
+
+   public void mousePress() {
+  }
+
+   public void mouseRelease() {
+  }
+
+   public void scroll(int amount) {
+  }
+}
+
+
+class TextBoxFormField extends FormField {
+  protected TextBox textbox = new TextBox(0, 0, 0, 0);
+
+  TextBoxFormField(String message, float box_height) {
+    super(message);
+    this.textbox.setText(message);
+    this.textbox.setLocation(0, 0, 0, box_height);
+  }
+
+   public void updateWidthDependencies() {
+    //
+  }
+   public float getHeight() {
+    return this.textbox.yf - this.textbox.yi;
+  }
+
+   public String getValue() {
+    return this.message;
+  }
+
+   public void update(int millis) {
+  }
+
+   public void mouseMove(float mX, float mY) {
+  }
+
+   public void mousePress() {
+  }
+
+   public void mouseRelease() {
+  }
+
+   public void scroll(int amount) {
+  }
+}
+
+
+class StringFormField extends FormField {
+  StringFormField(String message) {
+    super(message);
+  }
+
+   public void updateWidthDependencies() {
+    //
+  }
+   public float getHeight() {
+    return 0;
+  }
+
+   public String getValue() {
+    return this.message;
+  }
+
+   public void update(int millis) {
+  }
+
+   public void mouseMove(float mX, float mY) {
+  }
+
+   public void mousePress() {
+  }
+
+   public void mouseRelease() {
+  }
+
+   public void scroll(int amount) {
+  }
+}
+
+
+class IntegerFormField extends FormField {
+  IntegerFormField(String message) {
+    super(message);
+  }
+
+   public void updateWidthDependencies() {
+    //
+  }
+   public float getHeight() {
+    return 0;
+  }
+
+   public String getValue() {
+    return this.message;
+  }
+
+   public void update(int millis) {
+  }
+
+   public void mouseMove(float mX, float mY) {
+  }
+
+   public void mousePress() {
+  }
+
+   public void mouseRelease() {
+  }
+
+   public void scroll(int amount) {
+  }
+}
+
+
+class FloatFormField extends FormField {
+  FloatFormField(String message) {
+    super(message);
+  }
+
+   public void updateWidthDependencies() {
+    //
+  }
+   public float getHeight() {
+    return 0;
+  }
+
+   public String getValue() {
+    return this.message;
+  }
+
+   public void update(int millis) {
+  }
+
+   public void mouseMove(float mX, float mY) {
+  }
+
+   public void mousePress() {
+  }
+
+   public void mouseRelease() {
+  }
+
+   public void scroll(int amount) {
+  }
+}
+
+
+class BooleanFormField extends FormField {
+  BooleanFormField(String message) {
+    super(message);
+  }
+
+   public void updateWidthDependencies() {
+    //
+  }
+   public float getHeight() {
+    return 0;
+  }
+
+   public String getValue() {
+    return this.message;
+  }
+
+   public void update(int millis) {
+  }
+
+   public void mouseMove(float mX, float mY) {
+  }
+
+   public void mousePress() {
+  }
+
+   public void mouseRelease() {
+  }
+
+   public void scroll(int amount) {
+  }
+}
+
+
+class RadiosFormField extends FormField {
+  RadiosFormField(String message) {
+    super(message);
+  }
+
+   public void updateWidthDependencies() {
+    //
+  }
+   public float getHeight() {
+    return 0;
+  }
+
+   public String getValue() {
+    return this.message;
+  }
+
+   public void update(int millis) {
+  }
+
+   public void mouseMove(float mX, float mY) {
+  }
+
+   public void mousePress() {
+  }
+
+   public void mouseRelease() {
+  }
+
+   public void scroll(int amount) {
+  }
+}
+
+
+class CheckboxFormField extends FormField {
+  CheckboxFormField(String message) {
+    super(message);
+  }
+
+   public void updateWidthDependencies() {
+    //
+  }
+   public float getHeight() {
+    return 0;
+  }
+
+   public String getValue() {
+    return this.message;
+  }
+
+   public void update(int millis) {
+  }
+
+   public void mouseMove(float mX, float mY) {
+  }
+
+   public void mousePress() {
+  }
+
+   public void mouseRelease() {
+  }
+
+   public void scroll(int amount) {
+  }
+}
+
+
+class SubmitFormField extends FormField {
+  SubmitFormField(String message) {
+    super(message);
+  }
+
+   public void updateWidthDependencies() {
+    //
+  }
+   public float getHeight() {
+    return 0;
+  }
+
+   public String getValue() {
+    return this.message;
+  }
+
+   public void update(int millis) {
+  }
+
+   public void mouseMove(float mX, float mY) {
+  }
+
+   public void mousePress() {
+  }
+
+   public void mouseRelease() {
+  }
+
+   public void scroll(int amount) {
+  }
 }
 
 
@@ -1505,6 +1828,7 @@ abstract class Form {
 
   protected ArrayList<FormField> fields = new ArrayList<FormField>();
   protected float fieldCushion = 20;
+  protected float yStart = 0;
 
   protected String text_title_ref = null;
   protected String text_title = null;
@@ -1538,12 +1862,13 @@ abstract class Form {
   }
    public void setTitleText(String title) {
     this.text_title_ref = title;
-    float scrollbar_width = min(this.scrollbar_max_width, 0.08f * (xf - xi));
+    float scrollbar_width = min(this.scrollbar_max_width, 0.08f * (this.xf - this.xi));
     scrollbar_width = max(this.scrollbar_min_width, scrollbar_width);
-    scrollbar_width = min(0.08f * (xf - xi), scrollbar_width);
+    scrollbar_width = min(0.08f * (this.xf - this.xi), scrollbar_width);
     if (title == null) {
       this.text_title = null;
-      this.scrollbar.setLocation(xf - scrollbar_width, yi, xf, yf);
+      this.scrollbar.setLocation(this.xf - scrollbar_width, this.yi, this.xf, this.yf);
+      this.yStart = this.yi + 1;
     }
     else {
       this.text_title = "";
@@ -1557,7 +1882,8 @@ abstract class Form {
           break;
         }
       }
-      this.scrollbar.setLocation(xf - scrollbar_width, yi + 1 + textAscent() + textDescent(), xf, yf);
+      this.yStart = this.yi + 2 + textAscent() + textDescent();
+      this.scrollbar.setLocation(xf - scrollbar_width, this.yStart, this.xf, this.yf);
     }
   }
 
@@ -1578,13 +1904,12 @@ abstract class Form {
 
    public void refreshScrollbar() {
     int maxValue = 0;
-    float currY = this.yi + 1;
-    if (this.text_title_ref != null) {
-      textSize(this.title_size);
-      currY += textAscent() + textDescent() + 2;
-    }
+    float currY = this.yStart;
     for (int i = 0; i < this.fields.size(); i++) {
       currY += this.fields.get(i).getHeight();
+      if (i > 0) {
+        currY += this.fieldCushion;
+      }
       if (currY + 2 > this.yf) {
         maxValue++;
       }
@@ -1599,22 +1924,26 @@ abstract class Form {
     stroke(this.color_stroke);
     strokeWeight(1);
     rect(this.xi, this.yi, this.xf, this.yf);
-    float currY = this.yi + 1;
     if (this.text_title_ref != null) {
       fill(this.color_header);
       textSize(this.title_size);
       rect(this.xi, this.yi, this.xf, this.yi + textAscent() + textDescent() + 1);
       fill(this.color_title);
       textAlign(CENTER, TOP);
-      text(this.text_title, this.xi + 0.5f * (this.xf - this.xi), currY);
-      currY += textAscent() + textDescent() + 2;
+      text(this.text_title, this.xi + 0.5f * (this.xf - this.xi), this.yi + 1);
     }
+    float currY = this.yStart;
+    translate(this.xi + 1, 0);
     for (int i = PApplet.parseInt(floor(this.scrollbar.value)); i < this.fields.size(); i++) {
       if (currY + this.fields.get(i).getHeight() + 2 > this.yf) {
         break;
       }
-      currY += this.fields.get(i).getHeight();
+      translate(0, currY);
+      this.fields.get(i).update(millis);
+      translate(0, -currY);
+      currY += this.fields.get(i).getHeight() + this.fieldCushion;
     }
+    translate(-this.xi - 1, 0);
     if (this.scrollbar.maxValue != this.scrollbar.minValue) {
       this.scrollbar.update(millis);
     }
@@ -1624,6 +1953,15 @@ abstract class Form {
     this.scrollbar.mouseMove(mX, mY);
     if (mX > this.xi && mX < this.xf && mY > this.yi && mY < this.yf) {
       this.hovered = true;
+      mX += this.xi + 1;
+      mY += this.yStart;
+      for (int i = PApplet.parseInt(floor(this.scrollbar.value)); i < this.fields.size(); i++) {
+        if (mY + this.fields.get(i).getHeight() + 2 > this.yf) {
+          break;
+        }
+        this.fields.get(i).mouseMove(mX, mY);
+        mY += this.fields.get(i).getHeight() + this.fieldCushion;
+      }
     }
     else {
       this.hovered = false;
@@ -1632,15 +1970,24 @@ abstract class Form {
 
    public void mousePress() {
     this.scrollbar.mousePress();
+    for (FormField field : this.fields) {
+      field.mousePress();
+    }
   }
 
    public void mouseRelease() {
     this.scrollbar.mouseRelease();
+    for (FormField field : this.fields) {
+      field.mouseRelease();
+    }
   }
 
    public void scroll(int amount) {
     if (this.hovered) {
       this.scrollbar.increaseValue(amount);
+    }
+    for (FormField field : this.fields) {
+      field.scroll(amount);
     }
   }
 }
@@ -2005,6 +2352,7 @@ class InitialInterface extends InterfaceLNZ {
     @Override public 
     void release() {
       global.sounds.trigger("interfaces/buttonClick3");
+      InitialInterface.this.form = new InitialInterfaceForm("Version History", "This is a version history message.");
     }
   }
 
@@ -2037,6 +2385,18 @@ class InitialInterface extends InterfaceLNZ {
     }
      public void release() {
       this.color_tint = color(255);
+    }
+  }
+
+  class InitialInterfaceForm extends Form {
+    InitialInterfaceForm(String title, String message) {
+      super(0.5f * Constants.initialInterface_size - 120, 0.5f * Constants.initialInterface_size - 120,
+        0.5f * Constants.initialInterface_size + 120, 0.5f * Constants.initialInterface_size + 120);
+      this.setTitleText(title);
+      this.addField(new MessageFormField(message));
+      this.addField(new MessageFormField(message));
+      this.addField(new MessageFormField(message));
+      this.addField(new MessageFormField(message));
     }
   }
 

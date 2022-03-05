@@ -142,6 +142,7 @@ class InitialInterface extends InterfaceLNZ {
     @Override
     void release() {
       global.sounds.trigger("interfaces/buttonClick3");
+      InitialInterface.this.form = new InitialInterfaceForm("Version History", "This is a version history message.");
     }
   }
 
@@ -174,6 +175,18 @@ class InitialInterface extends InterfaceLNZ {
     }
     void release() {
       this.color_tint = color(255);
+    }
+  }
+
+  class InitialInterfaceForm extends Form {
+    InitialInterfaceForm(String title, String message) {
+      super(0.5 * Constants.initialInterface_size - 120, 0.5 * Constants.initialInterface_size - 120,
+        0.5 * Constants.initialInterface_size + 120, 0.5 * Constants.initialInterface_size + 120);
+      this.setTitleText(title);
+      this.addField(new MessageFormField(message));
+      this.addField(new MessageFormField(message));
+      this.addField(new MessageFormField(message));
+      this.addField(new MessageFormField(message));
     }
   }
 
