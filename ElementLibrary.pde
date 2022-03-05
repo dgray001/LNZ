@@ -1019,31 +1019,31 @@ class TextBox {
               this.text_lines.add(currLine);
               currLine = "" + nextChar;
               firstWord = true;
-              currY += text_height + this.text_leading;
               if (currY + text_height + 1 > this.yf) {
                 lines_above++;
               }
+              currY += text_height + this.text_leading;
             }
           }
           firstWord = false;
         }
         else {
           this.text_lines.add(currLine);
-          currLine = word;
-          firstWord = true;
-          currY += text_height + this.text_leading;
+          currLine = words[j];
+          firstWord = false;
           if (currY + text_height + 1 > this.yf) {
             lines_above++;
           }
+          currY += text_height + this.text_leading;
         }
       }
       this.text_lines.add(currLine);
       currLine = "";
       firstWord = true;
-      currY += text_height + this.text_leading;
       if (currY + text_height + 1 > this.yf) {
         lines_above++;
       }
+      currY += text_height + this.text_leading;
     }
     this.scrollbar.updateMaxValue(lines_above);
   }
@@ -1107,6 +1107,19 @@ class TextBox {
 
 
 
+abstract class InputBox extends RectangleButton {
+  String text = "";
+
+  InputBox(float xi, float yi, float xf, float yf) {
+    super(xi, yi, xf, yf);
+    this.roundness = 0;
+    this.setColors(color(170), color(200), color(200), color(255), color(0));
+  }
+}
+
+
+
+
 abstract class FormField {
   protected String message;
   protected float field_width = 0;
@@ -1135,20 +1148,47 @@ abstract class FormField {
 }
 
 
+// One line message
 class MessageFormField extends FormField {
-  protected float default_text_size = 16;
+  protected String display_message; // can be different if truncated
+  protected float default_text_size = 22;
+  protected float minimum_text_size = 8;
   protected float text_size = 0;
 
   MessageFormField(String message) {
     super(message);
+    this.display_message = message;
   }
 
   void updateWidthDependencies() {
-    // find text_size
+    float max_width = this.field_width - 2;
+    this.text_size = this.default_text_size;
+    textSize(this.text_size);
+    while(textWidth(this.display_message) > max_width) {
+      this.text_size -= 0.2;
+      textSize(this.text_size);
+      if (this.text_size < this.minimum_text_size) {
+        this.text_size = this.minimum_text_size;
+        textSize(this.text_size);
+        String truncated_string = "";
+        for (int i = 0 ; i < this.display_message.length(); i++) {
+          char c = this.display_message.charAt(i);
+          if (textWidth(truncated_string + c) <= max_width) {
+            truncated_string += c;
+          }
+          else {
+            this.display_message = truncated_string;
+            break;
+          }
+        }
+        break;
+      }
+    }
   }
 
   float getHeight() {
-    return this.default_text_size + 2;
+    textSize(this.text_size);
+    return textAscent() + textDescent() + 2;
   }
 
   String getValue() {
@@ -1156,6 +1196,10 @@ class MessageFormField extends FormField {
   }
 
   void update(int millis) {
+    textSize(this.text_size);
+    textAlign(LEFT, TOP);
+    fill(0);
+    text(this.display_message, 1, 1);
   }
 
   void mouseMove(float mX, float mY) {
@@ -1172,6 +1216,7 @@ class MessageFormField extends FormField {
 }
 
 
+// Multi-line message
 class TextBoxFormField extends FormField {
   protected TextBox textbox = new TextBox(0, 0, 0, 0);
 
@@ -1179,10 +1224,13 @@ class TextBoxFormField extends FormField {
     super(message);
     this.textbox.setText(message);
     this.textbox.setLocation(0, 0, 0, box_height);
+    this.textbox.color_background = color(255, 0);
+    this.textbox.color_header = color(255, 0);
+    this.textbox.color_stroke = color(255, 0);
   }
 
   void updateWidthDependencies() {
-    //
+    this.textbox.setLocation(0, 0, this.field_width, this.getHeight());
   }
   float getHeight() {
     return this.textbox.yf - this.textbox.yi;
@@ -1193,18 +1241,23 @@ class TextBoxFormField extends FormField {
   }
 
   void update(int millis) {
+    this.textbox.update(millis);
   }
 
   void mouseMove(float mX, float mY) {
+    this.textbox.mouseMove(mX, mY);
   }
 
   void mousePress() {
+    this.textbox.mousePress();
   }
 
   void mouseRelease() {
+    this.textbox.mouseRelease();
   }
 
   void scroll(int amount) {
+    this.textbox.scroll(amount);
   }
 }
 
@@ -1561,7 +1614,7 @@ abstract class Form {
     float currY = this.yStart;
     translate(this.xi + 1, 0);
     for (int i = int(floor(this.scrollbar.value)); i < this.fields.size(); i++) {
-      if (currY + this.fields.get(i).getHeight() + 2 > this.yf) {
+      if (currY + this.fields.get(i).getHeight() > this.yf) {
         break;
       }
       translate(0, currY);
@@ -1579,14 +1632,14 @@ abstract class Form {
     this.scrollbar.mouseMove(mX, mY);
     if (mX > this.xi && mX < this.xf && mY > this.yi && mY < this.yf) {
       this.hovered = true;
-      mX += this.xi + 1;
-      mY += this.yStart;
+      mX -= this.xi + 1;
+      mY -= this.yStart;
       for (int i = int(floor(this.scrollbar.value)); i < this.fields.size(); i++) {
-        if (mY + this.fields.get(i).getHeight() + 2 > this.yf) {
+        if (mY + this.fields.get(i).getHeight() > this.yf) {
           break;
         }
         this.fields.get(i).mouseMove(mX, mY);
-        mY += this.fields.get(i).getHeight() + this.fieldCushion;
+        mY -= this.fields.get(i).getHeight() + this.fieldCushion;
       }
     }
     else {
