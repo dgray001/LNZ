@@ -1109,6 +1109,8 @@ class TextBox {
 
 class InputBox extends RectangleButton {
   protected String text = "";
+  protected String hint_text = "";
+  protected color hint_color = color(80);
   protected boolean typing = false;
   protected String display_text = "";
 
@@ -1126,6 +1128,9 @@ class InputBox extends RectangleButton {
     this.setColors(color(170), color(220), color(220), color(255), color(0));
   }
 
+  void refreshText() {
+    this.setText(this.text);
+  }
   void setText(String text) {
     if (text == null) {
       text = "";
@@ -1139,6 +1144,11 @@ class InputBox extends RectangleButton {
       this.location_display = this.location_cursor - this.display_text.length();
       this.updateDisplayText();
     }
+  }
+
+  void setTextSize(float text_size) {
+    this.text_size = text_size;
+    this.refreshText();
   }
 
   @Override
@@ -1175,6 +1185,12 @@ class InputBox extends RectangleButton {
         this.display_text = this.text.charAt(this.location_display) + this.display_text;
       }
     }
+    // if say increased text size
+    else if (this.location_cursor - this.location_display > this.display_text.length()) {
+      int dif = this.location_cursor - this.location_display - this.display_text.length();
+      this.location_display += dif;
+      this.display_text = this.display_text.substring(dif);
+    }
   }
 
   void resetBlink() {
@@ -1198,10 +1214,17 @@ class InputBox extends RectangleButton {
   @Override
   void drawButton() {
     super.drawButton();
-    textSize(this.text_size);
     textAlign(LEFT, TOP);
-    fill(this.color_text);
-    text(this.display_text, this.xi + 2, this.yi + 1);
+    if (this.text.equals("")) {
+      textSize(this.text_size - 2);
+      fill(this.hint_color);
+      text(this.hint_text, this.xi + 2, this.yi + 1);
+    }
+    else {
+      textSize(this.text_size);
+      fill(this.color_text);
+      text(this.display_text, this.xi + 2, this.yi + 1);
+    }
     if (this.typing && this.cursor_blinking) {
       strokeWeight(this.cursor_weight);
       fill(this.color_stroke);
@@ -1478,15 +1501,21 @@ class StringFormField extends FormField {
   protected InputBox input = new InputBox(0, 0, 0, 0);
 
   StringFormField(String message) {
+    this(message, "");
+  }
+  StringFormField(String message, String hint) {
     super(message);
     if (message != null) {
       this.input.setText(message);
+    }
+    if (hint != null) {
+      this.input.hint_text = hint;
     }
     this.setTextSize(20);
   }
 
   void setTextSize(float text_size) {
-    this.input.text_size = text_size;
+    this.input.setTextSize(text_size);
     textSize(text_size);
     this.input.yf = textAscent() + textDescent() + 2;
   }
@@ -1534,16 +1563,21 @@ class IntegerFormField extends FormField {
   protected InputBox input = new InputBox(0, 0, 0, 0);
 
   IntegerFormField(String message) {
+    this(message, "");
+  }
+  IntegerFormField(String message, String hint) {
     super(message);
     if (message != null) {
       this.input.setText(message);
     }
-    this.input.display_text = message;
+    if (hint != null) {
+      this.input.hint_text = hint;
+    }
     this.setTextSize(20);
   }
 
   void setTextSize(float text_size) {
-    this.input.text_size = text_size;
+    this.input.setTextSize(text_size);
     textSize(text_size);
     this.input.yf = textAscent() + textDescent() + 2;
   }
@@ -1591,11 +1625,16 @@ class FloatFormField extends FormField {
   protected InputBox input = new InputBox(0, 0, 0, 0);
 
   FloatFormField(String message) {
+    this(message, "");
+  }
+  FloatFormField(String message, String hint) {
     super(message);
     if (message != null) {
       this.input.setText(message);
     }
-    this.input.display_text = message;
+    if (hint != null) {
+      this.input.hint_text = hint;
+    }
     this.setTextSize(20);
   }
 
@@ -1645,38 +1684,64 @@ class FloatFormField extends FormField {
 
 
 class BooleanFormField extends FormField {
+  protected InputBox input = new InputBox(0, 0, 0, 0);
+
   BooleanFormField(String message) {
+    this(message, "");
+  }
+  BooleanFormField(String message, String hint) {
     super(message);
+    if (message != null) {
+      this.input.setText(message);
+    }
+    if (hint != null) {
+      this.input.hint_text = hint;
+    }
+    this.setTextSize(20);
+  }
+
+  void setTextSize(float text_size) {
+    this.input.text_size = text_size;
+    textSize(text_size);
+    this.input.yf = textAscent() + textDescent() + 2;
   }
 
   void updateWidthDependencies() {
-    //
+    this.input.setLocation(0, 0, this.field_width, this.getHeight());
   }
   float getHeight() {
-    return 0;
+    return this.input.yf - this.input.yi;
   }
 
   String getValue() {
-    return this.message;
+    return this.input.text;
   }
 
   void update(int millis) {
+    this.input.update(millis);
   }
 
   void mouseMove(float mX, float mY) {
+    this.input.mouseMove(mX, mY);
   }
 
   void mousePress() {
+    this.input.mousePress();
   }
 
   void mouseRelease() {
+    this.input.mouseRelease();
   }
 
   void scroll(int amount) {
   }
 
-  void keyPress() {}
-  void keyRelease() {}
+  void keyPress() {
+    this.input.keyPress();
+  }
+  void keyRelease() {
+    this.input.keyRelease();
+  }
 }
 
 

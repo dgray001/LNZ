@@ -136,6 +136,7 @@ class InitialInterface extends InterfaceLNZ {
     @Override
     void release() {
       global.sounds.trigger("interfaces/buttonClick3");
+      InitialInterface.this.form = new InitialInterfaceForm("Uninstall Game", "Just delete it ya dip");
     }
   }
 
@@ -149,6 +150,7 @@ class InitialInterface extends InterfaceLNZ {
     @Override
     void release() {
       global.sounds.trigger("interfaces/buttonClick3");
+      InitialInterface.this.form = new InitialInterfaceForm("Reset Game", "Why would you want to reinstall a test version?");
     }
   }
 
@@ -162,7 +164,7 @@ class InitialInterface extends InterfaceLNZ {
     @Override
     void release() {
       global.sounds.trigger("interfaces/buttonClick3");
-      InitialInterface.this.form = new InitialInterfaceForm("Version History", "This is a version history message.");
+      InitialInterface.this.form = new InitialInterfaceForm("Version History", Constants.version_history);
     }
   }
 
@@ -203,7 +205,7 @@ class InitialInterface extends InterfaceLNZ {
       super(0.5 * Constants.initialInterface_size - 120, 0.5 * Constants.initialInterface_size - 120,
         0.5 * Constants.initialInterface_size + 120, 0.5 * Constants.initialInterface_size + 120);
       this.setTitleText(title);
-      this.addField(new StringFormField("test"));
+      this.addField(new TextBoxFormField(message, 120));
     }
   }
 
