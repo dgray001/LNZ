@@ -10,6 +10,7 @@ int ccolor(int r, int g, int b) {
 int ccolor(int r, int g, int b, int a) {
   int max = 256;
   return max*max*max*a + max*max*r + max*g + b;
+  //return ((255 - a) << 32) | (r << 16) | (g << 8) | b;
 }
 
 
@@ -45,10 +46,26 @@ class Images {
   }
 
   PImage getTransparentPixel() {
-    PImage img = new PImage(1, 1, RGB);
+    PImage img = new PImage(1, 1, ARGB);
     img.loadPixels();
-    img.pixels[0] = color(255, 1);
+    img.pixels[0] = color(255, 0);
     img.updatePixels();
     return img;
   }
+}
+
+
+
+PImage getCurrImage() {
+  PImage img = createImage(width, height, ARGB);
+  img.loadPixels();
+  loadPixels();
+  for (int i = 0; i < width; i++) {
+    for (int j = 0; j < height; j++) {
+      int index = i + j * height;
+      img.pixels[index] = pixels[index];
+    }
+  }
+  img.updatePixels();
+  return img;
 }

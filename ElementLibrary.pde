@@ -1692,7 +1692,7 @@ class IntegerFormField extends FormField {
     this.input.setLocation(0, 0, this.field_width, this.getHeight());
   }
   float getHeight() {
-    return this.input.yf - this.input.yi;
+    return this.input.button_height();
   }
 
   String getValue() {
@@ -2048,11 +2048,41 @@ class SubmitFormField extends FormField {
 
 
 abstract class Form {
+  class CancelButton extends RectangleButton {
+    CancelButton(float xi, float yi, float xf, float yf) {
+      super(xi, yi, xf, yf);
+      this.roundness = 0;
+      this.setColors(color(170), color(255, 60, 60), color(240, 30, 30), color(180, 0, 0), color(0));
+      this.noStroke();
+    }
+    @Override
+    void drawButton() {
+      super.drawButton();
+      stroke(0);
+      strokeWeight(1.5);
+      float offset = 0.05 * this.button_width();
+      line(this.xi + offset, this.yi + offset, this.xf - offset, this.yf - offset);
+      line(this.xi + offset, this.yf - offset, this.xf - offset, this.yi + offset);
+    }
+    void hover() {
+    }
+    void dehover() {
+    }
+    void click() {
+    }
+    void release() {
+      if (this.hovered) {
+        Form.this.cancelForm();
+      }
+    }
+  }
+
   protected float xi = 0;
   protected float yi = 0;
   protected float xf = 0;
   protected float yf = 0;
   protected boolean hovered = false;
+  protected CancelButton cancel;
 
   protected ScrollBar scrollbar = new ScrollBar(0, 0, 0, 0, true);
   protected float scrollbar_max_width = 60;
@@ -2064,7 +2094,7 @@ abstract class Form {
 
   protected String text_title_ref = null;
   protected String text_title = null;
-  protected float title_size = 26;
+  protected float title_size = 22;
 
   protected color color_background = color(210);
   protected color color_header = color(170);
@@ -2076,6 +2106,15 @@ abstract class Form {
   }
   Form(float xi, float yi, float xf, float yf) {
     this.setLocation(xi, yi, xf, yf);
+  }
+
+  void cancelButton() {
+    textSize(this.title_size);
+    this.cancelButton(textAscent() + textDescent() + 1);
+  }
+  void cancelButton(float size) {
+    this.cancel = new CancelButton(this.xf - size, this.yi + 1, this.xf - 1, this.yi + size);
+    this.refreshTitle();
   }
 
   void setLocation(float xi, float yi, float xf, float yf) {
@@ -2091,6 +2130,16 @@ abstract class Form {
 
   void refreshTitle() {
     this.setTitleText(this.text_title_ref);
+  }
+  void setTitleSize(float title_size) {
+    this.title_size = title_size;
+    this.refreshTitle();
+    if (this.cancel != null) {
+      textSize(this.title_size);
+      if (this.cancel.button_height() > textAscent() + textDescent() + 1) {
+        this.cancelButton();
+      }
+    }
   }
   void setTitleText(String title) {
     this.text_title_ref = title;
@@ -2162,7 +2211,14 @@ abstract class Form {
       rect(this.xi, this.yi, this.xf, this.yi + textAscent() + textDescent() + 1);
       fill(this.color_title);
       textAlign(CENTER, TOP);
-      text(this.text_title, this.xi + 0.5 * (this.xf - this.xi), this.yi + 1);
+      float center = this.xi + 0.5 * (this.xf - this.xi);
+      if (this.cancel != null) {
+        center -= 0.5 * this.cancel.button_width();
+      }
+      text(this.text_title, center, this.yi + 1);
+    }
+    if (this.cancel != null) {
+      this.cancel.update(millis);
     }
     float currY = this.yStart;
     translate(this.xi + 1, 0);
@@ -2189,17 +2245,21 @@ abstract class Form {
 
   void mouseMove(float mX, float mY) {
     this.scrollbar.mouseMove(mX, mY);
+    if (this.cancel != null) {
+      this.cancel.mouseMove(mX, mY);
+    }
     if (mX > this.xi && mX < this.xf && mY > this.yi && mY < this.yf) {
       this.hovered = true;
       mX -= this.xi + 1;
       mY -= this.yStart;
+      float currY = this.yStart;
       for (int i = int(floor(this.scrollbar.value)); i < this.fields.size(); i++) {
-        if (mY + this.fields.get(i).getHeight() > this.yf) {
-          println("ok");
+        if (currY + this.fields.get(i).getHeight() > this.yf) {
           break;
         }
         this.fields.get(i).mouseMove(mX, mY);
         mY -= this.fields.get(i).getHeight() + this.fieldCushion;
+        currY += this.fields.get(i).getHeight() + this.fieldCushion;
       }
     }
     else {
@@ -2209,6 +2269,9 @@ abstract class Form {
 
   void mousePress() {
     this.scrollbar.mousePress();
+    if (this.cancel != null) {
+      this.cancel.mousePress();
+    }
     for (FormField field : this.fields) {
       field.mousePress();
     }
@@ -2216,6 +2279,9 @@ abstract class Form {
 
   void mouseRelease() {
     this.scrollbar.mouseRelease();
+    if (this.cancel != null) {
+      this.cancel.mouseRelease();
+    }
     for (FormField field : this.fields) {
       field.mouseRelease();
     }
