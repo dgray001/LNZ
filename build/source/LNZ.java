@@ -129,7 +129,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220306: v0.6.1k" +
+  "\n20220306: v0.6.1m" +
   "\nLines: 3040 (v0.6.1)" +
   "";
   static final String version_history =
@@ -1460,6 +1460,7 @@ class TextBox {
   protected float xf = 0;
   protected float yf = 0;
   protected boolean hovered = false;
+  protected int lastUpdateTime = 0;
 
   protected ScrollBar scrollbar = new ScrollBar(true);
   protected float scrollbar_max_width = 50;
@@ -1638,6 +1639,7 @@ class TextBox {
     if (this.scrollbar.maxValue != this.scrollbar.minValue) {
       this.scrollbar.update(millis);
     }
+    this.lastUpdateTime = millis;
   }
 
    public void mouseMove(float mX, float mY) {
@@ -1663,6 +1665,169 @@ class TextBox {
       this.scrollbar.increaseValue(amount);
     }
   }
+}
+
+
+abstract class ListTextBox extends TextBox {
+  protected ArrayList<String> text_lines_ref;
+  protected int line_hovered = -1;
+  protected int line_clicked = -1;
+  protected int highlight_color = color(100, 100, 250, 120);
+  protected int doubleclickTimer = 0;
+  protected int doubleclickTime = 400;
+
+  ListTextBox() {
+    this(0, 0, 0, 0);
+  }
+  ListTextBox(float xi, float yi, float xf, float yf) {
+    super(xi, yi, xf, yf);
+  }
+
+  @Override public 
+  void setText(String text) {
+    this.text_ref = text;
+    this.text_lines.clear();
+    this.text_lines_ref = new ArrayList<String>();
+    float currY = this.yi + 1;
+    if (this.text_title_ref != null) {
+      textSize(this.title_size);
+      currY += textAscent() + textDescent() + 2;
+    }
+    textSize(this.text_size);
+    float text_height = textAscent() + textDescent();
+    float effective_xf = this.xf - this.xi - 3 - this.scrollbar.bar_size;
+    int lines_above = 0;
+    String[] lines = split(text, '\n');
+    for (String line : lines) {
+      this.text_lines_ref.add(line);
+      String currLine = "";
+      for (int i = 0; i < line.length(); i++) {
+        char nextChar = line.charAt(i);
+        if (textWidth(currLine + nextChar) < effective_xf) {
+          currLine += nextChar;
+        }
+        else {
+          break;
+        }
+      }
+      this.text_lines.add(currLine);
+      if (currY + text_height + 1 > this.yf) {
+        lines_above++;
+      }
+      currY += text_height + this.text_leading;
+    }
+    this.scrollbar.updateMaxValue(lines_above);
+  }
+
+   public void addLine(String line) {
+    this.addText("\n" + line);
+  }
+
+   public String highlightedLine() {
+    if (this.line_clicked < 0 || this.line_clicked >= this.text_lines_ref.size()) {
+      return null;
+    }
+    return this.text_lines_ref.get(this.line_clicked);
+  }
+
+  @Override public 
+  void update(int millis) {
+    int timeElapsed = millis - this.lastUpdateTime;
+    super.update(millis);
+    if (this.doubleclickTimer > 0) {
+      this.doubleclickTimer -= timeElapsed;
+    }
+    if (this.line_clicked < floor(this.scrollbar.value)) {
+      return;
+    }
+    float currY = this.yi + 1;
+    if (this.text_title_ref != null) {
+      textSize(this.title_size);
+      currY += textAscent() + textDescent() + 2;
+    }
+    textSize(this.text_size);
+    float text_height = textAscent() + textDescent();
+    currY += (this.line_clicked - floor(this.scrollbar.value)) * (text_height + this.text_leading);
+    if (currY + text_height + 1 > this.yf) {
+      return;
+    }
+    rectMode(CORNERS);
+    fill(this.highlight_color);
+    strokeWeight(0.001f);
+    stroke(this.highlight_color);
+    rect(this.xi + 1, currY, this.xf - this.xi - 2 - this.scrollbar.bar_size, currY + text_height);
+  }
+
+  @Override public 
+  void mouseMove(float mX, float mY) {
+    this.scrollbar.mouseMove(mX, mY);
+    if (mX > this.xi && mX < this.xf && mY > this.yi && mY < this.yf) {
+      this.hovered = true;
+      float currY = this.yi + 1;
+      if (this.text_title_ref != null) {
+        textSize(this.title_size);
+        currY += textAscent() + textDescent() + 2;
+      }
+      textSize(this.text_size);
+      float line_height = textAscent() + textDescent() + this.text_leading;
+      int target_line = PApplet.parseInt(floor(this.scrollbar.value) + floor((mY - currY) / line_height));
+      if (target_line < 0 || mX > (this.xf - this.scrollbar.bar_size) || target_line >= this.text_lines_ref.size() ||
+        (currY + (1 + target_line - floor(this.scrollbar.value)) * line_height + 1 > this.yf)) {
+        this.line_hovered = -1;
+      }
+      else {
+        this.line_hovered = target_line;
+      }
+    }
+    else {
+      this.hovered = false;
+      this.line_hovered = -1;
+    }
+  }
+
+  @Override public 
+  void mousePress() {
+    this.scrollbar.mousePress();
+    if (this.line_hovered > -1) {
+      if (this.doubleclickTimer > 0  && this.line_clicked == this.line_hovered) {
+        this.line_clicked = this.line_hovered;
+        this.doubleclick();
+      }
+      else {
+        this.line_clicked = this.line_hovered;
+        this.click();
+      }
+      this.doubleclickTimer = this.doubleclickTime;
+    }
+    else {
+      this.line_clicked = this.line_hovered;
+    }
+  }
+
+   public void keyPress() {
+    if (!this.hovered) {
+      return;
+    }
+    if (key == CODED) {
+      switch(keyCode) {
+        case UP:
+          if (this.line_clicked > 0) {
+            this.line_clicked--;
+          }
+          break;
+        case DOWN:
+          if (this.line_clicked < this.text_lines_ref.size() - 1) {
+            this.line_clicked++;
+          }
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+   public abstract void click(); // click on line
+   public abstract void doubleclick(); // doubleclick on line
 }
 
 
@@ -2258,6 +2423,11 @@ class MessageFormField extends FormField {
     this.display_message = message;
   }
 
+   public void setTextSize(float new_text_size) {
+    this.default_text_size = new_text_size;
+    this.updateWidthDependencies();
+  }
+
    public void updateWidthDependencies() {
     float max_width = this.field_width - 2;
     this.text_size = this.default_text_size;
@@ -2556,7 +2726,7 @@ class RadiosFormField extends MessageFormField {
     textSize(this.text_size - 2);
     for (RadioButton radio : this.radios) {
       radio.text_size = this.text_size - 2;
-      float radius = 0.5f * min(textAscent() + textDescent() + 2, abs(this.field_width - textWidth(radio.message)));
+      float radius = 0.5f * min(0.8f * (textAscent() + textDescent() + 2), abs(this.field_width - textWidth(radio.message)));
       float xc = textWidth(radio.message) + radius;
       float yc = currY + 0.5f * (textAscent() + textDescent() + 2);
       radio.setLocation(xc, yc, radius);
@@ -2666,7 +2836,7 @@ class CheckboxFormField extends MessageFormField {
     super.updateWidthDependencies();
     this.field_width = temp_field_width;
     textSize(this.text_size);
-    float checkboxsize = min(this.getHeight(), this.field_width - textWidth(this.message));
+    float checkboxsize = min(0.8f * this.getHeight(), this.field_width - textWidth(this.message));
     float xi = textWidth(this.message);
     float yi = 0.5f * (this.getHeight() - checkboxsize);
     this.checkbox.setLocation(xi, yi, xi + checkboxsize, yi + checkboxsize);
@@ -3034,6 +3204,11 @@ abstract class Form {
       this.yStart = this.yi + 2 + textAscent() + textDescent();
       this.scrollbar.setLocation(xf - scrollbar_width, this.yStart, this.xf, this.yf);
     }
+  }
+
+   public void setFieldCushion(float fieldCushion) {
+    this.fieldCushion = fieldCushion;
+    this.refreshScrollbar();
   }
 
 
@@ -3446,6 +3621,9 @@ class Options {
     }
   }
 
+   public void save() {
+    this.saveOptions();
+  }
    public void saveOptions() {
     PrintWriter file = createWriter(sketchPath("data/options.lnz"));
     file.println("default_profile_name: " + this.default_profile_name);
@@ -3807,6 +3985,19 @@ class InitialInterface extends InterfaceLNZ {
   private InitialInterfaceButton[] buttons = new InitialInterfaceButton[5];
   private LogoImageButton logo = new LogoImageButton();
 
+  class Test extends ListTextBox {
+    Test() {
+      super(5, 5, 200, 390);
+    }
+     public void click() {
+      println("clicked " + this.text_lines_ref.get(this.line_clicked));
+    }
+     public void doubleclick() {
+      println("double-clicked " + this.text_lines_ref.get(this.line_clicked));
+    }
+  }
+  Test test;
+
   InitialInterface() {
     super();
     float buttonHeight = (Constants.initialInterface_size - (this.buttons.length + 1) *
@@ -3816,6 +4007,16 @@ class InitialInterface extends InterfaceLNZ {
     this.buttons[2] = new InitialInterfaceButton3(buttonHeight);
     this.buttons[3] = new InitialInterfaceButton4(buttonHeight);
     this.buttons[4] = new InitialInterfaceButton5(buttonHeight);
+    this.test = new Test();
+    this.test.setText(Constants.version_history);
+    this.test.addLine("new line 1");
+    this.test.addLine("new line 2");
+    this.test.addLine("new line 3");
+    this.test.addLine("new line 4");
+    this.test.addLine("new line 5");
+    this.test.addLine("new line 6");
+    this.test.addLine("new line 7");
+    this.test.addLine("new line 8");
   }
 
    public void update(int millis) {
@@ -3823,6 +4024,7 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.update(millis);
     }
+    test.update(millis);
   }
 
    public void mouseMove(float mX, float mY) {
@@ -3830,6 +4032,7 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseMove(mX, mY);
     }
+    test.mouseMove(mX, mY);
   }
 
    public void mousePress() {
@@ -3837,6 +4040,7 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mousePress();
     }
+    test.mousePress();
   }
 
    public void mouseRelease() {
@@ -3844,10 +4048,15 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseRelease();
     }
+    test.mouseRelease();
   }
 
-   public void scroll(int amount) {}
-   public void keyPress() {}
+   public void scroll(int amount) {
+    test.scroll(amount);
+  }
+   public void keyPress() {
+    test.keyPress();
+  }
    public void keyRelease() {}
 }
 
@@ -4019,16 +4228,24 @@ class MainMenuInterface extends InterfaceLNZ {
         0.5f * (width + Constants.newProfileForm_width), 0.5f * (height + Constants.newProfileForm_height));
       this.setTitleText("New Profile");
       this.setTitleSize(18);
+      this.setFieldCushion(0);
       this.color_background = color(250, 180, 180);
       this.color_header = color(180, 50, 50);
-      this.addField(new SpacerFormField(0));
+
       StringFormField input = new StringFormField("", "Enter profile name");
       input.input.typing = true;
-      this.addField(input);
       MessageFormField error = new MessageFormField("");
       error.text_color = color(150, 20, 20);
-      error.default_text_size = 18;
+      error.setTextSize(18);
+      CheckboxFormField checkbox = new CheckboxFormField("Save as default profile  ");
+      checkbox.setTextSize(16);
+
+      this.addField(new SpacerFormField(20));
+      this.addField(input);
       this.addField(error);
+      this.addField(new SpacerFormField(20));
+      this.addField(checkbox);
+      this.addField(new SpacerFormField(8));
       this.addField(new SubmitFormField("Create New Profile"));
     }
 
@@ -4041,6 +4258,10 @@ class MainMenuInterface extends InterfaceLNZ {
           p.save();
           global.profile = p;
           this.canceled = true;
+          if (this.fields.get(4).getValue().equals("true")) {
+            global.options.default_profile_name = possibleProfileName;
+            global.options.save();
+          }
           break;
         case 1:
           this.fields.get(2).setValue("Enter a profile name.");

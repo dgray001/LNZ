@@ -281,6 +281,19 @@ class InitialInterface extends InterfaceLNZ {
   private InitialInterfaceButton[] buttons = new InitialInterfaceButton[5];
   private LogoImageButton logo = new LogoImageButton();
 
+  class Test extends ListTextBox {
+    Test() {
+      super(5, 5, 200, 390);
+    }
+    void click() {
+      println("clicked " + this.text_lines_ref.get(this.line_clicked));
+    }
+    void doubleclick() {
+      println("double-clicked " + this.text_lines_ref.get(this.line_clicked));
+    }
+  }
+  Test test;
+
   InitialInterface() {
     super();
     float buttonHeight = (Constants.initialInterface_size - (this.buttons.length + 1) *
@@ -290,6 +303,16 @@ class InitialInterface extends InterfaceLNZ {
     this.buttons[2] = new InitialInterfaceButton3(buttonHeight);
     this.buttons[3] = new InitialInterfaceButton4(buttonHeight);
     this.buttons[4] = new InitialInterfaceButton5(buttonHeight);
+    this.test = new Test();
+    this.test.setText(Constants.version_history);
+    this.test.addLine("new line 1");
+    this.test.addLine("new line 2");
+    this.test.addLine("new line 3");
+    this.test.addLine("new line 4");
+    this.test.addLine("new line 5");
+    this.test.addLine("new line 6");
+    this.test.addLine("new line 7");
+    this.test.addLine("new line 8");
   }
 
   void update(int millis) {
@@ -297,6 +320,7 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.update(millis);
     }
+    test.update(millis);
   }
 
   void mouseMove(float mX, float mY) {
@@ -304,6 +328,7 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseMove(mX, mY);
     }
+    test.mouseMove(mX, mY);
   }
 
   void mousePress() {
@@ -311,6 +336,7 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mousePress();
     }
+    test.mousePress();
   }
 
   void mouseRelease() {
@@ -318,9 +344,14 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseRelease();
     }
+    test.mouseRelease();
   }
 
-  void scroll(int amount) {}
-  void keyPress() {}
+  void scroll(int amount) {
+    test.scroll(amount);
+  }
+  void keyPress() {
+    test.keyPress();
+  }
   void keyRelease() {}
 }

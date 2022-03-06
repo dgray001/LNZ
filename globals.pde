@@ -65,6 +65,9 @@ class Options {
     }
   }
 
+  void save() {
+    this.saveOptions();
+  }
   void saveOptions() {
     PrintWriter file = createWriter(sketchPath("data/options.lnz"));
     file.println("default_profile_name: " + this.default_profile_name);
