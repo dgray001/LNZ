@@ -12,9 +12,11 @@ abstract class FormLNZ extends Form {
 
   @Override
   void update(int millis) {
+    rectMode(CORNERS);
+    fill(0);
+    //rect(0, 0, width, height);
     imageMode(CORNER);
     image(this.img, 0, 0);
-    rectMode(CORNERS);
     fill(0, 150);
     stroke(0, 1);
     translate(shadow_distance, shadow_distance);
@@ -30,6 +32,26 @@ abstract class FormLNZ extends Form {
 
 
 abstract class InterfaceLNZ {
+
+  class OptionsForm extends FormLNZ {
+    OptionsForm() {
+      super(Constants.OptionsForm_widthOffset, Constants.OptionsForm_heightOffset,
+        width - Constants.OptionsForm_widthOffset, height - Constants.OptionsForm_heightOffset);
+      this.setTitleText("Options");
+      this.setTitleSize(20);
+      this.color_background = color(250, 250, 180);
+      this.color_header = color(180, 180, 50);
+      this.addField(new SubmitFormField("Save Options"));
+      if (global.profile == null) {
+        this.canceled = true;
+        return;
+      }
+    }
+
+    void submit() {
+    }
+  }
+
   protected FormLNZ form = null;
 
   InterfaceLNZ() {
@@ -157,6 +179,7 @@ class InitialInterface extends InterfaceLNZ {
       background(global.color_background);
       surface.setSize(displayWidth, displayHeight);
       surface.setLocation(0, 0);
+      background(30, 0, 0);
       global.menu = null;
     }
   }

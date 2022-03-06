@@ -1798,6 +1798,7 @@ abstract class FormField {
   abstract void updateWidthDependencies();
   abstract float getHeight();
   abstract String getValue();
+  abstract void setValue(String newValue);
 
   abstract FormFieldSubmit update(int millis);
   abstract void mouseMove(float mX, float mY);
@@ -1829,6 +1830,9 @@ class SpacerFormField extends FormField {
   String getValue() {
     return this.message;
   }
+  void setValue(String newValue) {
+    this.message = newValue;
+  }
 
   FormFieldSubmit update(int millis) {
     return FormFieldSubmit.NONE;
@@ -1849,6 +1853,7 @@ class MessageFormField extends FormField {
   protected float default_text_size = 22;
   protected float minimum_text_size = 8;
   protected float text_size = 0;
+  protected color text_color = color(0);
 
   MessageFormField(String message) {
     super(message);
@@ -1890,11 +1895,15 @@ class MessageFormField extends FormField {
   String getValue() {
     return this.message;
   }
+  void setValue(String newValue) {
+    this.message = newValue;
+    this.updateWidthDependencies();
+  }
 
   FormFieldSubmit update(int millis) {
     textSize(this.text_size);
     textAlign(LEFT, TOP);
-    fill(0);
+    fill(this.text_color);
     text(this.display_message, 1, 1);
     return FormFieldSubmit.NONE;
   }
@@ -1932,7 +1941,10 @@ class TextBoxFormField extends FormField {
   }
 
   String getValue() {
-    return this.message;
+    return this.textbox.text_ref;
+  }
+  void setValue(String newValue) {
+    this.textbox.setText(newValue);
   }
 
   FormFieldSubmit update(int millis) {
@@ -1989,6 +2001,10 @@ class StringFormField extends MessageFormField {
   @Override
   String getValue() {
     return this.input.text;
+  }
+  @Override
+  void setValue(String newValue) {
+    this.input.setText(newValue);
   }
 
   @Override
@@ -2166,6 +2182,13 @@ class RadiosFormField extends MessageFormField {
   String getValue() {
     return Integer.toString(this.index_selected);
   }
+  @Override
+  void setValue(String newValue) {
+    if (isInt(newValue)) {
+      this.index_selected = toInt(newValue);
+      this.uncheckOthers();
+    }
+  }
 
   @Override
   FormFieldSubmit update(int millis) {
@@ -2255,6 +2278,12 @@ class CheckboxFormField extends MessageFormField {
   String getValue() {
     return Boolean.toString(this.checkbox.checked);
   }
+  @Override
+  void setValue(String newValue) {
+    if (isBoolean(newValue)) {
+      this.checkbox.checked = toBoolean(newValue);
+    }
+  }
 
   @Override
   FormFieldSubmit update(int millis) {
@@ -2312,6 +2341,12 @@ class SliderFormField extends MessageFormField {
   @Override
   String getValue() {
     return Float.toString(this.slider.value);
+  }
+  @Override
+  void setValue(String newValue) {
+    if (isFloat(newValue)) {
+      this.slider.setValue(toFloat(newValue));
+    }
   }
 
   @Override
@@ -2402,6 +2437,12 @@ class SubmitFormField extends FormField {
 
   String getValue() {
     return this.message;
+  }
+  @Override
+  void setValue(String newValue) {
+    if (isBoolean(newValue)) {
+      this.submit_button = toBoolean(newValue);
+    }
   }
 
   FormFieldSubmit update(int millis) {

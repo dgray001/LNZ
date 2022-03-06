@@ -62,7 +62,7 @@ PImage getCurrImage() {
   loadPixels();
   for (int i = 0; i < width; i++) {
     for (int j = 0; j < height; j++) {
-      int index = i + j * height;
+      int index = i + j * width;
       img.pixels[index] = pixels[index];
     }
   }

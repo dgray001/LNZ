@@ -126,6 +126,7 @@ class MainMenuInterface extends InterfaceLNZ {
     @Override
     void release() {
       super.release();
+      MainMenuInterface.this.form = new OptionsForm();
     }
   }
 
@@ -169,15 +170,47 @@ class MainMenuInterface extends InterfaceLNZ {
       this.color_background = color(250, 180, 180);
       this.color_header = color(180, 50, 50);
       this.addField(new SpacerFormField(0));
-      this.addField(new StringFormField("", "Enter profile name"));
+      StringFormField input = new StringFormField("", "Enter profile name");
+      input.input.typing = true;
+      this.addField(input);
+      MessageFormField error = new MessageFormField("");
+      error.text_color = color(150, 20, 20);
+      error.default_text_size = 18;
+      this.addField(error);
       this.addField(new SubmitFormField("Create New Profile"));
     }
 
     void submit() {
+      String possibleProfileName = this.fields.get(1).getValue();
+      int errorcode = isValidProfileName(possibleProfileName);
+      switch(errorcode) {
+        case 0:
+          Profile p = new Profile(possibleProfileName);
+          p.save();
+          global.profile = p;
+          this.canceled = true;
+          break;
+        case 1:
+          this.fields.get(2).setValue("Enter a profile name.");
+          break;
+        case 2:
+          this.fields.get(2).setValue("Profile name must start with a letter.");
+          break;
+        case 3:
+          this.fields.get(2).setValue("Profile name must be alphanumeric.");
+          break;
+        case 4:
+          this.fields.get(2).setValue("That profile already exists.");
+          break;
+        default:
+          this.fields.get(2).setValue("An unknown error occured.");
+          break;
+      }
     }
 
     @Override
     void cancel() {
+      this.fields.get(2).setValue("You must create a profile");
     }
   }
 
@@ -225,16 +258,16 @@ class MainMenuInterface extends InterfaceLNZ {
   // returns true if profile loaded
   boolean loadProfile(String profile_name) {
     mkdir("data/profiles", false, true);
-    if (!folderExists("data/profiles/" + profile_name)) {
+    if (!folderExists("data/profiles/" + profile_name.toLowerCase())) {
       println("Profile: No profile folder exists with name " + profile_name + ".");
       return false;
     }
-    if (!fileExists("data/profiles/" + profile_name + "/profile.lnz")) {
+    if (!fileExists("data/profiles/" + profile_name.toLowerCase() + "/profile.lnz")) {
       println("ERROR: Profile file missing for " + profile_name + ".");
       return false;
     }
-    global.profile = readProfile(sketchPath("data/profiles/" + profile_name + "/profile.lnz"));
-    global.profile.save_file_name = profile_name;
+    global.profile = readProfile(sketchPath("data/profiles/" + profile_name.toLowerCase() + "/profile.lnz"));
+    global.profile.display_name = profile_name;
     return true;
   }
 

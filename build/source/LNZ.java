@@ -154,6 +154,8 @@ static class Constants {
   // MainMenu Interface
   static final float newProfileForm_width = 400;
   static final float newProfileForm_height = 500;
+  static final float OptionsForm_widthOffset = 300;
+  static final float OptionsForm_heightOffset = 100;
 }
 class DImg {
 
@@ -2194,6 +2196,7 @@ abstract class FormField {
    public abstract void updateWidthDependencies();
    public abstract float getHeight();
    public abstract String getValue();
+   public abstract void setValue(String newValue);
 
    public abstract FormFieldSubmit update(int millis);
    public abstract void mouseMove(float mX, float mY);
@@ -2225,6 +2228,9 @@ class SpacerFormField extends FormField {
    public String getValue() {
     return this.message;
   }
+   public void setValue(String newValue) {
+    this.message = newValue;
+  }
 
    public FormFieldSubmit update(int millis) {
     return FormFieldSubmit.NONE;
@@ -2245,6 +2251,7 @@ class MessageFormField extends FormField {
   protected float default_text_size = 22;
   protected float minimum_text_size = 8;
   protected float text_size = 0;
+  protected int text_color = color(0);
 
   MessageFormField(String message) {
     super(message);
@@ -2286,11 +2293,15 @@ class MessageFormField extends FormField {
    public String getValue() {
     return this.message;
   }
+   public void setValue(String newValue) {
+    this.message = newValue;
+    this.updateWidthDependencies();
+  }
 
    public FormFieldSubmit update(int millis) {
     textSize(this.text_size);
     textAlign(LEFT, TOP);
-    fill(0);
+    fill(this.text_color);
     text(this.display_message, 1, 1);
     return FormFieldSubmit.NONE;
   }
@@ -2328,7 +2339,10 @@ class TextBoxFormField extends FormField {
   }
 
    public String getValue() {
-    return this.message;
+    return this.textbox.text_ref;
+  }
+   public void setValue(String newValue) {
+    this.textbox.setText(newValue);
   }
 
    public FormFieldSubmit update(int millis) {
@@ -2385,6 +2399,10 @@ class StringFormField extends MessageFormField {
   @Override public 
   String getValue() {
     return this.input.text;
+  }
+  @Override public 
+  void setValue(String newValue) {
+    this.input.setText(newValue);
   }
 
   @Override public 
@@ -2562,6 +2580,13 @@ class RadiosFormField extends MessageFormField {
   String getValue() {
     return Integer.toString(this.index_selected);
   }
+  @Override public 
+  void setValue(String newValue) {
+    if (isInt(newValue)) {
+      this.index_selected = toInt(newValue);
+      this.uncheckOthers();
+    }
+  }
 
   @Override public 
   FormFieldSubmit update(int millis) {
@@ -2651,6 +2676,12 @@ class CheckboxFormField extends MessageFormField {
   String getValue() {
     return Boolean.toString(this.checkbox.checked);
   }
+  @Override public 
+  void setValue(String newValue) {
+    if (isBoolean(newValue)) {
+      this.checkbox.checked = toBoolean(newValue);
+    }
+  }
 
   @Override public 
   FormFieldSubmit update(int millis) {
@@ -2708,6 +2739,12 @@ class SliderFormField extends MessageFormField {
   @Override public 
   String getValue() {
     return Float.toString(this.slider.value);
+  }
+  @Override public 
+  void setValue(String newValue) {
+    if (isFloat(newValue)) {
+      this.slider.setValue(toFloat(newValue));
+    }
   }
 
   @Override public 
@@ -2798,6 +2835,12 @@ class SubmitFormField extends FormField {
 
    public String getValue() {
     return this.message;
+  }
+  @Override public 
+  void setValue(String newValue) {
+    if (isBoolean(newValue)) {
+      this.submit_button = toBoolean(newValue);
+    }
   }
 
    public FormFieldSubmit update(int millis) {
@@ -3474,7 +3517,7 @@ class Images {
   loadPixels();
   for (int i = 0; i < width; i++) {
     for (int j = 0; j < height; j++) {
-      int index = i + j * height;
+      int index = i + j * width;
       img.pixels[index] = pixels[index];
     }
   }
@@ -3495,9 +3538,11 @@ abstract class FormLNZ extends Form {
 
   @Override public 
   void update(int millis) {
+    rectMode(CORNERS);
+    fill(0);
+    //rect(0, 0, width, height);
     imageMode(CORNER);
     image(this.img, 0, 0);
-    rectMode(CORNERS);
     fill(0, 150);
     stroke(0, 1);
     translate(shadow_distance, shadow_distance);
@@ -3513,6 +3558,26 @@ abstract class FormLNZ extends Form {
 
 
 abstract class InterfaceLNZ {
+
+  class OptionsForm extends FormLNZ {
+    OptionsForm() {
+      super(Constants.OptionsForm_widthOffset, Constants.OptionsForm_heightOffset,
+        width - Constants.OptionsForm_widthOffset, height - Constants.OptionsForm_heightOffset);
+      this.setTitleText("Options");
+      this.setTitleSize(20);
+      this.color_background = color(250, 250, 180);
+      this.color_header = color(180, 180, 50);
+      this.addField(new SubmitFormField("Save Options"));
+      if (global.profile == null) {
+        this.canceled = true;
+        return;
+      }
+    }
+
+     public void submit() {
+    }
+  }
+
   protected FormLNZ form = null;
 
   InterfaceLNZ() {
@@ -3640,6 +3705,7 @@ class InitialInterface extends InterfaceLNZ {
       background(global.color_background);
       surface.setSize(displayWidth, displayHeight);
       surface.setLocation(0, 0);
+      background(30, 0, 0);
       global.menu = null;
     }
   }
@@ -3732,8 +3798,6 @@ class InitialInterface extends InterfaceLNZ {
       this.addField(new SpacerFormField(0));
       this.addField(new TextBoxFormField(message, 120));
       this.addField(new SubmitFormField("  Ok  "));
-      this.addField(new SliderFormField("Slider test1", 0, 10, 0.5f));
-      this.addField(new SliderFormField("Slider test2", -5, 10));
     }
      public void submit() {
       this.canceled = true;
@@ -3914,6 +3978,7 @@ class MainMenuInterface extends InterfaceLNZ {
     @Override public 
     void release() {
       super.release();
+      MainMenuInterface.this.form = new OptionsForm();
     }
   }
 
@@ -3957,15 +4022,47 @@ class MainMenuInterface extends InterfaceLNZ {
       this.color_background = color(250, 180, 180);
       this.color_header = color(180, 50, 50);
       this.addField(new SpacerFormField(0));
-      this.addField(new StringFormField("", "Enter profile name"));
+      StringFormField input = new StringFormField("", "Enter profile name");
+      input.input.typing = true;
+      this.addField(input);
+      MessageFormField error = new MessageFormField("");
+      error.text_color = color(150, 20, 20);
+      error.default_text_size = 18;
+      this.addField(error);
       this.addField(new SubmitFormField("Create New Profile"));
     }
 
      public void submit() {
+      String possibleProfileName = this.fields.get(1).getValue();
+      int errorcode = isValidProfileName(possibleProfileName);
+      switch(errorcode) {
+        case 0:
+          Profile p = new Profile(possibleProfileName);
+          p.save();
+          global.profile = p;
+          this.canceled = true;
+          break;
+        case 1:
+          this.fields.get(2).setValue("Enter a profile name.");
+          break;
+        case 2:
+          this.fields.get(2).setValue("Profile name must start with a letter.");
+          break;
+        case 3:
+          this.fields.get(2).setValue("Profile name must be alphanumeric.");
+          break;
+        case 4:
+          this.fields.get(2).setValue("That profile already exists.");
+          break;
+        default:
+          this.fields.get(2).setValue("An unknown error occured.");
+          break;
+      }
     }
 
     @Override public 
     void cancel() {
+      this.fields.get(2).setValue("You must create a profile");
     }
   }
 
@@ -4013,16 +4110,16 @@ class MainMenuInterface extends InterfaceLNZ {
   // returns true if profile loaded
    public boolean loadProfile(String profile_name) {
     mkdir("data/profiles", false, true);
-    if (!folderExists("data/profiles/" + profile_name)) {
+    if (!folderExists("data/profiles/" + profile_name.toLowerCase())) {
       println("Profile: No profile folder exists with name " + profile_name + ".");
       return false;
     }
-    if (!fileExists("data/profiles/" + profile_name + "/profile.lnz")) {
+    if (!fileExists("data/profiles/" + profile_name.toLowerCase() + "/profile.lnz")) {
       println("ERROR: Profile file missing for " + profile_name + ".");
       return false;
     }
-    global.profile = readProfile(sketchPath("data/profiles/" + profile_name + "/profile.lnz"));
-    global.profile.save_file_name = profile_name;
+    global.profile = readProfile(sketchPath("data/profiles/" + profile_name.toLowerCase() + "/profile.lnz"));
+    global.profile.display_name = profile_name;
     return true;
   }
 
@@ -4067,9 +4164,18 @@ class MainMenuInterface extends InterfaceLNZ {
 
 class Profile {
   private String display_name = "";
-  private String save_file_name = "";
 
   Profile() {
+  }
+  Profile(String s) {
+    this.display_name = s;
+  }
+
+   public void save() {
+    PrintWriter file = createWriter(sketchPath("data/profiles/" + this.display_name.toLowerCase() + "/profile.lnz"));
+    file.println("display_name: " + this.display_name);
+    file.flush();
+    file.close();
   }
 }
 
@@ -4095,6 +4201,32 @@ class Profile {
     }
   }
   return p;
+}
+
+
+ public int isValidProfileName(String s) {
+  if (s == null) {
+    return 1;
+  }
+  else if (s.equals("")) {
+    return 1;
+  }
+  for (int i = 0; i < s.length(); i++) {
+    char c = s.charAt(i);
+    if (i == 0 && !Character.isLetter(c)) {
+      return 2;
+    }
+    else if (!Character.isLetterOrDigit(c)) {
+      return 3;
+    }
+  }
+  for (Path p : listEntries(sketchPath("data/profiles/"))) {
+    String filename = p.getFileName().toString().toLowerCase();
+    if (filename.equals(s.toLowerCase())) {
+      return 4;
+    }
+  }
+  return 0;
 }
 class Sounds {
   private Minim minim;

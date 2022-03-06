@@ -1,8 +1,17 @@
 class Profile {
   private String display_name = "";
-  private String save_file_name = "";
 
   Profile() {
+  }
+  Profile(String s) {
+    this.display_name = s;
+  }
+
+  void save() {
+    PrintWriter file = createWriter(sketchPath("data/profiles/" + this.display_name.toLowerCase() + "/profile.lnz"));
+    file.println("display_name: " + this.display_name);
+    file.flush();
+    file.close();
   }
 }
 
@@ -28,4 +37,30 @@ Profile readProfile(String path) {
     }
   }
   return p;
+}
+
+
+int isValidProfileName(String s) {
+  if (s == null) {
+    return 1;
+  }
+  else if (s.equals("")) {
+    return 1;
+  }
+  for (int i = 0; i < s.length(); i++) {
+    char c = s.charAt(i);
+    if (i == 0 && !Character.isLetter(c)) {
+      return 2;
+    }
+    else if (!Character.isLetterOrDigit(c)) {
+      return 3;
+    }
+  }
+  for (Path p : listEntries(sketchPath("data/profiles/"))) {
+    String filename = p.getFileName().toString().toLowerCase();
+    if (filename.equals(s.toLowerCase())) {
+      return 4;
+    }
+  }
+  return 0;
 }
