@@ -57,7 +57,7 @@ class Options {
       }
       switch(data[0]) {
         case "default_profile_name":
-          this.default_profile_name = data[1];
+          this.default_profile_name = trim(data[1]);
           break;
         default:
           break;
@@ -66,5 +66,9 @@ class Options {
   }
 
   void saveOptions() {
+    PrintWriter file = createWriter(sketchPath("data/options.lnz"));
+    file.println("default_profile_name: " + this.default_profile_name);
+    file.flush();
+    file.close();
   }
 }

@@ -162,13 +162,22 @@ class MainMenuInterface extends InterfaceLNZ {
 
   class NewProfileForm extends FormLNZ {
     NewProfileForm() {
-      super(0.5 * (width - Constants.newProfileForm_width), 0.5 * (height - Constants.initialInterface_size),
-        0.5 * (width + Constants.newProfileForm_width), 0.5 * (height + Constants.initialInterface_size));
+      super(0.5 * (width - Constants.newProfileForm_width), 0.5 * (height - Constants.newProfileForm_height),
+        0.5 * (width + Constants.newProfileForm_width), 0.5 * (height + Constants.newProfileForm_height));
       this.setTitleText("New Profile");
       this.setTitleSize(18);
+      this.color_background = color(250, 180, 180);
+      this.color_header = color(180, 50, 50);
+      this.addField(new SpacerFormField(0));
+      this.addField(new StringFormField("", "Enter profile name"));
+      this.addField(new SubmitFormField("Create New Profile"));
     }
 
     void submit() {
+    }
+
+    @Override
+    void cancel() {
     }
   }
 
@@ -217,9 +226,16 @@ class MainMenuInterface extends InterfaceLNZ {
   boolean loadProfile(String profile_name) {
     mkdir("data/profiles", false, true);
     if (!folderExists("data/profiles/" + profile_name)) {
+      println("Profile: No profile folder exists with name " + profile_name + ".");
       return false;
     }
-    return false;
+    if (!fileExists("data/profiles/" + profile_name + "/profile.lnz")) {
+      println("ERROR: Profile file missing for " + profile_name + ".");
+      return false;
+    }
+    global.profile = readProfile(sketchPath("data/profiles/" + profile_name + "/profile.lnz"));
+    global.profile.save_file_name = profile_name;
+    return true;
   }
 
   void update(int millis) {
