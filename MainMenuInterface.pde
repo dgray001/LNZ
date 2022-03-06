@@ -167,16 +167,24 @@ class MainMenuInterface extends InterfaceLNZ {
         0.5 * (width + Constants.newProfileForm_width), 0.5 * (height + Constants.newProfileForm_height));
       this.setTitleText("New Profile");
       this.setTitleSize(18);
+      this.setFieldCushion(0);
       this.color_background = color(250, 180, 180);
       this.color_header = color(180, 50, 50);
-      this.addField(new SpacerFormField(0));
+
       StringFormField input = new StringFormField("", "Enter profile name");
       input.input.typing = true;
-      this.addField(input);
       MessageFormField error = new MessageFormField("");
       error.text_color = color(150, 20, 20);
-      error.default_text_size = 18;
+      error.setTextSize(18);
+      CheckboxFormField checkbox = new CheckboxFormField("Save as default profile  ");
+      checkbox.setTextSize(16);
+
+      this.addField(new SpacerFormField(20));
+      this.addField(input);
       this.addField(error);
+      this.addField(new SpacerFormField(20));
+      this.addField(checkbox);
+      this.addField(new SpacerFormField(8));
       this.addField(new SubmitFormField("Create New Profile"));
     }
 
@@ -189,6 +197,10 @@ class MainMenuInterface extends InterfaceLNZ {
           p.save();
           global.profile = p;
           this.canceled = true;
+          if (this.fields.get(4).getValue().equals("true")) {
+            global.options.default_profile_name = possibleProfileName;
+            global.options.save();
+          }
           break;
         case 1:
           this.fields.get(2).setValue("Enter a profile name.");

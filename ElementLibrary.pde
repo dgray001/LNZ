@@ -1062,6 +1062,7 @@ class TextBox {
   protected float xf = 0;
   protected float yf = 0;
   protected boolean hovered = false;
+  protected int lastUpdateTime = 0;
 
   protected ScrollBar scrollbar = new ScrollBar(true);
   protected float scrollbar_max_width = 50;
@@ -1240,6 +1241,7 @@ class TextBox {
     if (this.scrollbar.maxValue != this.scrollbar.minValue) {
       this.scrollbar.update(millis);
     }
+    this.lastUpdateTime = millis;
   }
 
   void mouseMove(float mX, float mY) {
@@ -1265,6 +1267,169 @@ class TextBox {
       this.scrollbar.increaseValue(amount);
     }
   }
+}
+
+
+abstract class ListTextBox extends TextBox {
+  protected ArrayList<String> text_lines_ref;
+  protected int line_hovered = -1;
+  protected int line_clicked = -1;
+  protected color highlight_color = color(100, 100, 250, 120);
+  protected int doubleclickTimer = 0;
+  protected int doubleclickTime = 400;
+
+  ListTextBox() {
+    this(0, 0, 0, 0);
+  }
+  ListTextBox(float xi, float yi, float xf, float yf) {
+    super(xi, yi, xf, yf);
+  }
+
+  @Override
+  void setText(String text) {
+    this.text_ref = text;
+    this.text_lines.clear();
+    this.text_lines_ref = new ArrayList<String>();
+    float currY = this.yi + 1;
+    if (this.text_title_ref != null) {
+      textSize(this.title_size);
+      currY += textAscent() + textDescent() + 2;
+    }
+    textSize(this.text_size);
+    float text_height = textAscent() + textDescent();
+    float effective_xf = this.xf - this.xi - 3 - this.scrollbar.bar_size;
+    int lines_above = 0;
+    String[] lines = split(text, '\n');
+    for (String line : lines) {
+      this.text_lines_ref.add(line);
+      String currLine = "";
+      for (int i = 0; i < line.length(); i++) {
+        char nextChar = line.charAt(i);
+        if (textWidth(currLine + nextChar) < effective_xf) {
+          currLine += nextChar;
+        }
+        else {
+          break;
+        }
+      }
+      this.text_lines.add(currLine);
+      if (currY + text_height + 1 > this.yf) {
+        lines_above++;
+      }
+      currY += text_height + this.text_leading;
+    }
+    this.scrollbar.updateMaxValue(lines_above);
+  }
+
+  void addLine(String line) {
+    this.addText("\n" + line);
+  }
+
+  String highlightedLine() {
+    if (this.line_clicked < 0 || this.line_clicked >= this.text_lines_ref.size()) {
+      return null;
+    }
+    return this.text_lines_ref.get(this.line_clicked);
+  }
+
+  @Override
+  void update(int millis) {
+    int timeElapsed = millis - this.lastUpdateTime;
+    super.update(millis);
+    if (this.doubleclickTimer > 0) {
+      this.doubleclickTimer -= timeElapsed;
+    }
+    if (this.line_clicked < floor(this.scrollbar.value)) {
+      return;
+    }
+    float currY = this.yi + 1;
+    if (this.text_title_ref != null) {
+      textSize(this.title_size);
+      currY += textAscent() + textDescent() + 2;
+    }
+    textSize(this.text_size);
+    float text_height = textAscent() + textDescent();
+    currY += (this.line_clicked - floor(this.scrollbar.value)) * (text_height + this.text_leading);
+    if (currY + text_height + 1 > this.yf) {
+      return;
+    }
+    rectMode(CORNERS);
+    fill(this.highlight_color);
+    strokeWeight(0.001);
+    stroke(this.highlight_color);
+    rect(this.xi + 1, currY, this.xf - this.xi - 2 - this.scrollbar.bar_size, currY + text_height);
+  }
+
+  @Override
+  void mouseMove(float mX, float mY) {
+    this.scrollbar.mouseMove(mX, mY);
+    if (mX > this.xi && mX < this.xf && mY > this.yi && mY < this.yf) {
+      this.hovered = true;
+      float currY = this.yi + 1;
+      if (this.text_title_ref != null) {
+        textSize(this.title_size);
+        currY += textAscent() + textDescent() + 2;
+      }
+      textSize(this.text_size);
+      float line_height = textAscent() + textDescent() + this.text_leading;
+      int target_line = int(floor(this.scrollbar.value) + floor((mY - currY) / line_height));
+      if (target_line < 0 || mX > (this.xf - this.scrollbar.bar_size) || target_line >= this.text_lines_ref.size() ||
+        (currY + (1 + target_line - floor(this.scrollbar.value)) * line_height + 1 > this.yf)) {
+        this.line_hovered = -1;
+      }
+      else {
+        this.line_hovered = target_line;
+      }
+    }
+    else {
+      this.hovered = false;
+      this.line_hovered = -1;
+    }
+  }
+
+  @Override
+  void mousePress() {
+    this.scrollbar.mousePress();
+    if (this.line_hovered > -1) {
+      if (this.doubleclickTimer > 0  && this.line_clicked == this.line_hovered) {
+        this.line_clicked = this.line_hovered;
+        this.doubleclick();
+      }
+      else {
+        this.line_clicked = this.line_hovered;
+        this.click();
+      }
+      this.doubleclickTimer = this.doubleclickTime;
+    }
+    else {
+      this.line_clicked = this.line_hovered;
+    }
+  }
+
+  void keyPress() {
+    if (!this.hovered) {
+      return;
+    }
+    if (key == CODED) {
+      switch(keyCode) {
+        case UP:
+          if (this.line_clicked > 0) {
+            this.line_clicked--;
+          }
+          break;
+        case DOWN:
+          if (this.line_clicked < this.text_lines_ref.size() - 1) {
+            this.line_clicked++;
+          }
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  abstract void click(); // click on line
+  abstract void doubleclick(); // doubleclick on line
 }
 
 
@@ -1860,6 +2025,11 @@ class MessageFormField extends FormField {
     this.display_message = message;
   }
 
+  void setTextSize(float new_text_size) {
+    this.default_text_size = new_text_size;
+    this.updateWidthDependencies();
+  }
+
   void updateWidthDependencies() {
     float max_width = this.field_width - 2;
     this.text_size = this.default_text_size;
@@ -2158,7 +2328,7 @@ class RadiosFormField extends MessageFormField {
     textSize(this.text_size - 2);
     for (RadioButton radio : this.radios) {
       radio.text_size = this.text_size - 2;
-      float radius = 0.5 * min(textAscent() + textDescent() + 2, abs(this.field_width - textWidth(radio.message)));
+      float radius = 0.5 * min(0.8 * (textAscent() + textDescent() + 2), abs(this.field_width - textWidth(radio.message)));
       float xc = textWidth(radio.message) + radius;
       float yc = currY + 0.5 * (textAscent() + textDescent() + 2);
       radio.setLocation(xc, yc, radius);
@@ -2268,7 +2438,7 @@ class CheckboxFormField extends MessageFormField {
     super.updateWidthDependencies();
     this.field_width = temp_field_width;
     textSize(this.text_size);
-    float checkboxsize = min(this.getHeight(), this.field_width - textWidth(this.message));
+    float checkboxsize = min(0.8 * this.getHeight(), this.field_width - textWidth(this.message));
     float xi = textWidth(this.message);
     float yi = 0.5 * (this.getHeight() - checkboxsize);
     this.checkbox.setLocation(xi, yi, xi + checkboxsize, yi + checkboxsize);
@@ -2636,6 +2806,11 @@ abstract class Form {
       this.yStart = this.yi + 2 + textAscent() + textDescent();
       this.scrollbar.setLocation(xf - scrollbar_width, this.yStart, this.xf, this.yf);
     }
+  }
+
+  void setFieldCushion(float fieldCushion) {
+    this.fieldCushion = fieldCushion;
+    this.refreshScrollbar();
   }
 
 
