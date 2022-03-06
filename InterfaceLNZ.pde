@@ -249,13 +249,9 @@ class InitialInterface extends InterfaceLNZ {
       this.addField(new SpacerFormField(0));
       this.addField(new TextBoxFormField(message, 120));
       this.addField(new SubmitFormField("  Ok  "));
-      this.addField(new CheckboxFormField("test1: "));
-      this.addField(new CheckboxFormField("test2: "));
-      this.addField(new CheckboxFormField("test3fdsafasfds"));
-      this.addField(new CheckboxFormField("test4fdasfasfdsafsafdsafsadfdsafaf"));
     }
     void submit() {
-      //this.canceled = true;
+      this.canceled = true;
     }
   }
 

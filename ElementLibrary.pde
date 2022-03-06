@@ -511,6 +511,13 @@ abstract class EllipseButton extends Button {
     this.writeText();
   }
 
+  void setLocation(float xc, float yc, float xr, float yr) {
+    this.xc = xc;
+    this.yc = yc;
+    this.xr = xr;
+    this.yr = yr;
+  }
+
   void moveButton(float xMove, float yMove) {
     this.xc += xMove;
     this.yc += yMove;
@@ -537,6 +544,10 @@ abstract class CircleButton extends EllipseButton {
   }
   float radius() {
     return this.xr;
+  }
+
+  void setLocation(float xc, float yc, float radius) {
+    super.setLocation(xc, yc, radius, radius);
   }
 }
 
@@ -791,6 +802,11 @@ class ScrollBar {
     void click() {
       ScrollBar.this.decreaseValuePercent(0.1);
     }
+    @Override
+    void release() {
+      super.release();
+      this.hovered = false;
+    }
   }
 
   class ScrollBarDownSpaceButton extends ScrollBarButton {
@@ -800,6 +816,11 @@ class ScrollBar {
     }
     void click() {
       ScrollBar.this.increaseValuePercent(0.1);
+    }
+    @Override
+    void release() {
+      super.release();
+      this.hovered = false;
     }
   }
 
@@ -861,6 +882,18 @@ class ScrollBar {
   ScrollBar(float xi, float yi, float xf, float yf, boolean vertical) {
     this.vertical = vertical;
     this.setLocation(xi, yi, xf, yf);
+  }
+
+  void move(float xMove, float yMove) {
+    this.xi += xMove;
+    this.yi += yMove;
+    this.xf += xMove;
+    this.yf += yMove;
+    this.button_up.moveButton(xMove, yMove);
+    this.button_down.moveButton(xMove, yMove);
+    this.button_upspace.moveButton(xMove, yMove);
+    this.button_downspace.moveButton(xMove, yMove);
+    this.button_bar.moveButton(xMove, yMove);
   }
 
   void setLocation(float xi, float yi, float xf, float yf) {
@@ -1566,6 +1599,7 @@ class MessageFormField extends FormField {
     float max_width = this.field_width - 2;
     this.text_size = this.default_text_size;
     textSize(this.text_size);
+    this.display_message = this.message;
     while(textWidth(this.display_message) > max_width) {
       this.text_size -= 0.2;
       textSize(this.text_size);
@@ -1807,10 +1841,12 @@ class BooleanFormField extends StringFormField {
 }
 
 
+// Array of radio buttons
 class RadiosFormField extends MessageFormField {
-  class FormRadioButton extends RadioButton {
-    FormRadioButton(float xc, float yc, float r) {
-      super(xc, yc, r);
+  class FormFieldRadioButton extends RadioButton {
+    FormFieldRadioButton(String message) {
+      super(0, 0, 0);
+      this.message = message;
     }
     void hover() {
     }
@@ -1821,41 +1857,108 @@ class RadiosFormField extends MessageFormField {
   }
 
   protected ArrayList<RadioButton> radios = new ArrayList<RadioButton>();
+  protected float radio_padding = 6;
+  protected int index_selected = -1;
 
   RadiosFormField(String message) {
     super(message);
   }
 
+  void addRadio() {
+    this.addRadio("");
+  }
+  void addRadio(String message) {
+    this.addRadio(new FormFieldRadioButton(message));
+  }
+  void addRadio(RadioButton radio) {
+    this.radios.add(radio);
+    this.updateWidthDependencies();
+  }
+
+  @Override
   void updateWidthDependencies() {
-    //
+    super.updateWidthDependencies();
+    float currY = super.getHeight() + this.radio_padding;
+    textSize(this.text_size - 2);
+    for (RadioButton radio : this.radios) {
+      radio.text_size = this.text_size - 2;
+      float radius = 0.5 * min(textAscent() + textDescent() + 2, abs(this.field_width - textWidth(radio.message)));
+      float xc = textWidth(radio.message) + radius;
+      float yc = currY + 0.5 * (textAscent() + textDescent() + 2);
+      radio.setLocation(xc, yc, radius);
+      currY += textAscent() + textDescent() + 2 + this.radio_padding;
+    }
   }
 
+  @Override
+  float getHeight() {
+    float field_height = super.getHeight();
+    field_height += this.radios.size() * this.radio_padding;
+    boolean first = true;
+    for (RadioButton radio : this.radios) {
+      textSize(radio.text_size);
+      field_height += textAscent() + textDescent() + 2;
+    }
+    return field_height;
+  }
+
+  @Override
   String getValue() {
-    return this.message;
+    return Integer.toString(this.index_selected);
   }
 
+  @Override
   FormFieldSubmit update(int millis) {
-    return FormFieldSubmit.NONE;
+    FormFieldSubmit returnValue = super.update(millis);
+    for (RadioButton radio : this.radios) {
+      textSize(radio.text_size);
+      textAlign(LEFT, TOP);
+      fill(radio.color_text);
+      text(radio.message, 1, radio.yCenter() - radio.radius() + 1);
+      radio.update(millis);
+    }
+    return returnValue;
   }
 
+  @Override
   void mouseMove(float mX, float mY) {
+    for (RadioButton radio : this.radios) {
+      radio.mouseMove(mX, mY);
+    }
   }
 
+  @Override
   void mousePress() {
+    for (int i = 0; i < this.radios.size(); i++) {
+      RadioButton radio = this.radios.get(i);
+      boolean pressed = radio.checked;
+      radio.mousePress();
+      if (!pressed && radio.checked) {
+        this.index_selected = i;
+        this.uncheckOthers();
+      }
+    }
   }
 
+  void uncheckOthers() {
+    for (int i = 0; i < this.radios.size(); i++) {
+      if (i == this.index_selected) {
+        continue;
+      }
+      this.radios.get(i).checked = false;
+    }
+  }
+
+  @Override
   void mouseRelease() {
+    for (RadioButton radio : this.radios) {
+      radio.mouseRelease();
+    }
   }
-
-  void scroll(int amount) {
-  }
-
-  void keyPress() {}
-  void keyRelease() {}
-  void submit() {}
 }
 
 
+// Single checkbox
 class CheckboxFormField extends MessageFormField {
   class FormFieldCheckBox extends CheckBox {
     FormFieldCheckBox() {
@@ -1875,6 +1978,7 @@ class CheckboxFormField extends MessageFormField {
     super(message);
   }
 
+  @Override
   void updateWidthDependencies() {
     float temp_field_width = this.field_width;
     this.field_width = 0.75 * this.field_width;
@@ -1887,6 +1991,7 @@ class CheckboxFormField extends MessageFormField {
     this.checkbox.setLocation(xi, yi, xi + checkboxsize, yi + checkboxsize);
   }
 
+  @Override
   String getValue() {
     return Boolean.toString(this.checkbox.checked);
   }
@@ -1914,6 +2019,7 @@ class CheckboxFormField extends MessageFormField {
 }
 
 
+// Submit button (submits and cancels)
 class SubmitFormField extends FormField {
   class SubmitButton extends RectangleButton {
     SubmitButton(float xi, float yi, float xf, float yf) {
@@ -2105,12 +2211,13 @@ abstract class Form {
     this.yi += yMove;
     this.xf += xMove;
     this.yf += yMove;
+    this.scrollbar.move(xMove, yMove);
     if (this.cancel != null) {
       this.cancel.moveButton(xMove, yMove);
     }
     this.yStart += yMove;
     if (this.xi >= width || this.xf <= 0 || (this.cancel != null && this.xf <= this.cancel.button_width())
-      || this.yi >= height || this.yf <= 9) {
+      || this.yi >= height || this.yStart <= 0) {
       this.toCenter();
       this.dragging = false;
     }
@@ -2178,7 +2285,6 @@ abstract class Form {
   }
 
   void refreshScrollbar() {
-    int maxValue = 0;
     float currY = this.yStart;
     for (int i = 0; i < this.fields.size(); i++) {
       currY += this.fields.get(i).getHeight();
@@ -2186,10 +2292,11 @@ abstract class Form {
         currY += this.fieldCushion;
       }
       if (currY + 2 > this.yf) {
-        maxValue++;
+        this.scrollbar.updateMaxValue(this.fields.size());
+        return;
       }
     }
-    this.scrollbar.updateMaxValue(maxValue);
+    this.scrollbar.updateMaxValue(0);
   }
 
 
