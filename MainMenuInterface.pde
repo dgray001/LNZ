@@ -122,6 +122,11 @@ class MainMenuInterface extends InterfaceLNZ {
     PImage getIcon() {
       return global.images.getImage("icons/gear.png");
     }
+
+    @Override
+    void release() {
+      super.release();
+    }
   }
 
   class MainMenuGrowButton3 extends MainMenuGrowButton {
@@ -131,6 +136,11 @@ class MainMenuInterface extends InterfaceLNZ {
     }
     PImage getIcon() {
       return global.images.getImage("icons/achievements.png");
+    }
+
+    @Override
+    void release() {
+      super.release();
     }
   }
 
@@ -142,8 +152,25 @@ class MainMenuInterface extends InterfaceLNZ {
     PImage getIcon() {
       return global.images.getImage("icons/map.png");
     }
+
+    @Override
+    void release() {
+      super.release();
+    }
   }
 
+
+  class NewProfileForm extends FormLNZ {
+    NewProfileForm() {
+      super(0.5 * (width - Constants.newProfileForm_width), 0.5 * (height - Constants.initialInterface_size),
+        0.5 * (width + Constants.newProfileForm_width), 0.5 * (height + Constants.initialInterface_size));
+      this.setTitleText("New Profile");
+      this.setTitleSize(18);
+    }
+
+    void submit() {
+    }
+  }
 
 
   class backgroundImageThread extends Thread {
@@ -178,6 +205,21 @@ class MainMenuInterface extends InterfaceLNZ {
     this.growButtons[1] = new MainMenuGrowButton2();
     this.growButtons[2] = new MainMenuGrowButton3();
     this.growButtons[3] = new MainMenuGrowButton4();
+    this.loadProfile();
+  }
+
+  void loadProfile() {
+    if (!this.loadProfile(global.options.default_profile_name)) {
+      this.form = new NewProfileForm();
+    }
+  }
+  // returns true if profile loaded
+  boolean loadProfile(String profile_name) {
+    mkdir("data/profiles", false, true);
+    if (!folderExists("data/profiles/" + profile_name)) {
+      return false;
+    }
+    return false;
   }
 
   void update(int millis) {

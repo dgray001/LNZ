@@ -2,6 +2,7 @@ enum ProgramState {
   INITIAL_INTERFACE, EXITING, ENTERING_MAINMENU, MAINMENU_INTERFACE;
 }
 
+
 class Global {
   // Program
   private InterfaceLNZ menu;
@@ -9,6 +10,7 @@ class Global {
   private int timer_exiting = Constants.exit_delay;
   private Images images;
   private Sounds sounds;
+  private Options options = new Options();
   // FPS
   private int lastFrameTime = millis();
   private float lastFPS = Constants.maxFPS;
@@ -16,6 +18,8 @@ class Global {
   private int timer_FPS = Constants.frameUpdateTime;
   // Colors
   private color color_background = color(180);
+  // Profile
+  private Profile profile;
 
   Global(LNZ thisInstance) {
     this.images = new Images();
@@ -30,5 +34,37 @@ class Global {
 
   void exit() {
     this.state = ProgramState.EXITING;
+  }
+}
+
+
+class Options {
+  private String default_profile_name = "";
+
+  Options() {
+    this.loadOptions();
+  }
+
+  void loadOptions() {
+    String[] lines = loadStrings(sketchPath("data/options.lnz"));
+    if (lines == null) {
+      return;
+    }
+    for (String line : lines) {
+      String[] data = split(line, ':');
+      if (data.length < 2) {
+        continue;
+      }
+      switch(data[0]) {
+        case "default_profile_name":
+          this.default_profile_name = data[1];
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  void saveOptions() {
   }
 }

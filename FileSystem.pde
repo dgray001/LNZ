@@ -3,20 +3,22 @@ void mkFile(String path) {
   mkFile(path, false);
 }
 void mkFile(String path, boolean replace) {
-  Path p = Paths.get(sketchPath(path));
+  mkFile(Paths.get(sketchPath(path)), replace);
+}
+void mkFile(Path p, boolean replace) {
   if (!Files.exists(p)) {
     try {
       Files.createFile(p);
     } catch (IOException e) {
-      println("ERROR: IOException at mkFile(" + path + ")");
+      println("ERROR: IOException at mkFile(" + p + ")");
     }
   }
   else if (replace && !Files.isDirectory(p)) {
-    deleteFile(path);
+    deleteFile(p);
     try {
       Files.createFile(p);
     } catch (IOException e) {
-      println("ERROR: IOException at mkFile(" + path + ")");
+      println("ERROR: IOException at mkFile(" + p + ")");
     }
   }
 }
@@ -87,20 +89,33 @@ void mkdir(String path) {
   mkdir(path, false);
 }
 void mkdir(String path, boolean replace) {
-  Path p = Paths.get(sketchPath(path));
+  mkdir(path, replace, false);
+}
+void mkdir(String path, boolean replace, boolean replace_file) {
+  mkdir(Paths.get(sketchPath(path)), replace, replace_file);
+}
+void mkdir(Path p, boolean replace, boolean replace_file) {
   if (!Files.exists(p)) {
     try {
       Files.createDirectory(p);
     } catch (IOException e) {
-      println("ERROR: IOException at mkdir(" + path + ")");
+      println("ERROR: IOException at mkdir(" + p + ")");
     }
   }
   else if (replace && Files.isDirectory(p)) {
-    deleteFolder(path);
+    deleteFolder(p);
     try {
       Files.createDirectory(p);
     } catch (IOException e) {
-      println("ERROR: IOException at mkdir(" + path + ")");
+      println("ERROR: IOException at mkdir(" + p + ")");
+    }
+  }
+  else if ((replace || replace_file) && !Files.isDirectory(p)) {
+    deleteFile(p);
+    try {
+      Files.createDirectory(p);
+    } catch (IOException e) {
+      println("ERROR: IOException at mkdir(" + p + ")");
     }
   }
 }
@@ -126,4 +141,29 @@ void deleteFolder(Path p) {
   else {
     deleteFile(p);
   }
+}
+
+
+// Entry exists
+boolean entryExists(String path) {
+  return entryExists(Paths.get(sketchPath(path)));
+}
+boolean entryExists(Path p) {
+  return Files.exists(p);
+}
+
+// File exists
+boolean fileExists(String path) {
+  return fileExists(Paths.get(sketchPath(path)));
+}
+boolean fileExists(Path p) {
+  return (Files.exists(p) && !Files.isDirectory(p));
+}
+
+// Folder exists
+boolean folderExists(String path) {
+  return folderExists(Paths.get(sketchPath(path)));
+}
+boolean folderExists(Path p) {
+  return (Files.exists(p) && Files.isDirectory(p));
 }

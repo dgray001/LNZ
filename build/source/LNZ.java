@@ -129,7 +129,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220305: v0.6.1c" +
+  "\n20220305: v0.6.1e" +
   "\nLines: 3040 (v0.6.1)" +
   "";
   static final String version_history =
@@ -151,6 +151,9 @@ static class Constants {
   static final int initialInterface_buttonWidth = 80;
   static final int initialInterface_buttonGap = 25;
 
+  // MainMenu Interface
+  static final float newProfileForm_width = 400;
+  static final float newProfileForm_height = 400;
 }
 class DImg {
 
@@ -2781,20 +2784,22 @@ abstract class Form {
   mkFile(path, false);
 }
  public void mkFile(String path, boolean replace) {
-  Path p = Paths.get(sketchPath(path));
+  mkFile(Paths.get(sketchPath(path)), replace);
+}
+ public void mkFile(Path p, boolean replace) {
   if (!Files.exists(p)) {
     try {
       Files.createFile(p);
     } catch (IOException e) {
-      println("ERROR: IOException at mkFile(" + path + ")");
+      println("ERROR: IOException at mkFile(" + p + ")");
     }
   }
   else if (replace && !Files.isDirectory(p)) {
-    deleteFile(path);
+    deleteFile(p);
     try {
       Files.createFile(p);
     } catch (IOException e) {
-      println("ERROR: IOException at mkFile(" + path + ")");
+      println("ERROR: IOException at mkFile(" + p + ")");
     }
   }
 }
@@ -2865,20 +2870,33 @@ abstract class Form {
   mkdir(path, false);
 }
  public void mkdir(String path, boolean replace) {
-  Path p = Paths.get(sketchPath(path));
+  mkdir(path, replace, false);
+}
+ public void mkdir(String path, boolean replace, boolean replace_file) {
+  mkdir(Paths.get(sketchPath(path)), replace, replace_file);
+}
+ public void mkdir(Path p, boolean replace, boolean replace_file) {
   if (!Files.exists(p)) {
     try {
       Files.createDirectory(p);
     } catch (IOException e) {
-      println("ERROR: IOException at mkdir(" + path + ")");
+      println("ERROR: IOException at mkdir(" + p + ")");
     }
   }
   else if (replace && Files.isDirectory(p)) {
-    deleteFolder(path);
+    deleteFolder(p);
     try {
       Files.createDirectory(p);
     } catch (IOException e) {
-      println("ERROR: IOException at mkdir(" + path + ")");
+      println("ERROR: IOException at mkdir(" + p + ")");
+    }
+  }
+  else if ((replace || replace_file) && !Files.isDirectory(p)) {
+    deleteFile(p);
+    try {
+      Files.createDirectory(p);
+    } catch (IOException e) {
+      println("ERROR: IOException at mkdir(" + p + ")");
     }
   }
 }
@@ -2905,9 +2923,35 @@ abstract class Form {
     deleteFile(p);
   }
 }
+
+
+// Entry exists
+ public boolean entryExists(String path) {
+  return entryExists(Paths.get(sketchPath(path)));
+}
+ public boolean entryExists(Path p) {
+  return Files.exists(p);
+}
+
+// File exists
+ public boolean fileExists(String path) {
+  return fileExists(Paths.get(sketchPath(path)));
+}
+ public boolean fileExists(Path p) {
+  return (Files.exists(p) && !Files.isDirectory(p));
+}
+
+// Folder exists
+ public boolean folderExists(String path) {
+  return folderExists(Paths.get(sketchPath(path)));
+}
+ public boolean folderExists(Path p) {
+  return (Files.exists(p) && Files.isDirectory(p));
+}
 enum ProgramState {
   INITIAL_INTERFACE, EXITING, ENTERING_MAINMENU, MAINMENU_INTERFACE;
 }
+
 
 class Global {
   // Program
@@ -2916,6 +2960,7 @@ class Global {
   private int timer_exiting = Constants.exit_delay;
   private Images images;
   private Sounds sounds;
+  private Options options = new Options();
   // FPS
   private int lastFrameTime = millis();
   private float lastFPS = Constants.maxFPS;
@@ -2923,6 +2968,8 @@ class Global {
   private int timer_FPS = Constants.frameUpdateTime;
   // Colors
   private int color_background = color(180);
+  // Profile
+  private Profile profile;
 
   Global(LNZ thisInstance) {
     this.images = new Images();
@@ -2937,6 +2984,38 @@ class Global {
 
    public void exit() {
     this.state = ProgramState.EXITING;
+  }
+}
+
+
+class Options {
+  private String default_profile_name = "";
+
+  Options() {
+    this.loadOptions();
+  }
+
+   public void loadOptions() {
+    String[] lines = loadStrings(sketchPath("data/options.lnz"));
+    if (lines == null) {
+      return;
+    }
+    for (String line : lines) {
+      String[] data = split(line, ':');
+      if (data.length < 2) {
+        continue;
+      }
+      switch(data[0]) {
+        case "default_profile_name":
+          this.default_profile_name = data[1];
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+   public void saveOptions() {
   }
 }
  public int ccolor(int gray) {
@@ -3437,6 +3516,11 @@ class MainMenuInterface extends InterfaceLNZ {
      public PImage getIcon() {
       return global.images.getImage("icons/gear.png");
     }
+
+    @Override public 
+    void release() {
+      super.release();
+    }
   }
 
   class MainMenuGrowButton3 extends MainMenuGrowButton {
@@ -3446,6 +3530,11 @@ class MainMenuInterface extends InterfaceLNZ {
     }
      public PImage getIcon() {
       return global.images.getImage("icons/achievements.png");
+    }
+
+    @Override public 
+    void release() {
+      super.release();
     }
   }
 
@@ -3457,8 +3546,25 @@ class MainMenuInterface extends InterfaceLNZ {
      public PImage getIcon() {
       return global.images.getImage("icons/map.png");
     }
+
+    @Override public 
+    void release() {
+      super.release();
+    }
   }
 
+
+  class NewProfileForm extends FormLNZ {
+    NewProfileForm() {
+      super(0.5f * (width - Constants.newProfileForm_width), 0.5f * (height - Constants.initialInterface_size),
+        0.5f * (width + Constants.newProfileForm_width), 0.5f * (height + Constants.initialInterface_size));
+      this.setTitleText("New Profile");
+      this.setTitleSize(18);
+    }
+
+     public void submit() {
+    }
+  }
 
 
   class backgroundImageThread extends Thread {
@@ -3493,6 +3599,21 @@ class MainMenuInterface extends InterfaceLNZ {
     this.growButtons[1] = new MainMenuGrowButton2();
     this.growButtons[2] = new MainMenuGrowButton3();
     this.growButtons[3] = new MainMenuGrowButton4();
+    this.loadProfile();
+  }
+
+   public void loadProfile() {
+    if (!this.loadProfile(global.options.default_profile_name)) {
+      this.form = new NewProfileForm();
+    }
+  }
+  // returns true if profile loaded
+   public boolean loadProfile(String profile_name) {
+    mkdir("data/profiles", false, true);
+    if (!folderExists("data/profiles/" + profile_name)) {
+      return false;
+    }
+    return false;
   }
 
    public void update(int millis) {
@@ -3534,7 +3655,9 @@ class MainMenuInterface extends InterfaceLNZ {
    public void keyRelease() {}
 }
 
-
+class Profile {
+  private String display_name = "";
+}
 class Sounds {
   private Minim minim;
   private AudioOutput out;
