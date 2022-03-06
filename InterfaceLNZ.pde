@@ -7,6 +7,7 @@ abstract class FormLNZ extends Form {
     super(xi, yi, xf, yf);
     this.img = getCurrImage();
     this.cancelButton();
+    this.draggable = true;
   }
 
   @Override
@@ -243,6 +244,8 @@ class InitialInterface extends InterfaceLNZ {
         0.5 * Constants.initialInterface_size + 120, 0.5 * Constants.initialInterface_size + 120);
       this.setTitleText(title);
       this.setTitleSize(18);
+      this.color_background = color(180, 250, 180);
+      this.color_header = color(30, 170, 30);
       this.addField(new SpacerFormField(0));
       this.addField(new TextBoxFormField(message, 120));
       this.addField(new SubmitFormField("  Ok  "));
