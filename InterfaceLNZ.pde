@@ -1,5 +1,16 @@
+abstract class FormLNZ extends Form {
+  protected boolean canceled = false;
+  FormLNZ(float xi, float yi, float xf, float yf) {
+    super(xi, yi, xf, yf);
+  }
+  void cancel() {
+    this.canceled = true;
+  }
+}
+
+
 abstract class InterfaceLNZ {
-  protected Form form = null;
+  protected FormLNZ form = null;
 
   InterfaceLNZ() {
   }
@@ -10,6 +21,9 @@ abstract class InterfaceLNZ {
     }
     else {
       this.form.update(millis);
+      if (this.form.canceled) {
+        this.form = null;
+      }
     }
   }
 
@@ -117,6 +131,7 @@ class InitialInterface extends InterfaceLNZ {
 
     @Override
     void release() {
+      super.release();
       global.sounds.trigger("interfaces/buttonClick4");
       global.state = ProgramState.ENTERING_MAINMENU;
       background(global.color_background);
@@ -135,6 +150,7 @@ class InitialInterface extends InterfaceLNZ {
 
     @Override
     void release() {
+      super.release();
       global.sounds.trigger("interfaces/buttonClick3");
       InitialInterface.this.form = new InitialInterfaceForm("Uninstall Game", "Just delete it ya dip");
     }
@@ -149,6 +165,7 @@ class InitialInterface extends InterfaceLNZ {
 
     @Override
     void release() {
+      super.release();
       global.sounds.trigger("interfaces/buttonClick3");
       InitialInterface.this.form = new InitialInterfaceForm("Reset Game", "Why would you want to reinstall a test version?");
     }
@@ -163,6 +180,7 @@ class InitialInterface extends InterfaceLNZ {
 
     @Override
     void release() {
+      super.release();
       global.sounds.trigger("interfaces/buttonClick3");
       InitialInterface.this.form = new InitialInterfaceForm("Version History", Constants.version_history);
     }
@@ -177,8 +195,8 @@ class InitialInterface extends InterfaceLNZ {
 
     @Override
     void release() {
-      global.sounds.trigger("interfaces/buttonClick3");
       super.release();
+      global.sounds.trigger("interfaces/buttonClick3");
       global.exit();
     }
   }
@@ -200,13 +218,20 @@ class InitialInterface extends InterfaceLNZ {
     }
   }
 
-  class InitialInterfaceForm extends Form {
+  class InitialInterfaceForm extends FormLNZ {
     InitialInterfaceForm(String title, String message) {
       super(0.5 * Constants.initialInterface_size - 120, 0.5 * Constants.initialInterface_size - 120,
         0.5 * Constants.initialInterface_size + 120, 0.5 * Constants.initialInterface_size + 120);
       this.setTitleText(title);
-      this.addField(new TextBoxFormField(message, 120));
+      this.addField(new TextBoxFormField(message, 150));
       this.addField(new SubmitFormField("  Ok  "));
+      this.addField(new SubmitFormField("  Ok  "));
+      this.addField(new SubmitFormField("  Ok  "));
+      this.addField(new SubmitFormField("  Ok  "));
+      this.addField(new SubmitFormField("  Ok  "));
+    }
+    void submit() {
+      this.canceled = true;
     }
   }
 

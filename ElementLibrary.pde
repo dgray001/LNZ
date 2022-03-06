@@ -18,6 +18,7 @@ abstract class Button {
   protected boolean show_stroke = true;
   protected float stroke_weight = 0.5;
   protected boolean stay_dehovered = false;
+  protected boolean adjust_for_text_descent = false;
   // timer
   protected int hold_timer = 0;
   protected int lastUpdateTime = millis();
@@ -74,7 +75,12 @@ abstract class Button {
       fill(this.color_text);
       textAlign(CENTER, CENTER);
       textSize(this.text_size);
-      text(this.message, this.xCenter(), this.yCenter());
+      if (this.adjust_for_text_descent) {
+        text(this.message, this.xCenter(), this.yCenter() - textDescent());
+      }
+      else {
+        text(this.message, this.xCenter(), this.yCenter());
+      }
     }
   }
 
@@ -164,7 +170,8 @@ abstract class RectangleButton extends Button {
   protected int roundness = 8;
   protected float xCenter;
   protected float yCenter;
-  protected boolean raised = false;
+  protected boolean raised_border = false;
+  protected boolean raised_body = false;
   protected boolean shadow = false;
   protected float shadow_amount = 5;
 
@@ -200,12 +207,31 @@ abstract class RectangleButton extends Button {
     if (this.shadow && this.clicked) {
       translate(this.shadow_amount, this.shadow_amount);
     }
-    rect(this.xi, this.yi, this.xf, this.yf, this.roundness);
+    if (this.raised_body) {
+      fill(255, 0);
+      rect(this.xi, this.yi, this.xf, this.yf, this.roundness);
+      stroke(255, 0);
+      if (this.clicked) {
+        fill(darken(this.fillColor()));
+        rect(this.xi, this.yi, this.xf, this.yCenter());
+        fill(brighten(this.fillColor()));
+        rect(this.xi, this.yCenter(), this.xf, this.yf);
+      }
+      else {
+        fill(brighten(this.fillColor()));
+        rect(this.xi, this.yi, this.xf, this.yCenter(), this.roundness);
+        fill(darken(this.fillColor()));
+        rect(this.xi, this.yCenter(), this.xf, this.yf, this.roundness);
+      }
+    }
+    else {
+      rect(this.xi, this.yi, this.xf, this.yf, this.roundness);
+    }
     this.writeText();
     if (this.shadow && this.clicked) {
       translate(-this.shadow_amount, -this.shadow_amount);
     }
-    if (this.raised) {
+    if (this.raised_border) {
       strokeWeight(1);
       if (this.clicked) {
         stroke(0);
@@ -537,7 +563,6 @@ abstract class TriangleButton extends Button {
     }
     float t1 = (this.dotuu * dotvp - this.dotvu * dotup) / this.constant;
     float t2 = (this.dotvv * dotup - this.dotvu * dotvp) / this.constant;
-    println(t1, t2);
     if (t1 >= 0 && t2 >= 0 && t1 + t2 < 1) {
       return true;
     }
@@ -597,6 +622,7 @@ class ScrollBar {
     ScrollBarUpButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
       refreshArrowWidth();
+      this.raised_border = true;
     }
     @Override
     void setLocation(float xi, float yi, float xf, float yf) {
@@ -645,6 +671,7 @@ class ScrollBar {
     ScrollBarDownButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
       refreshArrowWidth();
+      this.raised_border = true;
     }
     @Override
     void setLocation(float xi, float yi, float xf, float yf) {
@@ -1933,16 +1960,20 @@ class SubmitFormField extends FormField {
     SubmitButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
       this.roundness = 0;
-      this.raised = true;
+      this.raised_body = true;
+      this.raised_border = true;
+      this.adjust_for_text_descent = true;
     }
     void hover() {
     }
     void dehover() {
     }
     void click() {
-      SubmitFormField.this.submitted = true;
     }
     void release() {
+      if (this.hovered) {
+        SubmitFormField.this.submitted = true;
+      }
     }
   }
 
@@ -1961,7 +1992,6 @@ class SubmitFormField extends FormField {
   }
 
   void updateWidthDependencies() {
-    println(this.button.message);
     textSize(this.button.text_size);
     float desiredWidth = textWidth(this.button.message + "  ");
     if (desiredWidth > this.field_width) {
@@ -1974,7 +2004,7 @@ class SubmitFormField extends FormField {
   }
 
   float getHeight() {
-    return this.button.button_height();
+    return this.button.yf - this.button.yi;
   }
 
   String getValue() {
@@ -2141,7 +2171,13 @@ abstract class Form {
         break;
       }
       translate(0, currY);
-      this.fields.get(i).update(millis);
+      FormFieldSubmit submit = this.fields.get(i).update(millis);
+      if (submit == FormFieldSubmit.SUBMIT) {
+        this.submitForm();
+      }
+      else if (submit == FormFieldSubmit.CANCEL) {
+        this.cancelForm();
+      }
       translate(0, -currY);
       currY += this.fields.get(i).getHeight() + this.fieldCushion;
     }
@@ -2159,6 +2195,7 @@ abstract class Form {
       mY -= this.yStart;
       for (int i = int(floor(this.scrollbar.value)); i < this.fields.size(); i++) {
         if (mY + this.fields.get(i).getHeight() > this.yf) {
+          println("ok");
           break;
         }
         this.fields.get(i).mouseMove(mX, mY);
@@ -2204,4 +2241,19 @@ abstract class Form {
       field.keyRelease();
     }
   }
+
+
+  void submitForm() {
+    for (FormField field : this.fields) {
+      field.submit();
+    }
+    this.submit();
+  }
+
+  void cancelForm() {
+    this.cancel();
+  }
+
+  abstract void submit();
+  abstract void cancel();
 }

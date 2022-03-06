@@ -51,10 +51,10 @@ boolean toBoolean(String str) {
 
 // color functions
 color brighten(color c) {
-  return adjust_color_brightness(c, 1.4);
+  return adjust_color_brightness(c, 1.05);
 }
 color darken(color c) {
-  return adjust_color_brightness(c, 0.6);
+  return adjust_color_brightness(c, 0.95);
 }
 color adjust_color_brightness(color c, float factor) {
   float r = constrain(factor * (c >> 16 & 0xFF), 0, 255);
