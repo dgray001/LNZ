@@ -153,7 +153,7 @@ static class Constants {
 
   // MainMenu Interface
   static final float newProfileForm_width = 400;
-  static final float newProfileForm_height = 400;
+  static final float newProfileForm_height = 500;
 }
 class DImg {
 
@@ -3007,7 +3007,7 @@ class Options {
       }
       switch(data[0]) {
         case "default_profile_name":
-          this.default_profile_name = data[1];
+          this.default_profile_name = trim(data[1]);
           break;
         default:
           break;
@@ -3016,6 +3016,10 @@ class Options {
   }
 
    public void saveOptions() {
+    PrintWriter file = createWriter(sketchPath("data/options.lnz"));
+    file.println("default_profile_name: " + this.default_profile_name);
+    file.flush();
+    file.close();
   }
 }
  public int ccolor(int gray) {
@@ -3556,13 +3560,23 @@ class MainMenuInterface extends InterfaceLNZ {
 
   class NewProfileForm extends FormLNZ {
     NewProfileForm() {
-      super(0.5f * (width - Constants.newProfileForm_width), 0.5f * (height - Constants.initialInterface_size),
-        0.5f * (width + Constants.newProfileForm_width), 0.5f * (height + Constants.initialInterface_size));
+      super(0.5f * (width - Constants.newProfileForm_width), 0.5f * (height - Constants.newProfileForm_height),
+        0.5f * (width + Constants.newProfileForm_width), 0.5f * (height + Constants.newProfileForm_height));
       this.setTitleText("New Profile");
       this.setTitleSize(18);
+      this.color_background = color(250, 180, 180);
+      this.color_header = color(170, 30, 30);
+      this.color_title = color(255);
+      this.addField(new SpacerFormField(0));
+      this.addField(new StringFormField("", "Enter profile name"));
+      this.addField(new SubmitFormField("Create New Profile"));
     }
 
      public void submit() {
+    }
+
+    @Override public 
+    void cancel() {
     }
   }
 
@@ -3611,9 +3625,16 @@ class MainMenuInterface extends InterfaceLNZ {
    public boolean loadProfile(String profile_name) {
     mkdir("data/profiles", false, true);
     if (!folderExists("data/profiles/" + profile_name)) {
+      println("Profile: No profile folder exists with name " + profile_name + ".");
       return false;
     }
-    return false;
+    if (!fileExists("data/profiles/" + profile_name + "/profile.lnz")) {
+      println("ERROR: Profile file missing for " + profile_name + ".");
+      return false;
+    }
+    global.profile = readProfile(sketchPath("data/profiles/" + profile_name + "/profile.lnz"));
+    global.profile.save_file_name = profile_name;
+    return true;
   }
 
    public void update(int millis) {
@@ -3657,6 +3678,34 @@ class MainMenuInterface extends InterfaceLNZ {
 
 class Profile {
   private String display_name = "";
+  private String save_file_name = "";
+
+  Profile() {
+  }
+}
+
+
+ public Profile readProfile(String path) {
+  String[] lines = loadStrings(path);
+  Profile p = new Profile();
+  if (lines == null) {
+    println("ERROR: Reading profile file but path " + path + " doesn't exist.");
+    return p;
+  }
+  for (String line : lines) {
+    String[] data = split(line, ':');
+    if (data.length < 2) {
+      continue;
+    }
+    switch(data[0]) {
+      case "display_name":
+        p.display_name = trim(data[1]);
+        break;
+      default:
+        break;
+    }
+  }
+  return p;
 }
 class Sounds {
   private Minim minim;
