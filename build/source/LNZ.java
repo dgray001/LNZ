@@ -128,7 +128,7 @@ static class Constants {
   // Program constants
   static final String credits =
   "Liberal Nazi Zombies" +
-  "20220305: v0.6.1" +
+  "20220305: v0.6.1a" +
   "Created by Daniel Gray" +
   "";
   static final String version_history =
@@ -410,6 +410,7 @@ abstract class Button {
   protected boolean show_stroke = true;
   protected float stroke_weight = 0.5f;
   protected boolean stay_dehovered = false;
+  protected boolean adjust_for_text_descent = false;
   // timer
   protected int hold_timer = 0;
   protected int lastUpdateTime = millis();
@@ -466,7 +467,12 @@ abstract class Button {
       fill(this.color_text);
       textAlign(CENTER, CENTER);
       textSize(this.text_size);
-      text(this.message, this.xCenter(), this.yCenter());
+      if (this.adjust_for_text_descent) {
+        text(this.message, this.xCenter(), this.yCenter() - textDescent());
+      }
+      else {
+        text(this.message, this.xCenter(), this.yCenter());
+      }
     }
   }
 
@@ -556,7 +562,8 @@ abstract class RectangleButton extends Button {
   protected int roundness = 8;
   protected float xCenter;
   protected float yCenter;
-  protected boolean raised = false;
+  protected boolean raised_border = false;
+  protected boolean raised_body = false;
   protected boolean shadow = false;
   protected float shadow_amount = 5;
 
@@ -592,12 +599,31 @@ abstract class RectangleButton extends Button {
     if (this.shadow && this.clicked) {
       translate(this.shadow_amount, this.shadow_amount);
     }
-    rect(this.xi, this.yi, this.xf, this.yf, this.roundness);
+    if (this.raised_body) {
+      fill(255, 0);
+      rect(this.xi, this.yi, this.xf, this.yf, this.roundness);
+      stroke(255, 0);
+      if (this.clicked) {
+        fill(darken(this.fillColor()));
+        rect(this.xi, this.yi, this.xf, this.yCenter());
+        fill(brighten(this.fillColor()));
+        rect(this.xi, this.yCenter(), this.xf, this.yf);
+      }
+      else {
+        fill(brighten(this.fillColor()));
+        rect(this.xi, this.yi, this.xf, this.yCenter(), this.roundness);
+        fill(darken(this.fillColor()));
+        rect(this.xi, this.yCenter(), this.xf, this.yf, this.roundness);
+      }
+    }
+    else {
+      rect(this.xi, this.yi, this.xf, this.yf, this.roundness);
+    }
     this.writeText();
     if (this.shadow && this.clicked) {
       translate(-this.shadow_amount, -this.shadow_amount);
     }
-    if (this.raised) {
+    if (this.raised_border) {
       strokeWeight(1);
       if (this.clicked) {
         stroke(0);
@@ -929,7 +955,6 @@ abstract class TriangleButton extends Button {
     }
     float t1 = (this.dotuu * dotvp - this.dotvu * dotup) / this.constant;
     float t2 = (this.dotvv * dotup - this.dotvu * dotvp) / this.constant;
-    println(t1, t2);
     if (t1 >= 0 && t2 >= 0 && t1 + t2 < 1) {
       return true;
     }
@@ -989,6 +1014,7 @@ class ScrollBar {
     ScrollBarUpButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
       refreshArrowWidth();
+      this.raised_border = true;
     }
     @Override public 
     void setLocation(float xi, float yi, float xf, float yf) {
@@ -1037,6 +1063,7 @@ class ScrollBar {
     ScrollBarDownButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
       refreshArrowWidth();
+      this.raised_border = true;
     }
     @Override public 
     void setLocation(float xi, float yi, float xf, float yf) {
@@ -2325,16 +2352,20 @@ class SubmitFormField extends FormField {
     SubmitButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
       this.roundness = 0;
-      this.raised = true;
+      this.raised_body = true;
+      this.raised_border = true;
+      this.adjust_for_text_descent = true;
     }
      public void hover() {
     }
      public void dehover() {
     }
      public void click() {
-      SubmitFormField.this.submitted = true;
     }
      public void release() {
+      if (this.hovered) {
+        SubmitFormField.this.submitted = true;
+      }
     }
   }
 
@@ -2353,7 +2384,6 @@ class SubmitFormField extends FormField {
   }
 
    public void updateWidthDependencies() {
-    println(this.button.message);
     textSize(this.button.text_size);
     float desiredWidth = textWidth(this.button.message + "  ");
     if (desiredWidth > this.field_width) {
@@ -2366,7 +2396,7 @@ class SubmitFormField extends FormField {
   }
 
    public float getHeight() {
-    return this.button.button_height();
+    return this.button.yf - this.button.yi;
   }
 
    public String getValue() {
@@ -2533,7 +2563,13 @@ abstract class Form {
         break;
       }
       translate(0, currY);
-      this.fields.get(i).update(millis);
+      FormFieldSubmit submit = this.fields.get(i).update(millis);
+      if (submit == FormFieldSubmit.SUBMIT) {
+        this.submitForm();
+      }
+      else if (submit == FormFieldSubmit.CANCEL) {
+        this.cancelForm();
+      }
       translate(0, -currY);
       currY += this.fields.get(i).getHeight() + this.fieldCushion;
     }
@@ -2551,6 +2587,7 @@ abstract class Form {
       mY -= this.yStart;
       for (int i = PApplet.parseInt(floor(this.scrollbar.value)); i < this.fields.size(); i++) {
         if (mY + this.fields.get(i).getHeight() > this.yf) {
+          println("ok");
           break;
         }
         this.fields.get(i).mouseMove(mX, mY);
@@ -2596,6 +2633,21 @@ abstract class Form {
       field.keyRelease();
     }
   }
+
+
+   public void submitForm() {
+    for (FormField field : this.fields) {
+      field.submit();
+    }
+    this.submit();
+  }
+
+   public void cancelForm() {
+    this.cancel();
+  }
+
+   public abstract void submit();
+   public abstract void cancel();
 }
 // default to if file does not exist create file
  public void mkFile(String path) {
@@ -2814,8 +2866,19 @@ class Images {
     return img;
   }
 }
+abstract class FormLNZ extends Form {
+  protected boolean canceled = false;
+  FormLNZ(float xi, float yi, float xf, float yf) {
+    super(xi, yi, xf, yf);
+  }
+   public void cancel() {
+    this.canceled = true;
+  }
+}
+
+
 abstract class InterfaceLNZ {
-  protected Form form = null;
+  protected FormLNZ form = null;
 
   InterfaceLNZ() {
   }
@@ -2826,6 +2889,9 @@ abstract class InterfaceLNZ {
     }
     else {
       this.form.update(millis);
+      if (this.form.canceled) {
+        this.form = null;
+      }
     }
   }
 
@@ -2933,6 +2999,7 @@ class InitialInterface extends InterfaceLNZ {
 
     @Override public 
     void release() {
+      super.release();
       global.sounds.trigger("interfaces/buttonClick4");
       global.state = ProgramState.ENTERING_MAINMENU;
       background(global.color_background);
@@ -2951,6 +3018,7 @@ class InitialInterface extends InterfaceLNZ {
 
     @Override public 
     void release() {
+      super.release();
       global.sounds.trigger("interfaces/buttonClick3");
       InitialInterface.this.form = new InitialInterfaceForm("Uninstall Game", "Just delete it ya dip");
     }
@@ -2965,6 +3033,7 @@ class InitialInterface extends InterfaceLNZ {
 
     @Override public 
     void release() {
+      super.release();
       global.sounds.trigger("interfaces/buttonClick3");
       InitialInterface.this.form = new InitialInterfaceForm("Reset Game", "Why would you want to reinstall a test version?");
     }
@@ -2979,6 +3048,7 @@ class InitialInterface extends InterfaceLNZ {
 
     @Override public 
     void release() {
+      super.release();
       global.sounds.trigger("interfaces/buttonClick3");
       InitialInterface.this.form = new InitialInterfaceForm("Version History", Constants.version_history);
     }
@@ -2993,8 +3063,8 @@ class InitialInterface extends InterfaceLNZ {
 
     @Override public 
     void release() {
-      global.sounds.trigger("interfaces/buttonClick3");
       super.release();
+      global.sounds.trigger("interfaces/buttonClick3");
       global.exit();
     }
   }
@@ -3016,13 +3086,20 @@ class InitialInterface extends InterfaceLNZ {
     }
   }
 
-  class InitialInterfaceForm extends Form {
+  class InitialInterfaceForm extends FormLNZ {
     InitialInterfaceForm(String title, String message) {
       super(0.5f * Constants.initialInterface_size - 120, 0.5f * Constants.initialInterface_size - 120,
         0.5f * Constants.initialInterface_size + 120, 0.5f * Constants.initialInterface_size + 120);
       this.setTitleText(title);
-      this.addField(new TextBoxFormField(message, 120));
+      this.addField(new TextBoxFormField(message, 150));
       this.addField(new SubmitFormField("  Ok  "));
+      this.addField(new SubmitFormField("  Ok  "));
+      this.addField(new SubmitFormField("  Ok  "));
+      this.addField(new SubmitFormField("  Ok  "));
+      this.addField(new SubmitFormField("  Ok  "));
+    }
+     public void submit() {
+      this.canceled = true;
     }
   }
 
@@ -3372,6 +3449,21 @@ class Sounds {
   else {
     return false;
   }
+}
+
+
+// color functions
+ public int brighten(int c) {
+  return adjust_color_brightness(c, 1.05f);
+}
+ public int darken(int c) {
+  return adjust_color_brightness(c, 0.95f);
+}
+ public int adjust_color_brightness(int c, float factor) {
+  float r = constrain(factor * (c >> 16 & 0xFF), 0, 255);
+  float g = constrain(factor * (c >> 8 & 0xFF), 0, 255);
+  float b = constrain(factor * (c & 0xFF), 0, 255);
+  return color(r, g, b, alpha(c));
 }
 
 
