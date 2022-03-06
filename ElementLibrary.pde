@@ -1515,6 +1515,255 @@ class InputBox extends RectangleButton {
 
 
 
+abstract class Slider  {
+  class SliderButton extends CircleButton {
+    protected boolean active = false;
+    protected float active_grow_factor = 1.3;
+    protected color active_color = color(0, 50, 0);
+    protected float lastX = 0;
+    protected float changeFactor = 1;
+
+    SliderButton() {
+      super(0, 0, 0);
+      this.setColors(color(170), color(255, 0), color(255, 0), color(255, 0), color(0));
+      strokeWeight(2);
+    }
+
+    @Override
+    float radius() {
+      if (this.active) {
+        return this.active_grow_factor * super.radius();
+      }
+      else {
+        return super.radius();
+      }
+    }
+
+    color lineColor() {
+      if (this.active) {
+        return this.active_color;
+      }
+      else {
+        return this.color_stroke;
+      }
+    }
+
+    @Override
+    void drawButton() {
+      ellipseMode(RADIUS);
+      if (this.active) {
+        fill(this.active_color);
+      }
+      else {
+        noFill();
+      }
+      stroke(this.lineColor());
+      strokeWeight(Slider.this.line_thickness);
+      circle(this.xc, this.yc, this.radius());
+    }
+
+    void mouseMove(float mX, float mY) {
+      super.mouseMove(mX, mY);
+      if (this.active && this.clicked) {
+        this.moveButton(mX - this.lastX, 0);
+        this.changeFactor = 1; // how much value actually changed (accounting for step_size)
+        Slider.this.refreshValue();
+        this.lastX += this.changeFactor * (mX - this.lastX);
+      }
+      else {
+        this.lastX = mX;
+      }
+    }
+
+    void mousePress() {
+      super.mousePress();
+      if (!this.hovered) {
+        this.active = false;
+      }
+    }
+
+    void scroll(int amount) {
+      if (!this.active) {
+        return;
+      }
+      Slider.this.step(amount);
+    }
+
+    void keyPress() {
+      if (!this.active) {
+        return;
+      }
+      if (key == CODED) {
+        switch(keyCode) {
+          case LEFT:
+            Slider.this.step(-1);
+            break;
+          case RIGHT:
+            Slider.this.step(1);
+            break;
+          default:
+            break;
+        }
+      }
+    }
+
+    void hover() {}
+    void dehover() {}
+    void release() {}
+
+    void click() {
+      this.active = true;
+    }
+  }
+
+  protected float xi;
+  protected float yi;
+  protected float xf;
+  protected float yf;
+  protected float yCenter;
+
+  protected float min_value = 0;
+  protected float max_value = 0;
+  protected float step_size = -1;
+  protected boolean no_step = true;
+  protected float value = 0;
+
+  protected SliderButton button = new SliderButton();
+  protected float offset;
+  protected float line_thickness = 3;
+
+  Slider() {
+    this(0, 0, 0, 0);
+  }
+  Slider(float xi, float yi, float xf, float yf) {
+    this.setLocation(xi, yi, xf, yf);
+  }
+
+  void setLocation(float xi, float yi, float xf, float yf) {
+    this.xi = xi;
+    this.yi = yi;
+    this.xf = xf;
+    this.yf = yf;
+    this.yCenter = yi + 0.5 * (yf - yi);
+    this.button.setLocation(xi, this.yCenter, 0.5 * (yf - yi) / this.button.active_grow_factor);
+    this.offset = this.button.xr * this.button.active_grow_factor;
+    this.refreshButton();
+  }
+
+  // called when slider changes value or size (this never changes value)
+  void refreshButton() {
+    if (this.min_value == this.max_value) {
+      this.button.moveButton(this.xi + this.offset - this.button.xCenter(), 0);
+      return;
+    }
+    float targetX = this.xi + this.offset + (this.xf - 2 * this.offset - this.xi) *
+      (this.value - this.min_value) / (this.max_value - this.min_value);
+    this.button.moveButton(targetX - this.button.xCenter(), 0);
+  }
+
+  // called when button changes value (this changes value so calls refreshButton)
+  void refreshValue() {
+    float targetValue = this.min_value + (this.button.xCenter() - this.xi - this.offset)
+      * (this.max_value - this.min_value) / (this.xf - 2 * this.offset - this.xi);
+    boolean hitbound = false;
+    if (targetValue >= this.max_value) {
+      float change = targetValue - this.value;
+      if (change > 0) {
+        this.button.changeFactor = (this.max_value - this.value) / change;
+      }
+      targetValue = this.max_value;
+      hitbound = true;
+    }
+    else if (targetValue <= this.min_value) {
+      float change = targetValue - this.value;
+      if (change < 0) {
+        this.button.changeFactor = (this.min_value - this.value) / change;
+      }
+      targetValue = this.min_value;
+      hitbound = true;
+    }
+    float change = targetValue - this.value;
+    if (!this.no_step && !hitbound && this.step_size != 0 && change != 0) {
+      float new_change = this.step_size * (floor(change / this.step_size));
+      this.button.changeFactor = new_change/change;
+      change = new_change;
+    }
+    this.value += change;
+    this.refreshButton();
+  }
+
+  void bounds(float min, float max, float step) {
+    if (min > max) {
+      min = max;
+    }
+    this.min_value = min;
+    this.max_value = max;
+    this.step_size = step;
+    if (this.value < min) {
+      this.value = min;
+    }
+    else if (this.value > max) {
+      this.value = max;
+    }
+    if (step > 0) {
+      this.no_step = false;
+    }
+    else {
+      this.no_step = true;
+    }
+  }
+
+  void step(int amount) {
+    if (this.no_step) {
+      this.value += 0.1 * (this.max_value - this.min_value) * amount;
+    }
+    else {
+      this.value += this.step_size * amount;
+    }
+    if (this.value > this.max_value) {
+      this.value = this.max_value;
+    }
+    else if (this.value < this.min_value) {
+      this.value = this.min_value;
+    }
+    this.refreshButton();
+  }
+
+  void update(int millis) {
+    strokeWeight(this.line_thickness);
+    stroke(this.button.active_color);
+    line(min(this.xi + this.offset, this.button.xc - this.button.radius()),
+      this.yCenter, this.button.xc - this.button.radius(), this.yCenter);
+    stroke(this.button.color_stroke);
+    line(this.button.xc + this.button.radius(), this.yCenter,
+      max(this.xf - this.offset, this.button.xc + this.button.radius()), this.yCenter);
+    this.button.update(millis);
+  }
+
+  void mouseMove(float mX, float mY) {
+    this.button.mouseMove(mX, mY);
+  }
+
+  void mousePress() {
+    this.button.mousePress();
+  }
+
+  void mouseRelease() {
+    this.button.mouseRelease();
+  }
+
+  void scroll(int amount) {
+    this.button.scroll(amount);
+  }
+
+  void keyPress() {
+    this.button.keyPress();
+  }
+}
+
+
+
+
 enum FormFieldSubmit {
   NONE, SUBMIT, CANCEL;
 }
