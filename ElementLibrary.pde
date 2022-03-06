@@ -308,6 +308,7 @@ abstract class RectangleButton extends Button {
 abstract class CheckBox extends RectangleButton {
   protected boolean checked = false;
   protected color color_check = color(0);
+  protected float offset = 0;
 
   CheckBox(float xi, float yi, float size) {
     this(xi, yi, xi + size, xi + size);
@@ -315,11 +316,25 @@ abstract class CheckBox extends RectangleButton {
   CheckBox(float xi, float yi, float xf, float yf) {
     super(xi, yi, xf, yf);
     this.setColors(color(170, 170), color(170, 0), color(170, 50), color(170, 120), color(0));
+    this.roundness = 0;
+    this.stroke_weight = 2;
+  }
+
+  @Override
+  void setLocation(float xi, float yi, float xf, float yf) {
+    super.setLocation(xi, yi, xf, yf);
+    this.offset = 0.1 * (xf  - xi);
   }
 
   @Override
   void drawButton() {
     super.drawButton();
+    if (this.checked) {
+      strokeWeight(this.stroke_weight);
+      stroke(this.color_stroke);
+      line(this.xi + offset, this.yi + offset, this.xf - offset, this.yf - offset);
+      line(this.xi + offset, this.yf - offset, this.xf - offset, this.yi + offset);
+    }
   }
 
   void click() {
@@ -1676,9 +1691,6 @@ class StringFormField extends MessageFormField {
     textSize(this.text_size);
     this.input.setLocation(textWidth(this.message), 0, this.field_width, textAscent() + textDescent() + 2);
   }
-  float getHeight() {
-    return this.input.yf - this.input.yi;
-  }
 
   @Override
   String getValue() {
@@ -1707,9 +1719,6 @@ class StringFormField extends MessageFormField {
   }
 
   @Override
-  void scroll(int amount) {}
-
-  @Override
   void keyPress() {
     this.input.keyPress();
   }
@@ -1717,9 +1726,6 @@ class StringFormField extends MessageFormField {
   void keyRelease() {
     this.input.keyRelease();
   }
-
-  @Override
-  void submit() {}
 }
 
 
@@ -1801,23 +1807,20 @@ class BooleanFormField extends StringFormField {
 }
 
 
-class RadiosFormField extends FormField {
+class RadiosFormField extends MessageFormField {
   class FormRadioButton extends RadioButton {
     FormRadioButton(float xc, float yc, float r) {
       super(xc, yc, r);
-      this.show_message = false;
     }
     void hover() {
     }
     void dehover() {
     }
-    void click() {
-    }
     void release() {
     }
   }
 
-  protected ArrayList<FormRadioButton> radios = new ArrayList<FormRadioButton>();
+  protected ArrayList<RadioButton> radios = new ArrayList<RadioButton>();
 
   RadiosFormField(String message) {
     super(message);
@@ -1825,9 +1828,6 @@ class RadiosFormField extends FormField {
 
   void updateWidthDependencies() {
     //
-  }
-  float getHeight() {
-    return 0;
   }
 
   String getValue() {
@@ -1856,41 +1856,61 @@ class RadiosFormField extends FormField {
 }
 
 
-class CheckboxFormField extends FormField {
+class CheckboxFormField extends MessageFormField {
+  class FormFieldCheckBox extends CheckBox {
+    FormFieldCheckBox() {
+      super(0, 0, 0, 0);
+    }
+    void hover() {
+    }
+    void dehover() {
+    }
+    void release() {
+    }
+  }
+
+  protected CheckBox checkbox = new FormFieldCheckBox();
+
   CheckboxFormField(String message) {
     super(message);
   }
 
   void updateWidthDependencies() {
-    //
-  }
-  float getHeight() {
-    return 0;
+    float temp_field_width = this.field_width;
+    this.field_width = 0.75 * this.field_width;
+    super.updateWidthDependencies();
+    this.field_width = temp_field_width;
+    textSize(this.text_size);
+    float checkboxsize = min(this.getHeight(), this.field_width - textWidth(this.message));
+    float xi = textWidth(this.message);
+    float yi = 0.5 * (this.getHeight() - checkboxsize);
+    this.checkbox.setLocation(xi, yi, xi + checkboxsize, yi + checkboxsize);
   }
 
   String getValue() {
-    return this.message;
+    return Boolean.toString(this.checkbox.checked);
   }
 
+  @Override
   FormFieldSubmit update(int millis) {
-    return FormFieldSubmit.NONE;
+    this.checkbox.update(millis);
+    return super.update(millis);
   }
 
+  @Override
   void mouseMove(float mX, float mY) {
+    this.checkbox.mouseMove(mX, mY);
   }
 
+  @Override
   void mousePress() {
+    this.checkbox.mousePress();
   }
 
+  @Override
   void mouseRelease() {
+    this.checkbox.mouseRelease();
   }
-
-  void scroll(int amount) {
-  }
-
-  void keyPress() {}
-  void keyRelease() {}
-  void submit() {}
 }
 
 

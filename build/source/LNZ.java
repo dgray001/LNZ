@@ -129,7 +129,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220305: v0.6.1f" +
+  "\n20220306: v0.6.1h" +
   "\nLines: 3040 (v0.6.1)" +
   "";
   static final String version_history =
@@ -704,6 +704,7 @@ abstract class RectangleButton extends Button {
 abstract class CheckBox extends RectangleButton {
   protected boolean checked = false;
   protected int color_check = color(0);
+  protected float offset = 0;
 
   CheckBox(float xi, float yi, float size) {
     this(xi, yi, xi + size, xi + size);
@@ -711,11 +712,25 @@ abstract class CheckBox extends RectangleButton {
   CheckBox(float xi, float yi, float xf, float yf) {
     super(xi, yi, xf, yf);
     this.setColors(color(170, 170), color(170, 0), color(170, 50), color(170, 120), color(0));
+    this.roundness = 0;
+    this.stroke_weight = 2;
+  }
+
+  @Override public 
+  void setLocation(float xi, float yi, float xf, float yf) {
+    super.setLocation(xi, yi, xf, yf);
+    this.offset = 0.1f * (xf  - xi);
   }
 
   @Override public 
   void drawButton() {
     super.drawButton();
+    if (this.checked) {
+      strokeWeight(this.stroke_weight);
+      stroke(this.color_stroke);
+      line(this.xi + offset, this.yi + offset, this.xf - offset, this.yf - offset);
+      line(this.xi + offset, this.yf - offset, this.xf - offset, this.yi + offset);
+    }
   }
 
    public void click() {
@@ -2072,9 +2087,6 @@ class StringFormField extends MessageFormField {
     textSize(this.text_size);
     this.input.setLocation(textWidth(this.message), 0, this.field_width, textAscent() + textDescent() + 2);
   }
-   public float getHeight() {
-    return this.input.yf - this.input.yi;
-  }
 
   @Override public 
   String getValue() {
@@ -2103,9 +2115,6 @@ class StringFormField extends MessageFormField {
   }
 
   @Override public 
-  void scroll(int amount) {}
-
-  @Override public 
   void keyPress() {
     this.input.keyPress();
   }
@@ -2113,9 +2122,6 @@ class StringFormField extends MessageFormField {
   void keyRelease() {
     this.input.keyRelease();
   }
-
-  @Override public 
-  void submit() {}
 }
 
 
@@ -2197,23 +2203,20 @@ class BooleanFormField extends StringFormField {
 }
 
 
-class RadiosFormField extends FormField {
+class RadiosFormField extends MessageFormField {
   class FormRadioButton extends RadioButton {
     FormRadioButton(float xc, float yc, float r) {
       super(xc, yc, r);
-      this.show_message = false;
     }
      public void hover() {
     }
      public void dehover() {
     }
-     public void click() {
-    }
      public void release() {
     }
   }
 
-  protected ArrayList<FormRadioButton> radios = new ArrayList<FormRadioButton>();
+  protected ArrayList<RadioButton> radios = new ArrayList<RadioButton>();
 
   RadiosFormField(String message) {
     super(message);
@@ -2221,9 +2224,6 @@ class RadiosFormField extends FormField {
 
    public void updateWidthDependencies() {
     //
-  }
-   public float getHeight() {
-    return 0;
   }
 
    public String getValue() {
@@ -2252,41 +2252,61 @@ class RadiosFormField extends FormField {
 }
 
 
-class CheckboxFormField extends FormField {
+class CheckboxFormField extends MessageFormField {
+  class FormFieldCheckBox extends CheckBox {
+    FormFieldCheckBox() {
+      super(0, 0, 0, 0);
+    }
+     public void hover() {
+    }
+     public void dehover() {
+    }
+     public void release() {
+    }
+  }
+
+  protected CheckBox checkbox = new FormFieldCheckBox();
+
   CheckboxFormField(String message) {
     super(message);
   }
 
    public void updateWidthDependencies() {
-    //
-  }
-   public float getHeight() {
-    return 0;
+    float temp_field_width = this.field_width;
+    this.field_width = 0.75f * this.field_width;
+    super.updateWidthDependencies();
+    this.field_width = temp_field_width;
+    textSize(this.text_size);
+    float checkboxsize = min(this.getHeight(), this.field_width - textWidth(this.message));
+    float xi = textWidth(this.message);
+    float yi = 0.5f * (this.getHeight() - checkboxsize);
+    this.checkbox.setLocation(xi, yi, xi + checkboxsize, yi + checkboxsize);
   }
 
    public String getValue() {
-    return this.message;
+    return Boolean.toString(this.checkbox.checked);
   }
 
-   public FormFieldSubmit update(int millis) {
-    return FormFieldSubmit.NONE;
+  @Override public 
+  FormFieldSubmit update(int millis) {
+    this.checkbox.update(millis);
+    return super.update(millis);
   }
 
-   public void mouseMove(float mX, float mY) {
+  @Override public 
+  void mouseMove(float mX, float mY) {
+    this.checkbox.mouseMove(mX, mY);
   }
 
-   public void mousePress() {
+  @Override public 
+  void mousePress() {
+    this.checkbox.mousePress();
   }
 
-   public void mouseRelease() {
+  @Override public 
+  void mouseRelease() {
+    this.checkbox.mouseRelease();
   }
-
-   public void scroll(int amount) {
-  }
-
-   public void keyPress() {}
-   public void keyRelease() {}
-   public void submit() {}
 }
 
 
@@ -3277,10 +3297,10 @@ class InitialInterface extends InterfaceLNZ {
       this.addField(new SpacerFormField(0));
       this.addField(new TextBoxFormField(message, 120));
       this.addField(new SubmitFormField("  Ok  "));
-      this.addField(new StringFormField("test1: ", "Enter a string"));
-      this.addField(new IntegerFormField("test2: ", "Enter an int between 0 and 10", 0, 10));
-      this.addField(new FloatFormField("test3fdsafasfds", "Enter a float between -5 and 5", -5, 5));
-      this.addField(new BooleanFormField("test4fdasfasfdsafsafdsafsadfdsafaf", "Enter a boolean"));
+      this.addField(new CheckboxFormField("test1: "));
+      this.addField(new CheckboxFormField("test2: "));
+      this.addField(new CheckboxFormField("test3fdsafasfds"));
+      this.addField(new CheckboxFormField("test4fdasfasfdsafsafdsafsadfdsafaf"));
     }
      public void submit() {
       //this.canceled = true;
