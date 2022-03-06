@@ -305,6 +305,29 @@ abstract class RectangleButton extends Button {
 }
 
 
+abstract class CheckBox extends RectangleButton {
+  protected boolean checked = false;
+  protected color color_check = color(0);
+
+  CheckBox(float xi, float yi, float size) {
+    this(xi, yi, xi + size, xi + size);
+  }
+  CheckBox(float xi, float yi, float xf, float yf) {
+    super(xi, yi, xf, yf);
+    this.setColors(color(170, 170), color(170, 0), color(170, 50), color(170, 120), color(0));
+  }
+
+  @Override
+  void drawButton() {
+    super.drawButton();
+  }
+
+  void click() {
+    this.checked = !this.checked;
+  }
+}
+
+
 abstract class ImageButton extends RectangleButton {
   protected PImage img;
   protected color color_tint = color(255);
@@ -497,13 +520,39 @@ abstract class CircleButton extends EllipseButton {
   CircleButton(float xc, float yc, float r) {
     super(xc, yc, r, r);
   }
+  float radius() {
+    return this.xr;
+  }
 }
 
 
 
 abstract class RadioButton extends CircleButton {
+  protected boolean checked = false;
+  protected color color_active = color(0);
+
   RadioButton(float xc, float yc, float r) {
     super(xc, yc, r);
+    this.setColors(color(170, 120), color(170, 0), color(170, 40), color(170, 80), color(0));
+  }
+
+  @Override
+  void drawButton() {
+    super.drawButton();
+    if (this.checked) {
+      fill(this.color_active);
+      ellipseMode(RADIUS);
+      circle(this.xCenter(), this.yCenter(), 0.6 * this.radius());
+    }
+    if (this.clicked) {
+      fill(this.color_active, 135);
+      ellipseMode(RADIUS);
+      circle(this.xCenter(), this.yCenter(), 1.4 * this.radius());
+    }
+  }
+
+  void click() {
+    this.checked = !this.checked;
   }
 }
 
@@ -1605,7 +1654,7 @@ class TextBoxFormField extends FormField {
 
 
 // String input
-class StringFormField extends FormField {
+class StringFormField extends MessageFormField {
   protected InputBox input = new InputBox(0, 0, 0, 0);
 
   StringFormField(String message) {
@@ -1613,64 +1662,68 @@ class StringFormField extends FormField {
   }
   StringFormField(String message, String hint) {
     super(message);
-    if (message != null) {
-      this.input.setText(message);
-    }
     if (hint != null) {
       this.input.hint_text = hint;
     }
-    this.setTextSize(20);
-  }
-
-  void setTextSize(float text_size) {
-    this.input.setTextSize(text_size);
-    textSize(text_size);
-    this.input.yf = textAscent() + textDescent() + 2;
   }
 
   void updateWidthDependencies() {
-    this.input.setLocation(0, 0, this.field_width, this.getHeight());
+    float temp_field_width = this.field_width;
+    this.field_width = 0.5 * this.field_width;
+    super.updateWidthDependencies();
+    this.field_width = temp_field_width;
+    this.input.setTextSize(this.text_size);
+    textSize(this.text_size);
+    this.input.setLocation(textWidth(this.message), 0, this.field_width, textAscent() + textDescent() + 2);
   }
   float getHeight() {
     return this.input.yf - this.input.yi;
   }
 
+  @Override
   String getValue() {
     return this.input.text;
   }
 
+  @Override
   FormFieldSubmit update(int millis) {
     this.input.update(millis);
-    return FormFieldSubmit.NONE;
+    return super.update(millis);
   }
 
+  @Override
   void mouseMove(float mX, float mY) {
     this.input.mouseMove(mX, mY);
   }
 
+  @Override
   void mousePress() {
     this.input.mousePress();
   }
 
+  @Override
   void mouseRelease() {
     this.input.mouseRelease();
   }
 
+  @Override
   void scroll(int amount) {}
 
+  @Override
   void keyPress() {
     this.input.keyPress();
   }
+  @Override
   void keyRelease() {
     this.input.keyRelease();
   }
 
+  @Override
   void submit() {}
 }
 
 
-class IntegerFormField extends FormField {
-  protected InputBox input = new InputBox(0, 0, 0, 0);
+class IntegerFormField extends StringFormField {
   protected int min_value = 0;
   protected int max_value = 0;
 
@@ -1678,57 +1731,15 @@ class IntegerFormField extends FormField {
     this(message, "");
   }
   IntegerFormField(String message, String hint) {
-    super(message);
-    if (message != null) {
-      this.input.setText(message);
-    }
-    if (hint != null) {
-      this.input.hint_text = hint;
-    }
-    this.setTextSize(20);
+    this(message, hint, 0, 0);
   }
-
-  void setTextSize(float text_size) {
-    this.input.setTextSize(text_size);
-    textSize(text_size);
-    this.input.yf = textAscent() + textDescent() + 2;
+  IntegerFormField(String message, int min, int max) {
+    this(message, "", min, max);
   }
-
-  void updateWidthDependencies() {
-    this.input.setLocation(0, 0, this.field_width, this.getHeight());
-  }
-  float getHeight() {
-    return this.input.button_height();
-  }
-
-  String getValue() {
-    return this.input.text;
-  }
-
-  FormFieldSubmit update(int millis) {
-    this.input.update(millis);
-    return FormFieldSubmit.NONE;
-  }
-
-  void mouseMove(float mX, float mY) {
-    this.input.mouseMove(mX, mY);
-  }
-
-  void mousePress() {
-    this.input.mousePress();
-  }
-
-  void mouseRelease() {
-    this.input.mouseRelease();
-  }
-
-  void scroll(int amount) {}
-
-  void keyPress() {
-    this.input.keyPress();
-  }
-  void keyRelease() {
-    this.input.keyRelease();
+  IntegerFormField(String message, String hint, int min, int max) {
+    super(message, hint);
+    this.min_value = min;
+    this.max_value = max;
   }
 
   void submit() {
@@ -1744,8 +1755,7 @@ class IntegerFormField extends FormField {
 }
 
 
-class FloatFormField extends FormField {
-  protected InputBox input = new InputBox(0, 0, 0, 0);
+class FloatFormField extends StringFormField {
   protected float min_value = 0;
   protected float max_value = 0;
 
@@ -1753,57 +1763,15 @@ class FloatFormField extends FormField {
     this(message, "");
   }
   FloatFormField(String message, String hint) {
-    super(message);
-    if (message != null) {
-      this.input.setText(message);
-    }
-    if (hint != null) {
-      this.input.hint_text = hint;
-    }
-    this.setTextSize(20);
+    this(message, hint, 0, 0);
   }
-
-  void setTextSize(float text_size) {
-    this.input.text_size = text_size;
-    textSize(text_size);
-    this.input.yf = textAscent() + textDescent() + 2;
+  FloatFormField(String message, float min, float max) {
+    this(message, "", min, max);
   }
-
-  void updateWidthDependencies() {
-    this.input.setLocation(0, 0, this.field_width, this.getHeight());
-  }
-  float getHeight() {
-    return this.input.yf - this.input.yi;
-  }
-
-  String getValue() {
-    return this.input.text;
-  }
-
-  FormFieldSubmit update(int millis) {
-    this.input.update(millis);
-    return FormFieldSubmit.NONE;
-  }
-
-  void mouseMove(float mX, float mY) {
-    this.input.mouseMove(mX, mY);
-  }
-
-  void mousePress() {
-    this.input.mousePress();
-  }
-
-  void mouseRelease() {
-    this.input.mouseRelease();
-  }
-
-  void scroll(int amount) {}
-
-  void keyPress() {
-    this.input.keyPress();
-  }
-  void keyRelease() {
-    this.input.keyRelease();
+  FloatFormField(String message, String hint, float min, float max) {
+    super(message, hint);
+    this.min_value = min;
+    this.max_value = max;
   }
 
   void submit() {
@@ -1819,64 +1787,12 @@ class FloatFormField extends FormField {
 }
 
 
-class BooleanFormField extends FormField {
-  protected InputBox input = new InputBox(0, 0, 0, 0);
-
+class BooleanFormField extends StringFormField {
   BooleanFormField(String message) {
     this(message, "");
   }
   BooleanFormField(String message, String hint) {
-    super(message);
-    if (message != null) {
-      this.input.setText(message);
-    }
-    if (hint != null) {
-      this.input.hint_text = hint;
-    }
-    this.setTextSize(20);
-  }
-
-  void setTextSize(float text_size) {
-    this.input.text_size = text_size;
-    textSize(text_size);
-    this.input.yf = textAscent() + textDescent() + 2;
-  }
-
-  void updateWidthDependencies() {
-    this.input.setLocation(0, 0, this.field_width, this.getHeight());
-  }
-  float getHeight() {
-    return this.input.yf - this.input.yi;
-  }
-
-  String getValue() {
-    return this.input.text;
-  }
-
-  FormFieldSubmit update(int millis) {
-    this.input.update(millis);
-    return FormFieldSubmit.NONE;
-  }
-
-  void mouseMove(float mX, float mY) {
-    this.input.mouseMove(mX, mY);
-  }
-
-  void mousePress() {
-    this.input.mousePress();
-  }
-
-  void mouseRelease() {
-    this.input.mouseRelease();
-  }
-
-  void scroll(int amount) {}
-
-  void keyPress() {
-    this.input.keyPress();
-  }
-  void keyRelease() {
-    this.input.keyRelease();
+    super(message, hint);
   }
 
   void submit() {
@@ -1886,6 +1802,23 @@ class BooleanFormField extends FormField {
 
 
 class RadiosFormField extends FormField {
+  class FormRadioButton extends RadioButton {
+    FormRadioButton(float xc, float yc, float r) {
+      super(xc, yc, r);
+      this.show_message = false;
+    }
+    void hover() {
+    }
+    void dehover() {
+    }
+    void click() {
+    }
+    void release() {
+    }
+  }
+
+  protected ArrayList<FormRadioButton> radios = new ArrayList<FormRadioButton>();
+
   RadiosFormField(String message) {
     super(message);
   }
