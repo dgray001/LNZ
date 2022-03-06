@@ -126,6 +126,9 @@ abstract class Button {
     if (this.disabled) {
       return;
     }
+    if (mouseButton != LEFT) {
+      return;
+    }
     if (this.hovered) {
       this.clicked = true;
       this.click();
@@ -137,6 +140,9 @@ abstract class Button {
 
   void mouseRelease() {
     if (this.disabled) {
+      return;
+    }
+    if (mouseButton != LEFT) {
       return;
     }
     if (this.clicked) {
@@ -2052,8 +2058,8 @@ abstract class Form {
     CancelButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
       this.roundness = 0;
-      this.setColors(color(170), color(255, 60, 60), color(240, 30, 30), color(180, 0, 0), color(0));
-      this.noStroke();
+      this.setColors(color(170), color(240, 30, 30), color(255, 60, 60), color(180, 0, 0), color(0));
+      this.color_stroke = color(0, 1);
     }
     @Override
     void drawButton() {
@@ -2101,6 +2107,12 @@ abstract class Form {
   protected color color_stroke = color(0);
   protected color color_title = color(0);
 
+  protected boolean draggable = false;
+  protected boolean hovered_header = false;
+  protected boolean dragging = false;
+  protected float dragX = 0;
+  protected float dragY = 0;
+
   Form() {
     this(0, 0, 0, 0);
   }
@@ -2113,8 +2125,15 @@ abstract class Form {
     this.cancelButton(textAscent() + textDescent() + 1);
   }
   void cancelButton(float size) {
-    this.cancel = new CancelButton(this.xf - size, this.yi + 1, this.xf - 1, this.yi + size);
+    this.cancel = new CancelButton(this.xf - size, this.yi + 1, this.xf, this.yi + size);
     this.refreshTitle();
+  }
+
+  float form_width() {
+    return this.xf - this.xi;
+  }
+  float form_height() {
+    return this.yf - this.yi;
   }
 
   void setLocation(float xi, float yi, float xf, float yf) {
@@ -2126,6 +2145,28 @@ abstract class Form {
     for (FormField field : this.fields) {
       field.setWidth(this.xf - this.xi - 3 - this.scrollbar.bar_size);
     }
+  }
+
+  void moveForm(float xMove, float yMove) {
+    this.xi += xMove;
+    this.yi += yMove;
+    this.xf += xMove;
+    this.yf += yMove;
+    if (this.cancel != null) {
+      this.cancel.moveButton(xMove, yMove);
+    }
+    this.yStart += yMove;
+    if (this.xi >= width || this.xf <= 0 || (this.cancel != null && this.xf <= this.cancel.button_width())
+      || this.yi >= height || this.yf <= 9) {
+      this.toCenter();
+      this.dragging = false;
+    }
+  }
+
+  void toCenter() {
+    float xMove = 0.5 * (width - this.form_width()) - this.xi;
+    float yMove = 0.5 * (height - this.form_height()) - this.yi;
+    this.moveForm(xMove, yMove);
   }
 
   void refreshTitle() {
@@ -2248,8 +2289,21 @@ abstract class Form {
     if (this.cancel != null) {
       this.cancel.mouseMove(mX, mY);
     }
+    if (this.dragging) {
+      this.moveForm(mouseX - this.dragX, mouseY - this.dragY);
+      this.dragX = mouseX;
+      this.dragY = mouseY;
+    }
+    this.hovered_header = false;
     if (mX > this.xi && mX < this.xf && mY > this.yi && mY < this.yf) {
       this.hovered = true;
+      if (this.text_title_ref != null) {
+        if (mY < this.yStart) {
+          if (this.cancel == null || !this.cancel.hovered) {
+            this.hovered_header = true;
+          }
+        }
+      }
       mX -= this.xi + 1;
       mY -= this.yStart;
       float currY = this.yStart;
@@ -2275,6 +2329,11 @@ abstract class Form {
     for (FormField field : this.fields) {
       field.mousePress();
     }
+    if (this.hovered_header) {
+      this.dragging = true;
+      this.dragX = mouseX;
+      this.dragY = mouseY;
+    }
   }
 
   void mouseRelease() {
@@ -2285,6 +2344,7 @@ abstract class Form {
     for (FormField field : this.fields) {
       field.mouseRelease();
     }
+    this.dragging = false;
   }
 
   void scroll(int amount) {
