@@ -1,8 +1,27 @@
 abstract class FormLNZ extends Form {
   protected boolean canceled = false;
+  protected float shadow_distance = 10;
+  protected PImage img;
+
   FormLNZ(float xi, float yi, float xf, float yf) {
     super(xi, yi, xf, yf);
+    this.img = getCurrImage();
+    this.cancelButton();
   }
+
+  @Override
+  void update(int millis) {
+    imageMode(CORNER);
+    image(this.img, 0, 0);
+    rectMode(CORNERS);
+    fill(0, 150);
+    stroke(0, 1);
+    translate(shadow_distance, shadow_distance);
+    rect(this.xi, this.yi, this.xf, this.yf);
+    translate(-shadow_distance, -shadow_distance);
+    super.update(millis);
+  }
+
   void cancel() {
     this.canceled = true;
   }
@@ -223,11 +242,9 @@ class InitialInterface extends InterfaceLNZ {
       super(0.5 * Constants.initialInterface_size - 120, 0.5 * Constants.initialInterface_size - 120,
         0.5 * Constants.initialInterface_size + 120, 0.5 * Constants.initialInterface_size + 120);
       this.setTitleText(title);
-      this.addField(new TextBoxFormField(message, 150));
-      this.addField(new SubmitFormField("  Ok  "));
-      this.addField(new SubmitFormField("  Ok  "));
-      this.addField(new SubmitFormField("  Ok  "));
-      this.addField(new SubmitFormField("  Ok  "));
+      this.setTitleSize(18);
+      this.addField(new SpacerFormField(0));
+      this.addField(new TextBoxFormField(message, 120));
       this.addField(new SubmitFormField("  Ok  "));
     }
     void submit() {
