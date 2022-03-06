@@ -1515,7 +1515,7 @@ class InputBox extends RectangleButton {
 
 
 
-abstract class Slider  {
+class Slider  {
   class SliderButton extends CircleButton {
     protected boolean active = false;
     protected float active_grow_factor = 1.3;
@@ -1720,6 +1720,17 @@ abstract class Slider  {
     else {
       this.value += this.step_size * amount;
     }
+    if (this.value > this.max_value) {
+      this.value = this.max_value;
+    }
+    else if (this.value < this.min_value) {
+      this.value = this.min_value;
+    }
+    this.refreshButton();
+  }
+
+  void setValue(float value) {
+    this.value = value;
     if (this.value > this.max_value) {
       this.value = this.max_value;
     }
@@ -2092,8 +2103,8 @@ class BooleanFormField extends StringFormField {
 
 // Array of radio buttons
 class RadiosFormField extends MessageFormField {
-  class FormFieldRadioButton extends RadioButton {
-    FormFieldRadioButton(String message) {
+  class DefaultRadioButton extends RadioButton {
+    DefaultRadioButton(String message) {
       super(0, 0, 0);
       this.message = message;
     }
@@ -2117,7 +2128,7 @@ class RadiosFormField extends MessageFormField {
     this.addRadio("");
   }
   void addRadio(String message) {
-    this.addRadio(new FormFieldRadioButton(message));
+    this.addRadio(new DefaultRadioButton(message));
   }
   void addRadio(RadioButton radio) {
     this.radios.add(radio);
@@ -2209,8 +2220,8 @@ class RadiosFormField extends MessageFormField {
 
 // Single checkbox
 class CheckboxFormField extends MessageFormField {
-  class FormFieldCheckBox extends CheckBox {
-    FormFieldCheckBox() {
+  class DefaultCheckBox extends CheckBox {
+    DefaultCheckBox() {
       super(0, 0, 0, 0);
     }
     void hover() {
@@ -2221,7 +2232,7 @@ class CheckboxFormField extends MessageFormField {
     }
   }
 
-  protected CheckBox checkbox = new FormFieldCheckBox();
+  protected CheckBox checkbox = new DefaultCheckBox();
 
   CheckboxFormField(String message) {
     super(message);
@@ -2264,6 +2275,74 @@ class CheckboxFormField extends MessageFormField {
   @Override
   void mouseRelease() {
     this.checkbox.mouseRelease();
+  }
+}
+
+
+// Slider
+class SliderFormField extends MessageFormField {
+  protected Slider slider = new Slider();
+  protected float max_slider_height = 30;
+
+  SliderFormField(String message, float max) {
+    this(message, 0, max, -1);
+  }
+  SliderFormField(String message, float min, float max) {
+    this(message, min, max, -1);
+  }
+  SliderFormField(String message, float min, float max, float step) {
+    super(message);
+    this.slider.bounds(min, max, step);
+    this.slider.setValue(min);
+  }
+
+  @Override
+  void updateWidthDependencies() {
+    float temp_field_width = this.field_width;
+    this.field_width = 0.4 * this.field_width;
+    super.updateWidthDependencies();
+    this.field_width = temp_field_width;
+    textSize(this.text_size);
+    float sliderheight = min(this.getHeight(), this.max_slider_height);
+    float xi = textWidth(this.message) + 0.05 * this.field_width;
+    float yi = 0.5 * (this.getHeight() - sliderheight);
+    this.slider.setLocation(xi, yi, this.field_width, yi + sliderheight);
+  }
+
+  @Override
+  String getValue() {
+    return Float.toString(this.slider.value);
+  }
+
+  @Override
+  FormFieldSubmit update(int millis) {
+    this.slider.update(millis);
+    return super.update(millis);
+  }
+
+  @Override
+  void mouseMove(float mX, float mY) {
+    this.slider.mouseMove(mX, mY);
+  }
+
+  @Override
+  void mousePress() {
+    this.slider.mousePress();
+  }
+
+  @Override
+  void mouseRelease() {
+    this.slider.mouseRelease();
+  }
+
+  @Override
+  void scroll(int amount) {
+    this.slider.scroll(amount);
+  }
+
+  @Override
+  void keyPress() {
+    this.slider.keyPress();
   }
 }
 

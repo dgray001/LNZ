@@ -129,7 +129,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220306: v0.6.1i" +
+  "\n20220306: v0.6.1k" +
   "\nLines: 3040 (v0.6.1)" +
   "";
   static final String version_history =
@@ -1911,7 +1911,7 @@ class InputBox extends RectangleButton {
 
 
 
-abstract class Slider  {
+class Slider  {
   class SliderButton extends CircleButton {
     protected boolean active = false;
     protected float active_grow_factor = 1.3f;
@@ -2116,6 +2116,17 @@ abstract class Slider  {
     else {
       this.value += this.step_size * amount;
     }
+    if (this.value > this.max_value) {
+      this.value = this.max_value;
+    }
+    else if (this.value < this.min_value) {
+      this.value = this.min_value;
+    }
+    this.refreshButton();
+  }
+
+   public void setValue(float value) {
+    this.value = value;
     if (this.value > this.max_value) {
       this.value = this.max_value;
     }
@@ -2488,8 +2499,8 @@ class BooleanFormField extends StringFormField {
 
 // Array of radio buttons
 class RadiosFormField extends MessageFormField {
-  class FormFieldRadioButton extends RadioButton {
-    FormFieldRadioButton(String message) {
+  class DefaultRadioButton extends RadioButton {
+    DefaultRadioButton(String message) {
       super(0, 0, 0);
       this.message = message;
     }
@@ -2513,7 +2524,7 @@ class RadiosFormField extends MessageFormField {
     this.addRadio("");
   }
    public void addRadio(String message) {
-    this.addRadio(new FormFieldRadioButton(message));
+    this.addRadio(new DefaultRadioButton(message));
   }
    public void addRadio(RadioButton radio) {
     this.radios.add(radio);
@@ -2605,8 +2616,8 @@ class RadiosFormField extends MessageFormField {
 
 // Single checkbox
 class CheckboxFormField extends MessageFormField {
-  class FormFieldCheckBox extends CheckBox {
-    FormFieldCheckBox() {
+  class DefaultCheckBox extends CheckBox {
+    DefaultCheckBox() {
       super(0, 0, 0, 0);
     }
      public void hover() {
@@ -2617,7 +2628,7 @@ class CheckboxFormField extends MessageFormField {
     }
   }
 
-  protected CheckBox checkbox = new FormFieldCheckBox();
+  protected CheckBox checkbox = new DefaultCheckBox();
 
   CheckboxFormField(String message) {
     super(message);
@@ -2660,6 +2671,74 @@ class CheckboxFormField extends MessageFormField {
   @Override public 
   void mouseRelease() {
     this.checkbox.mouseRelease();
+  }
+}
+
+
+// Slider
+class SliderFormField extends MessageFormField {
+  protected Slider slider = new Slider();
+  protected float max_slider_height = 30;
+
+  SliderFormField(String message, float max) {
+    this(message, 0, max, -1);
+  }
+  SliderFormField(String message, float min, float max) {
+    this(message, min, max, -1);
+  }
+  SliderFormField(String message, float min, float max, float step) {
+    super(message);
+    this.slider.bounds(min, max, step);
+    this.slider.setValue(min);
+  }
+
+  @Override public 
+  void updateWidthDependencies() {
+    float temp_field_width = this.field_width;
+    this.field_width = 0.4f * this.field_width;
+    super.updateWidthDependencies();
+    this.field_width = temp_field_width;
+    textSize(this.text_size);
+    float sliderheight = min(this.getHeight(), this.max_slider_height);
+    float xi = textWidth(this.message) + 0.05f * this.field_width;
+    float yi = 0.5f * (this.getHeight() - sliderheight);
+    this.slider.setLocation(xi, yi, this.field_width, yi + sliderheight);
+  }
+
+  @Override public 
+  String getValue() {
+    return Float.toString(this.slider.value);
+  }
+
+  @Override public 
+  FormFieldSubmit update(int millis) {
+    this.slider.update(millis);
+    return super.update(millis);
+  }
+
+  @Override public 
+  void mouseMove(float mX, float mY) {
+    this.slider.mouseMove(mX, mY);
+  }
+
+  @Override public 
+  void mousePress() {
+    this.slider.mousePress();
+  }
+
+  @Override public 
+  void mouseRelease() {
+    this.slider.mouseRelease();
+  }
+
+  @Override public 
+  void scroll(int amount) {
+    this.slider.scroll(amount);
+  }
+
+  @Override public 
+  void keyPress() {
+    this.slider.keyPress();
   }
 }
 
@@ -3653,6 +3732,8 @@ class InitialInterface extends InterfaceLNZ {
       this.addField(new SpacerFormField(0));
       this.addField(new TextBoxFormField(message, 120));
       this.addField(new SubmitFormField("  Ok  "));
+      this.addField(new SliderFormField("Slider test1", 0, 10, 0.5f));
+      this.addField(new SliderFormField("Slider test2", -5, 10));
     }
      public void submit() {
       this.canceled = true;
@@ -3661,15 +3742,6 @@ class InitialInterface extends InterfaceLNZ {
 
   private InitialInterfaceButton[] buttons = new InitialInterfaceButton[5];
   private LogoImageButton logo = new LogoImageButton();
-
-  TestSlider test = new TestSlider();
-
-  class TestSlider extends Slider {
-    TestSlider() {
-      super(10, 0, 250, 30);
-      this.bounds(0, 10, 1.08f);
-    }
-  }
 
   InitialInterface() {
     super();
@@ -3687,7 +3759,6 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.update(millis);
     }
-    test.update(millis);
   }
 
    public void mouseMove(float mX, float mY) {
@@ -3695,7 +3766,6 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseMove(mX, mY);
     }
-    test.mouseMove(mX, mY);
   }
 
    public void mousePress() {
@@ -3703,7 +3773,6 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mousePress();
     }
-    test.mousePress();
   }
 
    public void mouseRelease() {
@@ -3711,15 +3780,10 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseRelease();
     }
-    test.mouseRelease();
   }
 
-   public void scroll(int amount) {
-    test.scroll(amount);
-  }
-   public void keyPress() {
-    test.keyPress();
-  }
+   public void scroll(int amount) {}
+   public void keyPress() {}
    public void keyRelease() {}
 }
 
