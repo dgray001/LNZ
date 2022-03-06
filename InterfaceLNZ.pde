@@ -249,10 +249,10 @@ class InitialInterface extends InterfaceLNZ {
       this.addField(new SpacerFormField(0));
       this.addField(new TextBoxFormField(message, 120));
       this.addField(new SubmitFormField("  Ok  "));
-      this.addField(new StringFormField("test1: ", "Enter a string"));
-      this.addField(new IntegerFormField("test2: ", "Enter an int between 0 and 10", 0, 10));
-      this.addField(new FloatFormField("test3fdsafasfds", "Enter a float between -5 and 5", -5, 5));
-      this.addField(new BooleanFormField("test4fdasfasfdsafsafdsafsadfdsafaf", "Enter a boolean"));
+      this.addField(new CheckboxFormField("test1: "));
+      this.addField(new CheckboxFormField("test2: "));
+      this.addField(new CheckboxFormField("test3fdsafasfds"));
+      this.addField(new CheckboxFormField("test4fdasfasfdsafsafdsafsadfdsafaf"));
     }
     void submit() {
       //this.canceled = true;
