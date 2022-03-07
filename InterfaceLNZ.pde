@@ -281,18 +281,7 @@ class InitialInterface extends InterfaceLNZ {
   private InitialInterfaceButton[] buttons = new InitialInterfaceButton[5];
   private LogoImageButton logo = new LogoImageButton();
 
-  class Test extends ListTextBox {
-    Test() {
-      super(5, 5, 200, 390);
-    }
-    void click() {
-      println("clicked " + this.text_lines_ref.get(this.line_clicked));
-    }
-    void doubleclick() {
-      println("double-clicked " + this.text_lines_ref.get(this.line_clicked));
-    }
-  }
-  Test test;
+  DropDownList test;
 
   InitialInterface() {
     super();
@@ -303,7 +292,8 @@ class InitialInterface extends InterfaceLNZ {
     this.buttons[2] = new InitialInterfaceButton3(buttonHeight);
     this.buttons[3] = new InitialInterfaceButton4(buttonHeight);
     this.buttons[4] = new InitialInterfaceButton5(buttonHeight);
-    this.test = new Test();
+    this.test = new DropDownList(10, 10, 200, 100);
+    test.hint_text = "pick a line";
     this.test.setText(Constants.version_history);
     this.test.addLine("new line 1");
     this.test.addLine("new line 2");

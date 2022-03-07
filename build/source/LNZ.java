@@ -114,7 +114,7 @@ Global global;
   }
   // Prevent sketch from exiting on ESC
   if (key == ESC) {
-    //key = 0;
+    key = 0;
   }
 }
 
@@ -129,7 +129,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220306: v0.6.1m" +
+  "\n20220306: v0.6.1n" +
   "\nLines: 3040 (v0.6.1)" +
   "";
   static final String version_history =
@@ -1755,7 +1755,7 @@ abstract class ListTextBox extends TextBox {
     fill(this.highlight_color);
     strokeWeight(0.001f);
     stroke(this.highlight_color);
-    rect(this.xi + 1, currY, this.xf - this.xi - 2 - this.scrollbar.bar_size, currY + text_height);
+    rect(this.xi + 1, currY, this.xf - 2 - this.scrollbar.bar_size, currY + text_height);
   }
 
   @Override public 
@@ -1771,8 +1771,9 @@ abstract class ListTextBox extends TextBox {
       textSize(this.text_size);
       float line_height = textAscent() + textDescent() + this.text_leading;
       int target_line = PApplet.parseInt(floor(this.scrollbar.value) + floor((mY - currY) / line_height));
+      int lines_shown = this.text_lines.size() - PApplet.parseInt(this.scrollbar.maxValue);
       if (target_line < 0 || mX > (this.xf - this.scrollbar.bar_size) || target_line >= this.text_lines_ref.size() ||
-        (currY + (1 + target_line - floor(this.scrollbar.value)) * line_height + 1 > this.yf)) {
+        target_line - PApplet.parseInt(floor(this.scrollbar.value)) >= lines_shown) {
         this.line_hovered = -1;
       }
       else {
@@ -1804,6 +1805,20 @@ abstract class ListTextBox extends TextBox {
     }
   }
 
+   public void jump_to_line(boolean hard_jump) {
+    if (this.line_clicked < 0) {
+      return;
+    }
+    if (hard_jump || this.line_clicked < PApplet.parseInt(floor(this.scrollbar.value))) {
+      this.scrollbar.updateValue(this.line_clicked);
+      return;
+    }
+    int lines_shown = this.text_lines.size() - PApplet.parseInt(this.scrollbar.maxValue);
+    if (this.line_clicked >= PApplet.parseInt(floor(this.scrollbar.value)) + lines_shown) {
+      this.scrollbar.increaseValue(1 + this.line_clicked - PApplet.parseInt(floor(this.scrollbar.value)) - lines_shown);
+    }
+  }
+
    public void keyPress() {
     if (!this.hovered) {
       return;
@@ -1813,11 +1828,13 @@ abstract class ListTextBox extends TextBox {
         case UP:
           if (this.line_clicked > 0) {
             this.line_clicked--;
+            this.jump_to_line(false);
           }
           break;
         case DOWN:
           if (this.line_clicked < this.text_lines_ref.size() - 1) {
             this.line_clicked++;
+            this.jump_to_line(false);
           }
           break;
         default:
@@ -1828,6 +1845,134 @@ abstract class ListTextBox extends TextBox {
 
    public abstract void click(); // click on line
    public abstract void doubleclick(); // doubleclick on line
+}
+
+
+
+class DropDownList extends ListTextBox {
+  protected boolean active = false;
+  protected boolean show_highlight = false;
+  protected String hint_text = "";
+
+  DropDownList() {
+    this(0, 0, 0, 0);
+  }
+  DropDownList(float xi, float yi, float xf, float yf) {
+    super(xi, yi, xf, yf);
+  }
+
+  @Override public 
+  void update(int millis) {
+    if (this.active) {
+      super.update(millis);
+    }
+    else {
+      textAlign(LEFT, TOP);
+      textSize(this.text_size);
+      float text_height = textAscent() + textDescent();
+      rectMode(CORNERS);
+      fill(this.color_background);
+      stroke(this.color_stroke);
+      strokeWeight(1);
+      rect(this.xi, this.yi, this.xf - 1 - this.scrollbar.bar_size, this.yi + 3 + text_height);
+      if (this.line_clicked >= 0) {
+        fill(this.color_text);
+        text(this.text_lines.get(this.line_clicked), this.xi + 2, this.yi + 1);
+      }
+      else {
+        fill(this.color_text, 150);
+        text(this.hint_text, this.xi + 2, this.yi + 1);
+      }
+      if (this.show_highlight) {
+        fill(this.highlight_color);
+        strokeWeight(0.0001f);
+        stroke(this.highlight_color);
+        rect(this.xi + 1, this.yi + 1, this.xf - 2 - this.scrollbar.bar_size, this.yi + 1 + text_height);
+      }
+    }
+  }
+
+  @Override public 
+  void mousePress() {
+    if (!this.hovered) {
+      this.doubleclick();
+      this.show_highlight = false;
+    }
+    if (this.active) {
+      super.mousePress();
+    }
+    else {
+      int last_line_clicked = this.line_clicked;
+      super.mousePress();
+      if (this.line_clicked == PApplet.parseInt(floor(this.scrollbar.value))) {
+        if (this.show_highlight) {
+          this.active = true;
+          this.line_clicked = last_line_clicked;
+          this.jump_to_line(true);
+        }
+        else {
+          this.line_clicked = last_line_clicked;
+          this.show_highlight = true;
+        }
+      }
+      else {
+        this.line_clicked = last_line_clicked;
+        this.show_highlight = false;
+      }
+    }
+  }
+
+  @Override public 
+  void keyPress() {
+    if (!this.show_highlight && !this.active) {
+      return;
+    }
+    if (key == CODED) {
+      switch(keyCode) {
+        case UP:
+          if (this.line_clicked > 0) {
+            this.line_clicked--;
+            this.jump_to_line(false);
+          }
+          break;
+        case DOWN:
+          if (this.line_clicked < this.text_lines_ref.size() - 1) {
+            this.line_clicked++;
+            this.jump_to_line(false);
+          }
+          break;
+        default:
+          break;
+      }
+    }
+    else {
+      switch(key) {
+        case ENTER:
+        case RETURN:
+          if (this.active) {
+            this.doubleclick();
+          }
+          else {
+            this.active = true;
+            this.jump_to_line(true);
+          }
+          break;
+        case ESC:
+          this.doubleclick();
+          this.show_highlight = false;
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+   public void click() {}
+
+   public void doubleclick() {
+    this.active = false;
+    this.show_highlight = true;
+  }
 }
 
 
@@ -3985,18 +4130,7 @@ class InitialInterface extends InterfaceLNZ {
   private InitialInterfaceButton[] buttons = new InitialInterfaceButton[5];
   private LogoImageButton logo = new LogoImageButton();
 
-  class Test extends ListTextBox {
-    Test() {
-      super(5, 5, 200, 390);
-    }
-     public void click() {
-      println("clicked " + this.text_lines_ref.get(this.line_clicked));
-    }
-     public void doubleclick() {
-      println("double-clicked " + this.text_lines_ref.get(this.line_clicked));
-    }
-  }
-  Test test;
+  DropDownList test;
 
   InitialInterface() {
     super();
@@ -4007,7 +4141,8 @@ class InitialInterface extends InterfaceLNZ {
     this.buttons[2] = new InitialInterfaceButton3(buttonHeight);
     this.buttons[3] = new InitialInterfaceButton4(buttonHeight);
     this.buttons[4] = new InitialInterfaceButton5(buttonHeight);
-    this.test = new Test();
+    this.test = new DropDownList(10, 10, 200, 100);
+    test.hint_text = "pick a line";
     this.test.setText(Constants.version_history);
     this.test.addLine("new line 1");
     this.test.addLine("new line 2");
