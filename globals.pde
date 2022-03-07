@@ -38,7 +38,7 @@ class Global {
 }
 
 
-class Options {
+class Options { // global options (profile independent)
   private String default_profile_name = "";
 
   Options() {

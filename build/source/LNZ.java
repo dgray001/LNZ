@@ -114,7 +114,7 @@ Global global;
   }
   // Prevent sketch from exiting on ESC
   if (key == ESC) {
-    key = 0;
+    //key = 0;
   }
 }
 
@@ -156,6 +156,8 @@ static class Constants {
   static final float newProfileForm_height = 500;
   static final float OptionsForm_widthOffset = 300;
   static final float OptionsForm_heightOffset = 100;
+  static final float AchievementsForm_widthOffset = 300;
+  static final float AchievementsForm_heightOffset = 100;
 }
 class DImg {
 
@@ -3193,6 +3195,9 @@ class SubmitFormField extends FormField {
 }
 
 
+//class ButtonFormField extends
+
+
 
 abstract class Form {
   class CancelButton extends RectangleButton {
@@ -3739,7 +3744,7 @@ class Global {
 }
 
 
-class Options {
+class Options { // global options (profile independent)
   private String default_profile_name = "";
 
   Options() {
@@ -3890,14 +3895,18 @@ abstract class InterfaceLNZ {
       this.setTitleSize(20);
       this.color_background = color(250, 250, 180);
       this.color_header = color(180, 180, 50);
-      this.addField(new SubmitFormField("Save Options"));
       if (global.profile == null) {
         this.canceled = true;
         return;
       }
+      // add fields for profile options
+      this.addField(new SubmitFormField("Save Options"));
     }
 
      public void submit() {
+      // set profile options
+      global.profile.save();
+      this.canceled = true;
     }
   }
 
@@ -4130,8 +4139,6 @@ class InitialInterface extends InterfaceLNZ {
   private InitialInterfaceButton[] buttons = new InitialInterfaceButton[5];
   private LogoImageButton logo = new LogoImageButton();
 
-  DropDownList test;
-
   InitialInterface() {
     super();
     float buttonHeight = (Constants.initialInterface_size - (this.buttons.length + 1) *
@@ -4141,17 +4148,6 @@ class InitialInterface extends InterfaceLNZ {
     this.buttons[2] = new InitialInterfaceButton3(buttonHeight);
     this.buttons[3] = new InitialInterfaceButton4(buttonHeight);
     this.buttons[4] = new InitialInterfaceButton5(buttonHeight);
-    this.test = new DropDownList(10, 10, 200, 100);
-    test.hint_text = "pick a line";
-    this.test.setText(Constants.version_history);
-    this.test.addLine("new line 1");
-    this.test.addLine("new line 2");
-    this.test.addLine("new line 3");
-    this.test.addLine("new line 4");
-    this.test.addLine("new line 5");
-    this.test.addLine("new line 6");
-    this.test.addLine("new line 7");
-    this.test.addLine("new line 8");
   }
 
    public void update(int millis) {
@@ -4159,7 +4155,6 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.update(millis);
     }
-    test.update(millis);
   }
 
    public void mouseMove(float mX, float mY) {
@@ -4167,7 +4162,6 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseMove(mX, mY);
     }
-    test.mouseMove(mX, mY);
   }
 
    public void mousePress() {
@@ -4175,7 +4169,6 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mousePress();
     }
-    test.mousePress();
   }
 
    public void mouseRelease() {
@@ -4183,15 +4176,10 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseRelease();
     }
-    test.mouseRelease();
   }
 
-   public void scroll(int amount) {
-    test.scroll(amount);
-  }
-   public void keyPress() {
-    test.keyPress();
-  }
+   public void scroll(int amount) {}
+   public void keyPress() {}
    public void keyRelease() {}
 }
 
@@ -4212,7 +4200,7 @@ class MainMenuInterface extends InterfaceLNZ {
       this.icon = this.getIcon();
       this.text_size = 24;
       this.noStroke();
-      this.setColors(color(170), color(0, 1), color(150, 90, 90, 150), color(240, 180, 180), color(255));
+      this.setColors(color(170), color(1, 0), color(150, 90, 90, 150), color(240, 180, 180), color(255));
       this.refreshColor();
     }
 
@@ -4255,6 +4243,15 @@ class MainMenuInterface extends InterfaceLNZ {
       }
     }
 
+     public void reset() {
+      this.stretchButton(this.xf_grow * this.ratio - this.xf, RIGHT);
+      this.collapsing = false;
+      this.clicked = false;
+      this.hovered = false;
+      this.show_message = false;
+      this.refreshColor();
+    }
+
     @Override public 
     int fillColor() {
       if (this.collapsing) {
@@ -4290,6 +4287,7 @@ class MainMenuInterface extends InterfaceLNZ {
      public void release() {
       super.release();
       this.color_text = color(255);
+      this.reset();
     }
   }
 
@@ -4338,6 +4336,7 @@ class MainMenuInterface extends InterfaceLNZ {
     @Override public 
     void release() {
       super.release();
+      MainMenuInterface.this.form = new AchievementsForm();
     }
   }
 
@@ -4348,6 +4347,11 @@ class MainMenuInterface extends InterfaceLNZ {
     }
      public PImage getIcon() {
       return global.images.getImage("icons/map.png");
+    }
+
+    @Override public 
+    void update(int millis) {
+      super.update(millis);
     }
 
     @Override public 
@@ -4419,6 +4423,26 @@ class MainMenuInterface extends InterfaceLNZ {
     @Override public 
     void cancel() {
       this.fields.get(2).setValue("You must create a profile");
+    }
+  }
+
+
+  class AchievementsForm extends FormLNZ {
+    AchievementsForm() {
+      super(Constants.AchievementsForm_widthOffset, Constants.AchievementsForm_heightOffset,
+        width - Constants.AchievementsForm_widthOffset, height - Constants.AchievementsForm_heightOffset);
+      this.setTitleText("Achievements");
+      this.setTitleSize(20);
+      this.color_background = color(180, 250, 250);
+      this.color_header = color(50, 180, 180);
+      if (global.profile == null) {
+        this.canceled = true;
+        return;
+      }
+      // add fields for profile achievements
+    }
+
+     public void submit() {
     }
   }
 
