@@ -1,10 +1,16 @@
 class Profile {
   private String display_name = "";
+  private HashMap<Achievement, Boolean> achievements = new HashMap<Achievement, Boolean>();
+  private int achievement_tokens = 0;
 
   Profile() {
+    this("");
   }
   Profile(String s) {
     this.display_name = s;
+    for (Achievement a : Achievement.VALUES) {
+      this.achievements.put(a, false);
+    }
   }
 
   void save() {
@@ -31,6 +37,19 @@ Profile readProfile(String path) {
     switch(data[0]) {
       case "display_name":
         p.display_name = trim(data[1]);
+        break;
+      case "achievement":
+        for (Achievement a : Achievement.VALUES) {
+          if (a.display_name().equals(trim(data[1]))) {
+            p.achievements.put(a, true);
+            break;
+          }
+        }
+        break;
+      case "achievement_tokens":
+        if (isInt(trim(data[1]))) {
+          p.achievement_tokens = toInt(trim(data[1]));
+        }
         break;
       default:
         break;
