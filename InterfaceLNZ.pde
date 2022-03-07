@@ -285,6 +285,20 @@ class InitialInterface extends InterfaceLNZ {
   private InitialInterfaceButton[] buttons = new InitialInterfaceButton[5];
   private LogoImageButton logo = new LogoImageButton();
 
+  class Test extends LeagueButton {
+    Test() {
+      super(120, 395, 300, 400, 0.2 * PI, 40, 10);
+      this.message = "Launch Game";
+      this.show_message = true;
+      this.text_size = 22;
+    }
+    void click() {}
+    void hover() {}
+    void dehover() {}
+    void release() {}
+  }
+  Test test = new Test();
+
   InitialInterface() {
     super();
     float buttonHeight = (Constants.initialInterface_size - (this.buttons.length + 1) *
@@ -301,6 +315,7 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.update(millis);
     }
+    test.update(millis);
   }
 
   void mouseMove(float mX, float mY) {
@@ -308,6 +323,7 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseMove(mX, mY);
     }
+    test.mouseMove(mX, mY);
   }
 
   void mousePress() {
@@ -315,6 +331,7 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mousePress();
     }
+    test.mousePress();
   }
 
   void mouseRelease() {
@@ -322,6 +339,7 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseRelease();
     }
+    test.mouseRelease();
   }
 
   void scroll(int amount) {}

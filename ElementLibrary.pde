@@ -589,6 +589,7 @@ abstract class RadioButton extends CircleButton {
 
 
 
+
 abstract class TriangleButton extends Button {
   protected float x1;
   protected float y1;
@@ -604,6 +605,11 @@ abstract class TriangleButton extends Button {
   protected float yCenter;
 
   TriangleButton(float x1, float y1, float x2, float y2, float x3, float y3) {
+    super();
+    this.setLocation(x1, y1, x2, y2, x3, y3);
+  }
+
+  void setLocation(float x1, float y1, float x2, float y2, float x3, float y3) {
     this.x1 = x1;
     this.y1 = y1;
     this.x2 = x2;
@@ -624,6 +630,14 @@ abstract class TriangleButton extends Button {
 
   float yCenter() {
     return this.yCenter;
+  }
+
+  float button_width() {
+    return max(this.x1, this.x2, this.x3) - min(this.x1, this.x2, this.x3);
+  }
+
+  float button_height() {
+    return max(this.y1, this.y2, this.y3) - min(this.y1, this.y2, this.y3);
   }
 
   void drawButton() {
@@ -650,6 +664,191 @@ abstract class TriangleButton extends Button {
     float t1 = (this.dotuu * dotvp - this.dotvu * dotup) / this.constant;
     float t2 = (this.dotvv * dotup - this.dotvu * dotvp) / this.constant;
     if (t1 >= 0 && t2 >= 0 && t1 + t2 < 1) {
+      return true;
+    }
+    return false;
+  }
+}
+
+
+
+
+abstract class ArcButton extends Button {
+  class TestButton extends TriangleButton {
+    TestButton(float x1, float y1, float x2, float y2, float x3, float y3) {
+      super(x1, y1, x2, y2, x3, y3);
+    }
+    void hover() {}
+    void dehover() {}
+    void click() {}
+    void release() {}
+  }
+
+  protected float xc;
+  protected float yc;
+  protected float xr;
+  protected float yr;
+  protected float start;
+  protected float stop;
+  protected boolean pie = true; // false for open arc
+  protected float xStart;
+  protected float xStop;
+  protected float yStart;
+  protected float yStop;
+
+  ArcButton(float xc, float yc, float xr, float yr, float start, float stop) {
+    super();
+    this.setLocation(xc, yc, xr, yr, start, stop);
+  }
+
+  void setLocation(float xc, float yc, float xr, float yr, float start, float stop) {
+    this.xc = xc;
+    this.yc = yc;
+    this.xr = xr;
+    this.yr = yr;
+    this.start = start;
+    this.stop = stop;
+    // fix angles if not in range [0, TWO_PI]
+    this.xStart = cos(this.start);
+    this.xStop = cos(this.stop);
+    this.yStart = sin(this.start);
+    this.yStop = sin(this.stop);
+  }
+
+  float xCenter() {
+    return this.xc;
+  }
+
+  float yCenter() {
+    return this.yc;
+  }
+
+  float button_width() {
+    return 2 * this.xr;
+  }
+
+  float button_height() {
+    return 2 * this.yr;
+  }
+
+  void drawButton() {
+    this.setFill();
+    ellipseMode(RADIUS);
+    if (this.pie) {
+      arc(this.xc, this.yc, this.xr, this.yr, this.start, this.stop, PIE);
+    }
+    else {
+      arc(this.xc, this.yc, this.xr, this.yr, this.start, this.stop, CHORD);
+    }
+    this.writeText();
+  }
+
+  void moveButton(float xMove, float yMove) {
+    this.xc += xMove;
+    this.yc += yMove;
+  }
+
+  boolean mouseOn(float mX, float mY) {
+    if (this.xr == 0 || this.yr == 0) {
+      return false;
+    }
+    // in ellipse
+    float xRatio = (mX - this.xc) / this.xr;
+    float yRatio = (mY - this.yc) / this.yr;
+    float hypotenuse = xRatio * xRatio + yRatio * yRatio;
+    if (hypotenuse > 1) {
+      return false;
+    }
+    hypotenuse = sqrt(hypotenuse);
+    // in arc
+    float angle = asin(yRatio / hypotenuse);
+    if (xRatio < 0) { // Q2 or Q3
+      angle = PI - angle;
+    }
+    else if (yRatio < 0) { // Q4
+      angle += TWO_PI;
+    }
+    if (angle > this.start && angle < this.stop) {
+      if (this.pie) {
+        return true;
+      }
+      else {
+        TestButton excludedArea = new TestButton(0, 0, this.xStart, this.yStart, this.xStop, this.yStop);
+        if (!excludedArea.mouseOn(xRatio, yRatio)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+}
+
+
+
+
+// arc (chord) button cut with a chord
+abstract class LeagueButton extends ArcButton {
+  protected float trapezoid_height;
+  protected float trapezoid_shift;
+  protected float trapezoid_xi;
+  protected float trapezoid_xf;
+  protected float trapezoid_bottom;
+  protected PVector[] vertices = new PVector[4]; // trapezoid vertices
+
+  LeagueButton(float xBottom, float yBottom, float xRadius, float yRadius, float radians, float trapezoid_height, float trapezoid_shift) {
+    super(xBottom, yBottom - yRadius, xRadius, yRadius, HALF_PI - 0.5 * radians, HALF_PI + 0.5 * radians);
+    this.pie = false;
+    this.trapezoid_height = trapezoid_height;
+    this.trapezoid_shift = trapezoid_shift;
+    this.trapezoid_xi = xStop * this.xr + this.xc;
+    this.trapezoid_xf = xStart * this.xr + this.xc;
+    this.trapezoid_bottom = yStop * this.yr + this.yc;
+    this.vertices[0] = new PVector(this.trapezoid_xi, this.trapezoid_bottom);
+    this.vertices[1] = new PVector(this.trapezoid_xi + this.trapezoid_shift, this.trapezoid_bottom - this.trapezoid_height);
+    this.vertices[2] = new PVector(this.trapezoid_xf - this.trapezoid_shift, this.trapezoid_bottom - this.trapezoid_height);
+    this.vertices[3] = new PVector(this.trapezoid_xf, this.trapezoid_bottom);
+  }
+
+  @Override
+  void drawButton() {
+    this.setFill();
+    ellipseMode(RADIUS);
+    arc(this.xc, this.yc, this.xr, this.yr, this.start, this.stop, OPEN);
+    beginShape();
+    for (PVector p : this.vertices) {
+      vertex(p.x, p.y);
+    }
+    endShape();
+    stroke(this.fillColor());
+    strokeWeight(1);
+    line(this.trapezoid_xi, this.trapezoid_bottom, this.trapezoid_xf, this.trapezoid_bottom);
+    if (this.show_message) {
+      fill(this.color_text);
+      textSize(this.text_size);
+      textAlign(CENTER, BOTTOM);
+      text(this.message, this.xc, this.trapezoid_bottom);
+    }
+  }
+
+  boolean mouseOn(float mX, float mY) {
+    boolean collision = false;
+    for (int i = 0; i < this.vertices.length; i++) {
+      PVector p1 = this.vertices[i];
+      PVector p2;
+      if (i + 1 == this.vertices.length) {
+        p2 = this.vertices[0];
+      }
+      else {
+        p2 = this.vertices[i + 1];
+      }
+      if ( ((p1.y > mY) != (p2.y > mY)) && (mX < (p2.x - p1.x) * (mY - p1.y) / (p2.y - p1.y) + p1.x) ) {
+        collision = !collision;
+      }
+    }
+    if (collision) {
+      return true;
+    }
+    if (super.mouseOn(mX, mY)) {
       return true;
     }
     return false;
