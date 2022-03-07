@@ -16,7 +16,7 @@ class MainMenuInterface extends InterfaceLNZ {
       this.icon = this.getIcon();
       this.text_size = 24;
       this.noStroke();
-      this.setColors(color(170), color(0, 1), color(150, 90, 90, 150), color(240, 180, 180), color(255));
+      this.setColors(color(170), color(1, 0), color(150, 90, 90, 150), color(240, 180, 180), color(255));
       this.refreshColor();
     }
 
@@ -59,6 +59,15 @@ class MainMenuInterface extends InterfaceLNZ {
       }
     }
 
+    void reset() {
+      this.stretchButton(this.xf_grow * this.ratio - this.xf, RIGHT);
+      this.collapsing = false;
+      this.clicked = false;
+      this.hovered = false;
+      this.show_message = false;
+      this.refreshColor();
+    }
+
     @Override
     color fillColor() {
       if (this.collapsing) {
@@ -94,6 +103,7 @@ class MainMenuInterface extends InterfaceLNZ {
     void release() {
       super.release();
       this.color_text = color(255);
+      this.reset();
     }
   }
 
@@ -142,6 +152,7 @@ class MainMenuInterface extends InterfaceLNZ {
     @Override
     void release() {
       super.release();
+      MainMenuInterface.this.form = new AchievementsForm();
     }
   }
 
@@ -152,6 +163,11 @@ class MainMenuInterface extends InterfaceLNZ {
     }
     PImage getIcon() {
       return global.images.getImage("icons/map.png");
+    }
+
+    @Override
+    void update(int millis) {
+      super.update(millis);
     }
 
     @Override
@@ -223,6 +239,26 @@ class MainMenuInterface extends InterfaceLNZ {
     @Override
     void cancel() {
       this.fields.get(2).setValue("You must create a profile");
+    }
+  }
+
+
+  class AchievementsForm extends FormLNZ {
+    AchievementsForm() {
+      super(Constants.AchievementsForm_widthOffset, Constants.AchievementsForm_heightOffset,
+        width - Constants.AchievementsForm_widthOffset, height - Constants.AchievementsForm_heightOffset);
+      this.setTitleText("Achievements");
+      this.setTitleSize(20);
+      this.color_background = color(180, 250, 250);
+      this.color_header = color(50, 180, 180);
+      if (global.profile == null) {
+        this.canceled = true;
+        return;
+      }
+      // add fields for profile achievements
+    }
+
+    void submit() {
     }
   }
 

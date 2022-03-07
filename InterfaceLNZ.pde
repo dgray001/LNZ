@@ -41,14 +41,18 @@ abstract class InterfaceLNZ {
       this.setTitleSize(20);
       this.color_background = color(250, 250, 180);
       this.color_header = color(180, 180, 50);
-      this.addField(new SubmitFormField("Save Options"));
       if (global.profile == null) {
         this.canceled = true;
         return;
       }
+      // add fields for profile options
+      this.addField(new SubmitFormField("Save Options"));
     }
 
     void submit() {
+      // set profile options
+      global.profile.save();
+      this.canceled = true;
     }
   }
 
@@ -281,8 +285,6 @@ class InitialInterface extends InterfaceLNZ {
   private InitialInterfaceButton[] buttons = new InitialInterfaceButton[5];
   private LogoImageButton logo = new LogoImageButton();
 
-  DropDownList test;
-
   InitialInterface() {
     super();
     float buttonHeight = (Constants.initialInterface_size - (this.buttons.length + 1) *
@@ -292,17 +294,6 @@ class InitialInterface extends InterfaceLNZ {
     this.buttons[2] = new InitialInterfaceButton3(buttonHeight);
     this.buttons[3] = new InitialInterfaceButton4(buttonHeight);
     this.buttons[4] = new InitialInterfaceButton5(buttonHeight);
-    this.test = new DropDownList(10, 10, 200, 100);
-    test.hint_text = "pick a line";
-    this.test.setText(Constants.version_history);
-    this.test.addLine("new line 1");
-    this.test.addLine("new line 2");
-    this.test.addLine("new line 3");
-    this.test.addLine("new line 4");
-    this.test.addLine("new line 5");
-    this.test.addLine("new line 6");
-    this.test.addLine("new line 7");
-    this.test.addLine("new line 8");
   }
 
   void update(int millis) {
@@ -310,7 +301,6 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.update(millis);
     }
-    test.update(millis);
   }
 
   void mouseMove(float mX, float mY) {
@@ -318,7 +308,6 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseMove(mX, mY);
     }
-    test.mouseMove(mX, mY);
   }
 
   void mousePress() {
@@ -326,7 +315,6 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mousePress();
     }
-    test.mousePress();
   }
 
   void mouseRelease() {
@@ -334,14 +322,9 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseRelease();
     }
-    test.mouseRelease();
   }
 
-  void scroll(int amount) {
-    test.scroll(amount);
-  }
-  void keyPress() {
-    test.keyPress();
-  }
+  void scroll(int amount) {}
+  void keyPress() {}
   void keyRelease() {}
 }

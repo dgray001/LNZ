@@ -89,7 +89,7 @@ void keyPressed() {
   }
   // Prevent sketch from exiting on ESC
   if (key == ESC) {
-    key = 0;
+    //key = 0;
   }
 }
 
