@@ -42,6 +42,7 @@ Global global;
   global = new Global(this);
   background(global.color_background);
   global.menu = new InitialInterface();
+  noCursor();
 }
 
  public void draw() {
@@ -53,7 +54,7 @@ Global global;
     global.lastFPS = (Constants.frameAverageCache * global.lastFPS + PApplet.parseFloat(frameCount - global.frameCounter) *
       (1000.0f / Constants.frameUpdateTime)) / (Constants.frameAverageCache + 1);
     global.frameCounter = frameCount + 1;
-    //println(int(global.lastFPS) + " FPS");
+    println(PApplet.parseInt(global.lastFPS) + " FPS");
   }
   // Program
   if (global.menu != null) {
@@ -77,6 +78,9 @@ Global global;
     default:
       break;
   }
+  // cursor
+  imageMode(CENTER);
+  image(global.cursor, mouseX, mouseY, global.options.cursor_size, global.options.cursor_size);
 }
 
  public void mouseDragged() {
@@ -129,7 +133,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220306: v0.6.1n" +
+  "\n20220306: v0.6.1o" +
   "\nLines: 3040 (v0.6.1)" +
   "";
   static final String version_history =
@@ -145,6 +149,7 @@ static class Constants {
   static final int frameAverageCache = 5;
   static final int maxFPS = 120;
   static final int exit_delay = 300;
+  static final float default_cursor_size = 35;
 
   // Initial Interface
   static final int initialInterface_size = 400;
@@ -158,6 +163,8 @@ static class Constants {
   static final float OptionsForm_heightOffset = 100;
   static final float AchievementsForm_widthOffset = 300;
   static final float AchievementsForm_heightOffset = 100;
+  static final float banner_maxWidthRatio = 0.8f;
+  static final float banner_maxHeightRatio = 0.2f;
 }
 class DImg {
 
@@ -759,6 +766,11 @@ abstract class ImageButton extends RectangleButton {
     image(this.img, this.xi, this.yi, this.xf, this.yf);
     noTint();
     this.writeText();
+  }
+
+   public void setImg(PImage img) {
+    this.img = img;
+    this.img.resize(PApplet.parseInt(this.button_width()), PApplet.parseInt(this.button_height()));
   }
 }
 
@@ -3717,6 +3729,7 @@ class Global {
   private Images images;
   private Sounds sounds;
   private Options options = new Options();
+  private PImage cursor;
   // FPS
   private int lastFrameTime = millis();
   private float lastFPS = Constants.maxFPS;
@@ -3730,6 +3743,7 @@ class Global {
   Global(LNZ thisInstance) {
     this.images = new Images();
     this.sounds = new Sounds(thisInstance);
+    this.cursor = this.images.getImage("icons/cursor_default.png");
   }
 
    public int frame() {
@@ -3746,6 +3760,7 @@ class Global {
 
 class Options { // global options (profile independent)
   private String default_profile_name = "";
+  private float cursor_size = Constants.default_cursor_size;
 
   Options() {
     this.loadOptions();
@@ -3765,10 +3780,19 @@ class Options { // global options (profile independent)
         case "default_profile_name":
           this.default_profile_name = trim(data[1]);
           break;
+        case "cursor_size":
+          if (isFloat(trim(data[1]))) {
+            this.cursor_size = toFloat(trim(data[1]));
+          }
+          break;
         default:
           break;
       }
     }
+  }
+
+   public void defaultOptions() {
+    this.cursor_size = Constants.default_cursor_size;
   }
 
    public void save() {
@@ -3777,6 +3801,7 @@ class Options { // global options (profile independent)
    public void saveOptions() {
     PrintWriter file = createWriter(sketchPath("data/options.lnz"));
     file.println("default_profile_name: " + this.default_profile_name);
+    file.println("cursor_size: " + this.cursor_size);
     file.flush();
     file.close();
   }
@@ -4212,29 +4237,25 @@ class MainMenuInterface extends InterfaceLNZ {
       float pixelsMoved = timeElapsed * this.grow_speed;
       super.update(millis);
       float pixelsLeft = 0;
-      int pixelsToMove = 0;
       if (this.collapsing) {
         if (this.hovered) {
           pixelsLeft = this.xf_grow - this.xf;
-          pixelsToMove = PApplet.parseInt(ceil(min(pixelsLeft, pixelsMoved)));
-          if (pixelsToMove > 0) {
-            this.stretchButton(pixelsToMove, RIGHT);
-          }
-          else {
+          if (pixelsLeft < pixelsMoved) {
             this.collapsing = false;
             this.refreshColor();
+            pixelsMoved = pixelsLeft;
           }
+          this.stretchButton(pixelsMoved, RIGHT);
         }
         else {
+          pixelsMoved *= -1;
           pixelsLeft = this.xf_grow * this.ratio - this.xf;
-          pixelsToMove = PApplet.parseInt(floor(max(pixelsLeft, -pixelsMoved)));
-          if (pixelsToMove < 0) {
-            this.stretchButton(pixelsToMove, RIGHT);
-          }
-          else {
+          if (pixelsLeft > pixelsMoved) {
             this.collapsing = false;
             this.refreshColor();
+            pixelsMoved = pixelsLeft;
           }
+          this.stretchButton(pixelsMoved, RIGHT);
         }
       }
       if (!this.hovered && !this.collapsing) {
@@ -4361,6 +4382,43 @@ class MainMenuInterface extends InterfaceLNZ {
   }
 
 
+  class BannerButton extends ImageButton {
+    BannerButton() {
+      super(global.images.getImage("banner_default.png"), 0, 0, 0, 0);
+      float banner_width = min(Constants.banner_maxWidthRatio * width, Constants.banner_maxHeightRatio * height * this.img.width / this.img.height);
+      float banner_height = min(Constants.banner_maxHeightRatio * height, banner_width * this.img.height / this.img.width);
+      banner_width = banner_height * this.img.width / this.img.height;
+      float xi = 0.5f * (width - banner_width);
+      float yi = -10;
+      float xf = 0.5f * (width + banner_width) - 10;
+      float yf = banner_height;
+      this.setLocation(xi, yi, xf, yf);
+    }
+
+    @Override public 
+    void drawButton() {
+      imageMode(CORNERS);
+      image(this.img, this.xi, this.yi, this.xf, this.yf);
+    }
+
+     public void hover() {
+      this.setImg(global.images.getImage("banner_hovered.png"));
+    }
+
+     public void dehover() {
+      this.setImg(global.images.getImage("banner_default.png"));
+    }
+
+     public void click() {
+      this.setImg(global.images.getImage("banner_clicked.png"));
+    }
+
+     public void release() {
+      this.setImg(global.images.getImage("banner_default.png"));
+    }
+  }
+
+
   class NewProfileForm extends FormLNZ {
     NewProfileForm() {
       super(0.5f * (width - Constants.newProfileForm_width), 0.5f * (height - Constants.newProfileForm_height),
@@ -4469,8 +4527,9 @@ class MainMenuInterface extends InterfaceLNZ {
 
 
   private MainMenuGrowButton[] growButtons = new MainMenuGrowButton[4];
+  private BannerButton banner = new BannerButton();
   private PImage backgroundImage;
-  backgroundImageThread thread = new backgroundImageThread();
+  private backgroundImageThread thread = new backgroundImageThread();
 
   MainMenuInterface() {
     super();
@@ -4511,6 +4570,7 @@ class MainMenuInterface extends InterfaceLNZ {
     for (MainMenuGrowButton button : this.growButtons) {
       button.update(millis);
     }
+    banner.update(millis);
     // restart thread
     if (!this.thread.isAlive()) {
       this.backgroundImage = this.thread.img;
@@ -4523,18 +4583,21 @@ class MainMenuInterface extends InterfaceLNZ {
     for (MainMenuGrowButton button : this.growButtons) {
       button.mouseMove(mX, mY);
     }
+    banner.mouseMove(mX, mY);
   }
 
    public void mousePress() {
     for (MainMenuGrowButton button : this.growButtons) {
       button.mousePress();
     }
+    banner.mousePress();
   }
 
    public void mouseRelease() {
     for (MainMenuGrowButton button : this.growButtons) {
       button.mouseRelease();
     }
+    banner.mouseRelease();
   }
 
    public void scroll(int amount) {}

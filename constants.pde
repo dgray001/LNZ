@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220306: v0.6.1o" +
+  "\n20220306: v0.6.1p" +
   "\nLines: 3040 (v0.6.1)" +
   "";
   static final String version_history =
@@ -20,6 +20,7 @@ static class Constants {
   static final int frameAverageCache = 5;
   static final int maxFPS = 120;
   static final int exit_delay = 300;
+  static final float default_cursor_size = 35;
 
   // Initial Interface
   static final int initialInterface_size = 400;
@@ -33,4 +34,6 @@ static class Constants {
   static final float OptionsForm_heightOffset = 100;
   static final float AchievementsForm_widthOffset = 300;
   static final float AchievementsForm_heightOffset = 100;
+  static final float banner_maxWidthRatio = 0.8;
+  static final float banner_maxHeightRatio = 0.2;
 }

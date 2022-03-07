@@ -360,6 +360,11 @@ abstract class ImageButton extends RectangleButton {
     noTint();
     this.writeText();
   }
+
+  void setImg(PImage img) {
+    this.img = img;
+    this.img.resize(int(this.button_width()), int(this.button_height()));
+  }
 }
 
 
