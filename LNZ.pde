@@ -17,6 +17,7 @@ void setup() {
   global = new Global(this);
   background(global.color_background);
   global.menu = new InitialInterface();
+  noCursor();
 }
 
 void draw() {
@@ -52,6 +53,9 @@ void draw() {
     default:
       break;
   }
+  // cursor
+  imageMode(CENTER);
+  image(global.cursor, mouseX, mouseY, global.options.cursor_size, global.options.cursor_size);
 }
 
 void mouseDragged() {

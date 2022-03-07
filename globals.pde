@@ -11,6 +11,7 @@ class Global {
   private Images images;
   private Sounds sounds;
   private Options options = new Options();
+  private PImage cursor;
   // FPS
   private int lastFrameTime = millis();
   private float lastFPS = Constants.maxFPS;
@@ -24,6 +25,7 @@ class Global {
   Global(LNZ thisInstance) {
     this.images = new Images();
     this.sounds = new Sounds(thisInstance);
+    this.cursor = this.images.getImage("icons/cursor_default.png");
   }
 
   int frame() {
@@ -40,6 +42,7 @@ class Global {
 
 class Options { // global options (profile independent)
   private String default_profile_name = "";
+  private float cursor_size = Constants.default_cursor_size;
 
   Options() {
     this.loadOptions();
@@ -59,10 +62,19 @@ class Options { // global options (profile independent)
         case "default_profile_name":
           this.default_profile_name = trim(data[1]);
           break;
+        case "cursor_size":
+          if (isFloat(trim(data[1]))) {
+            this.cursor_size = toFloat(trim(data[1]));
+          }
+          break;
         default:
           break;
       }
     }
+  }
+
+  void defaultOptions() {
+    this.cursor_size = Constants.default_cursor_size;
   }
 
   void save() {
@@ -71,6 +83,7 @@ class Options { // global options (profile independent)
   void saveOptions() {
     PrintWriter file = createWriter(sketchPath("data/options.lnz"));
     file.println("default_profile_name: " + this.default_profile_name);
+    file.println("cursor_size: " + this.cursor_size);
     file.flush();
     file.close();
   }

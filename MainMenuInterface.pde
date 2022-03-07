@@ -28,29 +28,25 @@ class MainMenuInterface extends InterfaceLNZ {
       float pixelsMoved = timeElapsed * this.grow_speed;
       super.update(millis);
       float pixelsLeft = 0;
-      int pixelsToMove = 0;
       if (this.collapsing) {
         if (this.hovered) {
           pixelsLeft = this.xf_grow - this.xf;
-          pixelsToMove = int(ceil(min(pixelsLeft, pixelsMoved)));
-          if (pixelsToMove > 0) {
-            this.stretchButton(pixelsToMove, RIGHT);
-          }
-          else {
+          if (pixelsLeft < pixelsMoved) {
             this.collapsing = false;
             this.refreshColor();
+            pixelsMoved = pixelsLeft;
           }
+          this.stretchButton(pixelsMoved, RIGHT);
         }
         else {
+          pixelsMoved *= -1;
           pixelsLeft = this.xf_grow * this.ratio - this.xf;
-          pixelsToMove = int(floor(max(pixelsLeft, -pixelsMoved)));
-          if (pixelsToMove < 0) {
-            this.stretchButton(pixelsToMove, RIGHT);
-          }
-          else {
+          if (pixelsLeft > pixelsMoved) {
             this.collapsing = false;
             this.refreshColor();
+            pixelsMoved = pixelsLeft;
           }
+          this.stretchButton(pixelsMoved, RIGHT);
         }
       }
       if (!this.hovered && !this.collapsing) {
@@ -177,6 +173,43 @@ class MainMenuInterface extends InterfaceLNZ {
   }
 
 
+  class BannerButton extends ImageButton {
+    BannerButton() {
+      super(global.images.getImage("banner_default.png"), 0, 0, 0, 0);
+      float banner_width = min(Constants.banner_maxWidthRatio * width, Constants.banner_maxHeightRatio * height * this.img.width / this.img.height);
+      float banner_height = min(Constants.banner_maxHeightRatio * height, banner_width * this.img.height / this.img.width);
+      banner_width = banner_height * this.img.width / this.img.height;
+      float xi = 0.5 * (width - banner_width);
+      float yi = -10;
+      float xf = 0.5 * (width + banner_width) - 10;
+      float yf = banner_height;
+      this.setLocation(xi, yi, xf, yf);
+    }
+
+    @Override
+    void drawButton() {
+      imageMode(CORNERS);
+      image(this.img, this.xi, this.yi, this.xf, this.yf);
+    }
+
+    void hover() {
+      this.setImg(global.images.getImage("banner_hovered.png"));
+    }
+
+    void dehover() {
+      this.setImg(global.images.getImage("banner_default.png"));
+    }
+
+    void click() {
+      this.setImg(global.images.getImage("banner_clicked.png"));
+    }
+
+    void release() {
+      this.setImg(global.images.getImage("banner_default.png"));
+    }
+  }
+
+
   class NewProfileForm extends FormLNZ {
     NewProfileForm() {
       super(0.5 * (width - Constants.newProfileForm_width), 0.5 * (height - Constants.newProfileForm_height),
@@ -285,8 +318,9 @@ class MainMenuInterface extends InterfaceLNZ {
 
 
   private MainMenuGrowButton[] growButtons = new MainMenuGrowButton[4];
+  private BannerButton banner = new BannerButton();
   private PImage backgroundImage;
-  backgroundImageThread thread = new backgroundImageThread();
+  private backgroundImageThread thread = new backgroundImageThread();
 
   MainMenuInterface() {
     super();
@@ -327,6 +361,7 @@ class MainMenuInterface extends InterfaceLNZ {
     for (MainMenuGrowButton button : this.growButtons) {
       button.update(millis);
     }
+    banner.update(millis);
     // restart thread
     if (!this.thread.isAlive()) {
       this.backgroundImage = this.thread.img;
@@ -339,18 +374,21 @@ class MainMenuInterface extends InterfaceLNZ {
     for (MainMenuGrowButton button : this.growButtons) {
       button.mouseMove(mX, mY);
     }
+    banner.mouseMove(mX, mY);
   }
 
   void mousePress() {
     for (MainMenuGrowButton button : this.growButtons) {
       button.mousePress();
     }
+    banner.mousePress();
   }
 
   void mouseRelease() {
     for (MainMenuGrowButton button : this.growButtons) {
       button.mouseRelease();
     }
+    banner.mouseRelease();
   }
 
   void scroll(int amount) {}
