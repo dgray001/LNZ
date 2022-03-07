@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220306: v0.6.1p" +
+  "\n20220306: v0.6.1q" +
   "\nLines: 3040 (v0.6.1)" +
   "";
   static final String version_history =
@@ -36,4 +36,6 @@ static class Constants {
   static final float AchievementsForm_heightOffset = 100;
   static final float banner_maxWidthRatio = 0.8;
   static final float banner_maxHeightRatio = 0.2;
+  static final float creditsForm_width = 300;
+  static final float creditsForm_height = 320;
 }

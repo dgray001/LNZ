@@ -54,7 +54,7 @@ Global global;
     global.lastFPS = (Constants.frameAverageCache * global.lastFPS + PApplet.parseFloat(frameCount - global.frameCounter) *
       (1000.0f / Constants.frameUpdateTime)) / (Constants.frameAverageCache + 1);
     global.frameCounter = frameCount + 1;
-    println(PApplet.parseInt(global.lastFPS) + " FPS");
+    //println(int(global.lastFPS) + " FPS");
   }
   // Program
   if (global.menu != null) {
@@ -127,13 +127,42 @@ Global global;
     global.menu.LNZ_keyRelease();
   }
 }
+enum Achievement {
+  TEST;
+
+  private static final List<Achievement> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+
+  public String display_name() {
+    return Achievement.display_name(this);
+  }
+  static public String display_name(Achievement a) {
+    switch(a) {
+      case TEST:
+        return "Test";
+      default:
+        return "-- Error --";
+    }
+  }
+
+  public int tokens() {
+    return Achievement.tokens(this);
+  }
+  static public int tokens(Achievement a) {
+    switch(a) {
+      case TEST:
+        return 1;
+      default:
+        return 0;
+    }
+  }
+}
 static class Constants {
 
   // Program constants
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220306: v0.6.1o" +
+  "\n20220306: v0.6.1q" +
   "\nLines: 3040 (v0.6.1)" +
   "";
   static final String version_history =
@@ -165,6 +194,8 @@ static class Constants {
   static final float AchievementsForm_heightOffset = 100;
   static final float banner_maxWidthRatio = 0.8f;
   static final float banner_maxHeightRatio = 0.2f;
+  static final float creditsForm_width = 300;
+  static final float creditsForm_height = 320;
 }
 class DImg {
 
@@ -4415,6 +4446,25 @@ class MainMenuInterface extends InterfaceLNZ {
 
      public void release() {
       this.setImg(global.images.getImage("banner_default.png"));
+      MainMenuInterface.this.form = new CreditsForm();
+    }
+  }
+
+
+  class CreditsForm extends FormLNZ {
+    CreditsForm() {
+      super(0.5f * (width - Constants.creditsForm_width), 0.5f * (height - Constants.creditsForm_height),
+        0.5f * (width + Constants.creditsForm_width), 0.5f * (height + Constants.creditsForm_height));
+      this.setTitleText("Credits");
+      this.setTitleSize(18);
+      this.color_background = color(250, 180, 250);
+      this.color_header = color(170, 30, 170);
+      this.addField(new SpacerFormField(0));
+      this.addField(new TextBoxFormField(Constants.credits, 200));
+      this.addField(new SubmitFormField("  Ok  "));
+    }
+     public void submit() {
+      this.canceled = true;
     }
   }
 
@@ -4607,11 +4657,17 @@ class MainMenuInterface extends InterfaceLNZ {
 
 class Profile {
   private String display_name = "";
+  private HashMap<Achievement, Boolean> achievements = new HashMap<Achievement, Boolean>();
+  private int achievement_tokens = 0;
 
   Profile() {
+    this("");
   }
   Profile(String s) {
     this.display_name = s;
+    for (Achievement a : Achievement.VALUES) {
+      this.achievements.put(a, false);
+    }
   }
 
    public void save() {
@@ -4638,6 +4694,19 @@ class Profile {
     switch(data[0]) {
       case "display_name":
         p.display_name = trim(data[1]);
+        break;
+      case "achievement":
+        for (Achievement a : Achievement.VALUES) {
+          if (a.display_name().equals(trim(data[1]))) {
+            p.achievements.put(a, true);
+            break;
+          }
+        }
+        break;
+      case "achievement_tokens":
+        if (isInt(trim(data[1]))) {
+          p.achievement_tokens = toInt(trim(data[1]));
+        }
         break;
       default:
         break;

@@ -206,6 +206,25 @@ class MainMenuInterface extends InterfaceLNZ {
 
     void release() {
       this.setImg(global.images.getImage("banner_default.png"));
+      MainMenuInterface.this.form = new CreditsForm();
+    }
+  }
+
+
+  class CreditsForm extends FormLNZ {
+    CreditsForm() {
+      super(0.5 * (width - Constants.creditsForm_width), 0.5 * (height - Constants.creditsForm_height),
+        0.5 * (width + Constants.creditsForm_width), 0.5 * (height + Constants.creditsForm_height));
+      this.setTitleText("Credits");
+      this.setTitleSize(18);
+      this.color_background = color(250, 180, 250);
+      this.color_header = color(170, 30, 170);
+      this.addField(new SpacerFormField(0));
+      this.addField(new TextBoxFormField(Constants.credits, 200));
+      this.addField(new SubmitFormField("  Ok  "));
+    }
+    void submit() {
+      this.canceled = true;
     }
   }
 
