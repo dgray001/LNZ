@@ -205,8 +205,10 @@ class MainMenuInterface extends InterfaceLNZ {
     }
 
     void release() {
-      this.setImg(global.images.getImage("banner_default.png"));
-      MainMenuInterface.this.form = new CreditsForm();
+      if (this.hovered) {
+        this.setImg(global.images.getImage("banner_default.png"));
+        MainMenuInterface.this.form = new CreditsForm();
+      }
     }
   }
 
