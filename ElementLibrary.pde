@@ -868,7 +868,7 @@ abstract class LeagueButton extends ArcButton {
     endShape();
     stroke(this.fillColor());
     strokeWeight(1);
-    line(this.trapezoid_xi, this.trapezoid_bottom, this.trapezoid_xf, this.trapezoid_bottom);
+    line(this.trapezoid_xi+2, this.trapezoid_bottom-1, this.trapezoid_xf-2, this.trapezoid_bottom-1);
     if (this.show_message) {
       fill(this.color_text);
       textSize(this.text_size);
