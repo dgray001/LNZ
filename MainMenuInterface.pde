@@ -195,7 +195,6 @@ class MainMenuInterface extends InterfaceLNZ {
     }
 
     void hover() {
-      global.sounds.trigger_interface("interfaces/buttonOn1");
       this.setImg(global.images.getImage("banner_hovered.png"));
     }
 
@@ -240,28 +239,6 @@ class MainMenuInterface extends InterfaceLNZ {
       if (this.hovered) {
         // launch game
       }
-    }
-  }
-
-
-  class CreditsForm extends FormLNZ {
-    CreditsForm() {
-      super(0.5 * (width - Constants.creditsForm_width), 0.5 * (height - Constants.creditsForm_height),
-        0.5 * (width + Constants.creditsForm_width), 0.5 * (height + Constants.creditsForm_height));
-      this.setTitleText("Credits");
-      this.setTitleSize(18);
-      this.color_background = color(250, 180, 250);
-      this.color_header = color(170, 30, 170);
-
-      SubmitFormField submit = new SubmitFormField("  Ok  ");
-      submit.button.setColors(color(220), color(240, 190, 240),
-        color(190, 140, 190), color(140, 90, 140), color(0));
-      this.addField(new SpacerFormField(0));
-      this.addField(new TextBoxFormField(Constants.credits, 200));
-      this.addField(submit);
-    }
-    void submit() {
-      this.canceled = true;
     }
   }
 
@@ -383,7 +360,55 @@ class MainMenuInterface extends InterfaceLNZ {
       this.icon = global.images.getImage("units/ben.png");
       this.color_text = color(255);
       super.release();
+      if (this.hovered) {
+        MainMenuInterface.this.ViewProfile();
+      }
       this.reset();
+    }
+  }
+
+
+  class ProfileForm extends FormLNZ {
+    ProfileForm() {
+      super(0.5 * (width - Constants.profileForm_width), 0.5 * (height - Constants.profileForm_height),
+        0.5 * (width + Constants.profileForm_width), 0.5 * (height + Constants.profileForm_height));
+      this.setTitleText(global.profile.display_name);
+      this.setTitleSize(18);
+      this.setFieldCushion(0);
+      this.color_background = color(180, 180, 250);
+      this.color_header = color(90, 90, 200);
+
+      SubmitFormField logout = new SubmitFormField("Logout");
+      logout.button.setColors(color(180), color(190, 190, 240),
+        color(140, 140, 190), color(90, 90, 140), color(0));
+
+      this.addField(logout);
+    }
+
+    void submit() {
+      MainMenuInterface.this.loadExistingProfile();
+    }
+  }
+
+
+  class CreditsForm extends FormLNZ {
+    CreditsForm() {
+      super(0.5 * (width - Constants.creditsForm_width), 0.5 * (height - Constants.creditsForm_height),
+        0.5 * (width + Constants.creditsForm_width), 0.5 * (height + Constants.creditsForm_height));
+      this.setTitleText("Credits");
+      this.setTitleSize(18);
+      this.color_background = color(250, 180, 250);
+      this.color_header = color(170, 30, 170);
+
+      SubmitFormField submit = new SubmitFormField("  Ok  ");
+      submit.button.setColors(color(220), color(240, 190, 240),
+        color(190, 140, 190), color(140, 90, 140), color(0));
+      this.addField(new SpacerFormField(0));
+      this.addField(new TextBoxFormField(Constants.credits, 200));
+      this.addField(submit);
+    }
+    void submit() {
+      this.canceled = true;
     }
   }
 
@@ -648,6 +673,10 @@ class MainMenuInterface extends InterfaceLNZ {
   // load profile
   void loadExistingProfile() {
     this.form = new LoadProfileForm();
+  }
+  // Open profile
+  void ViewProfile() {
+    this.form = new ProfileForm();
   }
 
   void update(int millis) {
