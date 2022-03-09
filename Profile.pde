@@ -16,6 +16,12 @@ class Profile {
   void save() {
     PrintWriter file = createWriter(sketchPath("data/profiles/" + this.display_name.toLowerCase() + "/profile.lnz"));
     file.println("display_name: " + this.display_name);
+    for (Achievement a : Achievement.VALUES) {
+      if (this.achievements.get(a)) {
+        file.println("achievement: " + a.display_name());
+      }
+    }
+    file.println("achievement_tokens: " + this.achievement_tokens);
     file.flush();
     file.close();
   }

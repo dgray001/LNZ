@@ -28,6 +28,8 @@ abstract class FormLNZ extends Form {
   void cancel() {
     this.canceled = true;
   }
+
+  void buttonPress(int i) {}
 }
 
 
@@ -46,7 +48,10 @@ abstract class InterfaceLNZ {
         return;
       }
       // add fields for profile options
-      this.addField(new SubmitFormField("Save Options"));
+      SubmitFormField submit = new SubmitFormField("Save Options");
+      submit.button.setColors(color(220), color(240, 240, 190),
+        color(190, 190, 140), color(140, 140, 90), color(0));
+      this.addField(submit);
     }
 
     void submit() {
@@ -152,7 +157,7 @@ class InitialInterface extends InterfaceLNZ {
     }
 
     void hover() {
-      global.sounds.trigger("interfaces/buttonOn1");
+      global.sounds.trigger_interface("interfaces/buttonOn1");
       InitialInterface.this.logo.release();
     }
     void dehover() {
@@ -178,7 +183,7 @@ class InitialInterface extends InterfaceLNZ {
     @Override
     void release() {
       super.release();
-      global.sounds.trigger("interfaces/buttonClick4");
+      global.sounds.trigger_interface("interfaces/buttonClick4");
       global.state = ProgramState.ENTERING_MAINMENU;
       background(global.color_background);
       surface.setSize(displayWidth, displayHeight);
@@ -198,7 +203,7 @@ class InitialInterface extends InterfaceLNZ {
     @Override
     void release() {
       super.release();
-      global.sounds.trigger("interfaces/buttonClick3");
+      global.sounds.trigger_interface("interfaces/buttonClick3");
       InitialInterface.this.form = new InitialInterfaceForm("Uninstall Game", "Just delete it ya dip");
     }
   }
@@ -213,7 +218,7 @@ class InitialInterface extends InterfaceLNZ {
     @Override
     void release() {
       super.release();
-      global.sounds.trigger("interfaces/buttonClick3");
+      global.sounds.trigger_interface("interfaces/buttonClick3");
       InitialInterface.this.form = new InitialInterfaceForm("Reset Game", "Why would you want to reinstall a test version?");
     }
   }
@@ -228,7 +233,7 @@ class InitialInterface extends InterfaceLNZ {
     @Override
     void release() {
       super.release();
-      global.sounds.trigger("interfaces/buttonClick3");
+      global.sounds.trigger_interface("interfaces/buttonClick3");
       InitialInterface.this.form = new InitialInterfaceForm("Version History", Constants.version_history);
     }
   }
@@ -243,7 +248,7 @@ class InitialInterface extends InterfaceLNZ {
     @Override
     void release() {
       super.release();
-      global.sounds.trigger("interfaces/buttonClick3");
+      global.sounds.trigger_interface("interfaces/buttonClick3");
       global.exit();
     }
   }
@@ -273,9 +278,13 @@ class InitialInterface extends InterfaceLNZ {
       this.setTitleSize(18);
       this.color_background = color(180, 250, 180);
       this.color_header = color(30, 170, 30);
+
+      SubmitFormField submit = new SubmitFormField("  Ok  ");
+      submit.button.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
       this.addField(new SpacerFormField(0));
       this.addField(new TextBoxFormField(message, 120));
-      this.addField(new SubmitFormField("  Ok  "));
+      this.addField(submit);
     }
     void submit() {
       this.canceled = true;
@@ -284,20 +293,6 @@ class InitialInterface extends InterfaceLNZ {
 
   private InitialInterfaceButton[] buttons = new InitialInterfaceButton[5];
   private LogoImageButton logo = new LogoImageButton();
-
-  class Test extends LeagueButton {
-    Test() {
-      super(120, 395, 300, 400, 0.2 * PI, 40, 10);
-      this.message = "Launch Game";
-      this.show_message = true;
-      this.text_size = 22;
-    }
-    void click() {}
-    void hover() {}
-    void dehover() {}
-    void release() {}
-  }
-  Test test = new Test();
 
   InitialInterface() {
     super();
@@ -315,7 +310,6 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.update(millis);
     }
-    test.update(millis);
   }
 
   void mouseMove(float mX, float mY) {
@@ -323,7 +317,6 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseMove(mX, mY);
     }
-    test.mouseMove(mX, mY);
   }
 
   void mousePress() {
@@ -331,7 +324,6 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mousePress();
     }
-    test.mousePress();
   }
 
   void mouseRelease() {
@@ -339,7 +331,6 @@ class InitialInterface extends InterfaceLNZ {
     for (InitialInterfaceButton button : this.buttons) {
       button.mouseRelease();
     }
-    test.mouseRelease();
   }
 
   void scroll(int amount) {}
