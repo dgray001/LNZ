@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220309: v0.6.1w" +
+  "\n20220309: v0.6.1x" +
   "\nLines: 3040 (v0.6.1)" +
   "";
   static final String version_history =
@@ -43,4 +43,10 @@ static class Constants {
   static final float playButton_scaleFactor = 1.7;
   static final float profileButton_offset = 45;
   static final float profileButton_growfactor = 1.6;
+
+  // Options
+  static final int options_defaultVolume = 70;
+  static final int options_volumeMin = 0;
+  static final int options_volumeMax = 100;
+  static final int options_volumeGainAdjustment = -50;
 }
