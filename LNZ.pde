@@ -41,6 +41,7 @@ void draw() {
     case ENTERING_MAINMENU:
       global.state = ProgramState.MAINMENU_INTERFACE;
       global.menu = new MainMenuInterface();
+      global.sounds.play_background("main");
       break;
     case MAINMENU_INTERFACE:
       break;
@@ -53,6 +54,8 @@ void draw() {
     default:
       break;
   }
+  // background music go to next track
+  global.sounds.update();
   // cursor
   imageMode(CENTER);
   image(global.cursor, mouseX, mouseY, global.configuration.cursor_size, global.configuration.cursor_size);
