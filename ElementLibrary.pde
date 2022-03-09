@@ -3163,6 +3163,13 @@ abstract class Form {
     return this.yf - this.yi;
   }
 
+  float xCenter() {
+    return 0.5 * (this.xf - this.xi);
+  }
+  float yCenter() {
+    return 0.5 * (this.yf - this.yi);
+  }
+
   void setLocation(float xi, float yi, float xf, float yf) {
     this.xi = xi;
     this.yi = yi;
