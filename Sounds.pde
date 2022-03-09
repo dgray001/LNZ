@@ -2,6 +2,7 @@ class Sounds {
   private Minim minim;
 
   private AudioPlayer background_track;
+  private float gain_background = 0;
   private boolean playing_background = false;
   private boolean loop_background = true;
   private String album_name = "";
@@ -21,6 +22,9 @@ class Sounds {
   Sounds(LNZ thisInstance) {
     this.minim = new Minim(thisInstance);
     this.out_interface = this.minim.getLineOut();
+    this.out_environment = this.minim.getLineOut();
+    this.out_units = this.minim.getLineOut();
+    this.out_player = this.minim.getLineOut();
   }
 
   void play_background(String album_name) {
@@ -49,6 +53,13 @@ class Sounds {
     }
   }
 
+  void setBackgroundGain(float gain) {
+    this.gain_background = gain;
+    if (this.background_track != null) {
+      this.background_track.setGain(gain);
+    }
+  }
+
   void update() {
     if (this.playing_background) {
       if (this.background_track == null || !this.background_track.isPlaying()) {
@@ -56,6 +67,7 @@ class Sounds {
         String track_path = "data/sounds/background/" + this.album_name + this.track_number + ".wav";
         if (fileExists(track_path)) {
           this.background_track = minim.loadFile(track_path);
+          this.background_track.setGain(this.gain_background);
           this.background_track.play();
         }
         else if (this.loop_background) {
@@ -82,7 +94,64 @@ class Sounds {
         s.trigger();
       }
       else {
-        println("ERROR: Missing sound " + filePath + ".");
+        println("ERROR: Missing interface sound " + filePath + ".");
+      }
+    }
+  }
+
+  void trigger_environment(String soundPath) {
+    if (this.sounds_environment.containsKey(soundPath)) {
+      this.sounds_environment.get(soundPath).trigger();
+    }
+    else {
+      String filePath = this.basePath + soundPath + ".wav";
+      File f = new File(filePath);
+      if (f.exists()) {
+        Sampler s = new Sampler(filePath, 2, this.minim);
+        s.patch(this.out_environment);
+        this.sounds_environment.put(soundPath, s);
+        s.trigger();
+      }
+      else {
+        println("ERROR: Missing environment sound " + filePath + ".");
+      }
+    }
+  }
+
+  void trigger_units(String soundPath) {
+    if (this.sounds_units.containsKey(soundPath)) {
+      this.sounds_units.get(soundPath).trigger();
+    }
+    else {
+      String filePath = this.basePath + soundPath + ".wav";
+      File f = new File(filePath);
+      if (f.exists()) {
+        Sampler s = new Sampler(filePath, 2, this.minim);
+        s.patch(this.out_units);
+        this.sounds_units.put(soundPath, s);
+        s.trigger();
+      }
+      else {
+        println("ERROR: Missing units sound " + filePath + ".");
+      }
+    }
+  }
+
+  void trigger_player(String soundPath) {
+    if (this.sounds_player.containsKey(soundPath)) {
+      this.sounds_player.get(soundPath).trigger();
+    }
+    else {
+      String filePath = this.basePath + soundPath + ".wav";
+      File f = new File(filePath);
+      if (f.exists()) {
+        Sampler s = new Sampler(filePath, 2, this.minim);
+        s.patch(this.out_player);
+        this.sounds_player.put(soundPath, s);
+        s.trigger();
+      }
+      else {
+        println("ERROR: Missing player sound " + filePath + ".");
       }
     }
   }
