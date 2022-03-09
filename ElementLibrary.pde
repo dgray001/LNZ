@@ -477,6 +477,53 @@ abstract class RippleRectangleButton extends ImageButton {
 }
 
 
+abstract class RippleCircleButton extends RippleRectangleButton {
+  private ArrayList<Pixel> transparentPixels = new ArrayList<Pixel>();
+
+  RippleCircleButton(float xc, float yc, float r) {
+    super(xc - r, yc - r, xc + r, yc + r);
+    this.findTransparentPixels();
+    this.refreshColor();
+  }
+
+  void findTransparentPixels() {
+    float r = 0.5 * (this.xf - this.xi);
+    for (int i = 0; i < this.img.height; i++) {
+      for (int j = 0; j < this.img.width; j++) {
+        float distance = sqrt((r - i) * (r - i) + (r - j) * (r - j));
+        if (distance > r) {
+          this.transparentPixels.add(new Pixel(j, i, 0, 0));
+        }
+      }
+    }
+  }
+
+  void colorTransparentPixels() {
+    if (this.transparentPixels == null) {
+      return;
+    }
+    this.img.loadPixels();
+    for (Pixel p : this.transparentPixels) {
+      int index = p.x + p.y * this.img.width;
+      this.img.pixels[index] = color(1, 0);
+    }
+    this.img.updatePixels();
+  }
+
+  @Override
+  void refreshColor() {
+    super.refreshColor();
+    this.colorTransparentPixels();
+  }
+
+  @Override
+  void colorPixels() {
+    super.colorPixels();
+    this.colorTransparentPixels();
+  }
+}
+
+
 
 
 abstract class EllipseButton extends Button {
