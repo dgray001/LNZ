@@ -93,12 +93,12 @@ class MainMenuInterface extends InterfaceLNZ {
     }
 
     void click() {
+      global.sounds.trigger_interface("interfaces/buttonClick6");
       super.click();
       this.color_text = color(0);
     }
 
     void release() {
-      global.sounds.trigger_interface("interfaces/buttonClick6");
       super.release();
       this.color_text = color(255);
       this.reset();
@@ -204,12 +204,12 @@ class MainMenuInterface extends InterfaceLNZ {
     }
 
     void click() {
+      global.sounds.trigger_interface("interfaces/buttonClick1");
       this.setImg(global.images.getImage("banner_clicked.png"));
     }
 
     void release() {
       if (this.hovered) {
-        global.sounds.trigger_interface("interfaces/buttonClick1");
         this.setImg(global.images.getImage("banner_default.png"));
         MainMenuInterface.this.form = new CreditsForm();
       }
@@ -232,12 +232,13 @@ class MainMenuInterface extends InterfaceLNZ {
     }
     void dehover() {}
     void click() {
+      global.sounds.trigger_interface("interfaces/buttonClick2");
       this.color_text = color(255, 190, 255);
     }
     void release() {
       this.color_text = color(50, 10, 50);
       if (this.hovered) {
-        global.sounds.trigger_interface("interfaces/buttonClick2");
+        // launch game
       }
     }
   }
@@ -261,6 +262,128 @@ class MainMenuInterface extends InterfaceLNZ {
     }
     void submit() {
       this.canceled = true;
+    }
+  }
+
+
+  class ProfileButton extends RippleCircleButton {
+    protected float grow_speed = 0.9; // pixels / ms
+    protected PImage icon = global.images.getImage("units/ben.png");
+    protected boolean collapsing = false;
+
+    ProfileButton() {
+      super(width - Constants.profileButton_offset, height - Constants.profileButton_offset, 2 * Constants.profileButton_offset);
+      this.message = "Profile";
+      this.maxRippleDistance = (xf - xi) * Constants.profileButton_growfactor;
+      this.text_size = 32;
+      this.noStroke();
+      this.setColors(color(170), color(1, 0), color(1, 0), color(60, 60, 20, 200), color(255));
+      this.refreshColor();
+    }
+
+    @Override
+    void update(int millis) {
+      int timeElapsed = millis - this.lastUpdateTime;
+      float pixelsMoved = timeElapsed * this.grow_speed;
+      super.update(millis);
+      float pixelsLeft = 0;
+      if (this.collapsing) {
+        if (this.hovered) {
+          pixelsLeft = 4 * Constants.profileButton_offset * Constants.profileButton_growfactor - (this.xf - this.xi);
+          if (pixelsLeft < pixelsMoved) {
+            this.collapsing = false;
+            this.refreshColor();
+            pixelsMoved = pixelsLeft;
+          }
+          this.stretchButton(pixelsMoved, LEFT);
+          this.stretchButton(pixelsMoved, UP);
+        }
+        else {
+          pixelsMoved *= -1;
+          pixelsLeft = 4 * Constants.profileButton_offset - (this.xf - this.xi);
+          if (pixelsLeft > pixelsMoved) {
+            this.collapsing = false;
+            this.refreshColor();
+            pixelsMoved = pixelsLeft;
+          }
+          this.stretchButton(pixelsMoved, LEFT);
+          this.stretchButton(pixelsMoved, UP);
+        }
+      }
+      imageMode(CENTER);
+      image(this.icon, this.xCenter(), this.yCenter() - 0.2 * (this.yf - this.yi),
+        0.4 * this.button_width(), 0.4 * this.button_height());
+    }
+
+    @Override
+    void writeText() {
+      if (this.show_message) {
+        fill(this.color_text);
+        textAlign(CENTER, TOP);
+        textSize(this.text_size);
+        if (this.adjust_for_text_descent) {
+          text(this.message, this.xCenter(), this.yCenter() - textDescent());
+        }
+        else {
+          text(this.message, this.xCenter(), this.yCenter());
+        }
+      }
+    }
+
+    void reset() {
+      this.icon = global.images.getImage("units/ben.png");
+      this.color_text = color(255);
+      this.stretchButton(4 * Constants.profileButton_offset - (this.xf - this.xi), LEFT);
+      this.stretchButton(4 * Constants.profileButton_offset - (this.yf - this.yi), UP);
+      this.collapsing = false;
+      this.clicked = false;
+      this.hovered = false;
+      this.show_message = false;
+      this.refreshColor();
+    }
+
+    @Override
+    color fillColor() {
+      if (this.collapsing) {
+        if (this.clicked) {
+          return this.color_click;
+        }
+        else {
+          return this.color_hover;
+        }
+      }
+      return super.fillColor();
+    }
+
+    void hover() {
+      global.sounds.trigger_interface("interfaces/buttonOn3");
+      this.icon = global.images.getImage("units/ben_whiteborder.png");
+      this.collapsing = true;
+      super.hover();
+      this.show_message = true;
+    }
+
+    void dehover() {
+      this.icon = global.images.getImage("units/ben.png");
+      this.color_text = color(255);
+      this.collapsing = true;
+      super.dehover();
+      this.show_message = false;
+      this.clicked = false;
+    }
+
+    void click() {
+      global.sounds.trigger_interface("interfaces/buttonClick5");
+      this.icon = global.images.getImage("units/ben_blueborder.png");
+      this.color_text = color(0, 0, 255);
+      super.click();
+    }
+
+    void release() {
+      this.icon = global.images.getImage("units/ben.png");
+      this.color_text = color(255);
+      super.release();
+      this.reset();
     }
   }
 
@@ -473,6 +596,7 @@ class MainMenuInterface extends InterfaceLNZ {
   private MainMenuGrowButton[] growButtons = new MainMenuGrowButton[4];
   private BannerButton banner = new BannerButton();
   private PlayButton play = new PlayButton();
+  private ProfileButton profile = new ProfileButton();
   private PImage backgroundImage;
   private backgroundImageThread thread = new backgroundImageThread();
 
@@ -536,6 +660,7 @@ class MainMenuInterface extends InterfaceLNZ {
     }
     this.banner.update(millis);
     this.play.update(millis);
+    this.profile.update(millis);
     // restart thread
     if (!this.thread.isAlive()) {
       this.backgroundImage = this.thread.img;
@@ -550,6 +675,7 @@ class MainMenuInterface extends InterfaceLNZ {
     }
     this.banner.mouseMove(mX, mY);
     this.play.mouseMove(mX, mY);
+    this.profile.mouseMove(mX, mY);
   }
 
   void mousePress() {
@@ -558,6 +684,7 @@ class MainMenuInterface extends InterfaceLNZ {
     }
     this.banner.mousePress();
     this.play.mousePress();
+    this.profile.mousePress();
   }
 
   void mouseRelease() {
@@ -566,6 +693,7 @@ class MainMenuInterface extends InterfaceLNZ {
     }
     this.banner.mouseRelease();
     this.play.mouseRelease();
+    this.profile.mouseRelease();
   }
 
   void scroll(int amount) {}
