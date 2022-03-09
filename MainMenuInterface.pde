@@ -489,7 +489,7 @@ class MainMenuInterface extends InterfaceLNZ {
   void loadProfile() {
     ArrayList<Path> profiles = listFolders("data/profiles");
     for (Path p : profiles) {
-      if (global.configuration.default_profile_name.equals(p.getFileName().toString())) {
+      if (global.configuration.default_profile_name.toLowerCase().equals(p.getFileName().toString().toLowerCase())) {
         if (!loadProfile(global.configuration.default_profile_name)) {
           break;
         }
