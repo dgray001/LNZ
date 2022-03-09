@@ -78,6 +78,7 @@ class MainMenuInterface extends InterfaceLNZ {
     }
 
     void hover() {
+      global.sounds.trigger_interface("interfaces/buttonOn4");
       this.collapsing = true;
       super.hover();
       this.show_message = true;
@@ -97,6 +98,7 @@ class MainMenuInterface extends InterfaceLNZ {
     }
 
     void release() {
+      global.sounds.trigger_interface("interfaces/buttonClick6");
       super.release();
       this.color_text = color(255);
       this.reset();
@@ -193,6 +195,7 @@ class MainMenuInterface extends InterfaceLNZ {
     }
 
     void hover() {
+      global.sounds.trigger_interface("interfaces/buttonOn1");
       this.setImg(global.images.getImage("banner_hovered.png"));
     }
 
@@ -206,8 +209,35 @@ class MainMenuInterface extends InterfaceLNZ {
 
     void release() {
       if (this.hovered) {
+        global.sounds.trigger_interface("interfaces/buttonClick1");
         this.setImg(global.images.getImage("banner_default.png"));
         MainMenuInterface.this.form = new CreditsForm();
+      }
+    }
+  }
+
+
+  class PlayButton extends LeagueButton {
+    PlayButton() {
+      super(0.5 * width, height - 10, 300 * Constants.playButton_scaleFactor,
+        400 * Constants.playButton_scaleFactor, 0.2 * PI, 40 * Constants.playButton_scaleFactor,
+        12 * Constants.playButton_scaleFactor);
+      this.setColors(color(170), color(120, 200, 120), color(150, 250, 150), color(30, 120, 30), color(50, 10, 50));
+      this.message = "Play Game";
+      this.show_message = true;
+      this.text_size = 22 * Constants.playButton_scaleFactor;
+    }
+    void hover() {
+      global.sounds.trigger_interface("interfaces/buttonOn2");
+    }
+    void dehover() {}
+    void click() {
+      this.color_text = color(255, 190, 255);
+    }
+    void release() {
+      this.color_text = color(50, 10, 50);
+      if (this.hovered) {
+        global.sounds.trigger_interface("interfaces/buttonClick2");
       }
     }
   }
@@ -221,12 +251,96 @@ class MainMenuInterface extends InterfaceLNZ {
       this.setTitleSize(18);
       this.color_background = color(250, 180, 250);
       this.color_header = color(170, 30, 170);
+
+      SubmitFormField submit = new SubmitFormField("  Ok  ");
+      submit.button.setColors(color(220), color(240, 190, 240),
+        color(190, 140, 190), color(140, 90, 140), color(0));
       this.addField(new SpacerFormField(0));
       this.addField(new TextBoxFormField(Constants.credits, 200));
-      this.addField(new SubmitFormField("  Ok  "));
+      this.addField(submit);
     }
     void submit() {
       this.canceled = true;
+    }
+  }
+
+
+  class LoadProfileForm extends FormLNZ {
+    private ArrayList<Path> profiles;
+
+    LoadProfileForm() {
+      super(0.5 * (width - Constants.newProfileForm_width), 0.5 * (height - Constants.newProfileForm_height),
+        0.5 * (width + Constants.newProfileForm_width), 0.5 * (height + Constants.newProfileForm_height));
+      this.setTitleText("Load Profile");
+      this.setTitleSize(18);
+      this.setFieldCushion(0);
+      this.color_background = color(250, 180, 180);
+      this.color_header = color(180, 50, 50);
+
+      RadiosFormField radios = new RadiosFormField("Choose a profile:");
+      this.profiles = listFolders("data/profiles");
+      if (this.profiles.size() == 0) {
+        MainMenuInterface.this.createNewProfile();
+      }
+      for (Path p : this.profiles) {
+        radios.addRadio(p.getFileName().toString() + "  ");
+      }
+      MessageFormField error = new MessageFormField("");
+      error.text_color = color(150, 20, 20);
+      error.setTextSize(18);
+      CheckboxFormField checkbox = new CheckboxFormField("Save as default profile  ");
+      checkbox.setTextSize(16);
+      checkbox.checkbox.checked = true;
+      SubmitFormField submit = new SubmitFormField("Play Profile");
+      submit.button.setColors(color(180), color(240, 190, 190),
+        color(190, 140, 140), color(140, 90, 90), color(0));
+      ButtonFormField newProfileButton = new ButtonFormField("Create New Profile");
+      newProfileButton.button.setColors(color(180), color(240, 190, 190),
+        color(190, 140, 140), color(140, 90, 90), color(0));
+
+      this.addField(new SpacerFormField(20));
+      this.addField(radios);
+      this.addField(error);
+      this.addField(new SpacerFormField(20));
+      this.addField(checkbox);
+      this.addField(new SpacerFormField(8));
+      this.addField(submit);
+      this.addField(new SpacerFormField(20));
+      this.addField(newProfileButton);
+    }
+
+    void submit() {
+      String profileIndex = this.fields.get(1).getValue();
+      if (!isInt(profileIndex)) {
+        this.fields.get(2).setValue("Select a profile to play");
+        return;
+      }
+      int index = toInt(profileIndex);
+      if (index < 0 || index >= this.profiles.size()) {
+        this.fields.get(2).setValue("Select a profile to play");
+        return;
+      }
+      String profileName = this.profiles.get(index).getFileName().toString();
+      if (MainMenuInterface.this.loadProfile(profileName)) {
+        this.canceled = true;
+        if (this.fields.get(4).getValue().equals("true")) {
+          global.configuration.default_profile_name = profileName;
+          global.configuration.save();
+        }
+      }
+      else {
+        this.fields.get(2).setValue("There was an error opening the profile");
+      }
+    }
+
+    @Override
+    void cancel() {
+      this.fields.get(2).setValue("You must select a profile");
+    }
+
+    @Override
+    void buttonPress(int i) {
+      MainMenuInterface.this.createNewProfile();
     }
   }
 
@@ -248,6 +362,17 @@ class MainMenuInterface extends InterfaceLNZ {
       error.setTextSize(18);
       CheckboxFormField checkbox = new CheckboxFormField("Save as default profile  ");
       checkbox.setTextSize(16);
+      checkbox.checkbox.checked = true;
+      SubmitFormField submit = new SubmitFormField("Create New Profile");
+      submit.button.setColors(color(180), color(240, 190, 190),
+        color(190, 140, 140), color(140, 90, 90), color(0));
+      ButtonFormField loadProfileButton = new ButtonFormField("Load Existing Profile");
+      loadProfileButton.button.setColors(color(180), color(240, 190, 190),
+        color(190, 140, 140), color(140, 90, 90), color(0));
+      ArrayList<Path> profiles = listFolders("data/profiles");
+      if (profiles.size() == 0) {
+        loadProfileButton.button.disabled = true;
+      }
 
       this.addField(new SpacerFormField(20));
       this.addField(input);
@@ -255,7 +380,9 @@ class MainMenuInterface extends InterfaceLNZ {
       this.addField(new SpacerFormField(20));
       this.addField(checkbox);
       this.addField(new SpacerFormField(8));
-      this.addField(new SubmitFormField("Create New Profile"));
+      this.addField(submit);
+      this.addField(new SpacerFormField(20));
+      this.addField(loadProfileButton);
     }
 
     void submit() {
@@ -268,8 +395,8 @@ class MainMenuInterface extends InterfaceLNZ {
           global.profile = p;
           this.canceled = true;
           if (this.fields.get(4).getValue().equals("true")) {
-            global.options.default_profile_name = possibleProfileName;
-            global.options.save();
+            global.configuration.default_profile_name = possibleProfileName;
+            global.configuration.save();
           }
           break;
         case 1:
@@ -293,6 +420,11 @@ class MainMenuInterface extends InterfaceLNZ {
     @Override
     void cancel() {
       this.fields.get(2).setValue("You must create a profile");
+    }
+
+    @Override
+    void buttonPress(int i) {
+      MainMenuInterface.this.loadExistingProfile();
     }
   }
 
@@ -340,6 +472,7 @@ class MainMenuInterface extends InterfaceLNZ {
 
   private MainMenuGrowButton[] growButtons = new MainMenuGrowButton[4];
   private BannerButton banner = new BannerButton();
+  private PlayButton play = new PlayButton();
   private PImage backgroundImage;
   private backgroundImageThread thread = new backgroundImageThread();
 
@@ -354,8 +487,20 @@ class MainMenuInterface extends InterfaceLNZ {
   }
 
   void loadProfile() {
-    if (!this.loadProfile(global.options.default_profile_name)) {
-      this.form = new NewProfileForm();
+    ArrayList<Path> profiles = listFolders("data/profiles");
+    for (Path p : profiles) {
+      if (global.configuration.default_profile_name.equals(p.getFileName().toString())) {
+        if (!loadProfile(global.configuration.default_profile_name)) {
+          break;
+        }
+        return;
+      }
+    }
+    if (profiles.size() > 0) {
+      this.form = new LoadProfileForm();
+    }
+    else {
+      this.createNewProfile();
     }
   }
   // returns true if profile loaded
@@ -370,8 +515,15 @@ class MainMenuInterface extends InterfaceLNZ {
       return false;
     }
     global.profile = readProfile(sketchPath("data/profiles/" + profile_name.toLowerCase() + "/profile.lnz"));
-    global.profile.display_name = profile_name;
     return true;
+  }
+  // create new profile
+  void createNewProfile() {
+    this.form = new NewProfileForm();
+  }
+  // load profile
+  void loadExistingProfile() {
+    this.form = new LoadProfileForm();
   }
 
   void update(int millis) {
@@ -382,7 +534,8 @@ class MainMenuInterface extends InterfaceLNZ {
     for (MainMenuGrowButton button : this.growButtons) {
       button.update(millis);
     }
-    banner.update(millis);
+    this.banner.update(millis);
+    this.play.update(millis);
     // restart thread
     if (!this.thread.isAlive()) {
       this.backgroundImage = this.thread.img;
@@ -395,21 +548,24 @@ class MainMenuInterface extends InterfaceLNZ {
     for (MainMenuGrowButton button : this.growButtons) {
       button.mouseMove(mX, mY);
     }
-    banner.mouseMove(mX, mY);
+    this.banner.mouseMove(mX, mY);
+    this.play.mouseMove(mX, mY);
   }
 
   void mousePress() {
     for (MainMenuGrowButton button : this.growButtons) {
       button.mousePress();
     }
-    banner.mousePress();
+    this.banner.mousePress();
+    this.play.mousePress();
   }
 
   void mouseRelease() {
     for (MainMenuGrowButton button : this.growButtons) {
       button.mouseRelease();
     }
-    banner.mouseRelease();
+    this.banner.mouseRelease();
+    this.play.mouseRelease();
   }
 
   void scroll(int amount) {}

@@ -55,7 +55,7 @@ void draw() {
   }
   // cursor
   imageMode(CENTER);
-  image(global.cursor, mouseX, mouseY, global.options.cursor_size, global.options.cursor_size);
+  image(global.cursor, mouseX, mouseY, global.configuration.cursor_size, global.configuration.cursor_size);
 }
 
 void mouseDragged() {

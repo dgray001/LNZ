@@ -10,7 +10,7 @@ class Global {
   private int timer_exiting = Constants.exit_delay;
   private Images images;
   private Sounds sounds;
-  private Options options = new Options();
+  private Configuration configuration = new Configuration();
   private PImage cursor;
   // FPS
   private int lastFrameTime = millis();
@@ -40,17 +40,19 @@ class Global {
 }
 
 
-class Options { // global options (profile independent)
+// global options (profile independent)
+class Configuration {
   private String default_profile_name = "";
   private float cursor_size = Constants.default_cursor_size;
 
-  Options() {
-    this.loadOptions();
+  Configuration() {
+    this.loadConfiguration();
   }
 
-  void loadOptions() {
-    String[] lines = loadStrings(sketchPath("data/options.lnz"));
+  void loadConfiguration() {
+    String[] lines = loadStrings(sketchPath("data/configuration.lnz"));
     if (lines == null) {
+      this.save(); // save defaults if no configuration exists
       return;
     }
     for (String line : lines) {
@@ -73,15 +75,15 @@ class Options { // global options (profile independent)
     }
   }
 
-  void defaultOptions() {
+  void defaultConfiguration() {
     this.cursor_size = Constants.default_cursor_size;
   }
 
   void save() {
-    this.saveOptions();
+    this.saveConfiguration();
   }
-  void saveOptions() {
-    PrintWriter file = createWriter(sketchPath("data/options.lnz"));
+  void saveConfiguration() {
+    PrintWriter file = createWriter(sketchPath("data/configuration.lnz"));
     file.println("default_profile_name: " + this.default_profile_name);
     file.println("cursor_size: " + this.cursor_size);
     file.flush();

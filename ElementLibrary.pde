@@ -210,10 +210,10 @@ abstract class RectangleButton extends Button {
         this.xf + this.shadow_amount, this.yf + this.shadow_amount, this.roundness);
     }
     this.setFill();
-    if (this.shadow && this.clicked) {
+    if (this.shadow && this.clicked && !this.disabled) {
       translate(this.shadow_amount, this.shadow_amount);
     }
-    if (this.raised_body) {
+    if (this.raised_body && !this.disabled) {
       fill(255, 0);
       rect(this.xi, this.yi, this.xf, this.yf, this.roundness);
       stroke(255, 0);
@@ -234,10 +234,10 @@ abstract class RectangleButton extends Button {
       rect(this.xi, this.yi, this.xf, this.yf, this.roundness);
     }
     this.writeText();
-    if (this.shadow && this.clicked) {
+    if (this.shadow && this.clicked && !this.disabled) {
       translate(-this.shadow_amount, -this.shadow_amount);
     }
-    if (this.raised_border) {
+    if (this.raised_border && !this.disabled) {
       strokeWeight(1);
       if (this.clicked) {
         stroke(0);
@@ -786,7 +786,7 @@ abstract class ArcButton extends Button {
 
 
 
-// arc (chord) button cut with a chord
+// shaped like the 'Find Match' button in League
 abstract class LeagueButton extends ArcButton {
   protected float trapezoid_height;
   protected float trapezoid_shift;
@@ -1799,6 +1799,8 @@ class InputBox extends RectangleButton {
   protected int cursor_blink_timer = 0;
   protected boolean cursor_blinking = true;
 
+  protected float lastMouseX = 0;
+
   InputBox(float xi, float yi, float xf, float yf) {
     super(xi, yi, xf, yf);
     this.roundness = 0;
@@ -1924,6 +1926,12 @@ class InputBox extends RectangleButton {
     }
   }
 
+  @Override
+  void mouseMove(float mX, float mY) {
+    this.lastMouseX = mX;
+    super.mouseMove(mX, mY);
+  }
+
   void dehover() {
   }
 
@@ -1938,6 +1946,12 @@ class InputBox extends RectangleButton {
   void click() {
     this.typing = true;
     this.resetBlink();
+    textSize(this.text_size);
+    String display_text_copy = this.display_text;
+    while (display_text_copy.length() > 0 && this.lastMouseX < this.xi + 2 + textWidth(display_text_copy)) {
+      display_text_copy = display_text_copy.substring(0, display_text_copy.length() - 1);
+    }
+    this.location_cursor = location_display + display_text_copy.length();
   }
 
   void release() {
@@ -2290,7 +2304,7 @@ class Slider  {
 
 
 enum FormFieldSubmit {
-  NONE, SUBMIT, CANCEL;
+  NONE, SUBMIT, CANCEL, BUTTON;
 }
 
 abstract class FormField {
@@ -2739,6 +2753,10 @@ class RadiosFormField extends MessageFormField {
         this.index_selected = i;
         this.uncheckOthers();
       }
+      else if (pressed && !radio.checked) {
+        this.index_selected = -1;
+        this.uncheckOthers();
+      }
     }
   }
 
@@ -2999,7 +3017,19 @@ class SubmitFormField extends FormField {
 }
 
 
-//class ButtonFormField extends
+class ButtonFormField extends SubmitFormField {
+  ButtonFormField(String message) {
+    super(message, true);
+  }
+
+  @Override
+  FormFieldSubmit update(int millis) {
+    if (super.update(millis) != FormFieldSubmit.NONE) {
+      return FormFieldSubmit.BUTTON;
+    }
+    return FormFieldSubmit.NONE;
+  }
+}
 
 
 
@@ -3231,6 +3261,9 @@ abstract class Form {
       else if (submit == FormFieldSubmit.CANCEL) {
         this.cancelForm();
       }
+      else if (submit == FormFieldSubmit.BUTTON) { // alternate button
+        this.buttonPress(i);
+      }
       translate(0, -currY);
       currY += this.fields.get(i).getHeight() + this.fieldCushion;
     }
@@ -3338,4 +3371,5 @@ abstract class Form {
 
   abstract void submit();
   abstract void cancel();
+  abstract void buttonPress(int i);
 }
