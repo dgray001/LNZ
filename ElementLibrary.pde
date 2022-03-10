@@ -2370,6 +2370,16 @@ abstract class FormField {
     this.updateWidthDependencies();
   }
 
+  void setValue(int newValue) {
+    this.setValue(Integer.toString(newValue));
+  }
+  void setValue(float newValue) {
+    this.setValue(Float.toString(newValue));
+  }
+  void setValue(boolean newValue) {
+    this.setValue(Boolean.toString(newValue));
+  }
+
   abstract void updateWidthDependencies();
   abstract float getHeight();
   abstract String getValue();
@@ -2429,6 +2439,7 @@ class MessageFormField extends FormField {
   protected float minimum_text_size = 8;
   protected float text_size = 0;
   protected color text_color = color(0);
+  protected int text_align = LEFT;
 
   MessageFormField(String message) {
     super(message);
@@ -2482,9 +2493,20 @@ class MessageFormField extends FormField {
 
   FormFieldSubmit update(int millis) {
     textSize(this.text_size);
-    textAlign(LEFT, TOP);
+    textAlign(this.text_align, TOP);
     fill(this.text_color);
-    text(this.display_message, 1, 1);
+    switch(this.text_align) {
+      case RIGHT:
+        text(this.display_message, this.field_width - 1, 1);
+        break;
+      case CENTER:
+        text(this.display_message, 0.5 * this.field_width, 1);
+        break;
+      case LEFT:
+      default:
+        text(this.display_message, 1, 1);
+        break;
+    }
     return FormFieldSubmit.NONE;
   }
 
@@ -2896,6 +2918,7 @@ class CheckboxFormField extends MessageFormField {
 class SliderFormField extends MessageFormField {
   protected Slider slider = new Slider();
   protected float max_slider_height = 30;
+  protected float threshhold = 0.2;
 
   SliderFormField(String message, float max) {
     this(message, 0, max, -1);
@@ -2905,6 +2928,7 @@ class SliderFormField extends MessageFormField {
   }
   SliderFormField(String message, float min, float max, float step) {
     super(message);
+    this.text_align = RIGHT;
     this.slider.bounds(min, max, step);
     this.slider.setValue(min);
   }
@@ -2912,12 +2936,12 @@ class SliderFormField extends MessageFormField {
   @Override
   void updateWidthDependencies() {
     float temp_field_width = this.field_width;
-    this.field_width = 0.4 * this.field_width;
+    this.field_width = this.threshhold * this.field_width;
     super.updateWidthDependencies();
     this.field_width = temp_field_width;
     textSize(this.text_size);
     float sliderheight = min(this.getHeight(), this.max_slider_height);
-    float xi = textWidth(this.message) + 0.05 * this.field_width;
+    float xi = (this.threshhold + 0.02) * this.field_width;
     float yi = 0.5 * (this.getHeight() - sliderheight);
     this.slider.setLocation(xi, yi, this.field_width, yi + sliderheight);
   }
@@ -2936,7 +2960,11 @@ class SliderFormField extends MessageFormField {
   @Override
   FormFieldSubmit update(int millis) {
     this.slider.update(millis);
-    return super.update(millis);
+    float temp_field_width = this.field_width;
+    this.field_width = this.threshhold * this.field_width;
+    super.update(millis);
+    this.field_width = temp_field_width;
+    return FormFieldSubmit.NONE;
   }
 
   @Override

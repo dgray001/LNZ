@@ -1,5 +1,6 @@
 class Profile {
   class Options {
+    private float volume_master;
     private float volume_music;
     private float volume_interface;
     private float volume_environment;
@@ -17,6 +18,7 @@ class Profile {
     }
 
     void defaults() {
+      this.volume_master = Constants.options_defaultVolume;
       this.volume_music = Constants.options_defaultVolume;
       this.volume_interface = Constants.options_defaultVolume;
       this.volume_environment = Constants.options_defaultVolume;
@@ -28,6 +30,7 @@ class Profile {
       if (Profile.this.invalidProfile()) {
         return;
       }
+      //global.sounds.setMasterGain(this.volume_master + Constants.options_volumeGainAdjustment);
       global.sounds.setBackgroundGain(this.volume_music + Constants.options_volumeGainAdjustment);
       global.sounds.out_interface.setGain(this.volume_interface + Constants.options_volumeGainAdjustment);
       global.sounds.out_environment.setGain(this.volume_environment + Constants.options_volumeGainAdjustment);
@@ -50,6 +53,9 @@ class Profile {
           continue;
         }
         switch(data[0]) {
+          case "volume_master":
+            this.volume_master = toFloat(trim(data[1]));
+            break;
           case "volume_music":
             this.volume_music = toFloat(trim(data[1]));
             break;
@@ -76,6 +82,7 @@ class Profile {
         return;
       }
       PrintWriter file = createWriter(sketchPath("data/profiles/" + Profile.this.display_name.toLowerCase() + "/options.lnz"));
+      file.println("volume_master: " + this.volume_music);
       file.println("volume_music: " + this.volume_music);
       file.println("volume_interface: " + this.volume_interface);
       file.println("volume_environment: " + this.volume_environment);
