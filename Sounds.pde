@@ -3,6 +3,7 @@ class Sounds {
 
   private AudioPlayer background_track;
   private float gain_background = 0;
+  private boolean muted_background = false;
   private boolean playing_background = false;
   private boolean loop_background = true;
   private String album_name = "";
@@ -53,10 +54,17 @@ class Sounds {
     }
   }
 
-  void setBackgroundGain(float gain) {
+  void setBackgroundGain(float gain, boolean muted) {
     this.gain_background = gain;
+    this.muted_background = muted;
     if (this.background_track != null) {
       this.background_track.setGain(gain);
+      if (this.muted_background) {
+        this.background_track.mute();
+      }
+      else {
+        this.background_track.unmute();
+      }
     }
   }
 
@@ -69,6 +77,12 @@ class Sounds {
           this.background_track = minim.loadFile(track_path);
           this.background_track.setGain(this.gain_background);
           this.background_track.play();
+          if (this.muted_background) {
+            this.background_track.mute();
+          }
+          else {
+            this.background_track.unmute();
+          }
         }
         else if (this.loop_background) {
           this.track_number = 0;

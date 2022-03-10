@@ -1,11 +1,17 @@
 class Profile {
   class Options {
     private float volume_master;
+    private boolean volume_master_muted;
     private float volume_music;
+    private boolean volume_music_muted;
     private float volume_interface;
+    private boolean volume_interface_muted;
     private float volume_environment;
+    private boolean volume_environment_muted;
     private float volume_units;
+    private boolean volume_units_muted;
     private float volume_player;
+    private boolean volume_player_muted;
 
     Options() {
       this.profileUpdated();
@@ -19,23 +25,63 @@ class Profile {
 
     void defaults() {
       this.volume_master = Constants.options_defaultVolume;
+      this.volume_master_muted = false;
       this.volume_music = Constants.options_defaultVolume;
+      this.volume_music_muted = false;
       this.volume_interface = Constants.options_defaultVolume;
+      this.volume_interface_muted = false;
       this.volume_environment = Constants.options_defaultVolume;
+      this.volume_environment_muted = false;
       this.volume_units = Constants.options_defaultVolume;
+      this.volume_units_muted = false;
       this.volume_player = Constants.options_defaultVolume;
+      this.volume_player_muted = false;
     }
 
     void change() {
       if (Profile.this.invalidProfile()) {
         return;
       }
-      //global.sounds.setMasterGain(this.volume_master + Constants.options_volumeGainAdjustment);
-      global.sounds.setBackgroundGain(this.volume_music + Constants.options_volumeGainAdjustment);
-      global.sounds.out_interface.setGain(this.volume_interface + Constants.options_volumeGainAdjustment);
-      global.sounds.out_environment.setGain(this.volume_environment + Constants.options_volumeGainAdjustment);
-      global.sounds.out_units.setGain(this.volume_units + Constants.options_volumeGainAdjustment);
-      global.sounds.out_player.setGain(this.volume_player + Constants.options_volumeGainAdjustment);
+      float master_gain_adjustment = this.volume_master + Constants.options_volumeGainAdjustment;
+
+      if (this.volume_master_muted || this.volume_music_muted) {
+        global.sounds.setBackgroundGain(this.volume_music + Constants.options_volumeGainAdjustment + master_gain_adjustment, true);
+      }
+      else {
+        global.sounds.setBackgroundGain(this.volume_music + Constants.options_volumeGainAdjustment + master_gain_adjustment, false);
+      }
+
+      if (this.volume_master_muted || this.volume_interface_muted) {
+        global.sounds.out_interface.mute();
+      }
+      else {
+        global.sounds.out_interface.unmute();
+      }
+      global.sounds.out_interface.setGain(this.volume_interface + Constants.options_volumeGainAdjustment + master_gain_adjustment);
+
+      if (this.volume_master_muted || this.volume_environment_muted) {
+        global.sounds.out_environment.mute();
+      }
+      else {
+        global.sounds.out_environment.unmute();
+      }
+      global.sounds.out_environment.setGain(this.volume_environment + Constants.options_volumeGainAdjustment + master_gain_adjustment);
+
+      if (this.volume_master_muted || this.volume_units_muted) {
+        global.sounds.out_units.mute();
+      }
+      else {
+        global.sounds.out_units.unmute();
+      }
+      global.sounds.out_units.setGain(this.volume_units + Constants.options_volumeGainAdjustment + master_gain_adjustment);
+
+      if (this.volume_master_muted || this.volume_player_muted) {
+        global.sounds.out_player.mute();
+      }
+      else {
+        global.sounds.out_player.unmute();
+      }
+      global.sounds.out_player.setGain(this.volume_player + Constants.options_volumeGainAdjustment + master_gain_adjustment);
     }
 
     void read() {
