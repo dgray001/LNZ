@@ -2115,18 +2115,22 @@ class Slider  {
     }
 
     color lineColor() {
-      if (this.active) {
+      if (this.disabled) {
+        return this.color_disabled;
+      }
+      else if (this.active) {
         return this.active_color;
       }
-      else {
-        return this.color_stroke;
-      }
+      return this.color_stroke;
     }
 
     @Override
     void drawButton() {
       ellipseMode(RADIUS);
-      if (this.active) {
+      if (this.disabled) {
+        fill(this.color_disabled);
+      }
+      else if (this.active) {
         fill(this.active_color);
       }
       else {
@@ -2207,11 +2211,22 @@ class Slider  {
   protected float offset;
   protected float line_thickness = 3;
 
+  protected boolean hovered = false;
+
   Slider() {
     this(0, 0, 0, 0);
   }
   Slider(float xi, float yi, float xf, float yf) {
     this.setLocation(xi, yi, xf, yf);
+  }
+
+  void disable() {
+    this.button.active = false;
+    this.button.disabled = true;
+  }
+
+  void enable() {
+    this.button.disabled = false;
   }
 
   void setLocation(float xi, float yi, float xf, float yf) {
@@ -2328,10 +2343,22 @@ class Slider  {
 
   void mouseMove(float mX, float mY) {
     this.button.mouseMove(mX, mY);
+    if (mX > this.xi && mY > this.yi && mX < this.xf && mY < this.yf) {
+      this.hovered = true;
+    }
+    else {
+      this.hovered = false;
+    }
   }
 
   void mousePress() {
     this.button.mousePress();
+    if (this.hovered && !this.button.disabled) {
+      this.button.active = true;
+      this.button.clicked = true;
+      this.button.moveButton(this.button.lastX - this.button.xCenter(), 0);
+      Slider.this.refreshValue();
+    }
   }
 
   void mouseRelease() {
@@ -2380,6 +2407,9 @@ abstract class FormField {
     this.setValue(Boolean.toString(newValue));
   }
 
+  abstract void enable();
+  abstract void disable();
+
   abstract void updateWidthDependencies();
   abstract float getHeight();
   abstract String getValue();
@@ -2406,6 +2436,8 @@ class SpacerFormField extends FormField {
     this.spacer_height = spacer_height;
   }
 
+  void enable() {}
+  void disable() {}
   void updateWidthDependencies() {}
 
   float getHeight() {
@@ -2450,6 +2482,9 @@ class MessageFormField extends FormField {
     this.default_text_size = new_text_size;
     this.updateWidthDependencies();
   }
+
+  void enable() {}
+  void disable() {}
 
   void updateWidthDependencies() {
     float max_width = this.field_width - 2;
@@ -2534,6 +2569,9 @@ class TextBoxFormField extends FormField {
     this.textbox.color_header = color(255, 0);
     this.textbox.color_stroke = color(255, 0);
   }
+
+  void enable() {}
+  void disable() {}
 
   void updateWidthDependencies() {
     this.textbox.setLocation(0, 0, this.field_width, this.getHeight());
@@ -2916,7 +2954,20 @@ class CheckboxFormField extends MessageFormField {
 
 // Slider
 class SliderFormField extends MessageFormField {
+  class DefaultCheckBox extends CheckBox {
+    DefaultCheckBox() {
+      super(0, 0, 0, 0);
+    }
+    void hover() {
+    }
+    void dehover() {
+    }
+    void release() {
+    }
+  }
+
   protected Slider slider = new Slider();
+  protected CheckBox checkbox;
   protected float max_slider_height = 30;
   protected float threshhold = 0.2;
 
@@ -2933,21 +2984,51 @@ class SliderFormField extends MessageFormField {
     this.slider.setValue(min);
   }
 
+  void addCheckbox(String message) {
+    this.checkbox = new DefaultCheckBox();
+    this.checkbox.message = message;
+    this.updateWidthDependencies();
+  }
+
+  @Override
+  void disable() {
+    this.slider.disable();
+    this.checkbox.checked = true;
+  }
+  @Override
+  void enable() {
+    this.slider.enable();
+    this.checkbox.checked = false;
+  }
+
   @Override
   void updateWidthDependencies() {
     float temp_field_width = this.field_width;
     this.field_width = this.threshhold * this.field_width;
     super.updateWidthDependencies();
+    float buffer_width = 0.02 * this.field_width;
     this.field_width = temp_field_width;
-    textSize(this.text_size);
     float sliderheight = min(this.getHeight(), this.max_slider_height);
-    float xi = (this.threshhold + 0.02) * this.field_width;
+    if (this.checkbox != null) {
+      this.checkbox.text_size = 0.75 * this.text_size;
+      textSize(this.checkbox.text_size);
+      float checkboxsize = 0.8 * (textAscent() + textDescent() + 2);
+      buffer_width += textWidth(this.checkbox.message) + 0.02 * this.field_width;
+      float xi = this.threshhold * this.field_width + buffer_width;
+      float yi = 0.5 * (this.getHeight() - checkboxsize);
+      this.checkbox.setLocation(xi, yi, xi + checkboxsize, yi + checkboxsize);
+      buffer_width += checkboxsize + 0.02 * this.field_width;
+    }
+    float xi = this.threshhold * this.field_width + buffer_width;
     float yi = 0.5 * (this.getHeight() - sliderheight);
     this.slider.setLocation(xi, yi, this.field_width, yi + sliderheight);
   }
 
   @Override
   String getValue() {
+    if (this.checkbox != null && this.checkbox.checked) {
+      return Float.toString(this.slider.value) + ":disabled";
+    }
     return Float.toString(this.slider.value);
   }
   @Override
@@ -2964,22 +3045,44 @@ class SliderFormField extends MessageFormField {
     this.field_width = this.threshhold * this.field_width;
     super.update(millis);
     this.field_width = temp_field_width;
+    if (this.checkbox != null) {
+      textSize(this.checkbox.text_size);
+      fill(this.checkbox.color_text);
+      textAlign(RIGHT, CENTER);
+      text(this.checkbox.message, this.checkbox.xi - 1, this.checkbox.yCenter());
+      this.checkbox.update(millis);
+    }
     return FormFieldSubmit.NONE;
   }
 
   @Override
   void mouseMove(float mX, float mY) {
     this.slider.mouseMove(mX, mY);
+    if (this.checkbox != null) {
+      this.checkbox.mouseMove(mX, mY);
+    }
   }
 
   @Override
   void mousePress() {
     this.slider.mousePress();
+    if (this.checkbox != null) {
+      this.checkbox.mousePress();
+      if (this.checkbox.checked) {
+        this.disable();
+      }
+      else {
+        this.enable();
+      }
+    }
   }
 
   @Override
   void mouseRelease() {
     this.slider.mouseRelease();
+    if (this.checkbox != null) {
+      this.checkbox.mouseRelease();
+    }
   }
 
   @Override
@@ -3029,6 +3132,13 @@ class SubmitFormField extends FormField {
     this.button.message = message;
     this.button.show_message = true;
     this.submit_button = submit_button;
+  }
+
+  void disable() {
+    this.button.disabled = true;
+  }
+  void enable() {
+    this.button.disabled = false;
   }
 
   void updateWidthDependencies() {
