@@ -37,27 +37,97 @@ abstract class InterfaceLNZ {
 
   class OptionsForm extends FormLNZ {
     OptionsForm() {
-      super(Constants.OptionsForm_widthOffset, Constants.OptionsForm_heightOffset,
-        width - Constants.OptionsForm_widthOffset, height - Constants.OptionsForm_heightOffset);
+      super(Constants.optionsForm_widthOffset, Constants.optionsForm_heightOffset,
+        width - Constants.optionsForm_widthOffset, height - Constants.optionsForm_heightOffset);
       this.setTitleText("Options");
       this.setTitleSize(20);
+      this.setFieldCushion(0);
       this.color_background = color(250, 250, 180);
       this.color_header = color(180, 180, 50);
       if (global.profile == null) {
         this.canceled = true;
         return;
       }
-      // add fields for profile options
+      SliderFormField volume_master = new SliderFormField("Master Volume: ", 0, 100);
+      volume_master.threshhold = Constants.optionsForm_threshhold_master;
+      SliderFormField volume_music = new SliderFormField("Music: ", 0, 100);
+      volume_music.threshhold = Constants.optionsForm_threshhold_other;
+      SliderFormField volume_interface = new SliderFormField("Interface: ", 0, 100);
+      volume_interface.threshhold = Constants.optionsForm_threshhold_other;
+      SliderFormField volume_environment = new SliderFormField("Environment: ", 0, 100);
+      volume_environment.threshhold = Constants.optionsForm_threshhold_other;
+      SliderFormField volume_units = new SliderFormField("Units: ", 0, 100);
+      volume_units.threshhold = Constants.optionsForm_threshhold_other;
+      SliderFormField volume_player = new SliderFormField("Player: ", 0, 100);
+      volume_player.threshhold = Constants.optionsForm_threshhold_other;
+      SubmitFormField apply = new ButtonFormField("Apply");
+      apply.button.setColors(color(220), color(240, 240, 190),
+        color(190, 190, 140), color(140, 140, 90), color(0));
       SubmitFormField submit = new SubmitFormField("Save Options");
       submit.button.setColors(color(220), color(240, 240, 190),
         color(190, 190, 140), color(140, 140, 90), color(0));
+      SubmitFormField defaults = new ButtonFormField("Defaults");
+      defaults.button.setColors(color(220), color(240, 240, 190),
+        color(190, 190, 140), color(140, 140, 90), color(0));
+      SubmitFormField cancel = new SubmitFormField("Cancel", false);
+      cancel.button.setColors(color(220), color(240, 240, 190),
+        color(190, 190, 140), color(140, 140, 90), color(0));
+
+      this.addField(volume_master);
+      this.addField(volume_music);
+      this.addField(volume_interface);
+      this.addField(volume_environment);
+      this.addField(volume_units);
+      this.addField(volume_player);
+      this.addField(new SpacerFormField(10));
+      this.addField(apply);
+      this.addField(new SpacerFormField(10));
       this.addField(submit);
+      this.addField(new SpacerFormField(10));
+      this.addField(defaults);
+      this.addField(new SpacerFormField(10));
+      this.addField(cancel);
+
+      this.setFormFieldValues();
+    }
+
+    void setFormFieldValues() {
+      this.fields.get(0).setValue(global.profile.options.volume_master);
+      this.fields.get(1).setValue(global.profile.options.volume_music);
+      this.fields.get(2).setValue(global.profile.options.volume_interface);
+      this.fields.get(3).setValue(global.profile.options.volume_environment);
+      this.fields.get(4).setValue(global.profile.options.volume_units);
+      this.fields.get(5).setValue(global.profile.options.volume_player);
     }
 
     void submit() {
-      // set profile options
+      this.apply();
       global.profile.save();
       this.canceled = true;
+    }
+
+    void apply() {
+      global.profile.options.volume_master = toFloat(this.fields.get(0).getValue());
+      global.profile.options.volume_music = toFloat(this.fields.get(1).getValue());
+      global.profile.options.volume_interface = toFloat(this.fields.get(2).getValue());
+      global.profile.options.volume_environment = toFloat(this.fields.get(3).getValue());
+      global.profile.options.volume_units = toFloat(this.fields.get(4).getValue());
+      global.profile.options.volume_player = toFloat(this.fields.get(5).getValue());
+      global.profile.options.change();
+    }
+
+    void buttonPress(int index) {
+      switch(index) {
+        case 7: // apply
+          this.apply();
+          break;
+        case 11: // defaults
+          global.profile.options.defaults();
+          this.setFormFieldValues();
+          break;
+        default:
+          break;
+      }
     }
   }
 
