@@ -139,10 +139,18 @@ class Profile {
     }
   }
 
+
   private String display_name = "";
+
   private HashMap<Achievement, Boolean> achievements = new HashMap<Achievement, Boolean>();
   private int achievement_tokens = 0;
   private Options options;
+
+  private HashMap<HeroCode, Hero> heroes = new HashMap<HeroCode, Hero>();
+  private HeroCode curr_hero; // hero the player is playing as
+  private Level curr_level; // level the player is playing
+
+  private int money = 0;
 
   Profile() {
     this("");
@@ -174,6 +182,7 @@ class Profile {
       }
     }
     file.println("achievement_tokens: " + this.achievement_tokens);
+    file.println("money: " + this.money);
     file.flush();
     file.close();
     this.options.save();
