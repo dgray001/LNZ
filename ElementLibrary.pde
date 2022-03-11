@@ -3565,3 +3565,69 @@ abstract class Form {
   abstract void cancel();
   abstract void buttonPress(int i);
 }
+
+
+
+
+
+class Panel {
+  class PanelButton extends TriangleButton {
+    void release() {
+      if (this.hovered) {
+        Panel.this.collapse();
+      }
+    }
+  }
+
+
+  protected int location;
+  protected float size_min;
+  protected float size_max;
+  protected float size_curr;
+  protected float size;
+
+  protected boolean hovered = false;
+  protected boolean open = true;
+  protected boolean collapsing = false;
+  protected PImage img;
+
+  protected PanelButton button;
+
+  protected color color_background = color(220);
+
+  Panel(int location, float size_min, float size_max, float size) {
+    switch(location) {
+      case LEFT:
+      case RIGHT:
+      case TOP:
+      case DOWN:
+        this.location = location;
+        break;
+      default:
+        this.location = LEFT;
+        break;
+    }
+    this.size_min = size_min;
+    this.size_max = size_max;
+    this.size_curr = size;
+    this.size = size;
+  }
+
+
+  void collapse() {
+    this.collapsing = true;
+  }
+
+
+  void update(int millis) {
+  }
+
+  void mouseMove(float mX, float mY) {
+  }
+
+  void mousePress() {
+  }
+
+  void mouseRelease() {
+  }
+}

@@ -1,4 +1,3 @@
-
 class MainMenuInterface extends InterfaceLNZ {
 
   abstract class MainMenuGrowButton extends RippleRectangleButton {
