@@ -170,6 +170,7 @@ class MainMenuInterface extends InterfaceLNZ {
     @Override
     void release() {
       super.release();
+      global.state = ProgramState.ENTERING_MAPEDITOR;
     }
   }
 

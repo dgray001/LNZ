@@ -3570,8 +3570,77 @@ abstract class Form {
 
 
 
+class ClockInt {
+  protected int min;
+  protected int max;
+  protected int value;
+
+  ClockInt(int max) {
+    this(0, max, int(random(max)));
+  }
+  ClockInt(int max, int start) {
+    this(0, max, start);
+  }
+  ClockInt(int min, int max, int start) {
+    if (min > max) {
+      this.min = max;
+      this.max = min;
+    }
+    else {
+      this.min = min;
+      this.max = max;
+    }
+    this.value = start;
+    this.resolve();
+  }
+
+  void resolve() {
+    if (this.min == this.max) {
+      this.value = this.min;
+    }
+    else {
+      this.value = this.min + this.value % (this.max - this.min);
+    }
+  }
+
+  void add(int amount) {
+    this.value += amount;
+    this.resolve();
+  }
+}
+
+
+
+
+
 class Panel {
-  class PanelButton extends TriangleButton {
+  class PanelButton extends RectangleButton {
+    protected float image_rotation = 0;
+    protected float image_rotation_speed = 0.01;
+    protected float image_rotation_target = 0;
+    protected PImage icon;
+
+    PanelButton(float xi, float yi, float xf, float yf) {
+      super(xi, yi, xf, yf);
+      this.setColors(color(220), color(1, 0), color(170, 80), color(170, 180), color(0));
+      this.noStroke();
+      this.roundness = 0;
+    }
+
+    @Override
+    void update(int millis) {
+      super.update(millis);
+      if (this.icon != null) {
+        rotate(this.image_rotation);
+        imageMode(CORNERS);
+        image(this.icon, this.xi, this.yi, this.xf, this.yf);
+        rotate(-this.image_rotation);
+      }
+    }
+
+    void hover() {}
+    void dehover() {}
+    void click() {}
     void release() {
       if (this.hovered) {
         Panel.this.collapse();
@@ -3589,9 +3658,12 @@ class Panel {
   protected boolean hovered = false;
   protected boolean open = true;
   protected boolean collapsing = false;
+  protected float collapse_speed = 1.2;
+  protected int lastUpdateTime = 0;
   protected PImage img;
 
   protected PanelButton button;
+  protected float panelButtonSize = 30;
 
   protected color color_background = color(220);
 
@@ -3611,6 +3683,28 @@ class Panel {
     this.size_max = size_max;
     this.size_curr = size;
     this.size = size;
+    this.createButton();
+  }
+
+
+  void createButton() {
+    switch(this.location) {
+      case LEFT:
+        this.button = new PanelButton(this.size, 0, this.size + this.panelButtonSize, this.panelButtonSize);
+        break;
+      case RIGHT:
+        this.button = new PanelButton(width - this.size - this.panelButtonSize, 0, width - this.size, this.panelButtonSize);
+        break;
+      case UP:
+        this.button = new PanelButton(0, 0, 0, 0);
+        break;
+      case DOWN:
+        this.button = new PanelButton(0, 0, 0, 0);
+        break;
+    }
+  }
+  void addIcon(PImage icon) {
+    this.button.icon = icon;
   }
 
 
@@ -3620,14 +3714,71 @@ class Panel {
 
 
   void update(int millis) {
+    int timeElapsed = millis - this.lastUpdateTime;
+    this.button.update(millis);
+    rectMode(CORNER);
+    fill(this.color_background);
+    noStroke();
+    switch(this.location) {
+      case LEFT:
+        rect(0, 0, this.size, height);
+        break;
+      case RIGHT:
+        rect(width - this.size, 0, this.size, height);
+        break;
+      case UP:
+        rect(0, 0, width, this.size);
+        break;
+      case DOWN:
+        rect(0, height - this.size, width, this.size);
+        break;
+    }
+    if (this.collapsing) {
+      float buttonMove = 0;
+      if (this.open) {
+        buttonMove = -this.collapse_speed * timeElapsed;
+        this.size += buttonMove;
+        if (this.size < 0) {
+          buttonMove -= this.size;
+          this.size = 0;
+          this.open = false;
+          this.collapsing = false;
+        }
+      }
+      else {
+        buttonMove = this.collapse_speed * timeElapsed;
+        this.size += buttonMove;
+        if (this.size > this.size_curr) {
+          buttonMove += this.size_curr - this.size;
+          this.size = this.size_curr;
+          this.open = true;
+          this.collapsing = false;
+        }
+      }
+    }
+    this.lastUpdateTime = millis;
   }
 
   void mouseMove(float mX, float mY) {
+    this.button.mouseMove(mX, mY);
+    this.hovered = false;
+    switch(this.location) {
+      case LEFT:
+        break;
+      case RIGHT:
+        break;
+      case UP:
+        break;
+      case DOWN:
+        break;
+    }
   }
 
   void mousePress() {
+    this.button.mousePress();
   }
 
   void mouseRelease() {
+    this.button.mouseRelease();
   }
 }
