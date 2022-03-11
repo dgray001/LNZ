@@ -147,7 +147,7 @@ class Profile {
   private Options options;
 
   private HashMap<HeroCode, Hero> heroes = new HashMap<HeroCode, Hero>(); // maybe remove ??
-  private HeroCode curr_hero; // hero the player is playing as
+  private HeroCode curr_hero = HeroCode.ERROR; // hero the player is playing as
   private Level curr_level; // level the player is playing
 
   private int money = 0;

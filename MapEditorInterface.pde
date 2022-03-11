@@ -9,35 +9,58 @@ class MapEditorInterface extends InterfaceLNZ {
     MapEditorButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
     }
+    void hover() {}
+    void dehover() {
+      this.clicked = false;
+    }
+    void click() {}
   }
 
   class MapEditorButton1 extends MapEditorButton {
     MapEditorButton1() {
+      super(0, 0, 0, 0);
+    }
+    void release() {
     }
   }
 
   class MapEditorButton2 extends MapEditorButton {
     MapEditorButton2() {
+      super(0, 0, 0, 0);
+    }
+    void release() {
     }
   }
 
   class MapEditorButton3 extends MapEditorButton {
     MapEditorButton3() {
+      super(0, 0, 0, 0);
+    }
+    void release() {
     }
   }
 
   class MapEditorButton4 extends MapEditorButton {
     MapEditorButton4() {
+      super(0, 0, 0, 0);
+    }
+    void release() {
     }
   }
 
   class MapEditorButton5 extends MapEditorButton {
     MapEditorButton5() {
+      super(0, 0, 0, 0);
+    }
+    void release() {
     }
   }
 
   class MapEditorButton6 extends MapEditorButton {
     MapEditorButton6() {
+      super(0, 0, 0, 0);
+    }
+    void release() {
     }
   }
 
@@ -45,25 +68,57 @@ class MapEditorInterface extends InterfaceLNZ {
   class MapEditorListTextBox extends ListTextBox {
     MapEditorListTextBox() {
     }
+
+    void click() {
+    }
+    void doubleclick() {
+    }
   }
 
 
   class LevelEditorListTextBox extends ListTextBox {
     LevelEditorListTextBox() {
     }
+
+    void click() {
+    }
+    void doubleclick() {
+    }
   }
 
 
   class NewMapForm extends FormLNZ {
+    NewMapForm() {
+      super(0, 0, 0, 0);
+    }
+
+    void submit() {
+    }
   }
 
 
   class NewLevelForm extends FormLNZ {
+    NewLevelForm() {
+      super(0, 0, 0, 0);
+    }
+
+    void submit() {
+    }
   }
 
 
   class TriggerEditorForm extends Form {
     TriggerEditorForm() {
+      super(0, 0, 0, 0);
+    }
+
+    void cancel() {
+    }
+
+    void submit() {
+    }
+
+    void buttonPress(int i) {
     }
   }
 
@@ -86,6 +141,8 @@ class MapEditorInterface extends InterfaceLNZ {
     this.buttons[3] = new MapEditorButton4();
     this.buttons[4] = new MapEditorButton5();
     this.buttons[5] = new MapEditorButton6();
+    this.leftPanel.addIcon(global.images.getImage("icons/triangle.png"));
+    this.rightPanel.addIcon(global.images.getImage("icons/triangle.png"));
     this.navigate();
   }
 
@@ -116,6 +173,7 @@ class MapEditorInterface extends InterfaceLNZ {
 
 
   void update(int millis) {
+    background(30);
     this.leftPanel.update(millis);
     this.rightPanel.update(millis);
     if (this.rightPanel.open) {
@@ -156,26 +214,11 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
   void scroll(int amount) {
-    if (this.rightPanel.open) {
-      for (MapEditorButton button : this.buttons) {
-        button.scroll(amount);
-      }
-    }
   }
 
   void keyPress() {
-    if (this.rightPanel.open) {
-      for (MapEditorButton button : this.buttons) {
-        button.keyPress();
-      }
-    }
   }
 
   void keyRelease() {
-    if (this.rightPanel.open) {
-      for (MapEditorButton button : this.buttons) {
-        button.keyRelease();
-      }
-    }
   }
 }

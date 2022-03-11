@@ -353,8 +353,6 @@ class InitialInterface extends InterfaceLNZ {
       background(global.color_background);
       surface.setSize(displayWidth, displayHeight);
       surface.setLocation(0, 0);
-      background(30, 0, 0);
-      global.menu = null;
     }
   }
 

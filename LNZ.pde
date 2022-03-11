@@ -39,11 +39,20 @@ void draw() {
     case INITIAL_INTERFACE:
       break;
     case ENTERING_MAINMENU:
+      background(30, 0, 0);
       global.state = ProgramState.MAINMENU_INTERFACE;
       global.menu = new MainMenuInterface();
       global.sounds.play_background("main");
       break;
     case MAINMENU_INTERFACE:
+      break;
+    case ENTERING_MAPEDITOR:
+      background(30);
+      global.state = ProgramState.MAPEDITOR_INTERFACE;
+      global.menu = new MapEditorInterface();
+      global.sounds.play_background("aoc");
+      break;
+    case MAPEDITOR_INTERFACE:
       break;
     case EXITING:
       global.timer_exiting -= timeElapsed;
