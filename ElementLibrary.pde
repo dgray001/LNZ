@@ -3338,6 +3338,128 @@ class ButtonFormField extends SubmitFormField {
 }
 
 
+class SubmitCancelFormField extends FormField {
+  class SubmitCancelButton extends RectangleButton {
+    protected boolean submit;
+
+    SubmitCancelButton(float xi, float yi, float xf, float yf, boolean submit) {
+      super(xi, yi, xf, yf);
+      this.submit = submit;
+      this.roundness = 0;
+      this.raised_body = true;
+      this.raised_border = true;
+      this.adjust_for_text_descent = true;
+    }
+    void hover() {
+    }
+    void dehover() {
+    }
+    void click() {
+    }
+    void release() {
+      if (this.hovered) {
+        if (this.submit) {
+          SubmitCancelFormField.this.submitted = true;
+        }
+        else {
+          SubmitCancelFormField.this.canceled = true;
+        }
+      }
+    }
+  }
+
+  protected SubmitCancelButton button1 = new SubmitCancelButton(0, 0, 0, 30, true);
+  protected SubmitCancelButton button2 = new SubmitCancelButton(0, 0, 0, 30, false);
+  protected boolean submitted = false;
+  protected boolean canceled = false;
+  protected float gapSize = 10;
+
+  SubmitCancelFormField(String message1, String message2) {
+    super(message1);
+    this.button1.message = message1;
+    this.button1.show_message = true;
+    this.button2.message = message2;
+    this.button2.show_message = true;
+  }
+
+  void disable() {
+    this.button1.disabled = true;
+    this.button2.disabled = true;
+  }
+  void enable() {
+    this.button1.disabled = false;
+    this.button2.disabled = false;
+  }
+
+  void updateWidthDependencies() {
+    textSize(this.button1.text_size);
+    float desiredWidth1 = textWidth(this.button1.message + "  ");
+    textSize(this.button2.text_size);
+    float desiredWidth2 = textWidth(this.button2.message + "  ");
+    if (this.gapSize > this.field_width) {
+      this.button1.setXLocation(0, 0);
+      this.button2.setXLocation(0, 0);
+    }
+    else if (desiredWidth1 + this.gapSize + desiredWidth2 > this.field_width) {
+      this.button1.setXLocation(0, 0.5 * (this.field_width - this.gapSize));
+      this.button2.setXLocation(0.5 * (this.field_width + gapSize), this.field_width);
+    }
+    else {
+      this.button1.setXLocation(0.5 * (this.field_width - this.gapSize) - desiredWidth1, 0.5 * (this.field_width - this.gapSize));
+      this.button2.setXLocation(0.5 * (this.field_width + this.gapSize), 0.5 * (this.field_width + this.gapSize) + desiredWidth2);
+    }
+  }
+
+  float getHeight() {
+    return max(this.button1.yf - this.button1.yi, this.button2.yf - this.button2.yi);
+  }
+
+  String getValue() {
+    return this.message;
+  }
+  @Override
+  void setValue(String newValue) {
+    this.message = newValue;
+  }
+
+  FormFieldSubmit update(int millis) {
+    this.button1.update(millis);
+    this.button2.update(millis);
+    if (this.submitted) {
+      this.submitted = false;
+      return FormFieldSubmit.SUBMIT;
+    }
+    else if (this.canceled) {
+      this.canceled = false;
+      return FormFieldSubmit.CANCEL;
+    }
+    return FormFieldSubmit.NONE;
+  }
+
+  void mouseMove(float mX, float mY) {
+    this.button1.mouseMove(mX, mY);
+    this.button2.mouseMove(mX, mY);
+  }
+
+  void mousePress() {
+    this.button1.mousePress();
+    this.button2.mousePress();
+  }
+
+  void mouseRelease() {
+    this.button1.mouseRelease();
+    this.button2.mouseRelease();
+  }
+
+  void scroll(int amount) {
+  }
+
+  void keyPress() {}
+  void keyRelease() {}
+  void submit() {}
+}
+
+
 
 abstract class Form {
   class CancelButton extends RectangleButton {
