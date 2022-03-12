@@ -1367,6 +1367,12 @@ class TextBox {
     this.setLocation(xi, yi, xf, yf);
   }
 
+  void setXLocation(float xi, float xf) {
+    this.setLocation(xi, this.yi, xf, this.yf);
+  }
+  void setYLocation(float yi, float yf) {
+    this.setLocation(this.xi, yi, this.xf, yf);
+  }
   void setLocation(float xi, float yi, float xf, float yf) {
     this.xi = xi;
     this.yi = yi;
@@ -1429,6 +1435,10 @@ class TextBox {
 
   void refreshText() {
     this.setText(this.text_ref);
+  }
+
+  void clearText() {
+    this.setText("");
   }
 
   void addText(String text) {

@@ -13,11 +13,15 @@ class MapEditorInterface extends InterfaceLNZ {
       this.setColors(color(170), color(222, 184, 135), color(244, 164, 96), color(205, 133, 63), color(0));
       this.show_message = true;
     }
-    void hover() {}
+    void hover() {
+      global.sounds.trigger_interface("interfaces/buttonOn2");
+    }
     void dehover() {
       this.clicked = false;
     }
-    void click() {}
+    void click() {
+      global.sounds.trigger_interface("interfaces/buttonClick1");
+    }
   }
 
   class MapEditorButton1 extends MapEditorButton {
@@ -26,6 +30,7 @@ class MapEditorInterface extends InterfaceLNZ {
       this.message = "Toggle\nDisplay";
     }
     void release() {
+      MapEditorInterface.this.buttonClick1();
     }
   }
 
@@ -36,6 +41,7 @@ class MapEditorInterface extends InterfaceLNZ {
     }
     void release() {
       this.stayDehovered();
+      MapEditorInterface.this.buttonClick2();
     }
   }
 
@@ -46,6 +52,7 @@ class MapEditorInterface extends InterfaceLNZ {
     }
     void release() {
       this.stayDehovered();
+      MapEditorInterface.this.buttonClick3();
     }
   }
 
@@ -56,7 +63,7 @@ class MapEditorInterface extends InterfaceLNZ {
     }
     void release() {
       this.stayDehovered();
-      global.state = ProgramState.ENTERING_MAINMENU;
+      MapEditorInterface.this.buttonClick4();
     }
   }
 
@@ -69,12 +76,77 @@ class MapEditorInterface extends InterfaceLNZ {
     }
     void release() {
       this.stayDehovered();
+      MapEditorInterface.this.buttonClick5();
     }
   }
 
 
   class MapEditorListTextBox extends ListTextBox {
+    protected boolean active = false;
+
     MapEditorListTextBox() {
+      super(width, Constants.MapEditor_listBoxGap, width, 0.9 * height - Constants.MapEditor_listBoxGap);
+      this.color_background = color(250, 190, 140);
+      this.color_header = color(220, 180, 130);
+    }
+
+    void setList(MapEditorPage page) {
+      this.clearText();
+      switch(page) {
+        case MAPS:
+          this.setTitleText("Maps");
+          if (folderExists("data/maps")) {
+            boolean first = true;
+            for (Path p : listFiles("data/maps/")) {
+              String mapName = split(p.getFileName().toString(), '.')[0];
+              if (first) {
+                this.setText(mapName);
+                first = false;
+              }
+              else {
+                this.addLine(mapName);
+              }
+            }
+          }
+          else {
+            mkdir("data/maps");
+          }
+          break;
+        case LEVELS:
+          this.setTitleText("Levels");
+          if (folderExists("data/levels")) {
+            boolean first = true;
+            for (Path p : listFolders("data/levels/")) {
+              String levelName = p.getFileName().toString();
+              if (first) {
+                this.setText(levelName);
+                first = false;
+              }
+              else {
+                this.addLine(levelName);
+              }
+            }
+          }
+          else {
+            mkdir("data/levels");
+          }
+          break;
+        case TERRAIN:
+          this.setTitleText("Terrain");
+          break;
+        case FEATURES:
+          this.setTitleText("Features");
+          break;
+        case UNITS:
+          this.setTitleText("Units");
+          break;
+        case ITEMS:
+          this.setTitleText("Items");
+          break;
+        default:
+          println("ERROR: MapEditorPage " + page + " not found.");
+          break;
+      }
     }
 
     void click() {
@@ -115,6 +187,16 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
 
+  class ConfirmForm extends FormLNZ {
+    ConfirmForm(String message) {
+      super(0, 0, 0, 0);
+    }
+
+    void submit() {
+    }
+  }
+
+
   class TriggerEditorForm extends Form {
     TriggerEditorForm() {
       super(0, 0, 0, 0);
@@ -131,14 +213,14 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
 
-  private MapEditorPage page = MapEditorPage.MAPS;
+  private MapEditorPage page;
 
   private MapEditorButton[] buttons = new MapEditorButton[5];
   private Panel leftPanel = new Panel(LEFT, Constants.MapEditor_panelMinWidth,
     Constants.MapEditor_panelMaxWidth, Constants.MapEditor_panelStartWidth);
   private Panel rightPanel = new Panel(RIGHT, Constants.MapEditor_panelMinWidth,
     Constants.MapEditor_panelMaxWidth, Constants.MapEditor_panelStartWidth);
-  private MapEditorListTextBox listBox1;
+  private MapEditorListTextBox listBox1 = new MapEditorListTextBox();
   private LevelEditorListTextBox listBox2;
   private TriggerEditorForm triggerForm;
 
@@ -152,15 +234,15 @@ class MapEditorInterface extends InterfaceLNZ {
     this.rightPanel.addIcon(global.images.getImage("icons/triangle.png"));
     this.leftPanel.color_background = color(160, 82, 45);
     this.rightPanel.color_background = color(160, 82, 45);
-    this.navigate();
+    this.navigate(MapEditorPage.MAPS);
+    this.resizeButtons();
   }
 
 
   void navigate(MapEditorPage page) {
     this.page = page;
-    this.navigate();
-  }
-  void navigate() {
+    this.listBox1.setList(this.page);
+    this.listBox1.active = true;
     switch(this.page) {
       case MAPS:
         break;
@@ -191,6 +273,113 @@ class MapEditorInterface extends InterfaceLNZ {
     xi += buttonSize + Constants.MapEditor_buttonGapSize;
     this.buttons[3].setXLocation(xi, xi + buttonSize);
     this.buttons[4].setXLocation(xi, xi + buttonSize);
+    this.listBox1.setXLocation(width - this.rightPanel.size_curr + Constants.MapEditor_listBoxGap,
+      width - Constants.MapEditor_listBoxGap);
+    //this.listBox2.setXLocation(width - this.rightPanel.size_curr + Constants.MapEditor_listBoxGap,
+    //  width - Constants.MapEditor_listBoxGap);
+  }
+
+  void buttonClick1() {
+    switch(this.page) {
+      case MAPS:
+        this.navigate(MapEditorPage.LEVELS);
+        break;
+      case LEVELS:
+        this.navigate(MapEditorPage.MAPS);
+        break;
+      case TERRAIN:
+        break;
+      case FEATURES:
+        break;
+      case UNITS:
+        break;
+      case ITEMS:
+        break;
+      default:
+        println("ERROR: MapEditorPage " + this.page + " not found.");
+        break;
+    }
+  }
+
+  void buttonClick2() {
+    switch(this.page) {
+      case MAPS:
+        break;
+      case LEVELS:
+        break;
+      case TERRAIN:
+        break;
+      case FEATURES:
+        break;
+      case UNITS:
+        break;
+      case ITEMS:
+        break;
+      default:
+        println("ERROR: MapEditorPage " + this.page + " not found.");
+        break;
+    }
+  }
+
+  void buttonClick3() {
+    switch(this.page) {
+      case MAPS:
+        break;
+      case LEVELS:
+        break;
+      case TERRAIN:
+        break;
+      case FEATURES:
+        break;
+      case UNITS:
+        break;
+      case ITEMS:
+        break;
+      default:
+        println("ERROR: MapEditorPage " + this.page + " not found.");
+        break;
+    }
+  }
+
+  void buttonClick4() {
+    global.state = ProgramState.ENTERING_MAINMENU;
+    switch(this.page) {
+      case MAPS:
+        break;
+      case LEVELS:
+        break;
+      case TERRAIN:
+        break;
+      case FEATURES:
+        break;
+      case UNITS:
+        break;
+      case ITEMS:
+        break;
+      default:
+        println("ERROR: MapEditorPage " + this.page + " not found.");
+        break;
+    }
+  }
+
+  void buttonClick5() {
+    switch(this.page) {
+      case MAPS:
+        break;
+      case LEVELS:
+        break;
+      case TERRAIN:
+        break;
+      case FEATURES:
+        break;
+      case UNITS:
+        break;
+      case ITEMS:
+        break;
+      default:
+        println("ERROR: MapEditorPage " + this.page + " not found.");
+        break;
+    }
   }
 
 
@@ -199,9 +388,11 @@ class MapEditorInterface extends InterfaceLNZ {
     this.leftPanel.update(millis);
     this.rightPanel.update(millis);
     if (this.rightPanel.open && !this.rightPanel.collapsing) {
-      this.resizeButtons();
       for (MapEditorButton button : this.buttons) {
         button.update(millis);
+      }
+      if (this.listBox1.active) {
+        this.listBox1.update(millis);
       }
     }
   }
@@ -210,6 +401,7 @@ class MapEditorInterface extends InterfaceLNZ {
     this.leftPanel.mouseMove(mX, mY);
     this.rightPanel.mouseMove(mX, mY);
     if (this.leftPanel.clicked || this.rightPanel.clicked) {
+      this.resizeButtons();
       global.cursor = global.images.getImage("icons/cursor_resizeh_white.png");
     }
     else if (this.leftPanel.hovered || this.rightPanel.hovered) {
@@ -221,6 +413,9 @@ class MapEditorInterface extends InterfaceLNZ {
     if (this.rightPanel.open && !this.rightPanel.collapsing) {
       for (MapEditorButton button : this.buttons) {
         button.mouseMove(mX, mY);
+      }
+      if (this.listBox1.active) {
+        this.listBox1.mouseMove(mX, mY);
       }
     }
   }
@@ -234,6 +429,9 @@ class MapEditorInterface extends InterfaceLNZ {
     if (this.rightPanel.open && !this.rightPanel.collapsing) {
       for (MapEditorButton button : this.buttons) {
         button.mousePress();
+      }
+      if (this.listBox1.active) {
+        this.listBox1.mousePress();
       }
     }
   }
@@ -251,10 +449,18 @@ class MapEditorInterface extends InterfaceLNZ {
       for (MapEditorButton button : this.buttons) {
         button.mouseRelease();
       }
+      if (this.listBox1.active) {
+        this.listBox1.mouseRelease();
+      }
     }
   }
 
   void scroll(int amount) {
+    if (this.rightPanel.open && !this.rightPanel.collapsing) {
+      if (this.listBox1.active) {
+        this.listBox1.scroll(amount);
+      }
+    }
   }
 
   void keyPress() {
