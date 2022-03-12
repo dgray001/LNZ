@@ -179,30 +179,35 @@ class MapEditorInterface extends InterfaceLNZ {
       this.setTitleSize(18);
       this.color_background = color(180, 250, 180);
       this.color_header = color(30, 170, 30);
-      this.setFieldCushion(20);
+      this.setFieldCushion(0);
 
+      MessageFormField error = new MessageFormField("");
+      error.text_color = color(150, 20, 20);
+      error.setTextSize(18);
       SubmitCancelFormField submit = new SubmitCancelFormField("  Ok  ", "Cancel");
       submit.button1.setColors(color(220), color(190, 240, 190),
         color(140, 190, 140), color(90, 140, 90), color(0));
       submit.button2.setColors(color(220), color(190, 240, 190),
         color(140, 190, 140), color(90, 140, 90), color(0));
-      MessageFormField error1 = new MessageFormField("");
-      error1.text_color = color(150, 20, 20);
-      error1.setTextSize(18);
-      MessageFormField error2 = new MessageFormField("");
-      error2.text_color = color(150, 20, 20);
-      error2.setTextSize(18);
 
-      this.addField(new SpacerFormField(0));
+      this.addField(new SpacerFormField(20));
       this.addField(new StringFormField("", "Map Name"));
+      this.addField(error);
+      this.addField(new SpacerFormField(20));
       this.addField(new IntegerFormField("", "Map Width", 1, 3000));
+      this.addField(new SpacerFormField(20));
       this.addField(new IntegerFormField("", "Map Height", 1, 3000));
+      this.addField(new SpacerFormField(20));
       this.addField(submit);
     }
 
     void submit() {
+      if (fileExists("data/maps/" + this.fields.get(1).getValue() + ".map.lnz")) {
+        this.fields.get(2).setValue("A map with that name already exists");
+        return;
+      }
       GameMap newMap = new GameMap(this.fields.get(1).getValue(),
-        toInt(this.fields.get(2).getValue()), toInt(this.fields.get(3).getValue()));
+        toInt(this.fields.get(4).getValue()), toInt(this.fields.get(6).getValue()));
       newMap.save(sketchPath("data/maps/"));
       this.canceled = true;
       MapEditorInterface.this.listBox1.refresh();
@@ -225,10 +230,32 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
 
+  class MessageForm extends FormLNZ {
+    MessageForm(String title, String message) {
+      super(0.5 * (width - Constants.mapEditor_formWidth_small), 0.5 * (height - Constants.mapEditor_formHeight_small),
+        0.5 * (width + Constants.mapEditor_formWidth_small), 0.5 * (height + Constants.mapEditor_formHeight_small));
+      this.setTitleText(title);
+      this.setTitleSize(18);
+      this.color_background = color(180, 250, 180);
+      this.color_header = color(30, 170, 30);
+
+      SubmitFormField submit = new SubmitFormField("  Ok  ");
+      submit.button.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+      this.addField(new SpacerFormField(0));
+      this.addField(new TextBoxFormField(message, 120));
+      this.addField(submit);
+    }
+    void submit() {
+      this.canceled = true;
+    }
+  }
+
+
   abstract class ConfirmForm extends FormLNZ {
     ConfirmForm(String title, String message) {
-      super(0.5 * (width - Constants.mapEditor_formWidth), 0.5 * (height - Constants.mapEditor_formHeight),
-        0.5 * (width - Constants.mapEditor_formWidth), 0.5 * (height - Constants.mapEditor_formHeight));
+      super(0.5 * (width - Constants.mapEditor_formWidth_small), 0.5 * (height - Constants.mapEditor_formHeight_small),
+        0.5 * (width + Constants.mapEditor_formWidth_small), 0.5 * (height + Constants.mapEditor_formHeight_small));
       this.setTitleText(title);
       this.setTitleSize(18);
       this.color_background = color(180, 250, 180);
@@ -242,6 +269,20 @@ class MapEditorInterface extends InterfaceLNZ {
       this.addField(new SpacerFormField(0));
       this.addField(new TextBoxFormField(message, 120));
       this.addField(submit);
+    }
+  }
+
+
+  class DeleteMapForm extends ConfirmForm {
+    private String mapName;
+    DeleteMapForm(String mapName) {
+      super("Delete Map", "Are you sure you want to delete this map?\n" + mapName);
+      this.mapName = mapName;
+    }
+    void submit() {
+      deleteFile("data/maps/" + this.mapName + ".map.lnz");
+      this.canceled = true;
+      MapEditorInterface.this.listBox1.refresh();
     }
   }
 
@@ -380,6 +421,13 @@ class MapEditorInterface extends InterfaceLNZ {
   void buttonClick3() {
     switch(this.page) {
       case MAPS:
+        String mapName = this.listBox1.highlightedLine();
+        if (mapName == null) {
+          this.form = new MessageForm("Delete Map", "No map selected to delete.");
+        }
+        else {
+          this.form = new DeleteMapForm(mapName);
+        }
         break;
       case LEVELS:
         break;

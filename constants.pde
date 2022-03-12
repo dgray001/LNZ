@@ -4,8 +4,8 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220312: v0.6.2i" +
-  "\nLines: 5415 (v0.6.2)" +
+  "\n20220312: v0.6.2j" +
+  "\nLines: 6812 (v0.6.2j)" +
   "";
   static final String version_history =
   "Liberal Nazi Zombies" +
@@ -60,4 +60,6 @@ static class Constants {
   static final float mapEditor_listBoxGap = 5;
   static final float mapEditor_formWidth = 400;
   static final float mapEditor_formHeight = 500;
+  static final float mapEditor_formWidth_small = 250;
+  static final float mapEditor_formHeight_small = 250;
 }

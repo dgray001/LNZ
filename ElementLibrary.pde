@@ -1761,7 +1761,7 @@ abstract class ListTextBox extends TextBox {
 
   @Override
   void mousePress() {
-    this.scrollbar.mousePress();
+    super.mousePress();
     if (this.line_hovered > -1) {
       if (this.doubleclickTimer > 0  && this.line_clicked == this.line_hovered) {
         this.line_clicked = this.line_hovered;
@@ -1773,7 +1773,12 @@ abstract class ListTextBox extends TextBox {
       }
       this.doubleclickTimer = this.doubleclickTime;
     }
-    else {
+  }
+
+  @Override
+  void mouseRelease() {
+    super.mouseRelease();
+    if (this.line_hovered < 0) {
       this.line_clicked = this.line_hovered;
     }
   }
@@ -2688,7 +2693,6 @@ class TextBoxFormField extends FormField {
     this.textbox.color_background = color(255, 0);
     this.textbox.color_header = color(255, 0);
     this.textbox.color_stroke = color(255, 0);
-    this.textbox.setWordWrap(false);
   }
 
   void enable() {}
