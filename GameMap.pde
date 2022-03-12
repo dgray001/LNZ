@@ -44,10 +44,24 @@ enum GameMapCode {
 
 class GameMap {
   protected GameMapCode code = GameMapCode.ERROR;
+  protected String mapName = "";
+
+  protected int mapWidth = 0;
+  protected int mapHeight = 0;
 
   GameMap(GameMapCode code, String folderPath) {
     this.code = code;
+    this.mapName = GameMapCode.display_name(code);
     // open file(folderPath)
+  }
+  GameMap(String mapName, String folderPath) {
+    this.mapName = mapName;
+    // open file(folderPath)
+  }
+  GameMap(String mapName, int mapWidth, int mapHeight) {
+    this.mapName = mapName;
+    this.mapWidth = mapWidth;
+    this.mapHeight = mapHeight;
   }
 
 
@@ -74,7 +88,17 @@ class GameMap {
 
 
   void save(String folderPath) {
-    PrintWriter file = createWriter(folderPath + "/" + this.code.file_name() + ".map.lnz");
+    PrintWriter file;
+    if (this.code == GameMapCode.ERROR) {
+      file = createWriter(folderPath + "/" + this.mapName + ".map.lnz");
+    }
+    else {
+      file = createWriter(folderPath + "/" + this.code.file_name() + ".map.lnz");
+    }
+    file.println("code: " + this.code.file_name());
+    file.println("mapName: " + this.mapName);
+    file.println("mapWidth: " + this.mapWidth);
+    file.println("mapHeight: " + this.mapHeight);
     file.flush();
     file.close();
   }
