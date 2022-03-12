@@ -63,6 +63,8 @@ class MapEditorInterface extends InterfaceLNZ {
   class MapEditorButton5 extends MapEditorButton {
     MapEditorButton5() {
       super();
+      this.setLocation(0, 0.9 * height + Constants.MapEditor_buttonGapSize,
+        0, 0.94 * height - Constants.MapEditor_buttonGapSize);
       this.message = "Help";
     }
     void release() {
@@ -188,6 +190,7 @@ class MapEditorInterface extends InterfaceLNZ {
     this.buttons[2].setXLocation(xi, xi + buttonSize);
     xi += buttonSize + Constants.MapEditor_buttonGapSize;
     this.buttons[3].setXLocation(xi, xi + buttonSize);
+    this.buttons[4].setXLocation(xi, xi + buttonSize);
   }
 
 

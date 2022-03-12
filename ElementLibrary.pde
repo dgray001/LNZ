@@ -1087,6 +1087,7 @@ class ScrollBar {
 
   class ScrollBarBarButton extends ScrollBarButton {
     protected float val = 0;
+    protected float last_val = 0;
     ScrollBarBarButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
     }
@@ -1094,25 +1095,36 @@ class ScrollBar {
     void update(int millis) {
       if (!this.hidden) {
         drawButton();
-        if (this.clicked && ScrollBar.this.value_size != 0) {
-          this.hold_timer += millis - this.lastUpdateTime;
-          if (ScrollBar.this.vertical) {
-            ScrollBar.this.increaseValue((mouseY - this.val) / ScrollBar.this.value_size);
-          }
-          else {
-            ScrollBar.this.increaseValue((mouseX - this.val) / ScrollBar.this.value_size);
-          }
-          this.click();
-        }
+      }
+      if (this.clicked && ScrollBar.this.value_size != 0) {
+        this.hold_timer += millis - this.lastUpdateTime;
       }
       this.lastUpdateTime = millis;
     }
-    void click() {
+    @Override
+    void mouseMove(float mX, float mY) {
+      super.mouseMove(mX, mY);
       if (ScrollBar.this.vertical) {
-        this.val = mouseY;
+        this.last_val = mY;
       }
       else {
-        this.val = mouseX;
+        this.last_val = mX;
+      }
+      if (this.clicked && ScrollBar.this.value_size != 0) {
+        if (ScrollBar.this.vertical) {
+          ScrollBar.this.increaseValue((mY - this.yi - this.val) / ScrollBar.this.value_size);
+        }
+        else {
+          ScrollBar.this.increaseValue((mX - this.xi - this.val) / ScrollBar.this.value_size);
+        }
+      }
+    }
+    void click() {
+      if (ScrollBar.this.vertical) {
+        this.val = this.last_val - this.yi;
+      }
+      else {
+        this.val = this.last_val - this.xi;
       }
     }
   }
@@ -1329,6 +1341,10 @@ class TextBox {
   protected float scrollbar_max_width = 50;
   protected float scrollbar_min_width = 25;
 
+  protected boolean wordWrap = true;
+  protected ScrollBar scrollbar_horizontal;
+  protected ArrayList<String> text_lines_display = new ArrayList<String>();
+
   protected String text_ref = "";
   protected ArrayList<String> text_lines = new ArrayList<String>();
   protected float text_size = 15;
@@ -1375,12 +1391,12 @@ class TextBox {
 
   void setTitleText(String title) {
     this.text_title_ref = title;
-    float scrollbar_width = min(this.scrollbar_max_width, 0.05 * (xf - xi));
+    float scrollbar_width = min(this.scrollbar_max_width, 0.05 * (this.xf - this.xi));
     scrollbar_width = max(this.scrollbar_min_width, scrollbar_width);
-    scrollbar_width = min(0.05 * (xf - xi), scrollbar_width);
+    scrollbar_width = min(0.05 * (this.xf - this.xi), scrollbar_width);
     if (title == null) {
       this.text_title = null;
-      this.scrollbar.setLocation(xf - scrollbar_width, yi, xf, yf);
+      this.scrollbar.setLocation(xf - scrollbar_width, this.yi, this.xf, this.yf);
     }
     else {
       this.text_title = "";
@@ -1394,7 +1410,19 @@ class TextBox {
           break;
         }
       }
-      this.scrollbar.setLocation(xf - scrollbar_width, yi + 1 + textAscent() + textDescent(), xf, yf);
+      this.scrollbar.setLocation(this.xf - scrollbar_width, this.yi + 1 + textAscent() + textDescent(), this.xf, this.yf);
+    }
+    if (!this.wordWrap) {
+      this.scrollbar_horizontal.setLocation(this.xi, this.yf - this.scrollbar.bar_size, this.xf - this.scrollbar.bar_size, this.yf);
+    }
+    this.refreshText();
+  }
+
+  void setWordWrap(boolean wordWrap) {
+    this.wordWrap = wordWrap;
+    if (!wordWrap) {
+      this.scrollbar_horizontal = new ScrollBar(false);
+      this.scrollbar_horizontal.setLocation(this.xi, this.yf - this.scrollbar.bar_size, this.xf - this.scrollbar.bar_size, this.yf);
     }
     this.refreshText();
   }
@@ -1410,6 +1438,7 @@ class TextBox {
   void setText(String text) {
     this.text_ref = text;
     this.text_lines.clear();
+    this.text_lines_display.clear();
     float currY = this.yi + 1;
     if (this.text_title_ref != null) {
       textSize(this.title_size);
@@ -1422,55 +1451,96 @@ class TextBox {
     String[] lines = split(text, '\n');
     String currLine = "";
     boolean firstWord = true;
+    int max_line_length = 0;
     for (int i = 0; i < lines.length; i++) {
-      String[] words = split(lines[i], ' ');
-      for (int j = 0; j < words.length; j++) {
-        String word = " ";
-        if (firstWord) {
-          word = "";
-        }
-        word += words[j];
-        if (textWidth(currLine + word) < effective_xf) {
-          currLine += word;
-          firstWord = false;
-        }
-        else if (firstWord) {
-          for (int k = 0; k < word.length(); k++) {
-            char nextChar = word.charAt(k);
-            if (textWidth(currLine + nextChar) < effective_xf) {
-              currLine += nextChar;
-            }
-            else {
-              this.text_lines.add(currLine);
-              currLine = "" + nextChar;
-              firstWord = true;
-              if (currY + text_height + 1 > this.yf) {
-                lines_above++;
+      if (this.wordWrap) {
+        String[] words = split(lines[i], ' ');
+        for (int j = 0; j < words.length; j++) {
+          String word = " ";
+          if (firstWord) {
+            word = "";
+          }
+          word += words[j];
+          if (textWidth(currLine + word) < effective_xf) {
+            currLine += word;
+            firstWord = false;
+          }
+          else if (firstWord) {
+            for (int k = 0; k < word.length(); k++) {
+              char nextChar = word.charAt(k);
+              if (textWidth(currLine + nextChar) < effective_xf) {
+                currLine += nextChar;
               }
-              currY += text_height + this.text_leading;
+              else {
+                this.text_lines.add(currLine);
+                currLine = "" + nextChar;
+                firstWord = true;
+                if (currY + text_height + 1 > this.yf) {
+                  lines_above++;
+                }
+                currY += text_height + this.text_leading;
+              }
             }
+            firstWord = false;
           }
-          firstWord = false;
-        }
-        else {
-          this.text_lines.add(currLine);
-          currLine = words[j];
-          firstWord = false;
-          if (currY + text_height + 1 > this.yf) {
-            lines_above++;
+          else {
+            this.text_lines.add(currLine);
+            currLine = words[j];
+            firstWord = false;
+            if (currY + text_height + 1 > this.yf) {
+              lines_above++;
+            }
+            currY += text_height + this.text_leading;
           }
-          currY += text_height + this.text_leading;
         }
+        this.text_lines.add(currLine);
+        currLine = "";
+        firstWord = true;
+        if (currY + text_height + 1 > this.yf) {
+          lines_above++;
+        }
+        currY += text_height + this.text_leading;
       }
-      this.text_lines.add(currLine);
-      currLine = "";
-      firstWord = true;
-      if (currY + text_height + 1 > this.yf) {
-        lines_above++;
+      else {
+        this.text_lines.add(lines[i]);
+        for (int j = 0; j < lines[i].length(); j++) {
+          char nextChar = lines[i].charAt(j);
+          if (textWidth(currLine + nextChar) < effective_xf) {
+            currLine += nextChar;
+          }
+          else {
+            if (lines[i].length() - j > max_line_length) {
+              max_line_length = lines[i].length() - j;
+            }
+            break;
+          }
+        }
+        currLine = "";
+        if (currY + text_height + 1 > this.yf) {
+          lines_above++;
+        }
+        currY += text_height + this.text_leading;
       }
-      currY += text_height + this.text_leading;
     }
     this.scrollbar.updateMaxValue(lines_above);
+    if (!this.wordWrap) {
+      this.scrollbar_horizontal.updateMaxValue(max_line_length);
+    }
+  }
+
+  String truncateLine(String line) {
+    String return_line = "";
+    float effective_xf = this.xf - this.xi - 3 - this.scrollbar.bar_size;
+    for (int i = int(floor(this.scrollbar_horizontal.value)); i < line.length(); i++) {
+      char nextChar = line.charAt(i);
+      if (textWidth(return_line + nextChar) < effective_xf) {
+        return_line += nextChar;
+      }
+      else {
+        break;
+      }
+    }
+    return return_line;
   }
 
   void update(int millis) {
@@ -1497,16 +1567,31 @@ class TextBox {
       if (currY + text_height + 1 > this.yf) {
         break;
       }
-      text(this.text_lines.get(i), this.xi + 2, currY);
+      if (this.wordWrap) {
+        text(this.text_lines.get(i), this.xi + 2, currY);
+      }
+      else {
+        text(this.truncateLine(this.text_lines.get(i)), this.xi + 2, currY);
+      }
     }
     if (this.scrollbar.maxValue != this.scrollbar.minValue) {
       this.scrollbar.update(millis);
+    }
+    if (!this.wordWrap) {
+      if (this.scrollbar_horizontal.maxValue != this.scrollbar_horizontal.minValue) {
+        this.scrollbar_horizontal.update(millis);
+      }
     }
     this.lastUpdateTime = millis;
   }
 
   void mouseMove(float mX, float mY) {
     this.scrollbar.mouseMove(mX, mY);
+    if (!this.wordWrap) {
+      if (this.scrollbar_horizontal.maxValue != this.scrollbar_horizontal.minValue) {
+        this.scrollbar_horizontal.mouseMove(mX, mY);
+      }
+    }
     if (mX > this.xi && mX < this.xf && mY > this.yi && mY < this.yf) {
       this.hovered = true;
     }
@@ -1517,15 +1602,30 @@ class TextBox {
 
   void mousePress() {
     this.scrollbar.mousePress();
+    if (!this.wordWrap) {
+      if (this.scrollbar_horizontal.maxValue != this.scrollbar_horizontal.minValue) {
+        this.scrollbar_horizontal.mousePress();
+      }
+    }
   }
 
   void mouseRelease() {
     this.scrollbar.mouseRelease();
+    if (!this.wordWrap) {
+      if (this.scrollbar_horizontal.maxValue != this.scrollbar_horizontal.minValue) {
+        this.scrollbar_horizontal.mouseRelease();
+      }
+    }
   }
 
   void scroll(int amount) {
     if (this.hovered) {
       this.scrollbar.increaseValue(amount);
+      if (!this.wordWrap && this.scrollbar.maxValue == this.scrollbar.minValue) {
+        if (this.scrollbar_horizontal.maxValue != this.scrollbar_horizontal.minValue) {
+          this.scrollbar_horizontal.increaseValue(amount);
+        }
+      }
     }
   }
 }
@@ -2578,6 +2678,7 @@ class TextBoxFormField extends FormField {
     this.textbox.color_background = color(255, 0);
     this.textbox.color_header = color(255, 0);
     this.textbox.color_stroke = color(255, 0);
+    this.textbox.setWordWrap(false);
   }
 
   void enable() {}
