@@ -47,7 +47,7 @@ void draw() {
     case MAINMENU_INTERFACE:
       break;
     case ENTERING_MAPEDITOR:
-      background(30);
+      background(60);
       global.state = ProgramState.MAPEDITOR_INTERFACE;
       global.menu = new MapEditorInterface();
       global.sounds.play_background("aoc");

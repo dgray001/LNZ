@@ -266,6 +266,16 @@ abstract class RectangleButton extends Button {
     this.xCenter = this.xi + 0.5 * (this.xf - this.xi);
     this.yCenter = this.yi + 0.5 * (this.yf - this.yi);
   }
+  void setXLocation(float xi, float xf) {
+    this.xi = xi;
+    this.xf = xf;
+    this.xCenter = this.xi + 0.5 * (this.xf - this.xi);
+  }
+  void setYLocation(float yi, float yf) {
+    this.yi = yi;
+    this.yf = yf;
+    this.yCenter = this.yi + 0.5 * (this.yf - this.yi);
+  }
 
   void moveButton(float xMove, float yMove) {
     this.xi += xMove;
@@ -3769,6 +3779,20 @@ class Panel {
 
   void collapse() {
     this.collapsing = true;
+    switch(this.location) {
+      case LEFT:
+        this.img = getCurrImage(0, 0, int(round(this.size_curr)), height);
+        break;
+      case RIGHT:
+        this.img = getCurrImage(width - int(round(this.size_curr)), 0, width, height);
+        break;
+      case UP:
+        this.img = getCurrImage(0, 0, width, int(round(this.size_curr)));
+        break;
+      case DOWN:
+        this.img = getCurrImage(0, height - int(round(this.size_curr)), width, height);
+        break;
+    }
   }
 
 
@@ -3805,6 +3829,23 @@ class Panel {
           this.resetButtonLocation();
           buttonReset = true;
         }
+        if (this.img != null) {
+          imageMode(CORNER);
+          switch(this.location) {
+            case LEFT:
+              image(this.img, this.size - this.size_curr, 0);
+              break;
+            case RIGHT:
+              image(this.img, width - this.size, 0);
+              break;
+            case UP:
+              image(this.img, 0, this.size - this.size_curr);
+              break;
+            case DOWN:
+              image(this.img, 0, height - this.size);
+              break;
+          }
+        }
       }
       else {
         buttonMove = this.collapse_speed * timeElapsed;
@@ -3839,8 +3880,8 @@ class Panel {
 
   void mouseMove(float mX, float mY) {
     this.button.mouseMove(mX, mY);
-    this.hovered = false;
     if (!this.open || this.button.hovered) {
+      this.hovered = false;
       return;
     }
     switch(this.location) {
@@ -3851,6 +3892,9 @@ class Panel {
         else if (abs(mX - this.size) < this.hovered_delta) {
           this.hovered = true;
         }
+        else {
+          this.hovered = false;
+        }
         break;
       case RIGHT:
         if (this.clicked) {
@@ -3858,6 +3902,9 @@ class Panel {
         }
         else if (abs(mX - width + this.size) < this.hovered_delta) {
           this.hovered = true;
+        }
+        else {
+          this.hovered = false;
         }
         break;
       case UP:
@@ -3867,6 +3914,9 @@ class Panel {
         else if (abs(mY - this.size) < this.hovered_delta) {
           this.hovered = true;
         }
+        else {
+          this.hovered = false;
+        }
         break;
       case DOWN:
         if (this.clicked) {
@@ -3874,6 +3924,9 @@ class Panel {
         }
         else if (abs(mY - height + this.size) < this.hovered_delta) {
           this.hovered = true;
+        }
+        else {
+          this.hovered = false;
         }
         break;
     }
