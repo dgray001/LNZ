@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220311: v0.6.2g" +
+  "\n20220311: v0.6.2h" +
   "\nLines: 5415 (v0.6.2)" +
   "";
   static final String version_history =
@@ -57,4 +57,5 @@ static class Constants {
   static final float MapEditor_panelMaxWidth = 400;
   static final float MapEditor_panelStartWidth = 300;
   static final float MapEditor_buttonGapSize = 10;
+  static final float MapEditor_listBoxGap = 5;
 }
