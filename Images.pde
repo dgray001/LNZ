@@ -69,3 +69,24 @@ PImage getCurrImage() {
   img.updatePixels();
   return img;
 }
+
+PImage getCurrImage(int xi, int yi, int xf, int yf) {
+  PImage img = createImage(xf - xi, yf - yi, ARGB);
+  img.loadPixels();
+  loadPixels();
+  for (int i = xi; i <= xf; i++) {
+    for (int j = yi; j <= yf; j++) {
+      int index = i + j * width;
+      if (index < 0 || index >= pixels.length) {
+        continue;
+      }
+      int img_index = (i - xi) + (j - yi) * img.width;
+      if (img_index >= img.pixels.length) {
+        continue;
+      }
+      img.pixels[img_index] = pixels[index];
+    }
+  }
+  img.updatePixels();
+  return img;
+}

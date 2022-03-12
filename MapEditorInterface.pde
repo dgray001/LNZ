@@ -6,8 +6,12 @@ enum MapEditorPage {
 class MapEditorInterface extends InterfaceLNZ {
 
   abstract class MapEditorButton extends RectangleButton {
-    MapEditorButton(float xi, float yi, float xf, float yf) {
-      super(xi, yi, xf, yf);
+    MapEditorButton() {
+      super(0, 0.94 * height, 0, height - Constants.MapEditor_buttonGapSize);
+      this.raised_border = true;
+      this.roundness = 0;
+      this.setColors(color(170), color(222, 184, 135), color(244, 164, 96), color(205, 133, 63), color(0));
+      this.show_message = true;
     }
     void hover() {}
     void dehover() {
@@ -18,7 +22,8 @@ class MapEditorInterface extends InterfaceLNZ {
 
   class MapEditorButton1 extends MapEditorButton {
     MapEditorButton1() {
-      super(0, 0, 0, 0);
+      super();
+      this.message = "Toggle\nDisplay";
     }
     void release() {
     }
@@ -26,41 +31,42 @@ class MapEditorInterface extends InterfaceLNZ {
 
   class MapEditorButton2 extends MapEditorButton {
     MapEditorButton2() {
-      super(0, 0, 0, 0);
+      super();
+      this.message = "";
     }
     void release() {
+      this.stayDehovered();
     }
   }
 
   class MapEditorButton3 extends MapEditorButton {
     MapEditorButton3() {
-      super(0, 0, 0, 0);
+      super();
+      this.message = "";
     }
     void release() {
+      this.stayDehovered();
     }
   }
 
   class MapEditorButton4 extends MapEditorButton {
     MapEditorButton4() {
-      super(0, 0, 0, 0);
+      super();
+      this.message = "Main\nMenu";
     }
     void release() {
+      this.stayDehovered();
+      global.state = ProgramState.ENTERING_MAINMENU;
     }
   }
 
   class MapEditorButton5 extends MapEditorButton {
     MapEditorButton5() {
-      super(0, 0, 0, 0);
+      super();
+      this.message = "Help";
     }
     void release() {
-    }
-  }
-
-  class MapEditorButton6 extends MapEditorButton {
-    MapEditorButton6() {
-      super(0, 0, 0, 0);
-    }
-    void release() {
+      this.stayDehovered();
     }
   }
 
@@ -125,7 +131,7 @@ class MapEditorInterface extends InterfaceLNZ {
 
   private MapEditorPage page = MapEditorPage.MAPS;
 
-  private MapEditorButton[] buttons = new MapEditorButton[6];
+  private MapEditorButton[] buttons = new MapEditorButton[5];
   private Panel leftPanel = new Panel(LEFT, Constants.MapEditor_panelMinWidth,
     Constants.MapEditor_panelMaxWidth, Constants.MapEditor_panelStartWidth);
   private Panel rightPanel = new Panel(RIGHT, Constants.MapEditor_panelMinWidth,
@@ -140,9 +146,10 @@ class MapEditorInterface extends InterfaceLNZ {
     this.buttons[2] = new MapEditorButton3();
     this.buttons[3] = new MapEditorButton4();
     this.buttons[4] = new MapEditorButton5();
-    this.buttons[5] = new MapEditorButton6();
     this.leftPanel.addIcon(global.images.getImage("icons/triangle.png"));
     this.rightPanel.addIcon(global.images.getImage("icons/triangle.png"));
+    this.leftPanel.color_background = color(160, 82, 45);
+    this.rightPanel.color_background = color(160, 82, 45);
     this.navigate();
   }
 
@@ -171,12 +178,25 @@ class MapEditorInterface extends InterfaceLNZ {
     }
   }
 
+  void resizeButtons() {
+    float buttonSize = (this.rightPanel.size_curr - 5 * Constants.MapEditor_buttonGapSize) / 4.0;
+    float xi = width - this.rightPanel.size_curr + Constants.MapEditor_buttonGapSize;
+    this.buttons[0].setXLocation(xi, xi + buttonSize);
+    xi += buttonSize + Constants.MapEditor_buttonGapSize;
+    this.buttons[1].setXLocation(xi, xi + buttonSize);
+    xi += buttonSize + Constants.MapEditor_buttonGapSize;
+    this.buttons[2].setXLocation(xi, xi + buttonSize);
+    xi += buttonSize + Constants.MapEditor_buttonGapSize;
+    this.buttons[3].setXLocation(xi, xi + buttonSize);
+  }
+
 
   void update(int millis) {
-    background(30);
+    background(60);
     this.leftPanel.update(millis);
     this.rightPanel.update(millis);
-    if (this.rightPanel.open) {
+    if (this.rightPanel.open && !this.rightPanel.collapsing) {
+      this.resizeButtons();
       for (MapEditorButton button : this.buttons) {
         button.update(millis);
       }
@@ -186,7 +206,16 @@ class MapEditorInterface extends InterfaceLNZ {
   void mouseMove(float mX, float mY) {
     this.leftPanel.mouseMove(mX, mY);
     this.rightPanel.mouseMove(mX, mY);
-    if (this.rightPanel.open) {
+    if (this.leftPanel.clicked || this.rightPanel.clicked) {
+      global.cursor = global.images.getImage("icons/cursor_resizeh_white.png");
+    }
+    else if (this.leftPanel.hovered || this.rightPanel.hovered) {
+      global.cursor = global.images.getImage("icons/cursor_resizeh.png");
+    }
+    else {
+      global.cursor = global.images.getImage("icons/cursor_default.png");
+    }
+    if (this.rightPanel.open && !this.rightPanel.collapsing) {
       for (MapEditorButton button : this.buttons) {
         button.mouseMove(mX, mY);
       }
@@ -196,7 +225,10 @@ class MapEditorInterface extends InterfaceLNZ {
   void mousePress() {
     this.leftPanel.mousePress();
     this.rightPanel.mousePress();
-    if (this.rightPanel.open) {
+    if (this.leftPanel.clicked || this.rightPanel.clicked) {
+      global.cursor = global.images.getImage("icons/cursor_resizeh_white.png");
+    }
+    if (this.rightPanel.open && !this.rightPanel.collapsing) {
       for (MapEditorButton button : this.buttons) {
         button.mousePress();
       }
@@ -206,7 +238,13 @@ class MapEditorInterface extends InterfaceLNZ {
   void mouseRelease() {
     this.leftPanel.mouseRelease();
     this.rightPanel.mouseRelease();
-    if (this.rightPanel.open) {
+    if (this.leftPanel.hovered || this.rightPanel.hovered) {
+      global.cursor = global.images.getImage("icons/cursor_resizeh.png");
+    }
+    else {
+      global.cursor = global.images.getImage("icons/cursor_default.png");
+    }
+    if (this.rightPanel.open && !this.rightPanel.collapsing) {
       for (MapEditorButton button : this.buttons) {
         button.mouseRelease();
       }
