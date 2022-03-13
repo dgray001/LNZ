@@ -82,12 +82,105 @@ class MapEditorInterface extends InterfaceLNZ {
 
 
   class MapEditorListTextBox extends ListTextBox {
+    class RightClickListTextBox extends MaxListTextBox {
+      RightClickListTextBox(float mX, float mY) {
+        super(mX - Constants.mapEditor_rightClickBoxWidth, mY, mX, mY + Constants.mapEditor_rightClickBoxMaxHeight);
+        this.setText("Open Map");
+        this.addLine("Rename Map");
+        this.addLine("Delete Map");
+        this.highlight_color = color(1, 0);
+        this.hover_color = color(200, 150, 140, 100);
+      }
+
+      void click() {
+        MapEditorListTextBox.this.clickOption(this.line_clicked);
+      }
+
+      void doubleclick() {}
+    }
+
     protected boolean active = false;
+    protected RightClickListTextBox rightClickMenu;
 
     MapEditorListTextBox() {
       super(width, Constants.mapEditor_listBoxGap, width, 0.9 * height - Constants.mapEditor_listBoxGap);
       this.color_background = color(250, 190, 140);
       this.color_header = color(220, 180, 130);
+    }
+
+    @Override
+    void update(int millis) {
+      super.update(millis);
+      if (this.rightClickMenu != null) {
+        this.rightClickMenu.update(millis);
+      }
+    }
+
+    @Override
+    void mouseMove(float mX, float mY) {
+      if (this.rightClickMenu == null) {
+        super.mouseMove(mX, mY);
+      }
+      else {
+        this.rightClickMenu.mouseMove(mX, mY);
+      }
+    }
+
+    @Override
+    void mousePress() {
+      if (this.rightClickMenu != null) {
+        if (this.rightClickMenu.hovered) {
+          this.rightClickMenu.mousePress();
+        }
+        else {
+          this.rightClickMenu = null;
+        }
+      }
+      else {
+        super.mousePress();
+      }
+    }
+
+    @Override
+    void mouseRelease() {
+      if (this.rightClickMenu == null) {
+        super.mouseRelease();
+      }
+      else {
+        this.rightClickMenu.mouseRelease();
+      }
+    }
+
+    @Override
+    void scroll(int amount) {
+      if (this.rightClickMenu == null) {
+        super.scroll(amount);
+      }
+      else {
+        this.rightClickMenu.scroll(amount);
+      }
+    }
+
+    void clickOption(int option) {
+      switch(option) {
+        case 0:
+          // open map
+          break;
+        case 1:
+          // rename map
+          break;
+        case 2:
+          if (this.highlightedLine() != null) {
+            deleteFile("data/maps/" + this.highlightedLine() + ".map.lnz");
+            MapEditorInterface.this.listBox1.refresh();
+            this.line_clicked = -1;
+          }
+          break;
+        default:
+          println("ERROR: Option index " + option + " not recognized.");
+          break;
+      }
+      this.rightClickMenu = null;
     }
 
     void setList(MapEditorPage page) {
@@ -154,8 +247,15 @@ class MapEditorInterface extends InterfaceLNZ {
     }
 
     void click() {
+      if (mouseButton == RIGHT) {
+        this.rightClickMenu = new RightClickListTextBox(mouseX, mouseY);
+      }
     }
+
     void doubleclick() {
+      if (mouseButton == LEFT) {
+        // open map
+      }
     }
   }
 
@@ -183,7 +283,7 @@ class MapEditorInterface extends InterfaceLNZ {
 
       MessageFormField error = new MessageFormField("");
       error.text_color = color(150, 20, 20);
-      error.setTextSize(18);
+      error.setTextSize(16);
       SubmitCancelFormField submit = new SubmitCancelFormField("  Ok  ", "Cancel");
       submit.button1.setColors(color(220), color(190, 240, 190),
         color(140, 190, 140), color(90, 140, 90), color(0));
@@ -193,7 +293,7 @@ class MapEditorInterface extends InterfaceLNZ {
       this.addField(new SpacerFormField(20));
       this.addField(new StringFormField("", "Map Name"));
       this.addField(error);
-      this.addField(new SpacerFormField(20));
+      this.addField(new SpacerFormField(10));
       this.addField(new IntegerFormField("", "Map Width", 1, 3000));
       this.addField(new SpacerFormField(20));
       this.addField(new IntegerFormField("", "Map Height", 1, 3000));
@@ -314,6 +414,8 @@ class MapEditorInterface extends InterfaceLNZ {
   private LevelEditorListTextBox listBox2;
   private TriggerEditorForm triggerForm;
 
+  private GameMap map = new GameMap("test", 12, 12);
+
   MapEditorInterface() {
     this.buttons[0] = new MapEditorButton1();
     this.buttons[1] = new MapEditorButton2();
@@ -326,6 +428,7 @@ class MapEditorInterface extends InterfaceLNZ {
     this.rightPanel.color_background = color(160, 82, 45);
     this.navigate(MapEditorPage.MAPS);
     this.resizeButtons();
+    this.map.setLocation(Constants.mapEditor_panelStartWidth, 0, width - Constants.mapEditor_panelStartWidth, height);
   }
 
 
@@ -482,6 +585,7 @@ class MapEditorInterface extends InterfaceLNZ {
         this.listBox1.update(millis);
       }
     }
+    map.update(millis);
   }
 
   void mouseMove(float mX, float mY) {
