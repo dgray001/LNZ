@@ -38,13 +38,52 @@ enum GameMapCode {
         return "ERROR";
     }
   }
+
+  static public GameMapCode gameMapCode(String display_name) {
+    for (GameMapCode code : GameMapCode.VALUES) {
+      if (code == GameMapCode.ERROR) {
+        continue;
+      }
+      if (GameMapCode.display_name(code).equals(display_name) ||
+        GameMapCode.file_name(code).equals(display_name)) {
+        return code;
+      }
+    }
+    return GameMapCode.ERROR;
+  }
+}
+
+
+
+enum ReadFileObject {
+  NONE("None"), MAP("Map");
+
+  private static final List<ReadFileObject> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+
+  private String name;
+
+  private ReadFileObject(String name) {
+    this.name = name;
+  }
+
+  static public ReadFileObject objectType(String name) {
+    for (ReadFileObject type : ReadFileObject.VALUES) {
+      if (type == ReadFileObject.NONE) {
+        continue;
+      }
+      if (type.name.equals(name)) {
+        return type;
+      }
+    }
+    return ReadFileObject.NONE;
+  }
 }
 
 
 
 class GameMapSquare {
   private int squareHeight = 0;
-  //private ArrayList<Feature> features = new ArrayList<Feature>();
+  private int terrain_id = 0;
 
   GameMapSquare() {}
 }
@@ -54,6 +93,7 @@ class GameMapSquare {
 class GameMap {
   protected GameMapCode code = GameMapCode.ERROR;
   protected String mapName = "";
+  protected boolean nullify = false;
 
   protected int mapWidth = 0;
   protected int mapHeight = 0;
@@ -71,8 +111,8 @@ class GameMap {
   protected float yi = 0;
   protected float xf = 0;
   protected float yf = 0;
-  protected float color_border = color(60);
-  protected float color_background = color(20);
+  protected color color_border = color(60);
+  protected color color_background = color(20);
 
   protected float xi_map = 0;
   protected float yi_map = 0;
@@ -87,11 +127,11 @@ class GameMap {
   GameMap(GameMapCode code, String folderPath) {
     this.code = code;
     this.mapName = GameMapCode.display_name(code);
-    // open file(folderPath)
+    this.open(folderPath);
   }
   GameMap(String mapName, String folderPath) {
     this.mapName = mapName;
-    // open file(folderPath)
+    this.open(folderPath);
   }
   GameMap(String mapName, int mapWidth, int mapHeight) {
     this.mapName = mapName;
@@ -123,17 +163,23 @@ class GameMap {
 
 
   void refreshDisplayMap() { // in another thread ?
-    this.terrain_display = new DImg(100, 100);
+    this.startSquareX = max(0, this.viewX - (0.5 * width - this.xi - Constants.map_borderSize) / this.zoom);
+    this.startSquareY = max(0, this.viewY - (0.5 * height - this.yi - Constants.map_borderSize) / this.zoom);
+    this.xi_map = 0.5 * width - (this.viewX - this.startSquareX) * this.zoom;
+    this.yi_map = 0.5 * height - (this.viewY - this.startSquareY) * this.zoom;
+    this.visSquareX = min(this.mapWidth - this.startSquareX, (this.xf - this.xi_map - Constants.map_borderSize) / this.zoom);
+    this.visSquareY = min(this.mapHeight - this.startSquareY, (this.yf - this.yi_map - Constants.map_borderSize) / this.zoom);
+    this.xf_map = this.xi_map + this.visSquareX * this.zoom;
+    this.yf_map = this.yi_map + this.visSquareY * this.zoom;
+
+    this.terrain_display = new DImg(int(this.visSquareX * this.zoom), int(this.visSquareY * this.zoom));
     this.terrain_display.colorPixels(color(255, 0, 0));
-    this.xi_map = xi + 2 * Constants.map_borderSize;
-    this.yi_map = yi + Constants.map_borderSize;
-    this.xf_map = xf - 2 * Constants.map_borderSize;
-    this.yf_map = yf - Constants.map_borderSize;
   }
 
 
   void drawMap() {
     rectMode(CORNERS);
+    noStroke();
     fill(this.color_border);
     rect(this.xi, this.yi, this.xf, this.yf);
     fill(this.color_background);
@@ -175,19 +221,115 @@ class GameMap {
     else {
       file = createWriter(folderPath + "/" + this.code.file_name() + ".map.lnz");
     }
+    file.println("new: Map");
     file.println("code: " + this.code.file_name());
     file.println("mapName: " + this.mapName);
     file.println("mapWidth: " + this.mapWidth);
     file.println("mapHeight: " + this.mapHeight);
+    file.println("end: Map");
     file.flush();
     file.close();
+  }
+
+
+  void open(String folderPath) {
+    String[] lines;
+    String path;
+    if (this.code == GameMapCode.ERROR) {
+      path = folderPath + "/" + this.mapName + ".map.lnz";
+    }
+    else {
+      path = folderPath + "/" + this.code.file_name() + ".map.lnz";
+    }
+    lines = loadStrings(path);
+    if (lines == null) {
+      println("ERROR: Reading map at path " + path + " but no file exists.");
+      this.nullify = true;
+      return;
+    }
+
+    Stack<ReadFileObject> object_queue = new Stack<ReadFileObject>();
+
+    for (String line : lines) {
+      String[] parameters = split(line, ':');
+      if (parameters.length < 2) {
+        continue;
+      }
+
+      String dataname = trim(parameters[0]);
+      String data = trim(parameters[1]);
+      if (dataname.equals("new")) {
+        ReadFileObject type = ReadFileObject.objectType(data);
+        switch(type) {
+          case MAP:
+            object_queue.push(type);
+            break;
+          default:
+            break;
+        }
+      }
+      else if (dataname.equals("end")) {
+        ReadFileObject type = ReadFileObject.objectType(data);
+        if (object_queue.empty()) {
+          println("ERROR: Tring to end a " + type.name + " object but not inside any object.");
+        }
+        else if (type.name.equals(object_queue.peek().name)) {
+          switch(object_queue.pop()) {
+            case MAP:
+              return;
+            default:
+              break;
+          }
+        }
+        else {
+          println("ERROR: Tring to end a " + type.name + " object while inside a " + object_queue.peek().name + " object.");
+        }
+      }
+      else {
+        switch(object_queue.peek()) {
+          case MAP:
+            this.addData(dataname, data);
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }
+
+
+  void addData(String dataname, String data) {
+    switch(dataname) {
+      case "code":
+        this.code = GameMapCode.gameMapCode(data);
+        break;
+      case "mapName":
+        this.mapName = data;
+        break;
+      case "mapWidth":
+        this.mapWidth = toInt(data);
+        break;
+      case "mapHeight":
+        this.mapHeight = toInt(data);
+        break;
+      default:
+        println("ERROR: Dataname " + dataname + " not recognized for GameMap object.");
+        break;
+    }
   }
 }
 
 
 
 class GameMapEditor extends GameMap {
+
   GameMapEditor(GameMapCode code, String folderPath) {
     super(code, folderPath);
+  }
+  GameMapEditor(String mapName, String folderPath) {
+    super(mapName, folderPath);
+  }
+  GameMapEditor(String mapName, int mapWidth, int mapHeight) {
+    super(mapName, mapWidth, mapHeight);
   }
 }

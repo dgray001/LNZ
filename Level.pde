@@ -42,7 +42,7 @@ enum Location {
         return location;
       }
     }
-    return ERROR;
+    return Location.ERROR;
   }
 }
 
@@ -64,6 +64,8 @@ class Level {
 
   protected ArrayList<Linker> linkers = new ArrayList<Linker>();
   protected ArrayList<Trigger> triggers = new ArrayList<Trigger>();
+
+  protected Hero player;
 
   Level(String filePath, Location location) {
     this.filePath = filePath;
