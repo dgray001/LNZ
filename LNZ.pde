@@ -100,6 +100,7 @@ void mouseWheel(MouseEvent e) {
 }
 
 void keyPressed() {
+  global.keyPressFX2D();
   if (global.menu != null) {
     global.menu.LNZ_keyPress();
   }
@@ -110,6 +111,7 @@ void keyPressed() {
 }
 
 void keyReleased() {
+  global.keyReleaseFX2D();
   if (global.menu != null) {
     global.menu.LNZ_keyRelease();
   }
