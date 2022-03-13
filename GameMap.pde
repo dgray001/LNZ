@@ -91,19 +91,20 @@ class GameMapSquare {
 
   void setTerrain(int id) {
     this.terrain_id = id;
-    switch(id) {
-      case 1: // map edge
-        this.baseHeight = 100;
-        break;
-      case 101: // floors
-      case 102:
-      case 103:
-      case 104:
-        this.baseHeight = 0;
-        break;
-      default:
-        println("ERROR: Terrain ID " + id + " not found.");
-        break;
+    if (id > 300) { // stairs
+      this.baseHeight = 0;
+    }
+    else if (id > 200) { // walls
+      this.baseHeight = 100;
+    }
+    else if (id > 100) { // floors
+      this.baseHeight = 0;
+    }
+    else if (id == 1) { // map edge
+      this.baseHeight = 100;
+    }
+    else {
+      println("ERROR: Terrain ID " + id + " not found.");
     }
   }
 
@@ -114,6 +115,62 @@ class GameMapSquare {
       case 103:
       case 104:
         return "Carpet";
+      case 111:
+      case 112:
+      case 113:
+        return "Wood Floor";
+      case 121:
+      case 122:
+      case 123:
+        return "Tile Floor";
+      case 131:
+        return "Concrete Floor";
+      case 151:
+      case 152:
+      case 153:
+      case 154:
+      case 155:
+      case 156:
+        return "Grass";
+      case 161:
+      case 162:
+      case 163:
+        return "Dirt";
+      case 171:
+      case 172:
+      case 173:
+      case 174:
+      case 175:
+      case 176:
+      case 177:
+      case 178:
+      case 179:
+        return "Road";
+      case 201:
+      case 202:
+      case 203:
+      case 204:
+      case 205:
+      case 206:
+      case 207:
+        return "Brick Wall";
+      case 301:
+      case 302:
+      case 303:
+      case 304:
+      case 305:
+      case 306:
+      case 307:
+      case 308:
+      case 309:
+      case 310:
+      case 311:
+      case 312:
+      case 313:
+      case 314:
+      case 315:
+      case 316:
+        return "Stairs";
       default:
         return null;
     }
@@ -136,6 +193,24 @@ class GameMapSquare {
         break;
       case 104:
         imageName += "carpet_green.jpg";
+        break;
+      case 111:
+        imageName += "woodFloor_light.jpg";
+        break;
+      case 112:
+        imageName += "woodFloor_brown.jpg";
+        break;
+      case 113:
+        imageName += "woodFloor_dark.jpg";
+        break;
+      case 121:
+        imageName += "tile_red.jpg";
+        break;
+      case 122:
+        imageName += "tile_green.jpg";
+        break;
+      case 123:
+        imageName += "tile_gray.jpg";
         break;
       default:
         imageName += "default.jpg";
@@ -209,7 +284,7 @@ class GameMap {
       }
     }
     this.terrain_dimg = new DImg(this.mapWidth * Constants.map_terrainResolution, this.mapHeight * Constants.map_terrainResolution);
-    this.terrain_dimg.colorPixels(color(0));
+    this.terrain_dimg.colorPixels(color(20));
   }
 
 

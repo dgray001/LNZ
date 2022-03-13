@@ -265,7 +265,6 @@ PImage resizeImage(PImage img, int w, int h) {
   if (w <= 0 || h <= 0) {
     return createImage(1, 1, ARGB);
   }
-  println(w, h);
   float scaling_width = float(img.width) / w;
   float scaling_height = float(img.height) / h;
   PImage return_image = createImage(w, h, ARGB);
