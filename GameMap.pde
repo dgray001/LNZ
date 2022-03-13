@@ -82,10 +82,67 @@ enum ReadFileObject {
 
 
 class GameMapSquare {
-  private int squareHeight = 0;
+  private int baseHeight = 0;
   private int terrain_id = 0;
 
-  GameMapSquare() {}
+  GameMapSquare() {
+    this.setTerrain(1);
+  }
+
+  void setTerrain(int id) {
+    this.terrain_id = id;
+    switch(id) {
+      case 1: // map edge
+        this.baseHeight = 100;
+        break;
+      case 101: // floors
+      case 102:
+      case 103:
+      case 104:
+        this.baseHeight = 0;
+        break;
+      default:
+        println("ERROR: Terrain ID " + id + " not found.");
+        break;
+    }
+  }
+
+  String terrainName() {
+    switch(this.terrain_id) {
+      case 101: // floors
+      case 102:
+      case 103:
+      case 104:
+        return "Carpet";
+      default:
+        return null;
+    }
+  }
+
+  PImage terrainImage() {
+    String imageName = "terrain/";
+    switch(this.terrain_id) {
+      case 1:
+        imageName += "default.jpg";
+        break;
+      case 101:
+        imageName += "carpet_light.jpg";
+        break;
+      case 102:
+        imageName += "carpet_gray.jpg";
+        break;
+      case 103:
+        imageName += "carpet_dark.jpg";
+        break;
+      case 104:
+        imageName += "carpet_green.jpg";
+        break;
+      default:
+        imageName += "default.jpg";
+        break;
+    }
+    return global.images.getImage(imageName);
+  }
 }
 
 
@@ -99,9 +156,10 @@ class GameMap {
   protected int mapHeight = 0;
   protected GameMapSquare[][] squares;
 
-  protected DImg terrain;
-  //protected DImg fog;
-  protected DImg terrain_display = new DImg(0, 0);
+  protected DImg terrain_dimg;
+  //protected DImg feature_dimg;
+  //protected DImg fog_dimg;
+  protected PImage terrain_display = createImage(0, 0, RGB);
 
   protected float viewX = 0;
   protected float viewY = 0;
@@ -123,6 +181,8 @@ class GameMap {
   protected float startSquareY = 0;
   protected float visSquareX = 0;
   protected float visSquareY = 0;
+
+  protected int lastUpdateTime = millis();
 
   GameMap(GameMapCode code, String folderPath) {
     this.code = code;
@@ -148,8 +208,8 @@ class GameMap {
         this.squares[i][j] = new GameMapSquare();
       }
     }
-    this.terrain = new DImg(this.mapWidth * Constants.map_terrainResolution, this.mapHeight * Constants.map_terrainResolution);
-    this.terrain.makeTransparent();
+    this.terrain_dimg = new DImg(this.mapWidth * Constants.map_terrainResolution, this.mapHeight * Constants.map_terrainResolution);
+    this.terrain_dimg.colorPixels(color(0));
   }
 
 
@@ -172,12 +232,13 @@ class GameMap {
     this.xf_map = this.xi_map + this.visSquareX * this.zoom;
     this.yf_map = this.yi_map + this.visSquareY * this.zoom;
 
-    this.terrain_display = new DImg(int(this.visSquareX * this.zoom), int(this.visSquareY * this.zoom));
-    this.terrain_display.colorPixels(color(255, 0, 0));
+    this.terrain_display = resizeImage(this.terrain_dimg.getImagePiece(int(this.startSquareX * Constants.map_terrainResolution),
+      int(this.startSquareY * Constants.map_terrainResolution), int(this.visSquareX * Constants.map_terrainResolution),
+      int(this.visSquareY * Constants.map_terrainResolution)), int(this.xf_map - this.xi_map), int(this.yf_map - this.yi_map));
   }
 
 
-  void drawMap() {
+  void drawMap(int timeElapsed) {
     rectMode(CORNERS);
     noStroke();
     fill(this.color_border);
@@ -186,12 +247,15 @@ class GameMap {
     rect(this.xi + Constants.map_borderSize, this.yi + Constants.map_borderSize,
       this.xf - Constants.map_borderSize, this.yf - Constants.map_borderSize);
     // display terrain
-    this.terrain_display.display(this.xi_map, this.yi_map, this.xf_map, this.yf_map);
+    imageMode(CORNERS);
+    image(this.terrain_display, this.xi_map, this.yi_map, this.xf_map, this.yf_map);
   }
 
 
   void update(int millis) {
-    this.drawMap();
+    int timeElapsed = millis - this.lastUpdateTime;
+    // this.updateMap(); // logic (can be put into multiplayer later)
+    this.drawMap(millis); // everything visual
   }
 
   void mouseMove(float mX, float mY) {
@@ -224,8 +288,7 @@ class GameMap {
     file.println("new: Map");
     file.println("code: " + this.code.file_name());
     file.println("mapName: " + this.mapName);
-    file.println("mapWidth: " + this.mapWidth);
-    file.println("mapHeight: " + this.mapHeight);
+    file.println("dimensions: " + this.mapWidth + ", " + this.mapHeight);
     file.println("end: Map");
     file.flush();
     file.close();
@@ -306,11 +369,18 @@ class GameMap {
       case "mapName":
         this.mapName = data;
         break;
-      case "mapWidth":
-        this.mapWidth = toInt(data);
-        break;
-      case "mapHeight":
-        this.mapHeight = toInt(data);
+      case "dimensions":
+        String[] dimensions = split(data, ',');
+        if (dimensions.length < 2) {
+          println("ERROR: Map missing dimensions in data: " + data + ".");
+          this.mapWidth = 1;
+          this.mapHeight = 1;
+        }
+        else {
+          this.mapWidth = toInt(trim(dimensions[0]));
+          this.mapHeight = toInt(trim(dimensions[1]));
+        }
+        this.initializeSquares();
         break;
       default:
         println("ERROR: Dataname " + dataname + " not recognized for GameMap object.");
