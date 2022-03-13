@@ -168,7 +168,7 @@ class DImg {
 
   // transparent
   void makeTransparent() {
-    this.makeTransparent(0);
+    this.makeTransparent(1);
   }
   void makeTransparent(int alpha) {
     this.img.loadPixels();

@@ -1645,6 +1645,7 @@ abstract class ListTextBox extends TextBox {
   protected ArrayList<String> text_lines_ref;
   protected int line_hovered = -1;
   protected int line_clicked = -1;
+  protected color hover_color = color(1, 0);
   protected color highlight_color = color(100, 100, 250, 120);
   protected int doubleclickTimer = 0;
   protected int doubleclickTime = 400;
@@ -1710,9 +1711,6 @@ abstract class ListTextBox extends TextBox {
     if (this.doubleclickTimer > 0) {
       this.doubleclickTimer -= timeElapsed;
     }
-    if (this.line_clicked < floor(this.scrollbar.value)) {
-      return;
-    }
     float currY = this.yi + 1;
     if (this.text_title_ref != null) {
       textSize(this.title_size);
@@ -1720,15 +1718,26 @@ abstract class ListTextBox extends TextBox {
     }
     textSize(this.text_size);
     float text_height = textAscent() + textDescent();
-    currY += (this.line_clicked - floor(this.scrollbar.value)) * (text_height + this.text_leading);
-    if (currY + text_height + 1 > this.yf) {
-      return;
+    if (this.line_hovered >= floor(this.scrollbar.value)) {
+      float hovered_yi = currY + (this.line_hovered - floor(this.scrollbar.value)) * (text_height + this.text_leading);
+      if (hovered_yi + text_height + 1 < this.yf) {
+        rectMode(CORNERS);
+        fill(this.hover_color);
+        strokeWeight(0.001);
+        stroke(this.hover_color);
+        rect(this.xi + 1, hovered_yi, this.xf - 2 - this.scrollbar.bar_size, hovered_yi + text_height);
+      }
     }
-    rectMode(CORNERS);
-    fill(this.highlight_color);
-    strokeWeight(0.001);
-    stroke(this.highlight_color);
-    rect(this.xi + 1, currY, this.xf - 2 - this.scrollbar.bar_size, currY + text_height);
+    if (this.line_clicked >= floor(this.scrollbar.value)) {
+      float clicked_yi = currY + (this.line_clicked - floor(this.scrollbar.value)) * (text_height + this.text_leading);
+      if (clicked_yi + text_height + 1 < this.yf) {
+        rectMode(CORNERS);
+        fill(this.highlight_color);
+        strokeWeight(0.001);
+        stroke(this.highlight_color);
+        rect(this.xi + 1, clicked_yi, this.xf - 2 - this.scrollbar.bar_size, clicked_yi + text_height);
+      }
+    }
   }
 
   @Override
@@ -1823,6 +1832,39 @@ abstract class ListTextBox extends TextBox {
 
   abstract void click(); // click on line
   abstract void doubleclick(); // doubleclick on line
+}
+
+
+abstract class MaxListTextBox extends ListTextBox {
+  protected float y_curr = 0;
+
+  MaxListTextBox() {
+    this(0, 0, 0, 0);
+  }
+  MaxListTextBox(float xi, float yi, float xf, float yf) {
+    super(xi, yi, xf, yf);
+  }
+
+  @Override
+  void setText(String text) {
+    super.setText(text);
+    float currY = this.yi + 3;
+    if (this.text_title_ref != null) {
+      textSize(this.title_size);
+      currY += textAscent() + textDescent() + 2;
+    }
+    textSize(this.text_size);
+    float text_height = textAscent() + textDescent();
+    this.y_curr = min(this.yf, currY + this.text_lines_ref.size() * (text_height + this.text_leading));
+  }
+
+  @Override
+  void update(int millis) {
+    float y_max = this.yf;
+    this.yf = y_curr;
+    super.update(millis);
+    this.yf = y_max;
+  }
 }
 
 
