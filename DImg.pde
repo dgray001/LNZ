@@ -86,6 +86,27 @@ class DImg {
       w * (this.img.width / this.gridX), h * (this.img.height / this.gridY));
   }
 
+  // image piece
+  PImage getImagePiece(int xi, int yi, int w, int h) {
+    if (w < 0 || h < 0) {
+      return createImage(1, 1, ARGB);
+    }
+    PImage return_image = createImage(w, h, ARGB);
+    return_image.loadPixels();
+    for (int i = 0; i < h; i++) {
+      for (int j = 0; j < w; j++) {
+        int index = (yi + i) * this.img.width + (xi + j);
+        if (index < 0 || index >= this.img.pixels.length) {
+          continue;
+        }
+        int return_index = i * w + j;
+        return_image.pixels[return_index] = this.img.pixels[index];
+      }
+    }
+    return_image.updatePixels();
+    return return_image;
+  }
+
   // convolution
   void convolution(float[][] matrix) {
     if (matrix.length % 2 != 1 || matrix[0].length % 2 != 1) {
@@ -236,4 +257,27 @@ class DImg {
     this.img.pixels[index] = c;
     this.img.updatePixels();
   }
+}
+
+
+// resize image using nearest-neighbor interpolation
+PImage resizeImage(PImage img, int w, int h) {
+  if (w <= 0 || h <= 0) {
+    return createImage(1, 1, ARGB);
+  }
+  println(w, h);
+  float scaling_width = float(img.width) / w;
+  float scaling_height = float(img.height) / h;
+  PImage return_image = createImage(w, h, ARGB);
+  return_image.loadPixels();
+  for (int i = 0; i < h; i++) {
+    for (int j = 0; j < w; j++) {
+      int index = i * w + j;
+      int img_index = constrain(int(i * scaling_width * img.width +
+        j * scaling_height), 0, img.pixels.length - 1);
+      return_image.pixels[index] = img.pixels[img_index];
+    }
+  }
+  return_image.updatePixels();
+  return return_image;
 }
