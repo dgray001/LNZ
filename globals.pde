@@ -12,6 +12,7 @@ class Global {
   private Sounds sounds;
   private Configuration configuration = new Configuration();
   private PImage cursor;
+  private boolean holding_shift = false;
   // FPS
   private int lastFrameTime = millis();
   private float lastFPS = Constants.maxFPS;
@@ -32,6 +33,118 @@ class Global {
     int elapsed = millis() - this.lastFrameTime;
     this.lastFrameTime = millis();
     return elapsed;
+  }
+
+  void keyPressFX2D() {
+    if (key == CODED) {
+      switch(keyCode) {
+        case SHIFT:
+          this.holding_shift = true;
+          break;
+      }
+    }
+    else {
+      this.fixKeyFX2D();
+    }
+  }
+  void keyReleaseFX2D() {
+    if (key == CODED) {
+      switch(keyCode) {
+        case SHIFT:
+          this.holding_shift = false;
+          break;
+      }
+    }
+    else {
+      this.fixKeyFX2D();
+    }
+  }
+  void fixKeyFX2D() {
+    if (!this.holding_shift) {
+      if (key >= 'A' && key <= 'Z') {
+        key += 32;
+      }
+      else {
+        switch(key) {
+          case 192:
+            key = '`';
+            break;
+          case 222:
+            key = '\'';
+            break;
+        }
+      }
+    }
+    else {
+      switch(key) {
+        case '1':
+          key = '!';
+          break;
+        case '2':
+          key = '@';
+          break;
+        case '3':
+          key = '#';
+          break;
+        case '4':
+          key = '$';
+          break;
+        case '5':
+          key = '%';
+          break;
+        case '6':
+          key = '^';
+          break;
+        case '7':
+          key = '&';
+          break;
+        case '8':
+          key = '*';
+          break;
+        case '9':
+          key = '(';
+          break;
+        case '0':
+          key = ')';
+          break;
+        case '-':
+          key = '_';
+          break;
+        case '=':
+          key = '+';
+          break;
+        case '[':
+          key = '{';
+          break;
+        case ']':
+          key = '}';
+          break;
+        case '\\':
+          key = '|';
+          break;
+        case ';':
+          key = ':';
+          break;
+        case '\'':
+          key = '\"';
+          break;
+        case ',':
+          key = '<';
+          break;
+        case '.':
+          key = '>';
+          break;
+        case '/':
+          key = '?';
+          break;
+        case 192:
+          key = '~';
+          break;
+        case 222:
+          key = '\"';
+          break;
+      }
+    }
   }
 
   void exit() {
