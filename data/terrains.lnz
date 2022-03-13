@@ -1,0 +1,56 @@
+Map Edge: 1
+
+Carpet, light: 101
+Carpet, gray: 102
+Carpet, dark: 103
+Carpet, green: 104
+Wood Floor, light: 111
+Wood Floor, brown: 112
+Wood Floor, dark: 113
+Tile Floor, red: 121
+Tile Floor, green: 122
+Tile Floor, gray: 123
+Concrete: 131
+Grass, light: 151
+Grass, green: 152
+Grass, dark: 153
+Grass, dead: 154
+Grass, line left: 155
+Grass, line up: 156
+Dirt, light: 161
+Dirt, gray: 162
+Dirt, dark: 163
+Road, light: 171
+Road, asphalt: 172
+Road, dark: 173
+Road, white up: 174
+Road, white left: 175
+Road, yellow up: 176
+Road, yellow left: 177
+Road, double up: 178
+Road, double left: 179
+
+Brick Wall, blue: 201
+Brick Wall, gray: 202
+Brick Wall, green: 203
+Brick Wall, pink: 204
+Brick Wall, red: 205
+Brick Wall, yellow: 206
+Brick Wall, white: 207
+
+Stair, gray, up: 301
+Stair, gray, down: 302
+Stair, gray, left: 303
+Stair, gray, right: 304
+Stair, green, up: 305
+Stair, green, down: 306
+Stair, green, left: 307
+Stair, green, right: 308
+Stair, red, up: 309
+Stair, red, down: 310
+Stair, red, left: 311
+Stair, red, right: 312
+Stair, white, up: 313
+Stair, white, down: 314
+Stair, white, left: 315
+Stair, white, right: 316

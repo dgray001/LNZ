@@ -223,6 +223,18 @@ class MapEditorInterface extends InterfaceLNZ {
           break;
         case TERRAIN:
           this.setTitleText("Terrain");
+          boolean first = true;
+          if (fileExists("data/terrains.lnz")) {
+            for (String line : loadStrings(sketchPath("data/terrains.lnz"))) {
+              if (first) {
+                first = false;
+                this.setText(line);
+              }
+              else {
+                this.addLine(line);
+              }
+            }
+          }
           break;
         case FEATURES:
           this.setTitleText("Features");
@@ -244,14 +256,48 @@ class MapEditorInterface extends InterfaceLNZ {
     }
 
     void click() {
-      if (mouseButton == RIGHT) {
-        this.rightClickMenu = new RightClickListTextBox(mouseX, mouseY);
+      switch(MapEditorInterface.this.page) {
+        case MAPS:
+          if (mouseButton == RIGHT) {
+            this.rightClickMenu = new RightClickListTextBox(mouseX, mouseY);
+          }
+          break;
+        case LEVELS:
+          break;
+        case TERRAIN:
+          break;
+        case FEATURES:
+          break;
+        case UNITS:
+          break;
+        case ITEMS:
+          break;
+        default:
+          println("ERROR: MapEditorPage " + page + " not found.");
+          break;
       }
     }
 
     void doubleclick() {
-      if (mouseButton == LEFT) {
-        MapEditorInterface.this.openMapEditor(this.highlightedLine());
+      switch(MapEditorInterface.this.page) {
+        case MAPS:
+          if (mouseButton == LEFT) {
+            MapEditorInterface.this.openMapEditor(this.highlightedLine());
+          }
+          break;
+        case LEVELS:
+          break;
+        case TERRAIN:
+          break;
+        case FEATURES:
+          break;
+        case UNITS:
+          break;
+        case ITEMS:
+          break;
+        default:
+          println("ERROR: MapEditorPage " + page + " not found.");
+          break;
       }
     }
   }
