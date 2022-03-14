@@ -1,0 +1,2 @@
+//class VisualEffect extends MapObject {
+//}

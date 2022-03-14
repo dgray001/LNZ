@@ -1,0 +1,2 @@
+//class Projectile extends MapObject {
+//}

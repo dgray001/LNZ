@@ -329,10 +329,12 @@ class GameMap {
   protected GameMapSquare[][] squares;
 
   protected DImg terrain_dimg;
-  //protected DImg feature_dimg;
-  //protected DImg fog_dimg;
-  //protected boolean draw_fog = true;
+  protected DImg feature_dimg;
+  protected DImg fog_dimg;
+  protected boolean draw_fog = true;
   protected PImage terrain_display = createImage(0, 0, RGB);
+  protected PImage feature_display = createImage(0, 0, ARGB);
+  protected PImage fog_display = createImage(0, 0, ARGB);
 
   protected float viewX = 0;
   protected float viewY = 0;
@@ -392,7 +394,11 @@ class GameMap {
     }
     this.terrain_dimg = new DImg(this.mapWidth * Constants.map_terrainResolution, this.mapHeight * Constants.map_terrainResolution);
     this.terrain_dimg.setGrid(this.mapWidth, this.mapHeight);
-    this.terrain_dimg.colorPixels(color(255));
+    this.terrain_dimg.colorPixels(color(20));
+    this.feature_dimg = new DImg(this.mapWidth * Constants.map_featureResolution, this.mapHeight * Constants.map_featureResolution);
+    this.feature_dimg.setGrid(this.mapWidth, this.mapHeight);
+    this.fog_dimg = new DImg(this.mapWidth * Constants.map_fogResolution, this.mapHeight * Constants.map_fogResolution);
+    this.fog_dimg.setGrid(this.mapWidth, this.mapHeight);
   }
 
 
@@ -421,6 +427,12 @@ class GameMap {
     this.terrain_display = resizeImage(this.terrain_dimg.getImagePiece(int(this.startSquareX * Constants.map_terrainResolution),
       int(this.startSquareY * Constants.map_terrainResolution), int(this.visSquareX * Constants.map_terrainResolution),
       int(this.visSquareY * Constants.map_terrainResolution)), int(this.xf_map - this.xi_map), int(this.yf_map - this.yi_map));
+    this.feature_display = resizeImage(this.feature_dimg.getImagePiece(int(this.startSquareX * Constants.map_featureResolution),
+      int(this.startSquareY * Constants.map_featureResolution), int(this.visSquareX * Constants.map_featureResolution),
+      int(this.visSquareY * Constants.map_featureResolution)), int(this.xf_map - this.xi_map), int(this.yf_map - this.yi_map));
+    this.fog_display = resizeImage(this.feature_dimg.getImagePiece(int(this.startSquareX * Constants.map_fogResolution),
+      int(this.startSquareY * Constants.map_fogResolution), int(this.visSquareX * Constants.map_fogResolution),
+      int(this.visSquareY * Constants.map_fogResolution)), int(this.xf_map - this.xi_map), int(this.yf_map - this.yi_map));
   }
 
   void setZoom(float zoom) {
@@ -502,6 +514,17 @@ class GameMap {
     // display terrain
     imageMode(CORNERS);
     image(this.terrain_display, this.xi_map, this.yi_map, this.xf_map, this.yf_map);
+    // display feature
+    image(this.feature_display, this.xi_map, this.yi_map, this.xf_map, this.yf_map);
+    // display units
+    // display items
+    // display projectiles
+    // display visual effects
+    // display fog
+    if (this.draw_fog) {
+      imageMode(CORNERS);
+      image(this.fog_display, this.xi_map, this.yi_map, this.xf_map, this.yf_map);
+    }
   }
 
 
@@ -713,6 +736,7 @@ class GameMap {
 class GameMapEditor extends GameMap {
   protected boolean dropping_terrain = false;
   protected int terrain_id = 0;
+  protected MapObject dropping_object;
 
   protected boolean draw_grid = true;
 
@@ -770,7 +794,11 @@ class GameMapEditor extends GameMap {
       imageMode(CENTER);
       image((new GameMapSquare(this.terrain_id)).terrainImage(), mouseX, mouseY, this.zoom, this.zoom);
     }
-    else { // eraser or dropping mapobject
+    else if (this.dropping_object == null) {
+      imageMode(CORNER);
+      image(global.images.getImage("items/eraser.png"), mouseX, mouseY, this.zoom, this.zoom);
+    }
+    else {
     }
 
     this.lastUpdateTime = millis;
@@ -785,10 +813,14 @@ class GameMapEditor extends GameMap {
         if (this.dropping_terrain) {
           this.setTerrain(this.terrain_id, int(floor(this.mX)), int(floor(this.mY)));
         }
-        else {
+        else if (this.dropping_object == null) { // erase
+        }
+        else { // place
         }
         break;
       case CENTER:
+        this.dropping_terrain = false;
+        this.dropping_object = null;
         break;
     }
   }
