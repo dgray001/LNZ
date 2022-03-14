@@ -38,6 +38,13 @@ abstract class MapObject {
   abstract float xRadius();
   abstract float yRadius();
 
+  boolean inMap(int mapWidth, int mapHeight) {
+    if (this.xi() >= 0 && this.yi() >= 0 && this.xf() <= mapWidth && this.yf() <= mapHeight) {
+      return true;
+    }
+    return false;
+  }
+
   boolean inView(float xStart, float yStart, float xEnd, float yEnd) {
     if (this.xi() >= xStart && this.yi() >= yStart && this.xf() <= xEnd && this.yf() <= yEnd) {
       return true;
@@ -64,4 +71,11 @@ abstract class MapObject {
   abstract PImage getImage();
 
   abstract void update(int timeElapsed);
+
+  void mouseMove(float mX, float mY) {
+    if (mX >= this.xi() && mY >= this.yi() && mX <= this.xf() && mY <= this.yf()) {
+      this.hovered = true;
+    }
+    this.hovered = false;
+  }
 }

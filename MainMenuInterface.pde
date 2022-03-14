@@ -610,9 +610,8 @@ class MainMenuInterface extends InterfaceLNZ {
     @Override
     void run() {
       DImg dimg = new DImg(this.img);
-      dimg.makeTransparent(255);
-      dimg.addImagePercent(global.images.getImage("hillary.png"), 0, 0, 1, 1);
-      dimg.brightenGradient(0.02, this.distance_threshhold, this.mX, this.mY);
+      //dimg.brightenGradient(0.02, this.distance_threshhold, this.mX, this.mY);
+      dimg.transparencyGradientFromPoint(this.mX, this.mY, this.distance_threshhold);
       this.img = dimg.img;
     }
   }
@@ -622,12 +621,14 @@ class MainMenuInterface extends InterfaceLNZ {
   private BannerButton banner = new BannerButton();
   private PlayButton play = new PlayButton();
   private ProfileButton profile = new ProfileButton();
+  private PImage backgroundImagePicture;
   private PImage backgroundImage;
   private backgroundImageThread thread = new backgroundImageThread();
 
   MainMenuInterface() {
     super();
-    this.backgroundImage = createImage(width, height, RGB);
+    this.backgroundImagePicture = resizeImage(global.images.getImage("hillary.png"), width, height);
+    this.backgroundImage = createImage(width, height, ARGB);
     this.growButtons[0] = new MainMenuGrowButton1();
     this.growButtons[1] = new MainMenuGrowButton2();
     this.growButtons[2] = new MainMenuGrowButton3();
@@ -682,6 +683,7 @@ class MainMenuInterface extends InterfaceLNZ {
   void update(int millis) {
     // draw background
     imageMode(CORNER);
+    image(this.backgroundImagePicture, 0, 0);
     image(this.backgroundImage, 0, 0);
     // update elements
     for (MainMenuGrowButton button : this.growButtons) {

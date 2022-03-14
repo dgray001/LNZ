@@ -1,19 +1,3 @@
-int ccolor(int gray) {
-  return ccolor(gray, gray, gray, 255);
-}
-int ccolor(int gray, int a) {
-  return ccolor(gray, gray, gray, a);
-}
-int ccolor(int r, int g, int b) {
-  return ccolor(r, g, b, 255);
-}
-int ccolor(int r, int g, int b, int a) {
-  int max = 256;
-  return max*max*max*a + max*max*r + max*g + b;
-  //return ((255 - a) << 32) | (r << 16) | (g << 8) | b;
-}
-
-
 class Images {
   private HashMap<String, PImage> imgs = new HashMap<String, PImage>();
   private String basePath = sketchPath("data/images/");

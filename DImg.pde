@@ -48,7 +48,7 @@ class DImg {
 
   // Add image to part of this using width / height
   void addImage(PImage newImg, int x, int y, int w, int h) {
-   this.img.copy(newImg, 0, 0, newImg.width, newImg.height, x, y, w, h);
+   this.copyImage(newImg, x, y, w, h);
   }
   // Add image to part of this using percent of width / height
   void addImagePercent(PImage newImg, float xP, float yP, float wP, float hP) {
@@ -56,34 +56,63 @@ class DImg {
       println("ERROR: addImagePercent coordinates out of range");
       return;
     }
-    this.img.copy(newImg, 0, 0, newImg.width, newImg.height,
+    this.copyImage(newImg,
       round(this.img.width * xP), round(this.img.height * yP),
       round(this.img.width * wP), round(this.img.height * hP));
   }
   // Add image to grid square
   void addImageGrid(PImage newImg, int x, int y) {
-    if (x < 0 || y < 0 || x >= this.gridX || y >= this.gridY) {
-      println("ERROR: addImageGrid coordinate out of range");
-      return;
-    }
-    this.img.copy(newImg, 0, 0, newImg.width, newImg.height,
-      round(this.img.width * (float(x) / this.gridX)),
-      round(this.img.height * (float(y) / this.gridY)),
-      this.img.width / this.gridX, this.img.height / this.gridY);
+    this.addImageGrid(newImg, x, y, 1, 1);
   }
   void addImageGrid(PImage newImg, int x, int y, int w, int h) {
     if (x < 0 || y < 0 || x >= this.gridX || y >= this.gridY) {
       println("ERROR: addImageGrid coordinate out of range");
       return;
     }
-    if (w < 1 || h < 1 || x + w >= this.gridX || y + h >= this.gridY) {
+    if (w < 1 || h < 1 || x + w > this.gridX || y + h > this.gridY) {
       print("ERROR: addImageGrid coordinate our of range");
       return;
     }
-    this.img.copy(newImg, 0, 0, newImg.width, newImg.height,
+    this.copyImage(newImg,
       round(this.img.width * (float(x) / this.gridX)),
       round(this.img.height * (float(y) / this.gridY)),
       w * (this.img.width / this.gridX), h * (this.img.height / this.gridY));
+  }
+
+  // my own copy function which accounts for transparency
+  void copyImage(PImage newImg, float x, float y, float w, float h) {
+    this.img.loadPixels();
+    float scaling_width = newImg.width / w;
+    float scaling_height = newImg.height / h;
+    for (int i = 0; i < h; i++) {
+      int imgY = int(round(scaling_height * i + 0.5));
+      for (int j = 0; j < w; j++) {
+        int imgX = int(round(scaling_width * j + 0.5));
+
+        int index = int(round((i + y) * this.img.width + (j + x)));
+        int img_index = imgY * newImg.width + imgX;
+        try {
+          float r_source = newImg.pixels[img_index] >> 16 & 0xFF;
+          float g_source = newImg.pixels[img_index] >> 8 & 0xFF;
+          float b_source = newImg.pixels[img_index] & 0xFF;
+          float a_source = alpha(newImg.pixels[img_index]);
+          float r_target = this.img.pixels[index] >> 16 & 0xFF;
+          float g_target = this.img.pixels[index] >> 8 & 0xFF;
+          float b_target = this.img.pixels[index] & 0xFF;
+          float a_target = alpha(this.img.pixels[index]);
+
+          float factor_source = a_source / 255.0;
+          float factor_target = (1 - factor_source) * a_target / 255.0;
+          float r_final = constrain(factor_source * r_source + factor_target * r_target, 0, 255);
+          float g_final = constrain(factor_source * g_source + factor_target * g_target, 0, 255);
+          float b_final = constrain(factor_source * b_source + factor_target * b_target, 0, 255);
+          float a_final = constrain(a_source + a_target, 0, 255);
+
+          this.img.pixels[index] = ccolor(r_final, g_final, b_final, a_final);
+        } catch(Exception e) {}
+      }
+    }
+    this.img.updatePixels();
   }
 
   // image piece
@@ -180,7 +209,7 @@ class DImg {
         float r = constrain((c >> 16 & 0xFF) * curr_factor, 0, 255);
         float g = constrain((c >> 8 & 0xFF) * curr_factor, 0, 255);
         float b = constrain((c & 0xFF) * curr_factor, 0, 255);
-        int col = ccolor(int(r), int(g), int(b), 254);
+        int col = ccolor(int(r), int(g), int(b), 255);
         this.img.pixels[index] = col;
       }
     }
@@ -219,11 +248,11 @@ class DImg {
         float g = this.img.pixels[index] >> 8 & 0xFF;
         float b = this.img.pixels[index] & 0xFF;
         float curr_distance = sqrt((i - y) * (i - y) + (j - x) * (j - x));
-        float alpha = 0;
+        float alpha = 255;
         if (curr_distance < distance) {
-          alpha = 255 * (1 - curr_distance / distance);
+          alpha = 255 * curr_distance / distance;
         }
-        this.img.pixels[index] = color(r, g, b, alpha);
+        this.img.pixels[index] = ccolor(r, g, b, alpha);
       }
     }
     this.img.updatePixels();
@@ -257,6 +286,25 @@ class DImg {
     this.img.pixels[index] = c;
     this.img.updatePixels();
   }
+}
+
+
+int ccolor(int gray) {
+  return ccolor(gray, gray, gray, 255);
+}
+int ccolor(int gray, int a) {
+  return ccolor(gray, gray, gray, a);
+}
+int ccolor(int r, int g, int b) {
+  return ccolor(r, g, b, 255);
+}
+int ccolor(float r, float g, float b, float a) {
+  return ccolor(int(round(r)), int(round(g)), int(round(b)), int(round(a)));
+}
+int ccolor(int r, int g, int b, int a) {
+  int max = 256;
+  return max*max*max*a + max*max*r + max*g + b;
+  //return ((255 - a) << 32) | (r << 16) | (g << 8) | b;
 }
 
 
