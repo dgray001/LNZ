@@ -780,8 +780,14 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
   void keyPress() {
+    if (this.curr_map != null) {
+      this.curr_map.keyPress();
+    }
   }
 
   void keyRelease() {
+    if (this.curr_map != null) {
+      this.curr_map.keyRelease();
+    }
   }
 }

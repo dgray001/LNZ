@@ -13,6 +13,8 @@ class Profile {
     private float volume_player;
     private boolean volume_player_muted;
 
+    private float map_viewMoveSpeedFactor;
+
     Options() {
       this.profileUpdated();
     }
@@ -36,6 +38,7 @@ class Profile {
       this.volume_units_muted = false;
       this.volume_player = Constants.options_defaultVolume;
       this.volume_player_muted = false;
+      this.map_viewMoveSpeedFactor = Constants.map_defaultCameraSpeed;
     }
 
     void change() {
@@ -102,20 +105,41 @@ class Profile {
           case "volume_master":
             this.volume_master = toFloat(trim(data[1]));
             break;
+          case "volume_master_muted":
+            this.volume_master_muted = toBoolean(trim(data[1]));
+            break;
           case "volume_music":
             this.volume_music = toFloat(trim(data[1]));
+            break;
+          case "volume_music_muted":
+            this.volume_music_muted = toBoolean(trim(data[1]));
             break;
           case "volume_interface":
             this.volume_interface = toFloat(trim(data[1]));
             break;
+          case "volume_interface_muted":
+            this.volume_interface_muted = toBoolean(trim(data[1]));
+            break;
           case "volume_environment":
             this.volume_environment = toFloat(trim(data[1]));
+            break;
+          case "volume_environment_muted":
+            this.volume_environment_muted = toBoolean(trim(data[1]));
             break;
           case "volume_units":
             this.volume_units = toFloat(trim(data[1]));
             break;
+          case "volume_units_muted":
+            this.volume_units_muted = toBoolean(trim(data[1]));
+            break;
           case "volume_player":
             this.volume_player = toFloat(trim(data[1]));
+            break;
+          case "volume_player_muted":
+            this.volume_player_muted = toBoolean(trim(data[1]));
+            break;
+          case "map_viewMoveSpeedFactor":
+            this.map_viewMoveSpeedFactor = toFloat(trim(data[1]));
             break;
           default:
             break;
@@ -128,12 +152,19 @@ class Profile {
         return;
       }
       PrintWriter file = createWriter(sketchPath("data/profiles/" + Profile.this.display_name.toLowerCase() + "/options.lnz"));
-      file.println("volume_master: " + this.volume_music);
+      file.println("volume_master: " + this.volume_master);
+      file.println("volume_master_muted: " + this.volume_master_muted);
       file.println("volume_music: " + this.volume_music);
+      file.println("volume_music_muted: " + this.volume_music_muted);
       file.println("volume_interface: " + this.volume_interface);
+      file.println("volume_interface_muted: " + this.volume_interface_muted);
       file.println("volume_environment: " + this.volume_environment);
+      file.println("volume_environment_muted: " + this.volume_environment_muted);
       file.println("volume_units: " + this.volume_units);
+      file.println("volume_units_muted: " + this.volume_units_muted);
       file.println("volume_player: " + this.volume_player);
+      file.println("volume_player_muted: " + this.volume_player_muted);
+      file.println("map_viewMoveSpeedFactor: " + this.map_viewMoveSpeedFactor);
       file.flush();
       file.close();
     }

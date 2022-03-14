@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220313: v0.6.2p" +
+  "\n20220313: v0.6.2q" +
   "\nLines: 7128 (v0.6.2l)" +
   "";
   static final String version_history =
@@ -67,10 +67,14 @@ static class Constants {
 
   // GameMap
   static final float map_borderSize = 30;
-  static final int map_terrainResolution = 40;
-  static final int map_fogResolution = 15;
-  static final int map_featureResolution = 40;
+  static final int map_terrainResolution = 80;
+  static final int map_featureResolution = 60;
+  static final int map_fogResolution = 25;
   static final float map_defaultZoom = 60;
-  static final float map_minZoom = 10;
-  static final float map_maxZoom = 100;
+  static final float map_minZoom = 40;
+  static final float map_maxZoom = 120;
+  static final float map_scrollZoomFactor = -1;
+  static final float map_minCameraSpeed = 0.001;
+  static final float map_maxCameraSpeed = 0.1;
+  static final float map_defaultCameraSpeed = 0.01;
 }
