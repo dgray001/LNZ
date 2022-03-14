@@ -66,6 +66,9 @@ abstract class InterfaceLNZ {
       SliderFormField volume_player = new SliderFormField("Player: ", 0, 100);
       volume_player.threshhold = Constants.optionsForm_threshhold_other;
       volume_player.addCheckbox("mute: ");
+      SliderFormField map_move_speed = new SliderFormField("Camera Speed: ",
+        Constants.map_minCameraSpeed, Constants.map_maxCameraSpeed);
+      map_move_speed.threshhold = Constants.optionsForm_threshhold_other;
       SubmitFormField apply = new ButtonFormField("Apply");
       apply.button.setColors(color(220), color(240, 240, 190),
         color(190, 190, 140), color(140, 140, 90), color(0));
@@ -85,6 +88,8 @@ abstract class InterfaceLNZ {
       this.addField(volume_environment);
       this.addField(volume_units);
       this.addField(volume_player);
+      this.addField(new SpacerFormField(10));
+      this.addField(map_move_speed);
       this.addField(new SpacerFormField(10));
       this.addField(apply);
       this.addField(new SpacerFormField(10));
@@ -145,6 +150,8 @@ abstract class InterfaceLNZ {
       else {
         this.fields.get(5).enable();
       }
+
+      this.fields.get(7).setValue(global.profile.options.map_viewMoveSpeedFactor);
     }
 
     void submit() {
@@ -207,6 +214,9 @@ abstract class InterfaceLNZ {
         global.profile.options.volume_player_muted = false;
       }
       global.profile.options.volume_player = toFloat(split(vol_player, ':')[0]);
+
+      String camera_speed = this.fields.get(7).getValue();
+      global.profile.options.map_viewMoveSpeedFactor = toFloat(split(camera_speed, ':')[0]);
 
       global.profile.options.change();
     }

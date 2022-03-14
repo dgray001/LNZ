@@ -331,11 +331,16 @@ class GameMap {
   protected DImg terrain_dimg;
   //protected DImg feature_dimg;
   //protected DImg fog_dimg;
+  //protected boolean draw_fog = true;
   protected PImage terrain_display = createImage(0, 0, RGB);
 
   protected float viewX = 0;
   protected float viewY = 0;
   protected float zoom = Constants.map_defaultZoom;
+  protected boolean view_moving_left = false;
+  protected boolean view_moving_right = false;
+  protected boolean view_moving_up = false;
+  protected boolean view_moving_down = false;
 
   protected float xi = 0;
   protected float yi = 0;
@@ -418,6 +423,49 @@ class GameMap {
       int(this.visSquareY * Constants.map_terrainResolution)), int(this.xf_map - this.xi_map), int(this.yf_map - this.yi_map));
   }
 
+  void setZoom(float zoom) {
+    if (zoom > Constants.map_maxZoom) {
+      zoom = Constants.map_maxZoom;
+    }
+    else if (zoom < Constants.map_minZoom) {
+      zoom = Constants.map_minZoom;
+    }
+    this.zoom = zoom;
+    this.refreshDisplayMapParameters();
+  }
+  void changeZoom(float amount) {
+    this.setZoom(this.zoom + amount);
+  }
+
+  void setViewLocation(float viewX, float viewY) {
+    this.setViewLocation(viewX, viewY, true);
+  }
+  void setViewLocation(float viewX, float viewY, boolean refreshImage) {
+    if (viewX < 0) {
+      viewX = 0;
+    }
+    else if (viewX > this.mapWidth) {
+      viewX = this.mapWidth;
+    }
+    if (viewY < 0) {
+      viewY = 0;
+    }
+    else if (viewY > this.mapHeight) {
+      viewY = this.mapHeight;
+    }
+    this.viewX = viewX;
+    this.viewY = viewY;
+    if (refreshImage) {
+      this.refreshDisplayMapParameters();
+    }
+  }
+  void moveView(float changeX, float changeY) {
+    this.moveView(changeX, changeY, true);
+  }
+  void moveView(float changeX, float changeY, boolean refreshImage) {
+    this.setViewLocation(this.viewX + changeX, this.viewY + changeY, refreshImage);
+  }
+
 
   void setTerrain(int id, int x, int y) {
     this.setTerrain(id, x, y, true);
@@ -443,7 +491,7 @@ class GameMap {
   //}
 
 
-  void drawMap(int timeElapsed) {
+  void drawMap() {
     rectMode(CORNERS);
     noStroke();
     fill(this.color_border);
@@ -453,15 +501,40 @@ class GameMap {
       this.xf - Constants.map_borderSize, this.yf - Constants.map_borderSize);
     // display terrain
     imageMode(CORNERS);
-    image(this.terrain_dimg.img, this.xi + 40, this.yi + 40);
     image(this.terrain_display, this.xi_map, this.yi_map, this.xf_map, this.yf_map);
+  }
+
+
+  void updateView(int timeElapsed) {
+    boolean refreshView = false;
+    if (this.view_moving_left) {
+      this.moveView(-timeElapsed * global.profile.options.map_viewMoveSpeedFactor, 0, false);
+      refreshView = true;
+    }
+    if (this.view_moving_right) {
+      this.moveView(timeElapsed * global.profile.options.map_viewMoveSpeedFactor, 0, false);
+      refreshView = true;
+    }
+    if (this.view_moving_up) {
+      this.moveView(0, -timeElapsed * global.profile.options.map_viewMoveSpeedFactor, false);
+      refreshView = true;
+    }
+    if (this.view_moving_down) {
+      this.moveView(0, timeElapsed * global.profile.options.map_viewMoveSpeedFactor, false);
+      refreshView = true;
+    }
+    if (refreshView) {
+      this.refreshDisplayMapParameters();
+    }
   }
 
 
   void update(int millis) {
     int timeElapsed = millis - this.lastUpdateTime;
-    // this.updateMap(); // logic (can be put into multiplayer later)
-    this.drawMap(millis); // everything visual
+    //this.updateMap(timeElapsed); // logic (can be put into multiplayer later)
+    this.updateView(timeElapsed); // visual changes in map
+    this.drawMap(); // everything visual
+    this.lastUpdateTime = millis;
   }
 
   void mouseMove(float mX, float mY) {
@@ -489,6 +562,7 @@ class GameMap {
   }
 
   void scroll(int amount) {
+    this.changeZoom(Constants.map_scrollZoomFactor * amount);
   }
 
   void keyPress() {
@@ -640,6 +714,8 @@ class GameMapEditor extends GameMap {
   protected boolean dropping_terrain = false;
   protected int terrain_id = 0;
 
+  protected boolean draw_grid = true;
+
   GameMapEditor(GameMapCode code, String folderPath) {
     super(code, folderPath);
   }
@@ -659,8 +735,34 @@ class GameMapEditor extends GameMap {
 
   @Override
   void update(int millis) {
-    this.drawMap(millis);
+    int timeElapsed = millis - this.lastUpdateTime;
+
+    // update view
+    this.updateView(timeElapsed);
+
+    // draw map
+    this.drawMap();
+
     // draw grid
+    if (this.draw_grid) {
+      stroke(255);
+      strokeWeight(0.5);
+      textSize(10);
+      textAlign(LEFT, TOP);
+      rectMode(CORNER);
+      for (int i = int(ceil(this.startSquareX)); i < int(floor(this.startSquareX + this.visSquareX)); i++) {
+        for (int j = int(ceil(this.startSquareY)); j < int(floor(this.startSquareY + this.visSquareY)); j++) {
+          float x = this.xi_map + this.zoom * i;
+          float y = this.yi_map + this.zoom * j;
+          fill(200, 50);
+          rect(x, y, this.zoom, this.zoom);
+          fill(255);
+          text("(" + i + ", " + j + ")", x + 1, y + 1);
+        }
+      }
+    }
+
+    // draw object dropping
     if (!this.hovered_area) {
       return;
     }
@@ -670,6 +772,8 @@ class GameMapEditor extends GameMap {
     }
     else { // eraser or dropping mapobject
     }
+
+    this.lastUpdateTime = millis;
   }
 
   @Override
@@ -686,6 +790,54 @@ class GameMapEditor extends GameMap {
         break;
       case CENTER:
         break;
+    }
+  }
+
+  @Override
+  void keyPress() {
+    if (key == CODED) {
+      switch(keyCode) {
+        case LEFT:
+          this.view_moving_left = true;
+          break;
+        case RIGHT:
+          this.view_moving_right = true;
+          break;
+        case UP:
+          this.view_moving_up = true;
+          break;
+        case DOWN:
+          this.view_moving_down = true;
+          break;
+      }
+    }
+    else {
+      switch(key) {
+      }
+    }
+  }
+
+  @Override
+  void keyRelease() {
+    if (key == CODED) {
+      switch(keyCode) {
+        case LEFT:
+          this.view_moving_left = false;
+          break;
+        case RIGHT:
+          this.view_moving_right = false;
+          break;
+        case UP:
+          this.view_moving_up = false;
+          break;
+        case DOWN:
+          this.view_moving_down = false;
+          break;
+      }
+    }
+    else {
+      switch(key) {
+      }
     }
   }
 }
