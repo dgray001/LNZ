@@ -11,6 +11,13 @@ Tile Floor, red: 121
 Tile Floor, green: 122
 Tile Floor, gray: 123
 Concrete: 131
+Sidewalk, smooth: 132
+Sidewalk, cracked: 133
+Sand, light: 141
+Sand, tan: 142
+Sand, dark: 143
+Sand, line left: 144
+Sand, line up: 145
 Grass, light: 151
 Grass, green: 152
 Grass, dark: 153
@@ -23,12 +30,17 @@ Dirt, dark: 163
 Road, light: 171
 Road, asphalt: 172
 Road, dark: 173
-Road, white up: 174
-Road, white left: 175
-Road, yellow up: 176
-Road, yellow left: 177
-Road, double up: 178
-Road, double left: 179
+Road, white left: 174
+Road, white up: 175
+Road, yellow left: 176
+Road, yellow up: 177
+Road, double left: 178
+Road, double up: 179
+Water, rocks: 181
+Water, dirt: 182
+Water, shallow: 183
+Water, medium: 184
+Water, deep: 185
 
 Brick Wall, blue: 201
 Brick Wall, gray: 202

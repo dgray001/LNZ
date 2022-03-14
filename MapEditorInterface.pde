@@ -288,6 +288,9 @@ class MapEditorInterface extends InterfaceLNZ {
         case LEVELS:
           break;
         case TERRAIN:
+          if (mouseButton == LEFT) {
+            MapEditorInterface.this.dropTerrain(this.highlightedLine());
+          }
           break;
         case FEATURES:
           break;
@@ -644,6 +647,21 @@ class MapEditorInterface extends InterfaceLNZ {
   void closeMapEditor() {
     this.curr_map = null;
     this.navigate(MapEditorPage.MAPS);
+  }
+
+
+  void dropTerrain(String line) {
+    if (this.curr_map == null) {
+      return;
+    }
+    String[] line_split = split(line, ':');
+    if (line_split.length < 2) {
+      return;
+    }
+    String terrainID = trim(line_split[1]);
+    if (isInt(terrainID)) {
+      this.curr_map.dropTerrain(toInt(terrainID));
+    }
   }
 
 
