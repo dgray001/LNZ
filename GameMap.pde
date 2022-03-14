@@ -88,6 +88,9 @@ class GameMapSquare {
   GameMapSquare() {
     this.setTerrain(1);
   }
+  GameMapSquare(int terrain_id) {
+    this.setTerrain(terrain_id);
+  }
 
   void setTerrain(int id) {
     this.terrain_id = id;
@@ -212,6 +215,100 @@ class GameMapSquare {
       case 123:
         imageName += "tile_gray.jpg";
         break;
+      case 131:
+        imageName += "concrete.jpg";
+        break;
+      case 132:
+        imageName += "sidewalk1.jpg";
+        break;
+      case 133:
+        imageName += "sidewalk2.jpg";
+        break;
+      case 141:
+        imageName += "sand1.jpg";
+        break;
+      case 142:
+        imageName += "sand2.jpg";
+        break;
+      case 143:
+        imageName += "sand3.jpg";
+        break;
+      case 144:
+        imageName += "sand3_left.jpg";
+        break;
+      case 145:
+        imageName += "sand3_up.jpg";
+        break;
+      case 151:
+        imageName += "grass1.jpg";
+        break;
+      case 152:
+        imageName += "grass2.jpg";
+        break;
+      case 153:
+        imageName += "grass3.jpg";
+        break;
+      case 154:
+        imageName += "grass4.jpg";
+        break;
+      case 155:
+        imageName += "grass2_line_left.jpg";
+        break;
+      case 156:
+        imageName += "grass2_line_up.jpg";
+        break;
+      case 161:
+        imageName += "dirt1.jpg";
+        break;
+      case 162:
+        imageName += "dirt2.jpg";
+        break;
+      case 163:
+        imageName += "dirt3.jpg";
+        break;
+      case 171:
+        imageName += "road1.jpg";
+        break;
+      case 172:
+        imageName += "road2.jpg";
+        break;
+      case 173:
+        imageName += "road3.jpg";
+        break;
+      case 174:
+        imageName += "road1_left.jpg";
+        break;
+      case 175:
+        imageName += "road1_up.jpg";
+        break;
+      case 176:
+        imageName += "road2_left.jpg";
+        break;
+      case 177:
+        imageName += "road2_up.jpg";
+        break;
+      case 178:
+        imageName += "road2_left_double.jpg";
+        break;
+      case 179:
+        imageName += "road2_up_double.jpg";
+        break;
+      case 181:
+        imageName += "water1.png";
+        break;
+      case 182:
+        imageName += "water2.png";
+        break;
+      case 183:
+        imageName += "water3.jpg";
+        break;
+      case 184:
+        imageName += "water4.jpg";
+        break;
+      case 185:
+        imageName += "water5.png";
+        break;
+
       default:
         imageName += "default.jpg";
         break;
@@ -259,6 +356,11 @@ class GameMap {
 
   protected int lastUpdateTime = millis();
 
+  protected boolean hovered_area = false;
+  protected boolean hovered = false;
+  protected float mX = 0;
+  protected float mY = 0;
+
   GameMap(GameMapCode code, String folderPath) {
     this.code = code;
     this.mapName = GameMapCode.display_name(code);
@@ -284,7 +386,8 @@ class GameMap {
       }
     }
     this.terrain_dimg = new DImg(this.mapWidth * Constants.map_terrainResolution, this.mapHeight * Constants.map_terrainResolution);
-    this.terrain_dimg.colorPixels(color(20));
+    this.terrain_dimg.setGrid(this.mapWidth, this.mapHeight);
+    this.terrain_dimg.colorPixels(color(255));
   }
 
 
@@ -293,11 +396,11 @@ class GameMap {
     this.yi = yi;
     this.xf = xf;
     this.yf = yf;
-    this.refreshDisplayMap();
+    this.refreshDisplayMapParameters();
   }
 
 
-  void refreshDisplayMap() { // in another thread ?
+  void refreshDisplayMapParameters() { // in another thread ?
     this.startSquareX = max(0, this.viewX - (0.5 * width - this.xi - Constants.map_borderSize) / this.zoom);
     this.startSquareY = max(0, this.viewY - (0.5 * height - this.yi - Constants.map_borderSize) / this.zoom);
     this.xi_map = 0.5 * width - (this.viewX - this.startSquareX) * this.zoom;
@@ -306,11 +409,38 @@ class GameMap {
     this.visSquareY = min(this.mapHeight - this.startSquareY, (this.yf - this.yi_map - Constants.map_borderSize) / this.zoom);
     this.xf_map = this.xi_map + this.visSquareX * this.zoom;
     this.yf_map = this.yi_map + this.visSquareY * this.zoom;
+    this.refreshDisplayImages();
+  }
 
+  void refreshDisplayImages() {
     this.terrain_display = resizeImage(this.terrain_dimg.getImagePiece(int(this.startSquareX * Constants.map_terrainResolution),
       int(this.startSquareY * Constants.map_terrainResolution), int(this.visSquareX * Constants.map_terrainResolution),
       int(this.visSquareY * Constants.map_terrainResolution)), int(this.xf_map - this.xi_map), int(this.yf_map - this.yi_map));
   }
+
+
+  void setTerrain(int id, int x, int y) {
+    this.setTerrain(id, x, y, true);
+  }
+  void setTerrain(int id, int x, int y, boolean refreshImage) {
+    try {
+      this.squares[x][y].setTerrain(id);
+      this.terrain_dimg.addImageGrid(this.squares[x][y].terrainImage(), x, y);
+      if (refreshImage) {
+        this.refreshDisplayImages();
+      }
+    }
+    catch(IndexOutOfBoundsException e) {}
+  }
+  void setTerrainHeight(int h, int x, int y) {
+    try {
+      this.squares[x][y].baseHeight = h;
+    }
+    catch(IndexOutOfBoundsException e) {}
+  }
+
+  //void addFeature(Feature f) {
+  //}
 
 
   void drawMap(int timeElapsed) {
@@ -323,6 +453,7 @@ class GameMap {
       this.xf - Constants.map_borderSize, this.yf - Constants.map_borderSize);
     // display terrain
     imageMode(CORNERS);
+    image(this.terrain_dimg.img, this.xi + 40, this.yi + 40);
     image(this.terrain_display, this.xi_map, this.yi_map, this.xf_map, this.yf_map);
   }
 
@@ -334,6 +465,21 @@ class GameMap {
   }
 
   void mouseMove(float mX, float mY) {
+    if (mX > this.xi_map && mY > this.yi_map && mX < this.xf_map && mY < this.yf_map) {
+      this.hovered = true;
+      this.hovered_area = true;
+      this.mX = this.startSquareX + (mX - this.xi_map) / this.zoom;
+      this.mY = this.startSquareY + (mY - this.yi_map) / this.zoom;
+    }
+    else {
+      this.hovered = false;
+      if (mX > this.xi && mY > this.yi && mX < this.xf && mY < this.yf) {
+        this.hovered_area = true;
+      }
+      else {
+        this.hovered_area = false;
+      }
+    }
   }
 
   void mousePress() {
@@ -364,6 +510,12 @@ class GameMap {
     file.println("code: " + this.code.file_name());
     file.println("mapName: " + this.mapName);
     file.println("dimensions: " + this.mapWidth + ", " + this.mapHeight);
+    for (int i = 0; i < this.mapWidth; i++) {
+      for (int j = 0; j < this.mapHeight; j++) {
+        file.println("terrain: " + i + ", " + j + ": " + this.squares[i][j].terrain_id +
+          ", " + this.squares[i][j].baseHeight);
+      }
+    }
     file.println("end: Map");
     file.flush();
     file.close();
@@ -396,6 +548,9 @@ class GameMap {
 
       String dataname = trim(parameters[0]);
       String data = trim(parameters[1]);
+      for (int i = 2; i < parameters.length; i++) {
+        data += ":" + parameters[i];
+      }
       if (dataname.equals("new")) {
         ReadFileObject type = ReadFileObject.objectType(data);
         switch(type) {
@@ -457,6 +612,21 @@ class GameMap {
         }
         this.initializeSquares();
         break;
+      case "terrain":
+        String[] data_split = split(data, ':');
+        if (data_split.length < 2) {
+          println("ERROR: Terrain missing dimension in data: " + data + ".");
+          break;
+        }
+        String[] terrain_dimensions = split(data_split[0], ',');
+        int terrain_x = toInt(trim(terrain_dimensions[0]));
+        int terrain_y = toInt(trim(terrain_dimensions[1]));
+        String[] terrain_values = split(data_split[1], ',');
+        int terrain_id = toInt(trim(terrain_values[0]));
+        int terrain_height = toInt(trim(terrain_values[1]));
+        this.setTerrain(terrain_id, terrain_x, terrain_y, false);
+        this.setTerrainHeight(terrain_height, terrain_x, terrain_y);
+        break;
       default:
         println("ERROR: Dataname " + dataname + " not recognized for GameMap object.");
         break;
@@ -467,6 +637,8 @@ class GameMap {
 
 
 class GameMapEditor extends GameMap {
+  protected boolean dropping_terrain = false;
+  protected int terrain_id = 0;
 
   GameMapEditor(GameMapCode code, String folderPath) {
     super(code, folderPath);
@@ -476,5 +648,44 @@ class GameMapEditor extends GameMap {
   }
   GameMapEditor(String mapName, int mapWidth, int mapHeight) {
     super(mapName, mapWidth, mapHeight);
+  }
+
+
+  void dropTerrain(int id) {
+    this.dropping_terrain = true;
+    this.terrain_id = id;
+  }
+
+
+  @Override
+  void update(int millis) {
+    this.drawMap(millis);
+    // draw grid
+    if (!this.hovered_area) {
+      return;
+    }
+    if (this.dropping_terrain) {
+      imageMode(CENTER);
+      image((new GameMapSquare(this.terrain_id)).terrainImage(), mouseX, mouseY, this.zoom, this.zoom);
+    }
+    else { // eraser or dropping mapobject
+    }
+  }
+
+  @Override
+  void mousePress() {
+    switch(mouseButton) {
+      case LEFT:
+        break;
+      case RIGHT:
+        if (this.dropping_terrain) {
+          this.setTerrain(this.terrain_id, int(floor(this.mX)), int(floor(this.mY)));
+        }
+        else {
+        }
+        break;
+      case CENTER:
+        break;
+    }
   }
 }

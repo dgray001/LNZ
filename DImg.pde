@@ -265,16 +265,20 @@ PImage resizeImage(PImage img, int w, int h) {
   if (w <= 0 || h <= 0) {
     return createImage(1, 1, ARGB);
   }
-  float scaling_width = float(img.width) / w;
-  float scaling_height = float(img.height) / h;
+  float scaling_width = img.width / float(w);
+  float scaling_height = img.height / float(h);
   PImage return_image = createImage(w, h, ARGB);
   return_image.loadPixels();
   for (int i = 0; i < h; i++) {
+    int imgY = int(round(scaling_height * i + 0.5));
     for (int j = 0; j < w; j++) {
+      int imgX = int(round(scaling_width * j + 0.5));
+
       int index = i * w + j;
-      int img_index = constrain(int(i * scaling_width * img.width +
-        j * scaling_height), 0, img.pixels.length - 1);
-      return_image.pixels[index] = img.pixels[img_index];
+      int img_index = imgY * img.width + imgX;
+      try {
+        return_image.pixels[index] = img.pixels[img_index];
+      } catch(Exception e) {}
     }
   }
   return_image.updatePixels();
