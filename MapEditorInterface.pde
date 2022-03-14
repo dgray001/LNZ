@@ -223,11 +223,11 @@ class MapEditorInterface extends InterfaceLNZ {
           break;
         case TERRAIN:
           this.setTitleText("Terrain");
-          boolean first = true;
+          boolean first_terrain = true;
           if (fileExists("data/terrains.lnz")) {
             for (String line : loadStrings(sketchPath("data/terrains.lnz"))) {
-              if (first) {
-                first = false;
+              if (first_terrain) {
+                first_terrain = false;
                 this.setText(line);
               }
               else {
@@ -238,12 +238,48 @@ class MapEditorInterface extends InterfaceLNZ {
           break;
         case FEATURES:
           this.setTitleText("Features");
+          boolean first_feature = true;
+          if (fileExists("data/features.lnz")) {
+            for (String line : loadStrings(sketchPath("data/features.lnz"))) {
+              if (first_feature) {
+                first_feature = false;
+                this.setText(line);
+              }
+              else {
+                this.addLine(line);
+              }
+            }
+          }
           break;
         case UNITS:
           this.setTitleText("Units");
+          boolean first_unit = true;
+          if (fileExists("data/units.lnz")) {
+            for (String line : loadStrings(sketchPath("data/units.lnz"))) {
+              if (first_unit) {
+                first_unit = false;
+                this.setText(line);
+              }
+              else {
+                this.addLine(line);
+              }
+            }
+          }
           break;
         case ITEMS:
           this.setTitleText("Items");
+          boolean first_item = true;
+          if (fileExists("data/items.lnz")) {
+            for (String line : loadStrings(sketchPath("data/items.lnz"))) {
+              if (first_item) {
+                first_item = false;
+                this.setText(line);
+              }
+              else {
+                this.addLine(line);
+              }
+            }
+          }
           break;
         default:
           println("ERROR: MapEditorPage " + page + " not found.");
@@ -293,10 +329,19 @@ class MapEditorInterface extends InterfaceLNZ {
           }
           break;
         case FEATURES:
+          if (mouseButton == LEFT) {
+            MapEditorInterface.this.dropFeature(this.highlightedLine());
+          }
           break;
         case UNITS:
+          if (mouseButton == LEFT) {
+            MapEditorInterface.this.dropUnit(this.highlightedLine());
+          }
           break;
         case ITEMS:
+          if (mouseButton == LEFT) {
+            MapEditorInterface.this.dropItem(this.highlightedLine());
+          }
           break;
         default:
           println("ERROR: MapEditorPage " + page + " not found.");
@@ -533,12 +578,16 @@ class MapEditorInterface extends InterfaceLNZ {
         this.navigate(MapEditorPage.MAPS);
         break;
       case TERRAIN:
+        this.navigate(MapEditorPage.FEATURES);
         break;
       case FEATURES:
+        this.navigate(MapEditorPage.UNITS);
         break;
       case UNITS:
+        this.navigate(MapEditorPage.ITEMS);
         break;
       case ITEMS:
+        this.navigate(MapEditorPage.TERRAIN);
         break;
       default:
         println("ERROR: MapEditorPage " + this.page + " not found.");
@@ -661,6 +710,48 @@ class MapEditorInterface extends InterfaceLNZ {
     String terrainID = trim(line_split[1]);
     if (isInt(terrainID)) {
       this.curr_map.dropTerrain(toInt(terrainID));
+    }
+  }
+
+  void dropFeature(String line) {
+    if (this.curr_map == null) {
+      return;
+    }
+    String[] line_split = split(line, ':');
+    if (line_split.length < 2) {
+      return;
+    }
+    String featureID = trim(line_split[1]);
+    if (isInt(featureID)) {
+      this.curr_map.dropping_object = new Feature(toInt(featureID));
+    }
+  }
+
+  void dropUnit(String line) {
+    if (this.curr_map == null) {
+      return;
+    }
+    String[] line_split = split(line, ':');
+    if (line_split.length < 2) {
+      return;
+    }
+    String unitID = trim(line_split[1]);
+    if (isInt(unitID)) {
+      //this.curr_map.dropping_object = new Unit(toInt(unitID));
+    }
+  }
+
+  void dropItem(String line) {
+    if (this.curr_map == null) {
+      return;
+    }
+    String[] line_split = split(line, ':');
+    if (line_split.length < 2) {
+      return;
+    }
+    String itemID = trim(line_split[1]);
+    if (isInt(itemID)) {
+      //this.curr_map.dropping_object = new Item(toInt(itemID));
     }
   }
 

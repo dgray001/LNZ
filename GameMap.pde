@@ -367,6 +367,15 @@ class GameMap {
   protected boolean hovered = false;
   protected float mX = 0;
   protected float mY = 0;
+  protected MapObject hovered_object;
+
+  protected ArrayList<Feature> features = new ArrayList<Feature>();
+  //protected HashMap<Integer, Unit> units = new HashMap<Integer, Unit>();
+  //protected int nextUnitID = 1;
+  //protected HashMap<Integer, Item> items = new HashMap<Integer, Item>();
+  //protected int nextItemID = 1;
+  //protected ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+  //protected ArrayList<VisualEffect> visuals = new ArrayList<VisualEffect>();
 
   GameMap(GameMapCode code, String folderPath) {
     this.code = code;
@@ -424,12 +433,21 @@ class GameMap {
   }
 
   void refreshDisplayImages() {
+    this.refreshTerrainImage();
+    this.refreshFeatureImage();
+    this.refreshFogImage();
+  }
+  void refreshTerrainImage() {
     this.terrain_display = resizeImage(this.terrain_dimg.getImagePiece(int(this.startSquareX * Constants.map_terrainResolution),
       int(this.startSquareY * Constants.map_terrainResolution), int(this.visSquareX * Constants.map_terrainResolution),
       int(this.visSquareY * Constants.map_terrainResolution)), int(this.xf_map - this.xi_map), int(this.yf_map - this.yi_map));
+  }
+  void refreshFeatureImage() {
     this.feature_display = resizeImage(this.feature_dimg.getImagePiece(int(this.startSquareX * Constants.map_featureResolution),
       int(this.startSquareY * Constants.map_featureResolution), int(this.visSquareX * Constants.map_featureResolution),
       int(this.visSquareY * Constants.map_featureResolution)), int(this.xf_map - this.xi_map), int(this.yf_map - this.yi_map));
+  }
+  void refreshFogImage() {
     this.fog_display = resizeImage(this.feature_dimg.getImagePiece(int(this.startSquareX * Constants.map_fogResolution),
       int(this.startSquareY * Constants.map_fogResolution), int(this.visSquareX * Constants.map_fogResolution),
       int(this.visSquareY * Constants.map_fogResolution)), int(this.xf_map - this.xi_map), int(this.yf_map - this.yi_map));
@@ -499,8 +517,28 @@ class GameMap {
     catch(IndexOutOfBoundsException e) {}
   }
 
-  //void addFeature(Feature f) {
+  void addFeature(Feature f) {
+    if (!f.inMap(this.mapWidth, this.mapHeight)) {
+      return;
+    }
+    this.feature_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.xSize, f.ySize);
+    this.refreshFeatureImage();
+    this.features.add(f);
+  }
+  void removeFeature(int index) {
+    if (index < 0 || index >= this.features.size()) {
+      return;
+    }
+    this.features.remove(index);
+  }
+
+  //void addUnit(Unit f) {
   //}
+  // remove unit
+
+  //void addItem(Item f) {
+  //}
+  // remove item
 
 
   void drawMap() {
@@ -566,6 +604,14 @@ class GameMap {
       this.hovered_area = true;
       this.mX = this.startSquareX + (mX - this.xi_map) / this.zoom;
       this.mY = this.startSquareY + (mY - this.yi_map) / this.zoom;
+      // update hovered for map objects
+      this.hovered_object = null;
+      for (Feature f : this.features) {
+        f.mouseMove(this.mX, this.mY);
+        if (f.hovered) {
+          this.hovered_object = f;
+        }
+      }
     }
     else {
       this.hovered = false;
@@ -574,6 +620,10 @@ class GameMap {
       }
       else {
         this.hovered_area = false;
+      }
+      // dehover map objects
+      for (Feature f : this.features) {
+        f.hovered = false;
       }
     }
   }
@@ -585,7 +635,9 @@ class GameMap {
   }
 
   void scroll(int amount) {
-    this.changeZoom(Constants.map_scrollZoomFactor * amount);
+    if (this.hovered_area) {
+      this.changeZoom(Constants.map_scrollZoomFactor * amount);
+    }
   }
 
   void keyPress() {
@@ -799,6 +851,16 @@ class GameMapEditor extends GameMap {
       image(global.images.getImage("items/eraser.png"), mouseX, mouseY, this.zoom, this.zoom);
     }
     else {
+      if (Feature.class.isInstance(this.dropping_object)) {
+        imageMode(CORNER);
+        image(this.dropping_object.getImage(), mouseX - 0.5 * this.zoom, mouseY - 0.5 * this.zoom,
+          this.zoom * this.dropping_object.width(), this.zoom * this.dropping_object.height());
+      }
+      else {
+        imageMode(CENTER);
+        image(this.dropping_object.getImage(), mouseX, mouseY, this.zoom *
+          this.dropping_object.width(), this.zoom * this.dropping_object.height());
+      }
     }
 
     this.lastUpdateTime = millis;
@@ -815,7 +877,12 @@ class GameMapEditor extends GameMap {
         }
         else if (this.dropping_object == null) { // erase
         }
-        else { // place
+        else {
+          if (Feature.class.isInstance(this.dropping_object)) {
+            this.dropping_object.setLocation(this.mX, this.mY);
+            this.addFeature((Feature)this.dropping_object);
+          }
+          // else if unit, item
         }
         break;
       case CENTER:
