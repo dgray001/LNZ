@@ -76,6 +76,8 @@ abstract class MapObject {
     if (mX >= this.xi() && mY >= this.yi() && mX <= this.xf() && mY <= this.yf()) {
       this.hovered = true;
     }
-    this.hovered = false;
+    else {
+      this.hovered = false;
+    }
   }
 }

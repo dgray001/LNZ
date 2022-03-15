@@ -529,14 +529,39 @@ class GameMap {
     if (index < 0 || index >= this.features.size()) {
       return;
     }
+    Feature f = this.features.get(index);
+    // clear grid where feature was
+    this.feature_dimg.colorGrid(color(1, 0), int(round(f.x)), int(round(f.y)), f.xSize, f.ySize);
+    // add back in feature images that overlap
+    for (int i = 0; i < this.features.size(); i++) {
+      if (i == index) {
+        continue;
+      }
+      Feature f2 = this.features.get(i);
+      if (f2.x < f.x + f.xSize && f2.y < f.y + f.ySize && f2.x + f2.xSize > f.x && f2.y + f2.ySize > f.y) {
+        DImg dimg = new DImg(f2.getImage());
+        dimg.setGrid(f2.xSize, f2.ySize);
+        int xi_overlap = int(round(max(f.x, f2.x)));
+        int yi_overlap = int(round(max(f.y, f2.y)));
+        int w_overlap = int(round(min(f.xf() - xi_overlap, f2.xf() - xi_overlap)));
+        int h_overlap = int(round(min(f.yf() - yi_overlap, f2.yf() - yi_overlap)));
+        PImage imagePiece = dimg.getImageGridPiece(xi_overlap - int(round(f2.x)),
+          yi_overlap - int(round(f2.y)), w_overlap, h_overlap);
+        imagePiece.save("test.png");
+        this.feature_dimg.addImageGrid(imagePiece, xi_overlap, yi_overlap, w_overlap, h_overlap);
+      }
+    }
+    // refresh image
+    this.refreshFeatureImage();
+    // remove feature
     this.features.remove(index);
   }
 
-  //void addUnit(Unit f) {
+  //void addUnit(Unit u) {
   //}
   // remove unit
 
-  //void addItem(Item f) {
+  //void addItem(Item i) {
   //}
   // remove item
 
@@ -590,9 +615,45 @@ class GameMap {
   }
 
 
+  void updateMap(int timeElapsed) {
+    // Update features
+    for (int i = 0; i < this.features.size(); i++) {
+      if (this.features.get(i).remove) {
+        this.removeFeature(i);
+        i--;
+        continue;
+      }
+      this.features.get(i).update(timeElapsed);
+      if (this.features.get(i).remove) {
+        this.removeFeature(i);
+        i--;
+      }
+    }
+    // Update units
+    // Update items
+    // Update projectiles
+    // Update visual effects
+  }
+
+
+  void updateMapCheckObjectRemovalOnly() {
+    // Check features
+    for (int i = 0; i < this.features.size(); i++) {
+      if (this.features.get(i).remove) {
+        this.removeFeature(i);
+        i--;
+      }
+    }
+    // Check units
+    // Check items
+    // Check projectiles
+    // Check visual effects
+  }
+
+
   void update(int millis) {
     int timeElapsed = millis - this.lastUpdateTime;
-    //this.updateMap(timeElapsed); // logic (can be put into multiplayer later)
+    this.updateMap(timeElapsed); // map and mapObject logic
     this.updateView(timeElapsed); // visual changes in map
     this.drawMap(); // everything visual
     this.lastUpdateTime = millis;
@@ -819,6 +880,9 @@ class GameMapEditor extends GameMap {
     // draw map
     this.drawMap();
 
+    // check map object removals
+    this.updateMapCheckObjectRemovalOnly();
+
     // draw grid
     if (this.draw_grid) {
       stroke(255);
@@ -876,11 +940,15 @@ class GameMapEditor extends GameMap {
           this.setTerrain(this.terrain_id, int(floor(this.mX)), int(floor(this.mY)));
         }
         else if (this.dropping_object == null) { // erase
+          if (this.hovered_object != null) {
+            this.hovered_object.remove = true;
+          }
         }
         else {
           if (Feature.class.isInstance(this.dropping_object)) {
             this.dropping_object.setLocation(this.mX, this.mY);
             this.addFeature((Feature)this.dropping_object);
+            this.dropping_object = new Feature(this.dropping_object.ID);
           }
           // else if unit, item
         }

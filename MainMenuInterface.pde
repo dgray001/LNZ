@@ -628,12 +628,13 @@ class MainMenuInterface extends InterfaceLNZ {
   MainMenuInterface() {
     super();
     this.backgroundImagePicture = resizeImage(global.images.getImage("hillary.png"), width, height);
-    this.backgroundImage = createImage(width, height, ARGB);
+    this.backgroundImage = createPImage(color(0), width, height);
     this.growButtons[0] = new MainMenuGrowButton1();
     this.growButtons[1] = new MainMenuGrowButton2();
     this.growButtons[2] = new MainMenuGrowButton3();
     this.growButtons[3] = new MainMenuGrowButton4();
     this.loadProfile();
+    this.thread.start();
   }
 
   void loadProfile() {
