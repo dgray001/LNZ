@@ -1,9 +1,10 @@
 class Feature extends MapObject {
-  protected int xSize = 0;
-  protected int ySize = 0;
+  protected int sizeX = 0;
+  protected int sizeY = 0;
+  protected int sizeZ = 0;
 
-  //protected int number = 0; // timer, id, etc
-  //protected boolean toggle = false;
+  protected int number = 0;
+  protected boolean toggle = false;
   //protected Inventory inventory; // for items with inventory
 
   Feature(int ID) {
@@ -11,7 +12,7 @@ class Feature extends MapObject {
     switch(ID) {
       case 101:
         this.setStrings("Table", "Furniture", "");
-        this.setSize(2, 2);
+        this.setSize(2, 2, 3);
         break;
       default:
         println("ERROR: Feature ID " + ID + " not found.");
@@ -34,9 +35,10 @@ class Feature extends MapObject {
     this.y = floor(y);
   }
 
-  void setSize(int xSize, int ySize) {
-    this.xSize = xSize;
-    this.ySize = ySize;
+  void setSize(int sizeX, int sizeY, int sizeZ) {
+    this.sizeX = sizeX;
+    this.sizeY = sizeY;
+    this.sizeZ = sizeZ;
   }
 
   float xi() {
@@ -46,32 +48,28 @@ class Feature extends MapObject {
     return this.y;
   }
   float xf() {
-    return this.x + this.xSize;
+    return this.x + this.sizeX;
   }
   float yf() {
-    return this.y + this.ySize;
+    return this.y + this.sizeY;
   }
   float xCenter() {
-    return this.x + 0.5 * this.xSize;
+    return this.x + 0.5 * this.sizeX;
   }
   float yCenter() {
-    return this.y + 0.5 * this.ySize;
+    return this.y + 0.5 * this.sizeY;
   }
   float width() {
-    return this.xSize;
+    return this.sizeX;
   }
   float height() {
-    return this.ySize;
+    return this.sizeY;
   }
   float xRadius() {
-    return 0.5 * this.xSize;
+    return 0.5 * this.sizeX;
   }
   float yRadius() {
-    return 0.5 * this.ySize;
-  }
-
-  int height(float x, float y) {
-    return 0;
+    return 0.5 * this.sizeY;
   }
 
   PImage getImage() {
@@ -88,5 +86,32 @@ class Feature extends MapObject {
   }
 
   void update(int timeElapsed) {
+    switch(this.ID) {
+      default:
+        break;
+    }
+  }
+
+  String fileString() {
+    String fileString = "\n\nnew: Feature, " + this.ID;
+    fileString += this.objectFileString();
+    fileString += "\nnumber: " + this.number;
+    fileString += "\ntoggle: " + this.toggle;
+    fileString += "\nend: Feature";
+    return fileString;
+  }
+
+  void addData(String datakey, String data) {
+    switch(datakey) {
+      case "number":
+        this.number = toInt(data);
+        break;
+      case "toggle":
+        this.toggle = toBoolean(data);
+        break;
+      default:
+        println("ERROR: Datakey " + datakey + " not found for feature data.");
+        break;
+    }
   }
 }
