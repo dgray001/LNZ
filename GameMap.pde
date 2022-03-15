@@ -370,10 +370,10 @@ class GameMap {
   protected MapObject hovered_object;
 
   protected ArrayList<Feature> features = new ArrayList<Feature>();
-  //protected HashMap<Integer, Unit> units = new HashMap<Integer, Unit>();
-  //protected int nextUnitID = 1;
-  //protected HashMap<Integer, Item> items = new HashMap<Integer, Item>();
-  //protected int nextItemID = 1;
+  protected HashMap<Integer, Unit> units = new HashMap<Integer, Unit>();
+  protected int nextUnitID = 1;
+  protected HashMap<Integer, Item> items = new HashMap<Integer, Item>();
+  protected int nextItemID = 1;
   //protected ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
   //protected ArrayList<VisualEffect> visuals = new ArrayList<VisualEffect>();
 
@@ -521,7 +521,7 @@ class GameMap {
     if (!f.inMap(this.mapWidth, this.mapHeight)) {
       return;
     }
-    this.feature_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.xSize, f.ySize);
+    this.feature_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.sizeX, f.sizeY);
     this.refreshFeatureImage();
     this.features.add(f);
   }
@@ -531,16 +531,16 @@ class GameMap {
     }
     Feature f = this.features.get(index);
     // clear grid where feature was
-    this.feature_dimg.colorGrid(color(1, 0), int(round(f.x)), int(round(f.y)), f.xSize, f.ySize);
+    this.feature_dimg.colorGrid(color(1, 0), int(round(f.x)), int(round(f.y)), f.sizeX, f.sizeY);
     // add back in feature images that overlap
     for (int i = 0; i < this.features.size(); i++) {
       if (i == index) {
         continue;
       }
       Feature f2 = this.features.get(i);
-      if (f2.x < f.x + f.xSize && f2.y < f.y + f.ySize && f2.x + f2.xSize > f.x && f2.y + f2.ySize > f.y) {
+      if (f2.x < f.x + f.sizeX && f2.y < f.y + f.sizeY && f2.x + f2.sizeX > f.x && f2.y + f2.sizeY > f.y) {
         DImg dimg = new DImg(f2.getImage());
-        dimg.setGrid(f2.xSize, f2.ySize);
+        dimg.setGrid(f2.sizeX, f2.sizeY);
         int xi_overlap = int(round(max(f.x, f2.x)));
         int yi_overlap = int(round(max(f.y, f2.y)));
         int w_overlap = int(round(min(f.xf() - xi_overlap, f2.xf() - xi_overlap)));
@@ -557,12 +557,12 @@ class GameMap {
     this.features.remove(index);
   }
 
-  //void addUnit(Unit u) {
-  //}
+  void addUnit(Unit u) {
+  }
   // remove unit
 
-  //void addItem(Item i) {
-  //}
+  void addItem(Item i) {
+  }
   // remove item
 
 
@@ -630,7 +630,33 @@ class GameMap {
       }
     }
     // Update units
+    Iterator unit_iterator = this.units.entrySet().iterator();
+    while(unit_iterator.hasNext()) {
+      Map.Entry<Integer, Unit> entry = (Map.Entry<Integer, Unit>)unit_iterator.next();
+      Unit u = entry.getValue();
+      if (u.remove) {
+        unit_iterator.remove();
+        continue;
+      }
+      u.update(timeElapsed);
+      if (u.remove) {
+        unit_iterator.remove();
+      }
+    }
     // Update items
+    Iterator item_iterator = this.items.entrySet().iterator();
+    while(item_iterator.hasNext()) {
+      Map.Entry<Integer, Item> entry = (Map.Entry<Integer, Item>)item_iterator.next();
+      Item i = entry.getValue();
+      if (i.remove) {
+        item_iterator.remove();
+        continue;
+      }
+      i.update(timeElapsed);
+      if (i.remove) {
+        item_iterator.remove();
+      }
+    }
     // Update projectiles
     // Update visual effects
   }
@@ -645,7 +671,21 @@ class GameMap {
       }
     }
     // Check units
+    Iterator unit_iterator = this.units.entrySet().iterator();
+    while(unit_iterator.hasNext()) {
+      Map.Entry<Integer, Unit> entry = (Map.Entry<Integer, Unit>)unit_iterator.next();
+      if (entry.getValue().remove) {
+        unit_iterator.remove();
+      }
+    }
     // Check items
+    Iterator item_iterator = this.items.entrySet().iterator();
+    while(item_iterator.hasNext()) {
+      Map.Entry<Integer, Item> entry = (Map.Entry<Integer, Item>)item_iterator.next();
+      if (entry.getValue().remove) {
+        item_iterator.remove();
+      }
+    }
     // Check projectiles
     // Check visual effects
   }
@@ -654,7 +694,7 @@ class GameMap {
   void update(int millis) {
     int timeElapsed = millis - this.lastUpdateTime;
     this.updateMap(timeElapsed); // map and mapObject logic
-    this.updateView(timeElapsed); // visual changes in map
+    this.updateView(timeElapsed); // if moving or zooming (daylight changes?)
     this.drawMap(); // everything visual
     this.lastUpdateTime = millis;
   }
@@ -673,6 +713,20 @@ class GameMap {
           this.hovered_object = f;
         }
       }
+      for (Map.Entry<Integer, Unit> entry : this.units.entrySet()) {
+        Unit u = entry.getValue();
+        u.mouseMove(this.mX, this.mY);
+        if (u.hovered) {
+          this.hovered_object = u;
+        }
+      }
+      for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
+        Item i = entry.getValue();
+        i.mouseMove(this.mX, this.mY);
+        if (i.hovered) {
+          this.hovered_object = i;
+        }
+      }
     }
     else {
       this.hovered = false;
@@ -685,6 +739,12 @@ class GameMap {
       // dehover map objects
       for (Feature f : this.features) {
         f.hovered = false;
+      }
+      for (Map.Entry<Integer, Unit> entry : this.units.entrySet()) {
+        entry.getValue().hovered = false;
+      }
+      for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
+        entry.getValue().hovered = false;
       }
     }
   }
@@ -726,6 +786,9 @@ class GameMap {
           ", " + this.squares[i][j].baseHeight);
       }
     }
+    // add feature data
+    // add unit data
+    // add item data
     file.println("end: Map");
     file.flush();
     file.close();
@@ -733,6 +796,7 @@ class GameMap {
 
 
   void open(String folderPath) {
+    //   ADD MAPOBJECT DATA
     String[] lines;
     String path;
     if (this.code == GameMapCode.ERROR) {
@@ -762,7 +826,7 @@ class GameMap {
         data += ":" + parameters[i];
       }
       if (dataname.equals("new")) {
-        ReadFileObject type = ReadFileObject.objectType(data);
+        ReadFileObject type = ReadFileObject.objectType(trim(parameters[1]));
         switch(type) {
           case MAP:
             object_queue.push(type);
@@ -801,8 +865,8 @@ class GameMap {
   }
 
 
-  void addData(String dataname, String data) {
-    switch(dataname) {
+  void addData(String datakey, String data) {
+    switch(datakey) {
       case "code":
         this.code = GameMapCode.gameMapCode(data);
         break;
@@ -838,7 +902,7 @@ class GameMap {
         this.setTerrainHeight(terrain_height, terrain_x, terrain_y);
         break;
       default:
-        println("ERROR: Dataname " + dataname + " not recognized for GameMap object.");
+        println("ERROR: Datakey " + datakey + " not recognized for GameMap object.");
         break;
     }
   }
@@ -850,6 +914,7 @@ class GameMapEditor extends GameMap {
   protected boolean dropping_terrain = false;
   protected int terrain_id = 0;
   protected MapObject dropping_object;
+  protected MapObject prev_dropping_object;
 
   protected boolean draw_grid = true;
 
@@ -950,12 +1015,33 @@ class GameMapEditor extends GameMap {
             this.addFeature((Feature)this.dropping_object);
             this.dropping_object = new Feature(this.dropping_object.ID);
           }
-          // else if unit, item
+          else if (Unit.class.isInstance(this.dropping_object)) {
+            this.dropping_object.setLocation(this.mX, this.mY);
+            this.addUnit((Unit)this.dropping_object);
+            this.dropping_object = new Unit(this.dropping_object.ID);
+          }
+          else if (Item.class.isInstance(this.dropping_object)) {
+            this.dropping_object.setLocation(this.mX, this.mY);
+            this.addItem((Item)this.dropping_object);
+            this.dropping_object = new Item(this.dropping_object.ID);
+          }
         }
         break;
       case CENTER:
-        this.dropping_terrain = false;
-        this.dropping_object = null;
+        if (this.dropping_terrain) {
+          this.dropping_terrain = false;
+          this.dropping_object = null;
+          this.prev_dropping_object = null;
+        }
+        else {
+          if (this.dropping_object == null) {
+            this.dropping_object = this.prev_dropping_object;
+          }
+          else {
+            this.prev_dropping_object = this.dropping_object;
+            this.dropping_object = null;
+          }
+        }
         break;
     }
   }

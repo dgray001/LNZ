@@ -7,7 +7,7 @@ abstract class MapObject {
   protected float x = 0;
   protected float y = 0;
 
-  protected int height = 0;
+  protected int curr_height = 0; // bottom of object
 
   protected boolean hovered = false;
   protected boolean remove = false; // GameMap will remove object
@@ -66,8 +66,6 @@ abstract class MapObject {
     return false;
   }
 
-  abstract int height(float x, float y); // height dependent on parts of object
-
   abstract PImage getImage();
 
   abstract void update(int timeElapsed);
@@ -79,5 +77,30 @@ abstract class MapObject {
     else {
       this.hovered = false;
     }
+  }
+
+  abstract String fileString();
+  String objectFileString() {
+    return "\nlocation: " + this.x + ", " + this.y + ", " + this.curr_height + "\nremove: " + this.remove;
+  }
+
+  abstract void addData(String datakey, String data);
+  boolean addObjectData(String datakey, String data) {
+    switch(datakey) {
+      case "location":
+        String[] locationdata = split(data, ',');
+        if (locationdata.length < 3) {
+          println("ERROR: Location data for object too short: " + data + ".");
+          return false;
+        }
+        this.x = toFloat(trim(locationdata[0]));
+        this.y = toFloat(trim(locationdata[1]));
+        this.curr_height = toInt(trim(locationdata[2]));
+        return true;
+      case "remove":
+        this.remove = toBoolean(data);
+        return true;
+    }
+    return false;
   }
 }
