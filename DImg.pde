@@ -79,6 +79,32 @@ class DImg {
       w * (this.img.width / this.gridX), h * (this.img.height / this.gridY));
   }
 
+  // make grid a specific color
+  void colorGrid(color c, int x, int y) {
+    this.colorGrid(c, x, y, 1, 1);
+  }
+  void colorGrid(color c, int x, int y, int w, int h) {
+    if (x < 0 || y < 0 || x >= this.gridX || y >= this.gridY) {
+      println("ERROR: addImageGrid coordinate out of range");
+      return;
+    }
+    if (w < 1 || h < 1 || x + w > this.gridX || y + h > this.gridY) {
+      print("ERROR: addImageGrid coordinate our of range");
+      return;
+    }
+    this.img.loadPixels();
+    for (int i = 0; i < h * this.img.height / this.gridY; i++) {
+      for (int j = 0; j < w * this.img.width / this.gridX; j++) {
+        int index = (y * this.img.height / this.gridY + i) * this.img.width +
+          (x * this.img.width / this.gridX + j);
+        try {
+          this.img.pixels[index] = c;
+        } catch(IndexOutOfBoundsException e) {}
+      }
+    }
+    this.img.updatePixels();
+  }
+
   // my own copy function which accounts for transparency
   void copyImage(PImage newImg, float x, float y, float w, float h) {
     this.img.loadPixels();
@@ -109,7 +135,7 @@ class DImg {
           float a_final = constrain(a_source + a_target, 0, 255);
 
           this.img.pixels[index] = ccolor(r_final, g_final, b_final, a_final);
-        } catch(Exception e) {}
+        } catch(IndexOutOfBoundsException e) {}
       }
     }
     this.img.updatePixels();
@@ -134,6 +160,18 @@ class DImg {
     }
     return_image.updatePixels();
     return return_image;
+  }
+  PImage getImageGridPiece(int x, int y, int w, int h) {
+    if (x < 0 || y < 0 || x >= this.gridX || y >= this.gridY) {
+      println("ERROR: addImageGrid coordinate out of range");
+      return createImage(1, 1, RGB);
+    }
+    if (w < 1 || h < 1 || x + w > this.gridX || y + h > this.gridY) {
+      print("ERROR: addImageGrid coordinate our of range");
+      return createImage(1, 1, RGB);
+    }
+    return this.getImagePiece(x * this.img.width / this.gridX, y * this.img.height / this.gridY,
+      w * this.img.width / this.gridX, h * this.img.height / this.gridY);
   }
 
   // convolution
@@ -286,6 +324,13 @@ class DImg {
     this.img.pixels[index] = c;
     this.img.updatePixels();
   }
+}
+
+
+PImage createPImage(color c, int w, int h) {
+  DImg dimg = new DImg(w, h);
+  dimg.colorPixels(c);
+  return dimg.img;
 }
 
 
