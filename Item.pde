@@ -81,14 +81,17 @@ class Item extends MapObject {
   }
 
   String fileString() {
-    String fileString = "\n\nnew: Item, " + this.ID;
+    String fileString = "\nnew: Item: " + this.ID;
     fileString += this.objectFileString();
     fileString += "\nsize: " + this.size;
-    fileString += "\nend: Item";
+    fileString += "\nend: Item\n";
     return fileString;
   }
 
   void addData(String datakey, String data) {
+    if (this.addObjectData(datakey, data)) {
+      return;
+    }
     switch(datakey) {
       case "size":
         this.size = toFloat(data);

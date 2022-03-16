@@ -56,7 +56,7 @@ enum GameMapCode {
 
 
 enum ReadFileObject {
-  NONE("None"), MAP("Map");
+  NONE("None"), MAP("Map"), FEATURE("Feature"), UNIT("Unit"), ITEM("Item");
 
   private static final List<ReadFileObject> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 
@@ -371,9 +371,9 @@ class GameMap {
 
   protected ArrayList<Feature> features = new ArrayList<Feature>();
   protected HashMap<Integer, Unit> units = new HashMap<Integer, Unit>();
-  protected int nextUnitID = 1;
+  protected int nextUnitKey = 1;
   protected HashMap<Integer, Item> items = new HashMap<Integer, Item>();
-  protected int nextItemID = 1;
+  protected int nextItemKey = 1;
   //protected ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
   //protected ArrayList<VisualEffect> visuals = new ArrayList<VisualEffect>();
 
@@ -448,7 +448,7 @@ class GameMap {
       int(this.visSquareY * Constants.map_featureResolution)), int(this.xf_map - this.xi_map), int(this.yf_map - this.yi_map));
   }
   void refreshFogImage() {
-    this.fog_display = resizeImage(this.feature_dimg.getImagePiece(int(this.startSquareX * Constants.map_fogResolution),
+    this.fog_display = resizeImage(this.fog_dimg.getImagePiece(int(this.startSquareX * Constants.map_fogResolution),
       int(this.startSquareY * Constants.map_fogResolution), int(this.visSquareX * Constants.map_fogResolution),
       int(this.visSquareY * Constants.map_fogResolution)), int(this.xf_map - this.xi_map), int(this.yf_map - this.yi_map));
   }
@@ -557,8 +557,8 @@ class GameMap {
 
   // add unit
   void addUnit(Unit u) {
-    this.addUnit(u, this.nextUnitID);
-    this.nextUnitID++;
+    this.addUnit(u, this.nextUnitKey);
+    this.nextUnitKey++;
   }
   void addUnit(Unit u, int code) {
     this.units.put(code, u);
@@ -572,8 +572,8 @@ class GameMap {
 
   // add item
   void addItem(Item i) {
-    this.addItem(i, this.nextItemID);
-    this.nextItemID++;
+    this.addItem(i, this.nextItemKey);
+    this.nextItemKey++;
   }
   void addItem(Item i, int code) {
     this.items.put(code, i);
@@ -634,6 +634,7 @@ class GameMap {
     // display fog
     if (this.draw_fog) {
       imageMode(CORNERS);
+      image(this.feature_dimg.img, this.xi + 30, this.yi + 30, this.xi + 100, this.yi + 100);
       image(this.fog_display, this.xi_map, this.yi_map, this.xf_map, this.yf_map);
     }
   }
@@ -835,8 +836,19 @@ class GameMap {
       }
     }
     // add feature data
+    for (Feature f : this.features) {
+      file.println(f.fileString());
+    }
     // add unit data
+    for (Map.Entry<Integer, Unit> entry : this.units.entrySet()) {
+      file.println("nextUnitKey: " + entry.getKey());
+      file.println(entry.getValue().fileString());
+    }
     // add item data
+    for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
+      file.println("nextItemKey: " + entry.getKey());
+      file.println(entry.getValue().fileString());
+    }
     file.println("end: Map");
     file.flush();
     file.close();
@@ -844,7 +856,6 @@ class GameMap {
 
 
   void open(String folderPath) {
-    //   ADD MAPOBJECT DATA
     String[] lines;
     String path;
     if (this.code == GameMapCode.ERROR) {
@@ -861,6 +872,12 @@ class GameMap {
     }
 
     Stack<ReadFileObject> object_queue = new Stack<ReadFileObject>();
+
+    Feature curr_feature = null;
+    int max_unit_key = 0;
+    Unit curr_unit = null;
+    int max_item_key = 0;
+    Item curr_item = null;
 
     for (String line : lines) {
       String[] parameters = split(line, ':');
@@ -879,6 +896,30 @@ class GameMap {
           case MAP:
             object_queue.push(type);
             break;
+          case FEATURE:
+            if (parameters.length < 3) {
+              println("ERROR: Feature ID missing in Feature constructor.");
+              break;
+            }
+            object_queue.push(type);
+            curr_feature = new Feature(toInt(trim(parameters[2])));
+            break;
+          case UNIT:
+            if (parameters.length < 3) {
+              println("ERROR: Unit ID missing in Feature constructor.");
+              break;
+            }
+            object_queue.push(type);
+            curr_unit = new Unit(toInt(trim(parameters[2])));
+            break;
+          case ITEM:
+            if (parameters.length < 3) {
+              println("ERROR: Item ID missing in Feature constructor.");
+              break;
+            }
+            object_queue.push(type);
+            curr_item = new Item(toInt(trim(parameters[2])));
+            break;
           default:
             break;
         }
@@ -892,6 +933,33 @@ class GameMap {
           switch(object_queue.pop()) {
             case MAP:
               return;
+            case FEATURE:
+              if (curr_feature == null) {
+                println("ERROR: Trying to end a null feature.");
+              }
+              this.addFeature(curr_feature);
+              curr_feature = null;
+              break;
+            case UNIT:
+              if (curr_unit == null) {
+                println("ERROR: Trying to end a null unit.");
+              }
+              if (this.nextUnitKey > max_unit_key) {
+                max_unit_key = this.nextUnitKey;
+              }
+              this.addUnit(curr_unit);
+              curr_unit = null;
+              break;
+            case ITEM:
+              if (curr_item == null) {
+                println("ERROR: Trying to end a null item.");
+              }
+              if (this.nextItemKey > max_item_key) {
+                max_item_key = this.nextItemKey;
+              }
+              this.addItem(curr_item);
+              curr_item = null;
+              break;
             default:
               break;
           }
@@ -905,11 +973,32 @@ class GameMap {
           case MAP:
             this.addData(dataname, data);
             break;
+          case FEATURE:
+            if (curr_feature == null) {
+              println("ERROR: Trying to add feature data to null feature.");
+            }
+            curr_feature.addData(dataname, data);
+            break;
+          case UNIT:
+            if (curr_unit == null) {
+              println("ERROR: Trying to add unit data to null unit.");
+            }
+            curr_unit.addData(dataname, data);
+            break;
+          case ITEM:
+            if (curr_item == null) {
+              println("ERROR: Trying to add item data to null item.");
+            }
+            curr_item.addData(dataname, data);
+            break;
           default:
             break;
         }
       }
     }
+
+    this.nextUnitKey = max_unit_key + 1;
+    this.nextItemKey = max_item_key + 1;
   }
 
 
@@ -948,6 +1037,12 @@ class GameMap {
         int terrain_height = toInt(trim(terrain_values[1]));
         this.setTerrain(terrain_id, terrain_x, terrain_y, false);
         this.setTerrainHeight(terrain_height, terrain_x, terrain_y);
+        break;
+      case "nextUnitKey":
+        this.nextUnitKey = toInt(data);
+        break;
+      case "nextItemKey":
+        this.nextItemKey = toInt(data);
         break;
       default:
         println("ERROR: Datakey " + datakey + " not recognized for GameMap object.");
@@ -1016,27 +1111,26 @@ class GameMapEditor extends GameMap {
     }
 
     // draw object dropping
-    if (!this.hovered_area) {
-      return;
-    }
-    if (this.dropping_terrain) {
-      imageMode(CENTER);
-      image((new GameMapSquare(this.terrain_id)).terrainImage(), mouseX, mouseY, this.zoom, this.zoom);
-    }
-    else if (this.dropping_object == null) {
-      imageMode(CORNER);
-      image(global.images.getImage("items/eraser.png"), mouseX, mouseY, this.zoom, this.zoom);
-    }
-    else {
-      if (Feature.class.isInstance(this.dropping_object)) {
+    if (this.hovered_area) {
+      if (this.dropping_terrain) {
+        imageMode(CENTER);
+        image((new GameMapSquare(this.terrain_id)).terrainImage(), mouseX, mouseY, this.zoom, this.zoom);
+      }
+      else if (this.dropping_object == null) {
         imageMode(CORNER);
-        image(this.dropping_object.getImage(), mouseX - 0.5 * this.zoom, mouseY - 0.5 * this.zoom,
-          this.zoom * this.dropping_object.width(), this.zoom * this.dropping_object.height());
+        image(global.images.getImage("items/eraser.png"), mouseX, mouseY, this.zoom, this.zoom);
       }
       else {
-        imageMode(CENTER);
-        image(this.dropping_object.getImage(), mouseX, mouseY, this.zoom *
-          this.dropping_object.width(), this.zoom * this.dropping_object.height());
+        if (Feature.class.isInstance(this.dropping_object)) {
+          imageMode(CORNER);
+          image(this.dropping_object.getImage(), mouseX - 0.5 * this.zoom, mouseY - 0.5 * this.zoom,
+            this.zoom * this.dropping_object.width(), this.zoom * this.dropping_object.height());
+        }
+        else {
+          imageMode(CENTER);
+          image(this.dropping_object.getImage(), mouseX, mouseY, this.zoom *
+            this.dropping_object.width(), this.zoom * this.dropping_object.height());
+        }
       }
     }
 

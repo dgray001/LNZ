@@ -96,14 +96,17 @@ class Unit extends MapObject {
   }
 
   String fileString() {
-    String fileString = "\n\nnew: Unit, " + this.ID;
+    String fileString = "\nnew: Unit: " + this.ID;
     fileString += this.objectFileString();
     fileString += "\nsize: " + this.size;
-    fileString += "\nend: Unit";
+    fileString += "\nend: Unit\n";
     return fileString;
   }
 
   void addData(String datakey, String data) {
+    if (this.addObjectData(datakey, data)) {
+      return;
+    }
     switch(datakey) {
       case "size":
         this.size = toFloat(data);
