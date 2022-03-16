@@ -80,6 +80,7 @@ class Feature extends MapObject {
         break;
       default:
         println("ERROR: Feature ID " + ID + " not found.");
+        path += "default.png";
         break;
     }
     return global.images.getImage(path);

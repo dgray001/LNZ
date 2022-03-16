@@ -1,10 +1,27 @@
 class Unit extends MapObject {
-  protected float size = 0; // radius
-  protected int sizeZ = 0;
+  protected float size = Constants.unit_defaultSize; // radius
+  protected int sizeZ = Constants.unit_defaultHeight;
 
   Unit(int ID) {
     super(ID);
     switch(ID) {
+      case 1002:
+        this.setStrings("Test Dummy", "", "");
+        break;
+
+      // Heroes
+      case 1101:
+        this.setStrings("Ben Nelson", "Hero", "");
+        break;
+      case 1102:
+        this.setStrings("Daniel Gray", "Hero", "");
+        break;
+
+      // Zombies
+      case 1201:
+        this.setStrings("Broken Sick Zombie", "Zombie", "");
+        break;
+
       default:
         println("ERROR: Unit ID " + ID + " not found.");
         break;
@@ -60,8 +77,12 @@ class Unit extends MapObject {
   PImage getImage() {
     String path = "units/";
     switch(this.ID) {
+      case 1101:
+        path += "ben.png";
+        break;
       default:
         println("ERROR: Unit ID " + ID + " not found.");
+        path += "default.png";
         break;
     }
     return global.images.getImage(path);

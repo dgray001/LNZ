@@ -1,9 +1,14 @@
 class Item extends MapObject {
-  protected float size = 0; // radius
+  protected float size = Constants.item_defaultSize; // radius
 
   Item(int ID) {
     super(ID);
     switch(ID) {
+      // Consumables
+      case 2101:
+        this.setStrings("Crumb", "Consumable", "");
+        break;
+
       default:
         println("ERROR: Item ID " + ID + " not found.");
         break;
@@ -59,8 +64,12 @@ class Item extends MapObject {
   PImage getImage() {
     String path = "items/";
     switch(this.ID) {
+      case 2101:
+        path += "crumb.png";
+        break;
       default:
         println("ERROR: Item ID " + ID + " not found.");
+        path += "default.png";
         break;
     }
     return global.images.getImage(path);
