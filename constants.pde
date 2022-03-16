@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220315: v0.6.2u" +
+  "\n20220315: v0.6.2v" +
   "\nLines: 8723 (v0.6.2u)" +
   "";
   static final String version_history =
@@ -77,4 +77,13 @@ static class Constants {
   static final float map_minCameraSpeed = 0.001;
   static final float map_maxCameraSpeed = 0.1;
   static final float map_defaultCameraSpeed = 0.01;
+
+  // Features
+
+  // Units
+  static final float unit_defaultSize = 0.35;
+  static final int unit_defaultHeight = 5;
+
+  // Items
+  static final float item_defaultSize = 0.25;
 }

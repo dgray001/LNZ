@@ -517,6 +517,7 @@ class GameMap {
     catch(IndexOutOfBoundsException e) {}
   }
 
+  // add feature
   void addFeature(Feature f) {
     if (!f.inMap(this.mapWidth, this.mapHeight)) {
       return;
@@ -525,14 +526,13 @@ class GameMap {
     this.refreshFeatureImage();
     this.features.add(f);
   }
+  // remove feature
   void removeFeature(int index) {
     if (index < 0 || index >= this.features.size()) {
       return;
     }
     Feature f = this.features.get(index);
-    // clear grid where feature was
     this.feature_dimg.colorGrid(color(1, 0), int(round(f.x)), int(round(f.y)), f.sizeX, f.sizeY);
-    // add back in feature images that overlap
     for (int i = 0; i < this.features.size(); i++) {
       if (i == index) {
         continue;
@@ -551,19 +551,39 @@ class GameMap {
         this.feature_dimg.addImageGrid(imagePiece, xi_overlap, yi_overlap, w_overlap, h_overlap);
       }
     }
-    // refresh image
     this.refreshFeatureImage();
-    // remove feature
     this.features.remove(index);
   }
 
+  // add unit
   void addUnit(Unit u) {
+    this.addUnit(u, this.nextUnitID);
+    this.nextUnitID++;
+  }
+  void addUnit(Unit u, int code) {
+    this.units.put(code, u);
   }
   // remove unit
+  void removeUnit(int code) {
+    if (this.units.containsKey(code)) {
+      this.units.get(code).remove = true;
+    }
+  }
 
+  // add item
   void addItem(Item i) {
+    this.addItem(i, this.nextItemID);
+    this.nextItemID++;
+  }
+  void addItem(Item i, int code) {
+    this.items.put(code, i);
   }
   // remove item
+  void removeItem(int code) {
+    if (this.items.containsKey(code)) {
+      this.items.get(code).remove = true;
+    }
+  }
 
 
   void drawMap() {
@@ -580,7 +600,35 @@ class GameMap {
     // display feature
     image(this.feature_display, this.xi_map, this.yi_map, this.xf_map, this.yf_map);
     // display units
+    imageMode(CENTER);
+    Iterator unit_iterator = this.units.entrySet().iterator();
+    while(unit_iterator.hasNext()) {
+      Map.Entry<Integer, Unit> entry = (Map.Entry<Integer, Unit>)unit_iterator.next();
+      Unit u = entry.getValue();
+      if (!u.inView(this.startSquareX, this.startSquareY, this.startSquareX + this.visSquareX, this.startSquareY + this.visSquareY)) {
+        continue;
+      }
+      float translateX = this.xi_map + (u.x - this.startSquareX) * this.zoom;
+      float translateY = this.yi_map + (u.y - this.startSquareY) * this.zoom;
+      translate(translateX, translateY);
+      image(u.getImage(), 0, 0, u.width() * this.zoom, u.height() * this.zoom);
+      translate(-translateX, -translateY);
+    }
     // display items
+    imageMode(CENTER);
+    Iterator item_iterator = this.items.entrySet().iterator();
+    while(item_iterator.hasNext()) {
+      Map.Entry<Integer, Item> entry = (Map.Entry<Integer, Item>)item_iterator.next();
+      Item i = entry.getValue();
+      if (!i.inView(this.startSquareX, this.startSquareY, this.startSquareX + this.visSquareX, this.startSquareY + this.visSquareY)) {
+        continue;
+      }
+      float translateX = this.xi_map + (i.x - this.startSquareX) * this.zoom;
+      float translateY = this.yi_map + (i.y - this.startSquareY) * this.zoom;
+      translate(translateX, translateY);
+      image(i.getImage(), 0, 0, i.width() * this.zoom, i.height() * this.zoom);
+      translate(-translateX, -translateY);
+    }
     // display projectiles
     // display visual effects
     // display fog
@@ -959,7 +1007,7 @@ class GameMapEditor extends GameMap {
         for (int j = int(ceil(this.startSquareY)); j < int(floor(this.startSquareY + this.visSquareY)); j++) {
           float x = this.xi_map + this.zoom * i;
           float y = this.yi_map + this.zoom * j;
-          fill(200, 50);
+          fill(200, 0);
           rect(x, y, this.zoom, this.zoom);
           fill(255);
           text("(" + i + ", " + j + ")", x + 1, y + 1);
