@@ -82,7 +82,8 @@ enum ReadFileObject {
 
 
 class GameMapSquare {
-  private int baseHeight = 0;
+  private int base_elevation = 0;
+  private int feature_elevation = 0;
   private int terrain_id = 0;
 
   GameMapSquare() {
@@ -95,16 +96,16 @@ class GameMapSquare {
   void setTerrain(int id) {
     this.terrain_id = id;
     if (id > 300) { // stairs
-      this.baseHeight = 0;
+      this.base_elevation = 0;
     }
     else if (id > 200) { // walls
-      this.baseHeight = 100;
+      this.base_elevation = 100;
     }
     else if (id > 100) { // floors
-      this.baseHeight = 0;
+      this.base_elevation = 0;
     }
     else if (id == 1) { // map edge
-      this.baseHeight = 100;
+      this.base_elevation = 100;
     }
     else {
       println("ERROR: Terrain ID " + id + " not found.");
@@ -128,6 +129,13 @@ class GameMapSquare {
         return "Tile Floor";
       case 131:
         return "Concrete Floor";
+      case 132:
+      case 133:
+        return "Sidewalk";
+      case 141:
+      case 142:
+      case 143:
+        return "Sand";
       case 151:
       case 152:
       case 153:
@@ -149,6 +157,12 @@ class GameMapSquare {
       case 178:
       case 179:
         return "Road";
+      case 181:
+      case 182:
+      case 183:
+      case 184:
+      case 185:
+        return "Water";
       case 201:
       case 202:
       case 203:
@@ -308,6 +322,27 @@ class GameMapSquare {
       case 185:
         imageName += "water5.png";
         break;
+      case 191:
+        imageName += "brickWall_blue.jpg";
+        break;
+      case 192:
+        imageName += "brickWall_gray.jpg";
+        break;
+      case 193:
+        imageName += "brickWall_green.jpg";
+        break;
+      case 194:
+        imageName += "brickWall_pink.jpg";
+        break;
+      case 195:
+        imageName += "brickWall_red.jpg";
+        break;
+      case 196:
+        imageName += "brickWall_yellow.jpg";
+        break;
+      case 197:
+        imageName += "brickWall_white.jpg";
+        break;
 
       default:
         imageName += "default.jpg";
@@ -320,6 +355,137 @@ class GameMapSquare {
 
 
 class GameMap {
+
+  class HeaderMessage {
+    private String message;
+    private int text_align;
+    private float text_size;
+    private boolean fading = true;
+    private boolean showing = true;
+    private int fade_time = Constants.map_headerMessageFadeTime;
+    private int show_time = Constants.map_headerMessageShowTime;
+    private color color_background = color(110, 90, 70, 150);
+    private color color_text = color(255);
+
+    private float xi = 0;
+    private float yi = 0;
+    private float xf = 0;
+    private float yf = 0;
+    private float centerX = 0;
+    private float centerY = 0;
+
+    private int alpha = 255;
+    private boolean hovered = false;
+    private boolean remove = false;
+
+    HeaderMessage(String message) {
+      this(message, CENTER, Constants.map_defaultHeaderMessageTextSize);
+    }
+    HeaderMessage(String message, int text_align) {
+      this(message, text_align, Constants.map_defaultHeaderMessageTextSize);
+    }
+    HeaderMessage(String message, int text_align, float text_size) {
+      this.message = message;
+      this.text_align = text_align;
+      this.text_size = text_size;
+      this.evaluateSize();
+    }
+
+    void evaluateSize() {
+      textSize(this.text_size);
+      float size_width = textWidth(this.message) + 4;
+      float size_height = textAscent() + textDescent() + 2;
+      switch(this.text_align) {
+        case LEFT:
+          this.xi = GameMap.this.xi + 5;
+          this.yi = GameMap.this.yi + Constants.map_borderSize + 1;
+          this.xf = this.xi + size_width;
+          this.yf = this.yi + size_height;
+          break;
+        case RIGHT:
+          this.xi = GameMap.this.xf - 5 - size_width;
+          this.yi = GameMap.this.yi + Constants.map_borderSize + 1;
+          this.xf = GameMap.this.xf - 5;
+          this.yf = this.yi + size_height;
+          break;
+        case CENTER:
+        default:
+          this.xi = 0.5 * (width - size_width);
+          this.yi = GameMap.this.yi + Constants.map_borderSize + 1;
+          this.xf = 0.5 * (width + size_width);
+          this.yf = this.yi + size_height;
+          break;
+      }
+      this.centerX = this.xi + 0.5 * (this.xf - this.xi);
+      this.centerY = this.yi + 0.5 * (this.yf - this.yi);
+    }
+
+    void updateView(int timeElapsed) {
+      if (this.remove) {
+        return;
+      }
+      if (this.fading) {
+        this.fade_time -= timeElapsed;
+        if (this.fade_time <= 0) {
+          if (this.showing) {
+            this.fading = false;
+            this.show_time = Constants.map_headerMessageShowTime;
+          }
+          else {
+            this.remove = true;
+          }
+        }
+        if (this.showing) {
+          this.alpha = int(round(255 * (Constants.map_headerMessageFadeTime - this.fade_time) / Constants.map_headerMessageFadeTime));
+        }
+        else {
+          this.alpha = int(round(255 * this.fade_time / Constants.map_headerMessageFadeTime));
+        }
+      }
+      else {
+        this.alpha = 255;
+        this.show_time -= timeElapsed;
+        if (this.show_time <= 0) {
+          this.fading = true;
+          this.fade_time = Constants.map_headerMessageFadeTime;
+          this.showing = false;
+        }
+      }
+    }
+
+    void drawMessage() {
+      if (this.remove) {
+        return;
+      }
+      rectMode(CORNERS);
+      fill(this.color_background, alpha);
+      rect(this.xi, this.yi, this.xf, this.yf);
+      textAlign(CENTER, BOTTOM);
+      textSize(this.text_size);
+      fill(this.color_text, alpha);
+      text(this.message, this.centerX, this.yf - 2);
+    }
+
+    void mouseMove(float mX, float mY) {
+      if (mX > this.xi && mY > this.yi && mX < this.xf && mY < this.yf) {
+        this.hovered = true;
+      }
+      else {
+        this.hovered = false;
+      }
+    }
+
+    void mousePress() {
+      if (this.hovered) {
+        this.fading = false;
+        this.showing = true;
+        this.show_time = Constants.map_headerMessageShowTime;
+      }
+    }
+  }
+
+
+
   protected GameMapCode code = GameMapCode.ERROR;
   protected String mapName = "";
   protected boolean nullify = false;
@@ -376,6 +542,8 @@ class GameMap {
   protected int nextItemKey = 1;
   //protected ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
   //protected ArrayList<VisualEffect> visuals = new ArrayList<VisualEffect>();
+
+  protected Queue<HeaderMessage> headerMessages = new LinkedList<HeaderMessage>();
 
   GameMap(GameMapCode code, String folderPath) {
     this.code = code;
@@ -510,9 +678,9 @@ class GameMap {
     }
     catch(IndexOutOfBoundsException e) {}
   }
-  void setTerrainHeight(int h, int x, int y) {
+  void setTerrainBaseElevation(int h, int x, int y) {
     try {
-      this.squares[x][y].baseHeight = h;
+      this.squares[x][y].base_elevation = h;
     }
     catch(IndexOutOfBoundsException e) {}
   }
@@ -524,6 +692,11 @@ class GameMap {
   void addFeature(Feature f, boolean refreshImage) {
     if (!f.inMap(this.mapWidth, this.mapHeight)) {
       return;
+    }
+    for (int i = int(floor(f.x)); i < int(floor(f.x + f.sizeX)); i++) {
+      for (int j = int(floor(f.y)); j < int(floor(f.y + f.sizeY)); j++) {
+        this.squares[i][j].feature_elevation += f.sizeZ;
+      }
     }
     if (f.isFog()) {
       this.fog_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.sizeX, f.sizeY);
@@ -545,6 +718,14 @@ class GameMap {
       return;
     }
     Feature f = this.features.get(index);
+    if (!f.inMap(this.mapWidth, this.mapHeight)) {
+      return;
+    }
+    for (int i = int(floor(f.x)); i < int(floor(f.x + f.sizeX)); i++) {
+      for (int j = int(floor(f.y)); j < int(floor(f.y + f.sizeY)); j++) {
+        this.squares[i][j].feature_elevation -= f.sizeZ;
+      }
+    }
     this.feature_dimg.colorGrid(color(1, 0), int(round(f.x)), int(round(f.y)), f.sizeX, f.sizeY);
     for (int i = 0; i < this.features.size(); i++) {
       if (i == index) {
@@ -649,11 +830,16 @@ class GameMap {
       imageMode(CORNERS);
       image(this.fog_display, this.xi_map, this.yi_map, this.xf_map, this.yf_map);
     }
+    // header messages
+    if (this.headerMessages.peek() != null) {
+      this.headerMessages.peek().drawMessage();
+    }
   }
 
 
   void updateView(int timeElapsed) {
     boolean refreshView = false;
+    // moving view
     if (this.view_moving_left) {
       this.moveView(-timeElapsed * global.profile.options.map_viewMoveSpeedFactor, 0, false);
       refreshView = true;
@@ -672,6 +858,13 @@ class GameMap {
     }
     if (refreshView) {
       this.refreshDisplayMapParameters();
+    }
+    // header messages
+    if (this.headerMessages.peek() != null) {
+      this.headerMessages.peek().updateView(timeElapsed);
+      if (this.headerMessages.peek().remove) {
+        this.headerMessages.remove();
+      }
     }
   }
 
@@ -788,6 +981,10 @@ class GameMap {
           this.hovered_object = i;
         }
       }
+      // hovered for header message
+      if (this.headerMessages.peek() != null) {
+        this.headerMessages.peek().mouseMove(mX, mY);
+      }
     }
     else {
       this.hovered = false;
@@ -811,6 +1008,10 @@ class GameMap {
   }
 
   void mousePress() {
+    // clicked for header message
+    if (this.headerMessages.peek() != null) {
+      this.headerMessages.peek().mousePress();
+    }
   }
 
   void mouseRelease() {
@@ -844,7 +1045,7 @@ class GameMap {
     for (int i = 0; i < this.mapWidth; i++) {
       for (int j = 0; j < this.mapHeight; j++) {
         file.println("terrain: " + i + ", " + j + ": " + this.squares[i][j].terrain_id +
-          ", " + this.squares[i][j].baseHeight);
+          ", " + this.squares[i][j].base_elevation);
       }
     }
     // add feature data
@@ -1048,7 +1249,7 @@ class GameMap {
         int terrain_id = toInt(trim(terrain_values[0]));
         int terrain_height = toInt(trim(terrain_values[1]));
         this.setTerrain(terrain_id, terrain_x, terrain_y, false);
-        this.setTerrainHeight(terrain_height, terrain_x, terrain_y);
+        this.setTerrainBaseElevation(terrain_height, terrain_x, terrain_y);
         break;
       case "nextUnitKey":
         this.nextUnitKey = toInt(data);
@@ -1093,16 +1294,12 @@ class GameMapEditor extends GameMap {
   @Override
   void update(int millis) {
     int timeElapsed = millis - this.lastUpdateTime;
-
-    // update view
-    this.updateView(timeElapsed);
-
-    // draw map
-    this.drawMap();
-
     // check map object removals
     this.updateMapCheckObjectRemovalOnly();
-
+    // update view
+    this.updateView(timeElapsed);
+    // draw map
+    this.drawMap();
     // draw grid
     if (this.draw_grid) {
       stroke(255);
@@ -1121,7 +1318,6 @@ class GameMapEditor extends GameMap {
         }
       }
     }
-
     // draw object dropping
     if (this.hovered_area) {
       if (this.dropping_terrain) {
@@ -1145,7 +1341,6 @@ class GameMapEditor extends GameMap {
         }
       }
     }
-
     this.lastUpdateTime = millis;
   }
 
@@ -1198,6 +1393,10 @@ class GameMapEditor extends GameMap {
         }
         break;
     }
+    // clicked for header message
+    if (this.headerMessages.peek() != null) {
+      this.headerMessages.peek().mousePress();
+    }
   }
 
   @Override
@@ -1222,9 +1421,21 @@ class GameMapEditor extends GameMap {
       switch(key) {
         case 'z':
           this.draw_grid = !this.draw_grid;
+          if (this.draw_grid) {
+            this.headerMessages.add(new HeaderMessage("Showing Grid"));
+          }
+          else {
+            this.headerMessages.add(new HeaderMessage("Hiding Grid"));
+          }
           break;
         case 'x':
           this.draw_fog = !this.draw_fog;
+          if (this.draw_grid) {
+            this.headerMessages.add(new HeaderMessage("Showing Fog"));
+          }
+          else {
+            this.headerMessages.add(new HeaderMessage("Hiding Fog"));
+          }
           break;
       }
     }
