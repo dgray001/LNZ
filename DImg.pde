@@ -70,7 +70,7 @@ class DImg {
       return;
     }
     if (w < 1 || h < 1 || x + w > this.gridX || y + h > this.gridY) {
-      print("ERROR: addImageGrid coordinate our of range");
+      println("ERROR: addImageGrid coordinate out of range");
       return;
     }
     this.copyImage(newImg,
@@ -85,11 +85,11 @@ class DImg {
   }
   void colorGrid(color c, int x, int y, int w, int h) {
     if (x < 0 || y < 0 || x >= this.gridX || y >= this.gridY) {
-      println("ERROR: addImageGrid coordinate out of range");
+      println("ERROR: colorGrid coordinate out of range");
       return;
     }
     if (w < 1 || h < 1 || x + w > this.gridX || y + h > this.gridY) {
-      print("ERROR: addImageGrid coordinate our of range");
+      println("ERROR: colorGrid coordinate out of range");
       return;
     }
     this.img.loadPixels();
@@ -163,11 +163,11 @@ class DImg {
   }
   PImage getImageGridPiece(int x, int y, int w, int h) {
     if (x < 0 || y < 0 || x >= this.gridX || y >= this.gridY) {
-      println("ERROR: addImageGrid coordinate out of range");
+      println("ERROR: getImageGridPiece coordinate out of range");
       return createImage(1, 1, RGB);
     }
     if (w < 1 || h < 1 || x + w > this.gridX || y + h > this.gridY) {
-      print("ERROR: addImageGrid coordinate our of range");
+      println("ERROR: getImageGridPiece coordinate out of range");
       return createImage(1, 1, RGB);
     }
     return this.getImagePiece(x * this.img.width / this.gridX, y * this.img.height / this.gridY,

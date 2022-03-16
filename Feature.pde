@@ -10,9 +10,52 @@ class Feature extends MapObject {
   Feature(int ID) {
     super(ID);
     switch(ID) {
+      // fog
+      case 1:
+        this.setStrings("Fog", "", "");
+        this.setSize(1, 1, 0);
+        break;
+      case 2:
+        this.setStrings("Fog", "", "");
+        this.setSize(1, 1, 0);
+        break;
+      case 3:
+        this.setStrings("Fog", "", "");
+        this.setSize(1, 1, 0);
+        break;
+      case 4:
+        this.setStrings("Fog", "", "");
+        this.setSize(1, 1, 0);
+        break;
+      case 5:
+        this.setStrings("Fog", "", "");
+        this.setSize(1, 1, 0);
+        break;
+      case 6:
+        this.setStrings("Fog", "", "");
+        this.setSize(1, 1, 0);
+        break;
+      case 7:
+        this.setStrings("Fog", "", "");
+        this.setSize(1, 1, 0);
+        break;
+      case 8:
+        this.setStrings("Fog", "", "");
+        this.setSize(1, 1, 0);
+        break;
+      case 9:
+        this.setStrings("Fog", "", "");
+        this.setSize(1, 1, 0);
+        break;
+      case 10:
+        this.setStrings("Fog", "", "");
+        this.setSize(1, 1, 0);
+        break;
+
+      // Furniture
       case 101:
         this.setStrings("Table", "Furniture", "");
-        this.setSize(1, 1, 3);
+        this.setSize(2, 2, 3);
         break;
       default:
         println("ERROR: Feature ID " + ID + " not found.");
@@ -75,6 +118,36 @@ class Feature extends MapObject {
   PImage getImage() {
     String path = "features/";
     switch(this.ID) {
+      case 1:
+        path += "fog0.png";
+        break;
+      case 2:
+        path += "fog1.png";
+        break;
+      case 3:
+        path += "fog2.png";
+        break;
+      case 4:
+        path += "fog3.png";
+        break;
+      case 5:
+        path += "fog4.png";
+        break;
+      case 6:
+        path += "fog5.png";
+        break;
+      case 7:
+        path += "fog6.png";
+        break;
+      case 8:
+        path += "fog7.png";
+        break;
+      case 9:
+        path += "fog8.png";
+        break;
+      case 10:
+        path += "fog9.png";
+        break;
       case 101:
         path += "table.png";
         break;
@@ -116,6 +189,25 @@ class Feature extends MapObject {
       default:
         println("ERROR: Datakey " + datakey + " not found for feature data.");
         break;
+    }
+  }
+
+
+  boolean isFog() {
+    switch(this.ID) {
+      case 1:
+      case 2:
+      case 3:
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+      case 8:
+      case 9:
+      case 10:
+        return true;
+      default:
+        return false;
     }
   }
 }

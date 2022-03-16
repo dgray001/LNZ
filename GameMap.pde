@@ -519,11 +519,24 @@ class GameMap {
 
   // add feature
   void addFeature(Feature f) {
+    this.addFeature(f, true);
+  }
+  void addFeature(Feature f, boolean refreshImage) {
     if (!f.inMap(this.mapWidth, this.mapHeight)) {
       return;
     }
-    this.feature_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.sizeX, f.sizeY);
-    this.refreshFeatureImage();
+    if (f.isFog()) {
+      this.fog_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.sizeX, f.sizeY);
+      if (refreshImage) {
+        this.refreshFogImage();
+      }
+    }
+    else {
+      this.feature_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.sizeX, f.sizeY);
+      if (refreshImage) {
+        this.refreshFeatureImage();
+      }
+    }
     this.features.add(f);
   }
   // remove feature
@@ -634,7 +647,6 @@ class GameMap {
     // display fog
     if (this.draw_fog) {
       imageMode(CORNERS);
-      image(this.feature_dimg.img, this.xi + 30, this.yi + 30, this.xi + 100, this.yi + 100);
       image(this.fog_display, this.xi_map, this.yi_map, this.xf_map, this.yf_map);
     }
   }
@@ -937,7 +949,7 @@ class GameMap {
               if (curr_feature == null) {
                 println("ERROR: Trying to end a null feature.");
               }
-              this.addFeature(curr_feature);
+              this.addFeature(curr_feature, false);
               curr_feature = null;
               break;
             case UNIT:
@@ -1208,6 +1220,12 @@ class GameMapEditor extends GameMap {
     }
     else {
       switch(key) {
+        case 'z':
+          this.draw_grid = !this.draw_grid;
+          break;
+        case 'x':
+          this.draw_fog = !this.draw_fog;
+          break;
       }
     }
   }
