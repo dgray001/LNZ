@@ -12,7 +12,7 @@ class Feature extends MapObject {
     switch(ID) {
       case 101:
         this.setStrings("Table", "Furniture", "");
-        this.setSize(2, 2, 3);
+        this.setSize(1, 1, 3);
         break;
       default:
         println("ERROR: Feature ID " + ID + " not found.");
@@ -94,15 +94,18 @@ class Feature extends MapObject {
   }
 
   String fileString() {
-    String fileString = "\n\nnew: Feature, " + this.ID;
+    String fileString = "\nnew: Feature: " + this.ID;
     fileString += this.objectFileString();
     fileString += "\nnumber: " + this.number;
     fileString += "\ntoggle: " + this.toggle;
-    fileString += "\nend: Feature";
+    fileString += "\nend: Feature\n";
     return fileString;
   }
 
   void addData(String datakey, String data) {
+    if (this.addObjectData(datakey, data)) {
+      return;
+    }
     switch(datakey) {
       case "number":
         this.number = toInt(data);

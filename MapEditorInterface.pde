@@ -724,6 +724,7 @@ class MapEditorInterface extends InterfaceLNZ {
     String featureID = trim(line_split[1]);
     if (isInt(featureID)) {
       this.curr_map.dropping_object = new Feature(toInt(featureID));
+      this.curr_map.dropping_terrain = false;
     }
   }
 
@@ -738,6 +739,7 @@ class MapEditorInterface extends InterfaceLNZ {
     String unitID = trim(line_split[1]);
     if (isInt(unitID)) {
       this.curr_map.dropping_object = new Unit(toInt(unitID));
+      this.curr_map.dropping_terrain = false;
     }
   }
 
@@ -752,6 +754,7 @@ class MapEditorInterface extends InterfaceLNZ {
     String itemID = trim(line_split[1]);
     if (isInt(itemID)) {
       this.curr_map.dropping_object = new Item(toInt(itemID));
+      this.curr_map.dropping_terrain = false;
     }
   }
 
