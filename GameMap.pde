@@ -81,10 +81,35 @@ enum ReadFileObject {
 
 
 
+enum MapFogHandling {
+  DEFAULT("Default"), NONE("None"), EXPLORED("Explored"), NOFOG("NoFog");
+
+  private static final List<MapFogHandling> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+
+  private String name;
+
+  private MapFogHandling(String name) {
+    this.name = name;
+  }
+
+  static public MapFogHandling fogHandling(String name) {
+    for (MapFogHandling fogH : MapFogHandling.VALUES) {
+      if (fogH.name.equals(name)) {
+        return fogH;
+      }
+    }
+    return MapFogHandling.NONE;
+  }
+}
+
+
+
 class GameMapSquare {
   private int base_elevation = 0;
   private int feature_elevation = 0;
   private int terrain_id = 0;
+  private boolean explored = false;
+  private boolean visible = false;
 
   GameMapSquare() {
     this.setTerrain(1);
@@ -495,11 +520,13 @@ class GameMap {
   protected GameMapSquare[][] squares;
 
   protected DImg terrain_dimg;
-  protected DImg feature_dimg;
+  //protected DImg feature_dimg;
   protected DImg fog_dimg;
+  protected MapFogHandling fogHandling = MapFogHandling.DEFAULT;
+  protected color fogColor = color(170, 100);
   protected boolean draw_fog = true;
   protected PImage terrain_display = createImage(0, 0, RGB);
-  protected PImage feature_display = createImage(0, 0, ARGB);
+  //protected PImage feature_display = createImage(0, 0, ARGB);
   protected PImage fog_display = createImage(0, 0, ARGB);
 
   protected float viewX = 0;
@@ -572,10 +599,11 @@ class GameMap {
     this.terrain_dimg = new DImg(this.mapWidth * Constants.map_terrainResolution, this.mapHeight * Constants.map_terrainResolution);
     this.terrain_dimg.setGrid(this.mapWidth, this.mapHeight);
     this.terrain_dimg.colorPixels(color(20));
-    this.feature_dimg = new DImg(this.mapWidth * Constants.map_featureResolution, this.mapHeight * Constants.map_featureResolution);
-    this.feature_dimg.setGrid(this.mapWidth, this.mapHeight);
+    //this.feature_dimg = new DImg(this.mapWidth * Constants.map_featureResolution, this.mapHeight * Constants.map_featureResolution);
+    //this.feature_dimg.setGrid(this.mapWidth, this.mapHeight);
     this.fog_dimg = new DImg(this.mapWidth * Constants.map_fogResolution, this.mapHeight * Constants.map_fogResolution);
     this.fog_dimg.setGrid(this.mapWidth, this.mapHeight);
+    this.setFogHandling(this.fogHandling);
   }
 
 
@@ -587,6 +615,44 @@ class GameMap {
     this.refreshDisplayMapParameters();
   }
 
+
+  void setFogHandling(MapFogHandling fogHandling) {
+    this.fogHandling = fogHandling;
+    switch(fogHandling) {
+      case DEFAULT:
+        this.fog_dimg.colorPixels(color(0));
+        break;
+      case NONE:
+        this.fog_dimg.colorPixels(color(1, 0));
+        for (int i = 0; i < this.mapWidth; i++) {
+          for (int j = 0; j < this.mapHeight; j++) {
+            this.exploreTerrain(i, j, false);
+            this.setTerrainVisible(true, i, j, false);
+          }
+        }
+        break;
+      case NOFOG:
+        this.fog_dimg.colorPixels(color(0));
+        for (int i = 0; i < this.mapWidth; i++) {
+          for (int j = 0; j < this.mapHeight; j++) {
+            this.setTerrainVisible(true, i, j, false);
+          }
+        }
+        break;
+      case EXPLORED:
+        this.fog_dimg.colorPixels(this.fogColor);
+        for (int i = 0; i < this.mapWidth; i++) {
+          for (int j = 0; j < this.mapHeight; j++) {
+            this.exploreTerrain(i, j, false);
+          }
+        }
+        break;
+      default:
+        println("ERROR: Fog handling " + fogHandling.name + " not recognized.");
+        break;
+    }
+    this.refreshFogImage();
+  }
 
   void refreshDisplayMapParameters() { // in another thread ?
     this.startSquareX = max(0, this.viewX - (0.5 * width - this.xi - Constants.map_borderSize) / this.zoom);
@@ -611,14 +677,14 @@ class GameMap {
       int(this.visSquareY * Constants.map_terrainResolution)), int(this.xf_map - this.xi_map), int(this.yf_map - this.yi_map));
   }
   void refreshFeatureImage() {
-    this.feature_display = resizeImage(this.feature_dimg.getImagePiece(int(this.startSquareX * Constants.map_featureResolution),
-      int(this.startSquareY * Constants.map_featureResolution), int(this.visSquareX * Constants.map_featureResolution),
-      int(this.visSquareY * Constants.map_featureResolution)), int(this.xf_map - this.xi_map), int(this.yf_map - this.yi_map));
+  //  this.feature_display = resizeImage(this.feature_dimg.getImagePiece(int(this.startSquareX * Constants.map_featureResolution),
+  //    int(this.startSquareY * Constants.map_featureResolution), int(this.visSquareX * Constants.map_featureResolution),
+  //    int(this.visSquareY * Constants.map_featureResolution)), int(this.xf_map - this.xi_map), int(this.yf_map - this.yi_map));
   }
   void refreshFogImage() {
-    this.fog_display = resizeImage(this.fog_dimg.getImagePiece(int(this.startSquareX * Constants.map_fogResolution),
+    this.fog_display = this.fog_dimg.getImagePiece(int(this.startSquareX * Constants.map_fogResolution),
       int(this.startSquareY * Constants.map_fogResolution), int(this.visSquareX * Constants.map_fogResolution),
-      int(this.visSquareY * Constants.map_fogResolution)), int(this.xf_map - this.xi_map), int(this.yf_map - this.yi_map));
+      int(this.visSquareY * Constants.map_fogResolution));
   }
 
   void setZoom(float zoom) {
@@ -684,6 +750,45 @@ class GameMap {
     }
     catch(IndexOutOfBoundsException e) {}
   }
+  void exploreTerrain(int x, int y) {
+    this.exploreTerrain(x, y, true);
+  }
+  void exploreTerrain(int x, int y, boolean refreshImage) {
+    try {
+      this.squares[x][y].explored = true;
+      if (this.squares[x][y].visible) {
+        this.fog_dimg.colorGrid(color(1, 0), x, y);
+      }
+      else {
+        this.fog_dimg.colorGrid(this.fogColor, x, y);
+      }
+      if (refreshImage) {
+        this.refreshFogImage();
+      }
+    }
+    catch(IndexOutOfBoundsException e) {}
+  }
+  void setTerrainVisible(boolean visible, int x, int y) {
+    this.setTerrainVisible(visible, x, y, true);
+  }
+  void setTerrainVisible(boolean visible, int x, int y, boolean refreshImage) {
+    try {
+      this.squares[x][y].visible = visible;
+      if (!this.squares[x][y].explored) {
+        this.fog_dimg.colorGrid(color(0), x, y);
+      }
+      if (!this.squares[x][y].visible) {
+        this.fog_dimg.colorGrid(this.fogColor, x, y);
+      }
+      else {
+        this.fog_dimg.colorGrid(color(1, 0), x, y);
+      }
+      if (refreshImage) {
+        this.refreshFogImage();
+      }
+    }
+    catch(IndexOutOfBoundsException e) {}
+  }
 
   // add feature
   void addFeature(Feature f) {
@@ -699,13 +804,13 @@ class GameMap {
       }
     }
     if (f.isFog()) {
-      this.fog_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.sizeX, f.sizeY);
+      //this.fog_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.sizeX, f.sizeY);
       if (refreshImage) {
         this.refreshFogImage();
       }
     }
     else {
-      this.feature_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.sizeX, f.sizeY);
+      //this.feature_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.sizeX, f.sizeY);
       if (refreshImage) {
         this.refreshFeatureImage();
       }
@@ -726,7 +831,7 @@ class GameMap {
         this.squares[i][j].feature_elevation -= f.sizeZ;
       }
     }
-    this.feature_dimg.colorGrid(color(1, 0), int(round(f.x)), int(round(f.y)), f.sizeX, f.sizeY);
+    //this.feature_dimg.colorGrid(color(1, 0), int(round(f.x)), int(round(f.y)), f.sizeX, f.sizeY);
     for (int i = 0; i < this.features.size(); i++) {
       if (i == index) {
         continue;
@@ -742,7 +847,7 @@ class GameMap {
         PImage imagePiece = dimg.getImageGridPiece(xi_overlap - int(round(f2.x)),
           yi_overlap - int(round(f2.y)), w_overlap, h_overlap);
         imagePiece.save("test.png");
-        this.feature_dimg.addImageGrid(imagePiece, xi_overlap, yi_overlap, w_overlap, h_overlap);
+        //this.feature_dimg.addImageGrid(imagePiece, xi_overlap, yi_overlap, w_overlap, h_overlap);
       }
     }
     this.refreshFeatureImage();
@@ -781,7 +886,6 @@ class GameMap {
 
 
   void drawMap() {
-    this.refreshDisplayMapParameters();
     rectMode(CORNERS);
     noStroke();
     fill(this.color_border);
@@ -793,7 +897,19 @@ class GameMap {
     imageMode(CORNERS);
     image(this.terrain_display, this.xi_map, this.yi_map, this.xf_map, this.yf_map);
     // display feature
-    image(this.feature_display, this.xi_map, this.yi_map, this.xf_map, this.yf_map);
+    //image(this.feature_display, this.xi_map, this.yi_map, this.xf_map, this.yf_map);
+    imageMode(CORNER);
+    for (int i = 0; i < this.features.size(); i++) {
+      Feature f = this.features.get(i);
+      if (!f.inView(this.startSquareX, this.startSquareY, this.startSquareX + this.visSquareX, this.startSquareY + this.visSquareY)) {
+        continue;
+      }
+      float translateX = this.xi_map + (f.x - this.startSquareX) * this.zoom;
+      float translateY = this.yi_map + (f.y - this.startSquareY) * this.zoom;
+      translate(translateX, translateY);
+      image(f.getImage(), 0, 0, f.width() * this.zoom, f.height() * this.zoom);
+      translate(-translateX, -translateY);
+    }
     // display units
     imageMode(CENTER);
     Iterator unit_iterator = this.units.entrySet().iterator();
@@ -1046,7 +1162,7 @@ class GameMap {
     for (int i = 0; i < this.mapWidth; i++) {
       for (int j = 0; j < this.mapHeight; j++) {
         file.println("terrain: " + i + ", " + j + ": " + this.squares[i][j].terrain_id +
-          ", " + this.squares[i][j].base_elevation);
+          ", " + this.squares[i][j].base_elevation + ", " + this.squares[i][j].explored);
       }
     }
     // add feature data
@@ -1224,6 +1340,9 @@ class GameMap {
       case "mapName":
         this.mapName = data;
         break;
+      case "fogHandling":
+        this.setFogHandling(MapFogHandling.fogHandling(data));
+        break;
       case "dimensions":
         String[] dimensions = split(data, ',');
         if (dimensions.length < 2) {
@@ -1239,7 +1358,7 @@ class GameMap {
         break;
       case "terrain":
         String[] data_split = split(data, ':');
-        if (data_split.length < 2) {
+        if (data_split.length < 3) {
           println("ERROR: Terrain missing dimension in data: " + data + ".");
           break;
         }
@@ -1251,6 +1370,9 @@ class GameMap {
         int terrain_height = toInt(trim(terrain_values[1]));
         this.setTerrain(terrain_id, terrain_x, terrain_y, false);
         this.setTerrainBaseElevation(terrain_height, terrain_x, terrain_y);
+        if (toBoolean(trim(terrain_values[2]))) {
+          this.exploreTerrain(terrain_x, terrain_y);
+        }
         break;
       case "nextUnitKey":
         this.nextUnitKey = toInt(data);
@@ -1310,8 +1432,8 @@ class GameMapEditor extends GameMap {
       rectMode(CORNER);
       for (int i = int(ceil(this.startSquareX)); i < int(floor(this.startSquareX + this.visSquareX)); i++) {
         for (int j = int(ceil(this.startSquareY)); j < int(floor(this.startSquareY + this.visSquareY)); j++) {
-          float x = this.xi_map + this.zoom * (i - int(ceil(this.startSquareX)));
-          float y = this.yi_map + this.zoom * (j - int(ceil(this.startSquareY)));
+          float x = this.xi_map + this.zoom * (i - this.startSquareX);
+          float y = this.yi_map + this.zoom * (j - this.startSquareY);
           fill(200, 0);
           rect(x, y, this.zoom, this.zoom);
           fill(255);

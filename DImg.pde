@@ -48,7 +48,7 @@ class DImg {
 
   // Add image to part of this using width / height
   void addImage(PImage newImg, int x, int y, int w, int h) {
-   this.copyImage(newImg, x, y, w, h);
+    this.copyImage(newImg, x, y, w, h);
   }
   // Add image to part of this using percent of width / height
   void addImagePercent(PImage newImg, float xP, float yP, float wP, float hP) {
@@ -298,18 +298,11 @@ class DImg {
 
   // color pixels
   void colorPixels(color c) {
-    /*float ref_r = c >> 16 & 0xFF;
-    float ref_g = c >> 8 & 0xFF;
-    float ref_b = c & 0xFF;
-    float ref_a = alpha(c);*/
     this.img.loadPixels();
     for (int i = 0; i < this.img.height; i++) {
       for (int j = 0; j < this.img.width; j++) {
         int index = i * this.img.width + j;
-        if (index == 0) {
-          continue;
-        }
-        this.img.pixels[index] = c; //color(ref_r, ref_g, ref_b, ref_a);
+        this.img.pixels[index] = c;
       }
     }
     this.img.updatePixels();

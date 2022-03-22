@@ -880,6 +880,20 @@ class MapEditorInterface extends InterfaceLNZ {
     }
     this.leftPanel.mouseMove(mX, mY);
     this.rightPanel.mouseMove(mX, mY);
+    if (this.rightPanel.open && !this.rightPanel.collapsing) {
+      for (MapEditorButton button : this.buttons) {
+        button.mouseMove(mX, mY);
+      }
+      if (this.listBox1.active) {
+        this.listBox1.mouseMove(mX, mY);
+        if (this.listBox1.rightClickMenu != null && this.listBox1.rightClickMenu.hovered) {
+          this.rightPanel.hovered = false;
+        }
+      }
+    }
+    if (refreshMapLocation) {
+      this.curr_map.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+    }
     if (this.leftPanel.clicked || this.rightPanel.clicked) {
       this.resizeButtons();
       global.cursor = global.images.getImage("icons/cursor_resizeh_white.png");
@@ -889,17 +903,6 @@ class MapEditorInterface extends InterfaceLNZ {
     }
     else {
       global.cursor = global.images.getImage("icons/cursor_default.png");
-    }
-    if (this.rightPanel.open && !this.rightPanel.collapsing) {
-      for (MapEditorButton button : this.buttons) {
-        button.mouseMove(mX, mY);
-      }
-      if (this.listBox1.active) {
-        this.listBox1.mouseMove(mX, mY);
-      }
-    }
-    if (refreshMapLocation) {
-      this.curr_map.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
     }
   }
 
