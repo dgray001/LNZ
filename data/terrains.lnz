@@ -67,3 +67,11 @@ Stair, white, up: 313
 Stair, white, down: 314
 Stair, white, left: 315
 Stair, white, right: 316
+Stairway, green, up: 317
+Stairway, green, down: 318
+Stairway, green, left: 319
+Stairway, green, right: 320
+Stairway, red, up: 321
+Stairway, red, down: 322
+Stairway, red, left: 323
+Stairway, red, right: 324
