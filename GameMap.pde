@@ -212,6 +212,14 @@ class GameMapSquare {
       case 314:
       case 315:
       case 316:
+      case 317:
+      case 318:
+      case 319:
+      case 320:
+      case 321:
+      case 322:
+      case 323:
+      case 324:
         return "Stairs";
       default:
         return null;
@@ -262,6 +270,9 @@ class GameMapSquare {
         break;
       case 133:
         imageName += "sidewalk2.jpg";
+        break;
+      case 134:
+        imageName += "gravel1.jpg";
         break;
       case 141:
         imageName += "sand1.jpg";
@@ -347,26 +358,98 @@ class GameMapSquare {
       case 185:
         imageName += "water5.png";
         break;
-      case 191:
+      case 201:
         imageName += "brickWall_blue.jpg";
         break;
-      case 192:
+      case 202:
         imageName += "brickWall_gray.jpg";
         break;
-      case 193:
+      case 203:
         imageName += "brickWall_green.jpg";
         break;
-      case 194:
+      case 204:
         imageName += "brickWall_pink.jpg";
         break;
-      case 195:
+      case 205:
         imageName += "brickWall_red.jpg";
         break;
-      case 196:
+      case 206:
         imageName += "brickWall_yellow.jpg";
         break;
-      case 197:
+      case 207:
         imageName += "brickWall_white.jpg";
+        break;
+      case 301:
+        imageName += "stairs_gray_up.jpg";
+        break;
+      case 302:
+        imageName += "stairs_gray_down.jpg";
+        break;
+      case 303:
+        imageName += "stairs_gray_left.jpg";
+        break;
+      case 304:
+        imageName += "stairs_gray_right.jpg";
+        break;
+      case 305:
+        imageName += "stairs_green_up.jpg";
+        break;
+      case 306:
+        imageName += "stairs_green_down.jpg";
+        break;
+      case 307:
+        imageName += "stairs_green_left.jpg";
+        break;
+      case 308:
+        imageName += "stairs_green_right.jpg";
+        break;
+      case 309:
+        imageName += "stairs_red_up.jpg";
+        break;
+      case 310:
+        imageName += "stairs_red_down.jpg";
+        break;
+      case 311:
+        imageName += "stairs_red_left.jpg";
+        break;
+      case 312:
+        imageName += "stairs_red_right.jpg";
+        break;
+      case 313:
+        imageName += "stairs_white_up.jpg";
+        break;
+      case 314:
+        imageName += "stairs_white_down.jpg";
+        break;
+      case 315:
+        imageName += "stairs_white_left.jpg";
+        break;
+      case 316:
+        imageName += "stairs_white_right.jpg";
+        break;
+      case 317:
+        imageName += "stairway_green_up.png";
+        break;
+      case 318:
+        imageName += "stairway_green_down.png";
+        break;
+      case 319:
+        imageName += "stairway_green_left.png";
+        break;
+      case 320:
+        imageName += "stairway_green_right.png";
+        break;
+      case 321:
+        imageName += "stairway_red_up.png";
+        break;
+      case 322:
+        imageName += "stairway_red_down.png";
+        break;
+      case 323:
+        imageName += "stairway_red_left.png";
+        break;
+      case 324:
+        imageName += "stairway_red_right.png";
         break;
 
       default:
@@ -1358,14 +1441,22 @@ class GameMap {
         break;
       case "terrain":
         String[] data_split = split(data, ':');
-        if (data_split.length < 3) {
+        if (data_split.length < 2) {
           println("ERROR: Terrain missing dimension in data: " + data + ".");
           break;
         }
         String[] terrain_dimensions = split(data_split[0], ',');
+        if (terrain_dimensions.length < 2) {
+          println("ERROR: Terrain dimensions missing dimension in data: " + data + ".");
+          break;
+        }
         int terrain_x = toInt(trim(terrain_dimensions[0]));
         int terrain_y = toInt(trim(terrain_dimensions[1]));
         String[] terrain_values = split(data_split[1], ',');
+        if (terrain_values.length < 3) {
+          println("ERROR: Terrain values missing dimension in data: " + data + ".");
+          break;
+        }
         int terrain_id = toInt(trim(terrain_values[0]));
         int terrain_height = toInt(trim(terrain_values[1]));
         this.setTerrain(terrain_id, terrain_x, terrain_y, false);
@@ -1553,7 +1644,7 @@ class GameMapEditor extends GameMap {
           break;
         case 'x':
           this.draw_fog = !this.draw_fog;
-          if (this.draw_grid) {
+          if (this.draw_fog) {
             this.headerMessages.add(new HeaderMessage("Showing Fog"));
           }
           else {
