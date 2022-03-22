@@ -781,6 +781,7 @@ class GameMap {
 
 
   void drawMap() {
+    this.refreshDisplayMapParameters();
     rectMode(CORNERS);
     noStroke();
     fill(this.color_border);
@@ -1309,8 +1310,8 @@ class GameMapEditor extends GameMap {
       rectMode(CORNER);
       for (int i = int(ceil(this.startSquareX)); i < int(floor(this.startSquareX + this.visSquareX)); i++) {
         for (int j = int(ceil(this.startSquareY)); j < int(floor(this.startSquareY + this.visSquareY)); j++) {
-          float x = this.xi_map + this.zoom * i;
-          float y = this.yi_map + this.zoom * j;
+          float x = this.xi_map + this.zoom * (i - int(ceil(this.startSquareX)));
+          float y = this.yi_map + this.zoom * (j - int(ceil(this.startSquareY)));
           fill(200, 0);
           rect(x, y, this.zoom, this.zoom);
           fill(255);

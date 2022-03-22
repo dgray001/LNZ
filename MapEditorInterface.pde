@@ -99,8 +99,31 @@ class MapEditorInterface extends InterfaceLNZ {
       void doubleclick() {}
     }
 
+    class RenameInputBox extends InputBox {
+      RenameInputBox(int line_index) {
+        super(MapEditorListTextBox.this.xi + 1, 0, MapEditorListTextBox.this.xf - 1, 0);
+        this.setText(MapEditorListTextBox.this.text_lines_ref.get(line_index));
+        this.hint_text = "Enter a filename";
+        float currY = MapEditorListTextBox.this.yi + 1;
+        if (MapEditorListTextBox.this.text_title_ref != null) {
+          textSize(MapEditorListTextBox.this.title_size);
+          currY += textAscent() + textDescent() + 2;
+        }
+        textSize(MapEditorListTextBox.this.text_size);
+        float text_height = textAscent() + textDescent();
+        float input_yi = currY + (line_index - floor(MapEditorListTextBox.this.
+          scrollbar.value)) * (text_height + MapEditorListTextBox.this.text_leading);
+        this.setYLocation(input_yi, input_yi + text_height);
+        this.typing = true;
+        this.location_cursor = this.text.length();
+        this.location_display = this.text.length();
+        this.updateDisplayText();
+      }
+    }
+
     protected boolean active = false;
     protected RightClickListTextBox rightClickMenu;
+    protected RenameInputBox renameInputBox;
 
     MapEditorListTextBox() {
       super(width, Constants.mapEditor_listBoxGap, width, 0.9 * height - Constants.mapEditor_listBoxGap);
@@ -114,15 +137,21 @@ class MapEditorInterface extends InterfaceLNZ {
       if (this.rightClickMenu != null) {
         this.rightClickMenu.update(millis);
       }
+      else if (this.renameInputBox != null) {
+        this.renameInputBox.update(millis);
+      }
     }
 
     @Override
     void mouseMove(float mX, float mY) {
-      if (this.rightClickMenu == null) {
-        super.mouseMove(mX, mY);
+      if (this.rightClickMenu != null) {
+        this.rightClickMenu.mouseMove(mX, mY);
+      }
+      else if (this.renameInputBox != null) {
+        this.renameInputBox.mouseMove(mX, mY);
       }
       else {
-        this.rightClickMenu.mouseMove(mX, mY);
+        super.mouseMove(mX, mY);
       }
     }
 
@@ -136,6 +165,14 @@ class MapEditorInterface extends InterfaceLNZ {
           this.rightClickMenu = null;
         }
       }
+      else if (this.renameInputBox != null) {
+        if (this.renameInputBox.hovered) {
+          this.renameInputBox.mousePress();
+        }
+        else {
+          this.removeRenameInputBox();
+        }
+      }
       else {
         super.mousePress();
       }
@@ -143,22 +180,52 @@ class MapEditorInterface extends InterfaceLNZ {
 
     @Override
     void mouseRelease() {
-      if (this.rightClickMenu == null) {
-        super.mouseRelease();
+      if (this.rightClickMenu != null) {
+        this.rightClickMenu.mouseRelease();
+      }
+      else if (this.renameInputBox != null) {
+        this.renameInputBox.mouseRelease();
       }
       else {
-        this.rightClickMenu.mouseRelease();
+        super.mouseRelease();
       }
     }
 
     @Override
     void scroll(int amount) {
-      if (this.rightClickMenu == null) {
-        super.scroll(amount);
-      }
-      else {
+      if (this.rightClickMenu != null) {
         this.rightClickMenu.scroll(amount);
       }
+      else {
+        super.scroll(amount);
+      }
+    }
+
+    void keyPress() {
+      if (this.renameInputBox != null) {
+        this.renameInputBox.keyPress();
+        if (key != CODED && (key == ENTER || key == RETURN)) {
+          this.removeRenameInputBox();
+        }
+      }
+    }
+
+    void keyRelease() {
+      if (this.renameInputBox != null) {
+        this.renameInputBox.keyRelease();
+      }
+    }
+
+    void removeRenameInputBox() {
+      if (this.renameInputBox == null) {
+        return;
+      }
+      if (this.line_clicked < 0 || this.line_clicked >= this.text_lines_ref.size()) {
+        return;
+      }
+      MapEditorInterface.this.renameMapFile(this.highlightedLine(), this.renameInputBox.text);
+      this.renameInputBox = null;
+      this.refresh();
     }
 
     void clickOption(int option) {
@@ -167,7 +234,10 @@ class MapEditorInterface extends InterfaceLNZ {
           MapEditorInterface.this.openMapEditor(this.highlightedLine());
           break;
         case 1:
-          // rename map
+          if (this.line_clicked < 0 || this.line_clicked >= this.text_lines_ref.size()) {
+            break;
+          }
+          this.renameInputBox = new RenameInputBox(this.line_clicked);
           break;
         case 2:
           MapEditorInterface.this.deleteMap();
@@ -675,6 +745,18 @@ class MapEditorInterface extends InterfaceLNZ {
     this.navigate(MapEditorPage.TERRAIN);
   }
 
+  void renameMapFile(String mapName, String targetName) {
+    if (!fileExists("data/maps/" + mapName + ".map.lnz")) {
+      println("ERROR: Can't rename map file that doesn't exist.");
+      return;
+    }
+    if (fileExists("data/maps/" + targetName + ".map.lnz")) {
+      println("ERROR: Can't rename map file to a name that already exists.");
+      return;
+    }
+    moveFile("data/maps/" + mapName + ".map.lnz", "data/maps/" + targetName + ".map.lnz");
+  }
+
   void openMapEditor(String mapName) {
     this.curr_map = new GameMapEditor(mapName, sketchPath("data/maps/"));
     if (this.curr_map.nullify) {
@@ -877,11 +959,21 @@ class MapEditorInterface extends InterfaceLNZ {
     if (this.curr_map != null) {
       this.curr_map.keyPress();
     }
+    if (this.rightPanel.open && !this.rightPanel.collapsing) {
+      if (this.listBox1.active) {
+        this.listBox1.keyPress();
+      }
+    }
   }
 
   void keyRelease() {
     if (this.curr_map != null) {
       this.curr_map.keyRelease();
+    }
+    if (this.rightPanel.open && !this.rightPanel.collapsing) {
+      if (this.listBox1.active) {
+        this.listBox1.keyRelease();
+      }
     }
   }
 }

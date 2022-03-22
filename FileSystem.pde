@@ -23,6 +23,18 @@ void mkFile(Path p, boolean replace) {
   }
 }
 
+// move file
+void moveFile(String source_path, String target_path) {
+  moveFile(Paths.get(sketchPath(source_path)), Paths.get(sketchPath(target_path)));
+}
+void moveFile(Path source, Path target) {
+  try {
+    Files.move(source, target);
+  } catch(IOException e) {
+    println("ERROR: IOException at renameFile(" + source + ", " + target + ")");
+  }
+}
+
 // delete file
 void deleteFile(String path) {
   deleteFile(Paths.get(sketchPath(path)));
