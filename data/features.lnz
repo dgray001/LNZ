@@ -9,4 +9,111 @@ Fog, 30% opacity: 8
 Fog, 20% opacity: 9
 Fog, 10% opacity: 10
 
+Traveling Buddy: 11
+Chuck Quizmo: 12
+Workbench: 21
+Ender Chest: 22
+
 Wooden Table: 101
+Desk, up: 102
+Desk, left: 103
+Wooden Chair, up: 111
+Wooden Chair, down: 112
+Wooden Chair, left: 113
+Wooden Chair, right: 114
+Coordinator Chair: 115
+Couch, up: 121
+Couch, down: 122
+Couch, left: 123
+Couch, right: 124
+Park Bench, small, up: 125
+Park Bench, small, left: 126
+Park Bench, large, up: 127
+Park Bench, large, left: 128
+Bed, up: 131
+Bed, down: 132
+Bed, left: 133
+Bed, right: 134
+Wardrobe, up: 141
+Wardrobe, left: 142
+Sign, green, up: 151
+Sign, green, down: 152
+Sign, green, left: 153
+Sign, green, right: 154
+Sign, gray, up: 155
+Sign, gray, down: 156
+Sign, gray, left: 157
+Sign, gray, right: 158
+Water Fountain: 161
+Sink: 162
+Shower Stall: 163
+Urinal: 164
+Toilet: 165
+Stove: 171
+Vending Machine, food: 172
+Vending Machine, drink: 173
+Minifridge: 174
+Fridge: 175
+Washer: 176
+Dryer: 177
+Garbage Can: 181
+Recycle Can: 182
+Crate: 183
+Cardboard Box: 184
+Pickle Jar: 185
+Railing, green, up: 191
+Railing, green, left: 192
+Railing, red, up: 193
+Railing, red, left: 194
+Steel Cross: 201
+Mary Statue: 202
+
+Movable Brick Wall, blue: 301
+Movable Brick Wall, gray: 302
+Movable Brick Wall, green: 303
+Movable Brick Wall, pink: 304
+Movable Brick Wall, red: 305
+Movable Brick Wall, yellow: 306
+Movable Brick Wall, white: 307
+Pillar, gray: 311
+Pillar, red: 312
+Window, open: 321
+Window, closed: 322
+Window, locked: 323
+Door, open, up, left hinges: 331
+Door, open, up, right hinges: 332
+Door, open, left, up hinges: 333
+Door, open, left, down hinges: 334
+Door, open, diagonal left, up hinges: 335
+Door, open, diagonal left, down hinges: 336
+Door, open, diagonal right, up hinges: 337
+Door, open, diagonal right, down hinges: 338
+Door, closed, up: 339
+Door, closed, left: 340
+Door, closed, diagonal left: 341
+Door, closed, diagonal right: 342
+Door, locked, up: 343
+Door, locked, left: 344
+Door, locked, diagonal left: 345
+Door, locked, diagonal right: 346
+
+Dandelion: 401
+Gravel, pebbles: 411
+Gravel, rocks: 412
+Tree, maple: 421
+Tree, unknown: 422
+Tree, cedar: 423
+Tree, dead: 424
+Tree, large: 425
+Bush, light: 431
+Bush, dark: 432
+Bush, evergreen: 433
+
+Car, Honda CRV: 501
+Car, Ford F150: 502
+Car, VW Jetta: 503
+Car, VW Bug: 504
+Car, Lamborghini: 505
+Helicopter, civilian: 511
+Helicopter, medical: 512
+Helicopter, military: 513

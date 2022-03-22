@@ -50,6 +50,9 @@ Brick Wall, pink: 204
 Brick Wall, red: 205
 Brick Wall, yellow: 206
 Brick Wall, white: 207
+Wood Wall, light: 211
+Wood Wall, brown: 212
+Wood Wall, dark: 213
 
 Stair, gray, up: 301
 Stair, gray, down: 302

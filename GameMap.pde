@@ -196,6 +196,10 @@ class GameMapSquare {
       case 206:
       case 207:
         return "Brick Wall";
+      case 211:
+      case 212:
+      case 213:
+        return "Wooden Wall";
       case 301:
       case 302:
       case 303:
@@ -378,6 +382,15 @@ class GameMapSquare {
         break;
       case 207:
         imageName += "brickWall_white.jpg";
+        break;
+      case 211:
+        imageName += "woodWall_light.jpg";
+        break;
+      case 212:
+        imageName += "woodWall_brown.jpg";
+        break;
+      case 213:
+        imageName += "woodWall_dark.jpg";
         break;
       case 301:
         imageName += "stairs_gray_up.jpg";
