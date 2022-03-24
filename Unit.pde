@@ -193,4 +193,9 @@ class Unit extends MapObject {
         break;
     }
   }
+
+
+  int tier() {
+    return this.level / 10;
+  }
 }
