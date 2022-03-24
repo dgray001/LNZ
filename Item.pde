@@ -3,6 +3,9 @@ class Item extends MapObject {
 
   protected int tier = 1;
 
+  // graphics
+  protected BounceInt bounce = new BounceInt(Constants.item_bounceConstant);
+
   Item(int ID) {
     super(ID);
     switch(ID) {
@@ -201,7 +204,7 @@ class Item extends MapObject {
 
   void update(int timeElapsed) {
     // remove timer if active
-    // bounce int for graphics
+    this.bounce.add(timeElapsed);
   }
 
   String fileString() {

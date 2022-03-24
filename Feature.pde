@@ -875,9 +875,6 @@ class Feature extends MapObject {
         path += "bush_evergreen.png";
         break;
       case 501:
-        path += "bush_evergreen.png";
-        break;
-      case 501:
         path += "car_hondacrv.png";
         break;
       case 502:
