@@ -67,6 +67,40 @@ Railing, red, up: 193
 Railing, red, left: 194
 Steel Cross: 201
 Mary Statue: 202
+Wire Fence, up: 211
+Wire Fence, left: 212
+Wire Fence, upleft: 213
+Wire Fence, leftdown: 214
+Wire Fence, downright: 215
+Wire Fence, rightup: 216
+Wire Fence, diagonal_upleft: 217
+Wire Fence, diagonal_upright: 218
+Wire Fence, up_bottomleft: 219
+Wire Fence, up_bottomright: 220
+Wire Fence, down_topleft: 221
+Wire Fence, down_topright: 222
+Wire Fence, left_righttop: 223
+Wire Fence, left_rightbottom: 224
+Wire Fence, right_lefttop: 225
+Wire Fence, right_leftbottom: 226
+Barbed Wire Fence, up: 231
+Barbed Wire Fence, left: 232
+Barbed Wire Fence, upleft: 233
+Barbed Wire Fence, leftdown: 234
+Barbed Wire Fence, downright: 235
+Barbed Wire Fence, rightup: 236
+Barbed Wire Fence, diagonal_upleft: 237
+Barbed Wire Fence, diagonal_upright: 238
+Barbed Wire Fence, up_bottomleft: 239
+Barbed Wire Fence, up_bottomright: 240
+Barbed Wire Fence, down_topleft: 241
+Barbed Wire Fence, down_topright: 242
+Barbed Wire Fence, left_righttop: 243
+Barbed Wire Fence, left_rightbottom: 244
+Barbed Wire Fence, right_lefttop: 245
+Barbed Wire Fence, right_leftbottom: 246
+Parking Bumper, up: 251
+Parking Bumper, left: 252
 
 Movable Brick Wall, blue: 301
 Movable Brick Wall, gray: 302
