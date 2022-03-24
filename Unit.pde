@@ -2,11 +2,18 @@ class Unit extends MapObject {
   protected float size = Constants.unit_defaultSize; // radius
   protected int sizeZ = Constants.unit_defaultHeight;
 
+  protected int level = 0;
+
   Unit(int ID) {
     super(ID);
     switch(ID) {
-      case 1002:
+      // Other
+      case 1001:
         this.setStrings("Test Dummy", "", "");
+        break;
+      case 1002:
+        this.setStrings("Chicken", "Gaia", "");
+        this.level = 1;
         break;
 
       // Heroes
@@ -20,6 +27,43 @@ class Unit extends MapObject {
       // Zombies
       case 1201:
         this.setStrings("Broken Sick Zombie", "Zombie", "");
+        this.level = 1;
+        break;
+      case 1202:
+        this.setStrings("Broken Zombie", "Zombie", "");
+        this.level = 2;
+        break;
+      case 1203:
+        this.setStrings("Sick Zombie", "Zombie", "");
+        this.level = 3;
+        break;
+      case 1204:
+        this.setStrings("Lazy Hungry Zombie", "Zombie", "");
+        this.level = 4;
+        break;
+      case 1205:
+        this.setStrings("Lazy Zombie", "Zombie", "");
+        this.level = 5;
+        break;
+      case 1206:
+        this.setStrings("Hungry Zombie", "Zombie", "");
+        this.level = 6;
+        break;
+      case 1207:
+        this.setStrings("Confused Franny Zombie", "Zombie", "");
+        this.level = 7;
+        break;
+      case 1208:
+        this.setStrings("Confused Zombie", "Zombie", "");
+        this.level = 8;
+        break;
+      case 1209:
+        this.setStrings("Franny Zombie", "Zombie", "");
+        this.level = 9;
+        break;
+      case 1210:
+        this.setStrings("Intellectual Zombie", "Zombie", "");
+        this.level = 10;
         break;
 
       default:
@@ -77,8 +121,41 @@ class Unit extends MapObject {
   PImage getImage() {
     String path = "units/";
     switch(this.ID) {
+      case 1001:
+        path += "default.png";
+        break;
+      case 1002:
+        path += "chicken.png";
+        break;
       case 1101:
         path += "ben.png";
+        break;
+      case 1102:
+        path += "dan.png";
+        break;
+      case 1103:
+        path += "jf.png";
+        break;
+      case 1104:
+        path += "spinny.png";
+        break;
+      case 1105:
+        path += "mattus.png";
+        break;
+      case 1106:
+        path += "patrick.png";
+        break;
+      case 1201:
+      case 1202:
+      case 1203:
+      case 1204:
+      case 1205:
+      case 1206:
+      case 1207:
+      case 1208:
+      case 1209:
+      case 1210:
+        path += "zombie1.png";
         break;
       default:
         println("ERROR: Unit ID " + ID + " not found.");
