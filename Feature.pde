@@ -484,8 +484,422 @@ class Feature extends MapObject {
       case 10:
         path += "fog9.png";
         break;
+      case 11:
+        path += "khalil.jpg";
+        break;
+      case 12:
+        path += "chuck_quizmo.png";
+        break;
+      case 21:
+        path += "workbench.jpg";
+        break;
+      case 22:
+        path += "ender_chest_closed.png";
+        break;
       case 101:
         path += "table.png";
+        break;
+      case 102:
+        path += "desk_up.png";
+        break;
+      case 103:
+        path += "desk_left.png";
+        break;
+      case 111:
+        path += "chair_up.png";
+        break;
+      case 112:
+        path += "chair_down.png";
+        break;
+      case 113:
+        path += "chair_left.png";
+        break;
+      case 114:
+        path += "chair_right.png";
+        break;
+      case 115:
+        path += "chair_green.png";
+        break;
+      case 121:
+        path += "couch_up.png";
+        break;
+      case 122:
+        path += "couch_down.png";
+        break;
+      case 123:
+        path += "couch_left.png";
+        break;
+      case 124:
+        path += "couch_right.png";
+        break;
+      case 125:
+        path += "bench_small_up.png";
+        break;
+      case 126:
+        path += "bench_small_left.png";
+        break;
+      case 127:
+        path += "bench_large_up.png";
+        break;
+      case 128:
+        path += "bench_large_left.png";
+        break;
+      case 131:
+        path += "bed_up.png";
+        break;
+      case 132:
+        path += "bed_down.png";
+        break;
+      case 133:
+        path += "bed_uleft.png";
+        break;
+      case 134:
+        path += "bed_right.png";
+        break;
+      case 141:
+        path += "wardrobe_up.png";
+        break;
+      case 142:
+        path += "wardrobe_left.png";
+        break;
+      case 151:
+        path += "sign_green_up.png";
+        break;
+      case 152:
+        path += "sign_green_down.png";
+        break;
+      case 153:
+        path += "sign_green_left.png";
+        break;
+      case 154:
+        path += "sign_green_right.png";
+        break;
+      case 155:
+        path += "sign_green_up.png";
+        break;
+      case 156:
+        path += "sign_green_down.png";
+        break;
+      case 157:
+        path += "sign_green_left.png";
+        break;
+      case 158:
+        path += "sign_green_right.png";
+        break;
+      case 161:
+        path += "water_fountain.png";
+        break;
+      case 162:
+        path += "sink.png";
+        break;
+      case 163:
+        path += "shower_stall.png";
+        break;
+      case 164:
+        path += "urinal.png";
+        break;
+      case 165:
+        path += "toilet.png";
+        break;
+      case 171:
+        path += "stove.png";
+        break;
+      case 172:
+        path += "vending_machine_food.png";
+        break;
+      case 173:
+        path += "vending_machine_drink.png";
+        break;
+      case 174:
+        path += "minifridge.png";
+        break;
+      case 175:
+        path += "fridge.png";
+        break;
+      case 176:
+        path += "washer.png";
+        break;
+      case 177:
+        path += "dryer.png";
+        break;
+      case 181:
+        path += "garbage_can.png";
+        break;
+      case 182:
+        path += "recycle_can.png";
+        break;
+      case 183:
+        path += "crate.png";
+        break;
+      case 184:
+        path += "cardboard_box.png";
+        break;
+      case 185:
+        path += "pickle_jar.png";
+        break;
+      case 191:
+        path += "railing_green_up.png";
+        break;
+      case 192:
+        path += "railing_green_left.png";
+        break;
+      case 193:
+        path += "railing_red_up.png";
+        break;
+      case 194:
+        path += "railing_red_left.png";
+        break;
+      case 201:
+        path += "steel_cross.png";
+        break;
+      case 202:
+        path += "mary_statue.png";
+        break;
+      case 211:
+        path += "fence_gray_up.png";
+        break;
+      case 212:
+        path += "fence_gray_left.png";
+        break;
+      case 213:
+        path += "fence_gray_upleft.png";
+        break;
+      case 214:
+        path += "fence_gray_leftdown.png";
+        break;
+      case 215:
+        path += "fence_gray_downright.png";
+        break;
+      case 216:
+        path += "fence_gray_rightup.png";
+        break;
+      case 217:
+        path += "fence_gray_diagonal_upleft.png";
+        break;
+      case 218:
+        path += "fence_gray_diagonal_upright.png";
+        break;
+      case 219:
+        path += "fence_gray_up_downleft.png";
+        break;
+      case 220:
+        path += "fence_gray_up_downright.png";
+        break;
+      case 221:
+        path += "fence_gray_down_topleft.png";
+        break;
+      case 222:
+        path += "fence_gray_down_topright.png";
+        break;
+      case 223:
+        path += "fence_gray_left_righttop.png";
+        break;
+      case 224:
+        path += "fence_gray_left_rightdown.png";
+        break;
+      case 225:
+        path += "fence_gray_right_lefttop.png";
+        break;
+      case 226:
+        path += "fence_gray_right_leftdown.png";
+        break;
+      case 231:
+        path += "fence_green_up.png";
+        break;
+      case 232:
+        path += "fence_green_left.png";
+        break;
+      case 233:
+        path += "fence_green_upleft.png";
+        break;
+      case 234:
+        path += "fence_green_leftdown.png";
+        break;
+      case 235:
+        path += "fence_green_downright.png";
+        break;
+      case 236:
+        path += "fence_green_rightup.png";
+        break;
+      case 237:
+        path += "fence_green_diagonal_upleft.png";
+        break;
+      case 238:
+        path += "fence_green_diagonal_upright.png";
+        break;
+      case 239:
+        path += "fence_green_up_downleft.png";
+        break;
+      case 240:
+        path += "fence_green_up_downright.png";
+        break;
+      case 241:
+        path += "fence_green_down_topleft.png";
+        break;
+      case 242:
+        path += "fence_green_down_topright.png";
+        break;
+      case 243:
+        path += "fence_green_left_righttop.png";
+        break;
+      case 244:
+        path += "fence_green_left_rightdown.png";
+        break;
+      case 245:
+        path += "fence_green_right_lefttop.png";
+        break;
+      case 246:
+        path += "fence_green_right_leftdown.png";
+        break;
+      case 251:
+        path += "parking_bumper_up.png";
+        break;
+      case 252:
+        path += "parking_bumper_left.png";
+        break;
+      case 301:
+        path = "terrain/brickWall_blue.jpg";
+        break;
+      case 302:
+        path = "terrain/brickWall_gray.jpg";
+        break;
+      case 303:
+        path = "terrain/brickWall_green.jpg";
+        break;
+      case 304:
+        path = "terrain/brickWall_pink.jpg";
+        break;
+      case 305:
+        path = "terrain/brickWall_red.jpg";
+        break;
+      case 306:
+        path = "terrain/brickWall_yellow.jpg";
+        break;
+      case 307:
+        path = "terrain/brickWall_white.jpg";
+        break;
+      case 311:
+        path += "pillar_gray.png";
+        break;
+      case 312:
+        path += "pillar_red.jpg";
+        break;
+      case 321:
+        path += "window_open.jpg";
+        break;
+      case 322:
+        path += "window_closed.jpg";
+        break;
+      case 323:
+        path += "window_locked.jpg";
+        break;
+      case 331:
+        path += "door_open_up_lefthinges.png";
+        break;
+      case 332:
+        path += "door_open_up_righthinges.png";
+        break;
+      case 333:
+        path += "door_open_left_uphinges.png";
+        break;
+      case 334:
+        path += "door_open_left_downhinges.png";
+        break;
+      case 335:
+        path += "door_open_diagonalleft_uphinges.png";
+        break;
+      case 336:
+        path += "door_open_diagonalleft_downhinges.png";
+        break;
+      case 337:
+        path += "door_open_diagonalright_uphinges.png";
+        break;
+      case 338:
+        path += "door_open_diagonalright_downhinges.png";
+        break;
+      case 339:
+        path += "door_closed_up.png";
+        break;
+      case 340:
+        path += "door_closed_left.png";
+        break;
+      case 341:
+        path += "door_closed_diagonalleft.png";
+        break;
+      case 342:
+        path += "door_closed_diagonalright.png";
+        break;
+      case 343:
+        path += "door_locked_up.png";
+        break;
+      case 344:
+        path += "door_locked_left.png";
+        break;
+      case 345:
+        path += "door_locked_diagonalleft.png";
+        break;
+      case 346:
+        path += "door_locked_diagonalright.png";
+        break;
+      case 401:
+        path += "dandelion.png";
+        break;
+      case 411:
+        path += "gravel_pebbles.jpg";
+        break;
+      case 412:
+        path += "gravel_rocks.jpg";
+        break;
+      case 421:
+        path += "tree_maple.png";
+        break;
+      case 422:
+        path += "tree_unknown.png";
+        break;
+      case 423:
+        path += "tree_cedar.png";
+        break;
+      case 424:
+        path += "tree_dead.png";
+        break;
+      case 425:
+        path += "tree_large.png";
+        break;
+      case 431:
+        path += "bush_light.png";
+        break;
+      case 432:
+        path += "bush_dark.png";
+        break;
+      case 433:
+        path += "bush_evergreen.png";
+        break;
+      case 501:
+        path += "bush_evergreen.png";
+        break;
+      case 501:
+        path += "car_hondacrv.png";
+        break;
+      case 502:
+        path += "car_fordf150.png";
+        break;
+      case 503:
+        path += "car_vwjetta.png";
+        break;
+      case 504:
+        path += "car_vwbug.png";
+        break;
+      case 505:
+        path += "car_lamborghini.png";
+        break;
+      case 511:
+        path += "helicopter_civilian.png";
+        break;
+      case 512:
+        path += "helicopter_medical.png";
+        break;
+      case 513:
+        path += "helicopter_military.png";
         break;
       default:
         println("ERROR: Feature ID " + ID + " not found.");
