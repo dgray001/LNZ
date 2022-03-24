@@ -3884,12 +3884,7 @@ class ClockInt {
   }
 
   void resolve() {
-    if (this.min == this.max) {
-      this.value = this.min;
-    }
-    else {
-      this.value = this.min + this.value % (this.max - this.min);
-    }
+    this.value = this.min + (this.value - this.min) % (this.max - this.min + 1);
   }
 
   void add(int amount) {
@@ -3898,6 +3893,167 @@ class ClockInt {
   }
 }
 
+
+class ClockFloat {
+  protected float min;
+  protected float max;
+  protected float value;
+
+  ClockFloat(float max) {
+    this(0, max, random(max));
+  }
+  ClockFloat(float max, float start) {
+    this(0, max, start);
+  }
+  ClockFloat(float min, float max, float start) {
+    if (min > max) {
+      this.min = max;
+      this.max = min;
+    }
+    else {
+      this.min = min;
+      this.max = max;
+    }
+    this.value = start;
+    this.resolve();
+  }
+
+  void resolve() {
+    if (this.min == this.max) {
+      this.value = this.min;
+    }
+    else {
+      this.value = this.min + (this.value - this.min) % (this.max - this.min);
+    }
+  }
+
+  void add(float amount) {
+    this.value += amount;
+    this.resolve();
+  }
+}
+
+class BounceInt {
+  protected int min;
+  protected int max;
+  protected int value;
+  protected boolean moving_forward = true;
+
+  BounceInt(int max) {
+    this(0, max, int(random(max)));
+  }
+  BounceInt(int max, int start) {
+    this(0, max, start);
+  }
+  BounceInt(int min, int max, int start) {
+    if (min > max) {
+      this.min = max;
+      this.max = min;
+    }
+    else {
+      this.min = min;
+      this.max = max;
+    }
+    this.value = start;
+    this.resolve();
+  }
+
+  void resolve() {
+    while(true) {
+      if (this.moving_forward) {
+        if (this.value > this.max) {
+          this.moving_forward = false;
+          this.value = this.max + this.max - this.value;
+          continue;
+        }
+        else {
+          break;
+        }
+      }
+      else {
+        if (this.value < this.min) {
+          this.moving_forward = true;
+          this.value = this.min + this.min - this.value;
+          continue;
+        }
+        else {
+          break;
+        }
+      }
+    }
+  }
+
+  void add(int amount) {
+    if (this.moving_forward) {
+      this.value += amount;
+    }
+    else {
+      this.value -= amount;
+    }
+    this.resolve();
+  }
+}
+
+class BounceFloat {
+  protected float min;
+  protected float max;
+  protected float value;
+  protected boolean moving_forward = true;
+
+  BounceFloat(float max) {
+    this(0, max, random(max));
+  }
+  BounceFloat(float max, float start) {
+    this(0, max, start);
+  }
+  BounceFloat(float min, float max, float start) {
+    if (min > max) {
+      this.min = max;
+      this.max = min;
+    }
+    else {
+      this.min = min;
+      this.max = max;
+    }
+    this.value = start;
+    this.resolve();
+  }
+
+  void resolve() {
+    while(true) {
+      if (this.moving_forward) {
+        if (this.value > this.max) {
+          this.moving_forward = false;
+          this.value = this.max + this.max - this.value;
+          continue;
+        }
+        else {
+          break;
+        }
+      }
+      else {
+        if (this.value < this.min) {
+          this.moving_forward = true;
+          this.value = this.min + this.min - this.value;
+          continue;
+        }
+        else {
+          break;
+        }
+      }
+    }
+  }
+
+  void add(float amount) {
+    if (this.moving_forward) {
+      this.value += amount;
+    }
+    else {
+      this.value -= amount;
+    }
+    this.resolve();
+  }
+}
 
 
 

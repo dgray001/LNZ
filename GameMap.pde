@@ -1031,7 +1031,8 @@ class GameMap {
         continue;
       }
       float translateX = this.xi_map + (i.x - this.startSquareX) * this.zoom;
-      float translateY = this.yi_map + (i.y - this.startSquareY) * this.zoom;
+      float translateY = this.yi_map + (i.y - this.startSquareY) * this.zoom -
+        Constants.item_bounceOffset * i.bounce / float(Constants.item_bounceConstant);
       translate(translateX, translateY);
       image(i.getImage(), 0, 0, i.width() * this.zoom, i.height() * this.zoom);
       translate(-translateX, -translateY);
