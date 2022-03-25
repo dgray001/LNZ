@@ -382,6 +382,7 @@ class MainMenuInterface extends InterfaceLNZ {
       logout.button.setColors(color(180), color(190, 190, 240),
         color(140, 140, 190), color(90, 90, 140), color(0));
 
+      this.addField(new SpacerFormField(20));
       this.addField(logout);
     }
 

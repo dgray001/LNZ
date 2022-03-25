@@ -23,6 +23,18 @@ class Unit extends MapObject {
       case 1102:
         this.setStrings("Daniel Gray", "Hero", "");
         break;
+      case 1103:
+        this.setStrings("John-Francis", "Hero", "");
+        break;
+      case 1104:
+        this.setStrings("Mark Spinny", "Hero", "");
+        break;
+      case 1105:
+        this.setStrings("Mad Dog Mattus", "Hero", "");
+        break;
+      case 1106:
+        this.setStrings("Jeremiah", "Hero", "");
+        break;
 
       // Zombies
       case 1201:

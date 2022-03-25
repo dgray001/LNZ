@@ -62,6 +62,11 @@ class Level {
   protected GameMap currMap;
   protected GameMapCode currMapCode = GameMapCode.ERROR;
 
+  protected float xi = 0;
+  protected float yi = 0;
+  protected float xf = 0;
+  protected float yf = 0;
+
   protected ArrayList<Linker> linkers = new ArrayList<Linker>();
   protected ArrayList<Trigger> triggers = new ArrayList<Trigger>();
 
@@ -72,26 +77,64 @@ class Level {
     this.location = location;
     // open file
   }
+  // test map
+  Level(GameMap testMap) {
+    this.filePath = "";
+    this.currMap = testMap;
+  }
+
+
+  void setLocation(float xi, float yi, float xf, float yf) {
+    this.xi = xi;
+    this.yi = yi;
+    this.xf = xf;
+    this.yf = yf;
+    if (this.currMap != null) {
+      this.currMap.setLocation(xi, yi, xf, yf);
+    }
+  }
+
 
   void update(int millis) {
+    if (this.currMap != null) {
+      this.currMap.update(millis);
+    }
   }
 
   void mouseMove(float mX, float mY) {
+    if (this.currMap != null) {
+      this.currMap.mouseMove(mX, mY);
+    }
   }
 
   void mousePress() {
+    if (this.currMap != null) {
+      this.currMap.mousePress();
+    }
   }
 
   void mouseRelease() {
+    if (this.currMap != null) {
+      this.currMap.mouseRelease();
+    }
   }
 
   void scroll(int amount) {
+    if (this.currMap != null) {
+      this.currMap.scroll(amount);
+    }
   }
 
   void keyPress() {
+    if (this.currMap != null) {
+      this.currMap.keyPress();
+    }
   }
 
   void keyRelease() {
+    if (this.currMap != null) {
+      this.currMap.keyRelease();
+    }
   }
 
 

@@ -55,7 +55,7 @@ class Feature extends MapObject {
       // Unique
       case 11:
         this.setStrings("Traveling Buddy", "NPC", "");
-        this.setSize(3, 2, 6);
+        this.setSize(2, 1, 6);
         break;
       case 12:
         this.setStrings("Chuck Quizmo", "NPC", "");
@@ -346,7 +346,7 @@ class Feature extends MapObject {
         break;
       case 425:
         this.setStrings("Tree", "Nature", "");
-        this.setSize(2, 2, 35);
+        this.setSize(3, 3, 35);
         break;
       case 431:
         this.setStrings("Rock", "Nature", "");
@@ -551,7 +551,7 @@ class Feature extends MapObject {
         path += "bed_down.png";
         break;
       case 133:
-        path += "bed_uleft.png";
+        path += "bed_left.png";
         break;
       case 134:
         path += "bed_right.png";
@@ -575,16 +575,16 @@ class Feature extends MapObject {
         path += "sign_green_right.png";
         break;
       case 155:
-        path += "sign_green_up.png";
+        path += "sign_gray_up.png";
         break;
       case 156:
-        path += "sign_green_down.png";
+        path += "sign_gray_down.png";
         break;
       case 157:
-        path += "sign_green_left.png";
+        path += "sign_gray_left.png";
         break;
       case 158:
-        path += "sign_green_right.png";
+        path += "sign_gray_right.png";
         break;
       case 161:
         path += "water_fountain.png";
@@ -686,19 +686,19 @@ class Feature extends MapObject {
         path += "fence_gray_up_downright.png";
         break;
       case 221:
-        path += "fence_gray_down_topleft.png";
+        path += "fence_gray_down_upleft.png";
         break;
       case 222:
-        path += "fence_gray_down_topright.png";
+        path += "fence_gray_down_upright.png";
         break;
       case 223:
-        path += "fence_gray_left_righttop.png";
+        path += "fence_gray_left_rightup.png";
         break;
       case 224:
         path += "fence_gray_left_rightdown.png";
         break;
       case 225:
-        path += "fence_gray_right_lefttop.png";
+        path += "fence_gray_right_leftup.png";
         break;
       case 226:
         path += "fence_gray_right_leftdown.png";
@@ -734,19 +734,19 @@ class Feature extends MapObject {
         path += "fence_green_up_downright.png";
         break;
       case 241:
-        path += "fence_green_down_topleft.png";
+        path += "fence_green_down_upleft.png";
         break;
       case 242:
-        path += "fence_green_down_topright.png";
+        path += "fence_green_down_upright.png";
         break;
       case 243:
-        path += "fence_green_left_righttop.png";
+        path += "fence_green_left_rightup.png";
         break;
       case 244:
         path += "fence_green_left_rightdown.png";
         break;
       case 245:
-        path += "fence_green_right_lefttop.png";
+        path += "fence_green_right_leftup.png";
         break;
       case 246:
         path += "fence_green_right_leftdown.png";
@@ -866,12 +866,15 @@ class Feature extends MapObject {
         path += "tree_large.png";
         break;
       case 431:
+        path += "rock.png";
+        break;
+      case 441:
         path += "bush_light.png";
         break;
-      case 432:
+      case 442:
         path += "bush_dark.png";
         break;
-      case 433:
+      case 443:
         path += "bush_evergreen.png";
         break;
       case 501:

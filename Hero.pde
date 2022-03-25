@@ -43,11 +43,15 @@ enum HeroCode {
 
 
 
-class Hero {
+class Hero extends Unit {
   protected HeroCode code;
 
   protected Location location;
 
   protected int hunger = 100;
   protected int thirst = 100;
+
+  Hero(int ID) {
+    super(ID);
+  }
 }
