@@ -81,7 +81,6 @@ class Level {
   Level(GameMap testMap) {
     this.filePath = "";
     this.currMap = testMap;
-    this.currMap.draw_fog = false;
     this.player = new Hero(HeroCode.BEN);
     this.player.setLocation(0.5, 0.5);
     this.currMap.addPlayer(this.player);
