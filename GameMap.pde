@@ -616,11 +616,10 @@ class GameMap {
   protected GameMapSquare[][] squares;
 
   protected DImg terrain_dimg;
-  //protected DImg feature_dimg;
   protected DImg fog_dimg;
   protected MapFogHandling fogHandling = MapFogHandling.DEFAULT;
   protected color fogColor = color(170, 100);
-  protected boolean draw_fog = false;
+  protected boolean draw_fog = true;
   protected PImage terrain_display = createImage(0, 0, RGB);
   protected PImage fog_display = createImage(0, 0, ARGB);
 
@@ -656,6 +655,7 @@ class GameMap {
   protected float mX = 0;
   protected float mY = 0;
   protected MapObject hovered_object;
+  protected MapObject selected_object;
 
   protected ArrayList<Feature> features = new ArrayList<Feature>();
   protected HashMap<Integer, Unit> units = new HashMap<Integer, Unit>();
@@ -694,8 +694,6 @@ class GameMap {
     this.terrain_dimg = new DImg(this.mapWidth * Constants.map_terrainResolution, this.mapHeight * Constants.map_terrainResolution);
     this.terrain_dimg.setGrid(this.mapWidth, this.mapHeight);
     this.terrain_dimg.colorPixels(color(20));
-    //this.feature_dimg = new DImg(this.mapWidth * Constants.map_featureResolution, this.mapHeight * Constants.map_featureResolution);
-    //this.feature_dimg.setGrid(this.mapWidth, this.mapHeight);
     this.fog_dimg = new DImg(this.mapWidth * Constants.map_fogResolution, this.mapHeight * Constants.map_fogResolution);
     this.fog_dimg.setGrid(this.mapWidth, this.mapHeight);
     this.setFogHandling(this.fogHandling);
@@ -763,18 +761,12 @@ class GameMap {
 
   void refreshDisplayImages() {
     this.refreshTerrainImage();
-    this.refreshFeatureImage();
     this.refreshFogImage();
   }
   void refreshTerrainImage() {
     this.terrain_display = resizeImage(this.terrain_dimg.getImagePiece(int(this.startSquareX * Constants.map_terrainResolution),
       int(this.startSquareY * Constants.map_terrainResolution), int(this.visSquareX * Constants.map_terrainResolution),
       int(this.visSquareY * Constants.map_terrainResolution)), int(this.xf_map - this.xi_map), int(this.yf_map - this.yi_map));
-  }
-  void refreshFeatureImage() {
-  //  this.feature_display = resizeImage(this.feature_dimg.getImagePiece(int(this.startSquareX * Constants.map_featureResolution),
-  //    int(this.startSquareY * Constants.map_featureResolution), int(this.visSquareX * Constants.map_featureResolution),
-  //    int(this.visSquareY * Constants.map_featureResolution)), int(this.xf_map - this.xi_map), int(this.yf_map - this.yi_map));
   }
   void refreshFogImage() {
     this.fog_display = this.fog_dimg.getImagePiece(int(this.startSquareX * Constants.map_fogResolution),
@@ -898,17 +890,9 @@ class GameMap {
         this.squares[i][j].feature_elevation += f.sizeZ;
       }
     }
-    if (f.isFog()) {
-      //this.fog_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.sizeX, f.sizeY);
-      if (refreshImage) {
-        this.refreshFogImage();
-      }
-    }
-    else {
-      //this.feature_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.sizeX, f.sizeY);
-      if (refreshImage) {
-        this.refreshFeatureImage();
-      }
+    this.terrain_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.sizeX, f.sizeY);
+    if (refreshImage) {
+      this.refreshTerrainImage();
     }
     this.features.add(f);
   }
@@ -926,7 +910,12 @@ class GameMap {
         this.squares[i][j].feature_elevation -= f.sizeZ;
       }
     }
-    //this.feature_dimg.colorGrid(color(1, 0), int(round(f.x)), int(round(f.y)), f.sizeX, f.sizeY);
+    this.terrain_dimg.colorGrid(color(1, 0), int(round(f.x)), int(round(f.y)), f.sizeX, f.sizeY);
+    for (int i = int(round(f.xi())); i < int(round(f.xf())); i++) {
+      for (int j = int(round(f.yi())); j < int(round(f.yf())); j++) {
+        this.terrain_dimg.addImageGrid(this.squares[i][j].terrainImage(), i, j);
+      }
+    }
     for (int i = 0; i < this.features.size(); i++) {
       if (i == index) {
         continue;
@@ -941,11 +930,10 @@ class GameMap {
         int h_overlap = int(round(min(f.yf() - yi_overlap, f2.yf() - yi_overlap)));
         PImage imagePiece = dimg.getImageGridPiece(xi_overlap - int(round(f2.x)),
           yi_overlap - int(round(f2.y)), w_overlap, h_overlap);
-        imagePiece.save("test.png");
-        //this.feature_dimg.addImageGrid(imagePiece, xi_overlap, yi_overlap, w_overlap, h_overlap);
+        this.terrain_dimg.addImageGrid(imagePiece, xi_overlap, yi_overlap, w_overlap, h_overlap);
       }
     }
-    this.refreshFeatureImage();
+    this.refreshTerrainImage();
     this.features.remove(index);
   }
 
@@ -962,6 +950,10 @@ class GameMap {
     if (this.units.containsKey(code)) {
       this.units.get(code).remove = true;
     }
+  }
+  // add player unit
+  void addPlayer(Hero player) {
+    this.units.put(0, player);
   }
 
   // add item
@@ -991,20 +983,6 @@ class GameMap {
     // display terrain
     imageMode(CORNERS);
     image(this.terrain_display, this.xi_map, this.yi_map, this.xf_map, this.yf_map);
-    // display feature
-    //image(this.feature_display, this.xi_map, this.yi_map, this.xf_map, this.yf_map);
-    imageMode(CORNER);
-    for (int i = 0; i < this.features.size(); i++) {
-      Feature f = this.features.get(i);
-      if (!f.inView(this.startSquareX, this.startSquareY, this.startSquareX + this.visSquareX, this.startSquareY + this.visSquareY)) {
-        continue;
-      }
-      float translateX = this.xi_map + (f.x - this.startSquareX) * this.zoom;
-      float translateY = this.yi_map + (f.y - this.startSquareY) * this.zoom;
-      translate(translateX, translateY);
-      image(f.getImage(), 0, 0, f.width() * this.zoom, f.height() * this.zoom);
-      translate(-translateX, -translateY);
-    }
     // display units
     imageMode(CENTER);
     Iterator unit_iterator = this.units.entrySet().iterator();
@@ -1224,6 +1202,16 @@ class GameMap {
     // clicked for header message
     if (this.headerMessages.peek() != null) {
       this.headerMessages.peek().mousePress();
+    }
+    switch(mouseButton) {
+      case LEFT:
+        // select object
+        break;
+      case RIGHT:
+        // move player unit
+        break;
+      case CENTER:
+        break;
     }
   }
 
@@ -1543,12 +1531,15 @@ class GameMapEditor extends GameMap {
 
   GameMapEditor(GameMapCode code, String folderPath) {
     super(code, folderPath);
+    this.draw_fog = false;
   }
   GameMapEditor(String mapName, String folderPath) {
     super(mapName, folderPath);
+    this.draw_fog = false;
   }
   GameMapEditor(String mapName, int mapWidth, int mapHeight) {
     super(mapName, mapWidth, mapHeight);
+    this.draw_fog = false;
   }
 
 
@@ -1615,6 +1606,7 @@ class GameMapEditor extends GameMap {
   void mousePress() {
     switch(mouseButton) {
       case LEFT:
+        // select object
         break;
       case RIGHT:
         if (this.dropping_terrain) {
