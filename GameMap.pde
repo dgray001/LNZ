@@ -662,7 +662,7 @@ class GameMap {
   protected int nextUnitKey = 1;
   protected HashMap<Integer, Item> items = new HashMap<Integer, Item>();
   protected int nextItemKey = 1;
-  //protected ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+  protected ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
   //protected ArrayList<VisualEffect> visuals = new ArrayList<VisualEffect>();
 
   protected Queue<HeaderMessage> headerMessages = new LinkedList<HeaderMessage>();
@@ -971,6 +971,18 @@ class GameMap {
     }
   }
 
+  // add projectile
+  void addProjectile(Projectile p) {
+    this.projectiles.add(p);
+  }
+  // remove projectile
+  void removeProjectile(int index) {
+    if (index < 0 || index >= this.projectiles.size()) {
+      return;
+    }
+    this.projectiles.remove(index);
+  }
+
 
   void drawMap() {
     rectMode(CORNERS);
@@ -1140,6 +1152,18 @@ class GameMap {
       }
     }
     // Update projectiles
+    for (int i = 0; i < this.projectiles.size(); i++) {
+      if (this.projectiles.get(i).remove) {
+        this.removeProjectile(i);
+        i--;
+        continue;
+      }
+      this.projectiles.get(i).update(timeElapsed);
+      if (this.projectiles.get(i).remove) {
+        this.removeProjectile(i);
+        i--;
+      }
+    }
     // Update visual effects
   }
 
@@ -1169,6 +1193,12 @@ class GameMap {
       }
     }
     // Check projectiles
+    for (int i = 0; i < this.projectiles.size(); i++) {
+      if (this.projectiles.get(i).remove) {
+        this.removeProjectile(i);
+        i--;
+      }
+    }
     // Check visual effects
   }
 
