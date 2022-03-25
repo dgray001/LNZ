@@ -20,6 +20,8 @@ class Global {
   private int timer_FPS = Constants.frameUpdateTime;
   // Colors
   private color color_background = color(180);
+  private color color_nameDisplayed_background = color(100, 180);
+  private color color_nameDisplayed_text = color(255);
   // Profile
   private Profile profile;
 

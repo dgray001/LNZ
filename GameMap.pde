@@ -980,9 +980,16 @@ class GameMap {
     fill(this.color_background);
     rect(this.xi + Constants.map_borderSize, this.yi + Constants.map_borderSize,
       this.xf - Constants.map_borderSize, this.yf - Constants.map_borderSize);
+    // hovered info
+    String nameDisplayed = null;
+    color ellipseColor = color(255);
+    float ellipseWeight = 0.8;
     // display terrain
     imageMode(CORNERS);
     image(this.terrain_display, this.xi_map, this.yi_map, this.xf_map, this.yf_map);
+    try {
+      nameDisplayed = this.squares[int(floor(this.mX))][int(floor(this.mY))].terrainName();
+    } catch(ArrayIndexOutOfBoundsException e) {}
     // display units
     imageMode(CENTER);
     Iterator unit_iterator = this.units.entrySet().iterator();
@@ -1016,6 +1023,36 @@ class GameMap {
     }
     // display projectiles
     // display visual effects
+    // name displayed
+    if (this.hovered_object != null) {
+      nameDisplayed = this.hovered_object.display_name();
+      float ellipseX = this.xi_map + this.zoom * (this.hovered_object.xCenter() - this.startSquareX);
+      float ellipseY = this.yi_map + this.zoom * (this.hovered_object.yCenter() - this.startSquareY);
+      float ellipseDiameterX = this.zoom * this.hovered_object.width();
+      float ellipseDiameterY = this.zoom * this.hovered_object.height();
+      ellipseMode(CENTER);
+      noFill();
+      stroke(ellipseColor);
+      strokeWeight(ellipseWeight);
+      ellipse(ellipseX, ellipseY, ellipseDiameterX, ellipseDiameterY);
+    }
+    if (nameDisplayed != null) {
+      textSize(16);
+      float name_width = textWidth(nameDisplayed) + 2;
+      float name_height = textAscent() + textDescent() + 2;
+      float name_xi = mouseX;
+      float name_yi = mouseY - name_height - 4;
+      if (mouseX > 0.5 * width) {
+        name_xi -= name_width;
+      }
+      fill(global.color_nameDisplayed_background);
+      rectMode(CORNER);
+      noStroke();
+      rect(name_xi, name_yi, name_width, name_height);
+      fill(global.color_nameDisplayed_text);
+      textAlign(LEFT, TOP);
+      text(nameDisplayed, name_xi + 1, name_yi + 1);
+    }
     // display fog
     if (this.draw_fog) {
       imageMode(CORNERS);
@@ -1205,7 +1242,7 @@ class GameMap {
     }
     switch(mouseButton) {
       case LEFT:
-        // select object
+        this.selected_object = this.hovered_object;
         break;
       case RIGHT:
         // move player unit
@@ -1606,7 +1643,7 @@ class GameMapEditor extends GameMap {
   void mousePress() {
     switch(mouseButton) {
       case LEFT:
-        // select object
+        this.selected_object = this.hovered_object;
         break;
       case RIGHT:
         if (this.dropping_terrain) {

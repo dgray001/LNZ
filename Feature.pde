@@ -399,16 +399,6 @@ class Feature extends MapObject {
     }
   }
 
-  String display_name() {
-    return this.display_name;
-  }
-  String type() {
-    return this.type;
-  }
-  String description() {
-    return this.description;
-  }
-
   void setLocation(float x, float y) {
     this.x = floor(x);
     this.y = floor(y);
@@ -907,6 +897,16 @@ class Feature extends MapObject {
         break;
     }
     return global.images.getImage(path);
+  }
+
+  String display_name() {
+    return this.display_name;
+  }
+  String type() {
+    return this.type;
+  }
+  String description() {
+    return this.description;
   }
 
   void update(int timeElapsed) {
