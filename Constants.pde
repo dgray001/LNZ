@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220325: v0.6.3l" +
+  "\n20220325: v0.6.3m" +
   "\nLines: 11189 (v0.6.3h)" +
   "";
   static final String version_history =
@@ -21,6 +21,7 @@ static class Constants {
   static final int maxFPS = 120;
   static final int exit_delay = 300;
   static final float default_cursor_size = 35;
+  static final float inverse_root_two = 0.70710678;
 
   // Initial Interface
   static final int initialInterface_size = 400;
@@ -68,7 +69,7 @@ static class Constants {
   // GameMap
   static final float map_borderSize = 30;
   static final int map_terrainResolution = 60;
-  static final int map_fogResolution = 1; // in case in future I decide to use fog images
+  static final int map_fogResolution = 6; // in case in future I decide to use fog images
   static final float map_defaultZoom = 60;
   static final float map_minZoom = 40;
   static final float map_maxZoom = 120;
@@ -85,9 +86,13 @@ static class Constants {
   // Units
   static final float unit_defaultSize = 0.35;
   static final int unit_defaultHeight = 5;
+  static final float unit_defaultSight = 5.5;
 
   // Items
   static final float item_defaultSize = 0.25;
   static final int item_bounceConstant = 800;
   static final float item_bounceOffset = 0.15;
+
+  // Projectiles
+  static final float projectile_defaultSize = 0.25;
 }

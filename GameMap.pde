@@ -56,7 +56,7 @@ enum GameMapCode {
 
 
 enum ReadFileObject {
-  NONE("None"), MAP("Map"), FEATURE("Feature"), UNIT("Unit"), ITEM("Item");
+  NONE("None"), MAP("Map"), FEATURE("Feature"), UNIT("Unit"), ITEM("Item"), PROJECTILE("Projectile");
 
   private static final List<ReadFileObject> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 
@@ -99,6 +99,19 @@ enum MapFogHandling {
       }
     }
     return MapFogHandling.NONE;
+  }
+
+  public boolean show_fog() {
+    return MapFogHandling.show_fog(this);
+  }
+  static public boolean show_fog(MapFogHandling fogHandling) {
+    switch(fogHandling) {
+      case NONE:
+      case NOFOG:
+        return false;
+      default:
+        return true;
+    }
   }
 }
 
@@ -719,8 +732,7 @@ class GameMap {
         this.fog_dimg.colorPixels(color(1, 0));
         for (int i = 0; i < this.mapWidth; i++) {
           for (int j = 0; j < this.mapHeight; j++) {
-            this.exploreTerrain(i, j, false);
-            this.setTerrainVisible(true, i, j, false);
+            this.exploreTerrainAndVisible(i, j);
           }
         }
         break;
@@ -728,7 +740,7 @@ class GameMap {
         this.fog_dimg.colorPixels(color(0));
         for (int i = 0; i < this.mapWidth; i++) {
           for (int j = 0; j < this.mapHeight; j++) {
-            this.setTerrainVisible(true, i, j, false);
+            this.setTerrainVisible(true, i, j);
           }
         }
         break;
@@ -736,7 +748,7 @@ class GameMap {
         this.fog_dimg.colorPixels(this.fogColor);
         for (int i = 0; i < this.mapWidth; i++) {
           for (int j = 0; j < this.mapHeight; j++) {
-            this.exploreTerrain(i, j, false);
+            this.exploreTerrain(i, j);
           }
         }
         break;
@@ -838,9 +850,6 @@ class GameMap {
     catch(IndexOutOfBoundsException e) {}
   }
   void exploreTerrain(int x, int y) {
-    this.exploreTerrain(x, y, true);
-  }
-  void exploreTerrain(int x, int y, boolean refreshImage) {
     try {
       this.squares[x][y].explored = true;
       if (this.squares[x][y].visible) {
@@ -849,29 +858,27 @@ class GameMap {
       else {
         this.fog_dimg.colorGrid(this.fogColor, x, y);
       }
-      if (refreshImage) {
-        this.refreshFogImage();
-      }
+    }
+    catch(IndexOutOfBoundsException e) {}
+  }
+  void exploreTerrainAndVisible(int x, int y) {
+    try {
+      this.squares[x][y].explored = true;
+      this.squares[x][y].visible = true;
+      this.fog_dimg.colorGrid(color(1, 0), x, y);
     }
     catch(IndexOutOfBoundsException e) {}
   }
   void setTerrainVisible(boolean visible, int x, int y) {
-    this.setTerrainVisible(visible, x, y, true);
-  }
-  void setTerrainVisible(boolean visible, int x, int y, boolean refreshImage) {
     try {
       this.squares[x][y].visible = visible;
       if (!this.squares[x][y].explored) {
-        this.fog_dimg.colorGrid(color(0), x, y);
       }
-      if (!this.squares[x][y].visible) {
+      else if (!this.squares[x][y].visible) {
         this.fog_dimg.colorGrid(this.fogColor, x, y);
       }
       else {
         this.fog_dimg.colorGrid(color(1, 0), x, y);
-      }
-      if (refreshImage) {
-        this.refreshFogImage();
       }
     }
     catch(IndexOutOfBoundsException e) {}
@@ -1011,6 +1018,9 @@ class GameMap {
       if (!u.inView(this.startSquareX, this.startSquareY, this.startSquareX + this.visSquareX, this.startSquareY + this.visSquareY)) {
         continue;
       }
+      if (this.draw_fog && !this.squares[int(floor(u.x))][int(floor(u.y))].visible) {
+        continue;
+      }
       float translateX = this.xi_map + (u.x - this.startSquareX) * this.zoom;
       float translateY = this.yi_map + (u.y - this.startSquareY) * this.zoom;
       translate(translateX, translateY);
@@ -1024,6 +1034,9 @@ class GameMap {
       Map.Entry<Integer, Item> entry = (Map.Entry<Integer, Item>)item_iterator.next();
       Item i = entry.getValue();
       if (!i.inView(this.startSquareX, this.startSquareY, this.startSquareX + this.visSquareX, this.startSquareY + this.visSquareY)) {
+        continue;
+      }
+      if (this.draw_fog && !this.squares[int(floor(i.x))][int(floor(i.y))].visible) {
         continue;
       }
       float translateX = this.xi_map + (i.x - this.startSquareX) * this.zoom;
@@ -1099,6 +1112,9 @@ class GameMap {
     if (refreshView) {
       this.refreshDisplayMapParameters();
     }
+    else {
+      this.refreshFogImage();
+    }
     // header messages
     if (this.headerMessages.peek() != null) {
       this.headerMessages.peek().updateView(timeElapsed);
@@ -1132,11 +1148,12 @@ class GameMap {
         unit_iterator.remove();
         continue;
       }
-      u.update(timeElapsed);
+      u.update(timeElapsed, entry.getKey(), this);
       if (u.remove) {
         unit_iterator.remove();
       }
     }
+    this.updatePlayerUnit(timeElapsed);
     // Update items
     Iterator item_iterator = this.items.entrySet().iterator();
     while(item_iterator.hasNext()) {
@@ -1165,6 +1182,18 @@ class GameMap {
       }
     }
     // Update visual effects
+  }
+
+
+  void updatePlayerUnit(int timeElapsed) {
+    if (!this.units.containsKey(0)) {
+      return;
+    }
+    if (!Hero.class.isInstance(this.units.get(0))) {
+      return;
+    }
+    Hero player = (Hero)this.units.get(0);
+    //player.explore_terrain(this.squares);
   }
 
 
@@ -1229,6 +1258,10 @@ class GameMap {
         Unit u = entry.getValue();
         u.mouseMove(this.mX, this.mY);
         if (u.hovered) {
+          if (this.draw_fog && !this.squares[int(floor(u.x))][int(floor(u.y))].visible) {
+            u.hovered = false;
+            continue;
+          }
           this.hovered_object = u;
         }
       }
@@ -1236,6 +1269,10 @@ class GameMap {
         Item i = entry.getValue();
         i.mouseMove(this.mX, this.mY);
         if (i.hovered) {
+          if (this.draw_fog && !this.squares[int(floor(i.x))][int(floor(i.y))].visible) {
+            i.hovered = false;
+            continue;
+          }
           this.hovered_object = i;
         }
       }
@@ -1399,6 +1436,7 @@ class GameMap {
     Unit curr_unit = null;
     int max_item_key = 0;
     Item curr_item = null;
+    Projectile curr_projectile = null;
 
     for (String line : lines) {
       String[] parameters = split(line, ':');
@@ -1427,7 +1465,7 @@ class GameMap {
             break;
           case UNIT:
             if (parameters.length < 3) {
-              println("ERROR: Unit ID missing in Feature constructor.");
+              println("ERROR: Unit ID missing in Unit constructor.");
               break;
             }
             object_queue.push(type);
@@ -1435,11 +1473,19 @@ class GameMap {
             break;
           case ITEM:
             if (parameters.length < 3) {
-              println("ERROR: Item ID missing in Feature constructor.");
+              println("ERROR: Item ID missing in Item constructor.");
               break;
             }
             object_queue.push(type);
             curr_item = new Item(toInt(trim(parameters[2])));
+            break;
+          case PROJECTILE:
+            if (parameters.length < 3) {
+              println("ERROR: Projectile ID missing in Projectile constructor.");
+              break;
+            }
+            object_queue.push(type);
+            curr_projectile = new Projectile(toInt(trim(parameters[2])));
             break;
           default:
             break;
@@ -1481,6 +1527,13 @@ class GameMap {
               this.addItem(curr_item);
               curr_item = null;
               break;
+            case PROJECTILE:
+              if (curr_projectile == null) {
+                println("ERROR: Trying to end a null projectile.");
+              }
+              this.addProjectile(curr_projectile);
+              curr_projectile = null;
+              break;
             default:
               break;
           }
@@ -1511,6 +1564,12 @@ class GameMap {
               println("ERROR: Trying to add item data to null item.");
             }
             curr_item.addData(dataname, data);
+            break;
+          case PROJECTILE:
+            if (curr_projectile == null) {
+              println("ERROR: Trying to add projectile data to null projectile.");
+            }
+            curr_projectile.addData(dataname, data);
             break;
           default:
             break;

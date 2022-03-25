@@ -2,9 +2,12 @@ class Projectile extends MapObject {
   protected float size = Constants.projectile_defaultSize; // radius
 
   Projectile(int ID) {
-    default:
-      println("ERROR: Projectile ID " + ID + " not found.");
-      break;
+    super(ID);
+    switch(ID) {
+      default:
+        println("ERROR: Projectile ID " + ID + " not found.");
+        break;
+    }
   }
 
   String display_name() {
