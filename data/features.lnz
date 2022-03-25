@@ -139,9 +139,10 @@ Tree, unknown: 422
 Tree, cedar: 423
 Tree, dead: 424
 Tree, large: 425
-Bush, light: 431
-Bush, dark: 432
-Bush, evergreen: 433
+Rock: 431
+Bush, light: 441
+Bush, dark: 442
+Bush, evergreen: 443
 
 Car, Honda CRV: 501
 Car, Ford F150: 502

@@ -620,9 +620,8 @@ class GameMap {
   protected DImg fog_dimg;
   protected MapFogHandling fogHandling = MapFogHandling.DEFAULT;
   protected color fogColor = color(170, 100);
-  protected boolean draw_fog = true;
+  protected boolean draw_fog = false;
   protected PImage terrain_display = createImage(0, 0, RGB);
-  //protected PImage feature_display = createImage(0, 0, ARGB);
   protected PImage fog_display = createImage(0, 0, ARGB);
 
   protected float viewX = 0;
@@ -1031,8 +1030,8 @@ class GameMap {
         continue;
       }
       float translateX = this.xi_map + (i.x - this.startSquareX) * this.zoom;
-      float translateY = this.yi_map + (i.y - this.startSquareY) * this.zoom -
-        Constants.item_bounceOffset * i.bounce.value / float(Constants.item_bounceConstant);
+      float translateY = this.yi_map + (i.y - this.startSquareY - Constants.item_bounceOffset *
+        i.bounce.value / float(Constants.item_bounceConstant)) * this.zoom;
       translate(translateX, translateY);
       image(i.getImage(), 0, 0, i.width() * this.zoom, i.height() * this.zoom);
       translate(-translateX, -translateY);
@@ -1238,9 +1237,49 @@ class GameMap {
   }
 
   void keyPress() {
+    if (key == CODED) {
+      switch(keyCode) {
+        case LEFT:
+          this.view_moving_left = true;
+          break;
+        case RIGHT:
+          this.view_moving_right = true;
+          break;
+        case UP:
+          this.view_moving_up = true;
+          break;
+        case DOWN:
+          this.view_moving_down = true;
+          break;
+      }
+    }
+    else {
+      switch(key) {
+      }
+    }
   }
 
   void keyRelease() {
+    if (key == CODED) {
+      switch(keyCode) {
+        case LEFT:
+          this.view_moving_left = false;
+          break;
+        case RIGHT:
+          this.view_moving_right = false;
+          break;
+        case UP:
+          this.view_moving_up = false;
+          break;
+        case DOWN:
+          this.view_moving_down = false;
+          break;
+      }
+    }
+    else {
+      switch(key) {
+      }
+    }
   }
 
 
