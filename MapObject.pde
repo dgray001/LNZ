@@ -63,6 +63,11 @@ abstract class MapObject {
     float yDistance = max(0, abs(this.yCenter() - pointY) - this.yRadius());
     return sqrt(xDistance * xDistance + yDistance * yDistance);
   }
+  float distanceFromPoint(float pointX, float pointY) {
+    float xDistance = this.xCenter() - pointX;
+    float yDistance = this.yCenter() - pointY;
+    return sqrt(xDistance * xDistance + yDistance * yDistance);
+  }
 
   boolean touching(MapObject object) {
     if ( ((abs(this.xCenter() - object.xCenter()) - this.xRadius() - object.xRadius()) <= 0) ||

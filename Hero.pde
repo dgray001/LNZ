@@ -121,7 +121,7 @@ class Hero extends Unit {
     this.code = code;
   }
 
-
+/* // was shadowing the Unit functions
   void update(int millis) {
   }
 
@@ -141,5 +141,5 @@ class Hero extends Unit {
   }
 
   void keyRelease() {
-  }
+  }*/
 }
