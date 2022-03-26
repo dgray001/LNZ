@@ -1032,9 +1032,11 @@ class GameMap {
     // display terrain
     imageMode(CORNERS);
     image(this.terrain_display, this.xi_map, this.yi_map, this.xf_map, this.yf_map);
-    try {
-      nameDisplayed = this.squares[int(floor(this.mX))][int(floor(this.mY))].terrainName();
-    } catch(ArrayIndexOutOfBoundsException e) {}
+    if (this.hovered) {
+      try {
+        nameDisplayed = this.squares[int(floor(this.mX))][int(floor(this.mY))].terrainName();
+      } catch(ArrayIndexOutOfBoundsException e) {}
+    }
     // display units
     imageMode(CENTER);
     Iterator unit_iterator = this.units.entrySet().iterator();
@@ -1344,6 +1346,7 @@ class GameMap {
     }
     else {
       this.hovered = false;
+      this.hovered_object = null;
       if (mX > this.xi && mY > this.yi && mX < this.xf && mY < this.yf) {
         this.hovered_area = true;
         if (mX < this.xi + Constants.map_borderSize || mX > this.xf - Constants.map_borderSize ||

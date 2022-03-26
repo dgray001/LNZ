@@ -26,6 +26,10 @@ class Unit extends MapObject {
   protected int curr_action_id = 0;
   protected float curr_action_x = 0;
   protected float curr_action_y = 0;
+  protected float last_move_distance = 0;
+  protected boolean last_move_collision = false;
+
+  protected int timer_ai_action = 0;
 
   Unit(int ID) {
     super(ID);
@@ -256,12 +260,10 @@ class Unit extends MapObject {
     // unit action
     switch(this.curr_action) {
       case MOVING:
-        println("3");
         this.face(this.curr_action_x, this.curr_action_y);
-        println("facing: ", this.facingX, this.facingY);
-        this.move(timeElapsed, map, MoveModifier.NONE);
-        if (this.distance(this.curr_action_x, this.curr_action_y) < Constants.small_number) {
-          println("4");
+        this.move(timeElapsed, myKey, map, MoveModifier.NONE);
+        if (this.distanceFromPoint(this.curr_action_x, this.curr_action_y)
+          < this.last_move_distance) {
           this.curr_action = UnitAction.NONE;
         }
         break;
@@ -310,7 +312,7 @@ class Unit extends MapObject {
   }
 
 
-  void move(int timeElapsed, GameMap map, MoveModifier modifier) {
+  void move(int timeElapsed, int myKey, GameMap map, MoveModifier modifier) {
     // calculate attempted move distances
     float seconds = timeElapsed / 1000.0;
     float effectiveDistance = 0;
@@ -326,51 +328,108 @@ class Unit extends MapObject {
     }
     float tryMoveX = effectiveDistance * this.facingX;
     float tryMoveY = effectiveDistance * this.facingY;
-    println("trying to move: ", tryMoveX, tryMoveY);
-    float moveX = 0;
-    float moveY = 0;
     float startX = this.x;
     float startY = this.y;
+    this.last_move_collision = false;
     // move in x direction
+    this.moveX(tryMoveX, myKey, map);
+    // move in y direction
+    this.moveY(tryMoveY, myKey, map);
+    // move stat
+    float moveX = this.x - startX;
+    float moveY = this.y - startY;
+    this.last_move_distance = sqrt(moveX * moveX + moveY * moveY);
+    //this.stat_distance_traveled = this.last_move_distance;
+  }
+
+  void moveX(float tryMoveX, int myKey, GameMap map) {
     while(abs(tryMoveX) > Constants.map_moveLogicCap) {
       if (tryMoveX > 0) {
-        this.x += Constants.map_moveLogicCap; // call collision function
+        if (this.collisionLogicX(Constants.map_moveLogicCap, myKey, map)) {
+          this.last_move_collision = true;
+          return;
+        }
         tryMoveX -= Constants.map_moveLogicCap;
       }
       else {
-        this.x -= Constants.map_moveLogicCap; // call collision function
+        if (this.collisionLogicX(-Constants.map_moveLogicCap, myKey, map)) {
+          this.last_move_collision = true;
+          return;
+        }
         tryMoveX += Constants.map_moveLogicCap;
       }
     }
-    this.x += tryMoveX; // call collision function
-    // move in y direction
+    if (this.collisionLogicX(tryMoveX, myKey, map)) {
+      this.last_move_collision = true;
+      return;
+    }
+    if (abs(this.facingX) < Constants.unit_small_facing_threshhold) {
+      this.last_move_collision = true;
+    }
+  }
+
+  void moveY(float tryMoveY, int myKey, GameMap map) {
     while(abs(tryMoveY) > Constants.map_moveLogicCap) {
       if (tryMoveY > 0) {
-        this.y += Constants.map_moveLogicCap; // call collision function
+        if (this.collisionLogicY(Constants.map_moveLogicCap, myKey, map)) {
+          return;
+        }
         tryMoveY -= Constants.map_moveLogicCap;
       }
       else {
-        this.y -= Constants.map_moveLogicCap; // call collision function
+        if (this.collisionLogicY(-Constants.map_moveLogicCap, myKey, map)) {
+          return;
+        }
         tryMoveY += Constants.map_moveLogicCap;
       }
     }
-    this.y += tryMoveY; // call collision function
-    println("moved: ", startX - this.x, startY - this.y);
+    if (this.collisionLogicY(tryMoveY, myKey, map)) {
+      return;
+    }
+    if (abs(this.facingY) > Constants.unit_small_facing_threshhold) {
+      this.last_move_collision = false;
+    }
+  }
+
+  // returns true if collision occurs
+  boolean collisionLogicX(float tryMoveX, int myKey, GameMap map) {
+    this.x += tryMoveX;
+    if (!this.inMap(map.mapWidth, map.mapHeight)) {
+      this.x -= tryMoveX;
+      return true;
+    }
+    // terrain collisions
+    // unit collisions
+    return false;
+  }
+
+  // returns true if collision occurs
+  boolean collisionLogicY(float tryMoveY, int myKey, GameMap map) {
+    this.y += tryMoveY;
+    if (!this.inMap(map.mapWidth, map.mapHeight)) {
+      this.y -= tryMoveY;
+      return true;
+    }
+    // terrain collisions
+    // unit collisions
+    return false;
   }
 
 
   void aiLogic(int timeElapsed, int myKey, GameMap map) {
-    println("1");
     switch(this.ID) {
       // chicken
       case 1002:
-        if (this.curr_action == UnitAction.NONE) {
-          println("2");
-          this.curr_action = UnitAction.MOVING;
-          this.curr_action_x = this.x - Constants.ai_chickenMoveDistance +
-            2 * random(Constants.ai_chickenMoveDistance);
-          this.curr_action_y = this.y - Constants.ai_chickenMoveDistance +
-            2 * random(Constants.ai_chickenMoveDistance);
+        if (this.curr_action == UnitAction.NONE || this.last_move_collision) {
+          this.timer_ai_action -= timeElapsed;
+          if (this.timer_ai_action < 0) {
+            this.timer_ai_action = int(Constants.ai_chickenTimer + random(Constants.ai_chickenTimer));
+            this.curr_action = UnitAction.MOVING;
+            this.curr_action_x = this.x + Constants.ai_chickenMoveDistance -
+              2 * random(Constants.ai_chickenMoveDistance);
+            this.curr_action_y = this.y + Constants.ai_chickenMoveDistance -
+              2 * random(Constants.ai_chickenMoveDistance);
+          }
         }
         break;
       default:

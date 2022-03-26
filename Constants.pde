@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220326: v0.6.3q" +
+  "\n20220326: v0.6.3r" +
   "\nLines: 12590 (v0.6.3q)" +
   "";
   static final String version_history =
@@ -21,7 +21,7 @@ static class Constants {
   static final int maxFPS = 120;
   static final int exit_delay = 300;
   static final float default_cursor_size = 35;
-  static final float small_number = 0.00001; // for float miscalculations
+  static final float small_number = 0.001; // for float miscalculations
   static final float inverse_root_two = 0.70710678;
 
   // Initial Interface
@@ -93,9 +93,11 @@ static class Constants {
   static final int unit_defaultHeight = 5;
   static final float unit_defaultSight = 5.5;
   static final float unit_sneakSpeed = 0.5;
+  static final float unit_small_facing_threshhold = 0.01;
 
   // AI
   static final float ai_chickenMoveDistance = 2;
+  static final float ai_chickenTimer = 3000;
 
   // Items
   static final float item_defaultSize = 0.25;
