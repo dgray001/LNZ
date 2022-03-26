@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220325: v0.6.3m" +
+  "\n20220326: v0.6.3n" +
   "\nLines: 11189 (v0.6.3h)" +
   "";
   static final String version_history =
@@ -16,8 +16,8 @@ static class Constants {
   "\n202201: v0.4: Recreate Program" +
   "\n2019: v0.3: Legacy Version" +
   "";
-  static final int frameUpdateTime = 100;
-  static final int frameAverageCache = 5;
+  static final int frameUpdateTime = 401; // prime number
+  static final int frameAverageCache = 3;
   static final int maxFPS = 120;
   static final int exit_delay = 300;
   static final float default_cursor_size = 35;
