@@ -4,8 +4,8 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220326: v0.6.3p" +
-  "\nLines: 11189 (v0.6.3h)" +
+  "\n20220326: v0.6.3q" +
+  "\nLines: 12590 (v0.6.3q)" +
   "";
   static final String version_history =
   "Liberal Nazi Zombies" +
@@ -21,6 +21,7 @@ static class Constants {
   static final int maxFPS = 120;
   static final int exit_delay = 300;
   static final float default_cursor_size = 35;
+  static final float small_number = 0.00001; // for float miscalculations
   static final float inverse_root_two = 0.70710678;
 
   // Initial Interface
@@ -83,6 +84,7 @@ static class Constants {
   static final float map_selectedObjectTitleTextSize = 22;
   static final float map_selectedObjectPanelGap = 4;
   static final float map_selectedObjectImageGap = 8;
+  static final float map_moveLogicCap = 0.15; // longest movable distance at one logical go
 
   // Features
 
@@ -90,6 +92,10 @@ static class Constants {
   static final float unit_defaultSize = 0.35;
   static final int unit_defaultHeight = 5;
   static final float unit_defaultSight = 5.5;
+  static final float unit_sneakSpeed = 0.5;
+
+  // AI
+  static final float ai_chickenMoveDistance = 2;
 
   // Items
   static final float item_defaultSize = 0.25;
