@@ -98,6 +98,24 @@ class Level {
   }
 
 
+  void drawLeftPanel(int millis) {
+    if (this.currMap != null) {
+      this.currMap.drawLeftPanel(millis);
+    }
+  }
+
+  boolean leftPanelElementsHovered() {
+    if (this.currMap != null) {
+      return this.currMap.leftPanelElementsHovered();
+    }
+    return false;
+  }
+
+  void drawRightPanel(int millis) {
+    // quest and chat box
+  }
+
+
   void update(int millis) {
     if (this.currMap != null) {
       this.currMap.update(millis);
@@ -116,9 +134,9 @@ class Level {
     }
   }
 
-  void mouseRelease() {
+  void mouseRelease(float mX, float mY) {
     if (this.currMap != null) {
-      this.currMap.mouseRelease();
+      this.currMap.mouseRelease(mX, mY);
     }
   }
 

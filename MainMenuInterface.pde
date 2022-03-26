@@ -720,13 +720,13 @@ class MainMenuInterface extends InterfaceLNZ {
     this.profile.mousePress();
   }
 
-  void mouseRelease() {
+  void mouseRelease(float mX, float mY) {
     for (MainMenuGrowButton button : this.growButtons) {
-      button.mouseRelease();
+      button.mouseRelease(mX, mY);
     }
-    this.banner.mouseRelease();
-    this.play.mouseRelease();
-    this.profile.mouseRelease();
+    this.banner.mouseRelease(mX, mY);
+    this.play.mouseRelease(mX, mY);
+    this.profile.mouseRelease(mX, mY);
   }
 
   void scroll(int amount) {}

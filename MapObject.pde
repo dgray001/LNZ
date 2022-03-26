@@ -25,6 +25,7 @@ abstract class MapObject {
   abstract String display_name();
   abstract String type();
   abstract String description();
+  abstract String selectedObjectTextboxText();
 
   abstract void setLocation(float x, float y);
   abstract float xi();

@@ -180,15 +180,15 @@ class MapEditorInterface extends InterfaceLNZ {
     }
 
     @Override
-    void mouseRelease() {
+    void mouseRelease(float mX, float mY) {
       if (this.rightClickMenu != null) {
-        this.rightClickMenu.mouseRelease();
+        this.rightClickMenu.mouseRelease(mX, mY);
       }
       else if (this.renameInputBox != null) {
-        this.renameInputBox.mouseRelease();
+        this.renameInputBox.mouseRelease(mX, mY);
       }
       else {
-        super.mouseRelease();
+        super.mouseRelease(mX, mY);
       }
     }
 
@@ -593,8 +593,8 @@ class MapEditorInterface extends InterfaceLNZ {
     this.buttons[4] = new MapEditorButton5();
     this.leftPanel.addIcon(global.images.getImage("icons/triangle.png"));
     this.rightPanel.addIcon(global.images.getImage("icons/triangle.png"));
-    this.leftPanel.color_background = color(160, 82, 45);
-    this.rightPanel.color_background = color(160, 82, 45);
+    this.leftPanel.color_background = global.color_panelBackground;
+    this.rightPanel.color_background = global.color_panelBackground;
     this.navigate(MapEditorPage.MAPS);
     this.resizeButtons();
   }
@@ -923,6 +923,17 @@ class MapEditorInterface extends InterfaceLNZ {
       if (this.listBox1.active) {
         this.listBox1.update(millis);
       }
+      if (this.curr_level != null) {
+        this.curr_level.drawRightPanel(millis);
+      }
+    }
+    if (this.leftPanel.open && !this.leftPanel.collapsing) {
+      if (this.curr_level != null) {
+        this.curr_level.drawLeftPanel(millis);
+      }
+      else if (this.curr_map != null) {
+        this.curr_map.drawLeftPanel(millis);
+      }
     }
     if (refreshMapLocation) {
       if (this.curr_level != null) {
@@ -936,6 +947,7 @@ class MapEditorInterface extends InterfaceLNZ {
 
   void mouseMove(float mX, float mY) {
     boolean refreshMapLocation = false;
+    // map / level mouse move
     if (this.curr_level != null) {
       this.curr_level.mouseMove(mX, mY);
       if (this.leftPanel.clicked || this.rightPanel.clicked) {
@@ -948,7 +960,21 @@ class MapEditorInterface extends InterfaceLNZ {
         refreshMapLocation = true;
       }
     }
+    // left panel mouse move
     this.leftPanel.mouseMove(mX, mY);
+    if (this.leftPanel.open && !this.leftPanel.collapsing) {
+      if (this.curr_level != null) {
+        if (this.curr_level.leftPanelElementsHovered()) {
+          this.leftPanel.hovered = false;
+        }
+      }
+      else if (this.curr_map != null) {
+        if (this.curr_map.leftPanelElementsHovered()) {
+          this.leftPanel.hovered = false;
+        }
+      }
+    }
+    // right panel mouse move
     this.rightPanel.mouseMove(mX, mY);
     if (this.rightPanel.open && !this.rightPanel.collapsing) {
       for (MapEditorButton button : this.buttons) {
@@ -961,6 +987,7 @@ class MapEditorInterface extends InterfaceLNZ {
         }
       }
     }
+    // refresh map location
     if (refreshMapLocation) {
       if (this.curr_level != null) {
         this.curr_level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
@@ -969,6 +996,7 @@ class MapEditorInterface extends InterfaceLNZ {
         this.curr_map.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
       }
     }
+    // cursor icon resolution
     if (this.leftPanel.clicked || this.rightPanel.clicked) {
       this.resizeButtons();
       global.cursor = global.images.getImage("icons/cursor_resizeh_white.png");
@@ -1003,15 +1031,15 @@ class MapEditorInterface extends InterfaceLNZ {
     }
   }
 
-  void mouseRelease() {
+  void mouseRelease(float mX, float mY) {
     if (this.curr_level != null) {
-      this.curr_level.mouseRelease();
+      this.curr_level.mouseRelease(mX, mY);
     }
     else if (this.curr_map != null) {
-      this.curr_map.mouseRelease();
+      this.curr_map.mouseRelease(mX, mY);
     }
-    this.leftPanel.mouseRelease();
-    this.rightPanel.mouseRelease();
+    this.leftPanel.mouseRelease(mX, mY);
+    this.rightPanel.mouseRelease(mX, mY);
     if (this.leftPanel.hovered || this.rightPanel.hovered) {
       global.cursor = global.images.getImage("icons/cursor_resizeh.png");
     }
@@ -1020,10 +1048,10 @@ class MapEditorInterface extends InterfaceLNZ {
     }
     if (this.rightPanel.open && !this.rightPanel.collapsing) {
       for (MapEditorButton button : this.buttons) {
-        button.mouseRelease();
+        button.mouseRelease(mX, mY);
       }
       if (this.listBox1.active) {
-        this.listBox1.mouseRelease();
+        this.listBox1.mouseRelease(mX, mY);
       }
     }
   }

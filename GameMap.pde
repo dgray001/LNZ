@@ -620,6 +620,28 @@ class GameMap {
 
 
 
+  class SelectedObjectTextbox extends TextBox {
+    SelectedObjectTextbox() {
+      super(Constants.map_selectedObjectPanelGap, 0.2 * height, Constants.
+        map_selectedObjectPanelGap, 0.5 * height - 5);
+      this.color_background = color(1, 0);
+      this.color_header = color(1, 0);
+      this.color_stroke = color(1, 0);
+      this.scrollbar.setButtonColors(color(170),
+        adjust_color_brightness(global.color_panelBackground, 1.1),
+        adjust_color_brightness(global.color_panelBackground, 1.2),
+        adjust_color_brightness(global.color_panelBackground, 0.95), color(0));
+      this.scrollbar.button_upspace.setColors(color(1, 0), color(1, 0),
+        color(1, 0), color(0), color(0));
+      this.scrollbar.button_downspace.setColors(color(1, 0), color(1, 0),
+        color(1, 0), color(0), color(0));
+      this.scrollbar.button_up.raised_border = false;
+      this.scrollbar.button_down.raised_border = false;
+    }
+  }
+
+
+
   protected GameMapCode code = GameMapCode.ERROR;
   protected String mapName = "";
   protected boolean nullify = false;
@@ -663,12 +685,14 @@ class GameMap {
 
   protected int lastUpdateTime = millis();
 
-  protected boolean hovered_area = false;
-  protected boolean hovered = false;
+  protected boolean hovered = false; // hover map
+  protected boolean hovered_area = false; // hover GameMap-given area
+  protected boolean hovered_border = false; // hover border
   protected float mX = 0;
   protected float mY = 0;
   protected MapObject hovered_object;
   protected MapObject selected_object;
+  protected SelectedObjectTextbox selected_object_textbox = new SelectedObjectTextbox();
 
   protected ArrayList<Feature> features = new ArrayList<Feature>();
   protected HashMap<Integer, Unit> units = new HashMap<Integer, Unit>();
@@ -718,6 +742,8 @@ class GameMap {
     this.yi = yi;
     this.xf = xf;
     this.yf = yf;
+    this.selected_object_textbox.setXLocation(Constants.map_selectedObjectPanelGap,
+      xi - Constants.map_selectedObjectPanelGap);
     this.refreshDisplayMapParameters();
   }
 
@@ -1090,6 +1116,36 @@ class GameMap {
   }
 
 
+  void drawLeftPanel(int millis) {
+    float currY = Constants.map_selectedObjectPanelGap;
+    if (this.selected_object != null) {
+      textSize(Constants.map_selectedObjectTitleTextSize);
+      textAlign(CENTER, TOP);
+      text(this.selected_object.display_name(), 0.5 * this.xi, currY);
+      currY += textAscent() + textDescent() + Constants.map_selectedObjectPanelGap;
+      float image_size = min(this.selected_object_textbox.yi - 2 * Constants.
+        map_selectedObjectImageGap - currY, this.xi - 2 * Constants.map_selectedObjectPanelGap);
+      imageMode(CENTER);
+      image(this.selected_object.getImage(), 0.5 * this.xi, currY + 0.5 * image_size +
+        Constants.map_selectedObjectImageGap, image_size, image_size);
+      this.selected_object_textbox.setText(this.selected_object.selectedObjectTextboxText());
+      this.selected_object_textbox.update(millis);
+    }
+    stroke(0);
+    strokeWeight(1.5);
+    line(0, 0.5 * height, this.xi, 0.5 * height);
+  }
+
+  boolean leftPanelElementsHovered() {
+    if (this.selected_object != null) {
+      if (this.selected_object_textbox.hovered) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
   void updateView(int timeElapsed) {
     boolean refreshView = false;
     // moving view
@@ -1241,9 +1297,13 @@ class GameMap {
   }
 
   void mouseMove(float mX, float mY) {
+    if (this.selected_object != null) {
+      this.selected_object_textbox.mouseMove(mX, mY);
+    }
     if (mX > this.xi_map && mY > this.yi_map && mX < this.xf_map && mY < this.yf_map) {
       this.hovered = true;
       this.hovered_area = true;
+      this.hovered_border = false;
       this.mX = this.startSquareX + (mX - this.xi_map) / this.zoom;
       this.mY = this.startSquareY + (mY - this.yi_map) / this.zoom;
       // update hovered for map objects
@@ -1285,9 +1345,17 @@ class GameMap {
       this.hovered = false;
       if (mX > this.xi && mY > this.yi && mX < this.xf && mY < this.yf) {
         this.hovered_area = true;
+        if (mX < this.xi + Constants.map_borderSize || mX > this.xf - Constants.map_borderSize ||
+          mY < this.yi + Constants.map_borderSize || mY > this.yf - Constants.map_borderSize) {
+          this.hovered_border = true;
+        }
+        else {
+          this.hovered_border = false;
+        }
       }
       else {
         this.hovered_area = false;
+        this.hovered_border = false;
       }
       // dehover map objects
       for (Feature f : this.features) {
@@ -1302,14 +1370,22 @@ class GameMap {
     }
   }
 
+  void selectHoveredObject() {
+    if (this.hovered_area && !this.hovered_border) {
+      this.selected_object = this.hovered_object;
+    }
+  }
+
   void mousePress() {
-    // clicked for header message
     if (this.headerMessages.peek() != null) {
       this.headerMessages.peek().mousePress();
     }
+    if (this.selected_object != null) {
+      this.selected_object_textbox.mousePress();
+    }
     switch(mouseButton) {
       case LEFT:
-        this.selected_object = this.hovered_object;
+        this.selectHoveredObject();
         break;
       case RIGHT:
         // move player unit
@@ -1319,10 +1395,16 @@ class GameMap {
     }
   }
 
-  void mouseRelease() {
+  void mouseRelease(float mX, float mY) {
+    if (this.selected_object != null) {
+      this.selected_object_textbox.mouseRelease(mX, mY);
+    }
   }
 
   void scroll(int amount) {
+    if (this.selected_object != null) {
+      this.selected_object_textbox.scroll(amount);
+    }
     if (this.hovered_area) {
       this.changeZoom(Constants.map_scrollZoomFactor * amount);
     }
@@ -1730,9 +1812,15 @@ class GameMapEditor extends GameMap {
 
   @Override
   void mousePress() {
+    if (this.headerMessages.peek() != null) {
+      this.headerMessages.peek().mousePress();
+    }
+    if (this.selected_object != null) {
+      this.selected_object_textbox.mousePress();
+    }
     switch(mouseButton) {
       case LEFT:
-        this.selected_object = this.hovered_object;
+        this.selectHoveredObject();
         break;
       case RIGHT:
         if (this.dropping_terrain) {
@@ -1777,10 +1865,6 @@ class GameMapEditor extends GameMap {
           }
         }
         break;
-    }
-    // clicked for header message
-    if (this.headerMessages.peek() != null) {
-      this.headerMessages.peek().mousePress();
     }
   }
 
