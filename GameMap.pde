@@ -1119,6 +1119,7 @@ class GameMap {
   void drawLeftPanel(int millis) {
     float currY = Constants.map_selectedObjectPanelGap;
     if (this.selected_object != null) {
+      fill(255);
       textSize(Constants.map_selectedObjectTitleTextSize);
       textAlign(CENTER, TOP);
       text(this.selected_object.display_name(), 0.5 * this.xi, currY);

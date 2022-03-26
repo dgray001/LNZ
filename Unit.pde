@@ -1,11 +1,31 @@
+enum UnitAction {
+  NONE, MOVING;
+}
+
+
+enum MoveModifier {
+  NONE, SNEAK, RECOIL;
+}
+
+
+
 class Unit extends MapObject {
   protected float size = Constants.unit_defaultSize; // radius
   protected int sizeZ = Constants.unit_defaultHeight;
 
   protected int level = 0;
 
+  protected float facingX = 1;
+  protected float facingY = 0;
+
   protected float base_sight = Constants.unit_defaultSight;
-  // base other stats: health, attack, magic, defense, resistance, piercing, penetration, speed, agility, tenacity
+  protected float base_speed = 0;
+  // base other stats: health, attack, magic, defense, resistance, piercing, penetration, agility, tenacity
+
+  protected UnitAction curr_action = UnitAction.NONE;
+  protected int curr_action_id = 0;
+  protected float curr_action_x = 0;
+  protected float curr_action_y = 0;
 
   Unit(int ID) {
     super(ID);
@@ -16,6 +36,7 @@ class Unit extends MapObject {
         break;
       case 1002:
         this.setStrings("Chicken", "Gaia", "");
+        this.baseStats(1);
         this.level = 1;
         break;
 
@@ -99,6 +120,10 @@ class Unit extends MapObject {
   String selectedObjectTextboxText() {
     String text = "-- " + this.type() + " --";
     return text + "\n\n" + this.description();
+  }
+
+  void baseStats(float speed) {
+    this.base_speed = speed;
   }
 
   void setLocation(float x, float y) {
@@ -189,12 +214,15 @@ class Unit extends MapObject {
     return this.base_sight;
   }
 
+  float speed() {
+    return this.base_speed;
+  }
+
 
   void update(int timeElapsed, int myKey, GameMap map) {
+    // timers
     this.update(timeElapsed);
-    this.x += 0.03;
-    this.y += 0.03;
-    // fog logic
+    // fog logic for player units
     if (myKey == 0) {
       float unit_sight = this.sight();
       float inner_square_distance = Constants.inverse_root_two * unit_sight;
@@ -221,7 +249,25 @@ class Unit extends MapObject {
         }
       }
     }
-    // actions ?
+    // ai logic for ai units
+    else {
+      this.aiLogic(timeElapsed, myKey, map);
+    }
+    // unit action
+    switch(this.curr_action) {
+      case MOVING:
+        println("3");
+        this.face(this.curr_action_x, this.curr_action_y);
+        println("facing: ", this.facingX, this.facingY);
+        this.move(timeElapsed, map, MoveModifier.NONE);
+        if (this.distance(this.curr_action_x, this.curr_action_y) < Constants.small_number) {
+          println("4");
+          this.curr_action = UnitAction.NONE;
+        }
+        break;
+      case NONE:
+        break;
+    }
   }
 
   void update(int timeElapsed) {
@@ -232,11 +278,116 @@ class Unit extends MapObject {
   }
 
 
+  void face(float faceX, float faceY) {
+    this.setFacing(faceX - this.x, faceY - this.y);
+  }
+  void face(int direction) {
+    switch(direction) {
+      case UP:
+        this.setFacing(0, -1);
+        break;
+      case DOWN:
+        this.setFacing(0, 1);
+        break;
+      case LEFT:
+        this.setFacing(-1, 0);
+        break;
+      case RIGHT:
+        this.setFacing(1, 0);
+        break;
+      default:
+        println("ERROR: face direction " + direction + " not recognized.");
+        break;
+    }
+  }
+  void setFacing(float facingX, float facingY) {
+    float normConstant = sqrt(facingX * facingX + facingY * facingY);
+    if (normConstant == 0) {
+      println("ERROR: cannot set facing to 0.");
+    }
+    this.facingX = facingX / normConstant;
+    this.facingY = facingY / normConstant;
+  }
+
+
+  void move(int timeElapsed, GameMap map, MoveModifier modifier) {
+    // calculate attempted move distances
+    float seconds = timeElapsed / 1000.0;
+    float effectiveDistance = 0;
+    switch(modifier) {
+      case NONE:
+        effectiveDistance = this.speed() * seconds;
+        break;
+      case SNEAK:
+        effectiveDistance = Constants.unit_sneakSpeed * seconds;
+        break;
+      case RECOIL:
+        break;
+    }
+    float tryMoveX = effectiveDistance * this.facingX;
+    float tryMoveY = effectiveDistance * this.facingY;
+    println("trying to move: ", tryMoveX, tryMoveY);
+    float moveX = 0;
+    float moveY = 0;
+    float startX = this.x;
+    float startY = this.y;
+    // move in x direction
+    while(abs(tryMoveX) > Constants.map_moveLogicCap) {
+      if (tryMoveX > 0) {
+        this.x += Constants.map_moveLogicCap; // call collision function
+        tryMoveX -= Constants.map_moveLogicCap;
+      }
+      else {
+        this.x -= Constants.map_moveLogicCap; // call collision function
+        tryMoveX += Constants.map_moveLogicCap;
+      }
+    }
+    this.x += tryMoveX; // call collision function
+    // move in y direction
+    while(abs(tryMoveY) > Constants.map_moveLogicCap) {
+      if (tryMoveY > 0) {
+        this.y += Constants.map_moveLogicCap; // call collision function
+        tryMoveY -= Constants.map_moveLogicCap;
+      }
+      else {
+        this.y -= Constants.map_moveLogicCap; // call collision function
+        tryMoveY += Constants.map_moveLogicCap;
+      }
+    }
+    this.y += tryMoveY; // call collision function
+    println("moved: ", startX - this.x, startY - this.y);
+  }
+
+
+  void aiLogic(int timeElapsed, int myKey, GameMap map) {
+    println("1");
+    switch(this.ID) {
+      // chicken
+      case 1002:
+        if (this.curr_action == UnitAction.NONE) {
+          println("2");
+          this.curr_action = UnitAction.MOVING;
+          this.curr_action_x = this.x - Constants.ai_chickenMoveDistance +
+            2 * random(Constants.ai_chickenMoveDistance);
+          this.curr_action_y = this.y - Constants.ai_chickenMoveDistance +
+            2 * random(Constants.ai_chickenMoveDistance);
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+
   String fileString() {
     String fileString = "\nnew: Unit: " + this.ID;
     fileString += this.objectFileString();
     fileString += "\nsize: " + this.size;
-    fileString += "\nsight: " + this.base_sight;
+    fileString += "\nlevel: " + this.level;
+    fileString += "\nfacingX: " + this.facingX;
+    fileString += "\nfacingY: " + this.facingY;
+    fileString += "\nbase_sight: " + this.base_sight;
+    fileString += "\nbase_speed: " + this.base_speed;
     fileString += "\nend: Unit\n";
     return fileString;
   }
@@ -249,8 +400,20 @@ class Unit extends MapObject {
       case "size":
         this.size = toFloat(data);
         break;
-      case "sight":
+      case "level":
+        this.level = toInt(data);
+        break;
+      case "facingX":
+        this.facingX = toFloat(data);
+        break;
+      case "facingY":
+        this.facingY = toFloat(data);
+        break;
+      case "base_sight":
         this.base_sight = toFloat(data);
+        break;
+      case "base_speed":
+        this.base_speed = toFloat(data);
         break;
       default:
         println("ERROR: Datakey " + datakey + " not found for unit data.");
