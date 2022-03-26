@@ -96,6 +96,10 @@ class Unit extends MapObject {
   String description() {
     return this.description;
   }
+  String selectedObjectTextboxText() {
+    String text = "-- " + this.type() + " --";
+    return text + "\n\n" + this.description();
+  }
 
   void setLocation(float x, float y) {
     this.x = x;

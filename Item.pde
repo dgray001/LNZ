@@ -721,6 +721,10 @@ class Item extends MapObject {
   String description() {
     return this.description;
   }
+  String selectedObjectTextboxText() {
+    String text = "-- " + this.type() + " --";
+    return text + "\n\n" + this.description();
+  }
 
   void setLocation(float x, float y) {
     this.x = x;
@@ -769,10 +773,10 @@ class Item extends MapObject {
         path += "wasabi.png";
         break;
       case 2103:
-        path += "stuffing.png";
+        path += "stuffing.jpg";
         break;
       case 2104:
-        path += "catbarf.png";
+        path += "catbarf.jpg";
         break;
       case 2105:
         path += "ramen.png";

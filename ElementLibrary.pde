@@ -138,7 +138,7 @@ abstract class Button {
     }
   }
 
-  void mouseRelease() {
+  void mouseRelease(float mX, float mY) {
     if (this.disabled) {
       return;
     }
@@ -151,6 +151,7 @@ abstract class Button {
       this.release();
     }
     this.clicked = false;
+    this.mouseMove(mX, mY);
   }
 
   abstract float xCenter();
@@ -1157,6 +1158,12 @@ class ScrollBar {
     this.setLocation(xi, yi, xf, yf);
   }
 
+  void setButtonColors(color c_dis, color c_def, color c_hov, color c_cli, color c_tex) {
+    this.button_up.setColors(c_dis, c_def, c_hov, c_cli, c_tex);
+    this.button_down.setColors(c_dis, c_def, c_hov, c_cli, c_tex);
+    this.button_bar.setColors(c_dis, c_def, c_hov, c_cli, c_tex);
+  }
+
   void move(float xMove, float yMove) {
     this.xi += xMove;
     this.yi += yMove;
@@ -1318,12 +1325,12 @@ class ScrollBar {
     this.button_bar.mousePress();
   }
 
-  void mouseRelease() {
-    this.button_up.mouseRelease();
-    this.button_down.mouseRelease();
-    this.button_upspace.mouseRelease();
-    this.button_downspace.mouseRelease();
-    this.button_bar.mouseRelease();
+  void mouseRelease(float mX, float mY) {
+    this.button_up.mouseRelease(mX, mY);
+    this.button_down.mouseRelease(mX, mY);
+    this.button_upspace.mouseRelease(mX, mY);
+    this.button_downspace.mouseRelease(mX, mY);
+    this.button_bar.mouseRelease(mX, mY);
   }
 }
 
@@ -1602,7 +1609,7 @@ class TextBox {
         this.scrollbar_horizontal.mouseMove(mX, mY);
       }
     }
-    if (mX > this.xi && mX < this.xf && mY > this.yi && mY < this.yf) {
+    if (mX >= this.xi && mX <= this.xf && mY >= this.yi && mY <= this.yf) {
       this.hovered = true;
     }
     else {
@@ -1619,11 +1626,11 @@ class TextBox {
     }
   }
 
-  void mouseRelease() {
-    this.scrollbar.mouseRelease();
+  void mouseRelease(float mX, float mY) {
+    this.scrollbar.mouseRelease(mX, mY);
     if (!this.wordWrap) {
       if (this.scrollbar_horizontal.maxValue != this.scrollbar_horizontal.minValue) {
-        this.scrollbar_horizontal.mouseRelease();
+        this.scrollbar_horizontal.mouseRelease(mX, mY);
       }
     }
   }
@@ -1785,8 +1792,8 @@ abstract class ListTextBox extends TextBox {
   }
 
   @Override
-  void mouseRelease() {
-    super.mouseRelease();
+  void mouseRelease(float mX, float mY) {
+    super.mouseRelease(mX, mY);
     if (this.line_hovered < 0) {
       this.line_clicked = this.line_hovered;
     }
@@ -2528,8 +2535,8 @@ class Slider  {
     }
   }
 
-  void mouseRelease() {
-    this.button.mouseRelease();
+  void mouseRelease(float mX, float mY) {
+    this.button.mouseRelease(mX, mY);
   }
 
   void scroll(int amount) {
@@ -2585,7 +2592,7 @@ abstract class FormField {
   abstract FormFieldSubmit update(int millis);
   abstract void mouseMove(float mX, float mY);
   abstract void mousePress();
-  abstract void mouseRelease();
+  abstract void mouseRelease(float mX, float mY);
   abstract void keyPress();
   abstract void keyRelease();
   abstract void scroll(int amount);
@@ -2623,7 +2630,7 @@ class SpacerFormField extends FormField {
   }
   void mouseMove(float mX, float mY) {}
   void mousePress() {}
-  void mouseRelease() {}
+  void mouseRelease(float mX, float mY) {}
   void scroll(int amount) {}
   void keyPress() {}
   void keyRelease() {}
@@ -2716,7 +2723,7 @@ class MessageFormField extends FormField {
   }
 
   void mousePress() {}
-  void mouseRelease() {}
+  void mouseRelease(float mX, float mY) {}
   void scroll(int amount) {}
   void keyPress() {}
   void keyRelease() {}
@@ -2767,8 +2774,8 @@ class TextBoxFormField extends FormField {
     this.textbox.mousePress();
   }
 
-  void mouseRelease() {
-    this.textbox.mouseRelease();
+  void mouseRelease(float mX, float mY) {
+    this.textbox.mouseRelease(mX, mY);
   }
 
   void scroll(int amount) {
@@ -2831,8 +2838,8 @@ class StringFormField extends MessageFormField {
   }
 
   @Override
-  void mouseRelease() {
-    this.input.mouseRelease();
+  void mouseRelease(float mX, float mY) {
+    this.input.mouseRelease(mX, mY);
   }
 
   @Override
@@ -3044,9 +3051,9 @@ class RadiosFormField extends MessageFormField {
   }
 
   @Override
-  void mouseRelease() {
+  void mouseRelease(float mX, float mY) {
     for (RadioButton radio : this.radios) {
-      radio.mouseRelease();
+      radio.mouseRelease(mX, mY);
     }
   }
 }
@@ -3113,8 +3120,8 @@ class CheckboxFormField extends MessageFormField {
   }
 
   @Override
-  void mouseRelease() {
-    this.checkbox.mouseRelease();
+  void mouseRelease(float mX, float mY) {
+    this.checkbox.mouseRelease(mX, mY);
   }
 }
 
@@ -3245,10 +3252,10 @@ class SliderFormField extends MessageFormField {
   }
 
   @Override
-  void mouseRelease() {
-    this.slider.mouseRelease();
+  void mouseRelease(float mX, float mY) {
+    this.slider.mouseRelease(mX, mY);
     if (this.checkbox != null) {
-      this.checkbox.mouseRelease();
+      this.checkbox.mouseRelease(mX, mY);
     }
   }
 
@@ -3356,8 +3363,8 @@ class SubmitFormField extends FormField {
     this.button.mousePress();
   }
 
-  void mouseRelease() {
-    this.button.mouseRelease();
+  void mouseRelease(float mX, float mY) {
+    this.button.mouseRelease(mX, mY);
   }
 
   void scroll(int amount) {
@@ -3492,9 +3499,9 @@ class SubmitCancelFormField extends FormField {
     this.button2.mousePress();
   }
 
-  void mouseRelease() {
-    this.button1.mouseRelease();
-    this.button2.mouseRelease();
+  void mouseRelease(float mX, float mY) {
+    this.button1.mouseRelease(mX, mY);
+    this.button2.mouseRelease(mX, mY);
   }
 
   void scroll(int amount) {
@@ -3806,13 +3813,13 @@ abstract class Form {
     }
   }
 
-  void mouseRelease() {
-    this.scrollbar.mouseRelease();
+  void mouseRelease(float mX, float mY) {
+    this.scrollbar.mouseRelease(mX, mY);
     if (this.cancel != null) {
-      this.cancel.mouseRelease();
+      this.cancel.mouseRelease(mX, mY);
     }
     for (FormField field : this.fields) {
-      field.mouseRelease();
+      field.mouseRelease(mX, mY);
     }
     this.dragging = false;
   }
@@ -4374,8 +4381,8 @@ class Panel {
     }
   }
 
-  void mouseRelease() {
-    this.button.mouseRelease();
+  void mouseRelease(float mX, float mY) {
+    this.button.mouseRelease(mX, mY);
     this.clicked = false;
   }
 }

@@ -271,12 +271,12 @@ abstract class InterfaceLNZ {
     }
   }
 
-  void LNZ_mouseRelease() {
+  void LNZ_mouseRelease(float mX, float mY) {
     if (this.form == null) {
-      this.mouseRelease();
+      this.mouseRelease(mX, mY);
     }
     else {
-      this.form.mouseRelease();
+      this.form.mouseRelease(mX, mY);
     }
   }
 
@@ -310,7 +310,7 @@ abstract class InterfaceLNZ {
   abstract void update(int millis);
   abstract void mouseMove(float mX, float mY);
   abstract void mousePress();
-  abstract void mouseRelease();
+  abstract void mouseRelease(float mX, float mY);
   abstract void keyPress();
   abstract void keyRelease();
   abstract void scroll(int amount);
@@ -499,10 +499,10 @@ class InitialInterface extends InterfaceLNZ {
     }
   }
 
-  void mouseRelease() {
-    this.logo.mouseRelease();
+  void mouseRelease(float mX, float mY) {
+    this.logo.mouseRelease(mX, mY);
     for (InitialInterfaceButton button : this.buttons) {
-      button.mouseRelease();
+      button.mouseRelease(mX, mY);
     }
   }
 

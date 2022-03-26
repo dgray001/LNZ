@@ -22,6 +22,7 @@ class Global {
   private color color_background = color(180);
   private color color_nameDisplayed_background = color(100, 180);
   private color color_nameDisplayed_text = color(255);
+  private color color_panelBackground = color(160, 82, 45);
   // Profile
   private Profile profile;
 
