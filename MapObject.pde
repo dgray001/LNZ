@@ -45,6 +45,18 @@ abstract class MapObject {
     }
     return false;
   }
+  boolean inMapX(int mapWidth) {
+    if (this.xi() >= 0 && this.xf() <= mapWidth) {
+      return true;
+    }
+    return false;
+  }
+  boolean inMapY(int mapHeight) {
+    if (this.yi() >= 0 && this.yf() <= mapHeight) {
+      return true;
+    }
+    return false;
+  }
 
   boolean inView(float xStart, float yStart, float xEnd, float yEnd) {
     if (this.xi() >= xStart && this.yi() >= yStart && this.xf() <= xEnd && this.yf() <= yEnd) {
