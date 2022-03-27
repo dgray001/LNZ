@@ -1,5 +1,5 @@
 enum MapEditorPage {
-  MAPS, LEVELS, TERRAIN, FEATURES, UNITS, ITEMS, TESTMAP, OPENING_MAPEDITOR; // add level pages later
+  MAPS, LEVELS, TERRAIN, FEATURES, UNITS, ITEMS, TESTMAP, OPENING_MAPEDITOR, CREATING_MAP; // add level pages later
 }
 
 
@@ -473,13 +473,11 @@ class MapEditorInterface extends InterfaceLNZ {
         this.fields.get(2).setValue("A map with that name already exists");
         return;
       }
-      GameMapEditor newMap = new GameMapEditor(this.fields.get(1).getValue(),
+      MapEditorInterface.this.navigate(MapEditorPage.CREATING_MAP);
+      MapEditorInterface.this.create_map_thread = new NewMapThread(this.fields.get(1).getValue(),
         toInt(this.fields.get(4).getValue()), toInt(this.fields.get(6).getValue()));
-      newMap.save(sketchPath("data/maps/"));
-      newMap.initializeTerrain();
-      MapEditorInterface.this.setCurrMap(newMap);
+      MapEditorInterface.this.create_map_thread.start();
       this.canceled = true;
-      MapEditorInterface.this.listBox1.refresh();
     }
   }
 
@@ -572,6 +570,50 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
 
+  class NewMapThread extends Thread {
+    private GameMapEditor map_creating;
+    private String curr_status = "";
+    private String mapName = "";
+    private int mapWidth = 1;
+    private int mapHeight = 1;
+
+    NewMapThread(String mapName, int mapWidth, int mapHeight) {
+      this.mapName = mapName;
+      this.mapWidth = mapWidth;
+      this.mapHeight = mapHeight;
+    }
+
+    @Override
+    void run () {
+      this.curr_status = "Creating Map";
+      this.map_creating = new GameMapEditor();
+      this.map_creating.mapName = this.mapName;
+      this.map_creating.mapWidth = this.mapWidth;
+      this.map_creating.mapHeight = this.mapHeight;
+      this.map_creating.initializeSquares();
+      if (this.map_creating.nullify) {
+        this.curr_status += " -> " + global.last_error_message();
+        delay(2500);
+        return;
+      }
+      this.curr_status += "\nSaving Map";
+      this.map_creating.save(sketchPath("data/maps/"));
+      if (this.map_creating.nullify) {
+        this.curr_status += " -> " + global.last_error_message();
+        delay(2500);
+        return;
+      }
+      this.curr_status += "\nCreating Images";
+      this.map_creating.initializeTerrain();
+      if (this.map_creating.nullify) {
+        this.curr_status += " -> " + global.last_error_message();
+        delay(2500);
+        return;
+      }
+    }
+  }
+
+
   class OpenMapEditorThread extends Thread {
     private String mapName;
     private String folderPath;
@@ -628,6 +670,7 @@ class MapEditorInterface extends InterfaceLNZ {
   private Level curr_level;
 
   private OpenMapEditorThread open_mapEditor_thread;
+  private NewMapThread create_map_thread;
 
   MapEditorInterface() {
     this.buttons[0] = new MapEditorButton1();
@@ -672,6 +715,13 @@ class MapEditorInterface extends InterfaceLNZ {
         this.buttons[0].message = "";
         this.buttons[1].message = "Save\nMap";
         this.buttons[2].message = "Cancel\nMap";
+        break;
+      case OPENING_MAPEDITOR:
+      case CREATING_MAP:
+        this.listBox1.active = false;
+        this.buttons[0].message = "";
+        this.buttons[1].message = "";
+        this.buttons[2].message = "";
         break;
       default:
         global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
@@ -841,7 +891,7 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
   void openMapEditor(String mapName) {
-    this.page = MapEditorPage.OPENING_MAPEDITOR;
+    this.navigate(MapEditorPage.OPENING_MAPEDITOR);
     this.open_mapEditor_thread = new OpenMapEditorThread(mapName, sketchPath("data/maps/"));
     this.open_mapEditor_thread.start();
   }
@@ -936,6 +986,32 @@ class MapEditorInterface extends InterfaceLNZ {
   void update(int millis) {
     boolean refreshMapLocation = false;
     switch(this.page) {
+      case CREATING_MAP:
+        if (this.create_map_thread.isAlive()) {
+          fill(global.color_mapBorder);
+          rectMode(CORNERS);
+          rect(this.leftPanel.size_curr, 0, width - this.rightPanel.size_curr, height);
+          fill(global.color_loadingScreenBackground);
+          rect(this.leftPanel.size_curr + Constants.map_borderSize, Constants.map_borderSize,
+              width - this.rightPanel.size_curr - Constants.map_borderSize, height - Constants.map_borderSize);
+          fill(0);
+          textSize(24);
+          textAlign(LEFT, TOP);
+          text(this.create_map_thread.curr_status + " ...", this.leftPanel.size_curr +
+            Constants.map_borderSize + 30, Constants.map_borderSize + 30);
+        }
+        else {
+          if (this.create_map_thread.map_creating.nullify) {
+            this.curr_map = null;
+            this.navigate(MapEditorPage.MAPS);
+          }
+          else {
+            this.curr_map = this.create_map_thread.map_creating;
+            this.curr_map.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+            this.navigate(MapEditorPage.TERRAIN);
+          }
+        }
+        break;
       case OPENING_MAPEDITOR:
         if (this.open_mapEditor_thread.isAlive()) {
           fill(global.color_mapBorder);
