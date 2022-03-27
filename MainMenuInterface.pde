@@ -598,14 +598,14 @@ class MainMenuInterface extends InterfaceLNZ {
   }
 
 
-  class backgroundImageThread extends Thread {
+  class BackgroundImageThread extends Thread {
     private PImage img = createImage(width, height, ARGB);
     private float distance_threshhold = 150;
     private float mX = mouseX;
     private float mY = mouseY;
 
-    backgroundImageThread() {
-      super("backgroundImageThread");
+    BackgroundImageThread() {
+      super("BackgroundImageThread");
     }
 
     @Override
@@ -624,7 +624,7 @@ class MainMenuInterface extends InterfaceLNZ {
   private ProfileButton profile = new ProfileButton();
   private PImage backgroundImagePicture;
   private PImage backgroundImage;
-  private backgroundImageThread thread = new backgroundImageThread();
+  private BackgroundImageThread thread = new BackgroundImageThread();
 
   MainMenuInterface() {
     super();
@@ -697,7 +697,7 @@ class MainMenuInterface extends InterfaceLNZ {
     // restart thread
     if (!this.thread.isAlive()) {
       this.backgroundImage = this.thread.img;
-      this.thread = new backgroundImageThread();
+      this.thread = new BackgroundImageThread();
       this.thread.start();
     }
   }
