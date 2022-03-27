@@ -1,5 +1,5 @@
 enum MapEditorPage {
-  MAPS, LEVELS, TERRAIN, FEATURES, UNITS, ITEMS, TESTMAP; // add level pages later
+  MAPS, LEVELS, TERRAIN, FEATURES, UNITS, ITEMS, TESTMAP, OPENING_MAPEDITOR; // add level pages later
 }
 
 
@@ -247,7 +247,7 @@ class MapEditorInterface extends InterfaceLNZ {
           MapEditorInterface.this.deleteMap();
           break;
         default:
-          println("ERROR: Option index " + option + " not recognized.");
+          global.errorMessage("ERROR: Option index " + option + " not recognized.");
           break;
       }
       this.rightClickMenu = null;
@@ -358,7 +358,7 @@ class MapEditorInterface extends InterfaceLNZ {
         case TESTMAP:
           break;
         default:
-          println("ERROR: MapEditorPage " + page + " not found.");
+          global.errorMessage("ERROR: MapEditorPage " + page + " not found.");
           break;
       }
     }
@@ -385,7 +385,7 @@ class MapEditorInterface extends InterfaceLNZ {
         case ITEMS:
           break;
         default:
-          println("ERROR: MapEditorPage " + page + " not found.");
+          global.errorMessage("ERROR: MapEditorPage " + page + " not found.");
           break;
       }
     }
@@ -420,7 +420,7 @@ class MapEditorInterface extends InterfaceLNZ {
           }
           break;
         default:
-          println("ERROR: MapEditorPage " + page + " not found.");
+          global.errorMessage("ERROR: MapEditorPage " + page + " not found.");
           break;
       }
     }
@@ -476,6 +476,7 @@ class MapEditorInterface extends InterfaceLNZ {
       GameMapEditor newMap = new GameMapEditor(this.fields.get(1).getValue(),
         toInt(this.fields.get(4).getValue()), toInt(this.fields.get(6).getValue()));
       newMap.save(sketchPath("data/maps/"));
+      newMap.initializeTerrain();
       MapEditorInterface.this.setCurrMap(newMap);
       this.canceled = true;
       MapEditorInterface.this.listBox1.refresh();
@@ -571,6 +572,47 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
 
+  class OpenMapEditorThread extends Thread {
+    private String mapName;
+    private String folderPath;
+    private GameMapEditor map_opening;
+    private String curr_status = "";
+
+    OpenMapEditorThread(String mapName, String folderPath) {
+      super("OpenMapEditorThread");
+      this.mapName = mapName;
+      this.folderPath = folderPath;
+    }
+
+    @Override
+    void run() {
+      this.curr_status = "Opening File";
+      this.map_opening = new GameMapEditor();
+      this.map_opening.mapName = this.mapName;
+      String[] lines = this.map_opening.open1File(this.folderPath);
+      if (this.map_opening.nullify) {
+        this.curr_status += " -> " + global.last_error_message();
+        delay(2500);
+        return;
+      }
+      this.curr_status += "\nSetting Data";
+      this.map_opening.open2Data(lines);
+      if (this.map_opening.nullify) {
+        this.curr_status += " -> " + global.last_error_message();
+        delay(2500);
+        return;
+      }
+      this.curr_status += "\nCreating Images";
+      this.map_opening.initializeTerrain();
+      if (this.map_opening.nullify) {
+        this.curr_status += " -> " + global.last_error_message();
+        delay(2500);
+        return;
+      }
+    }
+  }
+
+
   private MapEditorPage page;
 
   private MapEditorButton[] buttons = new MapEditorButton[5];
@@ -584,6 +626,8 @@ class MapEditorInterface extends InterfaceLNZ {
 
   private GameMapEditor curr_map;
   private Level curr_level;
+
+  private OpenMapEditorThread open_mapEditor_thread;
 
   MapEditorInterface() {
     this.buttons[0] = new MapEditorButton1();
@@ -630,7 +674,7 @@ class MapEditorInterface extends InterfaceLNZ {
         this.buttons[2].message = "Cancel\nMap";
         break;
       default:
-        println("ERROR: MapEditorPage " + this.page + " not found.");
+        global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
         break;
     }
   }
@@ -675,7 +719,7 @@ class MapEditorInterface extends InterfaceLNZ {
       case TESTMAP:
         break;
       default:
-        println("ERROR: MapEditorPage " + this.page + " not found.");
+        global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
         break;
     }
   }
@@ -698,7 +742,7 @@ class MapEditorInterface extends InterfaceLNZ {
         this.saveMapTester();
         break;
       default:
-        println("ERROR: MapEditorPage " + this.page + " not found.");
+        global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
         break;
     }
   }
@@ -721,7 +765,7 @@ class MapEditorInterface extends InterfaceLNZ {
         this.closeMapTester();
         break;
       default:
-        println("ERROR: MapEditorPage " + this.page + " not found.");
+        global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
         break;
     }
   }
@@ -750,7 +794,7 @@ class MapEditorInterface extends InterfaceLNZ {
       case TESTMAP:
         break;
       default:
-        println("ERROR: MapEditorPage " + this.page + " not found.");
+        global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
         break;
     }
   }
@@ -786,25 +830,20 @@ class MapEditorInterface extends InterfaceLNZ {
 
   void renameMapFile(String mapName, String targetName) {
     if (!fileExists("data/maps/" + mapName + ".map.lnz")) {
-      println("ERROR: Can't rename map file that doesn't exist.");
+      global.errorMessage("ERROR: Can't rename map file that doesn't exist.");
       return;
     }
     if (fileExists("data/maps/" + targetName + ".map.lnz")) {
-      println("ERROR: Can't rename map file to a name that already exists.");
+      global.errorMessage("ERROR: Can't rename map file to a name that already exists.");
       return;
     }
     moveFile("data/maps/" + mapName + ".map.lnz", "data/maps/" + targetName + ".map.lnz");
   }
 
   void openMapEditor(String mapName) {
-    this.curr_map = new GameMapEditor(mapName, sketchPath("data/maps/"));
-    if (this.curr_map.nullify) {
-      this.curr_map = null;
-    }
-    else {
-      this.curr_map.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
-      this.navigate(MapEditorPage.TERRAIN);
-    }
+    this.page = MapEditorPage.OPENING_MAPEDITOR;
+    this.open_mapEditor_thread = new OpenMapEditorThread(mapName, sketchPath("data/maps/"));
+    this.open_mapEditor_thread.start();
   }
 
   void saveMapEditor() {
@@ -896,23 +935,53 @@ class MapEditorInterface extends InterfaceLNZ {
 
   void update(int millis) {
     boolean refreshMapLocation = false;
-    if (this.curr_level != null) {
-      this.curr_level.update(millis);
-      if (this.leftPanel.collapsing || this.rightPanel.collapsing) {
-        refreshMapLocation = true;
-      }
-    }
-    else if (this.curr_map != null) {
-      this.curr_map.update(millis);
-      if (this.leftPanel.collapsing || this.rightPanel.collapsing) {
-        refreshMapLocation = true;
-      }
-    }
-    else {
-      rectMode(CORNERS);
-      noStroke();
-      fill(color(60));
-      rect(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+    switch(this.page) {
+      case OPENING_MAPEDITOR:
+        if (this.open_mapEditor_thread.isAlive()) {
+          fill(global.color_mapBorder);
+          rectMode(CORNERS);
+          rect(this.leftPanel.size_curr, 0, width - this.rightPanel.size_curr, height);
+          fill(global.color_loadingScreenBackground);
+          rect(this.leftPanel.size_curr + Constants.map_borderSize, Constants.map_borderSize,
+              width - this.rightPanel.size_curr - Constants.map_borderSize, height - Constants.map_borderSize);
+          fill(0);
+          textSize(24);
+          textAlign(LEFT, TOP);
+          text(this.open_mapEditor_thread.curr_status + " ...", this.leftPanel.size_curr +
+            Constants.map_borderSize + 30, Constants.map_borderSize + 30);
+        }
+        else {
+          if (this.open_mapEditor_thread.map_opening.nullify) {
+            this.curr_map = null;
+            this.navigate(MapEditorPage.MAPS);
+          }
+          else {
+            this.curr_map = this.open_mapEditor_thread.map_opening;
+            this.curr_map.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+            this.navigate(MapEditorPage.TERRAIN);
+          }
+        }
+        break;
+      default:
+        if (this.curr_level != null) {
+          this.curr_level.update(millis);
+          if (this.leftPanel.collapsing || this.rightPanel.collapsing) {
+            refreshMapLocation = true;
+          }
+        }
+        else if (this.curr_map != null) {
+          this.curr_map.update(millis);
+          if (this.leftPanel.collapsing || this.rightPanel.collapsing) {
+            refreshMapLocation = true;
+          }
+        }
+        else {
+          rectMode(CORNERS);
+          noStroke();
+          fill(color(60));
+          rect(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+        }
+        break;
     }
     this.leftPanel.update(millis);
     this.rightPanel.update(millis);

@@ -107,7 +107,7 @@ class Unit extends MapObject {
         break;
 
       default:
-        println("ERROR: Unit ID " + ID + " not found.");
+        global.errorMessage("ERROR: Unit ID " + ID + " not found.");
         break;
     }
   }
@@ -206,7 +206,7 @@ class Unit extends MapObject {
         path += "zombie1.png";
         break;
       default:
-        println("ERROR: Unit ID " + ID + " not found.");
+        global.errorMessage("ERROR: Unit ID " + ID + " not found.");
         path += "default.png";
         break;
     }
@@ -298,14 +298,14 @@ class Unit extends MapObject {
         this.setFacing(1, 0);
         break;
       default:
-        println("ERROR: face direction " + direction + " not recognized.");
+        global.errorMessage("ERROR: face direction " + direction + " not recognized.");
         break;
     }
   }
   void setFacing(float facingX, float facingY) {
     float normConstant = sqrt(facingX * facingX + facingY * facingY);
     if (normConstant == 0) {
-      println("ERROR: cannot set facing to 0.");
+      global.errorMessage("ERROR: cannot set facing to 0.");
     }
     this.facingX = facingX / normConstant;
     this.facingY = facingY / normConstant;
@@ -475,7 +475,7 @@ class Unit extends MapObject {
         this.base_speed = toFloat(data);
         break;
       default:
-        println("ERROR: Datakey " + datakey + " not found for unit data.");
+        global.errorMessage("ERROR: Datakey " + datakey + " not found for unit data.");
         break;
     }
   }
