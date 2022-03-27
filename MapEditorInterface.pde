@@ -604,6 +604,7 @@ class MapEditorInterface extends InterfaceLNZ {
         return;
       }
       this.curr_status += "\nCreating Images";
+      global.images.loadMapGifs();
       this.map_creating.initializeTerrain();
       if (this.map_creating.nullify) {
         this.curr_status += " -> " + global.last_error_message();
@@ -645,6 +646,7 @@ class MapEditorInterface extends InterfaceLNZ {
         return;
       }
       this.curr_status += "\nCreating Images";
+      global.images.loadMapGifs();
       this.map_opening.initializeTerrain();
       if (this.map_opening.nullify) {
         this.curr_status += " -> " + global.last_error_message();
@@ -856,6 +858,7 @@ class MapEditorInterface extends InterfaceLNZ {
       this.form = new MessageForm("Test Map", "No map selected to test.");
     }
     else {
+      global.images.loadMapGifs();
       this.curr_level = new Level(new GameMap(mapName, sketchPath("data/maps/")));
       this.curr_level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
       this.navigate(MapEditorPage.TESTMAP);

@@ -688,6 +688,8 @@ class GameMap {
   protected boolean hovered = false; // hover map
   protected boolean hovered_area = false; // hover GameMap-given area
   protected boolean hovered_border = false; // hover border
+  protected boolean hovered_explored = false;
+  protected boolean hovered_visible = false;
   protected float mX = 0;
   protected float mY = 0;
   protected MapObject hovered_object;
@@ -700,7 +702,7 @@ class GameMap {
   protected HashMap<Integer, Item> items = new HashMap<Integer, Item>();
   protected int nextItemKey = 1;
   protected ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
-  //protected ArrayList<VisualEffect> visuals = new ArrayList<VisualEffect>();
+  protected ArrayList<VisualEffect> visualEffects = new ArrayList<VisualEffect>();
 
   protected Queue<HeaderMessage> headerMessages = new LinkedList<HeaderMessage>();
 
@@ -1032,6 +1034,32 @@ class GameMap {
     this.projectiles.remove(index);
   }
 
+  // add visual effect
+  void addVisualEffect(int id, float v_x, float v_y) {
+    VisualEffect v = new VisualEffect(id);
+    v.setLocation(v_x, v_y);
+    this.addVisualEffect(v);
+  }
+  void addVisualEffect(VisualEffect v) {
+    switch(v.ID) {
+      case 4001:
+        for (VisualEffect ve : this.visualEffects) {
+          if (ve.ID == 4001) {
+            ve.remove = true;
+          }
+        }
+        break;
+    }
+    this.visualEffects.add(v);
+  }
+  // remove visual effect
+  void removeVisualEffect(int index) {
+    if (index < 0 || index >= this.visualEffects.size()) {
+      return;
+    }
+    this.visualEffects.remove(index);
+  }
+
 
   void drawMap() {
     rectMode(CORNERS);
@@ -1048,7 +1076,7 @@ class GameMap {
     // display terrain
     imageMode(CORNERS);
     image(this.terrain_display, this.xi_map, this.yi_map, this.xf_map, this.yf_map);
-    if (this.hovered) {
+    if (this.hovered && this.hovered_explored) {
       try {
         nameDisplayed = this.squares[int(floor(this.mX))][int(floor(this.mY))].terrainName();
       } catch(ArrayIndexOutOfBoundsException e) {}
@@ -1095,6 +1123,19 @@ class GameMap {
     }
     // display projectiles
     // display visual effects
+    imageMode(CENTER);
+    for (VisualEffect v : this.visualEffects) {
+      float translateX = this.xi_map + (v.x - this.startSquareX) * this.zoom;
+      float translateY = this.yi_map + (v.y - this.startSquareY) * this.zoom;
+      translate(translateX, translateY);
+      if (v.scale_size) {
+        image(v.getImage(), 0, 0, v.size_width * this.zoom, v.size_height * this.zoom);
+      }
+      else {
+        image(v.getImage(), 0, 0, v.size_width, v.size_height);
+      }
+      translate(-translateX, -translateY);
+    }
     // name displayed
     if (this.hovered_object != null) {
       nameDisplayed = this.hovered_object.display_name();
@@ -1260,6 +1301,18 @@ class GameMap {
       }
     }
     // Update visual effects
+    for (int i = 0; i < this.visualEffects.size(); i++) {
+      if (this.visualEffects.get(i).remove) {
+        this.removeVisualEffect(i);
+        i--;
+        continue;
+      }
+      this.visualEffects.get(i).update(timeElapsed);
+      if (this.visualEffects.get(i).remove) {
+        this.removeVisualEffect(i);
+        i--;
+      }
+    }
   }
 
 
@@ -1307,6 +1360,13 @@ class GameMap {
       }
     }
     // Check visual effects
+    for (int i = 0; i < this.visualEffects.size(); i++) {
+      if (this.visualEffects.get(i).remove) {
+        this.removeVisualEffect(i);
+        i--;
+        continue;
+      }
+    }
   }
 
 
@@ -1322,6 +1382,14 @@ class GameMap {
     if (this.selected_object != null) {
       this.selected_object_textbox.mouseMove(mX, mY);
     }
+    if (this.draw_fog) {
+      this.hovered_explored = false;
+      this.hovered_visible = false;
+    }
+    else {
+      this.hovered_explored = true;
+      this.hovered_visible = true;
+    }
     if (mX > this.xi_map && mY > this.yi_map && mX < this.xf_map && mY < this.yf_map) {
       this.hovered = true;
       this.hovered_area = true;
@@ -1330,9 +1398,22 @@ class GameMap {
       this.mY = this.startSquareY + (mY - this.yi_map) / this.zoom;
       // update hovered for map objects
       this.hovered_object = null;
+      try {
+        if (!this.draw_fog || this.squares[int(floor(this.mX))][int(floor(this.mY))].visible) {
+          hovered_explored = true;
+          hovered_visible = true;
+        }
+        else if (!this.draw_fog || this.squares[int(floor(this.mX))][int(floor(this.mY))].explored) {
+          hovered_explored = true;
+        }
+      } catch(ArrayIndexOutOfBoundsException e) {}
       for (Feature f : this.features) {
         f.mouseMove(this.mX, this.mY);
         if (f.hovered) {
+          if (!hovered_explored) {
+            f.hovered = false;
+            continue;
+          }
           this.hovered_object = f;
         }
       }
@@ -1340,7 +1421,7 @@ class GameMap {
         Unit u = entry.getValue();
         u.mouseMove(this.mX, this.mY);
         if (u.hovered) {
-          if (this.draw_fog && !this.squares[int(floor(u.x))][int(floor(u.y))].visible) {
+          if (!hovered_visible) {
             u.hovered = false;
             continue;
           }
@@ -1351,7 +1432,7 @@ class GameMap {
         Item i = entry.getValue();
         i.mouseMove(this.mX, this.mY);
         if (i.hovered) {
-          if (this.draw_fog && !this.squares[int(floor(i.x))][int(floor(i.y))].visible) {
+          if (!hovered_visible) {
             i.hovered = false;
             continue;
           }
@@ -1366,6 +1447,8 @@ class GameMap {
     else {
       this.hovered = false;
       this.hovered_object = null;
+      this.hovered_explored = false;
+      this.hovered_visible = false;
       if (mX > this.xi && mY > this.yi && mX < this.xf && mY < this.yf) {
         this.hovered_area = true;
         this.mX = this.startSquareX + (mX - this.xi_map) / this.zoom;
@@ -1415,6 +1498,7 @@ class GameMap {
       case RIGHT:
         if (this.units.containsKey(0)) {
           this.units.get(0).moveTo(this.mX, this.mY);
+          this.addVisualEffect(4001, this.mX, this.mY);
         }
         break;
       case CENTER:

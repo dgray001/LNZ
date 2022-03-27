@@ -1,6 +1,7 @@
 class Images {
   private HashMap<String, PImage> imgs = new HashMap<String, PImage>();
   private String basePath = sketchPath("data/images/");
+  private boolean loaded_map_gifs = false;
 
   Images() {}
 
@@ -9,16 +10,30 @@ class Images {
       return this.imgs.get(filePath);
     }
     else {
-      PImage img = loadImage(this.basePath + filePath);
-      if (img == null) {
-        println("ERROR: Missing image " + filePath + ".");
-        this.imgs.put(filePath, this.getBlackPixel());
-        return this.getBlackPixel();
-      }
-      else {
-        this.imgs.put(filePath, img);
-        return img;
-      }
+      this.loadImageFile(filePath);
+      return this.imgs.get(filePath);
+    }
+  }
+
+  void loadImageFile(String filePath) {
+    PImage img = loadImage(this.basePath + filePath);
+    if (img == null) {
+      println("ERROR: Missing image " + filePath + ".");
+      this.imgs.put(filePath, this.getBlackPixel());
+    }
+    else {
+      this.imgs.put(filePath, img);
+    }
+  }
+
+  void loadMapGifs() {
+    if (this.loaded_map_gifs) {
+      return;
+    }
+    this.loaded_map_gifs = true;
+    // move gif
+    for (int i = 0; i <= Constants.gif_move_frames; i++) {
+      this.loadImageFile("gifs/move/" + i + ".png");
     }
   }
 
