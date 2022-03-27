@@ -707,7 +707,7 @@ class Item extends MapObject {
         break;
 
       default:
-        println("ERROR: Item ID " + ID + " not found.");
+        global.errorMessage("ERROR: Item ID " + ID + " not found.");
         break;
     }
   }
@@ -1342,7 +1342,7 @@ class Item extends MapObject {
         path += "chainsaw.png";
         break;
       default:
-        println("ERROR: Item ID " + ID + " not found.");
+        global.errorMessage("ERROR: Item ID " + ID + " not found.");
         path += "default.png";
         break;
     }
@@ -1371,7 +1371,7 @@ class Item extends MapObject {
         this.size = toFloat(data);
         break;
       default:
-        println("ERROR: Datakey " + datakey + " not found for item data.");
+        global.errorMessage("ERROR: Datakey " + datakey + " not found for item data.");
         break;
     }
   }

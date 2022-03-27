@@ -146,7 +146,7 @@ class GameMapSquare {
       this.base_elevation = 100;
     }
     else {
-      println("ERROR: Terrain ID " + id + " not found.");
+      global.errorMessage("ERROR: Terrain ID " + id + " not found.");
     }
   }
 
@@ -670,8 +670,8 @@ class GameMap {
   protected float yi = 0;
   protected float xf = 0;
   protected float yf = 0;
-  protected color color_border = color(60);
-  protected color color_background = color(20);
+  protected color color_border = global.color_mapBackground;
+  protected color color_background = global.color_mapBorder;
 
   protected float xi_map = 0;
   protected float yi_map = 0;
@@ -704,6 +704,7 @@ class GameMap {
 
   protected Queue<HeaderMessage> headerMessages = new LinkedList<HeaderMessage>();
 
+  GameMap() {}
   GameMap(GameMapCode code, String folderPath) {
     this.code = code;
     this.mapName = GameMapCode.display_name(code);
@@ -728,9 +729,20 @@ class GameMap {
         this.squares[i][j] = new GameMapSquare();
       }
     }
+  }
+
+
+  void initializeTerrain() {
     this.terrain_dimg = new DImg(this.mapWidth * Constants.map_terrainResolution, this.mapHeight * Constants.map_terrainResolution);
     this.terrain_dimg.setGrid(this.mapWidth, this.mapHeight);
-    this.terrain_dimg.colorPixels(color(20));
+    for (int i = 0; i < this.mapWidth; i++) {
+      for (int j = 0; j < this.mapHeight; j++) {
+        this.terrain_dimg.addImageGrid(this.squares[i][j].terrainImage(), i, j);
+      }
+    }
+    for (Feature f : this.features) {
+      this.terrain_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.sizeX, f.sizeY);
+    }
     this.fog_dimg = new DImg(this.mapWidth * Constants.map_fogResolution, this.mapHeight * Constants.map_fogResolution);
     this.fog_dimg.setGrid(this.mapWidth, this.mapHeight);
     this.setFogHandling(this.fogHandling);
@@ -779,7 +791,7 @@ class GameMap {
         }
         break;
       default:
-        println("ERROR: Fog handling " + fogHandling.name + " not recognized.");
+        global.errorMessage("ERROR: Fog handling " + fogHandling.name + " not recognized.");
         break;
     }
     this.refreshFogImage();
@@ -862,7 +874,9 @@ class GameMap {
   void setTerrain(int id, int x, int y, boolean refreshImage) {
     try {
       this.squares[x][y].setTerrain(id);
-      this.terrain_dimg.addImageGrid(this.squares[x][y].terrainImage(), x, y);
+      if (this.terrain_dimg != null) {
+        this.terrain_dimg.addImageGrid(this.squares[x][y].terrainImage(), x, y);
+      }
       if (refreshImage) {
         this.refreshDisplayImages();
       }
@@ -923,7 +937,9 @@ class GameMap {
         this.squares[i][j].feature_elevation += f.sizeZ;
       }
     }
-    this.terrain_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.sizeX, f.sizeY);
+    if (this.terrain_dimg != null) {
+      this.terrain_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.sizeX, f.sizeY);
+    }
     if (refreshImage) {
       this.refreshTerrainImage();
     }
@@ -1500,6 +1516,12 @@ class GameMap {
 
 
   void open(String folderPath) {
+    this.open2Data(this.open1File(folderPath));
+    this.initializeTerrain();
+  }
+
+
+  String[] open1File(String folderPath) {
     String[] lines;
     String path;
     if (this.code == GameMapCode.ERROR) {
@@ -1510,11 +1532,14 @@ class GameMap {
     }
     lines = loadStrings(path);
     if (lines == null) {
-      println("ERROR: Reading map at path " + path + " but no file exists.");
+      global.errorMessage("ERROR: Reading map at path " + path + " but no file exists.");
       this.nullify = true;
-      return;
     }
+    return lines;
+  }
 
+
+  void open2Data(String[] lines) {
     Stack<ReadFileObject> object_queue = new Stack<ReadFileObject>();
 
     Feature curr_feature = null;
@@ -1543,7 +1568,7 @@ class GameMap {
             break;
           case FEATURE:
             if (parameters.length < 3) {
-              println("ERROR: Feature ID missing in Feature constructor.");
+              global.errorMessage("ERROR: Feature ID missing in Feature constructor.");
               break;
             }
             object_queue.push(type);
@@ -1551,7 +1576,7 @@ class GameMap {
             break;
           case UNIT:
             if (parameters.length < 3) {
-              println("ERROR: Unit ID missing in Unit constructor.");
+              global.errorMessage("ERROR: Unit ID missing in Unit constructor.");
               break;
             }
             object_queue.push(type);
@@ -1559,7 +1584,7 @@ class GameMap {
             break;
           case ITEM:
             if (parameters.length < 3) {
-              println("ERROR: Item ID missing in Item constructor.");
+              global.errorMessage("ERROR: Item ID missing in Item constructor.");
               break;
             }
             object_queue.push(type);
@@ -1567,7 +1592,7 @@ class GameMap {
             break;
           case PROJECTILE:
             if (parameters.length < 3) {
-              println("ERROR: Projectile ID missing in Projectile constructor.");
+              global.errorMessage("ERROR: Projectile ID missing in Projectile constructor.");
               break;
             }
             object_queue.push(type);
@@ -1580,7 +1605,7 @@ class GameMap {
       else if (dataname.equals("end")) {
         ReadFileObject type = ReadFileObject.objectType(data);
         if (object_queue.empty()) {
-          println("ERROR: Tring to end a " + type.name + " object but not inside any object.");
+          global.errorMessage("ERROR: Tring to end a " + type.name + " object but not inside any object.");
         }
         else if (type.name.equals(object_queue.peek().name)) {
           switch(object_queue.pop()) {
@@ -1588,14 +1613,14 @@ class GameMap {
               return;
             case FEATURE:
               if (curr_feature == null) {
-                println("ERROR: Trying to end a null feature.");
+                global.errorMessage("ERROR: Trying to end a null feature.");
               }
               this.addFeature(curr_feature, false);
               curr_feature = null;
               break;
             case UNIT:
               if (curr_unit == null) {
-                println("ERROR: Trying to end a null unit.");
+                global.errorMessage("ERROR: Trying to end a null unit.");
               }
               if (this.nextUnitKey > max_unit_key) {
                 max_unit_key = this.nextUnitKey;
@@ -1605,7 +1630,7 @@ class GameMap {
               break;
             case ITEM:
               if (curr_item == null) {
-                println("ERROR: Trying to end a null item.");
+                global.errorMessage("ERROR: Trying to end a null item.");
               }
               if (this.nextItemKey > max_item_key) {
                 max_item_key = this.nextItemKey;
@@ -1615,7 +1640,7 @@ class GameMap {
               break;
             case PROJECTILE:
               if (curr_projectile == null) {
-                println("ERROR: Trying to end a null projectile.");
+                global.errorMessage("ERROR: Trying to end a null projectile.");
               }
               this.addProjectile(curr_projectile);
               curr_projectile = null;
@@ -1625,7 +1650,7 @@ class GameMap {
           }
         }
         else {
-          println("ERROR: Tring to end a " + type.name + " object while inside a " + object_queue.peek().name + " object.");
+          global.errorMessage("ERROR: Tring to end a " + type.name + " object while inside a " + object_queue.peek().name + " object.");
         }
       }
       else {
@@ -1635,25 +1660,25 @@ class GameMap {
             break;
           case FEATURE:
             if (curr_feature == null) {
-              println("ERROR: Trying to add feature data to null feature.");
+              global.errorMessage("ERROR: Trying to add feature data to null feature.");
             }
             curr_feature.addData(dataname, data);
             break;
           case UNIT:
             if (curr_unit == null) {
-              println("ERROR: Trying to add unit data to null unit.");
+              global.errorMessage("ERROR: Trying to add unit data to null unit.");
             }
             curr_unit.addData(dataname, data);
             break;
           case ITEM:
             if (curr_item == null) {
-              println("ERROR: Trying to add item data to null item.");
+              global.errorMessage("ERROR: Trying to add item data to null item.");
             }
             curr_item.addData(dataname, data);
             break;
           case PROJECTILE:
             if (curr_projectile == null) {
-              println("ERROR: Trying to add projectile data to null projectile.");
+              global.errorMessage("ERROR: Trying to add projectile data to null projectile.");
             }
             curr_projectile.addData(dataname, data);
             break;
@@ -1682,7 +1707,7 @@ class GameMap {
       case "dimensions":
         String[] dimensions = split(data, ',');
         if (dimensions.length < 2) {
-          println("ERROR: Map missing dimensions in data: " + data + ".");
+          global.errorMessage("ERROR: Map missing dimensions in data: " + data + ".");
           this.mapWidth = 1;
           this.mapHeight = 1;
         }
@@ -1695,19 +1720,19 @@ class GameMap {
       case "terrain":
         String[] data_split = split(data, ':');
         if (data_split.length < 2) {
-          println("ERROR: Terrain missing dimension in data: " + data + ".");
+          global.errorMessage("ERROR: Terrain missing dimension in data: " + data + ".");
           break;
         }
         String[] terrain_dimensions = split(data_split[0], ',');
         if (terrain_dimensions.length < 2) {
-          println("ERROR: Terrain dimensions missing dimension in data: " + data + ".");
+          global.errorMessage("ERROR: Terrain dimensions missing dimension in data: " + data + ".");
           break;
         }
         int terrain_x = toInt(trim(terrain_dimensions[0]));
         int terrain_y = toInt(trim(terrain_dimensions[1]));
         String[] terrain_values = split(data_split[1], ',');
         if (terrain_values.length < 3) {
-          println("ERROR: Terrain values missing dimension in data: " + data + ".");
+          global.errorMessage("ERROR: Terrain values missing dimension in data: " + data + ".");
           break;
         }
         int terrain_id = toInt(trim(terrain_values[0]));
@@ -1725,7 +1750,7 @@ class GameMap {
         this.nextItemKey = toInt(data);
         break;
       default:
-        println("ERROR: Datakey " + datakey + " not recognized for GameMap object.");
+        global.errorMessage("ERROR: Datakey " + datakey + " not recognized for GameMap object.");
         break;
     }
   }
@@ -1741,6 +1766,10 @@ class GameMapEditor extends GameMap {
 
   protected boolean draw_grid = true;
 
+  GameMapEditor() {
+    super();
+    this.draw_fog = false;
+  }
   GameMapEditor(GameMapCode code, String folderPath) {
     super(code, folderPath);
     this.draw_fog = false;

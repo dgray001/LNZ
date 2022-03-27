@@ -13,6 +13,7 @@ class Global {
   private Configuration configuration = new Configuration();
   private PImage cursor;
   private boolean holding_shift = false;
+  private Deque<String> error_messages = new ArrayDeque<String>();
   // FPS
   private int lastFrameTime = millis();
   private float lastFPS = Constants.maxFPS;
@@ -23,6 +24,9 @@ class Global {
   private color color_nameDisplayed_background = color(100, 180);
   private color color_nameDisplayed_text = color(255);
   private color color_panelBackground = color(160, 82, 45);
+  private color color_loadingScreenBackground = color(222, 185, 140);
+  private color color_mapBorder = color(20);
+  private color color_mapBackground = color(20);
   // Profile
   private Profile profile;
 
@@ -30,12 +34,24 @@ class Global {
     this.images = new Images();
     this.sounds = new Sounds(thisInstance);
     this.cursor = this.images.getImage("icons/cursor_default.png");
+    this.error_messages.push("None"); // prevent EmptyStackException
   }
 
   int frame() {
     int elapsed = millis() - this.lastFrameTime;
     this.lastFrameTime = millis();
     return elapsed;
+  }
+
+  String last_error_message() {
+    if (this.error_messages.peek().equals("None")) {
+      return "";
+    }
+    return this.error_messages.peek();
+  }
+
+  void errorMessage(String message) {
+    this.error_messages.push(message);
   }
 
   void keyPressFX2D() {
