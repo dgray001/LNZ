@@ -17,6 +17,7 @@ class Unit extends MapObject {
 
   protected float facingX = 1;
   protected float facingY = 0;
+  protected float facingA = 0; // angle in radians
 
   protected float base_sight = Constants.unit_defaultSight;
   protected float base_speed = 0;
@@ -47,6 +48,7 @@ class Unit extends MapObject {
       // Heroes
       case 1101:
         this.setStrings("Ben Nelson", "Hero", "");
+        this.baseStats(2);
         break;
       case 1102:
         this.setStrings("Daniel Gray", "Hero", "");
@@ -309,6 +311,18 @@ class Unit extends MapObject {
     }
     this.facingX = facingX / normConstant;
     this.facingY = facingY / normConstant;
+    this.facingA = (float)Math.atan2(this.facingY, this.facingX);
+  }
+
+  float facingAngle() {
+    return this.facingA;
+  }
+
+
+  void moveTo(float targetX, float targetY) {
+    this.curr_action = UnitAction.MOVING;
+    this.curr_action_x = targetX;
+    this.curr_action_y = targetY;
   }
 
 
@@ -393,9 +407,10 @@ class Unit extends MapObject {
 
   // returns true if collision occurs
   boolean collisionLogicX(float tryMoveX, int myKey, GameMap map) {
+    float startX = this.x;
     this.x += tryMoveX;
-    if (!this.inMap(map.mapWidth, map.mapHeight)) {
-      this.x -= tryMoveX;
+    if (!this.inMapX(map.mapWidth)) {
+      this.x = startX;
       return true;
     }
     // terrain collisions
@@ -405,9 +420,10 @@ class Unit extends MapObject {
 
   // returns true if collision occurs
   boolean collisionLogicY(float tryMoveY, int myKey, GameMap map) {
+    float startY = this.y;
     this.y += tryMoveY;
-    if (!this.inMap(map.mapWidth, map.mapHeight)) {
-      this.y -= tryMoveY;
+    if (!this.inMapY(map.mapHeight)) {
+      this.y = startY;
       return true;
     }
     // terrain collisions
@@ -424,11 +440,8 @@ class Unit extends MapObject {
           this.timer_ai_action -= timeElapsed;
           if (this.timer_ai_action < 0) {
             this.timer_ai_action = int(Constants.ai_chickenTimer + random(Constants.ai_chickenTimer));
-            this.curr_action = UnitAction.MOVING;
-            this.curr_action_x = this.x + Constants.ai_chickenMoveDistance -
-              2 * random(Constants.ai_chickenMoveDistance);
-            this.curr_action_y = this.y + Constants.ai_chickenMoveDistance -
-              2 * random(Constants.ai_chickenMoveDistance);
+            this.moveTo(this.x + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance),
+              this.curr_action_y = this.y + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance));
           }
         }
         break;

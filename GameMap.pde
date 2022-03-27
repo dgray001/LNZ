@@ -1067,8 +1067,11 @@ class GameMap {
       }
       float translateX = this.xi_map + (u.x - this.startSquareX) * this.zoom;
       float translateY = this.yi_map + (u.y - this.startSquareY) * this.zoom;
+      float rotationAngle = u.facingAngle();
       translate(translateX, translateY);
+      rotate(rotationAngle);
       image(u.getImage(), 0, 0, u.width() * this.zoom, u.height() * this.zoom);
+      rotate(-rotationAngle);
       translate(-translateX, -translateY);
     }
     // display items
@@ -1365,6 +1368,8 @@ class GameMap {
       this.hovered_object = null;
       if (mX > this.xi && mY > this.yi && mX < this.xf && mY < this.yf) {
         this.hovered_area = true;
+        this.mX = this.startSquareX + (mX - this.xi_map) / this.zoom;
+        this.mY = this.startSquareY + (mY - this.yi_map) / this.zoom;
         if (mX < this.xi + Constants.map_borderSize || mX > this.xf - Constants.map_borderSize ||
           mY < this.yi + Constants.map_borderSize || mY > this.yf - Constants.map_borderSize) {
           this.hovered_border = true;
@@ -1408,7 +1413,9 @@ class GameMap {
         this.selectHoveredObject();
         break;
       case RIGHT:
-        // move player unit
+        if (this.units.containsKey(0)) {
+          this.units.get(0).moveTo(this.mX, this.mY);
+        }
         break;
       case CENTER:
         break;
