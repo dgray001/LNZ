@@ -4,8 +4,8 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220326: v0.6.3r" +
-  "\nLines: 12590 (v0.6.3q)" +
+  "\n20220326: v0.6.3s" +
+  "\nLines: 12660 (v0.6.3s)" +
   "";
   static final String version_history =
   "Liberal Nazi Zombies" +
@@ -103,6 +103,8 @@ static class Constants {
   static final float item_defaultSize = 0.25;
   static final int item_bounceConstant = 800;
   static final float item_bounceOffset = 0.15;
+  static final int item_starPieceFrames = 4;
+  static final float item_starPieceAnimationTime = 450;
 
   // Projectiles
   static final float projectile_defaultSize = 0.25;

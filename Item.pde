@@ -140,19 +140,19 @@ class Item extends MapObject {
         this.tier = 2;
         break;
       case 2312:
-        this.setStrings("M1911", "Ranged Weapon", "");
+        this.setStrings("M1911", "Ranged Weapon", "Semi-automatic with medium capacity and power. Effective at close range.");
         this.tier = 2;
         break;
       case 2321:
-        this.setStrings("War Machine", "Ranged Weapon", "");
+        this.setStrings("War Machine", "Ranged Weapon", "6 round semi-automatic grenade launcher.");
         this.tier = 3;
         break;
       case 2322:
-        this.setStrings("Five-Seven", "Ranged Weapon", "");
+        this.setStrings("Five-Seven", "Ranged Weapon", "Semi-automatic pistol. Versatile and strong overall with a large magazine.");
         this.tier = 3;
         break;
       case 2323:
-        this.setStrings("Type25", "Ranged Weapon", "");
+        this.setStrings("Type25", "Ranged Weapon", "Fully automatic assault rifle. High rate of fire with moderate recoil.");
         this.tier = 3;
         break;
       case 2331:
@@ -160,15 +160,15 @@ class Item extends MapObject {
         this.tier = 4;
         break;
       case 2332:
-        this.setStrings("FAL", "Ranged Weapon", "");
+        this.setStrings("FAL", "Ranged Weapon", "Fully automatic assault rifle with high damage. Effective at medium to long range.");
         this.tier = 4;
         break;
       case 2333:
-        this.setStrings("Python", "Ranged Weapon", "");
+        this.setStrings("Python", "Ranged Weapon", "The Python .357 magnum revolver. No thank you, I have reproductive organs of my own.");
         this.tier = 4;
         break;
       case 2341:
-        this.setStrings("RPG", "Ranged Weapon", "");
+        this.setStrings("RPG", "Ranged Weapon", "Free-fire shoulder mounted rocket launcher.");
         this.tier = 5;
         break;
       case 2342:
@@ -184,11 +184,11 @@ class Item extends MapObject {
         this.tier = 5;
         break;
       case 2345:
-        this.setStrings("Executioner", "Ranged Weapon", "");
+        this.setStrings("Executioner", "Ranged Weapon", "Double-action revolver pistol. Fires 28 gauge shotgun shells.");
         this.tier = 5;
         break;
       case 2351:
-        this.setStrings("Galil", "Ranged Weapon", "");
+        this.setStrings("Galil", "Ranged Weapon", "Fully automatic assault rifle. Effective at medium to long range.");
         this.tier = 6;
         break;
       case 2352:
@@ -196,7 +196,7 @@ class Item extends MapObject {
         this.tier = 6;
         break;
       case 2353:
-        this.setStrings("Ballistic Knife", "Ranged Weapon", "");
+        this.setStrings("Ballistic Knife", "Ranged Weapon", "Spring-action knife launcher. Increases melee speed and can fire the blade as a projectile.");
         this.tier = 6;
         break;
       case 2354:
@@ -204,11 +204,11 @@ class Item extends MapObject {
         this.tier = 6;
         break;
       case 2355:
-        this.setStrings("MTAR", "Ranged Weapon", "");
+        this.setStrings("MTAR", "Ranged Weapon", "Fully automatic assault rifle. Versatile and strong overall.");
         this.tier = 6;
         break;
       case 2361:
-        this.setStrings("RPD", "Ranged Weapon", "");
+        this.setStrings("RPD", "Ranged Weapon", "Fully automatic with good power and quick fire rate. Effective at medium to long range.");
         this.tier = 7;
         break;
       case 2362:
@@ -220,15 +220,15 @@ class Item extends MapObject {
         this.tier = 7;
         break;
       case 2364:
-        this.setStrings("Vioce of Justice", "Ranged Weapon", "");
+        this.setStrings("Voice of Justice", "Ranged Weapon", "");
         this.tier = 7;
         break;
       case 2371:
-        this.setStrings("HAMR", "Ranged Weapon", "");
+        this.setStrings("HAMR", "Ranged Weapon", "Fully automatic LMG. Reduces recoil during sustained fire.");
         this.tier = 8;
         break;
       case 2372:
-        this.setStrings("Ray Gun", "Ranged Weapon", "");
+        this.setStrings("Ray Gun", "Ranged Weapon", "It's weird, but it works.");
         this.tier = 8;
         break;
       case 2373:
@@ -248,7 +248,7 @@ class Item extends MapObject {
         this.tier = 9;
         break;
       case 2382:
-        this.setStrings("Dead Speciemen Reactor 5000", "Ranged Weapon", "");
+        this.setStrings("Dead Specimen Reactor 5000", "Ranged Weapon", "");
         this.tier = 9;
         break;
       case 2391:
@@ -488,7 +488,7 @@ class Item extends MapObject {
         this.setStrings("Talc", "Material", "");
         break;
       case 2802:
-        this.setStrings("Glass", "Material", "");
+        this.setStrings("Broken Glass", "Material", "");
         break;
       case 2803:
         this.setStrings("Wire", "Material", "");
@@ -1155,7 +1155,7 @@ class Item extends MapObject {
         path += "talc.png";
         break;
       case 2802:
-        path += "glass.png";
+        path += "broken_glass.png";
         break;
       case 2803:
         path += "wire.png";
@@ -1170,7 +1170,10 @@ class Item extends MapObject {
         path += "calcite.png";
         break;
       case 2822:
-        path += "star_piece.png";
+        int frame = constrain(int(floor(Constants.item_starPieceFrames * (millis() %
+          Constants.item_starPieceAnimationTime) / Constants.item_starPieceAnimationTime)),
+          0, Constants.item_starPieceFrames - 1);
+        path += "star_piece_" + frame + ".png";
         break;
       case 2831:
         path += "fluorite.png";
