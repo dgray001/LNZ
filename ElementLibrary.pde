@@ -19,6 +19,7 @@ abstract class Button {
   protected float stroke_weight = 0.5;
   protected boolean stay_dehovered = false;
   protected boolean adjust_for_text_descent = false;
+  protected boolean hover_check_after_release = true;
   // timer
   protected int hold_timer = 0;
   protected int lastUpdateTime = millis();
@@ -151,7 +152,9 @@ abstract class Button {
       this.release();
     }
     this.clicked = false;
-    this.mouseMove(mX, mY);
+    if (this.hover_check_after_release) {
+      this.mouseMove(mX, mY);
+    }
   }
 
   abstract float xCenter();
@@ -3818,8 +3821,16 @@ abstract class Form {
     if (this.cancel != null) {
       this.cancel.mouseRelease(mX, mY);
     }
-    for (FormField field : this.fields) {
-      field.mouseRelease(mX, mY);
+    mX -= this.xi + 1;
+    mY -= this.yStart;
+    float currY = this.yStart;
+    for (int i = int(floor(this.scrollbar.value)); i < this.fields.size(); i++) {
+      if (currY + this.fields.get(i).getHeight() > this.yf) {
+        break;
+      }
+      this.fields.get(i).mouseRelease(mX, mY);
+      mY -= this.fields.get(i).getHeight() + this.fieldCushion;
+      currY += this.fields.get(i).getHeight() + this.fieldCushion;
     }
     this.dragging = false;
   }
@@ -4077,6 +4088,7 @@ class Panel {
       this.setColors(color(220), color(1, 0), color(170, 80), color(170, 180), color(0));
       this.noStroke();
       this.roundness = 0;
+      this.hover_check_after_release = false;
     }
 
     @Override
