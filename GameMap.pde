@@ -488,6 +488,72 @@ class GameMapSquare {
 
 
 
+class Rectangle {
+  private String mapName;
+  private float xi;
+  private float yi;
+  private float xf;
+  private float yf;
+
+  Rectangle(String mapName, float xi, float yi, float xf, float yf) {
+    this.mapName = mapName;
+    if (xf < xi) {
+      this.xi = xf;
+      this.xf = xi;
+    }
+    else {
+      this.xi = xi;
+      this.xf = xf;
+    }
+    if (yf < yi) {
+      this.yi = yf;
+      this.yf = yi;
+    }
+    else {
+      this.yi = yi;
+      this.yf = yf;
+    }
+  }
+
+  boolean touching(MapObject object, String object_map_name) {
+    if (!this.mapName.equals(object_map_name)) {
+      return false;
+    }
+    if (object.xf() >= this.xi && object.yf() >= this.yi &&
+      object.xi() <= this.xf && object.yi() <= this.yf) {
+      return true;
+    }
+    return false;
+  }
+  boolean touching(MapObject object) {
+    if (object.xf() >= this.xi && object.yf() >= this.yi &&
+      object.xi() <= this.xf && object.yi() <= this.yf) {
+      return true;
+    }
+    return false;
+  }
+
+  boolean contains(MapObject object, String object_map_name) {
+    if (!this.mapName.equals(object_map_name)) {
+      return false;
+    }
+    if (object.xi() >= this.xi && object.yi() >= this.yi &&
+      object.xf() <= this.xf && object.yf() <= this.yf) {
+      return true;
+    }
+    return false;
+  }
+  boolean contains(MapObject object) {
+    if (object.xi() >= this.xi && object.yi() >= this.yi &&
+      object.xf() <= this.xf && object.yf() <= this.yf) {
+      return true;
+    }
+    return false;
+  }
+}
+
+
+
 class GameMap {
 
   class HeaderMessage {
@@ -637,6 +703,35 @@ class GameMap {
         color(1, 0), color(0), color(0));
       this.scrollbar.button_up.raised_border = false;
       this.scrollbar.button_down.raised_border = false;
+    }
+  }
+
+
+
+  abstract class ConfirmForm extends FormLNZ {
+    protected boolean canceled = false;
+
+    ConfirmForm(String title, String message) {
+      super(0.5 * (width - Constants.mapEditor_formWidth_small), 0.5 * (height - Constants.mapEditor_formHeight_small),
+        0.5 * (width + Constants.mapEditor_formWidth_small), 0.5 * (height + Constants.mapEditor_formHeight_small));
+      this.setTitleText(title);
+      this.setTitleSize(18);
+      this.color_background = color(180, 250, 180);
+      this.color_header = color(30, 170, 30);
+
+      SubmitCancelFormField submit = new SubmitCancelFormField("  Ok  ", "Cancel");
+      submit.button1.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+      submit.button2.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+      this.addField(new SpacerFormField(0));
+      this.addField(new TextBoxFormField(message, 120));
+      this.addField(submit);
+    }
+
+    @Override
+    void cancel() {
+      this.canceled = true;
     }
   }
 
@@ -1850,12 +1945,53 @@ class GameMap {
 
 
 class GameMapEditor extends GameMap {
+  class ConfirmDeleteForm extends ConfirmForm {
+    ConfirmDeleteForm() {
+      super("Confirm Delete", "Are you sure you want to delete all the map " +
+        "objects (features, units, items) in the rectangle?");
+    }
+    @Override
+    void submit() {
+      if (GameMapEditor.this.rectangle_dropping != null) {
+        // Delete features
+        for (Feature f : GameMapEditor.this.features) {
+          if (GameMapEditor.this.rectangle_dropping.contains(f)) {
+            f.remove = true;
+          }
+        }
+        // Delete units
+        Iterator unit_iterator = GameMapEditor.this.units.entrySet().iterator();
+        while(unit_iterator.hasNext()) {
+          Map.Entry<Integer, Unit> entry = (Map.Entry<Integer, Unit>)unit_iterator.next();
+          if (GameMapEditor.this.rectangle_dropping.contains(entry.getValue())) {
+            entry.getValue().remove = true;
+          }
+        }
+        // Delete items
+        Iterator item_iterator = GameMapEditor.this.items.entrySet().iterator();
+        while(item_iterator.hasNext()) {
+          Map.Entry<Integer, Item> entry = (Map.Entry<Integer, Item>)item_iterator.next();
+          if (GameMapEditor.this.rectangle_dropping.contains(entry.getValue())) {
+            entry.getValue().remove = true;
+          }
+        }
+      }
+      GameMapEditor.this.rectangle_dropping = null;
+      this.canceled = true;
+    }
+  }
+
+
   protected boolean dropping_terrain = false;
+  protected boolean dragging_terrain = false;
   protected int terrain_id = 0;
   protected MapObject dropping_object;
   protected MapObject prev_dropping_object;
-
   protected boolean draw_grid = true;
+  protected boolean rectangle_mode = false;
+  protected Rectangle rectangle_dropping = null;
+  protected boolean drawing_rectangle = false;
+  protected ConfirmForm confirm_form;
 
   GameMapEditor() {
     super();
@@ -1883,6 +2019,13 @@ class GameMapEditor extends GameMap {
 
   @Override
   void update(int millis) {
+    if (this.confirm_form != null) {
+      this.confirm_form.update(millis);
+      if (this.confirm_form.canceled) {
+        this.confirm_form = null;
+      }
+      return;
+    }
     int timeElapsed = millis - this.lastUpdateTime;
     // check map object removals
     this.updateMapCheckObjectRemovalOnly();
@@ -1907,6 +2050,20 @@ class GameMapEditor extends GameMap {
           text("(" + i + ", " + j + ")", x + 1, y + 1);
         }
       }
+    }
+    // draw rectangle dropping
+    if (this.rectangle_mode && this.rectangle_dropping != null) {
+      fill(170, 100);
+      rectMode(CORNERS);
+      noStroke();
+      float rect_xi = max(this.startSquareX, this.rectangle_dropping.xi);
+      float rect_yi = max(this.startSquareY, this.rectangle_dropping.yi);
+      float rect_xf = min(this.startSquareX + this.visSquareX, this.rectangle_dropping.xf);
+      float rect_yf = min(this.startSquareY + this.visSquareY, this.rectangle_dropping.yf);
+      rect(this.xi_map + (rect_xi - this.startSquareX) * this.zoom,
+        this.yi_map + (rect_yi - this.startSquareY) * this.zoom,
+        this.xi_map + (rect_xf - this.startSquareX) * this.zoom,
+        this.yi_map + (rect_yf - this.startSquareY) * this.zoom);
     }
     // draw object dropping
     if (this.hovered_area) {
@@ -1935,7 +2092,27 @@ class GameMapEditor extends GameMap {
   }
 
   @Override
+  void mouseMove(float mX, float mY) {
+    if (this.confirm_form != null) {
+      this.confirm_form.mouseMove(mX, mY);
+      return;
+    }
+    super.mouseMove(mX, mY);
+    if (this.drawing_rectangle) {
+      this.rectangle_dropping.xf = this.mX;
+      this.rectangle_dropping.yf = this.mY;
+    }
+    if (this.dragging_terrain) {
+      this.setTerrain(this.terrain_id, int(floor(this.mX)), int(floor(this.mY)));
+    }
+  }
+
+  @Override
   void mousePress() {
+    if (this.confirm_form != null) {
+      this.confirm_form.mousePress();
+      return;
+    }
     if (this.headerMessages.peek() != null) {
       this.headerMessages.peek().mousePress();
     }
@@ -1947,8 +2124,14 @@ class GameMapEditor extends GameMap {
         this.selectHoveredObject();
         break;
       case RIGHT:
+        if (this.rectangle_mode) {
+          this.rectangle_dropping = new Rectangle(this.mapName, this.mX, this.mY, this.mX, this.mY);
+          this.drawing_rectangle = true;
+          break;
+        }
         if (this.dropping_terrain) {
           this.setTerrain(this.terrain_id, int(floor(this.mX)), int(floor(this.mY)));
+          this.dragging_terrain = true;
         }
         else if (this.dropping_object == null) { // erase
           if (this.hovered_object != null) {
@@ -1975,6 +2158,7 @@ class GameMapEditor extends GameMap {
         break;
       case CENTER:
         if (this.dropping_terrain) {
+          this.dragging_terrain = false;
           this.dropping_terrain = false;
           this.dropping_object = null;
           this.prev_dropping_object = null;
@@ -1993,7 +2177,70 @@ class GameMapEditor extends GameMap {
   }
 
   @Override
+  void mouseRelease(float mX, float mY) {
+    if (this.confirm_form != null) {
+      this.confirm_form.mouseRelease(mX, mY);
+      return;
+    }
+    super.mouseRelease(mX, mY);
+    switch(mouseButton) {
+      case LEFT:
+        break;
+      case RIGHT:
+        this.dragging_terrain = false;
+        this.drawing_rectangle = false;
+        if (this.rectangle_mode && this.rectangle_dropping != null) {
+          if (this.dropping_terrain) {
+            for (int i = int(floor(this.rectangle_dropping.xi)); i < int(ceil(this.rectangle_dropping.xf)); i++) {
+              for (int j = int(floor(this.rectangle_dropping.yi)); j < int(ceil(this.rectangle_dropping.yf)); j++) {
+                this.setTerrain(this.terrain_id, i, j);
+              }
+            }
+            this.rectangle_dropping = null;
+          }
+          else if (this.dropping_object != null) {
+            if (Feature.class.isInstance(this.dropping_object)) {
+              for (int i = int(floor(this.rectangle_dropping.xi)); i < int(ceil(this.rectangle_dropping.xf)); i += this.dropping_object.width()) {
+                for (int j = int(floor(this.rectangle_dropping.yi)); j < int(ceil(this.rectangle_dropping.yf)); j += this.dropping_object.height()) {
+                  this.dropping_object.setLocation(i, j);
+                  this.addFeature((Feature)this.dropping_object);
+                  this.dropping_object = new Feature(this.dropping_object.ID);
+                }
+              }
+            }
+            else if (Unit.class.isInstance(this.dropping_object)) {
+              // no support for unit rectangle adding
+            }
+            else if (Item.class.isInstance(this.dropping_object)) {
+              // no support for item rectangle adding
+            }
+            this.rectangle_dropping = null;
+          }
+          else {
+            this.confirm_form = new ConfirmDeleteForm();
+          }
+        }
+        break;
+      case CENTER:
+        break;
+    }
+  }
+
+  @Override
+  void scroll(int amount) {
+    if (this.confirm_form != null) {
+      this.confirm_form.scroll(amount);
+      return;
+    }
+    super.scroll(amount);
+  }
+
+  @Override
   void keyPress() {
+    if (this.confirm_form != null) {
+      this.confirm_form.keyPress();
+      return;
+    }
     if (key == CODED) {
       switch(keyCode) {
         case LEFT:
@@ -2030,12 +2277,26 @@ class GameMapEditor extends GameMap {
             this.headerMessages.add(new HeaderMessage("Hiding Fog"));
           }
           break;
+        case 'c':
+          this.rectangle_mode = !this.rectangle_mode;
+          this.drawing_rectangle = false;
+          if (this.rectangle_mode) {
+            this.headerMessages.add(new HeaderMessage("Rectangle Mode on"));
+          }
+          else {
+            this.headerMessages.add(new HeaderMessage("Rectangle Mode off"));
+          }
+          break;
       }
     }
   }
 
   @Override
   void keyRelease() {
+    if (this.confirm_form != null) {
+      this.confirm_form.keyRelease();
+      return;
+    }
     if (key == CODED) {
       switch(keyCode) {
         case LEFT:
