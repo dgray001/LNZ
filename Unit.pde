@@ -8,13 +8,30 @@ enum MoveModifier {
 }
 
 
-enum Color {
+enum Element {
   GRAY("Gray"), BLUE("Blue"), RED("Red"), CYAN("Cyan"), ORANGE("Orange"),
     BROWN("Brown"), PURPLE("Purple"), YELLOW("Yellow"), MAGENTA("Magenta");
 
-  String color_name;
-  Color(String color_name) {
-    this.color_name = color_name;
+  private static final List<Element> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+
+  private String element_name;
+  private Element(String element_name) {
+    this.element_name = element_name;
+  }
+  public String element_name() {
+    return this.element_name;
+  }
+  public static String element_name(Element element) {
+    return element.element_name();
+  }
+
+  public static Element element(String element_name) {
+    for (Element element : Element.VALUES) {
+      if (element.element_name().equals(element_name)) {
+        return element;
+      }
+    }
+    return Element.GRAY;
   }
 }
 
@@ -22,25 +39,59 @@ enum Color {
 enum Alliance {
   NONE("None"), BEN("Ben"), ZOMBIE("Zombie");
 
-  String alliance_name;
-  Alliance(String alliance_name) {
+  private static final List<Alliance> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+
+  private String alliance_name;
+  private Alliance(String alliance_name) {
     this.alliance_name = alliance_name;
+  }
+  public String alliance_name() {
+    return this.alliance_name;
+  }
+  public static String alliance_name(Alliance alliance) {
+    return alliance.alliance_name();
+  }
+
+  public static Alliance alliance(String alliance_name) {
+    for (Alliance alliance : Alliance.VALUES) {
+      if (alliance.alliance_name().equals(alliance_name)) {
+        return alliance;
+      }
+    }
+    return Alliance.NONE;
   }
 }
 
 
 enum StatusEffectCode {
-  NONE("None");
+  ERROR("Error");
 
-  String code_name;
-  StatusEffectCode(String code_name) {
+  private static final List<StatusEffectCode> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+
+  private String code_name;
+  private StatusEffectCode(String code_name) {
     this.code_name = code_name;
+  }
+  public String code_name() {
+    return this.code_name;
+  }
+  public static String code_name(StatusEffectCode code) {
+    return code.code_name();
+  }
+
+  public static StatusEffectCode code(String code_name) {
+    for (StatusEffectCode code : StatusEffectCode.VALUES) {
+      if (code.code_name().equals(code_name)) {
+        return code;
+      }
+    }
+    return StatusEffectCode.ERROR;
   }
 }
 
 
 class StatusEffect {
-  private StatusEffectCode code = StatusEffectCode.NONE;
+  private StatusEffectCode code = StatusEffectCode.ERROR;
 }
 
 
@@ -50,6 +101,7 @@ class Unit extends MapObject {
   protected int sizeZ = Constants.unit_defaultHeight;
 
   protected int level = 0;
+  protected Alliance alliance = Alliance.NONE;
 
   protected float facingX = 1;
   protected float facingY = 0;
@@ -83,12 +135,14 @@ class Unit extends MapObject {
         this.setStrings("Chicken", "Gaia", "");
         this.baseStats(1);
         this.level = 1;
+        this.sizeZ = 2;
         break;
 
       // Heroes
       case 1101:
         this.setStrings("Ben Nelson", "Hero", "");
         this.baseStats(2);
+        this.alliance = Alliance.BEN;
         break;
       case 1102:
         this.setStrings("Daniel Gray", "Hero", "");
@@ -110,42 +164,52 @@ class Unit extends MapObject {
       case 1201:
         this.setStrings("Broken Sick Zombie", "Zombie", "");
         this.level = 1;
+        this.alliance = Alliance.ZOMBIE;
         break;
       case 1202:
         this.setStrings("Broken Zombie", "Zombie", "");
         this.level = 2;
+        this.alliance = Alliance.ZOMBIE;
         break;
       case 1203:
         this.setStrings("Sick Zombie", "Zombie", "");
         this.level = 3;
+        this.alliance = Alliance.ZOMBIE;
         break;
       case 1204:
         this.setStrings("Lazy Hungry Zombie", "Zombie", "");
         this.level = 4;
+        this.alliance = Alliance.ZOMBIE;
         break;
       case 1205:
         this.setStrings("Lazy Zombie", "Zombie", "");
         this.level = 5;
+        this.alliance = Alliance.ZOMBIE;
         break;
       case 1206:
         this.setStrings("Hungry Zombie", "Zombie", "");
         this.level = 6;
+        this.alliance = Alliance.ZOMBIE;
         break;
       case 1207:
         this.setStrings("Confused Franny Zombie", "Zombie", "");
         this.level = 7;
+        this.alliance = Alliance.ZOMBIE;
         break;
       case 1208:
         this.setStrings("Confused Zombie", "Zombie", "");
         this.level = 8;
+        this.alliance = Alliance.ZOMBIE;
         break;
       case 1209:
         this.setStrings("Franny Zombie", "Zombie", "");
         this.level = 9;
+        this.alliance = Alliance.ZOMBIE;
         break;
       case 1210:
         this.setStrings("Intellectual Zombie", "Zombie", "");
         this.level = 10;
+        this.alliance = Alliance.ZOMBIE;
         break;
 
       default:
@@ -472,6 +536,24 @@ class Unit extends MapObject {
       return true;
     }
     // unit collisions
+    for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
+      Unit u = entry.getValue();
+      if (u.alliance == this.alliance) {
+        continue;
+      }
+      if (this.zf() <= u.zi() || u.zf() <= this.zi()) {
+        continue;
+      }
+      float distance_to = this.distance(u);
+      if (distance_to > 0) {
+        continue;
+      }
+      if ( (this.x > u.x && this.facingX > 0) || (this.x < u.x && this.facingX < 0) ) {
+        continue;
+      }
+      this.x = startX;
+      return true;
+    }
     return false;
   }
 
@@ -490,7 +572,33 @@ class Unit extends MapObject {
       return true;
     }
     // unit collisions
+    for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
+      Unit u = entry.getValue();
+      if (u.alliance == this.alliance) {
+        continue;
+      }
+      if (this.zf() <= u.zi() || u.zf() <= this.zi()) {
+        continue;
+      }
+      float distance_to = this.distance(u);
+      if (distance_to > 0) {
+        continue;
+      }
+      if ( (this.y > u.y && this.facingY > 0) || (this.y < u.y && this.facingY < 0) ) {
+        continue;
+      }
+      this.y = startY;
+      return true;
+    }
     return false;
+  }
+
+
+  int zi() {
+    return this.curr_height;
+  }
+  int zf() {
+    return this.curr_height + this.sizeZ;
   }
 
 
@@ -526,10 +634,12 @@ class Unit extends MapObject {
     fileString += this.objectFileString();
     fileString += "\nsize: " + this.size;
     fileString += "\nlevel: " + this.level;
+    fileString += "\nalliance: " + this.alliance.alliance_name();
     fileString += "\nfacingX: " + this.facingX;
     fileString += "\nfacingY: " + this.facingY;
     fileString += "\nbase_sight: " + this.base_sight;
     fileString += "\nbase_speed: " + this.base_speed;
+    fileString += "\nbase_agility: " + this.base_agility;
     fileString += "\nend: Unit\n";
     return fileString;
   }
@@ -545,6 +655,9 @@ class Unit extends MapObject {
       case "level":
         this.level = toInt(data);
         break;
+      case "alliance":
+        this.alliance = Alliance.alliance(data);
+        break;
       case "facingX":
         this.facingX = toFloat(data);
         break;
@@ -556,6 +669,9 @@ class Unit extends MapObject {
         break;
       case "base_speed":
         this.base_speed = toFloat(data);
+        break;
+      case "base_agility":
+        this.base_agility = toInt(data);
         break;
       default:
         global.errorMessage("ERROR: Datakey " + datakey + " not found for unit data.");

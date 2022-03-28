@@ -6,7 +6,7 @@ enum GameMapCode {
   public String display_name() {
     return GameMapCode.display_name(this);
   }
-  static public String display_name(GameMapCode a) {
+  public static String display_name(GameMapCode a) {
     switch(a) {
       case HOMEBASE:
         return "Home Base";
@@ -24,7 +24,7 @@ enum GameMapCode {
   public String file_name() {
     return GameMapCode.file_name(this);
   }
-  static public String file_name(GameMapCode a) {
+  public static String file_name(GameMapCode a) {
     switch(a) {
       case HOMEBASE:
         return "HOMEBASE";
@@ -39,7 +39,7 @@ enum GameMapCode {
     }
   }
 
-  static public GameMapCode gameMapCode(String display_name) {
+  public static GameMapCode gameMapCode(String display_name) {
     for (GameMapCode code : GameMapCode.VALUES) {
       if (code == GameMapCode.ERROR) {
         continue;
@@ -66,7 +66,7 @@ enum ReadFileObject {
     this.name = name;
   }
 
-  static public ReadFileObject objectType(String name) {
+  public static ReadFileObject objectType(String name) {
     for (ReadFileObject type : ReadFileObject.VALUES) {
       if (type == ReadFileObject.NONE) {
         continue;
@@ -92,7 +92,7 @@ enum MapFogHandling {
     this.name = name;
   }
 
-  static public MapFogHandling fogHandling(String name) {
+  public static MapFogHandling fogHandling(String name) {
     for (MapFogHandling fogH : MapFogHandling.VALUES) {
       if (fogH.name.equals(name)) {
         return fogH;
@@ -104,7 +104,7 @@ enum MapFogHandling {
   public boolean show_fog() {
     return MapFogHandling.show_fog(this);
   }
-  static public boolean show_fog(MapFogHandling fogHandling) {
+  public static boolean show_fog(MapFogHandling fogHandling) {
     switch(fogHandling) {
       case NONE:
       case NOFOG:
@@ -1214,10 +1214,15 @@ class GameMap {
       } catch(ArrayIndexOutOfBoundsException e) {}
     }
     // display units
+    boolean display_player = false;
     imageMode(CENTER);
     Iterator unit_iterator = this.units.entrySet().iterator();
     while(unit_iterator.hasNext()) {
       Map.Entry<Integer, Unit> entry = (Map.Entry<Integer, Unit>)unit_iterator.next();
+      if (entry.getKey() == 0) {
+        display_player = true;
+        continue;
+      }
       Unit u = entry.getValue();
       if (!u.inView(this.startSquareX, this.startSquareY, this.startSquareX + this.visSquareX, this.startSquareY + this.visSquareY)) {
         continue;
@@ -1225,14 +1230,10 @@ class GameMap {
       if (this.draw_fog && !this.squares[int(floor(u.x))][int(floor(u.y))].visible) {
         continue;
       }
-      float translateX = this.xi_map + (u.x - this.startSquareX) * this.zoom;
-      float translateY = this.yi_map + (u.y - this.startSquareY) * this.zoom;
-      float rotationAngle = u.facingAngle();
-      translate(translateX, translateY);
-      rotate(rotationAngle);
-      image(u.getImage(), 0, 0, u.width() * this.zoom, u.height() * this.zoom);
-      rotate(-rotationAngle);
-      translate(-translateX, -translateY);
+      this.displayUnit(u);
+    }
+    if (display_player) {
+      this.displayUnit(this.units.get(0));
     }
     // display items
     imageMode(CENTER);
@@ -1307,6 +1308,18 @@ class GameMap {
     if (this.headerMessages.peek() != null) {
       this.headerMessages.peek().drawMessage();
     }
+  }
+
+
+  void displayUnit(Unit u) {
+    float translateX = this.xi_map + (u.x - this.startSquareX) * this.zoom;
+    float translateY = this.yi_map + (u.y - this.startSquareY) * this.zoom;
+    float rotationAngle = u.facingAngle();
+    translate(translateX, translateY);
+    rotate(rotationAngle);
+    image(u.getImage(), 0, 0, u.width() * this.zoom, u.height() * this.zoom);
+    rotate(-rotationAngle);
+    translate(-translateX, -translateY);
   }
 
 
