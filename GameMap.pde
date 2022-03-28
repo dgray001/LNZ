@@ -134,7 +134,7 @@ class GameMapSquare {
   void setTerrain(int id) {
     this.terrain_id = id;
     if (id > 300) { // stairs
-      this.base_elevation = 0;
+      this.base_elevation = 3;
     }
     else if (id > 200) { // walls
       this.base_elevation = 100;
@@ -148,6 +148,43 @@ class GameMapSquare {
     else {
       global.errorMessage("ERROR: Terrain ID " + id + " not found.");
     }
+  }
+
+  int elevation(boolean moving_onto) {
+    int net_elevation = this.base_elevation + this.feature_elevation;
+    switch(this.terrain_id) {
+      case 301:
+      case 302:
+      case 303:
+      case 304:
+      case 305:
+      case 306:
+      case 307:
+      case 308:
+      case 309:
+      case 310:
+      case 311:
+      case 312:
+      case 313:
+      case 314:
+      case 315:
+      case 316:
+      case 317:
+      case 318:
+      case 319:
+      case 320:
+      case 321:
+      case 322:
+      case 323:
+      case 324:
+        if (moving_onto) {
+          net_elevation -= 3;
+        }
+        break;
+      default:
+        break;
+    }
+    return net_elevation;
   }
 
   String terrainName() {
@@ -1408,6 +1445,21 @@ class GameMap {
         i--;
       }
     }
+  }
+
+
+  // return max height from list of map squares
+  int maxHeightOfSquares(ArrayList<IntegerCoordinate> coordinates, boolean moving_onto) {
+    int max_height = -100;
+    for (IntegerCoordinate coordinate : coordinates) {
+      try {
+        int square_elevation = this.squares[coordinate.x][coordinate.y].elevation(moving_onto);
+        if (square_elevation > max_height) {
+          max_height = square_elevation;
+        }
+      } catch(ArrayIndexOutOfBoundsException e) {}
+    }
+    return max_height;
   }
 
 

@@ -1,3 +1,14 @@
+class IntegerCoordinate {
+  private int x;
+  private int y;
+  IntegerCoordinate(int x, int y) {
+    this.x = x;
+    this.y = y;
+  }
+}
+
+
+
 abstract class MapObject {
   protected int ID = 0;
   protected String display_name = "-- Error --";
@@ -87,6 +98,17 @@ abstract class MapObject {
         return true;
     }
     return false;
+  }
+
+  // returns arraylist of squares the unit is on
+  ArrayList<IntegerCoordinate> getSquaresOn() {
+    ArrayList<IntegerCoordinate> squares_on = new ArrayList<IntegerCoordinate>();
+    for (int i = int(floor(this.xi())); i < int(ceil(this.xf())); i++) {
+      for (int j = int(floor(this.yi())); j < int(ceil(this.yf())); j++) {
+        squares_on.add(new IntegerCoordinate(i, j));
+      }
+    }
+    return squares_on;
   }
 
   abstract PImage getImage();

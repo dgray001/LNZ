@@ -8,6 +8,42 @@ enum MoveModifier {
 }
 
 
+enum Color {
+  GRAY("Gray"), BLUE("Blue"), RED("Red"), CYAN("Cyan"), ORANGE("Orange"),
+    BROWN("Brown"), PURPLE("Purple"), YELLOW("Yellow"), MAGENTA("Magenta");
+
+  String color_name;
+  Color(String color_name) {
+    this.color_name = color_name;
+  }
+}
+
+
+enum Alliance {
+  NONE("None"), BEN("Ben"), ZOMBIE("Zombie");
+
+  String alliance_name;
+  Alliance(String alliance_name) {
+    this.alliance_name = alliance_name;
+  }
+}
+
+
+enum StatusEffectCode {
+  NONE("None");
+
+  String code_name;
+  StatusEffectCode(String code_name) {
+    this.code_name = code_name;
+  }
+}
+
+
+class StatusEffect {
+  private StatusEffectCode code = StatusEffectCode.NONE;
+}
+
+
 
 class Unit extends MapObject {
   protected float size = Constants.unit_defaultSize; // radius
@@ -21,7 +57,8 @@ class Unit extends MapObject {
 
   protected float base_sight = Constants.unit_defaultSight;
   protected float base_speed = 0;
-  // base other stats: health, attack, magic, defense, resistance, piercing, penetration, agility, tenacity
+  protected int base_agility = 1;
+  // base other stats: health, attack, magic, defense, resistance, piercing, penetration, tenacity
 
   protected UnitAction curr_action = UnitAction.NONE;
   protected int curr_action_id = 0;
@@ -29,6 +66,9 @@ class Unit extends MapObject {
   protected float curr_action_y = 0;
   protected float last_move_distance = 0;
   protected boolean last_move_collision = false;
+
+  protected ArrayList<IntegerCoordinate> curr_squares_on = new ArrayList<IntegerCoordinate>(); // squares unit is on
+  protected int curr_height = 0; // highest height from the squares_on
 
   protected int timer_ai_action = 0;
 
@@ -224,6 +264,10 @@ class Unit extends MapObject {
     return this.base_speed;
   }
 
+  int agility() {
+    return this.base_agility;
+  }
+
 
   void update(int timeElapsed, int myKey, GameMap map) {
     // timers
@@ -349,6 +393,13 @@ class Unit extends MapObject {
     this.moveX(tryMoveX, myKey, map);
     // move in y direction
     this.moveY(tryMoveY, myKey, map);
+    // calculates squares_on and height
+    this.curr_squares_on = this.getSquaresOn();
+    int new_height = map.maxHeightOfSquares(this.curr_squares_on, false);
+    if (new_height < this.curr_height) {
+      // calculate fall damage
+    }
+    this.curr_height = new_height;
     // move stat
     float moveX = this.x - startX;
     float moveY = this.y - startY;
@@ -409,11 +460,17 @@ class Unit extends MapObject {
   boolean collisionLogicX(float tryMoveX, int myKey, GameMap map) {
     float startX = this.x;
     this.x += tryMoveX;
+    // map collisions
     if (!this.inMapX(map.mapWidth)) {
       this.x = startX;
       return true;
     }
     // terrain collisions
+    int new_height = map.maxHeightOfSquares(this.getSquaresOn(), true);
+    if (!this.canMoveUp(new_height - this.curr_height)) {
+      this.x = startX;
+      return true;
+    }
     // unit collisions
     return false;
   }
@@ -427,8 +484,21 @@ class Unit extends MapObject {
       return true;
     }
     // terrain collisions
+    int new_height = map.maxHeightOfSquares(this.getSquaresOn(), true);
+    if (!this.canMoveUp(new_height - this.curr_height)) {
+      this.y = startY;
+      return true;
+    }
     // unit collisions
     return false;
+  }
+
+
+  boolean canMoveUp(int height_difference) {
+    if (height_difference > this.agility()) {
+      return false;
+    }
+    return true;
   }
 
 
