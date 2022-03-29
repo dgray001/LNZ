@@ -56,7 +56,8 @@ class Linker {
 
 
 class Level {
-  protected String filePath; // to level folder
+  protected String folderPath; // to level folder
+  protected String levelName = "error";
   protected Location location = Location.ERROR;
   protected boolean nullify = false;
 
@@ -77,18 +78,21 @@ class Level {
 
   Level() {
   }
-  Level(String filePath) {
-    this.filePath = filePath;
-    this.open(true);
+  Level(String folderPath, String levelName) {
+    this.folderPath = folderPath;
+    this.levelName = levelName;
+    this.open();
   }
-  Level(String filePath, Location location) {
-    this.filePath = filePath;
+  Level(String folderPath, Location location) {
+    this.folderPath = folderPath;
     this.location = location;
-    this.open(true);
+    this.levelName = location.display_name();
+    this.open();
   }
   // test map
   Level(GameMap testMap) {
-    this.filePath = "";
+    this.folderPath = "";
+    this.levelName = testMap.mapName;
     this.currMap = testMap;
     this.currMapName = testMap.mapName;
     this.player = new Hero(HeroCode.BEN);
@@ -175,17 +179,20 @@ class Level {
   }
 
 
-  void save(boolean curr_save) {
-    String folderPath = this.filePath;
-    if (this.location != Location.ERROR) {
-      folderPath += "/" + this.location.file_name();
+  void save() {
+    String finalFolderPath = this.folderPath;
+    if (this.location == Location.ERROR) {
+      finalFolderPath += "/" + this.levelName;
     }
-    if (curr_save) {
-      folderPath += "/currSave";
+    else {
+      finalFolderPath += "/" + this.location.file_name();
     }
-    PrintWriter file = createWriter(folderPath + "/level.lnz");
+    if (!folderExists(finalFolderPath)) {
+      mkdir(finalFolderPath);
+    };
+    PrintWriter file = createWriter(finalFolderPath + "/level.lnz");
     file.println("new: Level");
-    file.println("filePath: " + this.filePath);
+    file.println("levelName: " + this.levelName);
     file.println("location: " + this.location.file_name());
     if (this.currMapName != null) {
       file.println("currMapName: " + this.currMapName);
@@ -209,29 +216,29 @@ class Level {
     file.flush();
     file.close();
     if (this.currMap != null) {
-      this.currMap.save(folderPath);
+      this.currMap.save(finalFolderPath);
     }
   }
 
 
-  void open(boolean curr_save) {
-    this.open2Data(this.open1File(curr_save));
-    //this.openCurrMap();
+  void open() {
+    this.open2Data(this.open1File());
+    //this.openCurrMap(); (maybe not have this here and put in separate function called in interface) => check renameLEvel function
   }
 
 
-  String[] open1File(boolean curr_save) {
-    String folderPath = this.filePath;
-    if (this.location != Location.ERROR) {
-      folderPath += "/" + this.location.file_name();
+  String[] open1File() {
+    String finalFolderPath = this.folderPath;
+    if (this.location == Location.ERROR) {
+      finalFolderPath += "/" + this.levelName;
     }
-    if (curr_save && folderExists(folderPath += "/currSave")) {
-      folderPath += "/currSave";
+    else {
+      finalFolderPath += "/" + this.location.file_name();
     }
     String[] lines;
-    lines = loadStrings(folderPath + "/level.lnz");
+    lines = loadStrings(finalFolderPath + "/level.lnz");
     if (lines == null) {
-      global.errorMessage("ERROR: Reading level at path " + folderPath + " but no level file exists.");
+      global.errorMessage("ERROR: Reading level at path " + finalFolderPath + " but no level file exists.");
       this.nullify = true;
     }
     return lines;
@@ -339,8 +346,8 @@ class Level {
 
   void addData(String datakey, String data) {
     switch(datakey) {
-      case "filePath":
-        this.filePath = data;
+      case "levelName":
+        this.levelName = data;
         break;
       case "location":
         this.location = Location.location(data);
@@ -369,8 +376,9 @@ class Level {
 class LevelEditor extends Level {
   LevelEditor() {
   }
-  LevelEditor(String filePath) {
-    this.filePath = filePath;
-    this.open(true);
+  LevelEditor(String folderPath, String levelName) {
+    this.folderPath = folderPath;
+    this.levelName = levelName;
+    this.open();
   }
 }
