@@ -56,11 +56,13 @@ class Linker {
 
 
 class Level {
-  protected String filePath; // to profile folder (or saved levels folder)
+  protected String filePath; // to level folder
   protected Location location = Location.ERROR;
+  protected boolean nullify = false;
 
   protected GameMap currMap;
-  protected GameMapCode currMapCode = GameMapCode.ERROR;
+  protected String currMapName = null;
+  protected ArrayList<String> mapNames = new ArrayList<String>();
 
   protected float xi = 0;
   protected float yi = 0;
@@ -68,19 +70,24 @@ class Level {
   protected float yf = 0;
 
   protected ArrayList<Linker> linkers = new ArrayList<Linker>();
-  protected ArrayList<Trigger> triggers = new ArrayList<Trigger>();
+  protected int nextTriggerKey = 1;
+  protected HashMap<Integer, Trigger> triggers = new HashMap<Integer, Trigger>();
 
   protected Hero player;
 
+  Level(String filePath) {
+    this.filePath = filePath;
+  }
   Level(String filePath, Location location) {
     this.filePath = filePath;
     this.location = location;
-    // open file
+    this.open(true);
   }
   // test map
   Level(GameMap testMap) {
     this.filePath = "";
     this.currMap = testMap;
+    this.currMapName = testMap.mapName;
     this.player = new Hero(HeroCode.BEN);
     this.player.setLocation(0.5, 0.5);
     this.currMap.addPlayer(this.player);
@@ -159,15 +166,188 @@ class Level {
   }
 
 
-  void save() {
-    PrintWriter file = createWriter(this.filePath + "/" + this.location.file_name() + "/level.lnz");
+  void save(boolean curr_save) {
+    String folderPath = this.filePath;
+    if (this.location != Location.ERROR) {
+      folderPath += "/" + this.location.file_name();
+    }
+    if (curr_save) {
+      folderPath += "/currSave";
+    }
+    PrintWriter file = createWriter(folderPath + "/level.lnz");
+    file.println("new: Level");
     file.println("filePath: " + this.filePath);
     file.println("location: " + this.location.file_name());
-    file.println("currMapCode: " + this.currMapCode);
+    if (this.currMapName != null) {
+      file.println("currMapName: " + this.currMapName);
+    }
+    String mapNameList = "";
+    for (int i = 0; i < this.mapNames.size(); i++) {
+      if (i > 0) {
+        mapNameList += ", ";
+      }
+      mapNameList += this.mapNames.get(i);
+    }
+    file.println("mapNames: " + mapNameList);
+    /*for (Linker linker : this.linkers) {
+      file.println(linker.fileString());
+    }*/
+    /*for (Map.Entry<Integer, Trigger> entry : this.triggers.entrySet()) {
+      file.println("nextTriggerKey: " + entry.getKey());
+      file.println(entry.getValue().fileString());
+    }*/
+    file.println("end: Level");
     file.flush();
     file.close();
     if (this.currMap != null) {
-      this.currMap.save(this.filePath + "/" + this.location.file_name());
+      this.currMap.save(folderPath);
+    }
+  }
+
+  void open(boolean curr_save) {
+    this.open2Data(this.open1File(curr_save));
+    this.initializeTerrain();
+  }
+
+  void open1File(boolean curr_save) {
+    String folderPath = this.filePath;
+    if (this.location != Location.ERROR) {
+      folderPath += "/" + this.location.file_name();
+    }
+    if (curr_save && folderExists(folderPath += "/currSave")) {
+      folderPath += "/currSave";
+    }
+    String[] lines;
+    lines = loadStrings(folderPath + "/level.lnz");
+    if (lines == null) {
+      global.errorMessage("ERROR: Reading level at path " + folderPath + " but no level file exists.");
+      this.nullify = true;
+    }
+    return lines;
+  }
+
+  void open2Data(String[] lines) {
+    Stack<ReadFileObject> object_queue = new Stack<ReadFileObject>();
+
+    //Linker curr_linker = null;
+    //int max_trigger_key = 0;
+    //Trigger curr_trigger = null;
+
+    for (String line : lines) {
+      String[] parameters = split(line, ':');
+      if (parameters.length < 2) {
+        continue;
+      }
+
+      String dataname = trim(parameters[0]);
+      String data = trim(parameters[1]);
+      for (int i = 2; i < parameters.length; i++) {
+        data += ":" + parameters[i];
+      }
+      if (dataname.equals("new")) {
+        ReadFileObject type = ReadFileObject.objectType(trim(parameters[1]));
+        switch(type) {
+          case LEVEL:
+            object_queue.push(type);
+            break;
+          case LINKER:
+          case TRIGGER:
+            /*if (parameters.length < 3) {
+              global.errorMessage("ERROR: Feature ID missing in Feature constructor.");
+              break;
+            }
+            object_queue.push(type);
+            curr_feature = new Feature(toInt(trim(parameters[2])));*/
+            break;
+          default:
+            println("ERROR: Can't add a " + type + " type to Level data.");
+            break;
+        }
+      }
+      else if (dataname.equals("end")) {
+        ReadFileObject type = ReadFileObject.objectType(data);
+        if (object_queue.empty()) {
+          global.errorMessage("ERROR: Tring to end a " + type.name + " object but not inside any object.");
+        }
+        else if (type.name.equals(object_queue.peek().name)) {
+          switch(object_queue.pop()) {
+            case LEVEL:
+              return;
+            case LINKER:
+              /*if (curr_linker == null) {
+                global.errorMessage("ERROR: Trying to end a null linker.");
+              }
+              this.addLinker(curr_linker);
+              curr_linker = null;*/
+              break;
+            case TRIGGER:
+              /*if (curr_trigger == null) {
+                global.errorMessage("ERROR: Trying to end a null trigger.");
+              }
+              if (this.nextTriggerKey > max_trigger_key) {
+                max_trigger_key = this.nextTriggerKey;
+              }
+              this.addTrigger(curr_trigger);
+              curr_trigger = null;*/
+              break;
+            default:
+              break;
+          }
+        }
+        else {
+          global.errorMessage("ERROR: Tring to end a " + type.name + " object while inside a " + object_queue.peek().name + " object.");
+        }
+      }
+      else {
+        switch(object_queue.peek()) {
+          case LEVEL:
+            this.addData(dataname, data);
+            break;
+          case LINKER:
+            /*if (curr_linker == null) {
+              global.errorMessage("ERROR: Trying to add linker data to null linker.");
+            }
+            curr_linker.addData(dataname, data);*/
+            break;
+          case TRIGGER:
+            /*if (curr_trigger == null) {
+              global.errorMessage("ERROR: Trying to add trigger data to null trigger.");
+            }
+            curr_trigger.addData(dataname, data);*/
+            break;
+          default:
+            break;
+        }
+      }
+
+      this.nextTriggerKey = max_trigger_key + 1;
+    }
+  }
+
+
+  void addData(String datakey, String data) {
+    switch(datakey) {
+      case "filePath":
+        this.filePath = data;
+        break;
+      case "location":
+        this.location = Location.location(data);
+        break;
+      case "currMapName":
+        this.currMapName = data;
+        break;
+      case "mapNames":
+        String[] map_names = split(data, ',');
+        for (String map_name : map_names) {
+          this.mapNames.add(map_name);
+        }
+        break;
+      case "nextTriggerKey":
+        this.nextTriggerKey = toInt(data);
+        break;
+      default:
+        global.errorMessage("ERROR: Datakey " + datakey + " not recognized for GameMap object.");
+        break;
     }
   }
 }
