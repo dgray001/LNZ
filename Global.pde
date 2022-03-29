@@ -167,6 +167,7 @@ class Global {
   }
 
   void exit() {
+    this.sounds.stop_background();
     this.state = ProgramState.EXITING;
   }
 }

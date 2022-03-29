@@ -83,12 +83,22 @@ class MapEditorInterface extends InterfaceLNZ {
 
   class MapEditorListTextBox extends ListTextBox {
     class RightClickListTextBox extends MaxListTextBox {
-      RightClickListTextBox(float mX, float mY) {
+      RightClickListTextBox(float mX, float mY, MapEditorPage page) {
         super(mX - Constants.mapEditor_rightClickBoxWidth, mY, mX, mY + Constants.mapEditor_rightClickBoxMaxHeight);
-        this.setText("Open Map");
-        this.addLine("Rename Map");
-        this.addLine("Test Map");
-        this.addLine("Delete Map");
+        switch(page) {
+          case MAPS:
+            this.setText("Open Map");
+            this.addLine("Rename Map");
+            this.addLine("Test Map");
+            this.addLine("Delete Map");
+            break;
+          case LEVELS:
+            this.setText("Open Level");
+            this.addLine("Rename Level");
+            this.addLine("Test Level");
+            this.addLine("Delete Level");
+            break;
+        }
         this.highlight_color = color(1, 0);
         this.hover_color = color(200, 150, 140, 100);
       }
@@ -224,30 +234,67 @@ class MapEditorInterface extends InterfaceLNZ {
       if (this.line_clicked < 0 || this.line_clicked >= this.text_lines_ref.size()) {
         return;
       }
-      MapEditorInterface.this.renameMapFile(this.highlightedLine(), this.renameInputBox.text);
+      switch(MapEditorInterface.this.page) {
+        case MAPS:
+          MapEditorInterface.this.renameMapFile(this.highlightedLine(), this.renameInputBox.text);
+          break;
+        case LEVELS:
+          MapEditorInterface.this.renameLevelFolder(this.highlightedLine(), this.renameInputBox.text);
+          break;
+        default:
+          break;
+      }
       this.renameInputBox = null;
       this.refresh();
     }
 
     void clickOption(int option) {
-      switch(option) {
-        case 0:
-          MapEditorInterface.this.openMapEditor(this.highlightedLine());
-          break;
-        case 1:
-          if (this.line_clicked < 0 || this.line_clicked >= this.text_lines_ref.size()) {
-            break;
+      switch(MapEditorInterface.this.page) {
+        case MAPS:
+          switch(option) {
+            case 0:
+              MapEditorInterface.this.openMapEditor(this.highlightedLine());
+              break;
+            case 1:
+              if (this.line_clicked < 0 || this.line_clicked >= this.text_lines_ref.size()) {
+                break;
+              }
+              this.renameInputBox = new RenameInputBox(this.line_clicked);
+              break;
+            case 2:
+              MapEditorInterface.this.testMap();
+              break;
+            case 3:
+              MapEditorInterface.this.deleteMap();
+              break;
+            default:
+              global.errorMessage("ERROR: Option index " + option + " not recognized.");
+              break;
           }
-          this.renameInputBox = new RenameInputBox(this.line_clicked);
           break;
-        case 2:
-          MapEditorInterface.this.testMap();
-          break;
-        case 3:
-          MapEditorInterface.this.deleteMap();
+        case LEVELS:
+          switch(option) {
+            case 0:
+              MapEditorInterface.this.openLevelEditor(this.highlightedLine());
+              break;
+            case 1:
+              if (this.line_clicked < 0 || this.line_clicked >= this.text_lines_ref.size()) {
+                break;
+              }
+              this.renameInputBox = new RenameInputBox(this.line_clicked);
+              break;
+            case 2:
+              MapEditorInterface.this.testLevel();
+              break;
+            case 3:
+              MapEditorInterface.this.deleteLevel();
+              break;
+            default:
+              global.errorMessage("ERROR: Option index " + option + " not recognized.");
+              break;
+          }
           break;
         default:
-          global.errorMessage("ERROR: Option index " + option + " not recognized.");
           break;
       }
       this.rightClickMenu = null;
@@ -371,10 +418,13 @@ class MapEditorInterface extends InterfaceLNZ {
       switch(MapEditorInterface.this.page) {
         case MAPS:
           if (mouseButton == RIGHT) {
-            this.rightClickMenu = new RightClickListTextBox(mouseX, mouseY);
+            this.rightClickMenu = new RightClickListTextBox(mouseX, mouseY, MapEditorInterface.this.page);
           }
           break;
         case LEVELS:
+          if (mouseButton == RIGHT) {
+            this.rightClickMenu = new RightClickListTextBox(mouseX, mouseY, MapEditorInterface.this.page);
+          }
           break;
         case TERRAIN:
           break;
@@ -485,14 +535,39 @@ class MapEditorInterface extends InterfaceLNZ {
   class NewLevelForm extends FormLNZ {
     NewLevelForm() {
       super(0.5 * (width - Constants.mapEditor_formWidth), 0.5 * (height - Constants.mapEditor_formHeight),
-        0.5 * (width - Constants.mapEditor_formWidth), 0.5 * (height - Constants.mapEditor_formHeight));
+        0.5 * (width + Constants.mapEditor_formWidth), 0.5 * (height + Constants.mapEditor_formHeight));
       this.setTitleText("New Level");
       this.setTitleSize(18);
       this.color_background = color(180, 250, 180);
       this.color_header = color(30, 170, 30);
+      this.setFieldCushion(0);
+
+      MessageFormField error = new MessageFormField("");
+      error.text_color = color(150, 20, 20);
+      error.setTextSize(16);
+      SubmitCancelFormField submit = new SubmitCancelFormField("  Ok  ", "Cancel");
+      submit.button1.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+      submit.button2.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+
+      this.addField(new SpacerFormField(20));
+      this.addField(new StringFormField("", "Level Name"));
+      this.addField(error);
+      this.addField(new SpacerFormField(20));
+      this.addField(submit);
     }
 
     void submit() {
+      if (folderExists("data/levels/" + this.fields.get(1).getValue())) {
+        this.fields.get(2).setValue("A level with that name already exists");
+        return;
+      }
+      mkdir("data/levels/" + this.fields.get(1).getValue());
+      mkFile("data/levels/" + this.fields.get(1).getValue() + "/level.lnz");
+      // create new level
+      // open level
+      this.canceled = true;
     }
   }
 
@@ -770,6 +845,9 @@ class MapEditorInterface extends InterfaceLNZ {
         break;
       case TESTMAP:
         break;
+      case OPENING_MAPEDITOR:
+      case CREATING_MAP:
+        break;
       default:
         global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
         break;
@@ -782,7 +860,7 @@ class MapEditorInterface extends InterfaceLNZ {
         this.form = new NewMapForm();
         break;
       case LEVELS:
-        // new level form
+        this.form = new NewLevelForm();
         break;
       case TERRAIN:
       case FEATURES:
@@ -792,6 +870,9 @@ class MapEditorInterface extends InterfaceLNZ {
         break;
       case TESTMAP:
         this.saveMapTester();
+        break;
+      case OPENING_MAPEDITOR:
+      case CREATING_MAP:
         break;
       default:
         global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
@@ -805,7 +886,7 @@ class MapEditorInterface extends InterfaceLNZ {
         this.testMap();
         break;
       case LEVELS:
-        // test level
+        this.testLevel();
         break;
       case TERRAIN:
       case FEATURES:
@@ -815,6 +896,9 @@ class MapEditorInterface extends InterfaceLNZ {
         break;
       case TESTMAP:
         this.closeMapTester();
+        break;
+      case OPENING_MAPEDITOR:
+      case CREATING_MAP:
         break;
       default:
         global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
@@ -844,6 +928,9 @@ class MapEditorInterface extends InterfaceLNZ {
       case ITEMS:
         break;
       case TESTMAP:
+        break;
+      case OPENING_MAPEDITOR:
+      case CREATING_MAP:
         break;
       default:
         global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
@@ -923,6 +1010,39 @@ class MapEditorInterface extends InterfaceLNZ {
   void closeMapTester() {
     this.curr_level = null;
     this.navigate(MapEditorPage.MAPS);
+  }
+
+
+  void testLevel() {
+    println("testLevel");
+  }
+
+  void deleteLevel() {
+    println("deleteLevel");
+  }
+
+  void renameLevelFolder(String mapName, String targetName) {
+    println("renameLevelFolder");
+  }
+
+  void openLevelEditor(String levelName) {
+    println("openLevelEditor");
+  }
+
+  void saveLevelEditor() {
+    println("saveLevelEditor");
+  }
+
+  void closeLevelEditor() {
+    println("closeLevelEditor");
+  }
+
+  void saveLevelTester() {
+    println("saveLevelTester");
+  }
+
+  void closeLevelTester() {
+    println("closeLevelTester");
   }
 
 
