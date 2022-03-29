@@ -31,7 +31,19 @@ void moveFile(Path source, Path target) {
   try {
     Files.move(source, target);
   } catch(IOException e) {
-    println("ERROR: IOException at renameFile(" + source + ", " + target + ")");
+    println("ERROR: IOException at moveFile(" + source + ", " + target + ")");
+  }
+}
+
+// copy file
+void copyFile(String source_path, String target_path) {
+  copyFile(Paths.get(sketchPath(source_path)), Paths.get(sketchPath(target_path)));
+}
+void copyFile(Path source, Path target) {
+  try {
+    Files.copy(source, target);
+  } catch(IOException e) {
+    println("ERROR: IOException at copyFile(" + source + ", " + target + ")");
   }
 }
 
@@ -129,6 +141,45 @@ void mkdir(Path p, boolean replace, boolean replace_file) {
     } catch (IOException e) {
       println("ERROR: IOException at mkdir(" + p + ")");
     }
+  }
+}
+
+// move folder
+void moveFolder(String source_path, String target_path) {
+  moveFolder(Paths.get(sketchPath(source_path)), Paths.get(sketchPath(target_path)));
+}
+void moveFolder(Path source, Path target) {
+  if (Files.isDirectory(source)) {
+    mkdir(target, false, false);
+    for (Path filePath : listFiles(source)) {
+      moveFile(filePath, target);
+    }
+    for (Path folderPath : listFolders(source)) {
+      moveFolder(folderPath, target);
+    }
+  }
+  else {
+    moveFile(source, target);
+  }
+  deleteFolder(source);
+}
+
+// copy folder
+void copyFolder(String source_path, String target_path) {
+  copyFolder(Paths.get(sketchPath(source_path)), Paths.get(sketchPath(target_path)));
+}
+void copyFolder(Path source, Path target) {
+  if (Files.isDirectory(source)) {
+    mkdir(target, false, false);
+    for (Path filePath : listFiles(source)) {
+      copyFile(filePath, target);
+    }
+    for (Path folderPath : listFolders(source)) {
+      copyFolder(folderPath, target);
+    }
+  }
+  else {
+    copyFile(source, target);
   }
 }
 

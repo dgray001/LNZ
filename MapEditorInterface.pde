@@ -1,7 +1,12 @@
 enum MapEditorPage {
   MAPS, LEVELS, TERRAIN, FEATURES, UNITS, ITEMS, TESTMAP, OPENING_MAPEDITOR,
   CREATING_MAP, OPENING_TESTMAP, OPENING_TESTLEVEL, LEVEL_INFO, LEVEL_MAPS,
-  LINKERS, TRIGGERS, TRIGGER_EDITOR, CONDITION_EDITOR, EFFECT_EDITOR; // add level pages later
+  LINKERS, TRIGGERS, TRIGGER_EDITOR, CONDITION_EDITOR, EFFECT_EDITOR, TESTLEVEL;
+}
+
+
+enum RightPanelElementLocation {
+  BOTTOM, TOP, WHOLE;
 }
 
 
@@ -302,9 +307,24 @@ class MapEditorInterface extends InterfaceLNZ {
       this.rightClickMenu = null;
     }
 
+    void setPosition(RightPanelElementLocation position) {
+      switch(position) {
+        case TOP:
+          this.setYLocation(Constants.mapEditor_listBoxGap, 0.5 * height - Constants.mapEditor_listBoxGap);
+          break;
+        case BOTTOM:
+          this.setYLocation(0.5 * height + Constants.mapEditor_listBoxGap, 0.9 * height - Constants.mapEditor_listBoxGap);
+          break;
+        case WHOLE:
+          this.setYLocation(Constants.mapEditor_listBoxGap, 0.9 * height - Constants.mapEditor_listBoxGap);
+          break;
+      }
+    }
+
     void setList(MapEditorPage page) {
       this.clearText();
       this.line_clicked = -1;
+      this.active = true;
       switch(page) {
         case MAPS:
           this.setTitleText("Maps");
@@ -423,20 +443,8 @@ class MapEditorInterface extends InterfaceLNZ {
             mkdir("data/maps");
           }
           break;
-        case TESTMAP:
-        case OPENING_MAPEDITOR:
-        case CREATING_MAP:
-        case OPENING_TESTMAP:
-        case OPENING_TESTLEVEL:
-        case LEVEL_INFO:
-        case LINKERS:
-        case TRIGGERS:
-        case TRIGGER_EDITOR:
-        case CONDITION_EDITOR:
-        case EFFECT_EDITOR:
-          break;
         default:
-          global.errorMessage("ERROR: MapEditorPage " + page + " not found.");
+          this.active = false;
           break;
       }
     }
@@ -516,12 +524,102 @@ class MapEditorInterface extends InterfaceLNZ {
 
 
   class LevelEditorListTextBox extends ListTextBox {
+    protected boolean active = false;
+
     LevelEditorListTextBox() {
+      super(width, Constants.mapEditor_listBoxGap, width, 0.9 * height - Constants.mapEditor_listBoxGap);
+      this.color_background = color(250, 190, 140);
+      this.color_header = color(220, 180, 130);
+    }
+
+    void setPosition(RightPanelElementLocation position) {
+      switch(position) {
+        case TOP:
+          this.setYLocation(Constants.mapEditor_listBoxGap, 0.45 * height - Constants.mapEditor_listBoxGap);
+          break;
+        case BOTTOM:
+          this.setYLocation(0.45 * height + Constants.mapEditor_listBoxGap, 0.9 * height - Constants.mapEditor_listBoxGap);
+          break;
+        case WHOLE:
+          this.setYLocation(Constants.mapEditor_listBoxGap, 0.9 * height - Constants.mapEditor_listBoxGap);
+          break;
+      }
+    }
+
+    void setList(MapEditorPage page) {
+      this.clearText();
+      this.line_clicked = -1;
+      this.active = true;
+      switch(page) {
+        case LEVEL_INFO:
+          break;
+        case LEVEL_MAPS:
+          break;
+        case LINKERS:
+          break;
+        case TRIGGERS:
+          break;
+        case TRIGGER_EDITOR:
+          break;
+        case CONDITION_EDITOR:
+          break;
+        case EFFECT_EDITOR:
+          break;
+        default:
+          this.active = false;
+          break;
+      }
+    }
+
+    void refresh() {
+      this.setList(MapEditorInterface.this.page);
+    }
+
+    void keyPress() {
+    }
+
+    void keyRelease() {
     }
 
     void click() {
+      switch(page) {
+        case LEVEL_INFO:
+          break;
+        case LEVEL_MAPS:
+          break;
+        case LINKERS:
+          break;
+        case TRIGGERS:
+          break;
+        case TRIGGER_EDITOR:
+          break;
+        case CONDITION_EDITOR:
+          break;
+        case EFFECT_EDITOR:
+          break;
+        default:
+          break;
+      }
     }
     void doubleclick() {
+      switch(page) {
+        case LEVEL_INFO:
+          break;
+        case LEVEL_MAPS:
+          break;
+        case LINKERS:
+          break;
+        case TRIGGERS:
+          break;
+        case TRIGGER_EDITOR:
+          break;
+        case CONDITION_EDITOR:
+          break;
+        case EFFECT_EDITOR:
+          break;
+        default:
+          break;
+      }
     }
   }
 
@@ -837,7 +935,7 @@ class MapEditorInterface extends InterfaceLNZ {
   private Panel rightPanel = new Panel(RIGHT, Constants.mapEditor_panelMinWidth,
     Constants.mapEditor_panelMaxWidth, Constants.mapEditor_panelStartWidth);
   private MapEditorListTextBox listBox1 = new MapEditorListTextBox();
-  private LevelEditorListTextBox listBox2;
+  private LevelEditorListTextBox listBox2 = new LevelEditorListTextBox();
   private LevelEditorForm levelForm;
 
   private GameMapEditor curr_map;
@@ -866,17 +964,19 @@ class MapEditorInterface extends InterfaceLNZ {
   void navigate(MapEditorPage page) {
     this.page = page;
     this.listBox1.setList(this.page);
-    this.listBox1.active = true;
+    this.listBox2.setList(this.page);
     switch(this.page) {
       case MAPS:
         this.buttons[0].message = "Toggle\nDisplay";
         this.buttons[1].message = "New\nMap";
         this.buttons[2].message = "Test\nMap";
+        this.listBox1.setPosition(RightPanelElementLocation.WHOLE);
         break;
       case LEVELS:
         this.buttons[0].message = "Toggle\nDisplay";
         this.buttons[1].message = "New\nLevel";
         this.buttons[2].message = "Test\nLevel";
+        this.listBox1.setPosition(RightPanelElementLocation.WHOLE);
         break;
       case TERRAIN:
       case FEATURES:
@@ -885,87 +985,72 @@ class MapEditorInterface extends InterfaceLNZ {
         this.buttons[0].message = "Toggle\nDisplay";
         this.buttons[1].message = "Save\nMap";
         this.buttons[2].message = "Cancel\nMap";
+        this.listBox1.setPosition(RightPanelElementLocation.WHOLE);
         break;
       case TESTMAP:
-        this.listBox1.active = false;
         this.buttons[0].message = "";
         this.buttons[1].message = "Save\nMap";
         this.buttons[2].message = "Cancel\nMap";
         break;
       case OPENING_MAPEDITOR:
       case CREATING_MAP:
-        this.listBox1.active = false;
-        this.buttons[0].message = "";
-        this.buttons[1].message = "";
-        this.buttons[2].message = "";
-        break;
       case OPENING_TESTMAP:
-        this.listBox1.active = false;
-        this.buttons[0].message = "";
-        this.buttons[1].message = "";
-        this.buttons[2].message = "";
-        break;
       case OPENING_TESTLEVEL:
-        this.listBox1.active = false;
         this.buttons[0].message = "";
         this.buttons[1].message = "";
         this.buttons[2].message = "";
         break;
       case LEVEL_INFO:
-        this.listBox1.active = false;
         this.buttons[0].message = "Toggle\nDisplay";
         this.buttons[1].message = "Save\nLevel";
         this.buttons[2].message = "Cancel\nLevel";
-        // listbox2.setList(MAPS)
-        // levelForm = new LevelInfoForm();
-        // adjust size of listbox2 (bottom half)
+        // levelForm = new LevelInfoForm(); // TOP
+        this.listBox2.setPosition(RightPanelElementLocation.BOTTOM);
         break;
       case LEVEL_MAPS:
         this.buttons[0].message = "Toggle\nDisplay";
         this.buttons[1].message = "Save\nLevel";
         this.buttons[2].message = "Cancel\nLevel";
-        // listbox2.setList(MAPS)
-        // adjust size of listbox2 (bottom half)
-        // adjust size of listbox1 (top half)
+        this.listBox1.setPosition(RightPanelElementLocation.TOP);
+        this.listBox2.setPosition(RightPanelElementLocation.BOTTOM);
         break;
       case LINKERS:
-        this.listBox1.active = false;
         this.buttons[0].message = "Toggle\nDisplay";
         this.buttons[1].message = "Save\nLevel";
         this.buttons[2].message = "Cancel\nLevel";
-        // listbox2.setList(LINKERS)
-        // adjust size of listbox2 (whole)
+        this.listBox2.setPosition(RightPanelElementLocation.WHOLE);
         break;
       case TRIGGERS:
-        this.listBox1.active = false;
         this.buttons[0].message = "Toggle\nDisplay";
         this.buttons[1].message = "Save\nLevel";
         this.buttons[2].message = "Cancel\nLevel";
-        // listbox2.setList(TRIGGERS)
-        // adjust size of listbox2 (whole)
+        this.listBox2.setPosition(RightPanelElementLocation.WHOLE);
         break;
       case TRIGGER_EDITOR:
-        this.listBox1.active = false;
         this.buttons[0].message = "";
         this.buttons[1].message = "";
         this.buttons[2].message = "";
-        // listbox2.setList(TRIGGER_COMPONENTS)
-        // levelForm = new TriggerEditorForm();
-        // adjust size of listbox2 (bottom half)
+        // levelForm = new TriggerEditorForm(); // TOP
+        this.listBox2.setPosition(RightPanelElementLocation.BOTTOM);
         break;
       case CONDITION_EDITOR:
-        this.listBox1.active = false;
         this.buttons[0].message = "";
         this.buttons[1].message = "";
         this.buttons[2].message = "";
-        // levelForm = new ConditionEditorForm();
+        // levelForm = new ConditionEditorForm(); // TOP
+        this.listBox2.setPosition(RightPanelElementLocation.BOTTOM);
         break;
       case EFFECT_EDITOR:
-        this.listBox1.active = false;
         this.buttons[0].message = "";
         this.buttons[1].message = "";
         this.buttons[2].message = "";
-        // levelForm = new EffectEditorForm();
+        // levelForm = new EffectEditorForm(); // TOP
+        this.listBox2.setPosition(RightPanelElementLocation.BOTTOM);
+        break;
+      case TESTLEVEL:
+        this.buttons[0].message = "";
+        this.buttons[1].message = "Save\nLevel";
+        this.buttons[2].message = "Cancel\nLevel";
         break;
       default:
         global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
@@ -986,8 +1071,8 @@ class MapEditorInterface extends InterfaceLNZ {
     this.buttons[4].setXLocation(xi, xi + buttonSize);
     this.listBox1.setXLocation(width - this.rightPanel.size_curr + Constants.mapEditor_listBoxGap,
       width - Constants.mapEditor_listBoxGap);
-    //this.listBox2.setXLocation(width - this.rightPanel.size_curr + Constants.mapEditor_listBoxGap,
-    //  width - Constants.mapEditor_listBoxGap);
+    this.listBox2.setXLocation(width - this.rightPanel.size_curr + Constants.mapEditor_listBoxGap,
+      width - Constants.mapEditor_listBoxGap);
   }
 
   void buttonClick1() {
@@ -1034,6 +1119,8 @@ class MapEditorInterface extends InterfaceLNZ {
       case CONDITION_EDITOR:
       case EFFECT_EDITOR:
         break;
+      case TESTLEVEL:
+        break;
       default:
         global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
         break;
@@ -1062,13 +1149,19 @@ class MapEditorInterface extends InterfaceLNZ {
         break;
       case OPENING_TESTMAP:
       case OPENING_TESTLEVEL:
+        break;
       case LEVEL_INFO:
       case LEVEL_MAPS:
       case LINKERS:
       case TRIGGERS:
+        this.saveLevelEditor();
+        break;
       case TRIGGER_EDITOR:
       case CONDITION_EDITOR:
       case EFFECT_EDITOR:
+        break;
+      case TESTLEVEL:
+        this.saveLevelTester();
         break;
       default:
         global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
@@ -1098,13 +1191,19 @@ class MapEditorInterface extends InterfaceLNZ {
         break;
       case OPENING_TESTMAP:
       case OPENING_TESTLEVEL:
+        break;
       case LEVEL_INFO:
       case LEVEL_MAPS:
       case LINKERS:
       case TRIGGERS:
+        this.closeLevelEditor();
+        break;
       case TRIGGER_EDITOR:
       case CONDITION_EDITOR:
       case EFFECT_EDITOR:
+        break;
+      case TESTLEVEL:
+        this.closeLevelTester();
         break;
       default:
         global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
@@ -1148,6 +1247,8 @@ class MapEditorInterface extends InterfaceLNZ {
       case CONDITION_EDITOR:
       case EFFECT_EDITOR:
         break;
+      case TESTLEVEL:
+        break;
       default:
         global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
         break;
@@ -1165,6 +1266,7 @@ class MapEditorInterface extends InterfaceLNZ {
       this.curr_level = new Level(new GameMap(mapName, sketchPath("data/maps/")));
       this.curr_level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
       this.navigate(MapEditorPage.TESTMAP);
+      // load in test map thread
     }
   }
 
@@ -1185,15 +1287,16 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
   void renameMapFile(String mapName, String targetName) {
-    if (!fileExists("data/maps/" + mapName + ".map.lnz")) {
+    if (!entryExists("data/maps/" + mapName + ".map.lnz")) {
       global.errorMessage("ERROR: Can't rename map file that doesn't exist.");
       return;
     }
-    if (fileExists("data/maps/" + targetName + ".map.lnz")) {
+    if (entryExists("data/maps/" + targetName + ".map.lnz")) {
       global.errorMessage("ERROR: Can't rename map file to a name that already exists.");
       return;
     }
     moveFile("data/maps/" + mapName + ".map.lnz", "data/maps/" + targetName + ".map.lnz");
+    // rename in map file
   }
 
   void openMapEditor(String mapName) {
@@ -1230,10 +1333,10 @@ class MapEditorInterface extends InterfaceLNZ {
 
 
   void newLevel(String levelName) {
-    mkdir("data/levels/" + levelName);
     Level new_level = new LevelEditor();
-    new_level.filePath = "data/levels/" + levelName;
-    new_level.save(false);
+    new_level.folderPath = "data/levels/";
+    new_level.levelName = levelName;
+    new_level.save();
     this.curr_level = new_level;
     this.curr_level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
     this.navigate(MapEditorPage.LEVEL_INFO);
@@ -1241,6 +1344,8 @@ class MapEditorInterface extends InterfaceLNZ {
 
   void testLevel() {
     println("testLevel");
+    // test level thread
+    // change folderPath to profile / leveltester
   }
 
   void deleteLevel() {
@@ -1253,28 +1358,55 @@ class MapEditorInterface extends InterfaceLNZ {
     }
   }
 
-  void renameLevelFolder(String mapName, String targetName) {
-    println("renameLevelFolder");
+  void renameLevelFolder(String levelName, String targetName) {
+    if (!entryExists("data/levels/" + levelName)) {
+      global.errorMessage("ERROR: Can't rename level that doesn't exist.");
+      return;
+    }
+    if (entryExists("data/levels/" + targetName)) {
+      global.errorMessage("ERROR: Can't rename level to a name that already exists.");
+      return;
+    }
+    moveFolder("data/levels/" + levelName, "data/levels/" + targetName);
+    // rename in level.lnz file
   }
 
   void openLevelEditor(String levelName) {
-    println("openLevelEditor");
+    this.curr_level = new LevelEditor("data/levels", levelName);
+    if (this.curr_level.nullify) {
+      this.curr_level = null;
+      this.navigate(MapEditorPage.LEVELS);
+    }
+    else {
+      this.curr_level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+      this.navigate(MapEditorPage.LEVEL_INFO);
+    }
   }
 
   void saveLevelEditor() {
-    println("saveLevelEditor");
+    if (this.curr_level != null) {
+      this.curr_level.save();
+    }
+    this.closeLevelEditor();
   }
 
   void closeLevelEditor() {
-    println("closeLevelEditor");
+    this.curr_level = null;
+    this.navigate(MapEditorPage.LEVELS);
   }
 
   void saveLevelTester() {
-    println("saveLevelTester");
+    if (this.curr_level != null) {
+      this.curr_level.folderPath = "data/levels";
+      this.curr_level.save();
+    }
+    this.closeLevelTester();
   }
 
   void closeLevelTester() {
-    println("closeLevelTester");
+    this.curr_level = null;
+    deleteFolder("data/profiles/" + global.profile.display_name.toLowerCase() + "/leveltester");
+    this.navigate(MapEditorPage.LEVELS);
   }
 
 
@@ -1423,6 +1555,9 @@ class MapEditorInterface extends InterfaceLNZ {
       if (this.listBox1.active) {
         this.listBox1.update(millis);
       }
+      if (this.listBox2.active) {
+        this.listBox2.update(millis);
+      }
       if (this.curr_level != null) {
         this.curr_level.drawRightPanel(millis);
       }
@@ -1486,6 +1621,9 @@ class MapEditorInterface extends InterfaceLNZ {
           this.rightPanel.hovered = false;
         }
       }
+      if (this.listBox2.active) {
+        this.listBox2.mouseMove(mX, mY);
+      }
     }
     // refresh map location
     if (refreshMapLocation) {
@@ -1528,6 +1666,9 @@ class MapEditorInterface extends InterfaceLNZ {
       if (this.listBox1.active) {
         this.listBox1.mousePress();
       }
+      if (this.listBox2.active) {
+        this.listBox2.mousePress();
+      }
     }
   }
 
@@ -1553,6 +1694,9 @@ class MapEditorInterface extends InterfaceLNZ {
       if (this.listBox1.active) {
         this.listBox1.mouseRelease(mX, mY);
       }
+      if (this.listBox2.active) {
+        this.listBox2.mouseRelease(mX, mY);
+      }
     }
   }
 
@@ -1566,6 +1710,9 @@ class MapEditorInterface extends InterfaceLNZ {
     if (this.rightPanel.open && !this.rightPanel.collapsing) {
       if (this.listBox1.active) {
         this.listBox1.scroll(amount);
+      }
+      if (this.listBox2.active) {
+        this.listBox2.scroll(amount);
       }
     }
   }
@@ -1581,6 +1728,9 @@ class MapEditorInterface extends InterfaceLNZ {
       if (this.listBox1.active) {
         this.listBox1.keyPress();
       }
+      if (this.listBox2.active) {
+        this.listBox2.keyPress();
+      }
     }
   }
 
@@ -1594,6 +1744,9 @@ class MapEditorInterface extends InterfaceLNZ {
     if (this.rightPanel.open && !this.rightPanel.collapsing) {
       if (this.listBox1.active) {
         this.listBox1.keyRelease();
+      }
+      if (this.listBox2.active) {
+        this.listBox2.keyRelease();
       }
     }
   }
