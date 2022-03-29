@@ -75,8 +75,11 @@ class Level {
 
   protected Hero player;
 
+  Level() {
+  }
   Level(String filePath) {
     this.filePath = filePath;
+    this.open(true);
   }
   Level(String filePath, Location location) {
     this.filePath = filePath;
@@ -126,6 +129,12 @@ class Level {
   void update(int millis) {
     if (this.currMap != null) {
       this.currMap.update(millis);
+    }
+    else {
+      rectMode(CORNERS);
+      noStroke();
+      fill(color(60));
+      rect(this.xi, this.yi, this.xf, this.yf);
     }
   }
 
@@ -204,12 +213,14 @@ class Level {
     }
   }
 
+
   void open(boolean curr_save) {
     this.open2Data(this.open1File(curr_save));
-    this.initializeTerrain();
+    //this.openCurrMap();
   }
 
-  void open1File(boolean curr_save) {
+
+  String[] open1File(boolean curr_save) {
     String folderPath = this.filePath;
     if (this.location != Location.ERROR) {
       folderPath += "/" + this.location.file_name();
@@ -226,11 +237,12 @@ class Level {
     return lines;
   }
 
+
   void open2Data(String[] lines) {
     Stack<ReadFileObject> object_queue = new Stack<ReadFileObject>();
 
     //Linker curr_linker = null;
-    //int max_trigger_key = 0;
+    int max_trigger_key = 0;
     //Trigger curr_trigger = null;
 
     for (String line : lines) {
@@ -355,7 +367,10 @@ class Level {
 
 
 class LevelEditor extends Level {
-  LevelEditor(String filePath, Location location) {
-    super(filePath, location);
+  LevelEditor() {
+  }
+  LevelEditor(String filePath) {
+    this.filePath = filePath;
+    this.open(true);
   }
 }
