@@ -348,6 +348,10 @@ class Feature extends MapObject {
         this.setStrings("Tree", "Nature", "");
         this.setSize(3, 3, 35);
         break;
+      case 426:
+        this.setStrings("Tree", "Nature", "");
+        this.setSize(2, 2, 20);
+        break;
       case 431:
         this.setStrings("Rock", "Nature", "");
         this.setSize(3, 2, 7);

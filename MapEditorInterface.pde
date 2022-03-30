@@ -629,6 +629,12 @@ class MapEditorInterface extends InterfaceLNZ {
         switch(key) {
           case 'a':
             switch(MapEditorInterface.this.page) {
+              case LINKERS:
+                MapEditorInterface.this.addLinkerToLevel();
+                break;
+              case TRIGGERS:
+                MapEditorInterface.this.addTriggerToLevel();
+                break;
               default:
                 break;
             }
@@ -637,6 +643,12 @@ class MapEditorInterface extends InterfaceLNZ {
             switch(MapEditorInterface.this.page) {
               case LEVEL_MAPS:
                 MapEditorInterface.this.removeMapFromLevel(this.highlightedLine());
+                break;
+              case LINKERS:
+                // delete linker
+                break;
+              case TRIGGERS:
+                // delete trigger
                 break;
               default:
                 break;
@@ -1639,6 +1651,28 @@ class MapEditorInterface extends InterfaceLNZ {
       this.curr_map.dropping_object = new Item(toInt(itemID));
       this.curr_map.dropping_terrain = false;
     }
+  }
+
+  void addLinkerToLevel() {
+    if (this.curr_level == null) {
+      return;
+    }
+    if (!LevelEditor.class.isInstance(this.curr_level)) {
+      return;
+    }
+    ((LevelEditor)this.curr_level).newLinker();
+    this.listBox2.refresh();
+  }
+
+  void addTriggerToLevel() {
+    if (this.curr_level == null) {
+      return;
+    }
+    if (!LevelEditor.class.isInstance(this.curr_level)) {
+      return;
+    }
+    ((LevelEditor)this.curr_level).newTrigger();
+    this.listBox2.refresh();
   }
 
 
