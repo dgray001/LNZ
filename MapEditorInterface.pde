@@ -574,9 +574,37 @@ class MapEditorInterface extends InterfaceLNZ {
           break;
         case LINKERS:
           this.setTitleText("Linkers");
+          if (MapEditorInterface.this.curr_level != null) {
+            boolean first = true;
+            for (Linker linker : MapEditorInterface.this.curr_level.linkers) {
+              if (first) {
+                this.setText(linker.rect1.fileString());
+                this.addLine(linker.rect2.fileString());
+                first = false;
+              }
+              else {
+                this.addLine("");
+                this.addLine(linker.rect1.fileString());
+                this.addLine(linker.rect2.fileString());
+              }
+            }
+          }
           break;
         case TRIGGERS:
           this.setTitleText("Triggers");
+          if (MapEditorInterface.this.curr_level != null) {
+            boolean first = true;
+            for (Map.Entry<Integer, Trigger> entry : MapEditorInterface.this.curr_level.triggers.entrySet()) {
+              Trigger trigger = entry.getValue();
+              if (first) {
+                this.setText(trigger.triggerName);
+                first = false;
+              }
+              else {
+                this.addLine(trigger.triggerName);
+              }
+            }
+          }
           break;
         case TRIGGER_EDITOR:
           break;
@@ -651,7 +679,14 @@ class MapEditorInterface extends InterfaceLNZ {
       switch(page) {
         case LEVEL_INFO:
         case LEVEL_MAPS:
-          // open map
+          if (MapEditorInterface.this.curr_level != null && this.highlightedLine() != null) {
+            if (this.highlightedLine().equals(MapEditorInterface.this.curr_level.currMapName)) {
+              MapEditorInterface.this.curr_level.closeMap();
+            }
+            else {
+              MapEditorInterface.this.curr_level.openMap(this.highlightedLine());
+            }
+          }
           break;
         case LINKERS:
           // open linker form ?
@@ -1570,14 +1605,14 @@ class MapEditorInterface extends InterfaceLNZ {
         if (this.create_map_thread.isAlive()) {
           fill(global.color_mapBorder);
           rectMode(CORNERS);
-          rect(this.leftPanel.size_curr, 0, width - this.rightPanel.size_curr, height);
+          rect(this.leftPanel.size, 0, width - this.rightPanel.size, height);
           fill(global.color_loadingScreenBackground);
-          rect(this.leftPanel.size_curr + Constants.map_borderSize, Constants.map_borderSize,
-              width - this.rightPanel.size_curr - Constants.map_borderSize, height - Constants.map_borderSize);
+          rect(this.leftPanel.size + Constants.map_borderSize, Constants.map_borderSize,
+              width - this.rightPanel.size - Constants.map_borderSize, height - Constants.map_borderSize);
           fill(0);
           textSize(24);
           textAlign(LEFT, TOP);
-          text(this.create_map_thread.curr_status + " ...", this.leftPanel.size_curr +
+          text(this.create_map_thread.curr_status + " ...", this.leftPanel.size +
             Constants.map_borderSize + 30, Constants.map_borderSize + 30);
         }
         else {
@@ -1596,14 +1631,14 @@ class MapEditorInterface extends InterfaceLNZ {
         if (this.open_mapEditor_thread.isAlive()) {
           fill(global.color_mapBorder);
           rectMode(CORNERS);
-          rect(this.leftPanel.size_curr, 0, width - this.rightPanel.size_curr, height);
+          rect(this.leftPanel.size, 0, width - this.rightPanel.size, height);
           fill(global.color_loadingScreenBackground);
-          rect(this.leftPanel.size_curr + Constants.map_borderSize, Constants.map_borderSize,
-              width - this.rightPanel.size_curr - Constants.map_borderSize, height - Constants.map_borderSize);
+          rect(this.leftPanel.size + Constants.map_borderSize, Constants.map_borderSize,
+              width - this.rightPanel.size - Constants.map_borderSize, height - Constants.map_borderSize);
           fill(0);
           textSize(24);
           textAlign(LEFT, TOP);
-          text(this.open_mapEditor_thread.curr_status + " ...", this.leftPanel.size_curr +
+          text(this.open_mapEditor_thread.curr_status + " ...", this.leftPanel.size +
             Constants.map_borderSize + 30, Constants.map_borderSize + 30);
         }
         else {

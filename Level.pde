@@ -58,7 +58,7 @@ class Linker {
   private Rectangle rect2 = new Rectangle();
 
   Linker() {}
-  Linker(rect1, rect2) {
+  Linker(Rectangle rect1, Rectangle rect2) {
     this.rect1 = rect1;
     this.rect2 = rect2;
   }
@@ -161,6 +161,71 @@ class Level {
     }
   }
 
+  void openMap(String mapName) {
+    if (mapName == null) {
+      return;
+    }
+    if (!fileExists(this.finalFolderPath() + "/" + mapName + ".map.lnz")) {
+      global.errorMessage("ERROR: Level " + this.levelName + " has no map " +
+        "with name " + mapName + ".");
+      return;
+    }
+    if (mapName.equals(this.currMapName)) {
+      return;
+    }
+    this.currMapName = mapName;
+    this.currMap = new GameMap(mapName, this.finalFolderPath());
+    this.currMap.setLocation(this.xi, this.yi, this.xf, this.yf);
+  }
+
+  void closeMap() {
+    this.currMap.save(this.finalFolderPath());
+    this.currMap = null;
+    this.currMapName = null;
+  }
+
+
+  void addLinker(Linker linker) {
+    if (linker == null) {
+      global.errorMessage("ERROR: Can't add null linker to linkers.");
+      return;
+    }
+    this.linkers.add(linker);
+  }
+  void removeLinker(int index) {
+    if (index < 0 || index >= this.linkers.size()) {
+      global.errorMessage("ERROR: Linker index " + index + " out of range.");
+      return;
+    }
+    this.linkers.remove(index);
+  }
+
+  void addTrigger(Trigger trigger) {
+    if (trigger == null) {
+      global.errorMessage("ERROR: Can't add null trigger to triggers.");
+      return;
+    }
+    this.addTrigger(this.nextTriggerKey, trigger);
+    this.nextTriggerKey++;
+  }
+  void addTrigger(int triggerCode, Trigger trigger) {
+    if (trigger == null) {
+      global.errorMessage("ERROR: Can't add null trigger to triggers.");
+      return;
+    }
+    this.triggers.put(triggerCode, trigger);
+  }
+  void removeTrigger(int triggerKey) {
+    if (!this.triggers.containsKey(triggerKey)) {
+      global.errorMessage("ERROR: No trigger with key " + triggerKey + ".");
+      return;
+    }
+    this.triggers.remove(triggerKey);
+  }
+
+  //void addQuest(Quest quest) {}
+  //void removeQuest(int index) {}
+
 
   void setLocation(float xi, float yi, float xf, float yf) {
     this.xi = xi;
@@ -240,10 +305,7 @@ class Level {
   }
 
 
-  void save() {
-    this.save(true);
-  }
-  void save(boolean saveMap) {
+  String finalFolderPath() {
     String finalFolderPath = this.folderPath;
     if (this.location == Location.ERROR) {
       finalFolderPath += "/" + this.levelName;
@@ -251,6 +313,15 @@ class Level {
     else {
       finalFolderPath += "/" + this.location.file_name();
     }
+    return finalFolderPath;
+  }
+
+
+  void save() {
+    this.save(true);
+  }
+  void save(boolean saveMap) {
+    String finalFolderPath = this.finalFolderPath();
     if (!folderExists(finalFolderPath)) {
       mkdir(finalFolderPath);
     }
@@ -269,9 +340,9 @@ class Level {
       mapNameList += this.mapNames.get(i);
     }
     file.println("mapNames: " + mapNameList);
-    /*for (Linker linker : this.linkers) {
+    for (Linker linker : this.linkers) {
       file.println(linker.fileString());
-    }*/
+    }
     /*for (Map.Entry<Integer, Trigger> entry : this.triggers.entrySet()) {
       file.println("nextTriggerKey: " + entry.getKey());
       file.println(entry.getValue().fileString());
@@ -292,13 +363,7 @@ class Level {
 
 
   String[] open1File() {
-    String finalFolderPath = this.folderPath;
-    if (this.location == Location.ERROR) {
-      finalFolderPath += "/" + this.levelName;
-    }
-    else {
-      finalFolderPath += "/" + this.location.file_name();
-    }
+    String finalFolderPath = this.finalFolderPath();
     String[] lines;
     lines = loadStrings(finalFolderPath + "/level.lnz");
     if (lines == null) {
@@ -312,7 +377,7 @@ class Level {
   void open2Data(String[] lines) {
     Stack<ReadFileObject> object_queue = new Stack<ReadFileObject>();
 
-    //Linker curr_linker = null;
+    Linker curr_linker = null;
     int max_trigger_key = 0;
     //Trigger curr_trigger = null;
 
@@ -334,13 +399,12 @@ class Level {
             object_queue.push(type);
             break;
           case LINKER:
-          case TRIGGER:
-            /*if (parameters.length < 3) {
-              global.errorMessage("ERROR: Feature ID missing in Feature constructor.");
-              break;
-            }
             object_queue.push(type);
-            curr_feature = new Feature(toInt(trim(parameters[2])));*/
+            curr_linker = new Linker();
+            break;
+          case TRIGGER:
+            object_queue.push(type);
+            //curr_trigger = new Trigger();
             break;
           default:
             println("ERROR: Can't add a " + type + " type to Level data.");
@@ -357,11 +421,11 @@ class Level {
             case LEVEL:
               return;
             case LINKER:
-              /*if (curr_linker == null) {
+              if (curr_linker == null) {
                 global.errorMessage("ERROR: Trying to end a null linker.");
               }
               this.addLinker(curr_linker);
-              curr_linker = null;*/
+              curr_linker = null;
               break;
             case TRIGGER:
               /*if (curr_trigger == null) {
@@ -387,10 +451,10 @@ class Level {
             this.addData(dataname, data);
             break;
           case LINKER:
-            /*if (curr_linker == null) {
+            if (curr_linker == null) {
               global.errorMessage("ERROR: Trying to add linker data to null linker.");
             }
-            curr_linker.addData(dataname, data);*/
+            curr_linker.addData(dataname, data);
             break;
           case TRIGGER:
             /*if (curr_trigger == null) {
@@ -422,7 +486,9 @@ class Level {
       case "mapNames":
         String[] map_names = split(data, ',');
         for (String map_name : map_names) {
-          this.mapNames.add(trim(map_name));
+          if (!map_name.equals("")) {
+            this.mapNames.add(trim(map_name));
+          }
         }
         break;
       case "nextTriggerKey":
@@ -444,5 +510,23 @@ class LevelEditor extends Level {
     this.folderPath = folderPath;
     this.levelName = levelName;
     this.open();
+  }
+
+  @Override
+  void openMap(String mapName) {
+    if (mapName == null) {
+      return;
+    }
+    if (!fileExists(this.finalFolderPath() + "/" + mapName + ".map.lnz")) {
+      global.errorMessage("ERROR: Level " + this.levelName + " has no map " +
+        "with name " + mapName + ".");
+      return;
+    }
+    if (mapName.equals(this.currMapName)) {
+      return;
+    }
+    this.currMapName = mapName;
+    this.currMap = new GameMapEditor(mapName, this.finalFolderPath());
+    this.currMap.setLocation(this.xi, this.yi, this.xf, this.yf);
   }
 }

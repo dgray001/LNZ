@@ -1785,12 +1785,13 @@ abstract class ListTextBox extends TextBox {
       if (this.doubleclickTimer > 0  && this.line_clicked == this.line_hovered) {
         this.line_clicked = this.line_hovered;
         this.doubleclick();
+        this.doubleclickTimer = 0;
       }
       else {
         this.line_clicked = this.line_hovered;
         this.click();
+        this.doubleclickTimer = this.doubleclickTime;
       }
-      this.doubleclickTimer = this.doubleclickTime;
     }
   }
 
