@@ -116,6 +116,7 @@ class Level {
   protected HashMap<Integer, Trigger> triggers = new HashMap<Integer, Trigger>();
   //protected HashMap<Integer, Quest> quests = new HashMap<Integer, Quest>();
 
+  protected Rectangle player_start_location = null;
   protected Hero player;
 
   Level() {
@@ -140,6 +141,32 @@ class Level {
     this.player = new Hero(HeroCode.BEN);
     this.player.setLocation(0.5, 0.5);
     this.currMap.addPlayer(this.player);
+  }
+
+
+  void setPlayer(Hero player) {
+    if (this.player == null) {
+      if (this.player_start_location == null || !this.hasMap(this.player_start_location.mapName)) {
+        if (this.mapNames.size() > 0) {
+          this.openMap(this.mapNames.get(0));
+        }
+      }
+      else {
+        this.openMap(this.player_start_location.mapName);
+        player.setLocation(this.player_start_location.centerX(), this.player_start_location.centerY());
+        if (this.currMap == null) {
+          this.nullify = true;
+          global.errorMessage("ERROR: Can't open default map.");
+        }
+        else {
+          this.currMap.addPlayer(player);
+        }
+      }
+    }
+    else {
+      // save previous player
+    }
+    this.player = player;
   }
 
 
@@ -170,7 +197,7 @@ class Level {
         "with name " + mapName + ".");
       return;
     }
-    if (mapName.equals(this.currMapName)) {
+    if (mapName.equals(this.currMapName) && this.currMap != null) {
       return;
     }
     this.currMapName = mapName;
@@ -179,7 +206,9 @@ class Level {
   }
 
   void closeMap() {
-    this.currMap.save(this.finalFolderPath());
+    if (this.currMap != null) {
+      this.currMap.save(this.finalFolderPath());
+    }
     this.currMap = null;
     this.currMapName = null;
   }
@@ -347,6 +376,9 @@ class Level {
       file.println("nextTriggerKey: " + entry.getKey());
       file.println(entry.getValue().fileString());
     }*/
+    if (this.player_start_location != null) {
+      file.println("player_start_location: " + this.player_start_location.fileString());
+    }
     file.println("end: Level");
     file.flush();
     file.close();
@@ -494,6 +526,10 @@ class Level {
       case "nextTriggerKey":
         this.nextTriggerKey = toInt(data);
         break;
+      case "player_start_location":
+        this.player_start_location = new Rectangle();
+        this.player_start_location.addData(data);
+        break;
       default:
         global.errorMessage("ERROR: Datakey " + datakey + " not recognized for GameMap object.");
         break;
@@ -504,6 +540,8 @@ class Level {
 
 
 class LevelEditor extends Level {
+  protected Rectangle last_rectangle = null;
+
   LevelEditor() {
   }
   LevelEditor(String folderPath, String levelName) {
@@ -526,7 +564,56 @@ class LevelEditor extends Level {
       return;
     }
     this.currMapName = mapName;
-    this.currMap = new GameMapEditor(mapName, this.finalFolderPath());
+    this.currMap = new GameMapLevelEditor(mapName, this.finalFolderPath());
     this.currMap.setLocation(this.xi, this.yi, this.xf, this.yf);
+  }
+
+  @Override
+  void update(int millis) {
+    if (this.currMap != null) {
+      this.currMap.update(millis);
+    }
+    else {
+      rectMode(CORNERS);
+      noStroke();
+      fill(color(60));
+      rect(this.xi, this.yi, this.xf, this.yf);
+    }
+    if (this.currMap != null && this.last_rectangle != null && this.last_rectangle.mapName.equals(this.currMapName)) {
+      fill(170, 100);
+      rectMode(CORNERS);
+      noStroke();
+      float rect_xi = max(this.currMap.startSquareX, this.last_rectangle.xi);
+      float rect_yi = max(this.currMap.startSquareY, this.last_rectangle.yi);
+      float rect_xf = min(this.currMap.startSquareX + this.currMap.visSquareX, this.last_rectangle.xf);
+      float rect_yf = min(this.currMap.startSquareY + this.currMap.visSquareY, this.last_rectangle.yf);
+      rect(this.currMap.xi_map + (rect_xi - this.currMap.startSquareX) * this.currMap.zoom,
+        this.currMap.yi_map + (rect_yi - this.currMap.startSquareY) * this.currMap.zoom,
+        this.currMap.xi_map + (rect_xf - this.currMap.startSquareX) * this.currMap.zoom,
+        this.currMap.yi_map + (rect_yf - this.currMap.startSquareY) * this.currMap.zoom);
+    }
+  }
+
+  @Override
+  void keyPress() {
+    super.keyPress();
+    if (key == CODED) {
+      switch(keyCode) {}
+    }
+    else {
+      switch(key) {
+        case 's':
+          if (this.currMap != null && GameMapLevelEditor.class.isInstance(this.currMap)) {
+            this.last_rectangle = ((GameMapLevelEditor)this.currMap).rectangle_dropping;
+            ((GameMapLevelEditor)this.currMap).rectangle_dropping = null;
+            if (this.last_rectangle != null) {
+              this.player_start_location = this.last_rectangle;
+              this.currMap.headerMessages.clear();
+              this.currMap.addHeaderMessage("Player start location set");
+            }
+          }
+          break;
+      }
+    }
   }
 }

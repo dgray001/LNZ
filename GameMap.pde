@@ -1218,6 +1218,10 @@ class GameMap {
     this.visualEffects.remove(index);
   }
 
+  void addHeaderMessage(String message) {
+    this.headerMessages.add(new HeaderMessage(message));
+  }
+
 
   void drawMap() {
     rectMode(CORNERS);
@@ -2083,6 +2087,7 @@ class GameMapEditor extends GameMap {
   protected boolean rectangle_mode = false;
   protected Rectangle rectangle_dropping = null;
   protected boolean drawing_rectangle = false;
+  protected boolean square_mode = false;
   protected ConfirmForm confirm_form;
 
   GameMapEditor() {
@@ -2108,6 +2113,10 @@ class GameMapEditor extends GameMap {
     this.terrain_id = id;
   }
 
+
+  void update_super(int millis) {
+    super.update(millis);
+  }
 
   @Override
   void update(int millis) {
@@ -2183,6 +2192,10 @@ class GameMapEditor extends GameMap {
     this.lastUpdateTime = millis;
   }
 
+  void mouseMove_super(float mX, float mY) {
+    super.mouseMove(mX, mY);
+  }
+
   @Override
   void mouseMove(float mX, float mY) {
     if (this.confirm_form != null) {
@@ -2191,12 +2204,22 @@ class GameMapEditor extends GameMap {
     }
     super.mouseMove(mX, mY);
     if (this.drawing_rectangle) {
-      this.rectangle_dropping.xf = this.mX;
-      this.rectangle_dropping.yf = this.mY;
+      if (this.square_mode) {
+        this.rectangle_dropping.xf = ceil(this.mX);
+        this.rectangle_dropping.yf = ceil(this.mY);
+      }
+      else {
+        this.rectangle_dropping.xf = this.mX;
+        this.rectangle_dropping.yf = this.mY;
+      }
     }
     if (this.dragging_terrain) {
       this.setTerrain(this.terrain_id, int(floor(this.mX)), int(floor(this.mY)));
     }
+  }
+
+  void mousePress_super() {
+    super.mousePress();
   }
 
   @Override
@@ -2217,7 +2240,13 @@ class GameMapEditor extends GameMap {
         break;
       case RIGHT:
         if (this.rectangle_mode) {
-          this.rectangle_dropping = new Rectangle(this.mapName, this.mX, this.mY, this.mX, this.mY);
+          if (this.square_mode) {
+            this.rectangle_dropping = new Rectangle(this.mapName, floor(this.mX),
+              floor(this.mY), floor(this.mX), floor(this.mY));
+          }
+          else {
+            this.rectangle_dropping = new Rectangle(this.mapName, this.mX, this.mY, this.mX, this.mY);
+          }
           this.drawing_rectangle = true;
           break;
         }
@@ -2266,6 +2295,10 @@ class GameMapEditor extends GameMap {
         }
         break;
     }
+  }
+
+  void mouseRelease_super(float mX, float mY) {
+    super.mouseRelease(mX, mY);
   }
 
   @Override
@@ -2318,6 +2351,10 @@ class GameMapEditor extends GameMap {
     }
   }
 
+  void scroll_super(int amount) {
+    super.scroll(amount);
+  }
+
   @Override
   void scroll(int amount) {
     if (this.confirm_form != null) {
@@ -2325,6 +2362,10 @@ class GameMapEditor extends GameMap {
       return;
     }
     super.scroll(amount);
+  }
+
+  void keyPress_super() {
+    super.keyPress();
   }
 
   @Override
@@ -2377,6 +2418,260 @@ class GameMapEditor extends GameMap {
           }
           else {
             this.headerMessages.add(new HeaderMessage("Rectangle Mode off"));
+          }
+          break;
+        case 'v':
+          this.square_mode = !this.square_mode;
+          if (this.square_mode) {
+            this.headerMessages.add(new HeaderMessage("Square Mode on"));
+          }
+          else {
+            this.headerMessages.add(new HeaderMessage("Square Mode off"));
+          }
+          break;
+      }
+    }
+  }
+
+  void keyRelease_super() {
+    super.keyRelease();
+  }
+
+  @Override
+  void keyRelease() {
+    if (this.confirm_form != null) {
+      this.confirm_form.keyRelease();
+      return;
+    }
+    if (key == CODED) {
+      switch(keyCode) {
+        case LEFT:
+          this.view_moving_left = false;
+          break;
+        case RIGHT:
+          this.view_moving_right = false;
+          break;
+        case UP:
+          this.view_moving_up = false;
+          break;
+        case DOWN:
+          this.view_moving_down = false;
+          break;
+      }
+    }
+    else {
+      switch(key) {
+      }
+    }
+  }
+}
+
+
+
+class GameMapLevelEditor extends GameMapEditor {
+  GameMapLevelEditor(String mapName, String folderPath) {
+    super(mapName, folderPath);
+    this.square_mode = true;
+  }
+
+  @Override
+  void update(int millis) {
+    if (this.confirm_form != null) {
+      this.confirm_form.update(millis);
+      if (this.confirm_form.canceled) {
+        this.confirm_form = null;
+      }
+      return;
+    }
+    int timeElapsed = millis - this.lastUpdateTime;
+    // check map object removals
+    this.updateMapCheckObjectRemovalOnly();
+    // update view
+    this.updateView(timeElapsed);
+    // draw map
+    this.drawMap();
+    // draw grid
+    if (this.draw_grid) {
+      stroke(255);
+      strokeWeight(0.5);
+      textSize(10);
+      textAlign(LEFT, TOP);
+      rectMode(CORNER);
+      for (int i = int(ceil(this.startSquareX)); i < int(floor(this.startSquareX + this.visSquareX)); i++) {
+        for (int j = int(ceil(this.startSquareY)); j < int(floor(this.startSquareY + this.visSquareY)); j++) {
+          float x = this.xi_map + this.zoom * (i - this.startSquareX);
+          float y = this.yi_map + this.zoom * (j - this.startSquareY);
+          fill(200, 0);
+          rect(x, y, this.zoom, this.zoom);
+          fill(255);
+          text("(" + i + ", " + j + ")", x + 1, y + 1);
+        }
+      }
+    }
+    // draw rectangle dropping
+    if (this.rectangle_mode && this.rectangle_dropping != null) {
+      fill(170, 100);
+      rectMode(CORNERS);
+      noStroke();
+      float rect_xi = max(this.startSquareX, this.rectangle_dropping.xi);
+      float rect_yi = max(this.startSquareY, this.rectangle_dropping.yi);
+      float rect_xf = min(this.startSquareX + this.visSquareX, this.rectangle_dropping.xf);
+      float rect_yf = min(this.startSquareY + this.visSquareY, this.rectangle_dropping.yf);
+      rect(this.xi_map + (rect_xi - this.startSquareX) * this.zoom,
+        this.yi_map + (rect_yi - this.startSquareY) * this.zoom,
+        this.xi_map + (rect_xf - this.startSquareX) * this.zoom,
+        this.yi_map + (rect_yf - this.startSquareY) * this.zoom);
+    }
+    this.lastUpdateTime = millis;
+  }
+
+  @Override
+  void mouseMove(float mX, float mY) {
+    if (this.confirm_form != null) {
+      this.confirm_form.mouseMove(mX, mY);
+      return;
+    }
+    this.mouseMove_super(mX, mY);
+    if (this.drawing_rectangle) {
+      if (this.square_mode) {
+        this.rectangle_dropping.xf = ceil(this.mX);
+        this.rectangle_dropping.yf = ceil(this.mY);
+      }
+      else {
+        this.rectangle_dropping.xf = this.mX;
+        this.rectangle_dropping.yf = this.mY;
+      }
+    }
+  }
+
+  @Override
+  void mousePress() {
+    if (this.confirm_form != null) {
+      this.confirm_form.mousePress();
+      return;
+    }
+    if (this.headerMessages.peek() != null) {
+      this.headerMessages.peek().mousePress();
+    }
+    if (this.selected_object != null) {
+      this.selected_object_textbox.mousePress();
+    }
+    switch(mouseButton) {
+      case LEFT:
+        this.selectHoveredObject();
+        break;
+      case RIGHT:
+        if (this.rectangle_mode) {
+          if (this.square_mode) {
+            this.rectangle_dropping = new Rectangle(this.mapName, floor(this.mX),
+              floor(this.mY), floor(this.mX), floor(this.mY));
+          }
+          else {
+            this.rectangle_dropping = new Rectangle(this.mapName, this.mX, this.mY, this.mX, this.mY);
+          }
+          this.drawing_rectangle = true;
+          break;
+        }
+        break;
+      case CENTER:
+        break;
+    }
+  }
+
+  @Override
+  void mouseRelease(float mX, float mY) {
+    if (this.confirm_form != null) {
+      this.confirm_form.mouseRelease(mX, mY);
+      return;
+    }
+    this.mouseRelease_super(mX, mY);
+    switch(mouseButton) {
+      case LEFT:
+        break;
+      case RIGHT:
+        this.drawing_rectangle = false;
+        break;
+      case CENTER:
+        break;
+    }
+  }
+
+  @Override
+  void scroll(int amount) {
+    if (this.confirm_form != null) {
+      this.confirm_form.scroll(amount);
+      return;
+    }
+    this.scroll_super(amount);
+  }
+
+  @Override
+  void keyPress() {
+    if (this.confirm_form != null) {
+      this.confirm_form.keyPress();
+      return;
+    }
+    if (key == CODED) {
+      switch(keyCode) {
+        case LEFT:
+          this.view_moving_left = true;
+          break;
+        case RIGHT:
+          this.view_moving_right = true;
+          break;
+        case UP:
+          this.view_moving_up = true;
+          break;
+        case DOWN:
+          this.view_moving_down = true;
+          break;
+      }
+    }
+    else {
+      switch(key) {
+        case 'z':
+          this.draw_grid = !this.draw_grid;
+          if (this.draw_grid) {
+            this.headerMessages.clear();
+            this.headerMessages.add(new HeaderMessage("Showing Grid"));
+          }
+          else {
+            this.headerMessages.clear();
+            this.headerMessages.add(new HeaderMessage("Hiding Grid"));
+          }
+          break;
+        case 'x':
+          this.draw_fog = !this.draw_fog;
+          if (this.draw_fog) {
+            this.headerMessages.clear();
+            this.headerMessages.add(new HeaderMessage("Showing Fog"));
+          }
+          else {
+            this.headerMessages.clear();
+            this.headerMessages.add(new HeaderMessage("Hiding Fog"));
+          }
+          break;
+        case 'c':
+          this.rectangle_mode = !this.rectangle_mode;
+          this.drawing_rectangle = false;
+          if (this.rectangle_mode) {
+            this.headerMessages.clear();
+            this.headerMessages.add(new HeaderMessage("Rectangle Mode on"));
+          }
+          else {
+            this.headerMessages.clear();
+            this.headerMessages.add(new HeaderMessage("Rectangle Mode off"));
+          }
+          break;
+        case 'v':
+          this.square_mode = !this.square_mode;
+          if (this.square_mode) {
+            this.headerMessages.clear();
+            this.headerMessages.add(new HeaderMessage("Square Mode on"));
+          }
+          else {
+            this.headerMessages.clear();
+            this.headerMessages.add(new HeaderMessage("Square Mode off"));
           }
           break;
       }
