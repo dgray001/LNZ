@@ -633,12 +633,6 @@ class MapEditorInterface extends InterfaceLNZ {
                 break;
             }
             break;
-          case 's':
-            switch(MapEditorInterface.this.page) {
-              default:
-                break;
-            }
-            break;
           case 'd':
             switch(MapEditorInterface.this.page) {
               case LEVEL_MAPS:
@@ -920,7 +914,7 @@ class MapEditorInterface extends InterfaceLNZ {
         delay(2500);
         return;
       }
-      this.curr_status += "\nCreating Images";
+      this.curr_status += "\nGenerating Images";
       global.images.loadMapGifs();
       this.map_creating.initializeTerrain();
       if (this.map_creating.nullify) {
@@ -962,7 +956,7 @@ class MapEditorInterface extends InterfaceLNZ {
         delay(2500);
         return;
       }
-      this.curr_status += "\nCreating Images";
+      this.curr_status += "\nGenerating Images";
       global.images.loadMapGifs();
       this.map_opening.initializeTerrain();
       if (this.map_opening.nullify) {
@@ -976,36 +970,83 @@ class MapEditorInterface extends InterfaceLNZ {
 
   class OpenTestMapThread extends Thread {
     private String mapName;
-    private String folderPath;
-    private GameMapEditor map_opening;
+    private Level level_opening;
     private String curr_status = "";
 
-    OpenTestMapThread(String mapName, String folderPath) {
+    OpenTestMapThread(String mapName) {
       super("OpenTestMapThread");
       this.mapName = mapName;
-      this.folderPath = folderPath;
     }
 
     @Override
     void run() {
+      this.curr_status = "Opening File";
+      GameMap map_testing = new GameMap();
+      map_testing.mapName = this.mapName;
+      String[] lines = map_testing.open1File("data/maps/");
+      if (map_testing.nullify) {
+        this.curr_status += " -> " + global.last_error_message();
+        delay(2500);
+        return;
+      }
+      this.curr_status += "\nSetting Data";
+      map_testing.open2Data(lines);
+      if (map_testing.nullify) {
+        this.curr_status += " -> " + global.last_error_message();
+        delay(2500);
+        return;
+      }
+      this.curr_status += "\nGenerating Images";
+      global.images.loadMapGifs();
+      map_testing.initializeTerrain();
+      if (map_testing.nullify) {
+        this.curr_status += " -> " + global.last_error_message();
+        delay(2500);
+        return;
+      }
+      this.level_opening = new Level(map_testing);
     }
   }
 
 
   class OpenTestLevelThread extends Thread {
-    private String mapName;
-    private String folderPath;
-    private GameMapEditor map_opening;
+    private String levelName;
+    private Level level_opening;
     private String curr_status = "";
 
-    OpenTestLevelThread(String mapName, String folderPath) {
+    OpenTestLevelThread(String levelName) {
       super("OpenTestLevelThread");
-      this.mapName = mapName;
-      this.folderPath = folderPath;
+      this.levelName = levelName;
     }
 
     @Override
     void run() {
+      this.curr_status = "Opening File";
+      this.level_opening = new Level("data/levels", this.levelName);
+      if (this.level_opening.nullify) {
+        this.curr_status += " -> " + global.last_error_message();
+        delay(2500);
+        return;
+      }
+      this.curr_status += "\nCopying Data";
+      mkdir("data/profiles/" + global.profile.display_name.toLowerCase() + "/leveltester");
+      copyFolder("data/levels/" + this.levelName, "data/profiles/" + global.
+        profile.display_name.toLowerCase() + "/leveltester/" + this.levelName);
+      this.level_opening.folderPath = "data/profiles/" + global.profile.display_name.toLowerCase() + "/leveltester";
+      this.level_opening.save();
+      if (this.level_opening.nullify) {
+        this.curr_status += " -> " + global.last_error_message();
+        delay(2500);
+        return;
+      }
+      this.curr_status += "\nGenerating Images";
+      global.images.loadMapGifs();
+      this.level_opening.setPlayer(new Hero(HeroCode.BEN));
+      if (this.level_opening.nullify) {
+        this.curr_status += " -> " + global.last_error_message();
+        delay(2500);
+        return;
+      }
     }
   }
 
@@ -1027,7 +1068,7 @@ class MapEditorInterface extends InterfaceLNZ {
   private OpenMapEditorThread open_mapEditor_thread;
   private NewMapThread create_map_thread;
   private OpenTestMapThread open_testMap_thread;
-  private OpenTestLevelThread create_testLevel_thread;
+  private OpenTestLevelThread open_testLevel_thread;
 
   MapEditorInterface() {
     this.buttons[0] = new MapEditorButton1();
@@ -1345,11 +1386,9 @@ class MapEditorInterface extends InterfaceLNZ {
       this.form = new MessageForm("Test Map", "No map selected to test.");
     }
     else {
-      global.images.loadMapGifs();
-      this.curr_level = new Level(new GameMap(mapName, sketchPath("data/maps/")));
-      this.curr_level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
-      this.navigate(MapEditorPage.TESTMAP);
-      // load in test map thread
+      this.navigate(MapEditorPage.OPENING_TESTMAP);
+      this.open_testMap_thread = new OpenTestMapThread(mapName);
+      this.open_testMap_thread.start();
     }
   }
 
@@ -1426,9 +1465,14 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
   void testLevel() {
-    println("testLevel");
-    // test level thread
-    // change folderPath to profile / leveltester
+    String levelName = this.listBox1.highlightedLine();
+    if (levelName == null) {
+      this.form = new MessageForm("Test Level", "No level selected to test.");
+      return;
+    }
+    this.navigate(MapEditorPage.OPENING_TESTLEVEL);
+    this.open_testLevel_thread = new OpenTestLevelThread(levelName);
+    this.open_testLevel_thread.start();
   }
 
   void deleteLevel() {
@@ -1604,6 +1648,7 @@ class MapEditorInterface extends InterfaceLNZ {
       case CREATING_MAP:
         if (this.create_map_thread.isAlive()) {
           fill(global.color_mapBorder);
+          noStroke();
           rectMode(CORNERS);
           rect(this.leftPanel.size, 0, width - this.rightPanel.size, height);
           fill(global.color_loadingScreenBackground);
@@ -1630,6 +1675,7 @@ class MapEditorInterface extends InterfaceLNZ {
       case OPENING_MAPEDITOR:
         if (this.open_mapEditor_thread.isAlive()) {
           fill(global.color_mapBorder);
+          noStroke();
           rectMode(CORNERS);
           rect(this.leftPanel.size, 0, width - this.rightPanel.size, height);
           fill(global.color_loadingScreenBackground);
@@ -1650,6 +1696,60 @@ class MapEditorInterface extends InterfaceLNZ {
             this.curr_map = this.open_mapEditor_thread.map_opening;
             this.curr_map.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
             this.navigate(MapEditorPage.TERRAIN);
+          }
+        }
+        break;
+      case OPENING_TESTMAP:
+        if (this.open_testMap_thread.isAlive()) {
+          fill(global.color_mapBorder);
+          noStroke();
+          rectMode(CORNERS);
+          rect(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+          fill(global.color_loadingScreenBackground);
+          rect(this.leftPanel.size + Constants.map_borderSize, Constants.map_borderSize,
+              width - this.rightPanel.size - Constants.map_borderSize, height - Constants.map_borderSize);
+          fill(0);
+          textSize(24);
+          textAlign(LEFT, TOP);
+          text(this.open_testMap_thread.curr_status + " ...", this.leftPanel.size +
+            Constants.map_borderSize + 30, Constants.map_borderSize + 30);
+        }
+        else {
+          if (this.open_testMap_thread.level_opening == null || this.open_testMap_thread.level_opening.nullify) {
+            this.curr_level = null;
+            this.navigate(MapEditorPage.MAPS);
+          }
+          else {
+            this.curr_level = this.open_testMap_thread.level_opening;
+            this.curr_level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+            this.navigate(MapEditorPage.TESTMAP);
+          }
+        }
+        break;
+      case OPENING_TESTLEVEL:
+        if (this.open_testLevel_thread.isAlive()) {
+          fill(global.color_mapBorder);
+          noStroke();
+          rectMode(CORNERS);
+          rect(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+          fill(global.color_loadingScreenBackground);
+          rect(this.leftPanel.size + Constants.map_borderSize, Constants.map_borderSize,
+              width - this.rightPanel.size - Constants.map_borderSize, height - Constants.map_borderSize);
+          fill(0);
+          textSize(24);
+          textAlign(LEFT, TOP);
+          text(this.open_testLevel_thread.curr_status + " ...", this.leftPanel.size +
+            Constants.map_borderSize + 30, Constants.map_borderSize + 30);
+        }
+        else {
+          if (this.open_testLevel_thread.level_opening == null || this.open_testLevel_thread.level_opening.nullify) {
+            this.curr_level = null;
+            this.navigate(MapEditorPage.LEVELS);
+          }
+          else {
+            this.curr_level = this.open_testLevel_thread.level_opening;
+            this.curr_level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+            this.navigate(MapEditorPage.TESTLEVEL);
           }
         }
         break;

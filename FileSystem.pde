@@ -152,10 +152,10 @@ void moveFolder(Path source, Path target) {
   if (Files.isDirectory(source)) {
     mkdir(target, false, false);
     for (Path filePath : listFiles(source)) {
-      moveFile(filePath, target);
+      moveFile(filePath, target.resolve(filePath.getFileName()));
     }
     for (Path folderPath : listFolders(source)) {
-      moveFolder(folderPath, target);
+      moveFolder(folderPath, target.resolve(folderPath.getFileName()));
     }
   }
   else {
@@ -172,10 +172,10 @@ void copyFolder(Path source, Path target) {
   if (Files.isDirectory(source)) {
     mkdir(target, false, false);
     for (Path filePath : listFiles(source)) {
-      copyFile(filePath, target);
+      copyFile(filePath, target.resolve(filePath.getFileName()));
     }
     for (Path folderPath : listFolders(source)) {
-      copyFolder(folderPath, target);
+      copyFolder(folderPath, target.resolve(folderPath.getFileName()));
     }
   }
   else {
