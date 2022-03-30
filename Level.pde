@@ -13,6 +13,8 @@ enum Location {
         return "Francis Hall";
       case FRANCISCAN_OUTSIDE:
         return "Franciscan Campus";
+      case HOMEBASE:
+        return "Home Base";
       default:
         return "-- Error --";
     }
@@ -27,6 +29,8 @@ enum Location {
         return "FRANCISCAN_FRANCIS";
       case FRANCISCAN_OUTSIDE:
         return "FRANCISCAN_OUTSIDE";
+      case HOMEBASE:
+        return "HOMEBASE";
       default:
         return "ERROR";
     }
@@ -50,6 +54,43 @@ enum Location {
 
 
 class Linker {
+  private Rectangle rect1 = new Rectangle();
+  private Rectangle rect2 = new Rectangle();
+
+  Linker() {}
+  Linker(rect1, rect2) {
+    this.rect1 = rect1;
+    this.rect2 = rect2;
+  }
+
+  boolean port(Unit u, String map_name) {
+    if (this.rect1.contains(u, map_name)) {
+      return true;
+    }
+    return false;
+  }
+
+  String fileString() {
+    String fileString = "\nnew: Linker";
+    fileString += "\nrect1: " + this.rect1.fileString();
+    fileString += "\nrect2: " + this.rect2.fileString();
+    fileString += "\nend: Linker\n";
+    return fileString;
+  }
+
+  void addData(String datakey, String data) {
+    switch(datakey) {
+      case "rect1":
+        this.rect1.addData(data);
+        break;
+      case "rect2":
+        this.rect2.addData(data);
+        break;
+      default:
+        println("ERROR: Datakey " + datakey + " not found for linker data.");
+        break;
+    }
+  }
 }
 
 
@@ -73,6 +114,7 @@ class Level {
   protected ArrayList<Linker> linkers = new ArrayList<Linker>();
   protected int nextTriggerKey = 1;
   protected HashMap<Integer, Trigger> triggers = new HashMap<Integer, Trigger>();
+  //protected HashMap<Integer, Quest> quests = new HashMap<Integer, Quest>();
 
   protected Hero player;
 
@@ -98,6 +140,25 @@ class Level {
     this.player = new Hero(HeroCode.BEN);
     this.player.setLocation(0.5, 0.5);
     this.currMap.addPlayer(this.player);
+  }
+
+
+  boolean hasMap(String queryMapName) {
+    for (String mapName : this.mapNames) {
+      if (queryMapName.equals(mapName)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  void removeMap(String mapName) {
+    for (int i = 0; i < this.mapNames.size(); i++) {
+      if (mapName.equals(this.mapNames.get(i))) {
+        this.mapNames.remove(i);
+        return;
+      }
+    }
   }
 
 
@@ -180,6 +241,9 @@ class Level {
 
 
   void save() {
+    this.save(true);
+  }
+  void save(boolean saveMap) {
     String finalFolderPath = this.folderPath;
     if (this.location == Location.ERROR) {
       finalFolderPath += "/" + this.levelName;
@@ -189,7 +253,7 @@ class Level {
     }
     if (!folderExists(finalFolderPath)) {
       mkdir(finalFolderPath);
-    };
+    }
     PrintWriter file = createWriter(finalFolderPath + "/level.lnz");
     file.println("new: Level");
     file.println("levelName: " + this.levelName);
@@ -215,7 +279,7 @@ class Level {
     file.println("end: Level");
     file.flush();
     file.close();
-    if (this.currMap != null) {
+    if (saveMap && this.currMap != null) {
       this.currMap.save(finalFolderPath);
     }
   }
@@ -358,7 +422,7 @@ class Level {
       case "mapNames":
         String[] map_names = split(data, ',');
         for (String map_name : map_names) {
-          this.mapNames.add(map_name);
+          this.mapNames.add(trim(map_name));
         }
         break;
       case "nextTriggerKey":

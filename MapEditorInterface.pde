@@ -310,10 +310,10 @@ class MapEditorInterface extends InterfaceLNZ {
     void setPosition(RightPanelElementLocation position) {
       switch(position) {
         case TOP:
-          this.setYLocation(Constants.mapEditor_listBoxGap, 0.5 * height - Constants.mapEditor_listBoxGap);
+          this.setYLocation(Constants.mapEditor_listBoxGap, 0.45 * height - Constants.mapEditor_listBoxGap);
           break;
         case BOTTOM:
-          this.setYLocation(0.5 * height + Constants.mapEditor_listBoxGap, 0.9 * height - Constants.mapEditor_listBoxGap);
+          this.setYLocation(0.45 * height + Constants.mapEditor_listBoxGap, 0.9 * height - Constants.mapEditor_listBoxGap);
           break;
         case WHOLE:
           this.setYLocation(Constants.mapEditor_listBoxGap, 0.9 * height - Constants.mapEditor_listBoxGap);
@@ -323,6 +323,7 @@ class MapEditorInterface extends InterfaceLNZ {
 
     void setList(MapEditorPage page) {
       this.clearText();
+      this.line_hovered = -1;
       this.line_clicked = -1;
       this.active = true;
       switch(page) {
@@ -489,6 +490,9 @@ class MapEditorInterface extends InterfaceLNZ {
           }
           break;
         case LEVELS:
+          if (mouseButton == LEFT) {
+            MapEditorInterface.this.openLevelEditor(this.highlightedLine());
+          }
           break;
         case TERRAIN:
           if (mouseButton == LEFT) {
@@ -512,7 +516,7 @@ class MapEditorInterface extends InterfaceLNZ {
           break;
         case LEVEL_MAPS:
           if (mouseButton == LEFT) {
-            //MapEditorInterface.this.addMapToLevel(this.highlightedLine());
+            MapEditorInterface.this.addMapToLevel(this.highlightedLine());
           }
           break;
         default:
@@ -548,16 +552,31 @@ class MapEditorInterface extends InterfaceLNZ {
 
     void setList(MapEditorPage page) {
       this.clearText();
+      this.line_hovered = -1;
       this.line_clicked = -1;
       this.active = true;
       switch(page) {
         case LEVEL_INFO:
-          break;
         case LEVEL_MAPS:
+          this.setTitleText("Maps");
+          if (MapEditorInterface.this.curr_level != null) {
+            boolean first = true;
+            for (String mapName : MapEditorInterface.this.curr_level.mapNames) {
+              if (first) {
+                this.setText(mapName);
+                first = false;
+              }
+              else {
+                this.addLine(mapName);
+              }
+            }
+          }
           break;
         case LINKERS:
+          this.setTitleText("Linkers");
           break;
         case TRIGGERS:
+          this.setTitleText("Triggers");
           break;
         case TRIGGER_EDITOR:
           break;
@@ -576,6 +595,33 @@ class MapEditorInterface extends InterfaceLNZ {
     }
 
     void keyPress() {
+      if (key == CODED) {
+      }
+      else {
+        switch(key) {
+          case 'a':
+            switch(MapEditorInterface.this.page) {
+              default:
+                break;
+            }
+            break;
+          case 's':
+            switch(MapEditorInterface.this.page) {
+              default:
+                break;
+            }
+            break;
+          case 'd':
+            switch(MapEditorInterface.this.page) {
+              case LEVEL_MAPS:
+                MapEditorInterface.this.removeMapFromLevel(this.highlightedLine());
+                break;
+              default:
+                break;
+            }
+            break;
+        }
+      }
     }
 
     void keyRelease() {
@@ -604,12 +650,14 @@ class MapEditorInterface extends InterfaceLNZ {
     void doubleclick() {
       switch(page) {
         case LEVEL_INFO:
-          break;
         case LEVEL_MAPS:
+          // open map
           break;
         case LINKERS:
+          // open linker form ?
           break;
         case TRIGGERS:
+          // open trigger editor
           break;
         case TRIGGER_EDITOR:
           break;
@@ -1381,6 +1429,51 @@ class MapEditorInterface extends InterfaceLNZ {
       this.curr_level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
       this.navigate(MapEditorPage.LEVEL_INFO);
     }
+  }
+
+  void addMapToLevel(String mapName) {
+    if (mapName == null) {
+      this.form = new MessageForm("Add Map", "No map selected to add to level.");
+      return;
+    }
+    if (!fileExists("data/maps/" + mapName + ".map.lnz")) {
+      this.form = new MessageForm("Add Map", "Map is missing from maps folder:\n" + mapName);
+      return;
+    }
+    if (this.curr_level == null) {
+      this.form = new MessageForm("Add Map", "No current level to add map to.");
+      return;
+    }
+    if (this.curr_level.hasMap(mapName)) {
+      return;
+    }
+    copyFile("data/maps/" + mapName + ".map.lnz", "data/levels/" +
+      this.curr_level.levelName + "/" + mapName + ".map.lnz");
+    this.curr_level.mapNames.add(mapName);
+    this.curr_level.save(false);
+    this.listBox2.refresh();
+  }
+
+  void removeMapFromLevel(String mapName) {
+    if (mapName == null) {
+      this.form = new MessageForm("Remove Map", "No map selected to remove from level.");
+      return;
+    }
+    if (!fileExists("data/levels/" + this.curr_level.levelName + "/" + mapName + ".map.lnz")) {
+      this.form = new MessageForm("Remove Map", "Map is missing from level folder:\n" + mapName);
+      return;
+    }
+    if (this.curr_level == null) {
+      this.form = new MessageForm("Remove Map", "No current level to remove map from.");
+      return;
+    }
+    if (!this.curr_level.hasMap(mapName)) {
+      return;
+    }
+    deleteFile("data/levels/" + this.curr_level.levelName + "/" + mapName + ".map.lnz");
+    this.curr_level.removeMap(mapName);
+    this.curr_level.save(false);
+    this.listBox2.refresh();
   }
 
   void saveLevelEditor() {
