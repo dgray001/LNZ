@@ -1050,13 +1050,18 @@ class GameMap {
     catch(IndexOutOfBoundsException e) {}
   }
   void exploreTerrain(int x, int y) {
+    this.exploreTerrain(x, y, true);
+  }
+  void exploreTerrain(int x, int y, boolean refreshImage) {
     try {
       this.squares[x][y].explored = true;
-      if (this.squares[x][y].visible) {
-        this.fog_dimg.colorGrid(color(1, 0), x, y);
-      }
-      else {
-        this.fog_dimg.colorGrid(this.fogColor, x, y);
+      if (refreshImage) {
+        if (this.squares[x][y].visible) {
+          this.fog_dimg.colorGrid(color(1, 0), x, y);
+        }
+        else {
+          this.fog_dimg.colorGrid(this.fogColor, x, y);
+        }
       }
     }
     catch(IndexOutOfBoundsException e) {}
@@ -2022,7 +2027,7 @@ class GameMap {
         this.setTerrain(terrain_id, terrain_x, terrain_y, false);
         this.setTerrainBaseElevation(terrain_height, terrain_x, terrain_y);
         if (toBoolean(trim(terrain_values[2]))) {
-          this.exploreTerrain(terrain_x, terrain_y);
+          this.exploreTerrain(terrain_x, terrain_y, false);
         }
         break;
       case "nextUnitKey":
@@ -2471,6 +2476,7 @@ class GameMapEditor extends GameMap {
 class GameMapLevelEditor extends GameMapEditor {
   GameMapLevelEditor(String mapName, String folderPath) {
     super(mapName, folderPath);
+    this.rectangle_mode = true;
     this.square_mode = true;
   }
 

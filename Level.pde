@@ -568,6 +568,30 @@ class LevelEditor extends Level {
     this.currMap.setLocation(this.xi, this.yi, this.xf, this.yf);
   }
 
+
+  void newLinker() {
+    if (this.last_rectangle == null) {
+      return;
+    }
+    if (this.currMap == null) {
+      return;
+    }
+    if (!GameMapLevelEditor.class.isInstance(this.currMap)) {
+      return;
+    }
+    if (((GameMapLevelEditor)this.currMap).rectangle_dropping == null) {
+      return;
+    }
+    Linker linker = new Linker(this.last_rectangle, ((GameMapLevelEditor)this.currMap).rectangle_dropping);
+    this.addLinker(linker);
+  }
+
+
+  void newTrigger() {
+    println("new trigger");
+  }
+
+
   @Override
   void update(int millis) {
     if (this.currMap != null) {
@@ -603,6 +627,12 @@ class LevelEditor extends Level {
     else {
       switch(key) {
         case 's':
+          if (this.currMap != null && GameMapLevelEditor.class.isInstance(this.currMap)) {
+            this.last_rectangle = ((GameMapLevelEditor)this.currMap).rectangle_dropping;
+            ((GameMapLevelEditor)this.currMap).rectangle_dropping = null;
+          }
+          break;
+        case 'S':
           if (this.currMap != null && GameMapLevelEditor.class.isInstance(this.currMap)) {
             this.last_rectangle = ((GameMapLevelEditor)this.currMap).rectangle_dropping;
             ((GameMapLevelEditor)this.currMap).rectangle_dropping = null;
