@@ -119,6 +119,8 @@ class Level {
   protected Rectangle player_start_location = null;
   protected Hero player;
 
+  protected int last_update_time = millis();
+
   Level() {
   }
   Level(String folderPath, String levelName) {
@@ -188,6 +190,20 @@ class Level {
     }
   }
 
+
+  void movePlayerTo(Rectangle rect) {
+    if (this.player == null || rect == null) {
+      return;
+    }
+    if (!this.hasMap(rect.mapName)) {
+      return;
+    }
+    this.openMap(rect.mapName);
+    this.player.setLocation(rect.centerX(), rect.centerY());
+    this.player.stopAction();
+    this.currMap.addPlayer(player);
+  }
+
   void openMap(String mapName) {
     if (mapName == null) {
       return;
@@ -201,6 +217,9 @@ class Level {
       return;
     }
     this.currMapName = mapName;
+    if (this.currMap != null) {
+      this.currMap.save(this.finalFolderPath());
+    }
     this.currMap = new GameMap(mapName, this.finalFolderPath());
     this.currMap.setLocation(this.xi, this.yi, this.xf, this.yf);
   }
@@ -288,6 +307,18 @@ class Level {
   void update(int millis) {
     if (this.currMap != null) {
       this.currMap.update(millis);
+      int timeElapsed = millis - this.last_update_time;
+      /*for (Map.Entry<Integer, Trigger> entry : this.triggers.entrySet()) {
+        trigger logics
+      }*/
+      if (this.player != null) {
+        for (Linker linker : this.linkers) {
+          if (linker.rect1.contains(this.player, this.currMapName)) {
+            this.movePlayerTo(linker.rect2);
+          }
+        }
+      }
+      this.last_update_time = millis;
     }
     else {
       rectMode(CORNERS);

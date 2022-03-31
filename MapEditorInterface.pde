@@ -1041,6 +1041,7 @@ class MapEditorInterface extends InterfaceLNZ {
         return;
       }
       this.curr_status += "\nCopying Data";
+      deleteFolder("data/profiles/" + global.profile.display_name.toLowerCase() + "/leveltester");
       mkdir("data/profiles/" + global.profile.display_name.toLowerCase() + "/leveltester");
       copyFolder("data/levels/" + this.levelName, "data/profiles/" + global.
         profile.display_name.toLowerCase() + "/leveltester/" + this.levelName);
