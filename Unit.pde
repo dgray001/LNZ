@@ -390,6 +390,11 @@ class Unit extends MapObject {
   }
 
 
+  void stopAction() {
+    this.curr_action = UnitAction.NONE;
+  }
+
+
   void face(float faceX, float faceY) {
     this.setFacing(faceX - this.x, faceY - this.y);
   }

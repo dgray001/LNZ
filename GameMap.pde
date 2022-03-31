@@ -924,29 +924,51 @@ class GameMap {
     this.fogHandling = fogHandling;
     switch(fogHandling) {
       case DEFAULT:
-        this.fog_dimg.colorPixels(color(0));
+        for (int i = 0; i < this.mapWidth; i++) {
+          for (int j = 0; j < this.mapHeight; j++) {
+            if (!this.squares[i][j].explored) {
+              this.fog_dimg.colorGrid(color(0), i, j);
+            }
+            else if (!this.squares[i][j].visible) {
+              this.fog_dimg.colorGrid(this.fogColor, i, j);
+            }
+            else {
+              this.fog_dimg.colorGrid(color(1, 0), i, j);
+            }
+          }
+        }
         break;
       case NONE:
         this.fog_dimg.colorPixels(color(1, 0));
         for (int i = 0; i < this.mapWidth; i++) {
           for (int j = 0; j < this.mapHeight; j++) {
-            this.exploreTerrainAndVisible(i, j);
+            this.exploreTerrainAndVisible(i, j, false);
           }
         }
         break;
       case NOFOG:
-        this.fog_dimg.colorPixels(color(0));
         for (int i = 0; i < this.mapWidth; i++) {
           for (int j = 0; j < this.mapHeight; j++) {
-            this.setTerrainVisible(true, i, j);
+            this.setTerrainVisible(true, i, j, false);
+            if (!this.squares[i][j].explored) {
+              this.fog_dimg.colorGrid(color(0), i, j);
+            }
+            else {
+              this.fog_dimg.colorGrid(color(1, 0), i, j);
+            }
           }
         }
         break;
       case EXPLORED:
-        this.fog_dimg.colorPixels(this.fogColor);
         for (int i = 0; i < this.mapWidth; i++) {
           for (int j = 0; j < this.mapHeight; j++) {
-            this.exploreTerrain(i, j);
+            this.exploreTerrain(i, j, false);
+            if (!this.squares[i][j].visible) {
+              this.fog_dimg.colorGrid(this.fogColor, i, j);
+            }
+            else {
+              this.fog_dimg.colorGrid(color(1, 0), i, j);
+            }
           }
         }
         break;
@@ -1052,10 +1074,10 @@ class GameMap {
   void exploreTerrain(int x, int y) {
     this.exploreTerrain(x, y, true);
   }
-  void exploreTerrain(int x, int y, boolean refreshImage) {
+  void exploreTerrain(int x, int y, boolean refreshFogImage) {
     try {
       this.squares[x][y].explored = true;
-      if (refreshImage) {
+      if (refreshFogImage) {
         if (this.squares[x][y].visible) {
           this.fog_dimg.colorGrid(color(1, 0), x, y);
         }
@@ -1067,23 +1089,33 @@ class GameMap {
     catch(IndexOutOfBoundsException e) {}
   }
   void exploreTerrainAndVisible(int x, int y) {
+    this.exploreTerrainAndVisible(x, y, true);
+  }
+  void exploreTerrainAndVisible(int x, int y, boolean refreshFogImage) {
     try {
       this.squares[x][y].explored = true;
       this.squares[x][y].visible = true;
-      this.fog_dimg.colorGrid(color(1, 0), x, y);
+      if (refreshFogImage) {
+        this.fog_dimg.colorGrid(color(1, 0), x, y);
+      }
     }
     catch(IndexOutOfBoundsException e) {}
   }
   void setTerrainVisible(boolean visible, int x, int y) {
+    this.setTerrainVisible(visible, x, y, true);
+  }
+  void setTerrainVisible(boolean visible, int x, int y, boolean refreshFogImage) {
     try {
       this.squares[x][y].visible = visible;
-      if (!this.squares[x][y].explored) {
-      }
-      else if (!this.squares[x][y].visible) {
-        this.fog_dimg.colorGrid(this.fogColor, x, y);
-      }
-      else {
-        this.fog_dimg.colorGrid(color(1, 0), x, y);
+      if (refreshFogImage) {
+        if (!this.squares[x][y].explored) {
+        }
+        else if (!this.squares[x][y].visible) {
+          this.fog_dimg.colorGrid(this.fogColor, x, y);
+        }
+        else {
+          this.fog_dimg.colorGrid(color(1, 0), x, y);
+        }
       }
     }
     catch(IndexOutOfBoundsException e) {}
