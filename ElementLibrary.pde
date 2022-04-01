@@ -3439,6 +3439,14 @@ class SubmitCancelFormField extends FormField {
     this.button2.show_message = true;
   }
 
+  void setButtonHeight(int new_height) {
+    if (new_height < 0) {
+      new_height = 0;
+    }
+    this.button1.setYLocation(0, new_height);
+    this.button2.setYLocation(0, new_height);
+  }
+
   void disable() {
     this.button1.disabled = true;
     this.button2.disabled = true;
@@ -3461,9 +3469,13 @@ class SubmitCancelFormField extends FormField {
       this.button1.setXLocation(0, 0.5 * (this.field_width - this.gapSize));
       this.button2.setXLocation(0.5 * (this.field_width + gapSize), this.field_width);
     }
-    else {
+    else if (2 * max(desiredWidth1, desiredWidth2) + this.gapSize > this.field_width) {
       this.button1.setXLocation(0.5 * (this.field_width - this.gapSize) - desiredWidth1, 0.5 * (this.field_width - this.gapSize));
       this.button2.setXLocation(0.5 * (this.field_width + this.gapSize), 0.5 * (this.field_width + this.gapSize) + desiredWidth2);
+    }
+    else {
+      this.button1.setXLocation(0.5 * (this.field_width - this.gapSize) - max(desiredWidth1, desiredWidth2), 0.5 * (this.field_width - this.gapSize));
+      this.button2.setXLocation(0.5 * (this.field_width + this.gapSize), 0.5 * (this.field_width + this.gapSize) + max(desiredWidth1, desiredWidth2));
     }
   }
 
@@ -3484,7 +3496,7 @@ class SubmitCancelFormField extends FormField {
     this.button2.update(millis);
     if (this.submitted) {
       this.submitted = false;
-      return FormFieldSubmit.SUBMIT;
+      return FormFieldSubmit.BUTTON;
     }
     else if (this.canceled) {
       this.canceled = false;
@@ -3514,6 +3526,48 @@ class SubmitCancelFormField extends FormField {
   void keyPress() {}
   void keyRelease() {}
   void submit() {}
+}
+
+
+
+class ButtonsFormField extends SubmitCancelFormField {
+  protected int last_button_pressed = -1;
+
+  ButtonsFormField(String message1, String message2) {
+    super(message1, message2);
+  }
+
+  @Override
+  String getValue() {
+    return Integer.toString(this.last_button_pressed);
+  }
+  @Override
+  void setValue(String newValue) {
+    if (isInt(newValue)) {
+      this.last_button_pressed = toInt(newValue);
+    }
+    else {
+      this.last_button_pressed = -1;
+    }
+  }
+
+  @Override
+  FormFieldSubmit update(int millis) {
+    this.button1.update(millis);
+    this.button2.update(millis);
+    if (this.submitted) {
+      this.submitted = false;
+      this.last_button_pressed = 0;
+      return FormFieldSubmit.BUTTON;
+    }
+    else if (this.canceled) {
+      this.canceled = false;
+      this.last_button_pressed = 1;
+      return FormFieldSubmit.BUTTON;
+    }
+    this.last_button_pressed = -1;
+    return FormFieldSubmit.NONE;
+  }
 }
 
 
