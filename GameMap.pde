@@ -57,7 +57,8 @@ enum GameMapCode {
 
 enum ReadFileObject {
   NONE("None"), MAP("Map"), FEATURE("Feature"), UNIT("Unit"), ITEM("Item"),
-  PROJECTILE("Projectile"), LEVEL("Level"), LINKER("Linker"), TRIGGER("Trigger");
+  PROJECTILE("Projectile"), LEVEL("Level"), LINKER("Linker"), TRIGGER("Trigger"),
+  CONDITION("Condition"), EFFECT("Effect");
 
   private static final List<ReadFileObject> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 
