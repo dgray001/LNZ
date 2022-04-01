@@ -308,9 +308,9 @@ class Level {
     if (this.currMap != null) {
       this.currMap.update(millis);
       int timeElapsed = millis - this.last_update_time;
-      /*for (Map.Entry<Integer, Trigger> entry : this.triggers.entrySet()) {
-        trigger logics
-      }*/
+      for (Map.Entry<Integer, Trigger> entry : this.triggers.entrySet()) {
+        entry.getValue().update(timeElapsed, this);
+      }
       if (this.player != null) {
         for (Linker linker : this.linkers) {
           if (linker.rect1.contains(this.player, this.currMapName)) {
@@ -562,7 +562,7 @@ class Level {
         this.player_start_location.addData(data);
         break;
       default:
-        global.errorMessage("ERROR: Datakey " + datakey + " not recognized for GameMap object.");
+        global.errorMessage("ERROR: Datakey " + datakey + " not recognized for Level object.");
         break;
     }
   }
