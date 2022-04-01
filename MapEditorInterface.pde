@@ -754,10 +754,19 @@ class MapEditorInterface extends InterfaceLNZ {
           MapEditorInterface.this.openTriggerEditor(triggerKey);
           break;
         case TRIGGER_EDITOR:
-          break;
         case CONDITION_EDITOR:
-          break;
         case EFFECT_EDITOR:
+          if (MapEditorInterface.this.curr_trigger == null) {
+            break;
+          }
+          if (this.line_clicked > MapEditorInterface.this.curr_trigger.conditions.size()) {
+            MapEditorInterface.this.openEffectEditor(this.line_clicked -
+              MapEditorInterface.this.curr_trigger.conditions.size() - 1);
+          }
+          else if (this.line_clicked != -1 && this.line_clicked !=
+            MapEditorInterface.this.curr_trigger.conditions.size()) {
+            MapEditorInterface.this.openConditionEditor(this.line_clicked);
+          }
           break;
         default:
           break;
@@ -1015,17 +1024,32 @@ class MapEditorInterface extends InterfaceLNZ {
 
     ConditionEditorForm(Condition condition, float xi, float xf) {
       super(xi, xf);
+      condition.setName();
       this.condition = condition;
       this.setTitleText(condition.display_name);
+      this.addField(new SpacerFormField(20));
+      this.addField(new IntegerFormField("  ", "Condition ID", 0, 1));
+      this.addField(new SpacerFormField(20));
+      this.addField(new IntegerFormField("  ", "number 1", 0, Integer.MAX_VALUE - 1));
+      this.addField(new IntegerFormField("  ", "number 2", 0, Integer.MAX_VALUE - 1));
+      this.updateFields();
     }
 
     void submit() {
+      this.condition.setID(toInt(this.fields.get(1).getValue()));
+      this.condition.number1 = toInt(this.fields.get(3).getValue());
+      this.condition.number2 = toInt(this.fields.get(4).getValue());
+      this.condition.setName();
+      this.setTitleText(condition.display_name);
+      this.updateFields();
     }
 
-    void buttonPress(int i) {
-    }
+    void buttonPress(int i) {}
 
     void updateFields() {
+      this.fields.get(1).setValue(this.condition.ID);
+      this.fields.get(3).setValue(this.condition.number1);
+      this.fields.get(4).setValue(this.condition.number2);
     }
   }
 
@@ -1035,17 +1059,29 @@ class MapEditorInterface extends InterfaceLNZ {
 
     EffectEditorForm(Effect effect, float xi, float xf) {
       super(xi, xf);
+      effect.setName();
       this.effect = effect;
       this.setTitleText(effect.display_name);
+      this.addField(new SpacerFormField(20));
+      this.addField(new IntegerFormField("  ", "Effect ID", 0, 1));
+      this.addField(new SpacerFormField(20));
+      this.addField(new StringFormField("  ", "message"));
+      this.updateFields();
     }
 
     void submit() {
+      this.effect.setID(toInt(this.fields.get(1).getValue()));
+      this.effect.message = this.fields.get(3).getValue();
+      this.effect.setName();
+      this.setTitleText(effect.display_name);
+      this.updateFields();
     }
 
-    void buttonPress(int i) {
-    }
+    void buttonPress(int i) {}
 
     void updateFields() {
+      this.fields.get(1).setValue(this.effect.ID);
+      this.fields.get(3).setValue(this.effect.message);
     }
   }
 
@@ -1235,6 +1271,7 @@ class MapEditorInterface extends InterfaceLNZ {
   private GameMapEditor curr_map;
   private Level curr_level;
   private Trigger curr_trigger;
+  private int curr_trigger_component = -1;
 
   private OpenMapEditorThread open_mapEditor_thread;
   private NewMapThread create_map_thread;
@@ -1414,11 +1451,14 @@ class MapEditorInterface extends InterfaceLNZ {
         this.navigate(MapEditorPage.LEVEL_INFO);
         break;
       case TRIGGER_EDITOR:
-        // navigate to TRIGGERS
+        this.navigate(MapEditorPage.TRIGGERS);
         break;
       case CONDITION_EDITOR:
       case EFFECT_EDITOR:
-        // navigate to TRIGGER_EDITOR
+        this.levelForm = new TriggerEditorForm(this.curr_trigger,
+          width - this.rightPanel.size_curr + Constants.mapEditor_listBoxGap,
+            width - Constants.mapEditor_listBoxGap);
+        this.navigate(MapEditorPage.TRIGGER_EDITOR);
         break;
       case TESTLEVEL:
         break;
@@ -1771,15 +1811,47 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
   void openConditionEditor(int conditionIndex) {
-    if (this.curr_level == null) {
+    if (this.curr_trigger == null) {
       return;
     }
+    if (conditionIndex < 0 || conditionIndex >= this.curr_trigger.conditions.size()) {
+      return;
+    }
+    if (conditionIndex == this.curr_trigger_component) {
+      this.curr_trigger_component = -1;
+      this.levelForm = new TriggerEditorForm(this.curr_trigger,
+        width - this.rightPanel.size_curr + Constants.mapEditor_listBoxGap,
+          width - Constants.mapEditor_listBoxGap);
+      this.navigate(MapEditorPage.TRIGGER_EDITOR);
+      return;
+    }
+    this.curr_trigger_component = conditionIndex;
+    this.levelForm = new ConditionEditorForm(this.curr_trigger.conditions.get(
+      conditionIndex), width - this.rightPanel.size_curr + Constants.mapEditor_listBoxGap,
+      width - Constants.mapEditor_listBoxGap);
+      this.navigate(MapEditorPage.CONDITION_EDITOR);
   }
 
   void openEffectEditor(int effectIndex) {
-    if (this.curr_level == null) {
+    if (this.curr_trigger == null) {
       return;
     }
+    if (effectIndex < 0 || effectIndex >= this.curr_trigger.effects.size()) {
+      return;
+    }
+    if (effectIndex == this.curr_trigger_component) {
+      this.curr_trigger_component = -1;
+      this.levelForm = new TriggerEditorForm(this.curr_trigger,
+        width - this.rightPanel.size_curr + Constants.mapEditor_listBoxGap,
+          width - Constants.mapEditor_listBoxGap);
+      this.navigate(MapEditorPage.TRIGGER_EDITOR);
+      return;
+    }
+    this.curr_trigger_component = effectIndex;
+    this.levelForm = new EffectEditorForm(this.curr_trigger.effects.get(
+      effectIndex), width - this.rightPanel.size_curr + Constants.mapEditor_listBoxGap,
+      width - Constants.mapEditor_listBoxGap);
+      this.navigate(MapEditorPage.EFFECT_EDITOR);
   }
 
 

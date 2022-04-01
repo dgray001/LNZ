@@ -2884,6 +2884,7 @@ class IntegerFormField extends StringFormField {
     else if (value < this.min_value) {
       value = this.min_value;
     }
+    println(this.min_value, this.max_value, value);
     this.input.setText(Integer.toString(value));
   }
 }
