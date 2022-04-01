@@ -3618,6 +3618,19 @@ abstract class Form {
       field.setWidth(this.xf - this.xi - 3 - this.scrollbar.bar_size);
     }
   }
+  void setXLocation(float xi, float xf) {
+    this.xi = xi;
+    this.xf = xf;
+    this.refreshTitle();
+    for (FormField field : this.fields) {
+      field.setWidth(this.xf - this.xi - 3 - this.scrollbar.bar_size);
+    }
+  }
+  void setYLocation(float yi, float yf) {
+    this.yi = yi;
+    this.yf = yf;
+    this.refreshTitle();
+  }
 
   void moveForm(float xMove, float yMove) {
     this.xi += xMove;

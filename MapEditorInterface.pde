@@ -597,20 +597,44 @@ class MapEditorInterface extends InterfaceLNZ {
             for (Map.Entry<Integer, Trigger> entry : MapEditorInterface.this.curr_level.triggers.entrySet()) {
               Trigger trigger = entry.getValue();
               if (first) {
-                this.setText(trigger.triggerName);
+                this.setText(entry.getKey() + ": " + trigger.triggerName);
                 first = false;
               }
               else {
-                this.addLine(trigger.triggerName);
+                this.addLine(entry.getKey() + ": " + trigger.triggerName);
               }
             }
           }
           break;
         case TRIGGER_EDITOR:
-          break;
         case CONDITION_EDITOR:
-          break;
         case EFFECT_EDITOR:
+          this.setTitleText("Trigger Components");
+          if (MapEditorInterface.this.curr_trigger == null) {
+            break;
+          }
+          boolean first = true;
+          for (Condition condition : MapEditorInterface.this.curr_trigger.conditions) {
+            if (first) {
+              this.setText(condition.display_name);
+              first = false;
+            }
+            else {
+              this.addLine(condition.display_name);
+            }
+          }
+          if (!first) {
+            this.addLine("");
+          }
+          for (Effect effect : MapEditorInterface.this.curr_trigger.effects) {
+            if (first) {
+              this.setText(effect.display_name);
+              first = false;
+            }
+            else {
+              this.addLine(effect.display_name);
+            }
+          }
           break;
         default:
           this.active = false;
@@ -645,10 +669,21 @@ class MapEditorInterface extends InterfaceLNZ {
                 MapEditorInterface.this.removeMapFromLevel(this.highlightedLine());
                 break;
               case LINKERS:
-                // delete linker
+                if (this.line_clicked < 0 || this.line_clicked % 3 == 0) {
+                  break;
+                }
+                int linker_index = int(floor(this.line_clicked/3.0));
+                MapEditorInterface.this.removeLinkerFromLevel(linker_index);
                 break;
               case TRIGGERS:
-                // delete trigger
+                if (this.highlightedLine() == null) {
+                  break;
+                }
+                int triggerKey = toInt(trim(split(this.highlightedLine(), ':')[0]));
+                if (triggerKey == 0) {
+                  break;
+                }
+                MapEditorInterface.this.removeTriggerFromLevel(triggerKey);
                 break;
               default:
                 break;
@@ -698,7 +733,14 @@ class MapEditorInterface extends InterfaceLNZ {
           // open linker form ?
           break;
         case TRIGGERS:
-          // open trigger editor
+          if (MapEditorInterface.this.curr_level == null || this.highlightedLine() == null) {
+            break;
+          }
+          int triggerKey = toInt(trim(split(this.highlightedLine(), ':')[0]));
+          if (triggerKey == 0) {
+            break;
+          }
+          MapEditorInterface.this.openTriggerEditor(triggerKey);
           break;
         case TRIGGER_EDITOR:
           break;
@@ -866,8 +908,10 @@ class MapEditorInterface extends InterfaceLNZ {
 
 
   abstract class LevelEditorForm extends Form {
-    LevelEditorForm() {
-      super(0, 0, 0, 0);
+    LevelEditorForm(float xi, float xf) {
+      super(xi, Constants.mapEditor_listBoxGap, xf, 0.45 * height - Constants.mapEditor_listBoxGap);
+      this.color_background = color(250, 190, 140);
+      this.color_header = color(220, 180, 130);
     }
 
     void cancel() {
@@ -881,16 +925,47 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
 
-  class LevelInfoForm extends LevelEditorForm {}
+  class LevelInfoForm extends LevelEditorForm {
+    LevelInfoForm(float xi, float xf) {
+      super(xi, xf);
+      if (MapEditorInterface.this.curr_level != null) {
+        this.setTitleText(MapEditorInterface.this.curr_level.levelName);
+      }
+    }
+  }
 
 
-  class TriggerEditorForm extends LevelEditorForm {}
+  class TriggerEditorForm extends LevelEditorForm {
+    Trigger trigger;
+
+    TriggerEditorForm(Trigger trigger, float xi, float xf) {
+      super(xi, xf);
+      this.trigger = trigger;
+      this.setTitleText(trigger.triggerName);
+    }
+  }
 
 
-  class ConditionEditorForm extends LevelEditorForm {}
+  class ConditionEditorForm extends LevelEditorForm {
+    Condition condition;
+
+    ConditionEditorForm(Condition condition, float xi, float xf) {
+      super(xi, xf);
+      this.condition = condition;
+      this.setTitleText(condition.display_name);
+    }
+  }
 
 
-  class EffectEditorForm extends LevelEditorForm {}
+  class EffectEditorForm extends LevelEditorForm {
+    Effect effect;
+
+    EffectEditorForm(Effect effect, float xi, float xf) {
+      super(xi, xf);
+      this.effect = effect;
+      this.setTitleText(effect.display_name);
+    }
+  }
 
 
   class NewMapThread extends Thread {
@@ -1077,6 +1152,7 @@ class MapEditorInterface extends InterfaceLNZ {
 
   private GameMapEditor curr_map;
   private Level curr_level;
+  private Trigger curr_trigger;
 
   private OpenMapEditorThread open_mapEditor_thread;
   private NewMapThread create_map_thread;
@@ -1102,6 +1178,8 @@ class MapEditorInterface extends InterfaceLNZ {
     this.page = page;
     this.listBox1.setList(this.page);
     this.listBox2.setList(this.page);
+    boolean nullifyLevelForm = true;
+    boolean nullifyCurrTrigger = true;
     switch(this.page) {
       case MAPS:
         this.buttons[0].message = "Toggle\nDisplay";
@@ -1141,7 +1219,9 @@ class MapEditorInterface extends InterfaceLNZ {
         this.buttons[0].message = "Toggle\nDisplay";
         this.buttons[1].message = "Save\nLevel";
         this.buttons[2].message = "Cancel\nLevel";
-        // levelForm = new LevelInfoForm(); // TOP
+        this.levelForm = new LevelInfoForm(width - this.rightPanel.size_curr +
+          Constants.mapEditor_listBoxGap, width - Constants.mapEditor_listBoxGap);
+        nullifyLevelForm = false;
         this.listBox2.setPosition(RightPanelElementLocation.BOTTOM);
         break;
       case LEVEL_MAPS:
@@ -1164,24 +1244,13 @@ class MapEditorInterface extends InterfaceLNZ {
         this.listBox2.setPosition(RightPanelElementLocation.WHOLE);
         break;
       case TRIGGER_EDITOR:
-        this.buttons[0].message = "";
-        this.buttons[1].message = "";
-        this.buttons[2].message = "";
-        // levelForm = new TriggerEditorForm(); // TOP
-        this.listBox2.setPosition(RightPanelElementLocation.BOTTOM);
-        break;
       case CONDITION_EDITOR:
-        this.buttons[0].message = "";
-        this.buttons[1].message = "";
-        this.buttons[2].message = "";
-        // levelForm = new ConditionEditorForm(); // TOP
-        this.listBox2.setPosition(RightPanelElementLocation.BOTTOM);
-        break;
       case EFFECT_EDITOR:
-        this.buttons[0].message = "";
-        this.buttons[1].message = "";
-        this.buttons[2].message = "";
-        // levelForm = new EffectEditorForm(); // TOP
+        this.buttons[0].message = "Return";
+        this.buttons[1].message = "Save\nLevel";
+        this.buttons[2].message = "Cancel\nLevel";
+        nullifyLevelForm = false;
+        nullifyCurrTrigger = false;
         this.listBox2.setPosition(RightPanelElementLocation.BOTTOM);
         break;
       case TESTLEVEL:
@@ -1192,6 +1261,12 @@ class MapEditorInterface extends InterfaceLNZ {
       default:
         global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
         break;
+    }
+    if (nullifyLevelForm) {
+      this.levelForm = null;
+    }
+    if (nullifyCurrTrigger) {
+      this.curr_trigger = null;
     }
   }
 
@@ -1210,6 +1285,10 @@ class MapEditorInterface extends InterfaceLNZ {
       width - Constants.mapEditor_listBoxGap);
     this.listBox2.setXLocation(width - this.rightPanel.size_curr + Constants.mapEditor_listBoxGap,
       width - Constants.mapEditor_listBoxGap);
+    if (this.levelForm != null) {
+      this.levelForm.setXLocation(width - this.rightPanel.size_curr + Constants.mapEditor_listBoxGap,
+        width - Constants.mapEditor_listBoxGap);
+    }
   }
 
   void buttonClick1() {
@@ -1253,8 +1332,11 @@ class MapEditorInterface extends InterfaceLNZ {
         this.navigate(MapEditorPage.LEVEL_INFO);
         break;
       case TRIGGER_EDITOR:
+        // navigate to TRIGGERS
+        break;
       case CONDITION_EDITOR:
       case EFFECT_EDITOR:
+        // navigate to TRIGGER_EDITOR
         break;
       case TESTLEVEL:
         break;
@@ -1291,11 +1373,10 @@ class MapEditorInterface extends InterfaceLNZ {
       case LEVEL_MAPS:
       case LINKERS:
       case TRIGGERS:
-        this.saveLevelEditor();
-        break;
       case TRIGGER_EDITOR:
       case CONDITION_EDITOR:
       case EFFECT_EDITOR:
+        this.saveLevelEditor();
         break;
       case TESTLEVEL:
         this.saveLevelTester();
@@ -1333,11 +1414,10 @@ class MapEditorInterface extends InterfaceLNZ {
       case LEVEL_MAPS:
       case LINKERS:
       case TRIGGERS:
-        this.closeLevelEditor();
-        break;
       case TRIGGER_EDITOR:
       case CONDITION_EDITOR:
       case EFFECT_EDITOR:
+        this.closeLevelEditor();
         break;
       case TESTLEVEL:
         this.closeLevelTester();
@@ -1594,6 +1674,32 @@ class MapEditorInterface extends InterfaceLNZ {
     this.navigate(MapEditorPage.LEVELS);
   }
 
+  void openTriggerEditor(int triggerKey) {
+    if (this.curr_level == null) {
+      return;
+    }
+    if (!this.curr_level.triggers.containsKey(triggerKey)) {
+      return;
+    }
+    this.curr_trigger = this.curr_level.triggers.get(triggerKey);
+    this.levelForm = new TriggerEditorForm(this.curr_trigger,
+      width - this.rightPanel.size_curr + Constants.mapEditor_listBoxGap,
+        width - Constants.mapEditor_listBoxGap);
+    this.navigate(MapEditorPage.TRIGGER_EDITOR);
+  }
+
+  void openConditionEditor(int conditionIndex) {
+    if (this.curr_level == null) {
+      return;
+    }
+  }
+
+  void openEffectEditor(int effectIndex) {
+    if (this.curr_level == null) {
+      return;
+    }
+  }
+
 
   void dropTerrain(String line) {
     if (this.curr_map == null) {
@@ -1665,6 +1771,17 @@ class MapEditorInterface extends InterfaceLNZ {
     this.listBox2.refresh();
   }
 
+  void removeLinkerFromLevel(int linker_index) {
+    if (this.curr_level == null) {
+      return;
+    }
+    if (!LevelEditor.class.isInstance(this.curr_level)) {
+      return;
+    }
+    ((LevelEditor)this.curr_level).removeLinker(linker_index);
+    this.listBox2.refresh();
+  }
+
   void addTriggerToLevel() {
     if (this.curr_level == null) {
       return;
@@ -1673,6 +1790,17 @@ class MapEditorInterface extends InterfaceLNZ {
       return;
     }
     ((LevelEditor)this.curr_level).newTrigger();
+    this.listBox2.refresh();
+  }
+
+  void removeTriggerFromLevel(int trigger_key) {
+    if (this.curr_level == null) {
+      return;
+    }
+    if (!LevelEditor.class.isInstance(this.curr_level)) {
+      return;
+    }
+    ((LevelEditor)this.curr_level).removeTrigger(trigger_key);
     this.listBox2.refresh();
   }
 
@@ -1821,6 +1949,9 @@ class MapEditorInterface extends InterfaceLNZ {
       if (this.listBox2.active) {
         this.listBox2.update(millis);
       }
+      if (this.levelForm != null) {
+        this.levelForm.update(millis);
+      }
       if (this.curr_level != null) {
         this.curr_level.drawRightPanel(millis);
       }
@@ -1887,6 +2018,9 @@ class MapEditorInterface extends InterfaceLNZ {
       if (this.listBox2.active) {
         this.listBox2.mouseMove(mX, mY);
       }
+      if (this.levelForm != null) {
+        this.levelForm.mouseMove(mX, mY);
+      }
     }
     // refresh map location
     if (refreshMapLocation) {
@@ -1932,6 +2066,9 @@ class MapEditorInterface extends InterfaceLNZ {
       if (this.listBox2.active) {
         this.listBox2.mousePress();
       }
+      if (this.levelForm != null) {
+        this.levelForm.mousePress();
+      }
     }
   }
 
@@ -1960,6 +2097,9 @@ class MapEditorInterface extends InterfaceLNZ {
       if (this.listBox2.active) {
         this.listBox2.mouseRelease(mX, mY);
       }
+      if (this.levelForm != null) {
+        this.levelForm.mouseRelease(mX, mY);
+      }
     }
   }
 
@@ -1976,6 +2116,9 @@ class MapEditorInterface extends InterfaceLNZ {
       }
       if (this.listBox2.active) {
         this.listBox2.scroll(amount);
+      }
+      if (this.levelForm != null) {
+        this.levelForm.scroll(amount);
       }
     }
   }
@@ -1994,6 +2137,9 @@ class MapEditorInterface extends InterfaceLNZ {
       if (this.listBox2.active) {
         this.listBox2.keyPress();
       }
+      if (this.levelForm != null) {
+        this.levelForm.keyPress();
+      }
     }
   }
 
@@ -2010,6 +2156,9 @@ class MapEditorInterface extends InterfaceLNZ {
       }
       if (this.listBox2.active) {
         this.listBox2.keyRelease();
+      }
+      if (this.levelForm != null) {
+        this.levelForm.keyRelease();
       }
     }
   }

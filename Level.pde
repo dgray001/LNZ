@@ -403,10 +403,10 @@ class Level {
     for (Linker linker : this.linkers) {
       file.println(linker.fileString());
     }
-    /*for (Map.Entry<Integer, Trigger> entry : this.triggers.entrySet()) {
+    for (Map.Entry<Integer, Trigger> entry : this.triggers.entrySet()) {
       file.println("nextTriggerKey: " + entry.getKey());
       file.println(entry.getValue().fileString());
-    }*/
+    }
     if (this.player_start_location != null) {
       file.println("player_start_location: " + this.player_start_location.fileString());
     }
@@ -442,7 +442,9 @@ class Level {
 
     Linker curr_linker = null;
     int max_trigger_key = 0;
-    //Trigger curr_trigger = null;
+    Trigger curr_trigger = null;
+    Condition curr_condition = null;
+    Effect curr_effect = null;
 
     for (String line : lines) {
       String[] parameters = split(line, ':');
@@ -450,12 +452,12 @@ class Level {
         continue;
       }
 
-      String dataname = trim(parameters[0]);
+      String datakey = trim(parameters[0]);
       String data = trim(parameters[1]);
       for (int i = 2; i < parameters.length; i++) {
         data += ":" + parameters[i];
       }
-      if (dataname.equals("new")) {
+      if (datakey.equals("new")) {
         ReadFileObject type = ReadFileObject.objectType(trim(parameters[1]));
         switch(type) {
           case LEVEL:
@@ -467,14 +469,22 @@ class Level {
             break;
           case TRIGGER:
             object_queue.push(type);
-            //curr_trigger = new Trigger();
+            curr_trigger = new Trigger();
+            break;
+          case CONDITION:
+            object_queue.push(type);
+            curr_condition = new Condition();
+            break;
+          case EFFECT:
+            object_queue.push(type);
+            curr_effect = new Effect();
             break;
           default:
             println("ERROR: Can't add a " + type + " type to Level data.");
             break;
         }
       }
-      else if (dataname.equals("end")) {
+      else if (datakey.equals("end")) {
         ReadFileObject type = ReadFileObject.objectType(data);
         if (object_queue.empty()) {
           global.errorMessage("ERROR: Tring to end a " + type.name + " object but not inside any object.");
@@ -491,14 +501,41 @@ class Level {
               curr_linker = null;
               break;
             case TRIGGER:
-              /*if (curr_trigger == null) {
+              if (curr_trigger == null) {
                 global.errorMessage("ERROR: Trying to end a null trigger.");
               }
               if (this.nextTriggerKey > max_trigger_key) {
                 max_trigger_key = this.nextTriggerKey;
               }
               this.addTrigger(curr_trigger);
-              curr_trigger = null;*/
+              curr_trigger = null;
+              break;
+            case CONDITION:
+              if (curr_condition == null) {
+                global.errorMessage("ERROR: Trying to end a null condition.");
+              }
+              if (object_queue.peek() != ReadFileObject.TRIGGER) {
+                global.errorMessage("ERROR: Trying to end a condition while not in a TRIGGER.");
+              }
+              if (curr_trigger == null) {
+                global.errorMessage("ERROR: Trying to end an condition but curr_trigger is null.");
+              }
+              curr_condition.setName();
+              curr_trigger.conditions.add(curr_condition);
+              curr_condition = null;
+              break;
+            case EFFECT:
+              if (curr_effect == null) {
+                global.errorMessage("ERROR: Trying to end a null effect.");
+              }
+              if (object_queue.peek() != ReadFileObject.TRIGGER) {
+                global.errorMessage("ERROR: Trying to end a effect while not in a TRIGGER.");
+              }
+              if (curr_trigger == null) {
+                global.errorMessage("ERROR: Trying to end an effect but curr_trigger is null.");
+              }
+              curr_trigger.effects.add(curr_effect);
+              curr_effect = null;
               break;
             default:
               break;
@@ -511,21 +548,34 @@ class Level {
       else {
         switch(object_queue.peek()) {
           case LEVEL:
-            this.addData(dataname, data);
+            this.addData(datakey, data);
             break;
           case LINKER:
             if (curr_linker == null) {
               global.errorMessage("ERROR: Trying to add linker data to null linker.");
             }
-            curr_linker.addData(dataname, data);
+            curr_linker.addData(datakey, data);
             break;
           case TRIGGER:
-            /*if (curr_trigger == null) {
+            if (curr_trigger == null) {
               global.errorMessage("ERROR: Trying to add trigger data to null trigger.");
             }
-            curr_trigger.addData(dataname, data);*/
+            curr_trigger.addData(datakey, data);
+            break;
+          case CONDITION:
+            if (curr_condition == null) {
+              global.errorMessage("ERROR: Trying to add condition data to null trigger.");
+            }
+            curr_condition.addData(datakey, data);
+            break;
+          case EFFECT:
+            if (curr_effect == null) {
+              global.errorMessage("ERROR: Trying to add effect data to null trigger.");
+            }
+            curr_effect.addData(datakey, data);
             break;
           default:
+            // before or after actual file data
             break;
         }
       }
@@ -619,7 +669,7 @@ class LevelEditor extends Level {
 
 
   void newTrigger() {
-    println("new trigger");
+    this.addTrigger(new Trigger("Trigger " + this.nextTriggerKey));
   }
 
 
