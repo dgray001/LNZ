@@ -92,7 +92,7 @@ class Trigger {
 
 class Condition {
   private int ID = 0;
-  private String display_name = "-- ERROR --";
+  private String display_name = "Condition";
 
   private int number1 = 0;
   private int number2 = 0;
@@ -104,6 +104,8 @@ class Condition {
   void setID(int ID) {
     this.ID = ID;
     switch(ID) {
+      case 0:
+        break;
       case 1:
         break;
       default:
@@ -115,6 +117,8 @@ class Condition {
 
   void setName() {
     switch(this.ID) {
+      case 0:
+        break;
       case 1:
         if (number1 < 1000) {
           this.display_name = "Timer (" + this.number1 + " ms)";
@@ -123,12 +127,14 @@ class Condition {
           this.display_name = "Timer (" + round(this.number1/100.0)/10.0 + " s)";
         }
       default:
-        this.display_name = "-- ERROR --";
+        this.display_name = "Condition";
     }
   }
 
   boolean update(int timeElapsed, Level level) {
     switch(this.ID) {
+      case 0:
+        break;
       case 1:
         if (!this.met) {
           this.number2 -= timeElapsed;
@@ -147,6 +153,8 @@ class Condition {
   void reset() {
     this.met = false;
     switch(this.ID) {
+      case 0:
+        break;
       case 1:
         this.number2 = this.number1;
         break;
@@ -192,7 +200,7 @@ class Condition {
 
 class Effect {
   private int ID = 0;
-  private String display_name = "-- ERROR --";
+  private String display_name = "Effect";
 
   private String message = "";
 
@@ -201,6 +209,8 @@ class Effect {
   void setID(int ID) {
     this.ID = ID;
     switch(ID) {
+      case 0:
+        break;
       case 1:
         break;
       default:
@@ -211,15 +221,19 @@ class Effect {
 
   void setName() {
     switch(this.ID) {
+      case 0:
+        break;
       case 1:
         this.display_name = "Log";
       default:
-        this.display_name = "-- ERROR --";
+        this.display_name = "Effect";
     }
   }
 
   void actuate(Level level) {
     switch(this.ID) {
+      case 0:
+        break;
       case 1:
         println(this.message);
         break;

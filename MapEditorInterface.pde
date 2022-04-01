@@ -193,6 +193,9 @@ class MapEditorInterface extends InterfaceLNZ {
       }
       else {
         super.mousePress();
+        if (("").equals(this.highlightedLine())) {
+          this.line_clicked = -1;
+        }
       }
     }
 
@@ -646,6 +649,14 @@ class MapEditorInterface extends InterfaceLNZ {
       this.setList(MapEditorInterface.this.page);
     }
 
+    @Override
+    void mousePress() {
+      super.mousePress();
+      if (("").equals(this.highlightedLine())) {
+        this.line_clicked = -1;
+      }
+    }
+
     void keyPress() {
       if (key == CODED) {
       }
@@ -912,16 +923,19 @@ class MapEditorInterface extends InterfaceLNZ {
       super(xi, Constants.mapEditor_listBoxGap, xf, 0.45 * height - Constants.mapEditor_listBoxGap);
       this.color_background = color(250, 190, 140);
       this.color_header = color(220, 180, 130);
+      this.setFieldCushion(0);
+    }
+
+    @Override
+    void update(int millis) {
+      super.update(millis);
+      this.submit();
     }
 
     void cancel() {
     }
 
-    void submit() {
-    }
-
-    void buttonPress(int i) {
-    }
+    abstract void updateFields();
   }
 
 
@@ -932,16 +946,66 @@ class MapEditorInterface extends InterfaceLNZ {
         this.setTitleText(MapEditorInterface.this.curr_level.levelName);
       }
     }
+
+    void submit() {
+    }
+
+    void buttonPress(int i) {
+    }
+
+    void updateFields() {
+    }
   }
 
 
   class TriggerEditorForm extends LevelEditorForm {
-    Trigger trigger;
+    protected Trigger trigger;
 
     TriggerEditorForm(Trigger trigger, float xi, float xf) {
       super(xi, xf);
       this.trigger = trigger;
       this.setTitleText(trigger.triggerName);
+      this.addField(new SpacerFormField(20));
+      this.addField(new StringFormField("  ", "Trigger Name"));
+      this.addField(new SpacerFormField(20));
+      this.addField(new CheckboxFormField("     Active:  "));
+      this.addField(new CheckboxFormField("  Looping:  "));
+      this.addField(new CheckboxFormField("Amalgam:  "));
+      this.addField(new SpacerFormField(45));
+      ButtonsFormField buttons = new ButtonsFormField("Add\nCondition", "Add\nEffect");
+      buttons.setButtonHeight(45);
+      this.addField(buttons);
+      this.updateFields();
+    }
+
+    void submit() {
+      this.trigger.triggerName = this.fields.get(1).getValue();
+      this.trigger.active = toBoolean(this.fields.get(3).getValue());
+      this.trigger.looping = toBoolean(this.fields.get(4).getValue());
+      this.trigger.amalgam = toBoolean(this.fields.get(5).getValue());
+    }
+
+    void buttonPress(int i) {
+      if (i != 7) {
+        return;
+      }
+      if (!isInt(this.fields.get(7).getValue())) {
+        return;
+      }
+      int buttonPressed = toInt(this.fields.get(7).getValue());
+      if (buttonPressed == 0) {
+        MapEditorInterface.this.addConditionToTrigger();
+      }
+      else if (buttonPressed == 1) {
+        MapEditorInterface.this.addEffectToTrigger();
+      }
+    }
+
+    void updateFields() {
+      this.fields.get(1).setValue(this.trigger.triggerName);
+      this.fields.get(3).setValue(this.trigger.active);
+      this.fields.get(4).setValue(this.trigger.looping);
+      this.fields.get(5).setValue(this.trigger.amalgam);
     }
   }
 
@@ -954,6 +1018,15 @@ class MapEditorInterface extends InterfaceLNZ {
       this.condition = condition;
       this.setTitleText(condition.display_name);
     }
+
+    void submit() {
+    }
+
+    void buttonPress(int i) {
+    }
+
+    void updateFields() {
+    }
   }
 
 
@@ -964,6 +1037,15 @@ class MapEditorInterface extends InterfaceLNZ {
       super(xi, xf);
       this.effect = effect;
       this.setTitleText(effect.display_name);
+    }
+
+    void submit() {
+    }
+
+    void buttonPress(int i) {
+    }
+
+    void updateFields() {
     }
   }
 
@@ -1801,6 +1883,22 @@ class MapEditorInterface extends InterfaceLNZ {
       return;
     }
     ((LevelEditor)this.curr_level).removeTrigger(trigger_key);
+    this.listBox2.refresh();
+  }
+
+  void addConditionToTrigger() {
+    if (this.curr_trigger == null) {
+      return;
+    }
+    this.curr_trigger.conditions.add(new Condition());
+    this.listBox2.refresh();
+  }
+
+  void addEffectToTrigger() {
+    if (this.curr_trigger == null) {
+      return;
+    }
+    this.curr_trigger.effects.add(new Effect());
     this.listBox2.refresh();
   }
 
