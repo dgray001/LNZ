@@ -938,7 +938,7 @@ class MapEditorInterface extends InterfaceLNZ {
     @Override
     void update(int millis) {
       super.update(millis);
-      this.submit();
+      this.submitForm();
     }
 
     void cancel() {
@@ -1011,10 +1011,10 @@ class MapEditorInterface extends InterfaceLNZ {
     }
 
     void updateFields() {
-      this.fields.get(1).setValue(this.trigger.triggerName);
-      this.fields.get(3).setValue(this.trigger.active);
-      this.fields.get(4).setValue(this.trigger.looping);
-      this.fields.get(5).setValue(this.trigger.amalgam);
+      this.fields.get(1).setValueIfNotFocused(this.trigger.triggerName);
+      this.fields.get(3).setValueIfNotFocused(Boolean.toString(this.trigger.active));
+      this.fields.get(3).setValueIfNotFocused(Boolean.toString(this.trigger.looping));
+      this.fields.get(3).setValueIfNotFocused(Boolean.toString(this.trigger.amalgam));
     }
   }
 
@@ -1047,9 +1047,9 @@ class MapEditorInterface extends InterfaceLNZ {
     void buttonPress(int i) {}
 
     void updateFields() {
-      this.fields.get(1).setValue(this.condition.ID);
-      this.fields.get(3).setValue(this.condition.number1);
-      this.fields.get(4).setValue(this.condition.number2);
+      this.fields.get(3).setValueIfNotFocused(Integer.toString(this.condition.ID));
+      this.fields.get(3).setValueIfNotFocused(Integer.toString(this.condition.number1));
+      this.fields.get(3).setValueIfNotFocused(Integer.toString(this.condition.number2));
     }
   }
 
@@ -1080,8 +1080,8 @@ class MapEditorInterface extends InterfaceLNZ {
     void buttonPress(int i) {}
 
     void updateFields() {
-      this.fields.get(1).setValue(this.effect.ID);
-      this.fields.get(3).setValue(this.effect.message);
+      this.fields.get(1).setValueIfNotFocused(Integer.toString(this.effect.ID));
+      this.fields.get(3).setValueIfNotFocused(this.effect.message);
     }
   }
 

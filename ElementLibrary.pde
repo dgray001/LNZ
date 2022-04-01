@@ -2588,10 +2588,19 @@ abstract class FormField {
   abstract void enable();
   abstract void disable();
 
+  abstract boolean focusable();
+  abstract void focus();
+  abstract boolean focused();
+
   abstract void updateWidthDependencies();
   abstract float getHeight();
   abstract String getValue();
   abstract void setValue(String newValue);
+  void setValueIfNotFocused(String newValue) {
+    if (!this.focused()) {
+      this.setValue(newValue);
+    }
+  }
 
   abstract FormFieldSubmit update(int millis);
   abstract void mouseMove(float mX, float mY);
@@ -2617,6 +2626,14 @@ class SpacerFormField extends FormField {
   void enable() {}
   void disable() {}
   void updateWidthDependencies() {}
+
+  boolean focusable() {
+    return false;
+  }
+  void focus() {}
+  boolean focused() {
+    return false;
+  }
 
   float getHeight() {
     return this.spacer_height;
@@ -2663,6 +2680,14 @@ class MessageFormField extends FormField {
 
   void enable() {}
   void disable() {}
+
+  boolean focusable() {
+    return false;
+  }
+  void focus() {}
+  boolean focused() {
+    return false;
+  }
 
   void updateWidthDependencies() {
     float max_width = this.field_width - 2;
@@ -2751,6 +2776,14 @@ class TextBoxFormField extends FormField {
   void enable() {}
   void disable() {}
 
+  boolean focusable() {
+    return false;
+  }
+  void focus() {}
+  boolean focused() {
+    return false;
+  }
+
   void updateWidthDependencies() {
     this.textbox.setLocation(0, 0, this.field_width, this.getHeight());
   }
@@ -2804,6 +2837,19 @@ class StringFormField extends MessageFormField {
     if (hint != null) {
       this.input.hint_text = hint;
     }
+  }
+
+  @Override
+  boolean focusable() {
+    return true;
+  }
+  @Override
+  void focus() {
+    this.input.typing = true;
+  }
+  @Override
+  boolean focused() {
+    return this.input.typing;
   }
 
   void updateWidthDependencies() {
@@ -2877,6 +2923,9 @@ class IntegerFormField extends StringFormField {
   }
 
   void submit() {
+    if (this.focused()) {
+      return;
+    }
     int value = toInt(this.input.text);
     if (value > this.max_value) {
       value = this.max_value;
@@ -2884,7 +2933,6 @@ class IntegerFormField extends StringFormField {
     else if (value < this.min_value) {
       value = this.min_value;
     }
-    println(this.min_value, this.max_value, value);
     this.input.setText(Integer.toString(value));
   }
 }
@@ -2910,6 +2958,9 @@ class FloatFormField extends StringFormField {
   }
 
   void submit() {
+    if (this.focused()) {
+      return;
+    }
     float value = toFloat(this.input.text);
     if (value > this.max_value) {
       value = this.max_value;
@@ -2931,6 +2982,9 @@ class BooleanFormField extends StringFormField {
   }
 
   void submit() {
+    if (this.focused()) {
+      return;
+    }
     this.input.setText(Boolean.toString(toBoolean(this.input.text)));
   }
 }
@@ -3181,6 +3235,19 @@ class SliderFormField extends MessageFormField {
   }
 
   @Override
+  boolean focusable() {
+    return true;
+  }
+  @Override
+  void focus() {
+    this.slider.button.active = true;
+  }
+  @Override
+  boolean focused() {
+    return this.slider.button.active;
+  }
+
+  @Override
   void updateWidthDependencies() {
     float temp_field_width = this.field_width;
     this.field_width = this.threshhold * this.field_width;
@@ -3320,6 +3387,14 @@ class SubmitFormField extends FormField {
     this.button.disabled = false;
   }
 
+  boolean focusable() {
+    return false;
+  }
+  void focus() {}
+  boolean focused() {
+    return false;
+  }
+
   void updateWidthDependencies() {
     textSize(this.button.text_size);
     float desiredWidth = textWidth(this.button.message + "  ");
@@ -3455,6 +3530,14 @@ class SubmitCancelFormField extends FormField {
   void enable() {
     this.button1.disabled = false;
     this.button2.disabled = false;
+  }
+
+  boolean focusable() {
+    return false;
+  }
+  void focus() {}
+  boolean focused() {
+    return false;
   }
 
   void updateWidthDependencies() {
