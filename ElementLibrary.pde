@@ -4,6 +4,7 @@ abstract class Button {
   protected boolean disabled = false;
   protected boolean hovered = false;
   protected boolean clicked = false;
+  protected boolean button_focused = false;
   // colors
   protected color color_disabled = color(220, 180);
   protected color color_default = color(220);
@@ -11,6 +12,7 @@ abstract class Button {
   protected color color_click = color(120);
   protected color color_text = color(0);
   protected color color_stroke = color(0);
+  protected color color_focused = color(170, 180);
   // config
   protected String message = "";
   protected boolean show_message = false;
@@ -61,13 +63,23 @@ abstract class Button {
 
   void setFill() {
     fill(this.fillColor());
+    stroke(this.color_stroke);
     if (this.show_stroke) {
-      stroke(this.color_stroke);
-      strokeWeight(this.stroke_weight);
+      if (this.button_focused) {
+        strokeWeight(2 * this.stroke_weight);
+      }
+      else {
+        strokeWeight(this.stroke_weight);
+      }
     }
     else {
-      strokeWeight(0.0001);
-      noStroke();
+      if (this.button_focused) {
+        strokeWeight(0.8 * this.stroke_weight);
+      }
+      else {
+        strokeWeight(0.0001);
+        noStroke();
+      }
     }
   }
 
@@ -154,6 +166,41 @@ abstract class Button {
     this.clicked = false;
     if (this.hover_check_after_release) {
       this.mouseMove(mX, mY);
+    }
+  }
+
+  void keyPress() {
+    if (key == CODED) {
+    }
+    else {
+      switch(key) {
+        case RETURN:
+        case ENTER:
+          if (this.button_focused) {
+            this.clicked = true;
+            this.click();
+          }
+          break;
+      }
+    }
+  }
+
+  void keyRelease() {
+    if (key == CODED) {
+    }
+    else {
+      switch(key) {
+        case RETURN:
+        case ENTER:
+          if (this.button_focused) {
+            if (this.clicked) {
+              this.clicked = false;
+              this.hold_timer = 0;
+              this.release();
+            }
+          }
+          break;
+      }
     }
   }
 
@@ -259,6 +306,13 @@ abstract class RectangleButton extends Button {
         line(this.xf, this.yf, this.xf, this.yi);
         line(this.xf, this.yf, this.xi, this.yf);
       }
+    }
+    if (this.button_focused) {
+      noFill();
+      strokeWeight(this.stroke_weight);
+      stroke(this.color_stroke);
+      rect(this.xi + 0.1 * this.button_width(), this.yi + 0.1 * this.button_height(),
+        this.xf - 0.1 * this.button_width(), this.yf - 0.1 * this.button_height(), this.roundness);
     }
   }
 
@@ -575,6 +629,13 @@ abstract class EllipseButton extends Button {
     ellipseMode(RADIUS);
     ellipse(this.xc, this.yc, this.xr, this.yr);
     this.writeText();
+    if (this.button_focused) {
+      noFill();
+      strokeWeight(this.stroke_weight);
+      stroke(this.color_stroke);
+      ellipse(this.xc + 0.1 * this.xr, this.yc + 0.1 * this.yr,
+        this.xr - 0.1 * this.xr, this.yr - 0.1 * this.yr);
+    }
   }
 
   void setLocation(float xc, float yc, float xr, float yr) {
@@ -2590,6 +2651,7 @@ abstract class FormField {
 
   abstract boolean focusable();
   abstract void focus();
+  abstract void defocus();
   abstract boolean focused();
 
   abstract void updateWidthDependencies();
@@ -2631,6 +2693,7 @@ class SpacerFormField extends FormField {
     return false;
   }
   void focus() {}
+  void defocus() {}
   boolean focused() {
     return false;
   }
@@ -2685,6 +2748,7 @@ class MessageFormField extends FormField {
     return false;
   }
   void focus() {}
+  void defocus() {}
   boolean focused() {
     return false;
   }
@@ -2780,6 +2844,7 @@ class TextBoxFormField extends FormField {
     return false;
   }
   void focus() {}
+  void defocus() {}
   boolean focused() {
     return false;
   }
@@ -2841,11 +2906,18 @@ class StringFormField extends MessageFormField {
 
   @Override
   boolean focusable() {
+    if (this.input.typing) {
+      return false;
+    }
     return true;
   }
   @Override
   void focus() {
     this.input.typing = true;
+  }
+  @Override
+  void defocus() {
+    this.input.typing = false;
   }
   @Override
   boolean focused() {
@@ -3236,11 +3308,18 @@ class SliderFormField extends MessageFormField {
 
   @Override
   boolean focusable() {
+    if (this.slider.button.active) {
+      return false;
+    }
     return true;
   }
   @Override
   void focus() {
     this.slider.button.active = true;
+  }
+  @Override
+  void defocus() {
+    this.slider.button.active = false;
   }
   @Override
   boolean focused() {
@@ -3360,7 +3439,7 @@ class SubmitFormField extends FormField {
     void click() {
     }
     void release() {
-      if (this.hovered) {
+      if (this.hovered || this.button_focused) {
         SubmitFormField.this.submitted = true;
       }
     }
@@ -3388,9 +3467,17 @@ class SubmitFormField extends FormField {
   }
 
   boolean focusable() {
-    return false;
+    if (this.button.button_focused) {
+      return false;
+    }
+    return true;
   }
-  void focus() {}
+  void focus() {
+    this.button.button_focused = true;
+  }
+  void defocus() {
+    this.button.button_focused = false;
+  }
   boolean focused() {
     return false;
   }
@@ -3450,8 +3537,12 @@ class SubmitFormField extends FormField {
   void scroll(int amount) {
   }
 
-  void keyPress() {}
-  void keyRelease() {}
+  void keyPress() {
+    this.button.keyPress();
+  }
+  void keyRelease() {
+    this.button.keyRelease();
+  }
   void submit() {}
 }
 
@@ -3490,7 +3581,7 @@ class SubmitCancelFormField extends FormField {
     void click() {
     }
     void release() {
-      if (this.hovered) {
+      if (this.hovered || this.button_focused) {
         if (this.submit) {
           SubmitCancelFormField.this.submitted = true;
         }
@@ -3533,10 +3624,29 @@ class SubmitCancelFormField extends FormField {
   }
 
   boolean focusable() {
-    return false;
+    if (this.button2.button_focused) {
+      return false;
+    }
+    return true;
   }
-  void focus() {}
+  void focus() {
+    if (this.button1.button_focused) {
+      this.button1.button_focused = false;
+      this.button2.button_focused = true;
+    }
+    else {
+      this.button1.button_focused = true;
+      this.button2.button_focused = false;
+    }
+  }
+  void defocus() {
+    this.button1.button_focused = false;
+    this.button2.button_focused = false;
+  }
   boolean focused() {
+    if (this.button1.button_focused || this.button2.button_focused) {
+      return true;
+    }
     return false;
   }
 
@@ -3607,8 +3717,14 @@ class SubmitCancelFormField extends FormField {
   void scroll(int amount) {
   }
 
-  void keyPress() {}
-  void keyRelease() {}
+  void keyPress() {
+    this.button1.keyPress();
+    this.button2.keyPress();
+  }
+  void keyRelease() {
+    this.button1.keyRelease();
+    this.button2.keyRelease();
+  }
   void submit() {}
 }
 
@@ -3999,6 +4115,29 @@ abstract class Form {
   void keyPress() {
     for (FormField field : this.fields) {
       field.keyPress();
+    }
+    if (key != CODED && key == TAB) {
+      this.focusNextField();
+    }
+  }
+
+  void focusNextField() {
+    int field_focused = 0;
+    for (int i = 0; i < this.fields.size(); i++) {
+      if (this.fields.get(i).focused()) {
+        field_focused = i;
+        break;
+      }
+    }
+    ClockInt index = new ClockInt(0, this.fields.size() - 1, field_focused);
+    for (int i = 0; i < this.fields.size(); i++, index.add(1)) {
+      if (this.fields.get(index.value).focusable()) {
+        this.fields.get(index.value).focus();
+        break;
+      }
+    }
+    if (index.value != field_focused) {
+      this.fields.get(field_focused).defocus();
     }
   }
 
