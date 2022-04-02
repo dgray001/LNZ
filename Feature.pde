@@ -1,3 +1,29 @@
+class EditFeatureForm extends EditMapObjectForm {
+  protected Feature feature;
+
+  EditFeatureForm(Feature feature) {
+    super(feature);
+    this.feature = feature;
+    this.addField(new IntegerFormField("  ", "number", Integer.MIN_VALUE + 1, Integer.MAX_VALUE - 1));
+    this.addField(new CheckboxFormField("Toggle:  "));
+    this.addField(new SubmitFormField("Finished", false));
+    this.updateForm();
+  }
+
+  void updateObject() {
+    this.feature.number = toInt(this.fields.get(1).getValue());
+    this.feature.toggle = toBoolean(this.fields.get(2).getValue());
+  }
+
+  void updateForm() {
+    this.fields.get(1).setValueIfNotFocused(Integer.toString(this.feature.number));
+    this.fields.get(2).setValueIfNotFocused(Boolean.toString(this.feature.toggle));
+  }
+}
+
+
+
+
 class Feature extends MapObject {
   protected int sizeX = 0;
   protected int sizeY = 0;

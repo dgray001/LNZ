@@ -212,6 +212,8 @@ class GameMapSquare {
       case 141:
       case 142:
       case 143:
+      case 144:
+      case 145:
         return "Sand";
       case 151:
       case 152:
@@ -2127,6 +2129,7 @@ class GameMapEditor extends GameMap {
   protected boolean drawing_rectangle = false;
   protected boolean square_mode = false;
   protected ConfirmForm confirm_form;
+  protected EditMapObjectForm map_object_form;
 
   GameMapEditor() {
     super();
@@ -2162,6 +2165,13 @@ class GameMapEditor extends GameMap {
       this.confirm_form.update(millis);
       if (this.confirm_form.canceled) {
         this.confirm_form = null;
+      }
+      return;
+    }
+    else if (this.map_object_form != null) {
+      this.map_object_form.update(millis);
+      if (this.map_object_form.canceled) {
+        this.map_object_form = null;
       }
       return;
     }
@@ -2240,6 +2250,10 @@ class GameMapEditor extends GameMap {
       this.confirm_form.mouseMove(mX, mY);
       return;
     }
+    else if (this.map_object_form != null) {
+      this.map_object_form.mouseMove(mX, mY);
+      return;
+    }
     super.mouseMove(mX, mY);
     if (this.drawing_rectangle) {
       if (this.square_mode) {
@@ -2264,6 +2278,10 @@ class GameMapEditor extends GameMap {
   void mousePress() {
     if (this.confirm_form != null) {
       this.confirm_form.mousePress();
+      return;
+    }
+    else if (this.map_object_form != null) {
+      this.map_object_form.mousePress();
       return;
     }
     if (this.headerMessages.peek() != null) {
@@ -2345,6 +2363,10 @@ class GameMapEditor extends GameMap {
       this.confirm_form.mouseRelease(mX, mY);
       return;
     }
+    else if (this.map_object_form != null) {
+      this.map_object_form.mouseRelease(mX, mY);
+      return;
+    }
     super.mouseRelease(mX, mY);
     switch(mouseButton) {
       case LEFT:
@@ -2399,6 +2421,10 @@ class GameMapEditor extends GameMap {
       this.confirm_form.scroll(amount);
       return;
     }
+    else if (this.map_object_form != null) {
+      this.map_object_form.scroll(amount);
+      return;
+    }
     super.scroll(amount);
   }
 
@@ -2410,6 +2436,10 @@ class GameMapEditor extends GameMap {
   void keyPress() {
     if (this.confirm_form != null) {
       this.confirm_form.keyPress();
+      return;
+    }
+    else if (this.map_object_form != null) {
+      this.map_object_form.keyPress();
       return;
     }
     if (key == CODED) {
@@ -2467,6 +2497,19 @@ class GameMapEditor extends GameMap {
             this.headerMessages.add(new HeaderMessage("Square Mode off"));
           }
           break;
+        case 'b':
+          if (this.selected_object != null) {
+            if (Feature.class.isInstance(this.selected_object)) {
+              this.map_object_form = new EditFeatureForm((Feature)this.selected_object);
+            }
+            else if (Unit.class.isInstance(this.selected_object)) {
+              this.map_object_form = new EditUnitForm((Unit)this.selected_object);
+            }
+            else if (Item.class.isInstance(this.selected_object)) {
+              this.map_object_form = new EditItemForm((Item)this.selected_object);
+            }
+          }
+          break;
       }
     }
   }
@@ -2479,6 +2522,10 @@ class GameMapEditor extends GameMap {
   void keyRelease() {
     if (this.confirm_form != null) {
       this.confirm_form.keyRelease();
+      return;
+    }
+    else if (this.map_object_form != null) {
+      this.map_object_form.keyRelease();
       return;
     }
     if (key == CODED) {

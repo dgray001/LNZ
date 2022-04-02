@@ -14,7 +14,6 @@ abstract class FormLNZ extends Form {
   void update(int millis) {
     rectMode(CORNERS);
     fill(0);
-    //rect(0, 0, width, height);
     imageMode(CORNER);
     image(this.img, 0, 0);
     fill(0, 150);
