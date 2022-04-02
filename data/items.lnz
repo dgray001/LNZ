@@ -131,20 +131,39 @@ Topaz Boots: 2771
 Corundum Boots: 2781
 Diamond Boots: 2791
 
-Talc: 2801
-Broken Glass: 2802
-Wire: 2803
-Gypsum: 2811
-Barbed Wire: 2812
-Calcite: 2821
-Star Piece: 2822
-Fluorite: 2831
-Apatite: 2841
-Orthoclase: 2851
-Quartz: 2861
-Topaz: 2871
-Corundum: 2881
-Diamond: 2891
+Talc Ore: 2801
+Talc Crystal: 2802
+Talc Powder: 2803
+Soapstone: 2804
+Broken Glass: 2805
+Wire: 2806
+Gypsum Ore: 2811
+Gypsum Crystal: 2812
+Gypsum Powder: 2813
+Selenite Crystal: 2814
+Barbed Wire: 2815
+Calcite Ore: 2821
+Calcite Crystal: 2822
+Chalk: 2823
+Star Piece: 2824
+Fluorite Ore: 2831
+Fluorite Crystal: 2832
+Apatite Ore: 2841
+Apatite Crystal: 2842
+Orthoclase Ore: 2851
+Orthoclase Chunk: 2852
+Quartz Ore: 2861
+Quartz Crystal: 2862
+Amethyst: 2863
+Glass: 2864
+Topaz Ore: 2871
+Topaz Chunk: 2872
+Topaz Gem: 2873
+Corundum Ore: 2881
+Corundum Chunk: 2882
+Ruby: 2883
+Diamond Ore: 2891
+Diamond: 2892
 
 Key: 2901
 Master Key: 2902

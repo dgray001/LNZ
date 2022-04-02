@@ -982,6 +982,12 @@ class MapEditorInterface extends InterfaceLNZ {
       super(xi, xf);
       if (MapEditorInterface.this.curr_level != null) {
         this.setTitleText(MapEditorInterface.this.curr_level.levelName);
+        this.addField(new SpacerFormField(20));
+        this.addField(new MessageFormField(MapEditorInterface.this.curr_level.getCurrMapNameDisplay()));
+        this.addField(new SpacerFormField(20));
+        this.addField(new MessageFormField("Location: " + MapEditorInterface.this.curr_level.location.display_name()));
+        this.addField(new SpacerFormField(20));
+        this.addField(new MessageFormField(MapEditorInterface.this.curr_level.getPlayerStartLocationDisplay()));
       }
     }
 
