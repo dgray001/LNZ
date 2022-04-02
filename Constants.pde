@@ -4,8 +4,8 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220402: v0.6.4r" +
-  "\nLines: 16395 (v0.6.4q)" +
+  "\n20220402: v0.6.4s" +
+  "\nLines: 16810 (v0.6.4s)" +
   "";
   static final String version_history =
   "Liberal Nazi Zombies" +
@@ -155,6 +155,17 @@ static class Constants {
   static final float unit_defaultBaseAttackCooldown = 1200;
   static final float unit_defaultBaseAttackTime = 300;
   static final float unit_defaultBaseAttackRange = 0.2;
+
+  // Resistances
+  static final float resistance_default = 1;
+  static final float resistance_blue_blue = 0.95;
+  static final float resistance_red_red = 0.95;
+  static final float resistance_cyan_cyan = 0.95;
+  static final float resistance_orange_orange = 0.95;
+  static final float resistance_brown_brown = 0.95;
+  static final float resistance_purple_purple = 0.95;
+  static final float resistance_yellow_yellow = 0.95;
+  static final float resistance_magenta_magenta = 0.95;
 
   // AI
   static final float ai_chickenMoveDistance = 2;
