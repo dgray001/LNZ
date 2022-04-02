@@ -503,55 +503,132 @@ class Item extends MapObject {
 
       // Material
       case 2801:
-        this.setStrings("Talc", "Material", "");
+        this.setStrings("Talc Ore", "Material", "");
         break;
       case 2802:
-        this.setStrings("Broken Glass", "Material", "");
+        this.setStrings("Talc Crystal", "Material", "");
         break;
       case 2803:
+        this.setStrings("Talc Powder", "Material", "");
+        break;
+      case 2804:
+        this.setStrings("Soapstone", "Material", "");
+        break;
+      case 2805:
+        this.setStrings("Broken Glass", "Material", "");
+        break;
+      case 2806:
         this.setStrings("Wire", "Material", "");
         break;
       case 2811:
-        this.setStrings("Gypsum", "Material", "");
+        this.setStrings("Gypsum Ore", "Material", "");
         this.tier = 2;
         break;
       case 2812:
+        this.setStrings("Gypsum Crystal", "Material", "");
+        this.tier = 2;
+        break;
+      case 2813:
+        this.setStrings("Gypsum Powder", "Material", "");
+        this.tier = 2;
+        break;
+      case 2814:
+        this.setStrings("Selenite Crystal", "Material", "");
+        this.tier = 2;
+        break;
+      case 2815:
         this.setStrings("Barbed Wire", "Material", "");
         this.tier = 2;
         break;
       case 2821:
-        this.setStrings("Calcite", "Material", "");
+        this.setStrings("Calcite Ore", "Material", "");
         this.tier = 3;
         break;
       case 2822:
+        this.setStrings("Calcite Crystal", "Material", "");
+        this.tier = 3;
+        break;
+      case 2823:
+        this.setStrings("Chalk", "Material", "");
+        this.tier = 3;
+        break;
+      case 2824:
+        this.setStrings("Iceland Spar", "Material", "");
+        this.tier = 3;
+        break;
+      case 2825:
         this.setStrings("Star Piece", "Material", "");
         this.tier = 3;
         break;
       case 2831:
-        this.setStrings("Fluorite", "Material", "");
+        this.setStrings("Fluorite Ore", "Material", "");
+        this.tier = 4;
+        break;
+      case 2832:
+        this.setStrings("Fluorite Crystal", "Material", "");
         this.tier = 4;
         break;
       case 2841:
-        this.setStrings("Apatite", "Material", "");
+        this.setStrings("Apatite Ore", "Material", "");
+        this.tier = 5;
+        break;
+      case 2842:
+        this.setStrings("Apatite Crystal", "Material", "");
         this.tier = 5;
         break;
       case 2851:
-        this.setStrings("Orthoclase", "Material", "");
+        this.setStrings("Orthoclase Ore", "Material", "");
+        this.tier = 6;
+        break;
+      case 2852:
+        this.setStrings("Orthoclase Chunk", "Material", "");
         this.tier = 6;
         break;
       case 2861:
-        this.setStrings("Quartz", "Material", "");
+        this.setStrings("Quartz Ore", "Material", "");
+        this.tier = 7;
+        break;
+      case 2862:
+        this.setStrings("Quartz Crystal", "Material", "");
+        this.tier = 7;
+        break;
+      case 2863:
+        this.setStrings("Amethyst", "Material", "");
+        this.tier = 7;
+        break;
+      case 2864:
+        this.setStrings("Glass", "Material", "");
         this.tier = 7;
         break;
       case 2871:
-        this.setStrings("Topaz", "Material", "");
+        this.setStrings("Topaz Ore", "Material", "");
+        this.tier = 8;
+        break;
+      case 2872:
+        this.setStrings("Topaz Chunk", "Material", "");
+        this.tier = 8;
+        break;
+      case 2873:
+        this.setStrings("Topaz Gem", "Material", "");
         this.tier = 8;
         break;
       case 2881:
-        this.setStrings("Corundum", "Material", "");
+        this.setStrings("Corundum Ore", "Material", "");
+        this.tier = 9;
+        break;
+      case 2882:
+        this.setStrings("Corundum Chunk", "Material", "");
+        this.tier = 9;
+        break;
+      case 2883:
+        this.setStrings("Sapphire", "Material", "");
         this.tier = 9;
         break;
       case 2891:
+        this.setStrings("Diamond Ore", "Material", "");
+        this.tier = 10;
+        break;
+      case 2892:
         this.setStrings("Diamond", "Material", "");
         this.tier = 10;
         break;
@@ -1170,48 +1247,108 @@ class Item extends MapObject {
         break;
       // Materials
       case 2801:
-        path += "talc.png";
+        path += "talc_ore.png";
         break;
       case 2802:
-        path += "broken_glass.png";
+        path += "talc_crystal.png";
         break;
       case 2803:
+        path += "talc_powder.png";
+        break;
+      case 2804:
+        path += "soapstone.png";
+        break;
+      case 2805:
+        path += "broken_glass.png";
+        break;
+      case 2806:
         path += "wire.png";
         break;
       case 2811:
-        path += "gypsum.png";
+        path += "gypsum_ore.png";
         break;
       case 2812:
+        path += "gypsum_crystal.png";
+        break;
+      case 2813:
+        path += "gypsum_powder.png";
+        break;
+      case 2814:
+        path += "selenite_crystal.png";
+        break;
+      case 2815:
         path += "barbed_wire.png";
         break;
       case 2821:
-        path += "calcite.png";
+        path += "calcite_ore.png";
         break;
       case 2822:
+        path += "calcite_crystal.png";
+        break;
+      case 2823:
+        path += "chalk.png";
+        break;
+      case 2824:
+        path += "iceland_spar.png";
+        break;
+      case 2825:
         int frame = constrain(int(floor(Constants.item_starPieceFrames * (millis() %
           Constants.item_starPieceAnimationTime) / Constants.item_starPieceAnimationTime)),
           0, Constants.item_starPieceFrames - 1);
         path += "star_piece_" + frame + ".png";
         break;
       case 2831:
-        path += "fluorite.png";
+        path += "fluorite_ore.png";
+        break;
+      case 2832:
+        path += "fluorite_crystal.png";
         break;
       case 2841:
-        path += "apatite.png";
+        path += "apatite_ore.png";
+        break;
+      case 2842:
+        path += "apatite_crystal.png";
         break;
       case 2851:
-        path += "orthoclase.png";
+        path += "orthoclase_ore.png";
+        break;
+      case 2852:
+        path += "orthoclase_chunk.png";
         break;
       case 2861:
-        path += "quartz.png";
+        path += "quartz_ore.png";
+        break;
+      case 2862:
+        path += "quartz_crystal.png";
+        break;
+      case 2863:
+        path += "amethyst.png";
+        break;
+      case 2864:
+        path += "glass.png";
         break;
       case 2871:
-        path += "topaz.png";
+        path += "topaz_ore.png";
+        break;
+      case 2872:
+        path += "topaz_chunk.png";
+        break;
+      case 2873:
+        path += "topaz_gem.png";
         break;
       case 2881:
-        path += "corundum.png";
+        path += "corundum_ore.png";
+        break;
+      case 2882:
+        path += "corundum_chunk.png";
+        break;
+      case 2883:
+        path += "sapphire.png";
         break;
       case 2891:
+        path += "diamond_ore.png";
+        break;
+      case 2892:
         path += "diamond.png";
         break;
       // Other
