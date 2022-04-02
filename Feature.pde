@@ -943,6 +943,20 @@ class Feature extends MapObject {
     return global.images.getImage(path);
   }
 
+
+  boolean targetable(Unit u) {
+    return false;
+  }
+
+
+  float interactionDistance() {
+    switch(this.ID) {
+      default:
+        return Constants.feature_defaultInteractionDistance;
+    }
+  }
+
+
   void update(int timeElapsed) {
     switch(this.ID) {
       default:

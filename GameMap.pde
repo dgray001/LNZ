@@ -1727,8 +1727,14 @@ class GameMap {
         break;
       case RIGHT:
         if (this.units.containsKey(0)) {
-          this.units.get(0).moveTo(this.mX, this.mY);
-          this.addVisualEffect(4001, this.mX, this.mY);
+          Unit player = this.units.get(0);
+          if (this.hovered_object == null || !this.hovered_object.targetable(player)) {
+            player.moveTo(this.mX, this.mY);
+            this.addVisualEffect(4001, this.mX, this.mY);
+          }
+          else {
+            player.target(this.hovered_object);
+          }
         }
         break;
       case CENTER:

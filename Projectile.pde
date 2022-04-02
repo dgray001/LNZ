@@ -87,8 +87,15 @@ class Projectile extends MapObject {
     return global.images.getImage(path);
   }
 
+
+  boolean targetable(Unit u) {
+    return false;
+  }
+
+
   void update(int timeElapsed) {
   }
+
 
   String fileString() {
     String fileString = "\nnew: Projectile: " + this.ID;

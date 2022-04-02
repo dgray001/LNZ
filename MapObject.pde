@@ -152,6 +152,8 @@ abstract class MapObject {
     }
   }
 
+  abstract boolean targetable(Unit u);
+
   abstract String fileString();
   String objectFileString() {
     return "\nlocation: " + this.x + ", " + this.y + ", " + this.curr_height + "\nremove: " + this.remove;

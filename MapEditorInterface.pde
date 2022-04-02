@@ -1586,7 +1586,17 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
   void buttonClick4() {
-    this.form = new GoToMainMenuForm();
+    switch(this.page) {
+      case MAPS:
+      case LEVELS:
+        MapEditorInterface.this.curr_map = null;
+        MapEditorInterface.this.curr_level = null;
+        global.state = ProgramState.ENTERING_MAINMENU;
+        break;
+      default:
+        this.form = new GoToMainMenuForm();
+        break;
+    }
   }
 
   void buttonClick5() {

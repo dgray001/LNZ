@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220402: v0.6.4q" +
+  "\n20220402: v0.6.4r" +
   "\nLines: 16395 (v0.6.4q)" +
   "";
   static final String version_history =
@@ -144,6 +144,7 @@ static class Constants {
   static final float map_moveLogicCap = 0.15; // longest movable distance at one logical go
 
   // Features
+  static final float feature_defaultInteractionDistance = 0.3;
 
   // Units
   static final float unit_defaultSize = 0.35;
@@ -151,6 +152,9 @@ static class Constants {
   static final float unit_defaultSight = 5.5;
   static final float unit_sneakSpeed = 0.5;
   static final float unit_small_facing_threshhold = 0.01;
+  static final float unit_defaultBaseAttackCooldown = 1200;
+  static final float unit_defaultBaseAttackTime = 300;
+  static final float unit_defaultBaseAttackRange = 0.2;
 
   // AI
   static final float ai_chickenMoveDistance = 2;
@@ -162,6 +166,7 @@ static class Constants {
   static final float item_bounceOffset = 0.15;
   static final int item_starPieceFrames = 4;
   static final float item_starPieceAnimationTime = 450;
+  static final float item_defaultInteractionDistance = 0.3;
 
   // Projectiles
   static final float projectile_defaultSize = 0.25;
