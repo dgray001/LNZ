@@ -1388,6 +1388,8 @@ class GameMap {
     translate(translateX, translateY);
     rotate(rotationAngle);
     image(u.getImage(), 0, 0, u.width() * this.zoom, u.height() * this.zoom);
+    g.removeCache(u.getImage());
+    noTint();
     rotate(-rotationAngle);
     translate(-translateX, -translateY);
   }

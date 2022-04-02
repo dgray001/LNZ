@@ -38,6 +38,72 @@ enum Element {
     }
     return Element.GRAY;
   }
+
+  public float resistanceFactorTo(Element element) {
+    return Element.resistanceFactorTo(this, element);
+  }
+  public static float resistanceFactorTo(Element target, Element source) {
+    switch(target) {
+      case BLUE:
+        switch(source) {
+          case BLUE:
+            return Constants.resistance_blue_blue;
+          default:
+            return Constants.resistance_default;
+        }
+      case RED:
+        switch(source) {
+          case RED:
+            return Constants.resistance_blue_blue;
+          default:
+            return Constants.resistance_default;
+        }
+      case CYAN:
+        switch(source) {
+          case CYAN:
+            return Constants.resistance_blue_blue;
+          default:
+            return Constants.resistance_default;
+        }
+      case ORANGE:
+        switch(source) {
+          case ORANGE:
+            return Constants.resistance_blue_blue;
+          default:
+            return Constants.resistance_default;
+        }
+      case BROWN:
+        switch(source) {
+          case BROWN:
+            return Constants.resistance_blue_blue;
+          default:
+            return Constants.resistance_default;
+        }
+      case PURPLE:
+        switch(source) {
+          case PURPLE:
+            return Constants.resistance_blue_blue;
+          default:
+            return Constants.resistance_default;
+        }
+      case YELLOW:
+        switch(source) {
+          case YELLOW:
+            return Constants.resistance_blue_blue;
+          default:
+            return Constants.resistance_default;
+        }
+      case MAGENTA:
+        switch(source) {
+          case MAGENTA:
+            return Constants.resistance_blue_blue;
+          default:
+            return Constants.resistance_default;
+        }
+      default:
+        return Constants.resistance_default;
+    }
+  }
 }
 
 
@@ -140,19 +206,28 @@ class Unit extends MapObject {
   protected float facingY = 0;
   protected float facingA = 0; // angle in radians
 
+  protected float base_health = 1;
+  protected float base_attack = 0;
+  protected float base_magic = 0;
+  protected float base_defense = 0;
+  protected float base_resistance = 0;
+  protected float base_piercing = 0; // percentage from 0 - 1
+  protected float base_penetration = 0; // percentage from 0 - 1
   protected float base_attackRange = Constants.unit_defaultBaseAttackRange;
   protected float base_attackCooldown = Constants.unit_defaultBaseAttackCooldown;
   protected float base_attackTime = Constants.unit_defaultBaseAttackTime;
   protected float base_sight = Constants.unit_defaultSight;
   protected float base_speed = 0;
+  protected float base_tenacity = 0; // percentage from 0 - 1
   protected int base_agility = 1;
-  // base other stats: health, attack, magic, defense, resistance, piercing, penetration, tenacity
 
+  protected float curr_health = 1;
   protected float timer_attackCooldown = 0;
   protected float timer_attackTime = 0;
 
   protected UnitAction curr_action = UnitAction.NONE;
   protected MapObject object_targeting = null;
+  protected MapObject last_damage_from = null;
   protected float curr_action_x = 0;
   protected float curr_action_y = 0;
   protected float last_move_distance = 0;
@@ -172,7 +247,7 @@ class Unit extends MapObject {
         break;
       case 1002:
         this.setStrings("Chicken", "Gaia", "");
-        this.baseStats(1);
+        this.baseStats(2, 0, 0, 0, 1.4);
         this.level = 1;
         this.sizeZ = 2;
         break;
@@ -180,7 +255,7 @@ class Unit extends MapObject {
       // Heroes
       case 1101:
         this.setStrings("Ben Nelson", "Hero", "");
-        this.baseStats(2);
+        this.baseStats(4, 1, 0, 0, 2);
         this.alliance = Alliance.BEN;
         break;
       case 1102:
@@ -268,10 +343,49 @@ class Unit extends MapObject {
   }
   String selectedObjectTextboxText() {
     String text = "-- " + this.type() + " --";
+    text += "\n\nHealth: " + this.curr_health + "/" + this.health();
+    float attack = this.attack();
+    if (attack > 0) {
+      text += "\nAttack: " + attack;
+    }
+    float magic = this.magic();
+    if (magic > 0) {
+      text += "\nMagic: " + magic;
+    }
+    float defense = this.defense();
+    if (defense > 0) {
+      text += "\nDefense: " + defense;
+    }
+    float resistance = this.resistance();
+    if (resistance > 0) {
+      text += "\nResistance: " + resistance;
+    }
+    float piercing = this.piercing();
+    if (piercing > 0) {
+      text += "\nPiercing: " + int(round(piercing * 100)) + "%";
+    }
+    float penetration = this.penetration();
+    if (penetration > 0) {
+      text += "\nPenetration: " + int(round(penetration * 100)) + "%";
+    }
+    text += "\nSpeed: " + this.speed();
+    float tenacity = this.tenacity();
+    if (tenacity > 0) {
+      text += "\nTenacity: " + int(round(tenacity * 100)) + "%";
+    }
+    int agility = this.agility();
+    if (attack > 0) {
+      text += "\nAgility: " + agility;
+    }
     return text + "\n\n" + this.description();
   }
 
-  void baseStats(float speed) {
+  void baseStats(float health, float attack, float defense, float piercing, float speed) {
+    this.base_health = health;
+    this.curr_health = health;
+    this.base_attack = attack;
+    this.base_defense = defense;
+    this.base_piercing = piercing;
     this.base_speed = speed;
   }
 
@@ -367,6 +481,47 @@ class Unit extends MapObject {
   }
 
 
+  float health() {
+    float health = this.base_health;
+    return health;
+  }
+
+  float attack() {
+    float attack = this.base_attack;
+    return attack;
+  }
+
+  float magic() {
+    float magic = this.base_magic;
+    return magic;
+  }
+
+  float defense() {
+    float defense = this.base_defense;
+    return defense;
+  }
+
+  float resistance() {
+    float resistance = this.base_resistance;
+    return resistance;
+  }
+
+  float piercing() {
+    float piercing = this.base_piercing;
+    if (piercing > 1) {
+      piercing = 1;
+    }
+    return piercing;
+  }
+
+  float penetration() {
+    float penetration = this.base_penetration;
+    if (penetration > 1) {
+      penetration = 1;
+    }
+    return penetration;
+  }
+
   float attackRange() {
     float attackRange = this.base_attackRange;
     return attackRange;
@@ -390,6 +545,14 @@ class Unit extends MapObject {
   float speed() {
     float speed = this.base_speed;
     return speed;
+  }
+
+  float tenacity() {
+    float tenacity = this.base_tenacity;
+    if (tenacity > 1) {
+      tenacity = 1;
+    }
+    return tenacity;
   }
 
   int agility() {
@@ -530,7 +693,54 @@ class Unit extends MapObject {
 
   // Auto attack
   void attack(Unit u) {
-    u.remove = true;
+    u.damage(this, u.calculateDamageFrom(this, this.attack(), DamageType.PHYSICAL, this.element));
+    this.timer_attackCooldown = this.attackCooldown();
+  }
+
+
+  float calculateDamageFrom(Unit source, float power, DamageType damageType, Element element) {
+    float effectiveDefense = 0;
+    switch(damageType) {
+      case PHYSICAL:
+        effectiveDefense = this.defense() * (1 - source.piercing());
+        break;
+      case MAGICAL:
+        effectiveDefense = this.resistance() * (1 - source.penetration());
+        break;
+      case MIXED:
+        effectiveDefense = this.defense() * (1 - source.piercing()) +
+          this.resistance() * (1 - source.penetration());
+        break;
+      case TRUE:
+        effectiveDefense = 0;
+        break;
+    }
+    return max(0, power - effectiveDefense) * this.element.resistanceFactorTo(element);
+  }
+
+
+  void damage(Unit source, float amount) {
+    if (this.remove || amount <= 0) {
+      return;
+    }
+    this.curr_health -= amount;
+    if (this.curr_health <= 0) {
+      this.curr_health = 0;
+      this.remove = true;
+    }
+    this.last_damage_from = source;
+    source.damaged(this, amount);
+    if (this.remove) {
+      source.killed(this);
+    }
+  }
+
+
+  void damaged(Unit u, float damage) {
+  }
+
+
+  void killed(Unit u) {
   }
 
 
@@ -789,10 +999,23 @@ class Unit extends MapObject {
     fileString += "\nalliance: " + this.alliance.alliance_name();
     fileString += "\nfacingX: " + this.facingX;
     fileString += "\nfacingY: " + this.facingY;
+    fileString += "\nbase_health: " + this.base_health;
+    fileString += "\nbase_attack: " + this.base_attack;
+    fileString += "\nbase_magic: " + this.base_magic;
+    fileString += "\nbase_defense: " + this.base_defense;
+    fileString += "\nbase_resistance: " + this.base_resistance;
+    fileString += "\nbase_piercing: " + this.base_piercing;
+    fileString += "\nbase_penetration: " + this.base_penetration;
     fileString += "\nbase_attackRange: " + this.base_attackRange;
+    fileString += "\nbase_attackCooldown: " + this.base_attackCooldown;
+    fileString += "\nbase_attackTime: " + this.base_attackTime;
     fileString += "\nbase_sight: " + this.base_sight;
     fileString += "\nbase_speed: " + this.base_speed;
+    fileString += "\nbase_tenacity: " + this.base_tenacity;
     fileString += "\nbase_agility: " + this.base_agility;
+    fileString += "\ncurr_health: " + this.curr_health;
+    fileString += "\ntimer_attackCooldown: " + this.timer_attackCooldown;
+    fileString += "\ntimer_attackTime: " + this.timer_attackTime;
     fileString += "\nend: Unit\n";
     return fileString;
   }
@@ -817,8 +1040,35 @@ class Unit extends MapObject {
       case "facingY":
         this.facingY = toFloat(data);
         break;
+      case "base_health":
+        this.base_health = toFloat(data);
+        break;
+      case "base_attack":
+        this.base_attack = toFloat(data);
+        break;
+      case "base_magic":
+        this.base_magic = toFloat(data);
+        break;
+      case "base_defense":
+        this.base_defense = toFloat(data);
+        break;
+      case "base_resistance":
+        this.base_resistance = toFloat(data);
+        break;
+      case "base_piercing":
+        this.base_piercing = toFloat(data);
+        break;
+      case "base_penetration":
+        this.base_penetration = toFloat(data);
+        break;
       case "base_attackRange":
         this.base_attackRange = toFloat(data);
+        break;
+      case "base_attackCooldown":
+        this.base_attackCooldown = toFloat(data);
+        break;
+      case "base_attackTime":
+        this.base_attackTime = toFloat(data);
         break;
       case "base_sight":
         this.base_sight = toFloat(data);
@@ -826,8 +1076,20 @@ class Unit extends MapObject {
       case "base_speed":
         this.base_speed = toFloat(data);
         break;
+      case "base_tenacity":
+        this.base_tenacity = toFloat(data);
+        break;
       case "base_agility":
         this.base_agility = toInt(data);
+        break;
+      case "curr_health":
+        this.base_tenacity = toFloat(data);
+        break;
+      case "timer_attackCooldown":
+        this.base_tenacity = toFloat(data);
+        break;
+      case "timer_attackTime":
+        this.base_tenacity = toFloat(data);
         break;
       default:
         global.errorMessage("ERROR: Datakey " + datakey + " not found for unit data.");
