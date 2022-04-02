@@ -3690,7 +3690,7 @@ class SubmitCancelFormField extends FormField {
     this.button2.update(millis);
     if (this.submitted) {
       this.submitted = false;
-      return FormFieldSubmit.BUTTON;
+      return FormFieldSubmit.SUBMIT;
     }
     else if (this.canceled) {
       this.canceled = false;

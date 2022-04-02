@@ -880,8 +880,14 @@ class MapEditorInterface extends InterfaceLNZ {
 
   abstract class ConfirmForm extends FormLNZ {
     ConfirmForm(String title, String message) {
-      super(0.5 * (width - Constants.mapEditor_formWidth_small), 0.5 * (height - Constants.mapEditor_formHeight_small),
-        0.5 * (width + Constants.mapEditor_formWidth_small), 0.5 * (height + Constants.mapEditor_formHeight_small));
+      this(title, message, Constants.mapEditor_formWidth_small, Constants.mapEditor_formHeight_small);
+    }
+    ConfirmForm(String title, String message, boolean mediumForm) {
+      this(title, message, Constants.mapEditor_formWidth, Constants.mapEditor_formHeight);
+    }
+    ConfirmForm(String title, String message, float formWidth, float formHeight) {
+      super(0.5 * (width - formWidth), 0.5 * (height - formHeight),
+        0.5 * (width + formWidth), 0.5 * (height + formHeight));
       this.setTitleText(title);
       this.setTitleSize(18);
       this.color_background = color(180, 250, 180);
@@ -893,7 +899,7 @@ class MapEditorInterface extends InterfaceLNZ {
       submit.button2.setColors(color(220), color(190, 240, 190),
         color(140, 190, 140), color(90, 140, 90), color(0));
       this.addField(new SpacerFormField(0));
-      this.addField(new TextBoxFormField(message, 120));
+      this.addField(new TextBoxFormField(message, formHeight - 130));
       this.addField(submit);
     }
   }
@@ -923,6 +929,29 @@ class MapEditorInterface extends InterfaceLNZ {
       deleteFolder("data/levels/" + this.levelName);
       this.canceled = true;
       MapEditorInterface.this.listBox1.refresh();
+    }
+  }
+
+
+  class GoToMainMenuForm extends ConfirmForm {
+    GoToMainMenuForm() {
+      super("Main Menu", "Are you sure you want to exit to the main menu?\nAll unsaved changes will be lost.");
+    }
+    void submit() {
+      this.canceled = true;
+      MapEditorInterface.this.curr_map = null;
+      MapEditorInterface.this.curr_level = null;
+      global.state = ProgramState.ENTERING_MAINMENU;
+    }
+  }
+
+
+  class HelpForm extends ConfirmForm {
+    HelpForm(String helpString) {
+      super("Help", helpString, true);
+    }
+    void submit() {
+      this.canceled = true;
     }
   }
 
@@ -1551,42 +1580,56 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
   void buttonClick4() {
-    // confirm form first
-    this.curr_map = null;
-    this.curr_level = null;
-    global.state = ProgramState.ENTERING_MAINMENU;
+    this.form = new GoToMainMenuForm();
   }
 
   void buttonClick5() {
     switch(this.page) {
       case MAPS:
+        this.form = new HelpForm(Constants.help_mapEditor_maps);
         break;
       case LEVELS:
+        this.form = new HelpForm(Constants.help_mapEditor_levels);
         break;
       case TERRAIN:
+        this.form = new HelpForm(Constants.help_mapEditor_terrain);
         break;
       case FEATURES:
+        this.form = new HelpForm(Constants.help_mapEditor_features);
         break;
       case UNITS:
+        this.form = new HelpForm(Constants.help_mapEditor_units);
         break;
       case ITEMS:
+        this.form = new HelpForm(Constants.help_mapEditor_items);
         break;
       case TESTMAP:
-        break;
       case OPENING_MAPEDITOR:
       case CREATING_MAP:
-        break;
       case OPENING_TESTMAP:
       case OPENING_TESTLEVEL:
-      case LEVEL_INFO:
-      case LEVEL_MAPS:
-      case LINKERS:
-      case TRIGGERS:
-      case TRIGGER_EDITOR:
-      case CONDITION_EDITOR:
-      case EFFECT_EDITOR:
-        break;
       case TESTLEVEL:
+        break;
+      case LEVEL_INFO:
+        this.form = new HelpForm(Constants.help_mapEditor_levelInfo);
+        break;
+      case LEVEL_MAPS:
+        this.form = new HelpForm(Constants.help_mapEditor_levelMaps);
+        break;
+      case LINKERS:
+        this.form = new HelpForm(Constants.help_mapEditor_linkers);
+        break;
+      case TRIGGERS:
+        this.form = new HelpForm(Constants.help_mapEditor_triggers);
+        break;
+      case TRIGGER_EDITOR:
+        this.form = new HelpForm(Constants.help_mapEditor_triggerEditor);
+        break;
+      case CONDITION_EDITOR:
+        this.form = new HelpForm(Constants.help_mapEditor_conditionEditor);
+        break;
+      case EFFECT_EDITOR:
+        this.form = new HelpForm(Constants.help_mapEditor_effectEditor);
         break;
       default:
         global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
