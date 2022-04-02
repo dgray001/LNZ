@@ -102,13 +102,22 @@ class EditUnitForm extends EditMapObjectForm {
   EditUnitForm(Unit unit) {
     super(unit);
     this.unit = unit;
+    this.addField(new FloatFormField("  ", "base sight", 0, Float.MAX_VALUE));
+    this.addField(new FloatFormField("  ", "base speed", 0, Float.MAX_VALUE));
+    this.addField(new IntegerFormField("  ", "base agility", 0, 10));
     this.updateForm();
   }
 
   void updateObject() {
+    this.unit.base_sight = toFloat(this.fields.get(1).getValue());
+    this.unit.base_speed = toFloat(this.fields.get(2).getValue());
+    this.unit.base_agility = toInt(this.fields.get(3).getValue());
   }
 
   void updateForm() {
+    this.fields.get(1).setValueIfNotFocused(Float.toString(this.unit.base_sight));
+    this.fields.get(2).setValueIfNotFocused(Float.toString(this.unit.base_speed));
+    this.fields.get(3).setValueIfNotFocused(Integer.toString(this.unit.base_agility));
   }
 }
 

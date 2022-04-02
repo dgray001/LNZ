@@ -146,6 +146,26 @@ class Level {
   }
 
 
+  String getCurrMapNameDisplay() {
+    if (this.currMapName == null) {
+      return "No current map (see default)";
+    }
+    else {
+      return "Current map: " + this.currMapName;
+    }
+  }
+
+  String getPlayerStartLocationDisplay() {
+    if (this.player_start_location == null) {
+      return "No player start location";
+    }
+    else {
+      return "Player starts on " + this.player_start_location.mapName + " at (" +
+        this.player_start_location.centerX() + ", " + this.player_start_location.centerY() + ")";
+    }
+  }
+
+
   void setPlayer(Hero player) {
     if (this.player == null) {
       if (this.player_start_location == null || !this.hasMap(this.player_start_location.mapName)) {
