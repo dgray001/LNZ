@@ -1,10 +1,15 @@
 enum UnitAction {
-  NONE, MOVING;
+  NONE, MOVING, TARGETING_FEATURE, TARGETING_UNIT, TARGETING_ITEM, ATTACKING;
 }
 
 
 enum MoveModifier {
   NONE, SNEAK, RECOIL;
+}
+
+
+enum DamageType {
+  PHYSICAL, MAGICAL, MIXED, TRUE;
 }
 
 
@@ -129,18 +134,25 @@ class Unit extends MapObject {
 
   protected int level = 0;
   protected Alliance alliance = Alliance.NONE;
+  protected Element element = Element.GRAY;
 
   protected float facingX = 1;
   protected float facingY = 0;
   protected float facingA = 0; // angle in radians
 
+  protected float base_attackRange = Constants.unit_defaultBaseAttackRange;
+  protected float base_attackCooldown = Constants.unit_defaultBaseAttackCooldown;
+  protected float base_attackTime = Constants.unit_defaultBaseAttackTime;
   protected float base_sight = Constants.unit_defaultSight;
   protected float base_speed = 0;
   protected int base_agility = 1;
   // base other stats: health, attack, magic, defense, resistance, piercing, penetration, tenacity
 
+  protected float timer_attackCooldown = 0;
+  protected float timer_attackTime = 0;
+
   protected UnitAction curr_action = UnitAction.NONE;
-  protected int curr_action_id = 0;
+  protected MapObject object_targeting = null;
   protected float curr_action_x = 0;
   protected float curr_action_y = 0;
   protected float last_move_distance = 0;
@@ -347,16 +359,42 @@ class Unit extends MapObject {
   }
 
 
+  boolean targetable(Unit u) {
+    if (this.alliance == u.alliance) {
+      return false;
+    }
+    return true;
+  }
+
+
+  float attackRange() {
+    float attackRange = this.base_attackRange;
+    return attackRange;
+  }
+
+  float attackCooldown() {
+    float attackCooldown = this.base_attackCooldown;
+    return attackCooldown;
+  }
+
+  float attackTime() {
+    float attackTime = this.base_attackTime;
+    return attackTime;
+  }
+
   float sight() {
-    return this.base_sight;
+    float sight = this.base_sight;
+    return sight;
   }
 
   float speed() {
-    return this.base_speed;
+    float speed = this.base_speed;
+    return speed;
   }
 
   int agility() {
-    return this.base_agility;
+    int agility = this.base_agility;
+    return agility;
   }
 
 
@@ -404,16 +442,95 @@ class Unit extends MapObject {
           this.curr_action = UnitAction.NONE;
         }
         break;
+      case TARGETING_FEATURE:
+        if (this.object_targeting == null || this.object_targeting.remove) {
+          this.curr_action = UnitAction.NONE;
+          break;
+        }
+        Feature f = (Feature)this.object_targeting;
+        this.face(f);
+        if (this.distance(f) > f.interactionDistance()) {
+          this.move(timeElapsed, myKey, map, MoveModifier.NONE);
+        }
+        else {
+          // unit interact with feature
+          this.curr_action = UnitAction.NONE;
+        }
+        break;
+      case TARGETING_UNIT:
+        if (this.object_targeting == null || this.object_targeting.remove) {
+          this.curr_action = UnitAction.NONE;
+          break;
+        }
+        Unit u = (Unit)this.object_targeting;
+        this.face(u);
+        if (this.distance(u) > this.attackRange()) {
+          this.move(timeElapsed, myKey, map, MoveModifier.NONE);
+        }
+        else if (this.timer_attackCooldown <= 0) {
+          this.curr_action = UnitAction.ATTACKING;
+          this.timer_attackTime = this.attackTime();
+        }
+        break;
+      case TARGETING_ITEM:
+        if (this.object_targeting == null || this.object_targeting.remove) {
+          this.curr_action = UnitAction.NONE;
+          break;
+        }
+        Item i = (Item)this.object_targeting;
+        this.face(i);
+        if (this.distance(i) > i.interactionDistance()) {
+          this.move(timeElapsed, myKey, map, MoveModifier.NONE);
+        }
+        else {
+          // pickup item
+        }
+        break;
+      case ATTACKING:
+        if (this.object_targeting == null || this.object_targeting.remove) {
+          this.curr_action = UnitAction.NONE;
+          break;
+        }
+        Unit unit_attacking = (Unit)this.object_targeting;
+        this.timer_attackTime -= timeElapsed;
+        if (this.timer_attackTime < 0) {
+          this.curr_action = UnitAction.TARGETING_UNIT;
+          this.attack(unit_attacking);
+        }
+        break;
       case NONE:
         break;
     }
   }
 
+  // timers independent of curr action
   void update(int timeElapsed) {
-    // timers
-    // other action timers
-    // timers for status effects
-    // timers for AI actions if controlled by AI
+    if (this.timer_attackCooldown > 0) {
+      this.timer_attackCooldown -= timeElapsed;
+    }
+  }
+
+
+  void target(MapObject object) {
+    this.object_targeting = object;
+    if (Feature.class.isInstance(this.object_targeting)) {
+      this.curr_action = UnitAction.TARGETING_FEATURE;
+    }
+    else if (Unit.class.isInstance(this.object_targeting)) {
+      this.curr_action = UnitAction.TARGETING_UNIT;
+    }
+    else if (Item.class.isInstance(this.object_targeting)) {
+      this.curr_action = UnitAction.TARGETING_ITEM;
+    }
+    else {
+      this.curr_action = UnitAction.NONE;
+    }
+  }
+
+
+  // Auto attack
+  void attack(Unit u) {
+    u.remove = true;
   }
 
 
@@ -422,6 +539,9 @@ class Unit extends MapObject {
   }
 
 
+  void face(MapObject object) {
+    this.face(object.xCenter(), object.yCenter());
+  }
   void face(float faceX, float faceY) {
     this.setFacing(faceX - this.x, faceY - this.y);
   }
@@ -669,6 +789,7 @@ class Unit extends MapObject {
     fileString += "\nalliance: " + this.alliance.alliance_name();
     fileString += "\nfacingX: " + this.facingX;
     fileString += "\nfacingY: " + this.facingY;
+    fileString += "\nbase_attackRange: " + this.base_attackRange;
     fileString += "\nbase_sight: " + this.base_sight;
     fileString += "\nbase_speed: " + this.base_speed;
     fileString += "\nbase_agility: " + this.base_agility;
@@ -695,6 +816,9 @@ class Unit extends MapObject {
         break;
       case "facingY":
         this.facingY = toFloat(data);
+        break;
+      case "base_attackRange":
+        this.base_attackRange = toFloat(data);
         break;
       case "base_sight":
         this.base_sight = toFloat(data);

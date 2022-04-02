@@ -1504,6 +1504,20 @@ class Item extends MapObject {
     return global.images.getImage(path);
   }
 
+
+  boolean targetable(Unit u) {
+    return true;
+  }
+
+
+  float interactionDistance() {
+    switch(this.ID) {
+      default:
+        return Constants.item_defaultInteractionDistance;
+    }
+  }
+
+
   void update(int timeElapsed) {
     // remove timer if active
     this.bounce.add(timeElapsed);

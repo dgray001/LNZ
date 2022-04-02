@@ -107,12 +107,19 @@ class VisualEffect extends MapObject {
     return global.images.getImage(path);
   }
 
+
+  boolean targetable(Unit u) {
+    return false;
+  }
+
+
   void update(int timeElapsed) {
     this.timer -= timeElapsed;
     if (this.timer < 0) {
       this.remove = true;
     }
   }
+
 
   String fileString() {
     String fileString = "\nnew: VisualEffect: " + this.ID;
