@@ -9,6 +9,34 @@ class IntegerCoordinate {
 
 
 
+abstract class EditMapObjectForm extends FormLNZ {
+  EditMapObjectForm(MapObject mapObject) {
+    super(0.5 * (width - Constants.mapEditor_formWidth), 0.5 * (height - Constants.mapEditor_formHeight),
+      0.5 * (width + Constants.mapEditor_formWidth), 0.5 * (height + Constants.mapEditor_formHeight));
+    this.setTitleText(mapObject.display_name());
+    this.setTitleSize(18);
+    this.addField(new SpacerFormField(1));
+    this.color_background = color(160, 220, 220);
+    this.color_header = color(30, 150, 150);
+  }
+
+  @Override
+  void update(int millis) {
+    super.update(millis);
+    this.submitForm();
+  }
+
+  void submit() {
+    this.updateObject();
+    this.updateForm();
+  }
+
+  abstract void updateObject();
+  abstract void updateForm();
+}
+
+
+
 abstract class MapObject {
   protected int ID = 0;
   protected String display_name = "-- Error --";

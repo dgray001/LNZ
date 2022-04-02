@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220401: v0.6.4n" +
+  "\n20220402: v0.6.4o" +
   "\nLines: 16020 (v0.6.4m)" +
   "";
   static final String version_history =
@@ -76,16 +76,20 @@ static class Constants {
     "see more options.";
   static final String help_mapEditor_terrain = "Terrain\n\nIn this view you " +
     "can select terrain to add to the map.\n\nHotkeys:\n z: Toggle grid\n x: " +
-    "Toggle fog\n c: Toggle rectangle mode\n b: Edit selected object on map.";
+    "Toggle fog\n c: Toggle rectangle mode\n v: Toggle square mode\n b: Edit " +
+    "selected object on map.";
   static final String help_mapEditor_features = "Features\n\nIn this view you " +
     "can select features to add to the map.\n\nHotkeys:\n z: Toggle grid\n x: " +
-    "Toggle fog\n c: Toggle rectangle mode\n b: Edit selected object on map.";
+    "Toggle fog\n c: Toggle rectangle mode\n v: Toggle square mode\n b: Edit " +
+    "selected object on map.";
   static final String help_mapEditor_units = "Units\n\nIn this view you " +
     "can select units to add to the map.\n\nHotkeys:\n z: Toggle grid\n x: " +
-    "Toggle fog\n c: Toggle rectangle mode\n b: Edit selected object on map.";
+    "Toggle fog\n c: Toggle rectangle mode\n v: Toggle square mode\n b: Edit " +
+    "selected object on map.";
   static final String help_mapEditor_items = "Items\n\nIn this view you " +
     "can select items to add to the map.\n\nHotkeys:\n z: Toggle grid\n x: " +
-    "Toggle fog\n c: Toggle rectangle mode\n b: Edit selected object on map.";
+    "Toggle fog\n c: Toggle rectangle mode\n v: Toggle square mode\n b: Edit " +
+    "selected object on map.";
   static final String help_mapEditor_levelInfo = "Level Editor\n\nIn this " +
     "view you see an overview of your level and the maps in it.\nDouble-click " +
     "a map to view it.\n\nHotkeys:\n z: Toggle grid\n x: Toggle fog\n c: Toggle " +

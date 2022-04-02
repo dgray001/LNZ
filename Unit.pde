@@ -96,6 +96,24 @@ class StatusEffect {
 
 
 
+class EditUnitForm extends EditMapObjectForm {
+  protected Unit unit;
+
+  EditUnitForm(Unit unit) {
+    super(unit);
+    this.unit = unit;
+    this.updateForm();
+  }
+
+  void updateObject() {
+  }
+
+  void updateForm() {
+  }
+}
+
+
+
 class Unit extends MapObject {
   protected float size = Constants.unit_defaultSize; // radius
   protected int sizeZ = Constants.unit_defaultHeight;

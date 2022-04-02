@@ -1,3 +1,21 @@
+class EditItemForm extends EditMapObjectForm {
+  protected Item item;
+
+  EditItemForm(Item item) {
+    super(item);
+    this.item = item;
+    this.updateForm();
+  }
+
+  void updateObject() {
+  }
+
+  void updateForm() {
+  }
+}
+
+
+
 class Item extends MapObject {
   protected float size = Constants.item_defaultSize; // radius
 
