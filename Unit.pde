@@ -14,7 +14,8 @@ enum DamageType {
 
 
 enum GearSlot {
-  ERROR("Error"), WEAPON("Weapon"), HEAD("Head"), CHEST("Chest"), LEGS("Legs"), FEET("Feet");
+  ERROR("Error"), WEAPON("Weapon"), HEAD("Head"), CHEST("Chest"), LEGS("Legs"),
+    FEET("Feet"); // offhand, other hands (for alien with 4+ hands), belt, accessories 1-4
 
   private static final List<GearSlot> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 
@@ -529,33 +530,87 @@ class Unit extends MapObject {
   }
 
 
+  Item weapon() {
+    if (this.gear.containsKey(GearSlot.WEAPON)) {
+      return this.gear.get(GearSlot.WEAPON);
+    }
+    return null;
+  }
+
+  Item headgear() {
+    if (this.gear.containsKey(GearSlot.HEAD)) {
+      return this.gear.get(GearSlot.HEAD);
+    }
+    return null;
+  }
+
+  Item chestgear() {
+    if (this.gear.containsKey(GearSlot.CHEST)) {
+      return this.gear.get(GearSlot.CHEST);
+    }
+    return null;
+  }
+
+  Item leggear() {
+    if (this.gear.containsKey(GearSlot.LEGS)) {
+      return this.gear.get(GearSlot.LEGS);
+    }
+    return null;
+  }
+
+  Item footgear() {
+    if (this.gear.containsKey(GearSlot.FEET)) {
+      return this.gear.get(GearSlot.FEET);
+    }
+    return null;
+  }
+
+
   float health() {
     float health = this.base_health;
+    if (this.weapon() != null && this.weapon().weapon()) {
+      health += this.weapon().health;
+    }
     return health;
   }
 
   float attack() {
     float attack = this.base_attack;
+    if (this.weapon() != null) {
+      attack += this.weapon().attack;
+    }
     return attack;
   }
 
   float magic() {
     float magic = this.base_magic;
+    if (this.weapon() != null) {
+      magic += this.weapon().magic;
+    }
     return magic;
   }
 
   float defense() {
     float defense = this.base_defense;
+    if (this.weapon() != null && this.weapon().weapon()) {
+      defense += this.weapon().defense;
+    }
     return defense;
   }
 
   float resistance() {
     float resistance = this.base_resistance;
+    if (this.weapon() != null && this.weapon().weapon()) {
+      resistance += this.weapon().resistance;
+    }
     return resistance;
   }
 
   float piercing() {
     float piercing = this.base_piercing;
+    if (this.weapon() != null) {
+      piercing += this.weapon().piercing;
+    }
     if (piercing > 1) {
       piercing = 1;
     }
@@ -564,6 +619,9 @@ class Unit extends MapObject {
 
   float penetration() {
     float penetration = this.base_penetration;
+    if (this.weapon() != null) {
+      penetration += this.weapon().penetration;
+    }
     if (penetration > 1) {
       penetration = 1;
     }
@@ -572,31 +630,49 @@ class Unit extends MapObject {
 
   float attackRange() {
     float attackRange = this.base_attackRange;
+    if (this.weapon() != null && this.weapon().weapon()) {
+      attackRange += this.weapon().attackRange;
+    }
     return attackRange;
   }
 
   float attackCooldown() {
     float attackCooldown = this.base_attackCooldown;
+    if (this.weapon() != null && this.weapon().weapon()) {
+      attackCooldown += this.weapon().attackCooldown;
+    }
     return attackCooldown;
   }
 
   float attackTime() {
     float attackTime = this.base_attackTime;
+    if (this.weapon() != null && this.weapon().weapon()) {
+      attackTime += this.weapon().attackTime;
+    }
     return attackTime;
   }
 
   float sight() {
     float sight = this.base_sight;
+    if (this.weapon() != null) {
+      sight += this.weapon().sight;
+    }
     return sight;
   }
 
   float speed() {
     float speed = this.base_speed;
+    if (this.weapon() != null && this.weapon().weapon()) {
+      speed += this.weapon().speed;
+    }
     return speed;
   }
 
   float tenacity() {
     float tenacity = this.base_tenacity;
+    if (this.weapon() != null && this.weapon().weapon()) {
+      tenacity += this.weapon().tenacity;
+    }
     if (tenacity > 1) {
       tenacity = 1;
     }
@@ -605,6 +681,9 @@ class Unit extends MapObject {
 
   int agility() {
     int agility = this.base_agility;
+    if (this.weapon() != null && this.weapon().weapon()) {
+      agility += this.weapon().agility;
+    }
     return agility;
   }
 
@@ -694,7 +773,13 @@ class Unit extends MapObject {
           this.move(timeElapsed, myKey, map, MoveModifier.NONE);
         }
         else {
-          // pickup item
+          if (this.gear.containsKey(GearSlot.WEAPON)) {
+            if (this.weapon() == null) {
+              this.gear.put(GearSlot.WEAPON, new Item(i));
+              i.remove = true;
+            }
+          }
+          this.curr_action = UnitAction.NONE;
         }
         break;
       case ATTACKING:
@@ -1047,7 +1132,7 @@ class Unit extends MapObject {
     fileString += "\nalliance: " + this.alliance.alliance_name();
     fileString += "\nelement: " + this.element.element_name();
     for (Map.Entry<GearSlot, Item> slot : this.gear.entrySet()) {
-      fileString += "\ngearSlot: " + slot.getKey()
+      fileString += "\ngearSlot: " + slot.getKey();
       if (slot.getValue() != null) {
         fileString += slot.getValue().fileString(slot.getKey());
       }

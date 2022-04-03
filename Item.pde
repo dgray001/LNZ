@@ -21,9 +21,55 @@ class Item extends MapObject {
 
   protected int tier = 1;
 
+  protected float health = 0;
+  protected float attack = 0;
+  protected float magic = 0;
+  protected float defense = 0;
+  protected float resistance = 0;
+  protected float piercing = 0; // percentage from 0 - 1
+  protected float penetration = 0; // percentage from 0 - 1
+  protected float attackRange = 0;
+  protected float attackCooldown = 0;
+  protected float attackTime = 0;
+  protected float sight = 0;
+  protected float speed = 0;
+  protected float tenacity = 0; // percentage from 0 - 1
+  protected int agility = 0;
+
   // graphics
   protected BounceInt bounce = new BounceInt(Constants.item_bounceConstant);
 
+  Item(Item i) {
+    super();
+    if (i == null) {
+      this.remove = true;
+      return;
+    }
+    this.ID = i.ID;
+    this.display_name = i.display_name;
+    this.type = i.type;
+    this.description = i.description;
+    this.x = i.x;
+    this.y = i.y;
+    this.curr_height = i.curr_height;
+    this.remove = i.remove;
+    this.size = i.size;
+    this.tier = i.tier;
+    this.health = i.health;
+    this.attack = i.attack;
+    this.magic = i.magic;
+    this.defense = i.defense;
+    this.resistance = i.resistance;
+    this.piercing = i.piercing;
+    this.penetration = i.penetration;
+    this.attackRange = i.attackRange;
+    this.attackCooldown = i.attackCooldown;
+    this.attackTime = i.attackTime;
+    this.sight = i.sight;
+    this.speed = i.speed;
+    this.tenacity = i.tenacity;
+    this.agility = i.agility;
+  }
   Item(int ID) {
     super(ID);
     switch(ID) {
@@ -1510,6 +1556,26 @@ class Item extends MapObject {
   }
 
 
+  boolean weapon() {
+    if (this.type.contains("Weapon")) {
+      return true;
+    }
+    return false;
+  }
+
+  boolean armor() {
+    switch(this.type) {
+      case "Headgear":
+      case "Chestgear":
+      case "Leggear":
+      case "Footgear":
+        return true;
+      default:
+        return false;
+    }
+  }
+
+
   float interactionDistance() {
     switch(this.ID) {
       default:
@@ -1530,9 +1596,23 @@ class Item extends MapObject {
     String fileString = "\nnew: Item: " + this.ID;
     fileString += this.objectFileString();
     fileString += "\nsize: " + this.size;
+    fileString += "\nhealth: " + this.health;
+    fileString += "\nattack: " + this.attack;
+    fileString += "\nmagic: " + this.magic;
+    fileString += "\ndefense: " + this.defense;
+    fileString += "\nresistance: " + this.resistance;
+    fileString += "\npiercing: " + this.piercing;
+    fileString += "\npenetration: " + this.penetration;
+    fileString += "\nattackRange: " + this.attackRange;
+    fileString += "\nattackCooldown: " + this.attackCooldown;
+    fileString += "\nattackTime: " + this.attackTime;
+    fileString += "\nsight: " + this.sight;
+    fileString += "\nspeed: " + this.speed;
+    fileString += "\ntenacity: " + this.tenacity;
+    fileString += "\nagility: " + this.agility;
     fileString += "\nend: Item";
     if (slot != null) {
-      fileStirng += ": " + slot.slot_name();
+      fileString += ": " + slot.slot_name();
     }
     return fileString;
   }
@@ -1544,6 +1624,48 @@ class Item extends MapObject {
     switch(datakey) {
       case "size":
         this.size = toFloat(data);
+        break;
+      case "health":
+        this.health = toFloat(data);
+        break;
+      case "attack":
+        this.attack = toFloat(data);
+        break;
+      case "magic":
+        this.magic = toFloat(data);
+        break;
+      case "defense":
+        this.defense = toFloat(data);
+        break;
+      case "resistance":
+        this.resistance = toFloat(data);
+        break;
+      case "piercing":
+        this.piercing = toFloat(data);
+        break;
+      case "penetration":
+        this.penetration = toFloat(data);
+        break;
+      case "attackRange":
+        this.attackRange = toFloat(data);
+        break;
+      case "attackCooldown":
+        this.attackCooldown = toFloat(data);
+        break;
+      case "attackTime":
+        this.attackTime = toFloat(data);
+        break;
+      case "sight":
+        this.sight = toFloat(data);
+        break;
+      case "speed":
+        this.speed = toFloat(data);
+        break;
+      case "tenacity":
+        this.tenacity = toFloat(data);
+        break;
+      case "agility":
+        this.agility = toInt(data);
         break;
       default:
         global.errorMessage("ERROR: Datakey " + datakey + " not found for item data.");
