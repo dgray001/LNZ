@@ -40,6 +40,9 @@ class Item extends MapObject {
   protected BounceInt bounce = new BounceInt(Constants.item_bounceConstant);
 
   Item(Item i) {
+    this(i, i.x, i.y);
+  }
+  Item(Item i, float x, float y) {
     super();
     if (i == null) {
       this.remove = true;
@@ -49,8 +52,8 @@ class Item extends MapObject {
     this.display_name = i.display_name;
     this.type = i.type;
     this.description = i.description;
-    this.x = i.x;
-    this.y = i.y;
+    this.x = x;
+    this.y = y;
     this.curr_height = i.curr_height;
     this.remove = i.remove;
     this.size = i.size;

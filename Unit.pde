@@ -33,7 +33,7 @@ enum GearSlot {
   public static GearSlot gearSlot(String slot_name) {
     for (GearSlot slot : GearSlot.VALUES) {
       if (slot == GearSlot.ERROR) {
-        break;
+        continue;
       }
       if (slot.slot_name().equals(slot_name)) {
         return slot;
@@ -184,7 +184,7 @@ enum StatusEffectCode {
   public static StatusEffectCode code(String code_name) {
     for (StatusEffectCode code : StatusEffectCode.VALUES) {
       if (code == StatusEffectCode.ERROR) {
-        break;
+        continue;
       }
       if (code.code_name().equals(code_name)) {
         return code;
@@ -807,6 +807,17 @@ class Unit extends MapObject {
   }
 
 
+  void dropWeapon(GameMap map) {
+    if (this.weapon() == null) {
+      return;
+    }
+    map.addItem(new Item(this.weapon(), this.x + this.facingX * this.xRadius() -
+      0.5 * this.facingY * this.xRadius(), this.y + 0.5 * this.facingX *
+      this.yRadius() + this.facingY * this.yRadius()));
+    this.gear.put(GearSlot.WEAPON, null);
+  }
+
+
   void target(MapObject object) {
     this.object_targeting = object;
     if (Feature.class.isInstance(this.object_targeting)) {
@@ -917,8 +928,8 @@ class Unit extends MapObject {
     this.facingA = (float)Math.atan2(this.facingY, this.facingX);
   }
 
-  float facingAngle() {
-    return this.facingA;
+  float facingAngleModifier() {
+    return 0;
   }
 
 
