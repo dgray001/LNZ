@@ -14,6 +14,7 @@ class Global {
   private PImage cursor;
   private boolean holding_shift = false;
   private Deque<String> error_messages = new ArrayDeque<String>();
+  private PrintWriter log;
   // FPS
   private int lastFrameTime = millis();
   private float lastFPS = Constants.maxFPS;
@@ -34,7 +35,10 @@ class Global {
     this.images = new Images();
     this.sounds = new Sounds(thisInstance);
     this.cursor = this.images.getImage("icons/cursor_default.png");
-    this.error_messages.push("None"); // prevent EmptyStackException
+    if (!folderExists("data/logs")) {
+      mkdir("data/logs");
+    }
+    this.log = createWriter(sketchPath("data/logs/curr_log.lnz"));
   }
 
   int frame() {
@@ -43,15 +47,24 @@ class Global {
     return elapsed;
   }
 
-  String last_error_message() {
-    if (this.error_messages.peek().equals("None")) {
-      return "";
+  void log(String message) {
+    this.log.println(message);
+    println(message);
+  }
+
+  String lastErrorMessage() {
+    if (this.error_messages.peek() == null) {
+      return "None";
     }
     return this.error_messages.peek();
   }
 
   void errorMessage(String message) {
     this.error_messages.push(message);
+    this.log(message);
+    if (this.menu != null) {
+      this.menu.throwError(message);
+    }
   }
 
   void keyPressFX2D() {
@@ -166,9 +179,17 @@ class Global {
     }
   }
 
-  void exit() {
+  void exitDelay() {
     this.sounds.stop_background();
+    this.log("Exiting normally.");
+    this.log.flush();
+    this.log.close();
     this.state = ProgramState.EXITING;
+  }
+
+  void exitImmediately() {
+    this.exitDelay();
+    exit();
   }
 }
 

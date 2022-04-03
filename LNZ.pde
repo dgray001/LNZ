@@ -68,6 +68,8 @@ void draw() {
   // cursor
   imageMode(CENTER);
   image(global.cursor, mouseX, mouseY, global.configuration.cursor_size, global.configuration.cursor_size);
+  // check new errors
+  
 }
 
 void mouseDragged() {

@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220402: v0.6.4s" +
+  "\n20220403: v0.6.4t" +
   "\nLines: 16810 (v0.6.4s)" +
   "";
   static final String version_history =
@@ -23,6 +23,8 @@ static class Constants {
   static final float default_cursor_size = 35;
   static final float small_number = 0.001; // for float miscalculations
   static final float inverse_root_two = 0.70710678;
+  static final float errorForm_width = 400;
+  static final float errorForm_height = 400;
 
   // Initial Interface
   static final int initialInterface_size = 400;
