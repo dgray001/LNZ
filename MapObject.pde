@@ -51,6 +51,7 @@ abstract class MapObject {
   protected boolean hovered = false;
   protected boolean remove = false; // GameMap will remove object
 
+  MapObject() {}
   MapObject(int ID) {
     this.ID = ID;
   }

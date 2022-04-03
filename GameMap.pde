@@ -1303,7 +1303,7 @@ class GameMap {
       this.displayUnit(u);
     }
     if (display_player) {
-      this.displayUnit(this.units.get(0));
+      this.displayUnit(this.units.get(0), true);
     }
     // display items
     imageMode(CENTER);
@@ -1382,12 +1382,29 @@ class GameMap {
 
 
   void displayUnit(Unit u) {
+    this.displayUnit(u, false);
+  }
+  void displayUnit(Unit u, boolean display_hand) {
     float translateX = this.xi_map + (u.x - this.startSquareX) * this.zoom;
     float translateY = this.yi_map + (u.y - this.startSquareY) * this.zoom;
     float rotationAngle = u.facingAngle();
     translate(translateX, translateY);
     rotate(rotationAngle);
     image(u.getImage(), 0, 0, u.width() * this.zoom, u.height() * this.zoom);
+    if (u.weapon() != null) {
+      translate(u.xRadius(), 0.5 * u.yRadius());
+      image(u.weapon().getImage(), 0, 0, Constants.unit_weaponDisplayScaleFactor *
+        u.weapon().width() * this.zoom, Constants.unit_weaponDisplayScaleFactor *
+        u.weapon().height() * this.zoom);
+      translate(-u.xRadius(), -0.5 * u.yRadius());
+    }
+    else if (display_hand) {
+      translate(u.xRadius(), 0.5 * u.yRadius());
+      image(global.images.getImage("icons/hand.png"), 0, 0, Constants.unit_weaponDisplayScaleFactor *
+        2 * Constants.item_defaultSize * this.zoom, Constants.unit_weaponDisplayScaleFactor *
+        2 * Constants.item_defaultSize * this.zoom);
+      translate(-u.xRadius(), -0.5 * u.yRadius());
+    }
     g.removeCache(u.getImage());
     noTint();
     rotate(-rotationAngle);
@@ -1953,7 +1970,7 @@ class GameMap {
                 global.errorMessage("ERROR: Trying to end a null feature.");
               }
               if (object_queue.empty()) {
-                global.error("ERROR: Trying to end a feature not inside any other object.");
+                global.errorMessage("ERROR: Trying to end a feature not inside any other object.");
                 break;
               }
               this.addFeature(curr_feature, false);
@@ -1964,7 +1981,7 @@ class GameMap {
                 global.errorMessage("ERROR: Trying to end a null unit.");
               }
               if (object_queue.empty()) {
-                global.error("ERROR: Trying to end a unit not inside any other object.");
+                global.errorMessage("ERROR: Trying to end a unit not inside any other object.");
                 break;
               }
               if (this.nextUnitKey > max_unit_key) {
@@ -1978,7 +1995,7 @@ class GameMap {
                 global.errorMessage("ERROR: Trying to end a null item.");
               }
               if (object_queue.empty()) {
-                global.error("ERROR: Trying to end an item not inside any other object.");
+                global.errorMessage("ERROR: Trying to end an item not inside any other object.");
                 break;
               }
               switch(object_queue.peek()) {
@@ -2007,7 +2024,7 @@ class GameMap {
                   // item attachments
                   break;
                 default:
-                  global.error("ERROR: Trying to end an item inside a " + object_queue.peek().name + ".");
+                  global.errorMessage("ERROR: Trying to end an item inside a " + object_queue.peek().name + ".");
                   break;
               }
               curr_item = null;
@@ -2017,7 +2034,7 @@ class GameMap {
                 global.errorMessage("ERROR: Trying to end a null projectile.");
               }
               if (object_queue.empty()) {
-                global.error("ERROR: Trying to end a projectile not inside any other object.");
+                global.errorMessage("ERROR: Trying to end a projectile not inside any other object.");
                 break;
               }
               this.addProjectile(curr_projectile);

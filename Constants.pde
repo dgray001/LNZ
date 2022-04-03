@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220403: v0.6.4x" +
+  "\n20220403: v0.6.4y" +
   "\nLines: 17108 (v0.6.4x)" +
   "";
   static final String version_history =
@@ -157,6 +157,7 @@ static class Constants {
   static final float unit_defaultBaseAttackCooldown = 1200;
   static final float unit_defaultBaseAttackTime = 300;
   static final float unit_defaultBaseAttackRange = 0.2;
+  static final float unit_weaponDisplayScaleFactor = 0.8;
 
   // Resistances
   static final float resistance_default = 1;
