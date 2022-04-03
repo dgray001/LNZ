@@ -5,7 +5,7 @@ class Projectile extends MapObject {
     super(ID);
     switch(ID) {
       default:
-        println("ERROR: Projectile ID " + ID + " not found.");
+        global.errorMessage("ERROR: Projectile ID " + ID + " not found.");
         break;
     }
   }
@@ -80,7 +80,7 @@ class Projectile extends MapObject {
     String path = "projectiles/";
     switch(this.ID) {
       default:
-        println("ERROR: Projectile ID " + ID + " not found.");
+        global.errorMessage("ERROR: Projectile ID " + ID + " not found.");
         path += "default.png";
         break;
     }
@@ -114,7 +114,7 @@ class Projectile extends MapObject {
         this.size = toFloat(data);
         break;
       default:
-        println("ERROR: Datakey " + datakey + " not found for projectile data.");
+        global.errorMessage("ERROR: Datakey " + datakey + " not found for projectile data.");
         break;
     }
   }

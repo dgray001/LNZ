@@ -13,7 +13,7 @@ class VisualEffect extends MapObject {
         this.scale_size = false;
         break;
       default:
-        println("ERROR: VisualEffect ID " + ID + " not found.");
+        global.errorMessage("ERROR: VisualEffect ID " + ID + " not found.");
         break;
     }
   }
@@ -100,7 +100,7 @@ class VisualEffect extends MapObject {
         path += frame + ".png";
         break;
       default:
-        println("ERROR: Visual Effect ID " + ID + " not found.");
+        global.errorMessage("ERROR: Visual Effect ID " + ID + " not found.");
         path = "default.png";
         break;
     }
@@ -142,7 +142,7 @@ class VisualEffect extends MapObject {
         this.size_height = toFloat(data);
         break;
       default:
-        println("ERROR: Datakey " + datakey + " not found for visual effect data.");
+        global.errorMessage("ERROR: Datakey " + datakey + " not found for visual effect data.");
         break;
     }
   }

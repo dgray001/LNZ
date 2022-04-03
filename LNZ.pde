@@ -68,8 +68,14 @@ void draw() {
   // cursor
   imageMode(CENTER);
   image(global.cursor, mouseX, mouseY, global.configuration.cursor_size, global.configuration.cursor_size);
-  // check new errors
-  
+  // check focused
+  if (!focused && global.focused_last_frame) {
+    global.loseFocus();
+  }
+  else if (focused && !global.focused_last_frame) {
+    global.gainFocus();
+  }
+  global.focused_last_frame = focused;
 }
 
 void mouseDragged() {

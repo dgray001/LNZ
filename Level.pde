@@ -87,7 +87,7 @@ class Linker {
         this.rect2.addData(data);
         break;
       default:
-        println("ERROR: Datakey " + datakey + " not found for linker data.");
+        global.errorMessage("ERROR: Datakey " + datakey + " not found for linker data.");
         break;
     }
   }
@@ -500,7 +500,7 @@ class Level {
             curr_effect = new Effect();
             break;
           default:
-            println("ERROR: Can't add a " + type + " type to Level data.");
+            global.errorMessage("ERROR: Can't add a " + type + " type to Level data.");
             break;
         }
       }

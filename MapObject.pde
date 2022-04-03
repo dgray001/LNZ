@@ -165,7 +165,7 @@ abstract class MapObject {
       case "location":
         String[] locationdata = split(data, ',');
         if (locationdata.length < 3) {
-          println("ERROR: Location data for object too short: " + data + ".");
+          global.errorMessage("ERROR: Location data for object too short: " + data + ".");
           return false;
         }
         this.x = toFloat(trim(locationdata[0]));

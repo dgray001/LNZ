@@ -1928,7 +1928,7 @@ class GameMap {
             curr_projectile = new Projectile(toInt(trim(parameters[2])));
             break;
           default:
-            println("ERROR: Can't add a " + type + " type to GameMap data.");
+            global.errorMessage("ERROR: Can't add a " + type + " type to GameMap data.");
             break;
         }
       }

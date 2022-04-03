@@ -424,7 +424,7 @@ class Feature extends MapObject {
         break;
 
       default:
-        println("ERROR: Feature ID " + ID + " not found.");
+        global.errorMessage("ERROR: Feature ID " + ID + " not found.");
         break;
     }
   }
@@ -936,7 +936,7 @@ class Feature extends MapObject {
         path += "helicopter_military.png";
         break;
       default:
-        println("ERROR: Feature ID " + ID + " not found.");
+        global.errorMessage("ERROR: Feature ID " + ID + " not found.");
         path += "default.png";
         break;
     }
@@ -985,7 +985,7 @@ class Feature extends MapObject {
         this.toggle = toBoolean(data);
         break;
       default:
-        println("ERROR: Datakey " + datakey + " not found for feature data.");
+        global.errorMessage("ERROR: Datakey " + datakey + " not found for feature data.");
         break;
     }
   }

@@ -2391,4 +2391,9 @@ class MapEditorInterface extends InterfaceLNZ {
       }
     }
   }
+
+
+  void loseFocus() {}
+
+  void gainFocus() {}
 }
