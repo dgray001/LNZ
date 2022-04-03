@@ -1317,19 +1317,17 @@ class GameMap {
       if (this.draw_fog && !this.squares[int(floor(i.x))][int(floor(i.y))].visible) {
         continue;
       }
-      pushMatrix();
       float translateX = this.xi_map + (i.x - this.startSquareX) * this.zoom;
       float translateY = this.yi_map + (i.y - this.startSquareY - Constants.item_bounceOffset *
         i.bounce.value / float(Constants.item_bounceConstant)) * this.zoom;
       translate(translateX, translateY);
       image(i.getImage(), 0, 0, i.width() * this.zoom, i.height() * this.zoom);
-      popMatrix();
+      translate(-translateX, -translateY);
     }
     // display projectiles
     // display visual effects
     imageMode(CENTER);
     for (VisualEffect v : this.visualEffects) {
-      pushMatrix();
       float translateX = this.xi_map + (v.x - this.startSquareX) * this.zoom;
       float translateY = this.yi_map + (v.y - this.startSquareY) * this.zoom;
       translate(translateX, translateY);
@@ -1339,7 +1337,7 @@ class GameMap {
       else {
         image(v.getImage(), 0, 0, v.size_width, v.size_height);
       }
-      popMatrix();
+      translate(-translateX, -translateY);
     }
     // name displayed
     if (this.hovered_object != null) {
@@ -1387,18 +1385,22 @@ class GameMap {
     this.displayUnit(u, false);
   }
   void displayUnit(Unit u, boolean display_hand) {
-    pushMatrix();
     float translateX = this.xi_map + (u.x - this.startSquareX) * this.zoom;
     float translateY = this.yi_map + (u.y - this.startSquareY) * this.zoom;
     translate(translateX, translateY);
+    float net_rotation = 0;
+    boolean flip = false;
     if (abs(u.facingA) > HALF_PI) {
-      scale(-1, 1);
-      rotate((PI - abs(u.facingA)) * u.facingA / abs(u.facingA));
+      flip = true;
+      net_rotation = (PI - abs(u.facingA)) * u.facingA / abs(u.facingA) + u.facingAngleModifier();
     }
     else {
-      rotate(u.facingA);
+      net_rotation = u.facingA + u.facingAngleModifier();
     }
-    rotate(u.facingAngleModifier());
+    if (flip) {
+      scale(-1, 1);
+    }
+    rotate(net_rotation);
     image(u.getImage(), 0, 0, u.width() * this.zoom, u.height() * this.zoom);
     if (u.weapon() != null) {
       float translateItemX = 0.9 * (u.xRadius() + Constants.unit_weaponDisplayScaleFactor * Constants.item_defaultSize) * this.zoom;
@@ -1407,6 +1409,7 @@ class GameMap {
       image(u.weapon().getImage(), 0, 0, Constants.unit_weaponDisplayScaleFactor *
         u.weapon().width() * this.zoom, Constants.unit_weaponDisplayScaleFactor *
         u.weapon().height() * this.zoom);
+      translate(-translateItemX, -translateItemY);
     }
     else if (display_hand) {
       float translateItemX = 0.9 * (u.xRadius() + Constants.unit_weaponDisplayScaleFactor * Constants.item_defaultSize) * this.zoom;
@@ -1415,10 +1418,15 @@ class GameMap {
       image(global.images.getImage("icons/hand.png"), 0, 0, Constants.unit_weaponDisplayScaleFactor *
         2 * Constants.item_defaultSize * this.zoom, Constants.unit_weaponDisplayScaleFactor *
         2 * Constants.item_defaultSize * this.zoom);
+      translate(-translateItemX, -translateItemY);
     }
     g.removeCache(u.getImage());
     noTint();
-    popMatrix();
+    rotate(-net_rotation);
+    if (flip) {
+      scale(-1, 1);
+    }
+    translate(-translateX, -translateY);
   }
 
 

@@ -105,12 +105,25 @@ enum HeroCode {
 
 
 class Hero extends Unit {
+
+  class HeroInventory extends Inventory {
+    protected boolean viewing = false;
+
+    HeroInventory() {
+      super(Constants.hero_inventoryMaxRows, Constants.hero_inventoryMaxCols, false);
+      this.setSlots(Hero.this.inventoryStartSlots());
+    }
+  }
+
+
   protected HeroCode code;
 
   protected Location location = Location.ERROR;
 
   protected int hunger = 100;
   protected int thirst = 100;
+
+  protected HeroInventory inventory = new HeroInventory();
 
   Hero(int ID) {
     super(ID);
@@ -121,25 +134,86 @@ class Hero extends Unit {
     this.code = code;
   }
 
-/* // was shadowing the Unit functions
-  void update(int millis) {
+
+  int inventoryStartSlots() {
+    return Constants.hero_inventoryDefaultStartSlots;
   }
 
-  void mouseMove(float mX, float mY) {
+
+  void update_hero(int millis) {
+    if (this.inventory.viewing) {
+      float inventoryTranslateX = 0.5 * (width - this.inventory.display_width);
+      float inventoryTranslateY = 0.5 * (height - this.inventory.display_height);
+      translate(inventoryTranslateX, inventoryTranslateY);
+      this.inventory.update(millis);
+      translate(-inventoryTranslateX, -inventoryTranslateY);
+    }
   }
 
-  void mousePress() {
+  void mouseMove_hero(float mX, float mY) {
+    if (this.inventory.viewing) {
+      float inventoryTranslateX = 0.5 * (width - this.inventory.display_width);
+      float inventoryTranslateY = 0.5 * (height - this.inventory.display_height);
+      this.inventory.mouseMove(mX - inventoryTranslateX, mY - inventoryTranslateY);
+    }
   }
 
-  void mouseRelease() {
+  void mousePress_hero() {
+    if (this.inventory.viewing) {
+      this.inventory.mousePress();
+    }
   }
 
-  void scroll(int amount) {
+  void mouseRelease_hero(float mX, float mY) {
+    if (this.inventory.viewing) {
+      float inventoryTranslateX = 0.5 * (width - this.inventory.display_width);
+      float inventoryTranslateY = 0.5 * (height - this.inventory.display_height);
+      this.inventory.mouseRelease(mX - inventoryTranslateX, mY - inventoryTranslateY);
+    }
   }
 
-  void keyPress() {
+  void scroll_hero(int amount) {
+    // scroll through inventory bar if available
   }
 
-  void keyRelease() {
-  }*/
+  void keyPress_hero() {
+    if (key == CODED) {
+      switch(keyCode) {
+        default:
+          break;
+      }
+    }
+    else {
+      switch(key) {
+        case 'w':
+        case 'W':
+          // stash item
+          break;
+        case 'e':
+        case 'E':
+          this.inventory.viewing = !this.inventory.viewing;
+          if (!this.inventory.viewing) {
+            // return item clicked item
+          }
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  void keyRelease_hero() {
+    if (key == CODED) {
+      switch(keyCode) {
+        default:
+          break;
+      }
+    }
+    else {
+      switch(key) {
+        default:
+          break;
+      }
+    }
+  }
 }
