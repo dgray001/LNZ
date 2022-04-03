@@ -31,6 +31,9 @@ enum GearSlot {
 
   public static GearSlot gearSlot(String slot_name) {
     for (GearSlot slot : GearSlot.VALUES) {
+      if (slot == GearSlot.ERROR) {
+        break;
+      }
       if (slot.slot_name().equals(slot_name)) {
         return slot;
       }
@@ -179,6 +182,9 @@ enum StatusEffectCode {
 
   public static StatusEffectCode code(String code_name) {
     for (StatusEffectCode code : StatusEffectCode.VALUES) {
+      if (code == StatusEffectCode.ERROR) {
+        break;
+      }
       if (code.code_name().equals(code_name)) {
         return code;
       }
@@ -233,6 +239,8 @@ class Unit extends MapObject {
   protected float facingY = 0;
   protected float facingA = 0; // angle in radians
 
+  protected HashMap<GearSlot, Item> gear = new HashMap<GearSlot, Item>();
+
   protected float base_health = 1;
   protected float base_attack = 0;
   protected float base_magic = 0;
@@ -283,6 +291,7 @@ class Unit extends MapObject {
       case 1101:
         this.setStrings("Ben Nelson", "Hero", "");
         this.baseStats(4, 1, 0, 0, 2);
+        this.gearSlots("Weapon");
         this.alliance = Alliance.BEN;
         break;
       case 1102:
@@ -315,6 +324,7 @@ class Unit extends MapObject {
       case 1203:
         this.setStrings("Sick Zombie", "Zombie", "");
         this.level = 3;
+        this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1204:
@@ -330,26 +340,31 @@ class Unit extends MapObject {
       case 1206:
         this.setStrings("Hungry Zombie", "Zombie", "");
         this.level = 6;
+        this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1207:
         this.setStrings("Confused Franny Zombie", "Zombie", "");
         this.level = 7;
+        this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1208:
         this.setStrings("Confused Zombie", "Zombie", "");
         this.level = 8;
+        this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1209:
         this.setStrings("Franny Zombie", "Zombie", "");
         this.level = 9;
+        this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1210:
         this.setStrings("Intellectual Zombie", "Zombie", "");
         this.level = 10;
+        this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
         break;
 
@@ -414,6 +429,12 @@ class Unit extends MapObject {
     this.base_defense = defense;
     this.base_piercing = piercing;
     this.base_speed = speed;
+  }
+
+  void gearSlots(String ... strings) {
+    for (String string : strings) {
+      this.gear.put(GearSlot.gearSlot(string), null);
+    }
   }
 
   void setLocation(float x, float y) {
@@ -1024,6 +1045,13 @@ class Unit extends MapObject {
     fileString += "\nsize: " + this.size;
     fileString += "\nlevel: " + this.level;
     fileString += "\nalliance: " + this.alliance.alliance_name();
+    fileString += "\nelement: " + this.element.element_name();
+    for (Map.Entry<GearSlot, Item> slot : this.gear.entrySet()) {
+      fileString += "\ngearSlot: " + slot.getKey()
+      if (slot.getValue() != null) {
+        fileString += slot.getValue().fileString(slot.getKey());
+      }
+    }
     fileString += "\nfacingX: " + this.facingX;
     fileString += "\nfacingY: " + this.facingY;
     fileString += "\nbase_health: " + this.base_health;
@@ -1060,6 +1088,12 @@ class Unit extends MapObject {
         break;
       case "alliance":
         this.alliance = Alliance.alliance(data);
+        break;
+      case "element":
+        this.element = Element.element(data);
+        break;
+      case "gearSlot":
+        this.gear.put(GearSlot.gearSlot(data), null);
         break;
       case "facingX":
         this.facingX = toFloat(data);

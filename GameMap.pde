@@ -1940,7 +1940,7 @@ class GameMap {
         }
       }
       else if (dataname.equals("end")) {
-        ReadFileObject type = ReadFileObject.objectType(data);
+        ReadFileObject type = ReadFileObject.objectType(trim(parameters[1]));
         if (object_queue.empty()) {
           global.errorMessage("ERROR: Tring to end a " + type.name + " object but not inside any object.");
         }
@@ -1952,12 +1952,20 @@ class GameMap {
               if (curr_feature == null) {
                 global.errorMessage("ERROR: Trying to end a null feature.");
               }
+              if (object_queue.empty()) {
+                global.error("ERROR: Trying to end a feature not inside any other object.");
+                break;
+              }
               this.addFeature(curr_feature, false);
               curr_feature = null;
               break;
             case UNIT:
               if (curr_unit == null) {
                 global.errorMessage("ERROR: Trying to end a null unit.");
+              }
+              if (object_queue.empty()) {
+                global.error("ERROR: Trying to end a unit not inside any other object.");
+                break;
               }
               if (this.nextUnitKey > max_unit_key) {
                 max_unit_key = this.nextUnitKey;
@@ -1969,15 +1977,48 @@ class GameMap {
               if (curr_item == null) {
                 global.errorMessage("ERROR: Trying to end a null item.");
               }
-              if (this.nextItemKey > max_item_key) {
-                max_item_key = this.nextItemKey;
+              if (object_queue.empty()) {
+                global.error("ERROR: Trying to end an item not inside any other object.");
+                break;
               }
-              this.addItem(curr_item);
+              switch(object_queue.peek()) {
+                case MAP:
+                  if (this.nextItemKey > max_item_key) {
+                    max_item_key = this.nextItemKey;
+                  }
+                  this.addItem(curr_item);
+                  break;
+                case FEATURE:
+                  // feature inventory
+                  break;
+                case UNIT:
+                  if (parameters.length < 3) {
+                    global.errorMessage("ERROR: GearSlot code missing in Item constructor.");
+                    break;
+                  }
+                  GearSlot code = GearSlot.gearSlot(trim(parameters[2]));
+                  if (curr_unit == null) {
+                    global.errorMessage("ERROR: Trying to add gear to null unit.");
+                    break;
+                  }
+                  curr_unit.gear.put(code, curr_item);
+                  break;
+                case ITEM:
+                  // item attachments
+                  break;
+                default:
+                  global.error("ERROR: Trying to end an item inside a " + object_queue.peek().name + ".");
+                  break;
+              }
               curr_item = null;
               break;
             case PROJECTILE:
               if (curr_projectile == null) {
                 global.errorMessage("ERROR: Trying to end a null projectile.");
+              }
+              if (object_queue.empty()) {
+                global.error("ERROR: Trying to end a projectile not inside any other object.");
+                break;
               }
               this.addProjectile(curr_projectile);
               curr_projectile = null;
@@ -1987,7 +2028,7 @@ class GameMap {
           }
         }
         else {
-          global.errorMessage("ERROR: Tring to end a " + type.name + " object while inside a " + object_queue.peek().name + " object.");
+          global.errorMessage("ERROR: Tring to end a " + type.name + " object but current object is a " + object_queue.peek().name + ".");
         }
       }
       else {
