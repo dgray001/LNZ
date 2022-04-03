@@ -53,7 +53,7 @@ class DImg {
   // Add image to part of this using percent of width / height
   void addImagePercent(PImage newImg, float xP, float yP, float wP, float hP) {
     if (xP < 0.0 || yP < 0.0 || wP < 0.0 || hP < 0.0 || xP > 1.0 || yP > 1.0 || wP > 1.0 || hP > 1.0) {
-      println("ERROR: addImagePercent coordinates out of range");
+      global.log("DImg: addImagePercent coordinates out of range");
       return;
     }
     this.copyImage(newImg,
@@ -66,11 +66,11 @@ class DImg {
   }
   void addImageGrid(PImage newImg, int x, int y, int w, int h) {
     if (x < 0 || y < 0 || x >= this.gridX || y >= this.gridY) {
-      println("ERROR: addImageGrid coordinate out of range");
+      global.log("DImg: addImageGrid coordinate out of range");
       return;
     }
     if (w < 1 || h < 1 || x + w > this.gridX || y + h > this.gridY) {
-      println("ERROR: addImageGrid coordinate out of range");
+      global.log("DImg: addImageGrid coordinate out of range");
       return;
     }
     this.copyImage(newImg,
@@ -85,11 +85,11 @@ class DImg {
   }
   void colorGrid(color c, int x, int y, int w, int h) {
     if (x < 0 || y < 0 || x >= this.gridX || y >= this.gridY) {
-      println("ERROR: colorGrid coordinate out of range");
+      global.log("DImg: colorGrid coordinate out of range");
       return;
     }
     if (w < 1 || h < 1 || x + w > this.gridX || y + h > this.gridY) {
-      println("ERROR: colorGrid coordinate out of range");
+      global.log("DImg: colorGrid coordinate out of range");
       return;
     }
     this.img.loadPixels();
@@ -163,11 +163,11 @@ class DImg {
   }
   PImage getImageGridPiece(int x, int y, int w, int h) {
     if (x < 0 || y < 0 || x >= this.gridX || y >= this.gridY) {
-      println("ERROR: getImageGridPiece coordinate out of range");
+      global.log("DImg: getImageGridPiece coordinate out of range");
       return createImage(1, 1, RGB);
     }
     if (w < 1 || h < 1 || x + w > this.gridX || y + h > this.gridY) {
-      println("ERROR: getImageGridPiece coordinate out of range");
+      global.log("DImg: getImageGridPiece coordinate out of range");
       return createImage(1, 1, RGB);
     }
     return this.getImagePiece(x * this.img.width / this.gridX, y * this.img.height / this.gridY,
@@ -177,7 +177,7 @@ class DImg {
   // convolution
   void convolution(float[][] matrix) {
     if (matrix.length % 2 != 1 || matrix[0].length % 2 != 1) {
-      println("ERROR: convolution matrix invalid size.");
+      global.log("DImg: convolution matrix invalid size.");
       return;
     }
     this.img.loadPixels();

@@ -18,7 +18,7 @@ class Images {
   void loadImageFile(String filePath) {
     PImage img = loadImage(this.basePath + filePath);
     if (img == null) {
-      println("ERROR: Missing image " + filePath + ".");
+      global.log("Images: Missing image " + filePath + ".");
       this.imgs.put(filePath, this.getBlackPixel());
     }
     else {

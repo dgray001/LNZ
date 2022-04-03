@@ -228,7 +228,7 @@ Profile readProfile(String path) {
   String[] lines = loadStrings(path);
   Profile p = new Profile();
   if (lines == null) {
-    println("ERROR: Reading profile file but path " + path + " doesn't exist.");
+    global.errorMessage("ERROR: Reading profile file but path " + path + " doesn't exist.");
     return p;
   }
   for (String line : lines) {

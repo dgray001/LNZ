@@ -15,6 +15,7 @@ class Global {
   private boolean holding_shift = false;
   private Deque<String> error_messages = new ArrayDeque<String>();
   private PrintWriter log;
+  private boolean focused_last_frame = true;
   // FPS
   private int lastFrameTime = millis();
   private float lastFPS = Constants.maxFPS;
@@ -45,6 +46,19 @@ class Global {
     int elapsed = millis() - this.lastFrameTime;
     this.lastFrameTime = millis();
     return elapsed;
+  }
+
+  void loseFocus() {
+    this.holding_shift = false;
+    if (this.menu != null) {
+      this.menu.loseFocus();
+    }
+  }
+
+  void gainFocus() {
+    if (this.menu != null) {
+      this.menu.gainFocus();
+    }
   }
 
   void log(String message) {
@@ -184,12 +198,67 @@ class Global {
     this.log("Exiting normally.");
     this.log.flush();
     this.log.close();
+    if (!folderExists("data/logs/past")) {
+      mkdir("data/logs/past");
+    }
+    copyFile("data/logs/curr_log.lnz", "data/logs/past/" + year() + this.monthString() +
+      this.dayString() + "-" + this.hourString() + this.minuteString() + this.secondString() + ".lnz");
     this.state = ProgramState.EXITING;
   }
 
   void exitImmediately() {
     this.exitDelay();
     exit();
+  }
+
+  String monthString() {
+    int month = month();
+    if (month < 10) {
+      return "0" + Integer.toString(month);
+    }
+    else {
+      return Integer.toString(month);
+    }
+  }
+
+  String dayString() {
+    int day = day();
+    if (day < 10) {
+      return "0" + Integer.toString(day);
+    }
+    else {
+      return Integer.toString(day);
+    }
+  }
+
+  String hourString() {
+    int hour = hour();
+    if (hour < 10) {
+      return "0" + Integer.toString(hour);
+    }
+    else {
+      return Integer.toString(hour);
+    }
+  }
+
+  String minuteString() {
+    int minute = minute();
+    if (minute < 10) {
+      return "0" + Integer.toString(minute);
+    }
+    else {
+      return Integer.toString(minute);
+    }
+  }
+
+  String secondString() {
+    int second = second();
+    if (second < 10) {
+      return "0" + Integer.toString(second);
+    }
+    else {
+      return Integer.toString(second);
+    }
   }
 }
 

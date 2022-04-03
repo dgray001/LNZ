@@ -659,11 +659,11 @@ class MainMenuInterface extends InterfaceLNZ {
   boolean loadProfile(String profile_name) {
     mkdir("data/profiles", false, true);
     if (!folderExists("data/profiles/" + profile_name.toLowerCase())) {
-      println("Profile: No profile folder exists with name " + profile_name + ".");
+      global.log("Profile: No profile folder exists with name " + profile_name + ".");
       return false;
     }
     if (!fileExists("data/profiles/" + profile_name.toLowerCase() + "/profile.lnz")) {
-      println("ERROR: Profile file missing for " + profile_name + ".");
+      global.errorMessage("ERROR: Profile file missing for " + profile_name + ".");
       return false;
     }
     global.profile = readProfile(sketchPath("data/profiles/" + profile_name.toLowerCase() + "/profile.lnz"));
@@ -732,4 +732,9 @@ class MainMenuInterface extends InterfaceLNZ {
   void scroll(int amount) {}
   void keyPress() {}
   void keyRelease() {}
+
+
+  void loseFocus() {}
+
+  void gainFocus() {}
 }

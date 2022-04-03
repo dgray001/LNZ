@@ -116,7 +116,7 @@ class Sounds {
         s.trigger();
       }
       else {
-        println("ERROR: Missing interface sound " + filePath + ".");
+        global.log("Sounds: Missing interface sound " + filePath + ".");
       }
     }
   }
@@ -135,7 +135,7 @@ class Sounds {
         s.trigger();
       }
       else {
-        println("ERROR: Missing environment sound " + filePath + ".");
+        global.log("Sounds: Missing environment sound " + filePath + ".");
       }
     }
   }
@@ -154,7 +154,7 @@ class Sounds {
         s.trigger();
       }
       else {
-        println("ERROR: Missing units sound " + filePath + ".");
+        global.log("Sounds: Missing units sound " + filePath + ".");
       }
     }
   }
@@ -173,7 +173,7 @@ class Sounds {
         s.trigger();
       }
       else {
-        println("ERROR: Missing player sound " + filePath + ".");
+        global.log("Sounds: Missing player sound " + filePath + ".");
       }
     }
   }

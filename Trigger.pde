@@ -235,7 +235,7 @@ class Effect {
       case 0:
         break;
       case 1:
-        println(this.message);
+        global.log(this.message);
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");

@@ -75,7 +75,7 @@ abstract class InterfaceLNZ {
     }
 
     void sendEmail() {
-      println("Send email.");
+      global.log("Send email (not configured).");
     }
   }
 
@@ -356,6 +356,8 @@ abstract class InterfaceLNZ {
     }
   }
 
+  abstract void loseFocus();
+  abstract void gainFocus();
   abstract void update(int millis);
   abstract void mouseMove(float mX, float mY);
   abstract void mousePress();
@@ -558,4 +560,9 @@ class InitialInterface extends InterfaceLNZ {
   void scroll(int amount) {}
   void keyPress() {}
   void keyRelease() {}
+
+
+  void loseFocus() {}
+
+  void gainFocus() {}
 }
