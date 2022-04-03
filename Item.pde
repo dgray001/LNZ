@@ -330,7 +330,7 @@ class Item extends MapObject {
 
       // Chestgear
       case 2501:
-        this.setStrings("Talc Armor", "Chestgear", "");
+        this.setStrings("Talc Chestplate", "Chestgear", "");
         break;
       case 2502:
         this.setStrings("T-Shirt", "Chestgear", "");
@@ -342,7 +342,7 @@ class Item extends MapObject {
         this.setStrings("Coat", "Chestgear", "");
         break;
       case 2511:
-        this.setStrings("Gypsum Armor", "Chestgear", "");
+        this.setStrings("Gypsum Chestplate", "Chestgear", "");
         this.tier = 2;
         break;
       case 2512:
@@ -354,35 +354,35 @@ class Item extends MapObject {
         this.tier = 2;
         break;
       case 2521:
-        this.setStrings("Calcite Armor", "Chestgear", "");
+        this.setStrings("Calcite Chestplate", "Chestgear", "");
         this.tier = 3;
         break;
       case 2531:
-        this.setStrings("Fluorite Armor", "Chestgear", "");
+        this.setStrings("Fluorite Chestplate", "Chestgear", "");
         this.tier = 4;
         break;
       case 2541:
-        this.setStrings("Apatite Armor", "Chestgear", "");
+        this.setStrings("Apatite Chestplate", "Chestgear", "");
         this.tier = 5;
         break;
       case 2551:
-        this.setStrings("Orthoclase Armor", "Chestgear", "");
+        this.setStrings("Orthoclase Chestplate", "Chestgear", "");
         this.tier = 6;
         break;
       case 2561:
-        this.setStrings("Quartz Armor", "Chestgear", "");
+        this.setStrings("Quartz Chestplate", "Chestgear", "");
         this.tier = 7;
         break;
       case 2571:
-        this.setStrings("Topaz Armor", "Chestgear", "");
+        this.setStrings("Topaz Chestplate", "Chestgear", "");
         this.tier = 8;
         break;
       case 2581:
-        this.setStrings("Corundum Armor", "Chestgear", "");
+        this.setStrings("Corundum Chestplate", "Chestgear", "");
         this.tier = 9;
         break;
       case 2591:
-        this.setStrings("Diamond Armor", "Chestgear", "");
+        this.setStrings("Diamond Chestplate", "Chestgear", "");
         this.tier = 10;
         break;
 
@@ -1109,7 +1109,7 @@ class Item extends MapObject {
         break;
       // Chestgear
       case 2501:
-        path += "talc_armor.png";
+        path += "talc_chestplate.png";
         break;
       case 2502:
         path += "t-shirt.png";
@@ -1121,7 +1121,7 @@ class Item extends MapObject {
         path += "coat.png";
         break;
       case 2511:
-        path += "gypsum_armor.png";
+        path += "gypsum_chestplate.png";
         break;
       case 2512:
         path += "bens_coat.png";
@@ -1130,28 +1130,28 @@ class Item extends MapObject {
         path += "suit_jacket.png";
         break;
       case 2521:
-        path += "calcite_armor.png";
+        path += "calcite_chestplate.png";
         break;
       case 2531:
-        path += "fluorite_armor.png";
+        path += "fluorite_chestplate.png";
         break;
       case 2541:
-        path += "apatite_armor.png";
+        path += "apatite_chestplate.png";
         break;
       case 2551:
-        path += "orthoclase_armor.png";
+        path += "orthoclase_chestplate.png";
         break;
       case 2561:
-        path += "quartz_armor.png";
+        path += "quartz_chestplate.png";
         break;
       case 2571:
-        path += "topaz_armor.png";
+        path += "topaz_chestplate.png";
         break;
       case 2581:
-        path += "corundum_armor.png";
+        path += "corundum_chestplate.png";
         break;
       case 2591:
-        path += "diamond_armor.png";
+        path += "diamond_chestplate.png";
         break;
       // Leggear
       case 2601:

@@ -13,6 +13,33 @@ enum DamageType {
 }
 
 
+enum GearSlot {
+  ERROR("Error"), WEAPON("Weapon"), HEAD("Head"), CHEST("Chest"), LEGS("Legs"), FEET("Feet");
+
+  private static final List<GearSlot> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+
+  private String slot_name;
+  private GearSlot(String slot_name) {
+    this.slot_name = slot_name;
+  }
+  public String slot_name() {
+    return this.slot_name;
+  }
+  public static String slot_name(GearSlot slot) {
+    return slot.slot_name();
+  }
+
+  public static GearSlot gearSlot(String slot_name) {
+    for (GearSlot slot : GearSlot.VALUES) {
+      if (slot.slot_name().equals(slot_name)) {
+        return slot;
+      }
+    }
+    return GearSlot.ERROR;
+  }
+}
+
+
 enum Element {
   GRAY("Gray"), BLUE("Blue"), RED("Red"), CYAN("Cyan"), ORANGE("Orange"),
     BROWN("Brown"), PURPLE("Purple"), YELLOW("Yellow"), MAGENTA("Magenta");
