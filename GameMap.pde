@@ -1806,6 +1806,13 @@ class GameMap {
   }
 
 
+  void loseFocus() {
+  }
+
+  void gainFocus() {
+  }
+
+
   void save(String folderPath) {
     PrintWriter file;
     if (this.code == GameMapCode.ERROR) {

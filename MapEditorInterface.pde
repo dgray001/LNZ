@@ -244,15 +244,18 @@ class MapEditorInterface extends InterfaceLNZ {
       if (this.line_clicked < 0 || this.line_clicked >= this.text_lines_ref.size()) {
         return;
       }
-      switch(MapEditorInterface.this.page) {
-        case MAPS:
-          MapEditorInterface.this.renameMapFile(this.highlightedLine(), this.renameInputBox.text);
-          break;
-        case LEVELS:
-          MapEditorInterface.this.renameLevelFolder(this.highlightedLine(), this.renameInputBox.text);
-          break;
-        default:
-          break;
+      String targetName = this.renameInputBox.text;
+      if (targetName != null && !targetName.equals("")) {
+        switch(MapEditorInterface.this.page) {
+          case MAPS:
+            MapEditorInterface.this.renameMapFile(this.highlightedLine(), this.renameInputBox.text);
+            break;
+          case LEVELS:
+            MapEditorInterface.this.renameLevelFolder(this.highlightedLine(), this.renameInputBox.text);
+            break;
+          default:
+            break;
+        }
       }
       this.renameInputBox = null;
       this.refresh();
@@ -1691,8 +1694,19 @@ class MapEditorInterface extends InterfaceLNZ {
       global.errorMessage("ERROR: Can't rename map file to a name that already exists.");
       return;
     }
-    moveFile("data/maps/" + mapName + ".map.lnz", "data/maps/" + targetName + ".map.lnz");
-    // rename in map file
+    GameMap map = new GameMap();
+    map.mapName = mapName;
+    String[] lines = map.open1File("data/maps/");
+    PrintWriter mapFile = createWriter("data/maps/" + targetName + ".map.lnz");
+    for (String line : lines) {
+      if (trim(split(line, ':')[0]).equals("mapName")) {
+        line = "mapName: " + targetName;
+      }
+      mapFile.println(line);
+    }
+    mapFile.flush();
+    mapFile.close();
+    deleteFile("data/maps/" + mapName + ".map.lnz");
   }
 
   void openMapEditor(String mapName) {
@@ -1769,7 +1783,19 @@ class MapEditorInterface extends InterfaceLNZ {
       return;
     }
     moveFolder("data/levels/" + levelName, "data/levels/" + targetName);
-    // rename in level.lnz file
+    Level level = new Level();
+    level.folderPath = "data/levels/";
+    level.levelName = targetName;
+    String[] lines = level.open1File();
+    PrintWriter levelFile = createWriter(level.finalFolderPath() + "/level.lnz");
+    for (String line : lines) {
+      if (trim(split(line, ':')[0]).equals("levelName")) {
+        line = "levelName: " + targetName;
+      }
+      levelFile.println(line);
+    }
+    levelFile.flush();
+    levelFile.close();
   }
 
   void openLevelEditor(String levelName) {
@@ -2393,7 +2419,21 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
 
-  void loseFocus() {}
+  void loseFocus() {
+    if (this.curr_level != null) {
+      this.curr_level.loseFocus();
+    }
+    else if (this.curr_map != null) {
+      this.curr_map.loseFocus();
+    }
+  }
 
-  void gainFocus() {}
+  void gainFocus() {
+    if (this.curr_level != null) {
+      this.curr_level.gainFocus();
+    }
+    else if (this.curr_map != null) {
+      this.curr_map.gainFocus();
+    }
+  }
 }
