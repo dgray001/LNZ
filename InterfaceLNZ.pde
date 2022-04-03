@@ -34,6 +34,52 @@ abstract class FormLNZ extends Form {
 
 abstract class InterfaceLNZ {
 
+  class ErrorForm extends FormLNZ {
+    ErrorForm(String errorMessage) {
+      super(0.5 * (width - Constants.errorForm_width), 0.5 * (height - Constants.errorForm_height),
+        0.5 * (width + Constants.errorForm_width), 0.5 * (height + Constants.errorForm_height));
+      this.setTitleText("Error Detected");
+      this.setTitleSize(20);
+      this.setFieldCushion(0);
+      this.color_background = color(250, 150, 150);
+      this.color_header = color(180, 50, 50);
+      this.addField(new SpacerFormField(20));
+      this.addField(new MessageFormField("Error detected on this frame."));
+      this.addField(new SpacerFormField(10));
+      this.addField(new TextBoxFormField("Error message:\n" + errorMessage, 100));
+      this.addField(new SpacerFormField(20));
+      this.addField(new MessageFormField("Check the data/error folder for logs and image."));
+      this.addField(new SpacerFormField(20));
+      this.addField(new CheckboxFormField("Send error report  "));
+      this.addField(new SpacerFormField(20));
+      SubmitCancelFormField buttons = new SubmitCancelFormField("Continue\n(may crash)", "Exit");
+      textSize(buttons.button1.text_size);
+      buttons.setButtonHeight(2 * (textAscent() + textDescent() + 2));
+      this.addField(buttons);
+      this.img.save("data/logs/screenshot.jpg");
+    }
+
+    void submit() {
+      if (this.fields.get(7).getValue().equals(Boolean.toString(true))) {
+        this.sendEmail();
+      }
+      this.canceled = true;
+    }
+
+    @Override
+    void cancel() {
+      if (this.fields.get(7).getValue().equals(Boolean.toString(true))) {
+        this.sendEmail();
+      }
+      global.exitDelay();
+    }
+
+    void sendEmail() {
+      println("Send email.");
+    }
+  }
+
+
   class OptionsForm extends FormLNZ {
     OptionsForm() {
       super(Constants.optionsForm_widthOffset, Constants.optionsForm_heightOffset,
@@ -240,6 +286,10 @@ abstract class InterfaceLNZ {
   InterfaceLNZ() {
   }
 
+  void throwError(String message) {
+    this.form = new ErrorForm(message);
+  }
+
   void LNZ_update(int millis) {
     if (this.form == null) {
       this.update(millis);
@@ -421,7 +471,7 @@ class InitialInterface extends InterfaceLNZ {
     void release() {
       super.release();
       global.sounds.trigger_interface("interfaces/buttonClick3");
-      global.exit();
+      global.exitDelay();
     }
   }
 

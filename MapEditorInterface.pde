@@ -1143,14 +1143,14 @@ class MapEditorInterface extends InterfaceLNZ {
       this.map_creating.mapHeight = this.mapHeight;
       this.map_creating.initializeSquares();
       if (this.map_creating.nullify) {
-        this.curr_status += " -> " + global.last_error_message();
+        this.curr_status += " -> " + global.lastErrorMessage();
         delay(2500);
         return;
       }
       this.curr_status += "\nSaving Map";
       this.map_creating.save(sketchPath("data/maps/"));
       if (this.map_creating.nullify) {
-        this.curr_status += " -> " + global.last_error_message();
+        this.curr_status += " -> " + global.lastErrorMessage();
         delay(2500);
         return;
       }
@@ -1158,7 +1158,7 @@ class MapEditorInterface extends InterfaceLNZ {
       global.images.loadMapGifs();
       this.map_creating.initializeTerrain();
       if (this.map_creating.nullify) {
-        this.curr_status += " -> " + global.last_error_message();
+        this.curr_status += " -> " + global.lastErrorMessage();
         delay(2500);
         return;
       }
@@ -1185,14 +1185,14 @@ class MapEditorInterface extends InterfaceLNZ {
       this.map_opening.mapName = this.mapName;
       String[] lines = this.map_opening.open1File(this.folderPath);
       if (this.map_opening.nullify) {
-        this.curr_status += " -> " + global.last_error_message();
+        this.curr_status += " -> " + global.lastErrorMessage();
         delay(2500);
         return;
       }
       this.curr_status += "\nSetting Data";
       this.map_opening.open2Data(lines);
       if (this.map_opening.nullify) {
-        this.curr_status += " -> " + global.last_error_message();
+        this.curr_status += " -> " + global.lastErrorMessage();
         delay(2500);
         return;
       }
@@ -1200,7 +1200,7 @@ class MapEditorInterface extends InterfaceLNZ {
       global.images.loadMapGifs();
       this.map_opening.initializeTerrain();
       if (this.map_opening.nullify) {
-        this.curr_status += " -> " + global.last_error_message();
+        this.curr_status += " -> " + global.lastErrorMessage();
         delay(2500);
         return;
       }
@@ -1225,14 +1225,14 @@ class MapEditorInterface extends InterfaceLNZ {
       map_testing.mapName = this.mapName;
       String[] lines = map_testing.open1File("data/maps/");
       if (map_testing.nullify) {
-        this.curr_status += " -> " + global.last_error_message();
+        this.curr_status += " -> " + global.lastErrorMessage();
         delay(2500);
         return;
       }
       this.curr_status += "\nSetting Data";
       map_testing.open2Data(lines);
       if (map_testing.nullify) {
-        this.curr_status += " -> " + global.last_error_message();
+        this.curr_status += " -> " + global.lastErrorMessage();
         delay(2500);
         return;
       }
@@ -1240,7 +1240,7 @@ class MapEditorInterface extends InterfaceLNZ {
       global.images.loadMapGifs();
       map_testing.initializeTerrain();
       if (map_testing.nullify) {
-        this.curr_status += " -> " + global.last_error_message();
+        this.curr_status += " -> " + global.lastErrorMessage();
         delay(2500);
         return;
       }
@@ -1264,7 +1264,7 @@ class MapEditorInterface extends InterfaceLNZ {
       this.curr_status = "Opening File";
       this.level_opening = new Level("data/levels", this.levelName);
       if (this.level_opening.nullify) {
-        this.curr_status += " -> " + global.last_error_message();
+        this.curr_status += " -> " + global.lastErrorMessage();
         delay(2500);
         return;
       }
@@ -1276,7 +1276,7 @@ class MapEditorInterface extends InterfaceLNZ {
       this.level_opening.folderPath = "data/profiles/" + global.profile.display_name.toLowerCase() + "/leveltester";
       this.level_opening.save();
       if (this.level_opening.nullify) {
-        this.curr_status += " -> " + global.last_error_message();
+        this.curr_status += " -> " + global.lastErrorMessage();
         delay(2500);
         return;
       }
@@ -1284,7 +1284,7 @@ class MapEditorInterface extends InterfaceLNZ {
       global.images.loadMapGifs();
       this.level_opening.setPlayer(new Hero(HeroCode.BEN));
       if (this.level_opening.nullify) {
-        this.curr_status += " -> " + global.last_error_message();
+        this.curr_status += " -> " + global.lastErrorMessage();
         delay(2500);
         return;
       }

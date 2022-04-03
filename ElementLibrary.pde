@@ -3606,7 +3606,7 @@ class SubmitCancelFormField extends FormField {
     this.button2.show_message = true;
   }
 
-  void setButtonHeight(int new_height) {
+  void setButtonHeight(float new_height) {
     if (new_height < 0) {
       new_height = 0;
     }

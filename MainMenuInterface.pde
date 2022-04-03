@@ -117,7 +117,7 @@ class MainMenuInterface extends InterfaceLNZ {
     @Override
     void release() {
       super.release();
-      global.exit();
+      global.exitDelay();
     }
   }
 
@@ -237,7 +237,7 @@ class MainMenuInterface extends InterfaceLNZ {
     void release() {
       this.color_text = color(50, 10, 50);
       if (this.hovered) {
-        // launch game
+        global.errorMessage("ERROR: YOU FOOL THE GAME ISN'T READY TO PLAY");
       }
     }
   }
