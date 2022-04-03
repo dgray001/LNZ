@@ -10,6 +10,7 @@ Global global;
 
 void setup() {
   fullScreen(FX2D);
+  pixelDensity(displayDensity());
   surface.setSize(Constants.initialInterface_size, Constants.initialInterface_size);
   surface.setLocation(int(0.5 * (displayWidth - Constants.initialInterface_size)),
     int(0.5 * (displayHeight - Constants.initialInterface_size)));

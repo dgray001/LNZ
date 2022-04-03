@@ -281,6 +281,27 @@ abstract class InterfaceLNZ {
     }
   }
 
+
+  class AchievementsForm extends FormLNZ {
+    AchievementsForm() {
+      super(Constants.achievementsForm_widthOffset, Constants.achievementsForm_heightOffset,
+        width - Constants.achievementsForm_widthOffset, height - Constants.achievementsForm_heightOffset);
+      this.setTitleText("Achievements");
+      this.setTitleSize(20);
+      this.color_background = color(180, 250, 250);
+      this.color_header = color(50, 180, 180);
+      if (global.profile == null) {
+        this.canceled = true;
+        return;
+      }
+      // add fields for profile achievements
+    }
+
+    void submit() {
+    }
+  }
+  
+
   protected FormLNZ form = null;
 
   InterfaceLNZ() {

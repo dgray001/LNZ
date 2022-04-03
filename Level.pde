@@ -121,8 +121,7 @@ class Level {
 
   protected int last_update_time = millis();
 
-  Level() {
-  }
+  Level() {}
   Level(String folderPath, String levelName) {
     this.folderPath = folderPath;
     this.levelName = levelName;
@@ -385,6 +384,19 @@ class Level {
   }
 
 
+  void loseFocus() {
+    if (this.currMap != null) {
+      this.currMap.loseFocus();
+    }
+  }
+
+  void gainFocus() {
+    if (this.currMap != null) {
+      this.currMap.gainFocus();
+    }
+  }
+
+
   String finalFolderPath() {
     String finalFolderPath = this.folderPath;
     if (this.location == Location.ERROR) {
@@ -441,7 +453,6 @@ class Level {
 
   void open() {
     this.open2Data(this.open1File());
-    //this.openCurrMap(); (maybe not have this here and put in separate function called in interface) => check renameLEvel function
   }
 
 
