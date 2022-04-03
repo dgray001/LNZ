@@ -345,11 +345,17 @@ class Level {
       fill(color(60));
       rect(this.xi, this.yi, this.xf, this.yf);
     }
+    if (this.player != null) {
+      this.player.update_hero(millis);
+    }
   }
 
   void mouseMove(float mX, float mY) {
     if (this.currMap != null) {
       this.currMap.mouseMove(mX, mY);
+    }
+    if (this.player != null) {
+      this.player.mouseMove_hero(mX, mY);
     }
   }
 
@@ -357,11 +363,17 @@ class Level {
     if (this.currMap != null) {
       this.currMap.mousePress();
     }
+    if (this.player != null) {
+      this.player.mousePress_hero();
+    }
   }
 
   void mouseRelease(float mX, float mY) {
     if (this.currMap != null) {
       this.currMap.mouseRelease(mX, mY);
+    }
+    if (this.player != null) {
+      this.player.mouseRelease_hero(mX, mY);
     }
   }
 
@@ -369,17 +381,26 @@ class Level {
     if (this.currMap != null) {
       this.currMap.scroll(amount);
     }
+    if (this.player != null) {
+      this.player.scroll_hero(amount);
+    }
   }
 
   void keyPress() {
     if (this.currMap != null) {
       this.currMap.keyPress();
     }
+    if (this.player != null) {
+      this.player.keyPress_hero();
+    }
   }
 
   void keyRelease() {
     if (this.currMap != null) {
       this.currMap.keyRelease();
+    }
+    if (this.player != null) {
+      this.player.keyRelease_hero();
     }
   }
 
