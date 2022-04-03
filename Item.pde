@@ -1593,7 +1593,7 @@ class Item extends MapObject {
   }
 
   String fileString() {
-    return this.fileString(null) + "\n";
+    return this.fileString(null);
   }
   String fileString(GearSlot slot) {
     String fileString = "\nnew: Item: " + this.ID;
