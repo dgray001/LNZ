@@ -104,14 +104,221 @@ enum HeroCode {
 
 
 
+enum InventoryLocation {
+  INVENTORY, FEATURE, HEADGEAR, CHESTGEAR, LEGGEAR, FOOTGEAR, WEAPON;
+}
+
+
+
 class Hero extends Unit {
 
   class HeroInventory extends Inventory {
+
+    class InventoryKey {
+      private InventoryLocation location;
+      private int index;
+      InventoryKey(InventoryLocation location, int index) {
+        this.location = location;
+        this.index = index;
+      }
+    }
+
+    protected Item item_holding = null;
+    protected InventoryKey item_origin = null;
+    protected Item item_dropping = null;
+
+    protected Inventory feature_inventory = null;
+
+    protected float last_mX = 0;
+    protected float last_mY = 0;
     protected boolean viewing = false;
 
     HeroInventory() {
       super(Constants.hero_inventoryMaxRows, Constants.hero_inventoryMaxCols, false);
       this.setSlots(Hero.this.inventoryStartSlots());
+    }
+
+
+    void dropItemHolding() {
+      if (this.item_holding == null) {
+        return;
+      }
+      if (this.item_origin == null) {
+        this.item_dropping = this.item_holding;
+      }
+      else {
+        switch(this.item_origin.location) {
+          case INVENTORY:
+            this.item_dropping = this.placeAt(this.item_holding, this.item_origin.index);
+            break;
+          case FEATURE:
+            if (this.feature_inventory == null) {
+              this.item_dropping = this.item_holding;
+            }
+            else {
+              this.item_dropping = this.feature_inventory.placeAt(this.item_holding, this.item_origin.index);
+            }
+            break;
+          case HEADGEAR:
+            break;
+          case CHESTGEAR:
+            break;
+          case LEGGEAR:
+            break;
+          case FOOTGEAR:
+            break;
+          case WEAPON:
+            break;
+        }
+      }
+      this.item_holding = null;
+      this.item_origin = null;
+    }
+
+
+    @Override
+    void update(int millis) {
+      super.update(millis);
+      if (this.item_holding != null) {
+        imageMode(CENTER);
+        image(this.item_holding.getImage(), this.item_holding.x, this.item_holding.y,
+          this.button_size, this.button_size);
+      }
+      if (this.feature_inventory != null) {
+        float featureInventoryTranslateX = 0.5 * (this.display_width - this.feature_inventory.display_width);
+        float featureInventoryTranslateY = -this.feature_inventory.display_height;
+        translate(featureInventoryTranslateX, featureInventoryTranslateY);
+        this.feature_inventory.update(millis);
+        translate(-featureInventoryTranslateX, -featureInventoryTranslateY);
+      }
+    }
+
+    @Override
+    void mouseMove(float mX, float mY) {
+      if (this.item_holding != null) {
+        this.item_holding.x += mX - this.last_mX;
+        this.item_holding.y += mY - this.last_mY;
+      }
+      this.last_mX = mX;
+      this.last_mY = mY;
+      super.mouseMove(mX, mY);
+      if (this.feature_inventory != null) {
+        float featureInventoryTranslateX = 0.5 * (this.display_width - this.feature_inventory.display_width);
+        float featureInventoryTranslateY = -this.feature_inventory.display_height;
+        this.feature_inventory.mouseMove(mX - featureInventoryTranslateX, mY - featureInventoryTranslateY);
+      }
+    }
+
+    @Override
+    void mousePress() {
+      super.mousePress();
+      if (this.feature_inventory != null) {
+        this.feature_inventory.mousePress();
+      }
+      switch(mouseButton) {
+        case LEFT:
+          break;
+        case RIGHT:
+          break;
+        case CENTER:
+          break;
+      }
+      boolean found_clicked = false;
+      for (int x = 0; x < this.max_cols; x++) {
+        for (int y = 0; y < this.max_rows; y++) {
+          int i = y * this.max_cols + x;
+          if (i >= this.slots.size()) {
+            break;
+          }
+          this.slots.get(i).mousePress();
+          if (this.slots.get(i).button.clicked) {
+            if (this.item_holding == null) {
+              this.item_holding = new Item(this.slots.get(i).item);
+              this.item_origin = new InventoryKey(InventoryLocation.INVENTORY, i);
+              this.slots.get(i).item = null;
+              if (this.item_holding != null) {
+                this.item_holding.x = 2 + (x + 0.5) * this.button_size;
+                this.item_holding.y = 2 + (y + 0.5) * this.button_size;
+              }
+            }
+            else {
+              // drop parts of item holding
+            }
+            found_clicked = true;
+            break;
+          }
+        }
+      }
+      if (found_clicked) {
+        return;
+      }
+      if (this.feature_inventory != null) {
+        for (int x = 0; x < this.feature_inventory.max_cols; x++) {
+          for (int y = 0; y < this.feature_inventory.max_cols; y++) {
+            int i = y * this.feature_inventory.max_cols + x;
+            if (i >= this.feature_inventory.slots.size()) {
+              break;
+            }
+            this.feature_inventory.slots.get(i).mousePress();
+            if (this.feature_inventory.slots.get(i).button.clicked) {
+              if (this.item_holding == null) {
+                this.item_holding = new Item(this.feature_inventory.slots.get(i).item);
+                this.item_origin = new InventoryKey(InventoryLocation.FEATURE, i);
+                this.feature_inventory.slots.get(i).item = null;
+                if (this.item_holding != null) {
+                  this.item_holding.x = 0.5 * (this.display_width - this.
+                    feature_inventory.display_width) + 2 + (x + 0.5) * this.button_size;
+                  this.item_holding.y = 2 + (y + 0.5) * this.button_size - this.feature_inventory.display_height;
+                }
+              }
+              else {
+                // drop parts of item holding
+              }
+              found_clicked = true;
+              break;
+            }
+          }
+        }
+      }
+      if (found_clicked) {
+        return;
+      }
+    }
+
+    @Override
+    void mouseRelease(float mX, float mY) {
+      super.mouseRelease(mX, mY);
+      if (this.feature_inventory != null) {
+        this.feature_inventory.mouseRelease(mX, mY);
+      }
+      if (this.item_holding == null) {
+        return;
+      }
+      boolean found_hovered = false;
+      for (int i = 0; i < this.slots.size(); i++) {
+        if (this.slots.get(i).button.hovered) {
+          this.item_holding = this.placeAt(this.item_holding, i, true);
+          found_hovered = true;
+          this.dropItemHolding();
+          break;
+        }
+      }
+      if (found_hovered) {
+        return;
+      }
+      if (this.feature_inventory != null) {
+        for (int i = 0; i < this.feature_inventory.slots.size(); i++) {
+          if (this.feature_inventory.slots.get(i).button.hovered) {
+            this.item_holding = this.feature_inventory.placeAt(this.item_holding, i, true);
+            found_hovered = true;
+            this.dropItemHolding();
+            break;
+          }
+        }
+      }
+      if (!found_hovered) {
+        this.dropItemHolding();
+      }
     }
   }
 
@@ -187,7 +394,9 @@ class Hero extends Unit {
       switch(key) {
         case 'w':
         case 'W':
-          // stash item
+          if (this.weapon() != null) {
+            this.gear.put(GearSlot.WEAPON, this.inventory.stash(this.weapon()));
+          }
           break;
         case 'e':
         case 'E':

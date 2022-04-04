@@ -811,10 +811,16 @@ class Unit extends MapObject {
     if (this.weapon() == null) {
       return;
     }
-    map.addItem(new Item(this.weapon(), this.x + this.facingX * this.xRadius() -
-      0.5 * this.facingY * this.xRadius(), this.y + 0.5 * this.facingX *
-      this.yRadius() + this.facingY * this.yRadius()));
+    map.addItem(new Item(this.weapon(), this.frontX(), this.frontY()));
     this.gear.put(GearSlot.WEAPON, null);
+  }
+
+  float frontX() {
+    return this.x + this.facingX * this.xRadius() - 0.5 * this.facingY * this.xRadius();
+  }
+
+  float frontY() {
+    return this.y + 0.5 * this.facingX * this.yRadius() + this.facingY * this.yRadius();
   }
 
 

@@ -336,6 +336,11 @@ class Level {
             this.movePlayerTo(linker.rect2);
           }
         }
+        if (this.player.inventory.item_dropping != null) {
+          this.currMap.addItem(new Item(this.player.inventory.item_dropping,
+            this.player.frontX(), this.player.frontY()));
+          this.player.inventory.item_dropping = null;
+        }
       }
       this.last_update_time = millis;
     }
