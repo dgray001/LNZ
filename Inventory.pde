@@ -82,7 +82,6 @@ class Inventory {
     if (fillup) {
       this.fillMaxCapacity();
     }
-    this.setButtonSize(Constants.hero_defaultInventoryButtonSize);
   }
 
   int maxCapacity() {

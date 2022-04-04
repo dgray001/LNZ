@@ -105,12 +105,111 @@ enum HeroCode {
 
 
 enum InventoryLocation {
-  INVENTORY, FEATURE, HEADGEAR, CHESTGEAR, LEGGEAR, FOOTGEAR, WEAPON;
+  INVENTORY, GEAR, FEATURE, CRAFTING;
 }
 
 
 
 class Hero extends Unit {
+
+  class GearInventory extends Inventory {
+    GearInventory() {
+      super(4, 3, true);
+    }
+
+    @Override
+    void update(int millis) {
+      rectMode(CORNER);
+      fill(this.color_background);
+      noStroke();
+      rect(0, 0, this.display_width, this.display_height);
+      imageMode(CORNERS);
+      for (Map.Entry<GearSlot, Item> entry : Hero.this.gear.entrySet()) {
+        switch(entry.getKey()) {
+          case WEAPON:
+            this.updateSlot(millis, 3, entry.getValue());
+            break;
+          case HEAD:
+            this.updateSlot(millis, 1, entry.getValue());
+            break;
+          case CHEST:
+            this.updateSlot(millis, 4, entry.getValue());
+            break;
+          case LEGS:
+            this.updateSlot(millis, 7, entry.getValue());
+            break;
+          case FEET:
+            this.updateSlot(millis, 10, entry.getValue());
+            break;
+        }
+      }
+    }
+
+    void updateSlot(int millis, int index, Item i) {
+      int x = index % this.max_cols;
+      if (x < 0 || x >= this.max_cols) {
+        return;
+      }
+      int y = index / this.max_cols;
+      if (y < 0 || y >= this.max_rows) {
+        return;
+      }
+      this.slots.get(index).item = i;
+      translate(2 + x * this.button_size, 2 + y * this.button_size);
+      this.slots.get(index).update(millis);
+      if (this.slots.get(index).item == null) {
+        // draw icon
+      }
+      translate(-2 - x * this.button_size, -2 - y * this.button_size);
+    }
+
+    @Override
+    void mouseMove(float mX, float mY) {
+      for (int x = 0; x < this.max_cols; x++) {
+        for (int y = 0; y < this.max_rows; y++) {
+          int i = y * this.max_cols + x;
+          if (i >= this.slots.size()) {
+            break;
+          }
+          if (!this.slotActive(i)) {
+            continue;
+          }
+          this.slots.get(i).mouseMove(mX - 2 - x * this.button_size, mY - 2 - y * this.button_size);
+        }
+      }
+    }
+
+    boolean slotActive(int index) {
+      switch(index) {
+        case 0:
+          return Hero.this.gear.containsKey(GearSlot.HAND_THIRD);
+        case 1:
+          return Hero.this.gear.containsKey(GearSlot.HEAD);
+        case 2:
+          return Hero.this.gear.containsKey(GearSlot.HAND_FOURTH);
+        case 3:
+          return Hero.this.gear.containsKey(GearSlot.WEAPON);
+        case 4:
+          return Hero.this.gear.containsKey(GearSlot.CHEST);
+        case 5:
+          return Hero.this.gear.containsKey(GearSlot.OFFHAND);
+        case 6:
+          return Hero.this.gear.containsKey(GearSlot.BELT_RIGHT);
+        case 7:
+          return Hero.this.gear.containsKey(GearSlot.LEGS);
+        case 8:
+          return Hero.this.gear.containsKey(GearSlot.BELT_LEFT);
+        case 9:
+          return Hero.this.gear.containsKey(GearSlot.FEET_SECOND);
+        case 10:
+          return Hero.this.gear.containsKey(GearSlot.FEET);
+        case 11:
+          return Hero.this.gear.containsKey(GearSlot.FEET_THIRD);
+        default:
+          return false;
+      }
+    }
+  }
 
   class HeroInventory extends Inventory {
 
@@ -127,7 +226,9 @@ class Hero extends Unit {
     protected InventoryKey item_origin = null;
     protected Item item_dropping = null;
 
+    protected GearInventory gear_inventory = new GearInventory();
     protected Inventory feature_inventory = null;
+    // protected CraftingInventory crafting_inventory = new CraftingInventory(1, 1); // unlock 1,1 first then 1,2 (or 2,1) then 2,2
 
     protected float last_mX = 0;
     protected float last_mY = 0;
@@ -136,6 +237,7 @@ class Hero extends Unit {
     HeroInventory() {
       super(Constants.hero_inventoryMaxRows, Constants.hero_inventoryMaxCols, false);
       this.setSlots(Hero.this.inventoryStartSlots());
+      this.setButtonSize(Constants.hero_defaultInventoryButtonSize);
     }
 
 
@@ -151,6 +253,9 @@ class Hero extends Unit {
           case INVENTORY:
             this.item_dropping = this.placeAt(this.item_holding, this.item_origin.index);
             break;
+          case GEAR:
+            this.item_dropping = this.placeAt(this.item_holding, this.item_origin.index);
+            break;
           case FEATURE:
             if (this.feature_inventory == null) {
               this.item_dropping = this.item_holding;
@@ -159,15 +264,7 @@ class Hero extends Unit {
               this.item_dropping = this.feature_inventory.placeAt(this.item_holding, this.item_origin.index);
             }
             break;
-          case HEADGEAR:
-            break;
-          case CHESTGEAR:
-            break;
-          case LEGGEAR:
-            break;
-          case FOOTGEAR:
-            break;
-          case WEAPON:
+          case CRAFTING:
             break;
         }
       }
@@ -177,34 +274,62 @@ class Hero extends Unit {
 
 
     @Override
+    void setButtonSize(float button_size) {
+      super.setButtonSize(button_size);
+      if (this.gear_inventory != null) {
+        this.gear_inventory.setButtonSize(button_size);
+      }
+      if (this.feature_inventory != null) {
+        this.feature_inventory.setButtonSize(button_size);
+      }
+    }
+
+
+    @Override
     void update(int millis) {
+      // main inventory
       super.update(millis);
+      // gear
+      float gearInventoryTranslateX = - this.gear_inventory.display_width - 2;
+      float gearInventoryTranslateY = 0.5 * (this.display_height - this.gear_inventory.display_height);
+      translate(gearInventoryTranslateX, gearInventoryTranslateY);
+      this.gear_inventory.update(millis);
+      translate(-gearInventoryTranslateX, -gearInventoryTranslateY);
+      // feature
+      if (this.feature_inventory != null) {
+        float featureInventoryTranslateX = 0.5 * (this.display_width - this.feature_inventory.display_width);
+        float featureInventoryTranslateY = - this.feature_inventory.display_height - 2;
+        translate(featureInventoryTranslateX, featureInventoryTranslateY);
+        this.feature_inventory.update(millis);
+        translate(-featureInventoryTranslateX, -featureInventoryTranslateY);
+      }
+      // item holding
       if (this.item_holding != null) {
         imageMode(CENTER);
         image(this.item_holding.getImage(), this.item_holding.x, this.item_holding.y,
           this.button_size, this.button_size);
       }
-      if (this.feature_inventory != null) {
-        float featureInventoryTranslateX = 0.5 * (this.display_width - this.feature_inventory.display_width);
-        float featureInventoryTranslateY = -this.feature_inventory.display_height;
-        translate(featureInventoryTranslateX, featureInventoryTranslateY);
-        this.feature_inventory.update(millis);
-        translate(-featureInventoryTranslateX, -featureInventoryTranslateY);
-      }
     }
 
     @Override
     void mouseMove(float mX, float mY) {
+      // item holding
       if (this.item_holding != null) {
         this.item_holding.x += mX - this.last_mX;
         this.item_holding.y += mY - this.last_mY;
       }
       this.last_mX = mX;
       this.last_mY = mY;
+      // main inventory
       super.mouseMove(mX, mY);
+      // gear
+      float gearInventoryTranslateX = - this.gear_inventory.display_width - 2;
+      float gearInventoryTranslateY = 0.5 * (this.display_height - this.gear_inventory.display_height);
+      this.gear_inventory.mouseMove(mX - gearInventoryTranslateX, mY - gearInventoryTranslateY);
+      // feature
       if (this.feature_inventory != null) {
         float featureInventoryTranslateX = 0.5 * (this.display_width - this.feature_inventory.display_width);
-        float featureInventoryTranslateY = -this.feature_inventory.display_height;
+        float featureInventoryTranslateY = - this.feature_inventory.display_height - 2;
         this.feature_inventory.mouseMove(mX - featureInventoryTranslateX, mY - featureInventoryTranslateY);
       }
     }
@@ -223,6 +348,7 @@ class Hero extends Unit {
         case CENTER:
           break;
       }
+      // main inventory
       boolean found_clicked = false;
       for (int x = 0; x < this.max_cols; x++) {
         for (int y = 0; y < this.max_rows; y++) {
@@ -249,6 +375,40 @@ class Hero extends Unit {
           }
         }
       }
+      // gear
+      if (found_clicked) {
+        return;
+      }
+      for (int x = 0; x < this.gear_inventory.max_cols; x++) {
+        for (int y = 0; y < this.gear_inventory.max_cols; y++) {
+          int i = y * this.gear_inventory.max_cols + x;
+          if (i >= this.gear_inventory.slots.size()) {
+            break;
+          }
+          if (!this.gear_inventory.slotActive(i)) {
+            continue;
+          }
+          this.gear_inventory.slots.get(i).mousePress();
+          if (this.gear_inventory.slots.get(i).button.clicked) {
+            if (this.item_holding == null) {
+              this.item_holding = new Item(this.gear_inventory.slots.get(i).item);
+              this.item_origin = new InventoryKey(InventoryLocation.GEAR, i);
+              this.gear_inventory.slots.get(i).item = null;
+              if (this.item_holding != null) {
+                this.item_holding.x = 0.5 * (this.display_width - this.
+                  gear_inventory.display_width) + 2 + (x + 0.5) * this.button_size;
+                this.item_holding.y = 2 + (y + 0.5) * this.button_size - this.gear_inventory.display_height;
+              }
+            }
+            else {
+              // drop parts of item holding
+            }
+            found_clicked = true;
+            break;
+          }
+        }
+      }
+      // feature
       if (found_clicked) {
         return;
       }
@@ -280,20 +440,25 @@ class Hero extends Unit {
           }
         }
       }
-      if (found_clicked) {
-        return;
-      }
     }
 
     @Override
     void mouseRelease(float mX, float mY) {
+      // process latest hovered information
       super.mouseRelease(mX, mY);
+      float gearInventoryTranslateX = - this.gear_inventory.display_width - 2;
+      float gearInventoryTranslateY = 0.5 * (this.display_height - this.gear_inventory.display_height);
+      this.gear_inventory.mouseRelease(mX - gearInventoryTranslateX, mY - gearInventoryTranslateY);
       if (this.feature_inventory != null) {
-        this.feature_inventory.mouseRelease(mX, mY);
+        float featureInventoryTranslateX = 0.5 * (this.display_width - this.feature_inventory.display_width);
+        float featureInventoryTranslateY = - this.feature_inventory.display_height - 2;
+        this.feature_inventory.mouseRelease(mX - featureInventoryTranslateX, mY - featureInventoryTranslateY);
       }
+      // process item holding
       if (this.item_holding == null) {
         return;
       }
+      // main inventory
       boolean found_hovered = false;
       for (int i = 0; i < this.slots.size(); i++) {
         if (this.slots.get(i).button.hovered) {
@@ -303,6 +468,22 @@ class Hero extends Unit {
           break;
         }
       }
+      // gear
+      if (found_hovered) {
+        return;
+      }
+      for (int i = 0; i < this.gear_inventory.slots.size(); i++) {
+        if (!this.gear_inventory.slotActive(i)) {
+          continue;
+        }
+        if (this.gear_inventory.slots.get(i).button.hovered) {
+          this.item_holding = this.gear_inventory.placeAt(this.item_holding, i, true);
+          found_hovered = true;
+          this.dropItemHolding();
+          break;
+        }
+      }
+      // feature
       if (found_hovered) {
         return;
       }

@@ -21,6 +21,11 @@ class Item extends MapObject {
 
   protected int tier = 1;
 
+  protected float curr_health = 0;
+  protected float hunger = 0;
+  protected float thirst = 0;
+  protected float money = 0;
+
   protected float health = 0;
   protected float attack = 0;
   protected float magic = 0;
@@ -58,6 +63,10 @@ class Item extends MapObject {
     this.remove = i.remove;
     this.size = i.size;
     this.tier = i.tier;
+    this.curr_health = i.curr_health;
+    this.hunger = i.hunger;
+    this.thirst = i.thirst;
+    this.money = i.money;
     this.health = i.health;
     this.attack = i.attack;
     this.magic = i.magic;
@@ -1599,6 +1608,10 @@ class Item extends MapObject {
     String fileString = "\nnew: Item: " + this.ID;
     fileString += this.objectFileString();
     fileString += "\nsize: " + this.size;
+    fileString += "\ncurr_health: " + this.curr_health;
+    fileString += "\nhunger: " + this.hunger;
+    fileString += "\nthirst: " + this.thirst;
+    fileString += "\nmoney: " + this.money;
     fileString += "\nhealth: " + this.health;
     fileString += "\nattack: " + this.attack;
     fileString += "\nmagic: " + this.magic;
@@ -1627,6 +1640,18 @@ class Item extends MapObject {
     switch(datakey) {
       case "size":
         this.size = toFloat(data);
+        break;
+      case "curr_health":
+        this.curr_health = toFloat(data);
+        break;
+      case "hunger":
+        this.hunger = toFloat(data);
+        break;
+      case "thirst":
+        this.thirst = toFloat(data);
+        break;
+      case "money":
+        this.money = toFloat(data);
         break;
       case "health":
         this.health = toFloat(data);
