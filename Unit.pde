@@ -15,7 +15,9 @@ enum DamageType {
 
 enum GearSlot {
   ERROR("Error"), WEAPON("Weapon"), HEAD("Head"), CHEST("Chest"), LEGS("Legs"),
-    FEET("Feet"); // offhand, other hands (for alien with 4+ hands), belt, accessories 1-4
+    FEET("Feet"), OFFHAND("Offhand"), BELT_LEFT("Belt (left)"), BELT_RIGHT(
+    "Belt (right)"), HAND_THIRD("Third Hand"), HAND_FOURTH("Fourth Hand"),
+    FEET_SECOND("Feet (second pair)"), FEET_THIRD("Feet (third pair)");
 
   private static final List<GearSlot> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 
