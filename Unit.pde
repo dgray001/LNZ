@@ -294,7 +294,7 @@ class Unit extends MapObject {
       case 1101:
         this.setStrings("Ben Nelson", "Hero", "");
         this.baseStats(4, 1, 0, 0, 2);
-        this.gearSlots("Weapon");
+        this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
         this.alliance = Alliance.BEN;
         break;
       case 1102:
