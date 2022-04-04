@@ -8,8 +8,8 @@ class Inventory {
       }
       InventoryButton(float button_size) {
         super(0, 0, 0, 0);
-        this.setColors(color(0, 120), color(1, 0), color(220, 80), color(220, 160), color(0));
-        this.setStroke(color(220), 3);
+        this.setColors(color(0, 120), color(1, 0), color(220, 70), color(220, 140), color(0));
+        this.setStroke(color(142, 75, 50), 3);
         this.setSize(button_size);
         this.roundness = 0;
       }
@@ -40,6 +40,9 @@ class Inventory {
     }
 
     void update(int millis) {
+      if (this.item != null) {
+        image(this.item.getImage(), this.button.xi, this.button.yi, this.button.xf, this.button.yf);
+      }
       this.button.update(millis);
       if (this.item != null && this.item.remove) {
         this.item = null;
@@ -65,7 +68,7 @@ class Inventory {
   protected ArrayList<InventorySlot> slots = new ArrayList<InventorySlot>();
   protected float button_size = 0;
 
-  protected color color_background = color(170);
+  protected color color_background = color(210, 153, 108);
 
   protected float display_width = 0;
   protected float display_height = 0;
@@ -137,11 +140,42 @@ class Inventory {
   }
 
 
+  Item stash(Item i) {
+    for (InventorySlot slot : this.slots) {
+      if (slot.item == null) {
+        slot.item = new Item(i);
+        return null;
+      }
+    }
+    return i;
+  }
+
+  Item placeAt(Item i, int index) {
+    return this.placeAt(i, index, false);
+  }
+  Item placeAt(Item i, int index, boolean replace) {
+    if (index < 0 || index >= this.slots.size()) {
+      return i;
+    }
+    if (this.slots.get(index).item == null) {
+      this.slots.get(index).item = new Item(i);
+      return null;
+    }
+    else if (replace) {
+      Item replaced = new Item(this.slots.get(index).item);
+      this.slots.get(index).item = new Item(i);
+      return replaced;
+    }
+    return i;
+  }
+
+
   void update(int millis) {
     rectMode(CORNER);
     fill(this.color_background);
     noStroke();
     rect(0, 0, this.display_width, this.display_height);
+    imageMode(CORNERS);
     for (int x = 0; x < this.max_cols; x++) {
       for (int y = 0; y < this.max_rows; y++) {
         int i = y * this.max_cols + x;
