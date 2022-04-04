@@ -117,6 +117,99 @@ class Hero extends Unit {
       super(4, 3, true);
     }
 
+    Item getItem(int index) {
+      switch(index) {
+        case 0:
+          return Hero.this.gear.get(GearSlot.HAND_THIRD);
+        case 1:
+          return Hero.this.gear.get(GearSlot.HEAD);
+        case 2:
+          return Hero.this.gear.get(GearSlot.HAND_FOURTH);
+        case 3:
+          return Hero.this.gear.get(GearSlot.WEAPON);
+        case 4:
+          return Hero.this.gear.get(GearSlot.CHEST);
+        case 5:
+          return Hero.this.gear.get(GearSlot.OFFHAND);
+        case 6:
+          return Hero.this.gear.get(GearSlot.BELT_RIGHT);
+        case 7:
+          return Hero.this.gear.get(GearSlot.LEGS);
+        case 8:
+          return Hero.this.gear.get(GearSlot.BELT_LEFT);
+        case 9:
+          return Hero.this.gear.get(GearSlot.FEET_SECOND);
+        case 10:
+          return Hero.this.gear.get(GearSlot.FEET);
+        case 11:
+          return Hero.this.gear.get(GearSlot.FEET_THIRD);
+        default:
+          global.errorMessage("ERROR: Gear inventory index " + index + " out of range.");
+          return null;
+      }
+    }
+
+    void setItem(int index, Item i) {
+      switch(index) {
+        case 0:
+          Hero.this.gear.put(GearSlot.HAND_THIRD, i);
+          break;
+        case 1:
+          Hero.this.gear.put(GearSlot.HEAD, i);
+          break;
+        case 2:
+          Hero.this.gear.put(GearSlot.HAND_FOURTH, i);
+          break;
+        case 3:
+          Hero.this.gear.put(GearSlot.WEAPON, i);
+          break;
+        case 4:
+          Hero.this.gear.put(GearSlot.CHEST, i);
+          break;
+        case 5:
+          Hero.this.gear.put(GearSlot.OFFHAND, i);
+          break;
+        case 6:
+          Hero.this.gear.put(GearSlot.BELT_RIGHT, i);
+          break;
+        case 7:
+          Hero.this.gear.put(GearSlot.LEGS, i);
+          break;
+        case 8:
+          Hero.this.gear.put(GearSlot.BELT_LEFT, i);
+          break;
+        case 9:
+          Hero.this.gear.put(GearSlot.FEET_SECOND, i);
+          break;
+        case 10:
+          Hero.this.gear.put(GearSlot.FEET, i);
+          break;
+        case 11:
+          Hero.this.gear.put(GearSlot.FEET_THIRD, i);
+          break;
+        default:
+          global.errorMessage("ERROR: Gear inventory index " + index + " out of range.");
+          break;
+      }
+    }
+
+    @Override
+    Item placeAt(Item i, int index, boolean replace) {
+      if (index < 0 || index >= this.slots.size()) {
+        return i;
+      }
+      if (this.getItem(index) == null) {
+        this.setItem(index, i);
+        return null;
+      }
+      else if (replace) {
+        Item replaced = new Item(this.getItem(index));
+        this.setItem(index, i);
+        return replaced;
+      }
+      return i;
+    }
+
     @Override
     void update(int millis) {
       rectMode(CORNER);
@@ -158,7 +251,49 @@ class Hero extends Unit {
       translate(2 + x * this.button_size, 2 + y * this.button_size);
       this.slots.get(index).update(millis);
       if (this.slots.get(index).item == null) {
-        // draw icon
+        String iconName = "icons/";
+        switch(index) {
+          case 0:
+            iconName += "";
+            break;
+          case 1:
+            iconName += "head.png";
+            break;
+          case 2:
+            iconName += "";
+            break;
+          case 3:
+            iconName += "hand_inverted.png";
+            break;
+          case 4:
+            iconName += "chest.png";
+            break;
+          case 5:
+            iconName += "hand.png";
+            break;
+          case 6:
+            iconName += "";
+            break;
+          case 7:
+            iconName += "legs.png";
+            break;
+          case 8:
+            iconName += "";
+            break;
+          case 9:
+            iconName += "";
+            break;
+          case 10:
+            iconName += "feet.png";
+            break;
+          case 11:
+            iconName += "";
+            break;
+          default:
+            global.errorMessage("ERROR: Gear inventory index " + index + " out of range.");
+            break;
+        }
+        image(global.images.getImage(iconName), 0, 0, this.button_size, this.button_size);
       }
       translate(-2 - x * this.button_size, -2 - y * this.button_size);
     }
@@ -254,7 +389,7 @@ class Hero extends Unit {
             this.item_dropping = this.placeAt(this.item_holding, this.item_origin.index);
             break;
           case GEAR:
-            this.item_dropping = this.placeAt(this.item_holding, this.item_origin.index);
+            this.item_dropping = this.gear_inventory.placeAt(this.item_holding, this.item_origin.index);
             break;
           case FEATURE:
             if (this.feature_inventory == null) {
@@ -380,7 +515,7 @@ class Hero extends Unit {
         return;
       }
       for (int x = 0; x < this.gear_inventory.max_cols; x++) {
-        for (int y = 0; y < this.gear_inventory.max_cols; y++) {
+        for (int y = 0; y < this.gear_inventory.max_rows; y++) {
           int i = y * this.gear_inventory.max_cols + x;
           if (i >= this.gear_inventory.slots.size()) {
             break;
@@ -391,13 +526,13 @@ class Hero extends Unit {
           this.gear_inventory.slots.get(i).mousePress();
           if (this.gear_inventory.slots.get(i).button.clicked) {
             if (this.item_holding == null) {
-              this.item_holding = new Item(this.gear_inventory.slots.get(i).item);
+              this.item_holding = new Item(this.gear_inventory.getItem(i));
               this.item_origin = new InventoryKey(InventoryLocation.GEAR, i);
-              this.gear_inventory.slots.get(i).item = null;
+              this.gear_inventory.setItem(i, null);
               if (this.item_holding != null) {
-                this.item_holding.x = 0.5 * (this.display_width - this.
-                  gear_inventory.display_width) + 2 + (x + 0.5) * this.button_size;
-                this.item_holding.y = 2 + (y + 0.5) * this.button_size - this.gear_inventory.display_height;
+                this.item_holding.x = (x + 0.5) * this.button_size - this.gear_inventory.display_width;
+                this.item_holding.y = 0.5 * (this.display_height - this.
+                  gear_inventory.display_height) + 2 + (y + 0.5) * this.button_size;
               }
             }
             else {
@@ -414,7 +549,7 @@ class Hero extends Unit {
       }
       if (this.feature_inventory != null) {
         for (int x = 0; x < this.feature_inventory.max_cols; x++) {
-          for (int y = 0; y < this.feature_inventory.max_cols; y++) {
+          for (int y = 0; y < this.feature_inventory.max_rows; y++) {
             int i = y * this.feature_inventory.max_cols + x;
             if (i >= this.feature_inventory.slots.size()) {
               break;
@@ -428,7 +563,7 @@ class Hero extends Unit {
                 if (this.item_holding != null) {
                   this.item_holding.x = 0.5 * (this.display_width - this.
                     feature_inventory.display_width) + 2 + (x + 0.5) * this.button_size;
-                  this.item_holding.y = 2 + (y + 0.5) * this.button_size - this.feature_inventory.display_height;
+                  this.item_holding.y = (y + 0.5) * this.button_size - this.feature_inventory.display_height;
                 }
               }
               else {
