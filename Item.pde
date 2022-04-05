@@ -4,21 +4,79 @@ class EditItemForm extends EditMapObjectForm {
   EditItemForm(Item item) {
     super(item);
     this.item = item;
+    this.addField(new FloatFormField("  ", "curr health", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "hunger", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "thirst", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "money", 0, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "health", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "attack", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "magic", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "defense", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "resistance", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "piercing", -1, 1));
+    this.addField(new FloatFormField("  ", "penetration", -1, 1));
+    this.addField(new FloatFormField("  ", "attackRange", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "attackCooldown", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "attackTime", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "sight", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "speed", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "tenacity", -1, 1));
+    this.addField(new IntegerFormField("  ", "agility", -10, 10));
+    this.addField(new IntegerFormField("  ", "ammo", 0, Integer.MAX_VALUE - 1));
     this.updateForm();
   }
 
   void updateObject() {
+    this.item.curr_health = toFloat(this.fields.get(1).getValue());
+    this.item.hunger = toFloat(this.fields.get(2).getValue());
+    this.item.thirst = toFloat(this.fields.get(3).getValue());
+    this.item.money = toFloat(this.fields.get(4).getValue());
+    this.item.health = toFloat(this.fields.get(5).getValue());
+    this.item.attack = toFloat(this.fields.get(6).getValue());
+    this.item.magic = toFloat(this.fields.get(7).getValue());
+    this.item.defense = toFloat(this.fields.get(8).getValue());
+    this.item.resistance = toFloat(this.fields.get(9).getValue());
+    this.item.piercing = toFloat(this.fields.get(10).getValue());
+    this.item.penetration = toFloat(this.fields.get(11).getValue());
+    this.item.attackRange = toFloat(this.fields.get(12).getValue());
+    this.item.attackCooldown = toFloat(this.fields.get(13).getValue());
+    this.item.attackTime = toFloat(this.fields.get(14).getValue());
+    this.item.sight = toFloat(this.fields.get(15).getValue());
+    this.item.speed = toFloat(this.fields.get(16).getValue());
+    this.item.tenacity = toFloat(this.fields.get(17).getValue());
+    this.item.agility = toInt(this.fields.get(18).getValue());
+    this.item.ammo = toInt(this.fields.get(19).getValue());
   }
 
   void updateForm() {
+    this.fields.get(1).setValueIfNotFocused(Float.toString(this.item.curr_health));
+    this.fields.get(2).setValueIfNotFocused(Float.toString(this.item.hunger));
+    this.fields.get(3).setValueIfNotFocused(Float.toString(this.item.thirst));
+    this.fields.get(4).setValueIfNotFocused(Float.toString(this.item.money));
+    this.fields.get(5).setValueIfNotFocused(Float.toString(this.item.health));
+    this.fields.get(6).setValueIfNotFocused(Float.toString(this.item.attack));
+    this.fields.get(7).setValueIfNotFocused(Float.toString(this.item.magic));
+    this.fields.get(8).setValueIfNotFocused(Float.toString(this.item.defense));
+    this.fields.get(9).setValueIfNotFocused(Float.toString(this.item.resistance));
+    this.fields.get(10).setValueIfNotFocused(Float.toString(this.item.piercing));
+    this.fields.get(11).setValueIfNotFocused(Float.toString(this.item.penetration));
+    this.fields.get(12).setValueIfNotFocused(Float.toString(this.item.attackRange));
+    this.fields.get(13).setValueIfNotFocused(Float.toString(this.item.attackCooldown));
+    this.fields.get(14).setValueIfNotFocused(Float.toString(this.item.attackTime));
+    this.fields.get(15).setValueIfNotFocused(Float.toString(this.item.sight));
+    this.fields.get(16).setValueIfNotFocused(Float.toString(this.item.speed));
+    this.fields.get(17).setValueIfNotFocused(Float.toString(this.item.tenacity));
+    this.fields.get(18).setValueIfNotFocused(Integer.toString(this.item.agility));
+    this.fields.get(19).setValueIfNotFocused(Integer.toString(this.item.ammo));
   }
 }
 
 
 
 class Item extends MapObject {
-  protected float size = Constants.item_defaultSize; // radius
+  protected int stack = 1;
 
+  protected float size = Constants.item_defaultSize; // radius
   protected int tier = 1;
 
   protected float curr_health = 0;
@@ -41,6 +99,8 @@ class Item extends MapObject {
   protected float tenacity = 0; // percentage from 0 - 1
   protected int agility = 0;
 
+  protected int ammo = 0;
+
   // graphics
   protected BounceInt bounce = new BounceInt(Constants.item_bounceConstant);
 
@@ -61,6 +121,7 @@ class Item extends MapObject {
     this.y = y;
     this.curr_height = i.curr_height;
     this.remove = i.remove;
+    this.stack = i.stack;
     this.size = i.size;
     this.tier = i.tier;
     this.curr_health = i.curr_health;
@@ -81,6 +142,7 @@ class Item extends MapObject {
     this.speed = i.speed;
     this.tenacity = i.tenacity;
     this.agility = i.agility;
+    this.ammo = i.ammo;
   }
   Item(int ID) {
     super(ID);
@@ -1587,6 +1649,35 @@ class Item extends MapObject {
     }
   }
 
+  boolean stackable() {
+    switch(this.ID) {
+      default:
+        return false;
+    }
+  }
+
+  boolean shootable() {
+    if (this.throwable()) {
+      return true;
+    }
+    else if (this.type.equals("Ranged Weapon") && this.availableAmmo() > 0) {
+      return true;
+    }
+    return false;
+  }
+
+  boolean throwable() {
+    switch(this.ID) {
+      default:
+        return false;
+    }
+  }
+
+
+  int availableAmmo() {
+    return this.ammo;
+  }
+
 
   float interactionDistance() {
     switch(this.ID) {
@@ -1607,6 +1698,7 @@ class Item extends MapObject {
   String fileString(GearSlot slot) {
     String fileString = "\nnew: Item: " + this.ID;
     fileString += this.objectFileString();
+    fileString += "\nstack: " + this.stack;
     fileString += "\nsize: " + this.size;
     fileString += "\ncurr_health: " + this.curr_health;
     fileString += "\nhunger: " + this.hunger;
@@ -1626,6 +1718,7 @@ class Item extends MapObject {
     fileString += "\nspeed: " + this.speed;
     fileString += "\ntenacity: " + this.tenacity;
     fileString += "\nagility: " + this.agility;
+    fileString += "\nammo: " + this.ammo;
     fileString += "\nend: Item";
     if (slot != null) {
       fileString += ": " + slot.slot_name();
@@ -1638,6 +1731,9 @@ class Item extends MapObject {
       return;
     }
     switch(datakey) {
+      case "stack":
+        this.size = toInt(data);
+        break;
       case "size":
         this.size = toFloat(data);
         break;
@@ -1694,6 +1790,9 @@ class Item extends MapObject {
         break;
       case "agility":
         this.agility = toInt(data);
+        break;
+      case "ammo":
+        this.ammo = toInt(data);
         break;
       default:
         global.errorMessage("ERROR: Datakey " + datakey + " not found for item data.");

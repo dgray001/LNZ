@@ -19,6 +19,8 @@ void setup() {
   background(global.color_background);
   global.menu = new InitialInterface();
   noCursor();
+  mouseX = -50;
+  mouseY = -50;
 }
 
 void draw() {

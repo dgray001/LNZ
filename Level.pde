@@ -309,7 +309,7 @@ class Level {
     if (this.currMap != null) {
       this.currMap.drawLeftPanel(millis);
     }
-    if (this.player !- null) {
+    if (this.player != null) {
       this.player.drawLeftPanel(millis, this.xi);
     }
   }
