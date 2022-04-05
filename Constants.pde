@@ -4,8 +4,8 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220404: v0.6.5e" +
-  "\nLines: 18066 (v0.6.5d)" +
+  "\n20220404: v0.6.5f" +
+  "\nLines: 18249 (v0.6.5f)" +
   "";
   static final String version_history =
   "Liberal Nazi Zombies" +
@@ -194,4 +194,9 @@ static class Constants {
   static final int hero_inventoryMaxRows = 6;
   static final int hero_inventoryMaxCols = 10;
   static final int hero_inventoryDefaultStartSlots = 13;
+  static final float hero_experienceNextLevel_level = 1.4;
+  static final float hero_experienceNextLevel_power = 2.0;
+  static final float hero_experienceNextLevel_tier = 3.0;
+  static final float hero_killExponent = 3.0;
+  static final int hero_maxLevel = 100;
 }

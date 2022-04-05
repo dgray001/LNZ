@@ -1264,6 +1264,6 @@ class Unit extends MapObject {
 
 
   int tier() {
-    return this.level / 10;
+    return 1 + int(floor(this.level / 10));
   }
 }
