@@ -1,5 +1,6 @@
 enum UnitAction {
-  NONE, MOVING, TARGETING_FEATURE, TARGETING_UNIT, TARGETING_ITEM, ATTACKING;
+  NONE, MOVING, TARGETING_FEATURE, TARGETING_UNIT, TARGETING_ITEM, ATTACKING,
+  SHOOTING, CONSUMING;
 }
 
 
@@ -209,22 +210,49 @@ class EditUnitForm extends EditMapObjectForm {
   EditUnitForm(Unit unit) {
     super(unit);
     this.unit = unit;
-    this.addField(new FloatFormField("  ", "base sight", 0, Float.MAX_VALUE));
-    this.addField(new FloatFormField("  ", "base speed", 0, Float.MAX_VALUE));
+    this.addField(new FloatFormField("  ", "base health", 0, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "base attack", 0, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "base magic", 0, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "base defense", 0, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "base resistance", 0, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "base piercing", 0, 1));
+    this.addField(new FloatFormField("  ", "base penetration", 0, 1));
+    this.addField(new FloatFormField("  ", "base attack range", 0, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "base sight", 0, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "base speed", 0, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "base tenacity", 0, 1));
     this.addField(new IntegerFormField("  ", "base agility", 0, 10));
     this.updateForm();
   }
 
   void updateObject() {
-    this.unit.base_sight = toFloat(this.fields.get(1).getValue());
-    this.unit.base_speed = toFloat(this.fields.get(2).getValue());
-    this.unit.base_agility = toInt(this.fields.get(3).getValue());
+    this.unit.base_health = toFloat(this.fields.get(1).getValue());
+    this.unit.base_attack = toFloat(this.fields.get(2).getValue());
+    this.unit.base_magic = toFloat(this.fields.get(3).getValue());
+    this.unit.base_defense = toFloat(this.fields.get(4).getValue());
+    this.unit.base_resistance = toFloat(this.fields.get(5).getValue());
+    this.unit.base_piercing = toFloat(this.fields.get(6).getValue());
+    this.unit.base_penetration = toFloat(this.fields.get(7).getValue());
+    this.unit.base_attackRange = toFloat(this.fields.get(8).getValue());
+    this.unit.base_sight = toFloat(this.fields.get(9).getValue());
+    this.unit.base_speed = toFloat(this.fields.get(10).getValue());
+    this.unit.base_tenacity = toFloat(this.fields.get(11).getValue());
+    this.unit.base_agility = toInt(this.fields.get(12).getValue());
   }
 
   void updateForm() {
-    this.fields.get(1).setValueIfNotFocused(Float.toString(this.unit.base_sight));
-    this.fields.get(2).setValueIfNotFocused(Float.toString(this.unit.base_speed));
-    this.fields.get(3).setValueIfNotFocused(Integer.toString(this.unit.base_agility));
+    this.fields.get(1).setValueIfNotFocused(Float.toString(this.unit.base_health));
+    this.fields.get(2).setValueIfNotFocused(Float.toString(this.unit.base_attack));
+    this.fields.get(3).setValueIfNotFocused(Float.toString(this.unit.base_magic));
+    this.fields.get(4).setValueIfNotFocused(Float.toString(this.unit.base_defense));
+    this.fields.get(5).setValueIfNotFocused(Float.toString(this.unit.base_resistance));
+    this.fields.get(6).setValueIfNotFocused(Float.toString(this.unit.base_piercing));
+    this.fields.get(7).setValueIfNotFocused(Float.toString(this.unit.base_penetration));
+    this.fields.get(8).setValueIfNotFocused(Float.toString(this.unit.base_attackRange));
+    this.fields.get(9).setValueIfNotFocused(Float.toString(this.unit.base_sight));
+    this.fields.get(10).setValueIfNotFocused(Float.toString(this.unit.base_speed));
+    this.fields.get(11).setValueIfNotFocused(Float.toString(this.unit.base_tenacity));
+    this.fields.get(12).setValueIfNotFocused(Integer.toString(this.unit.base_agility));
   }
 }
 
@@ -760,6 +788,7 @@ class Unit extends MapObject {
           this.move(timeElapsed, myKey, map, MoveModifier.NONE);
         }
         else if (this.timer_attackCooldown <= 0) {
+          if (this.gear.get(GearSlot.WEAPON) != null && this.gear.get(GearSlot.WEAPON).shootable())
           this.curr_action = UnitAction.ATTACKING;
           this.timer_attackTime = this.attackTime();
         }

@@ -735,6 +735,8 @@ class Hero extends Unit {
   protected float curr_mana = 0;
   protected int hunger = 100;
   protected int thirst = 100;
+  protected int hunger_timer = Constants.hero_hungerTimer;
+  protected int thirst_timer = Constants.hero_thirstTimer;
 
   protected LeftPanelMenu left_panel_menu = LeftPanelMenu.MAIN;
   protected HeroInventory inventory = new HeroInventory();
@@ -822,7 +824,62 @@ class Hero extends Unit {
   }
 
 
+  void hungerTick() {
+    this.decreaseHunger(1);
+    this.hunger_timer = Constants.hero_hungerTimer;
+  }
+
+  void thirstTick() {
+    this.decreaseThirst(1);
+    this.thirst_timer = Constants.hero_thirstTimer;
+  }
+
+  void increaseHunger(int amount) {
+    this.changeHunger(amount);
+  }
+
+  void decreaseHunger(int amount) {
+    this.changeHunger(-amount);
+  }
+
+  void changeHunger(int amount) {
+    this.hunger += amount;
+    if (this.hunger > 100) {
+      this.hunger = 100;
+    }
+    else if (this.hunger < 0) {
+      this.hunger = 0;
+    }
+  }
+
+  void increaseThirst(int amount) {
+    this.changeThirst(amount);
+  }
+
+  void decreaseThirst(int amount) {
+    this.changeThirst(-amount);
+  }
+
+  void changeThirst(int amount) {
+    this.thirst += amount;
+    if (this.thirst > 100) {
+      this.thirst = 100;
+    }
+    else if (this.thirst < 0) {
+      this.thirst = 0;
+    }
+  }
+
+
   void update_hero(int millis) {
+    this.hunger_timer -= millis;
+    if (this.hunger_timer < 0) {
+      this.hungerTick();
+    }
+    this.thirst_timer -= millis;
+    if (this.thirst_timer < 0) {
+      this.thirstTick();
+    }
     this.inventory_bar.update(millis);
     if (this.inventory.viewing) {
       float inventoryTranslateX = 0.5 * (width - this.inventory.display_width);
