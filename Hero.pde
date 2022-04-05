@@ -643,6 +643,11 @@ class Hero extends Unit {
 
   protected Location location = Location.ERROR;
 
+  protected int level_tokens = 0;
+  protected float experience = 0;
+  protected int experience_next_level = 1;
+  protected float mana = 0;
+  protected float curr_mana = 0;
   protected int hunger = 100;
   protected int thirst = 100;
 
@@ -658,8 +663,59 @@ class Hero extends Unit {
   }
 
 
+  void refreshExperienceNextLevel() {
+    if (this.level == Constants.hero_maxLevel) {
+      this.experience_next_level = 0;
+      return;
+    }
+    this.experience_next_level = int(ceil(pow(
+      this.level * Constants.hero_experienceNextLevel_level *
+      (1 + (this.tier() - 1) * Constants.hero_experienceNextLevel_tier),
+    Constants.hero_experienceNextLevel_power) + 1));
+  }
+
+
+  String manaDisplayName() {
+    switch(this.code) {
+      case BEN:
+        return "Rage";
+      default:
+        return "Error";
+    }
+  }
+
+
   int inventoryStartSlots() {
     return Constants.hero_inventoryDefaultStartSlots;
+  }
+
+
+  void addExperience(int amount) {
+    if (this.level == Constants.hero_maxLevel) {
+      return;
+    }
+    this.experience += amount;
+    while(this.experience > this.experience_next_level) {
+      this.experience -= this.experience_next_level;
+      this.levelup();
+      if (this.level == Constants.hero_maxLevel) {
+        break;
+      }
+    }
+  }
+
+
+  void levelup() {
+    this.level++;
+    this.refreshExperienceNextLevel();
+    this.level_tokens += this.level;
+  }
+
+
+  @Override
+  void killed(Unit u) {
+    super.killed(u);
+    this.addExperience(int(ceil(1 + power(u.level, Constants.hero_killExponent))));
   }
 
 
