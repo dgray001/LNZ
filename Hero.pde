@@ -104,6 +104,12 @@ enum HeroCode {
 
 
 
+enum LeftPanelMenu {
+  NONE, MAIN; // others in future as game becomes more complex
+}
+
+
+
 enum InventoryLocation {
   INVENTORY, GEAR, FEATURE, CRAFTING;
 }
@@ -639,6 +645,85 @@ class Hero extends Unit {
   }
 
 
+  class InventoryBar {
+    private float xi_border = 0;
+    private float yi = 0;
+    private float xf_border = 0;
+    private float yf = 0;
+    private float xi_bar = 0;
+    private float xf_bar = 0;
+    private float xi_picture = 0;
+    private float yi_picture = 0;
+    private float xf_picture = 0;
+    private float yf_picture = 0;
+
+    protected color color_background = color(210, 153, 108);
+
+    InventoryBar() {
+      this.setHeight(Constants.hero_defaultInventoryBarHeight);
+    }
+
+    void setHeight(float new_height) {
+      this.yf = height - Constants.hero_inventoryBarGap;
+      this.yi = this.yf - new_height;
+      this.xf_bar = 0.5 * (width + 3.333 * new_height);
+      this.xi_bar = 0.5 * (width - 3.333 * new_height);
+      this.xf_border = this.xi_bar - Constants.hero_inventoryBarGap;
+      this.xi_border = this.xf_border - new_height;
+      float border_thickness = 0.04166667 * new_height;
+      this.xi_picture = this.xi_border + border_thickness;
+      this.yi_picture = this.yi + border_thickness;
+      this.xf_picture = this.xf_border - border_thickness;
+      this.yf_picture = this.yf - border_thickness;
+    }
+
+    PImage getBorderImage() {
+      String imageName = "icons/border";
+      switch(Hero.this.code) {
+        case BEN:
+          imageName += "_gray.png";
+          break;
+        default:
+          imageName += "_template.png";
+          break;
+      }
+      return global.images.getImage(imageName);
+    }
+
+    PImage getHeroImage() {
+      String imageName = "units/";
+      switch(Hero.this.code) {
+        case BEN:
+          imageName += "ben_circle.png";
+          break;
+        default:
+          imageName += "default.png";
+          break;
+      }
+      return global.images.getImage(imageName);
+    }
+
+    void update(int millis) {
+      rectMode(CORNERS);
+      noStroke();
+      fill(this.color_background);
+      rect(this.xi_bar, this.yi, this.xf_bar, this.yf);
+      imageMode(CORNERS);
+      image(this.getBorderImage(), this.xi_border, this.yi, this.xf_border, this.yf);
+      image(this.getHeroImage(), this.xi_picture, this.yi_picture, this.xf_picture, this.yf_picture);
+    }
+
+    void mouseMove(float mX, float mY) {
+    }
+
+    void mousePress() {
+    }
+
+    void mouseRelease(float mX, float mY) {
+    }
+  }
+
+
   protected HeroCode code;
 
   protected Location location = Location.ERROR;
@@ -651,7 +736,9 @@ class Hero extends Unit {
   protected int hunger = 100;
   protected int thirst = 100;
 
+  protected LeftPanelMenu left_panel_menu = LeftPanelMenu.MAIN;
   protected HeroInventory inventory = new HeroInventory();
+  protected InventoryBar inventory_bar = new InventoryBar();
 
   Hero(int ID) {
     super(ID);
@@ -715,11 +802,28 @@ class Hero extends Unit {
   @Override
   void killed(Unit u) {
     super.killed(u);
-    this.addExperience(int(ceil(1 + power(u.level, Constants.hero_killExponent))));
+    this.addExperience(int(ceil(1 + pow(u.level, Constants.hero_killExponent))));
+  }
+
+
+  void drawLeftPanel(int millis, float panel_width) {
+    switch(this.left_panel_menu) {
+      case MAIN:
+        this.drawMainPanel(millis, panel_width);
+        break;
+      case NONE:
+      default:
+        break;
+    }
+  }
+
+  void drawMainPanel(int millis, float panel_width) {
+    // draw left panel
   }
 
 
   void update_hero(int millis) {
+    this.inventory_bar.update(millis);
     if (this.inventory.viewing) {
       float inventoryTranslateX = 0.5 * (width - this.inventory.display_width);
       float inventoryTranslateY = 0.5 * (height - this.inventory.display_height);
@@ -730,6 +834,7 @@ class Hero extends Unit {
   }
 
   void mouseMove_hero(float mX, float mY) {
+    this.inventory_bar.mouseMove(mX, mY);
     if (this.inventory.viewing) {
       float inventoryTranslateX = 0.5 * (width - this.inventory.display_width);
       float inventoryTranslateY = 0.5 * (height - this.inventory.display_height);
@@ -738,12 +843,14 @@ class Hero extends Unit {
   }
 
   void mousePress_hero() {
+    this.inventory_bar.mousePress();
     if (this.inventory.viewing) {
       this.inventory.mousePress();
     }
   }
 
   void mouseRelease_hero(float mX, float mY) {
+    this.inventory_bar.mouseRelease(mX, mY);
     if (this.inventory.viewing) {
       float inventoryTranslateX = 0.5 * (width - this.inventory.display_width);
       float inventoryTranslateY = 0.5 * (height - this.inventory.display_height);
