@@ -918,6 +918,7 @@ class Unit extends MapObject {
         this.timer_actionTime -= timeElapsed;
         if (this.timer_actionTime < 0) {
           this.useItem(map);
+          this.curr_action = UnitAction.NONE;
         }
         break;
       case NONE:
@@ -940,7 +941,7 @@ class Unit extends MapObject {
 
 
   void useItem(GameMap map) {
-    global.errorMessage("ERROR: Units cannot use Items, only heroes can.");
+    global.errorMessage("ERROR: Units cannot use Items, only Heroes can.");
   }
 
 
