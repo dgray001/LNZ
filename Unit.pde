@@ -1,6 +1,6 @@
 enum UnitAction {
   NONE, MOVING, TARGETING_FEATURE, TARGETING_UNIT, TARGETING_ITEM, ATTACKING,
-  SHOOTING, AIMING, CONSUMING;
+  SHOOTING, AIMING, USING_ITEM;
 }
 
 
@@ -910,7 +910,15 @@ class Unit extends MapObject {
           }
         }
         break;
-      case CONSUMING:
+      case USING_ITEM:
+        if (this.weapon() == null || !this.weapon().usable()) {
+          this.curr_action = UnitAction.NONE;
+          break;
+        }
+        this.timer_actionTime -= timeElapsed;
+        if (this.timer_actionTime < 0) {
+          this.useItem(map);
+        }
         break;
       case NONE:
         break;
@@ -928,6 +936,11 @@ class Unit extends MapObject {
     if (this.timer_attackCooldown > 0) {
       this.timer_attackCooldown -= timeElapsed;
     }
+  }
+
+
+  void useItem(GameMap map) {
+    global.errorMessage("ERROR: Units cannot use Items, only heroes can.");
   }
 
 

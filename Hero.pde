@@ -112,6 +112,7 @@ enum LeftPanelMenu {
 
 enum InventoryLocation {
   INVENTORY, GEAR, FEATURE, CRAFTING;
+  private static final List<InventoryLocation> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 }
 
 
@@ -411,6 +412,11 @@ class Hero extends Unit {
       }
       this.item_holding = null;
       this.item_origin = null;
+    }
+
+
+    InventoryLocation itemLocation() {
+      return null;
     }
 
 
@@ -808,6 +814,21 @@ class Hero extends Unit {
   }
 
 
+  @Override
+  void useItem(GameMap map) {
+    if (this.weapon() == null || !this.weapon().usable()) {
+      return;
+    }
+    if (this.weapon().consumable()) {
+      this.weapon().consumed();
+      return;
+    }
+    if (this.weapon().reloadable()) {
+    }
+    global.log("WARNING: Trying to use item " + this.weapon().display_name() + " but no logic exists to use it.");
+  }
+
+
   void drawLeftPanel(int millis, float panel_width) {
     switch(this.left_panel_menu) {
       case MAIN:
@@ -939,6 +960,16 @@ class Hero extends Unit {
           this.inventory.viewing = !this.inventory.viewing;
           if (!this.inventory.viewing) {
             // return item clicked item
+          }
+          break;
+        case 'r':
+        case 'R':
+          if (this.weapon() != null && this.weapon().usable()) {
+            if (this.weapon().reloadable()) {
+              // check if have proper ammo
+            }
+            this.curr_action = UnitAction.USING_ITEM;
+            this.timer_actionTime = this.weapon().useTime();
           }
           break;
         default:
