@@ -1694,6 +1694,9 @@ class Item extends MapObject {
       return false;
     }
     switch(this.ID) {
+      case 2931:
+      case 2933:
+        return true;
       default:
         return false;
     }
@@ -1713,6 +1716,10 @@ class Item extends MapObject {
     switch(this.ID) {
       case 2312:
         return 20;
+      case 2931:
+        return 2;
+      case 2933:
+        return 1;
       default:
         return 0;
     }
@@ -1745,6 +1752,10 @@ class Item extends MapObject {
     switch(this.ID) {
       case 2312:
         return 6;
+      case 2931:
+        return 2.5;
+      case 2933:
+        return 2;
       default:
         return 0;
     }
@@ -1754,6 +1765,10 @@ class Item extends MapObject {
     switch(this.ID) {
       case 2312:
         return 96;
+      case 2931:
+        return 300;
+      case 2933:
+        return 300;
       default:
         return 0;
     }
@@ -1763,6 +1778,10 @@ class Item extends MapObject {
     switch(this.ID) {
       case 2312:
         return 10;
+      case 2931:
+        return 60;
+      case 2933:
+        return 60;
       default:
         return 0;
     }
@@ -1781,6 +1800,10 @@ class Item extends MapObject {
     switch(this.ID) {
       case 2312:
         return 0.12;
+      case 2931:
+        return 0.1;
+      case 2933:
+        return 0.1;
       default:
         return 0;
     }
