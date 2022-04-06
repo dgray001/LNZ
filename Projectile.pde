@@ -10,6 +10,7 @@ class Projectile extends MapObject {
   protected float power = 0;
   protected float piercing = 0;
   protected float penetration = 0;
+  protected Element element = Element.GRAY;
   protected DamageType damageType = DamageType.PHYSICAL;
 
   protected float speed = 0;
@@ -364,7 +365,8 @@ class Projectile extends MapObject {
     // if (doesn't explode on impact) {
     //     start timer } else {
     this.remove = true;
-    // calculate damage to unit
+    u.damage(map.units.get(this.source_key), u.calculateDamageFrom(this.power,
+      this.damageType, this.element, this.piercing, this.penetration));
   }
 
 
@@ -376,6 +378,7 @@ class Projectile extends MapObject {
     fileString += "\nfacingX: " + this.facingX;
     fileString += "\nfacingY: " + this.facingY;
     fileString += "\nalliance: " + this.alliance.alliance_name();
+    fileString += "\nelement: " + this.element.element_name();
     fileString += "\npower: " + this.power;
     fileString += "\npiercing: " + this.piercing;
     fileString += "\npenetration: " + this.penetration;
@@ -402,6 +405,9 @@ class Projectile extends MapObject {
         break;
       case "alliance":
         this.alliance = Alliance.alliance(data);
+        break;
+      case "element":
+        this.element = Element.element(data);
         break;
       case "power":
         this.power = toFloat(data);

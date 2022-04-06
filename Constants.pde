@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220406: v0.6.5m" +
+  "\n20220406: v0.6.5n" +
   "\nLines: 19096 (v0.6.5m)" +
   "";
   static final String version_history =
@@ -158,6 +158,27 @@ static class Constants {
   static final float unit_defaultBaseAttackTime = 300;
   static final float unit_defaultBaseAttackRange = 0.2;
   static final float unit_weaponDisplayScaleFactor = 0.8;
+  static final float unit_attackAnimation_ratio1 = 0.6;
+  static final float unit_attackAnimation_ratio2 = 0.85;
+  static final float unit_attackAnimation_amount1 = 0.33 * PI;
+  static final float unit_attackAnimation_amount2 = -0.5 * PI;
+  static final float unit_attackAnimation_amount3 = Constants.unit_attackAnimation_amount1 + Constants.unit_attackAnimation_amount2;
+  static final float unit_attackAnimation_multiplier1 =
+    Constants.unit_attackAnimation_amount1 / Constants.unit_attackAnimation_ratio1;
+  static final float unit_attackAnimation_multiplier2 = Constants.unit_attackAnimation_amount2 /
+    (Constants.unit_attackAnimation_ratio2 - Constants.unit_attackAnimation_ratio1);
+  static final float unit_attackAnimationAngle(float timerRatio) {
+    if (timerRatio < Constants.unit_attackAnimation_ratio1) {
+      return timerRatio * Constants.unit_attackAnimation_multiplier1;
+    }
+    else if (timerRatio < Constants.unit_attackAnimation_ratio2) {
+      return Constants.unit_attackAnimation_amount1 + (timerRatio -
+        Constants.unit_attackAnimation_ratio1) * Constants.unit_attackAnimation_multiplier2;
+    }
+    else {
+      return Constants.unit_attackAnimation_amount3 * (1 - timerRatio) / (1 - Constants.unit_attackAnimation_ratio2);
+    }
+  }
 
   // Resistances
   static final float resistance_default = 1;
