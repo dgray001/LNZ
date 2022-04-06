@@ -289,7 +289,7 @@ class Unit extends MapObject {
 
   protected float curr_health = 1;
   protected float timer_attackCooldown = 0;
-  protected float timer_attackTime = 0;
+  protected float timer_actionTime = 0;
 
   protected UnitAction curr_action = UnitAction.NONE;
   protected MapObject object_targeting = null;
@@ -607,7 +607,12 @@ class Unit extends MapObject {
   float attack() {
     float attack = this.base_attack;
     if (this.weapon() != null) {
-      attack += this.weapon().attack;
+      if (this.weapon().shootable()) {
+        attack += this.weapon().shootAttack();
+      }
+      else {
+        attack += this.weapon().attack;
+      }
     }
     return attack;
   }
@@ -615,7 +620,12 @@ class Unit extends MapObject {
   float magic() {
     float magic = this.base_magic;
     if (this.weapon() != null) {
-      magic += this.weapon().magic;
+      if (this.weapon().shootable()) {
+        magic += this.weapon().shootMagic();
+      }
+      else {
+        magic += this.weapon().magic;
+      }
     }
     return magic;
   }
@@ -639,7 +649,12 @@ class Unit extends MapObject {
   float piercing() {
     float piercing = this.base_piercing;
     if (this.weapon() != null) {
-      piercing += this.weapon().piercing;
+      if (this.weapon().shootable()) {
+        piercing += this.weapon().shootPiercing();
+      }
+      else {
+        piercing += this.weapon().piercing;
+      }
     }
     if (piercing > 1) {
       piercing = 1;
@@ -650,7 +665,12 @@ class Unit extends MapObject {
   float penetration() {
     float penetration = this.base_penetration;
     if (this.weapon() != null) {
-      penetration += this.weapon().penetration;
+      if (this.weapon().shootable()) {
+        penetration += this.weapon().shootPenetration();
+      }
+      else {
+        penetration += this.weapon().penetration;
+      }
     }
     if (penetration > 1) {
       penetration = 1;
@@ -661,6 +681,9 @@ class Unit extends MapObject {
   float attackRange() {
     float attackRange = this.base_attackRange;
     if (this.weapon() != null && this.weapon().weapon()) {
+      if (this.weapon().shootable()) {
+        return this.weapon().shootRange();
+      }
       attackRange += this.weapon().attackRange;
     }
     return attackRange;
@@ -669,6 +692,9 @@ class Unit extends MapObject {
   float attackCooldown() {
     float attackCooldown = this.base_attackCooldown;
     if (this.weapon() != null && this.weapon().weapon()) {
+      if (this.weapon().shootable()) {
+        return this.weapon().shootCooldown();
+      }
       attackCooldown += this.weapon().attackCooldown;
     }
     return attackCooldown;
@@ -677,6 +703,9 @@ class Unit extends MapObject {
   float attackTime() {
     float attackTime = this.base_attackTime;
     if (this.weapon() != null && this.weapon().weapon()) {
+      if (this.weapon().shootable()) {
+        return this.weapon().shootTime();
+      }
       attackTime += this.weapon().attackTime;
     }
     return attackTime;
@@ -788,9 +817,14 @@ class Unit extends MapObject {
           this.move(timeElapsed, myKey, map, MoveModifier.NONE);
         }
         else if (this.timer_attackCooldown <= 0) {
-          if (this.gear.get(GearSlot.WEAPON) != null && this.gear.get(GearSlot.WEAPON).shootable())
-          this.curr_action = UnitAction.ATTACKING;
-          this.timer_attackTime = this.attackTime();
+          if (this.gear.get(GearSlot.WEAPON) != null && this.gear.get(GearSlot.WEAPON).shootable()) {
+            this.curr_action = UnitAction.SHOOTING;
+            this.timer_actionTime = this.attackTime();
+          }
+          else {
+            this.curr_action = UnitAction.ATTACKING;
+            this.timer_actionTime = this.attackTime();
+          }
         }
         break;
       case TARGETING_ITEM:
@@ -819,11 +853,27 @@ class Unit extends MapObject {
           break;
         }
         Unit unit_attacking = (Unit)this.object_targeting;
-        this.timer_attackTime -= timeElapsed;
-        if (this.timer_attackTime < 0) {
+        this.timer_actionTime -= timeElapsed;
+        if (this.timer_actionTime < 0) {
           this.curr_action = UnitAction.TARGETING_UNIT;
           this.attack(unit_attacking);
         }
+        break;
+      case SHOOTING:
+        if (this.weapon() == null || !this.weapon().shootable()) {
+          this.curr_action = UnitAction.NONE;
+          break;
+        }
+        if (this.object_targeting != null) {
+          this.face(this.object_targeting);
+        }
+        this.timer_actionTime -= timeElapsed;
+        if (this.timer_actionTime < 0) {
+          this.curr_action = UnitAction.TARGETING_UNIT;
+          this.shoot(myKey, map);
+        }
+        break;
+      case CONSUMING:
         break;
       case NONE:
         break;
@@ -869,6 +919,16 @@ class Unit extends MapObject {
     else {
       this.curr_action = UnitAction.NONE;
     }
+  }
+
+
+  // Shoot projectile
+  void shoot(int myKey, GameMap map) {
+    if (this.weapon() == null || !this.weapon().shootable()) {
+      return;
+    }
+    map.addProjectile(new Projectile(this.weapon().ID + 1000, myKey, this));
+    this.timer_attackCooldown = this.attackCooldown();
   }
 
 
@@ -1080,8 +1140,11 @@ class Unit extends MapObject {
     }
     // unit collisions
     for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
+      if (entry.getKey() == myKey) {
+        continue;
+      }
       Unit u = entry.getValue();
-      if (u.alliance == this.alliance) {
+      if (u.alliance == this.alliance && this.alliance != Alliance.NONE) {
         continue;
       }
       if (this.zf() <= u.zi() || u.zf() <= this.zi()) {
@@ -1116,8 +1179,11 @@ class Unit extends MapObject {
     }
     // unit collisions
     for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
+      if (entry.getKey() == myKey) {
+        continue;
+      }
       Unit u = entry.getValue();
-      if (u.alliance == this.alliance) {
+      if (u.alliance == this.alliance && this.alliance != Alliance.NONE) {
         continue;
       }
       if (this.zf() <= u.zi() || u.zf() <= this.zi()) {
@@ -1142,6 +1208,9 @@ class Unit extends MapObject {
   }
   int zf() {
     return this.curr_height + this.sizeZ;
+  }
+  int zHalf() {
+    return this.curr_height + int(ceil(this.sizeZ));
   }
 
 
@@ -1203,7 +1272,7 @@ class Unit extends MapObject {
     fileString += "\nbase_agility: " + this.base_agility;
     fileString += "\ncurr_health: " + this.curr_health;
     fileString += "\ntimer_attackCooldown: " + this.timer_attackCooldown;
-    fileString += "\ntimer_attackTime: " + this.timer_attackTime;
+    fileString += "\ntimer_actionTime: " + this.timer_actionTime;
     fileString += "\nend: Unit\n";
     return fileString;
   }
@@ -1280,10 +1349,10 @@ class Unit extends MapObject {
         this.base_tenacity = toFloat(data);
         break;
       case "timer_attackCooldown":
-        this.base_tenacity = toFloat(data);
+        this.timer_attackCooldown = toFloat(data);
         break;
-      case "timer_attackTime":
-        this.base_tenacity = toFloat(data);
+      case "timer_actionTime":
+        this.timer_actionTime = toFloat(data);
         break;
       default:
         global.errorMessage("ERROR: Datakey " + datakey + " not found for unit data.");

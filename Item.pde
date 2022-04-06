@@ -280,6 +280,7 @@ class Item extends MapObject {
       case 2312:
         this.setStrings("M1911", "Ranged Weapon", "Semi-automatic with medium capacity and power. Effective at close range.");
         this.tier = 2;
+        this.attackRange = 6;
         break;
       case 2321:
         this.setStrings("War Machine", "Ranged Weapon", "6 round semi-automatic grenade launcher.");
@@ -1631,7 +1632,7 @@ class Item extends MapObject {
 
 
   boolean weapon() {
-    if (this.type.contains("Weapon")) {
+    if (this.type.contains("Weapon") || this.throwable()) {
       return true;
     }
     return false;
@@ -1670,6 +1671,84 @@ class Item extends MapObject {
     switch(this.ID) {
       default:
         return false;
+    }
+  }
+
+
+  float shootAttack() {
+    switch(this.ID) {
+      case 2312:
+        return 20;
+      default:
+        return 0;
+    }
+  }
+
+  float shootMagic() {
+    switch(this.ID) {
+      default:
+        return 0;
+    }
+  }
+
+  float shootPiercing() {
+    switch(this.ID) {
+      case 2312:
+        return 12;
+      default:
+        return 0;
+    }
+  }
+
+  float shootPenetration() {
+    switch(this.ID) {
+      default:
+        return 0;
+    }
+  }
+
+  float shootRange() {
+    switch(this.ID) {
+      case 2312:
+        return 6;
+      default:
+        return 0;
+    }
+  }
+
+  float shootCooldown() {
+    switch(this.ID) {
+      case 2312:
+        return 96;
+      default:
+        return 0;
+    }
+  }
+
+  float shootTime() {
+    switch(this.ID) {
+      case 2312:
+        return 10;
+      default:
+        return 0;
+    }
+  }
+
+  float shootRecoil() {
+    switch(this.ID) {
+      case 2312:
+        return 0.005;
+      default:
+        return 0;
+    }
+  }
+
+  float shootInaccuracy() {
+    switch(this.ID) {
+      case 2312:
+        return 0.12;
+      default:
+        return 0;
     }
   }
 
