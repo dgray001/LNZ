@@ -1759,6 +1759,20 @@ class GameMap {
         entry.getValue().hovered = false;
       }
     }
+    // aiming for player
+    if (this.units.containsKey(0) && global.holding_ctrl) {
+      switch(this.units.get(0).curr_action) {
+        case AIMING:
+          this.units.get(0).aim(this.mX, this.mY);
+          break;
+        case MOVING:
+          this.units.get(0).moveTo(this.mX, this.mY);
+          break;
+        case NONE:
+          this.units.get(0).face(this.mX, this.mY);
+          break;
+      }
+    }
   }
 
   void selectHoveredObject() {
@@ -1781,7 +1795,10 @@ class GameMap {
       case RIGHT:
         if (this.units.containsKey(0)) {
           Unit player = this.units.get(0);
-          if (this.hovered_object == null || !this.hovered_object.targetable(player)) {
+          if (player.weapon() != null && player.weapon().shootable() && global.holding_ctrl) {
+            player.aim(this.mX, this.mY);
+          }
+          else if (this.hovered_object == null || !this.hovered_object.targetable(player)) {
             player.moveTo(this.mX, this.mY);
             this.addVisualEffect(4001, this.mX, this.mY);
           }
