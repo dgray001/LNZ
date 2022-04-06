@@ -1676,6 +1676,25 @@ class Item extends MapObject {
     }
   }
 
+  boolean usable() {
+    return this.consumable() || this.reloadable();
+  }
+
+  boolean consumable() {
+    return this.type.equals("Consumable");
+  }
+
+  void consumed() {
+    this.removeStack();
+  }
+
+  boolean reloadable() {
+    if (this.type.equals("Ranged Weapon") && this.availableAmmo() < this.maximumAmmo()) {
+      return true;
+    }
+    return false;
+  }
+
   boolean shootable() {
     if (this.remove) {
       return false;
@@ -1734,6 +1753,8 @@ class Item extends MapObject {
 
   float shootPiercing() {
     switch(this.ID) {
+      case 2311:
+        return 0.15;
       case 2312:
         return 0.12;
       default:
@@ -1812,6 +1833,29 @@ class Item extends MapObject {
 
   int availableAmmo() {
     return this.ammo;
+  }
+  int maximumAmmo() {
+    switch(this.ID) {
+      case 2301:
+        return 1;
+      case 2311:
+        return 1;
+      case 2312:
+        return 8;
+      default:
+        return 0;
+    }
+  }
+
+  float useTime() {
+    switch(this.ID) {
+      case 2101:
+        return 900;
+      case 2312:
+        return 1700;
+      default:
+        return 0;
+    }
   }
 
 
