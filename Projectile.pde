@@ -49,7 +49,7 @@ class Projectile extends MapObject {
         this.speed = 5;
         this.decay = 0.5;
         break;
-      case 3133: // pebble
+      case 3933: // pebble
         this.speed = 5;
         this.decay = 0.5;
         break;
@@ -180,7 +180,22 @@ class Projectile extends MapObject {
     // move in y direction
     this.moveY(tryMoveY, map);
     // decay
-    // decay logic
+    float decay_percentage = 1 - this.decay * timeElapsed / 1000.0;
+    if (decay_percentage < 0) {
+      this.speed = 0;
+      this.power = 0;
+      this.piercing = 0;
+      this.penetration = 0;
+    }
+    else {
+      this.speed *= decay_percentage;
+      this.power *= decay_percentage;
+      this.piercing *= decay_percentage;
+      this.penetration *= decay_percentage;
+    }
+    if (speed < Constants.projectile_threshholdSpeed) {
+      this.dropOnGround(map);
+    }
   }
 
 
@@ -242,7 +257,7 @@ class Projectile extends MapObject {
     try {
       if (map.squares[int(floor(this.x))][int(floor(this.y))].elevation(true) > this.curr_height) {
         this.x = startX;
-        this.collideWithTerrain(map);
+        this.dropOnGround(map);
         return true;
       }
     } catch(Exception e) {}
@@ -285,7 +300,7 @@ class Projectile extends MapObject {
     try {
       if (map.squares[int(floor(this.x))][int(floor(this.y))].elevation(true) > this.curr_height) {
         this.y = startY;
-        this.collideWithTerrain(map);
+        this.dropOnGround(map);
         return true;
       }
     } catch(Exception e) {}
@@ -315,8 +330,25 @@ class Projectile extends MapObject {
     return false;
   }
 
-  void collideWithTerrain(GameMap map) {
-    // drop item
+  ArrayList<Item> droppedItems(boolean hitUnit) {
+    ArrayList<Item> droppedItems = new ArrayList<Item>();
+    switch(this.ID) {
+      case 3931: // rock
+        droppedItems.add(new Item(2931));
+        break;
+      case 3933: // pebble
+        droppedItems.add(new Item(2933));
+        break;
+      default:
+        break;
+    }
+    return droppedItems;
+  }
+
+  void dropOnGround(GameMap map) {
+    for (Item i : this.droppedItems(false)) {
+      map.addItem(i, this.x, this.y);
+    }
     // explode on impact (splash damage)
     // if (doesn't explode on impact) {
     //     start timer } else {
@@ -325,7 +357,9 @@ class Projectile extends MapObject {
   }
 
   void collideWithUnit(GameMap map, Unit u) {
-    // drop item ?
+    for (Item i : this.droppedItems(true)) {
+      map.addItem(i, this.x, this.y);
+    }
     // explode on impact (splash damage)
     // if (doesn't explode on impact) {
     //     start timer } else {
