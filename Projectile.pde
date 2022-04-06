@@ -42,15 +42,23 @@ class Projectile extends MapObject {
 
   void setID() {
     switch(ID) {
+      case 3301: // Slingshot
+        this.speed = 8;
+        this.decay = 0.5;
+        break;
+      case 3311: // Bow
+        this.speed = 12;
+        this.decay = 0.5;
+        break;
       case 3312: // M1911
         this.speed = 90;
         this.decay = 1.11317;
         break;
-      case 3931: // rock
+      case 3931: // rock (thrown)
         this.speed = 5;
         this.decay = 0.5;
         break;
-      case 3933: // pebble
+      case 3933: // pebble (thrown)
         this.speed = 5;
         this.decay = 0.5;
         break;
@@ -145,6 +153,12 @@ class Projectile extends MapObject {
   PImage getImage() {
     String path = "projectiles/";
     switch(this.ID) {
+      case 3301:
+        path += "rock.png";
+        break;
+      case 3311:
+        path += "arrow.png";
+        break;
       case 3312:
         path += "45_acp.png";
         break;

@@ -344,6 +344,9 @@ class Level {
             this.player.frontX(), this.player.frontY()));
           this.player.inventory.item_dropping = null;
         }
+        if (this.player.messages.peek() != null) {
+          this.currMap.addHeaderMessage(this.player.messages.poll());
+        }
       }
       this.last_update_time = millis;
     }

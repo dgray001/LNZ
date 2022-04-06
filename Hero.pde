@@ -353,17 +353,16 @@ class Hero extends Unit {
     }
   }
 
-  class HeroInventory extends Inventory {
-
-    class InventoryKey {
-      private InventoryLocation location;
-      private int index;
-      InventoryKey(InventoryLocation location, int index) {
-        this.location = location;
-        this.index = index;
-      }
+  class InventoryKey {
+    private InventoryLocation location;
+    private int index;
+    InventoryKey(InventoryLocation location, int index) {
+      this.location = location;
+      this.index = index;
     }
+  }
 
+  class HeroInventory extends Inventory {
     protected Item item_holding = null;
     protected InventoryKey item_origin = null;
     protected Item item_dropping = null;
@@ -415,7 +414,47 @@ class Hero extends Unit {
     }
 
 
-    InventoryLocation itemLocation() {
+    InventoryKey itemLocation(int item_id) {
+      InventoryKey location = null;
+      for (InventoryLocation invLocation : InventoryLocation.VALUES) {
+        location = this.itemLocation(item_id, invLocation);
+        if (location != null) {
+          break;
+        }
+      }
+      return location;
+    }
+    InventoryKey itemLocation(int item_id, InventoryLocation invLocation) {
+      switch(invLocation) {
+        case INVENTORY:
+          for (int i = 0; i < this.slots.size(); i++) {
+            if (this.slots.get(i).item != null && this.slots.get(i).item.ID == item_id) {
+              return new InventoryKey(InventoryLocation.INVENTORY, i);
+            }
+          }
+          break;
+        case GEAR:
+          for (int i = 0; i < this.gear_inventory.slots.size(); i++) {
+            if (this.gear_inventory.slots.get(i).item != null
+              && this.gear_inventory.slots.get(i).item.ID == item_id) {
+              return new InventoryKey(InventoryLocation.GEAR, i);
+            }
+          }
+          break;
+        case FEATURE:
+          if (this.feature_inventory == null) {
+            break;
+          }
+          for (int i = 0; i < this.feature_inventory.slots.size(); i++) {
+            if (this.feature_inventory.slots.get(i).item != null &&
+              this.feature_inventory.slots.get(i).item.ID == item_id) {
+              return new InventoryKey(InventoryLocation.FEATURE, i);
+            }
+          }
+          break;
+        case CRAFTING:
+          break;
+      }
       return null;
     }
 
@@ -748,6 +787,8 @@ class Hero extends Unit {
   protected HeroInventory inventory = new HeroInventory();
   protected InventoryBar inventory_bar = new InventoryBar();
 
+  protected Queue<String> messages = new LinkedList<String>();
+
   Hero(int ID) {
     super(ID);
     this.code = HeroCode.heroCodeFromId(ID);
@@ -824,6 +865,25 @@ class Hero extends Unit {
       return;
     }
     if (this.weapon().reloadable()) {
+      while(this.weapon().maximumAmmo() - this.weapon().availableAmmo() > 0) {
+        ArrayList<Integer> possible_ammo = this.weapon().possibleAmmo();
+        boolean noAmmo = true;
+        for (int id : possible_ammo) {
+          InventoryKey ammoLocation = this.inventory.itemLocation(id, InventoryLocation.INVENTORY);
+          if (ammoLocation != null) {
+            Item ammo = this.inventory.slots.get(ammoLocation.index).item;
+            int ammoLoaded = min(this.weapon().maximumAmmo() - this.weapon().availableAmmo(), ammo.stack);
+            ammo.removeStack(ammoLoaded);
+            this.weapon().ammo += ammoLoaded;
+            noAmmo = false;
+            break;
+          }
+        }
+        if (noAmmo) {
+          break;
+        }
+      }
+      return;
     }
     global.log("WARNING: Trying to use item " + this.weapon().display_name() + " but no logic exists to use it.");
   }
@@ -966,7 +1026,18 @@ class Hero extends Unit {
         case 'R':
           if (this.weapon() != null && this.weapon().usable()) {
             if (this.weapon().reloadable()) {
-              // check if have proper ammo
+              ArrayList<Integer> possible_ammo = this.weapon().possibleAmmo();
+              boolean noAmmo = true;
+              for (int id : possible_ammo) {
+                if (this.inventory.itemLocation(id, InventoryLocation.INVENTORY) != null) {
+                  noAmmo = false;
+                  break;
+                }
+              }
+              if (noAmmo) {
+                this.messages.add("Out of ammo");
+                break;
+              }
             }
             this.curr_action = UnitAction.USING_ITEM;
             this.timer_actionTime = this.weapon().useTime();

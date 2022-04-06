@@ -937,7 +937,64 @@ class Item extends MapObject {
     return this.description;
   }
   String selectedObjectTextboxText() {
-    String text = "-- " + this.type() + " --";
+    String text = "-- " + this.type() + " --\n";
+    if (this.curr_health != 0) {
+      text += "\nHealth Regeneration: " + this.curr_health;
+    }
+    if (this.hunger != 0) {
+      text += "\nFood: " + this.hunger;
+    }
+    if (this.thirst != 0) {
+      text += "\nThirst: " + this.thirst;
+    }
+    if (this.money != 0) {
+      text += "\nMoney: " + this.money;
+    }
+    if (this.type.equals("Ranged Weapon")) {
+      text += "\nAmmo: " + this.ammo + "/" + this.maximumAmmo();
+    }
+    if (this.health != 0) {
+      text += "\nHealth: " + this.health;
+    }
+    if (this.attack != 0) {
+      text += "\nAttack: " + this.attack;
+    }
+    if (this.magic != 0) {
+      text += "\nMagic: " + this.magic;
+    }
+    if (this.defense != 0) {
+      text += "\nDefense: " + this.defense;
+    }
+    if (this.resistance != 0) {
+      text += "\nResistance: " + this.resistance;
+    }
+    if (this.piercing != 0) {
+      text += "\nPiercing: " + this.piercing;
+    }
+    if (this.penetration != 0) {
+      text += "\nPenetration: " + this.penetration;
+    }
+    if (this.attackRange != 0) {
+      text += "\nRange: " + this.attackRange;
+    }
+    if (this.attackCooldown != 0) {
+      text += "\nAttack Cooldown: " + this.attackCooldown;
+    }
+    if (this.attackTime != 0) {
+      text += "\nAttack Time: " + this.attackTime;
+    }
+    if (this.sight != 0) {
+      text += "\nSight: " + this.sight;
+    }
+    if (this.speed != 0) {
+      text += "\nSpeed: " + this.speed;
+    }
+    if (this.tenacity != 0) {
+      text += "\nTenacity: " + this.tenacity;
+    }
+    if (this.agility != 0) {
+      text += "\nAgility: " + this.agility;
+    }
     return text + "\n\n" + this.description();
   }
 
@@ -1092,10 +1149,20 @@ class Item extends MapObject {
         break;
       // Ranged Weapons
       case 2301:
-        path += "slingshot.png";
+        if (this.ammo > 0) {
+          path += "slingshot_loaded.png";
+        }
+        else {
+          path += "slingshot_unloaded.png";
+        }
         break;
       case 2311:
-        path += "recurve_bow.png";
+        if (this.ammo > 0) {
+          path += "recurve_bow_loaded.png";
+        }
+        else {
+          path += "recurve_bow_unloaded.png";
+        }
         break;
       case 2312:
         path += "m1911.png";
@@ -1695,6 +1762,25 @@ class Item extends MapObject {
     return false;
   }
 
+  ArrayList<Integer> possibleAmmo() {
+    ArrayList<Integer> possible_ammo = new ArrayList<Integer>();
+    switch(this.ID) {
+      case 2301:
+        possible_ammo.add(2931);
+        possible_ammo.add(2933);
+        break;
+      case 2311:
+        possible_ammo.add(2932);
+        break;
+      case 2312:
+        possible_ammo.add(2941);
+        break;
+      default:
+        break;
+    }
+    return possible_ammo;
+  }
+
   boolean shootable() {
     if (this.remove) {
       return false;
@@ -1733,6 +1819,10 @@ class Item extends MapObject {
 
   float shootAttack() {
     switch(this.ID) {
+      case 2301:
+        return 5;
+      case 2311:
+        return 8;
       case 2312:
         return 20;
       case 2931:
@@ -1771,6 +1861,10 @@ class Item extends MapObject {
 
   float shootRange() {
     switch(this.ID) {
+      case 2301:
+        return 3;
+      case 2311:
+        return 5;
       case 2312:
         return 6;
       case 2931:
@@ -1784,6 +1878,10 @@ class Item extends MapObject {
 
   float shootCooldown() {
     switch(this.ID) {
+      case 2301:
+        return 1300;
+      case 2311:
+        return 1500;
       case 2312:
         return 96;
       case 2931:
@@ -1797,6 +1895,10 @@ class Item extends MapObject {
 
   float shootTime() {
     switch(this.ID) {
+      case 2301:
+        return 350;
+      case 2311:
+        return 300;
       case 2312:
         return 10;
       case 2931:
@@ -1819,6 +1921,10 @@ class Item extends MapObject {
 
   float shootInaccuracy() {
     switch(this.ID) {
+      case 2301:
+        return 0.12;
+      case 2311:
+        return 0.12;
       case 2312:
         return 0.12;
       case 2931:
@@ -1851,6 +1957,10 @@ class Item extends MapObject {
     switch(this.ID) {
       case 2101:
         return 900;
+      case 2301:
+        return 1000;
+      case 2311:
+        return 1500;
       case 2312:
         return 1700;
       default:
