@@ -416,22 +416,22 @@ class Unit extends MapObject {
   }
   String selectedObjectTextboxText() {
     String text = "-- " + this.type() + " --";
-    text += "\n\nHealth: " + this.curr_health + "/" + this.health();
+    text += "\n\nHealth: " + int(ceil(this.curr_health)) + "/" + int(ceil(this.health()));
     float attack = this.attack();
     if (attack > 0) {
-      text += "\nAttack: " + attack;
+      text += "\nAttack: " + int(attack * 10.0) / 10.0;
     }
     float magic = this.magic();
     if (magic > 0) {
-      text += "\nMagic: " + magic;
+      text += "\nMagic: " + int(magic * 10.0) / 10.0;
     }
     float defense = this.defense();
     if (defense > 0) {
-      text += "\nDefense: " + defense;
+      text += "\nDefense: " + int(defense * 10.0) / 10.0;
     }
     float resistance = this.resistance();
     if (resistance > 0) {
-      text += "\nResistance: " + resistance;
+      text += "\nResistance: " + int(resistance * 10.0) / 10.0;
     }
     float piercing = this.piercing();
     if (piercing > 0) {
@@ -441,7 +441,7 @@ class Unit extends MapObject {
     if (penetration > 0) {
       text += "\nPenetration: " + int(round(penetration * 100)) + "%";
     }
-    text += "\nSpeed: " + this.speed();
+    text += "\nSpeed: " + int(this.speed() * 10.0) / 10.0;
     float tenacity = this.tenacity();
     if (tenacity > 0) {
       text += "\nTenacity: " + int(round(tenacity * 100)) + "%";
@@ -679,9 +679,12 @@ class Unit extends MapObject {
   }
 
   float attackRange() {
+    return this.attackRange(false);
+  }
+  float attackRange(boolean forceMelee) {
     float attackRange = this.base_attackRange;
     if (this.weapon() != null && this.weapon().weapon()) {
-      if (this.weapon().shootable()) {
+      if (!forceMelee && this.weapon().shootable()) {
         return this.weapon().shootRange();
       }
       attackRange += this.weapon().attackRange;
@@ -690,9 +693,12 @@ class Unit extends MapObject {
   }
 
   float attackCooldown() {
+    return this.attackCooldown(false);
+  }
+  float attackCooldown(boolean forceMelee) {
     float attackCooldown = this.base_attackCooldown;
     if (this.weapon() != null && this.weapon().weapon()) {
-      if (this.weapon().shootable()) {
+      if (!forceMelee && this.weapon().shootable()) {
         return this.weapon().shootCooldown();
       }
       attackCooldown += this.weapon().attackCooldown;
@@ -701,9 +707,12 @@ class Unit extends MapObject {
   }
 
   float attackTime() {
+    return this.attackTime(false);
+  }
+  float attackTime(boolean forceMelee) {
     float attackTime = this.base_attackTime;
     if (this.weapon() != null && this.weapon().weapon()) {
-      if (this.weapon().shootable()) {
+      if (!forceMelee && this.weapon().shootable()) {
         return this.weapon().shootTime();
       }
       attackTime += this.weapon().attackTime;
@@ -813,13 +822,20 @@ class Unit extends MapObject {
         }
         Unit u = (Unit)this.object_targeting;
         this.face(u);
-        if (this.distance(u) > this.attackRange()) {
+        float distance = this.distance(u);
+        if (distance > this.attackRange()) {
           this.move(timeElapsed, myKey, map, MoveModifier.NONE);
         }
         else if (this.timer_attackCooldown <= 0) {
           if (this.gear.get(GearSlot.WEAPON) != null && this.gear.get(GearSlot.WEAPON).shootable()) {
-            this.curr_action = UnitAction.SHOOTING;
-            this.timer_actionTime = this.attackTime();
+            if (this.gear.get(GearSlot.WEAPON).throwable() && distance < this.attackRange(true)) {
+              this.curr_action = UnitAction.ATTACKING;
+              this.timer_actionTime = this.attackTime(true);
+            }
+            else {
+              this.curr_action = UnitAction.SHOOTING;
+              this.timer_actionTime = this.attackTime();
+            }
           }
           else {
             this.curr_action = UnitAction.ATTACKING;
@@ -972,22 +988,24 @@ class Unit extends MapObject {
   // Auto attack
   void attack(Unit u) {
     u.damage(this, u.calculateDamageFrom(this, this.attack(), DamageType.PHYSICAL, this.element));
-    this.timer_attackCooldown = this.attackCooldown();
+    this.timer_attackCooldown = this.attackCooldown(true);
   }
 
 
   float calculateDamageFrom(Unit source, float power, DamageType damageType, Element element) {
+    return this.calculateDamageFrom(power, damageType, element, source.piercing(), source.penetration());
+  }
+  float calculateDamageFrom(float power, DamageType damageType, Element element, float piercing, float penetration) {
     float effectiveDefense = 0;
     switch(damageType) {
       case PHYSICAL:
-        effectiveDefense = this.defense() * (1 - source.piercing());
+        effectiveDefense = this.defense() * (1 - piercing);
         break;
       case MAGICAL:
-        effectiveDefense = this.resistance() * (1 - source.penetration());
+        effectiveDefense = this.resistance() * (1 - penetration);
         break;
       case MIXED:
-        effectiveDefense = this.defense() * (1 - source.piercing()) +
-          this.resistance() * (1 - source.penetration());
+        effectiveDefense = this.defense() * (1 - piercing) + this.resistance() * (1 - penetration);
         break;
       case TRUE:
         effectiveDefense = 0;
@@ -1007,9 +1025,11 @@ class Unit extends MapObject {
       this.remove = true;
     }
     this.last_damage_from = source;
-    source.damaged(this, amount);
-    if (this.remove) {
-      source.killed(this);
+    if (source != null) {
+      source.damaged(this, amount);
+      if (this.remove) {
+        source.killed(this);
+      }
     }
   }
 
@@ -1063,6 +1083,9 @@ class Unit extends MapObject {
   }
 
   float facingAngleModifier() {
+    if (this.curr_action == UnitAction.ATTACKING) {
+      return Constants.unit_attackAnimationAngle(1 - this.timer_actionTime / this.attackTime(true));
+    }
     return 0;
   }
 
@@ -1383,7 +1406,7 @@ class Unit extends MapObject {
         this.base_agility = toInt(data);
         break;
       case "curr_health":
-        this.base_tenacity = toFloat(data);
+        this.curr_health = toFloat(data);
         break;
       case "timer_attackCooldown":
         this.timer_attackCooldown = toFloat(data);
