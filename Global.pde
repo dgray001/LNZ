@@ -13,6 +13,8 @@ class Global {
   private Configuration configuration = new Configuration();
   private PImage cursor;
   private boolean holding_shift = false;
+  private boolean holding_ctrl = false;
+  private boolean holding_alt = false;
   private Deque<String> error_messages = new ArrayDeque<String>();
   private PrintWriter log;
   private boolean focused_last_frame = true;
@@ -50,6 +52,8 @@ class Global {
 
   void loseFocus() {
     this.holding_shift = false;
+    this.holding_ctrl = false;
+    this.holding_alt = false;
     if (this.menu != null) {
       this.menu.loseFocus();
     }
@@ -91,6 +95,12 @@ class Global {
   void keyPressFX2D() {
     if (key == CODED) {
       switch(keyCode) {
+        case ALT:
+          this.holding_alt = true;
+          break;
+        case CONTROL:
+          this.holding_ctrl = true;
+          break;
         case SHIFT:
           this.holding_shift = true;
           break;
@@ -103,6 +113,12 @@ class Global {
   void keyReleaseFX2D() {
     if (key == CODED) {
       switch(keyCode) {
+        case ALT:
+          this.holding_alt = false;
+          break;
+        case CONTROL:
+          this.holding_ctrl = false;
+          break;
         case SHIFT:
           this.holding_shift = false;
           break;

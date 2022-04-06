@@ -1,6 +1,6 @@
 enum UnitAction {
   NONE, MOVING, TARGETING_FEATURE, TARGETING_UNIT, TARGETING_ITEM, ATTACKING,
-  SHOOTING, CONSUMING;
+  SHOOTING, AIMING, CONSUMING;
 }
 
 
@@ -784,7 +784,7 @@ class Unit extends MapObject {
     // unit action
     switch(this.curr_action) {
       case MOVING:
-        this.face(this.curr_action_x, this.curr_action_y);
+        this.face(this.curr_action_x, this.curr_action_y); // pathfinding
         this.move(timeElapsed, myKey, map, MoveModifier.NONE);
         if (this.distanceFromPoint(this.curr_action_x, this.curr_action_y)
           < this.last_move_distance) {
@@ -825,6 +825,17 @@ class Unit extends MapObject {
             this.curr_action = UnitAction.ATTACKING;
             this.timer_actionTime = this.attackTime();
           }
+        }
+        break;
+      case AIMING:
+        if (this.weapon() == null || !this.weapon().shootable()) {
+          this.curr_action = UnitAction.NONE;
+          break;
+        }
+        this.face(this.curr_action_x, this.curr_action_y);
+        if (this.timer_attackCooldown <= 0) {
+          this.curr_action = UnitAction.SHOOTING;
+          this.timer_actionTime = this.attackTime();
         }
         break;
       case TARGETING_ITEM:
@@ -869,8 +880,18 @@ class Unit extends MapObject {
         }
         this.timer_actionTime -= timeElapsed;
         if (this.timer_actionTime < 0) {
-          this.curr_action = UnitAction.TARGETING_UNIT;
           this.shoot(myKey, map);
+          if (this.weapon().shootable()) {
+            if (myKey == 0 && global.holding_ctrl) {
+              this.curr_action = UnitAction.AIMING;
+            }
+            else {
+              this.curr_action = UnitAction.TARGETING_UNIT;
+            }
+          }
+          else {
+            this.curr_action = UnitAction.NONE;
+          }
         }
         break;
       case CONSUMING:
@@ -922,12 +943,22 @@ class Unit extends MapObject {
   }
 
 
+  // Aim at mouse
+  void aim(float targetX, float targetY) {
+    this.curr_action = UnitAction.AIMING;
+    this.object_targeting = null;
+    this.curr_action_x = targetX;
+    this.curr_action_y = targetY;
+  }
+
+
   // Shoot projectile
   void shoot(int myKey, GameMap map) {
     if (this.weapon() == null || !this.weapon().shootable()) {
       return;
     }
     map.addProjectile(new Projectile(this.weapon().ID + 1000, myKey, this));
+    this.weapon().shot();
     this.timer_attackCooldown = this.attackCooldown();
   }
 

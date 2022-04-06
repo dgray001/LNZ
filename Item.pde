@@ -280,7 +280,6 @@ class Item extends MapObject {
       case 2312:
         this.setStrings("M1911", "Ranged Weapon", "Semi-automatic with medium capacity and power. Effective at close range.");
         this.tier = 2;
-        this.attackRange = 6;
         break;
       case 2321:
         this.setStrings("War Machine", "Ranged Weapon", "6 round semi-automatic grenade launcher.");
@@ -1657,7 +1656,30 @@ class Item extends MapObject {
     }
   }
 
+  void addStack() {
+    this.addStack(1);
+  }
+  void addStack(int amount) {
+    this.stack += amount;
+    if (this.stack <= 0) {
+      this.remove = true;
+    }
+  }
+
+  void removeStack() {
+    this.removeStack(1);
+  }
+  void removeStack(int amount) {
+    this.stack -= amount;
+    if (this.stack <= 0) {
+      this.remove = true;
+    }
+  }
+
   boolean shootable() {
+    if (this.remove) {
+      return false;
+    }
     if (this.throwable()) {
       return true;
     }
@@ -1668,9 +1690,21 @@ class Item extends MapObject {
   }
 
   boolean throwable() {
+    if (this.remove) {
+      return false;
+    }
     switch(this.ID) {
       default:
         return false;
+    }
+  }
+
+  void shot() {
+    if (this.throwable()) {
+      this.removeStack();
+    }
+    else {
+      this.ammo--;
     }
   }
 
@@ -1694,7 +1728,7 @@ class Item extends MapObject {
   float shootPiercing() {
     switch(this.ID) {
       case 2312:
-        return 12;
+        return 0.12;
       default:
         return 0;
     }
