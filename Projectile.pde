@@ -2,8 +2,9 @@ class Projectile extends MapObject {
   protected float size = Constants.projectile_defaultSize; // radius
 
   protected int source_key;
-  protected float facingX = 0;
+  protected float facingX = 1;
   protected float facingY = 0;
+  protected float facingA = 0;
   protected Alliance alliance = Alliance.NONE;
 
   protected float power = 0;
@@ -22,14 +23,19 @@ class Projectile extends MapObject {
   Projectile(int ID, int source_key, Unit u) {
     super(ID);
     this.source_key = source_key;
-    this.curr_height = u.zHalf();
     // assume autoattack unless stated otherwise
-    this.facingX = u.facingX;
-    this.facingY = u.facingY;
-    this.alliance = u.alliance;
-    this.power = u.attack();
-    this.piercing = u.piercing();
-    this.penetration = u.penetration();
+    if (u != null) {
+      this.x = u.frontX();
+      this.y = u.frontY();
+      this.curr_height = u.zHalf();
+      this.facingX = u.facingX;
+      this.facingY = u.facingY;
+      this.facingA = u.facingA;
+      this.alliance = u.alliance;
+      this.power = u.attack();
+      this.piercing = u.piercing();
+      this.penetration = u.penetration();
+    }
     this.setID();
   }
 
@@ -49,6 +55,16 @@ class Projectile extends MapObject {
     this.power = power;
     this.piercing = piercing;
     this.penetration = penetration;
+  }
+
+  void setFacing(float facingX, float facingY) {
+    this.facingX = facingX;
+    this.facingY = facingY;
+    this.facingA = (float)Math.atan2(this.facingY, this.facingX);
+  }
+
+  void refreshFacing() {
+    this.facingA = (float)Math.atan2(this.facingY, this.facingX);
   }
 
   String display_name() {

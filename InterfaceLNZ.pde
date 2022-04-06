@@ -77,6 +77,10 @@ abstract class InterfaceLNZ {
     void sendEmail() {
       global.log("Send email (not configured).");
     }
+
+    void addErrorMessage(String message) {
+      this.fields.get(3).setValue(this.fields.get(3).getValue() + "\n\nError Message:\n" + message);
+    }
   }
 
 
@@ -300,7 +304,7 @@ abstract class InterfaceLNZ {
     void submit() {
     }
   }
-  
+
 
   protected FormLNZ form = null;
 
@@ -308,7 +312,12 @@ abstract class InterfaceLNZ {
   }
 
   void throwError(String message) {
-    this.form = new ErrorForm(message);
+    if (this.form != null && ErrorForm.class.isInstance(this.form)) {
+      ((ErrorForm)this.form).addErrorMessage(message);
+    }
+    else {
+      this.form = new ErrorForm(message);
+    }
   }
 
   void LNZ_update(int millis) {

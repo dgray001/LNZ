@@ -79,6 +79,8 @@ void draw() {
     global.gainFocus();
   }
   global.focused_last_frame = focused;
+  // check error message
+  global.checkErrorMessge();
 }
 
 void mouseDragged() {
