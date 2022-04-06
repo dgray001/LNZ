@@ -1210,6 +1210,11 @@ class GameMap {
     this.addItem(i, this.nextItemKey);
     this.nextItemKey++;
   }
+  void addItem(Item i, float x, float y) {
+    i.setLocation(x, y);
+    this.addItem(i, this.nextItemKey);
+    this.nextItemKey++;
+  }
   void addItem(Item i, int code) {
     this.items.put(code, i);
   }
