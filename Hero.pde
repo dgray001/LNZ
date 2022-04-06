@@ -776,6 +776,7 @@ class Hero extends Unit {
   protected int level_tokens = 0;
   protected float experience = 0;
   protected int experience_next_level = 1;
+  protected float money = 0;
   protected float mana = 0;
   protected float curr_mana = 0;
   protected int hunger = 100;
@@ -861,6 +862,10 @@ class Hero extends Unit {
       return;
     }
     if (this.weapon().consumable()) {
+      this.heal(this.weapon().curr_health);
+      this.increaseHunger(this.weapon().hunger);
+      this.increaseThirst(this.weapon().thirst);
+      this.money += this.weapon().money;
       this.weapon().consumed();
       return;
     }

@@ -1056,6 +1056,20 @@ class Unit extends MapObject {
   }
 
 
+  void heal(float amount) {
+    this.heal(amount, false);
+  }
+  void heal(float amount, boolean overheal) {
+    this.curr_health += amount;
+    if (this.curr_health <= 0) {
+      this.curr_health = 0;
+    }
+    if (!overheal && this.curr_health > this.health()) {
+      this.curr_health = this.health();
+    }
+  }
+
+
   void stopAction() {
     this.curr_action = UnitAction.NONE;
   }

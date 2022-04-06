@@ -5,8 +5,8 @@ class EditItemForm extends EditMapObjectForm {
     super(item);
     this.item = item;
     this.addField(new FloatFormField("  ", "curr health", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "hunger", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "thirst", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new IntegerFormField("  ", "hunger", -100, 100));
+    this.addField(new IntegerFormField("  ", "thirst", -100, 100));
     this.addField(new FloatFormField("  ", "money", 0, Float.MAX_VALUE - 1));
     this.addField(new FloatFormField("  ", "health", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
     this.addField(new FloatFormField("  ", "attack", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
@@ -15,9 +15,9 @@ class EditItemForm extends EditMapObjectForm {
     this.addField(new FloatFormField("  ", "resistance", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
     this.addField(new FloatFormField("  ", "piercing", -1, 1));
     this.addField(new FloatFormField("  ", "penetration", -1, 1));
-    this.addField(new FloatFormField("  ", "attackRange", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "attackCooldown", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "attackTime", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "attack range", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "attack cooldown", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("  ", "attack time", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
     this.addField(new FloatFormField("  ", "sight", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
     this.addField(new FloatFormField("  ", "speed", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
     this.addField(new FloatFormField("  ", "tenacity", -1, 1));
@@ -28,8 +28,8 @@ class EditItemForm extends EditMapObjectForm {
 
   void updateObject() {
     this.item.curr_health = toFloat(this.fields.get(1).getValue());
-    this.item.hunger = toFloat(this.fields.get(2).getValue());
-    this.item.thirst = toFloat(this.fields.get(3).getValue());
+    this.item.hunger = toInt(this.fields.get(2).getValue());
+    this.item.thirst = toInt(this.fields.get(3).getValue());
     this.item.money = toFloat(this.fields.get(4).getValue());
     this.item.health = toFloat(this.fields.get(5).getValue());
     this.item.attack = toFloat(this.fields.get(6).getValue());
@@ -50,8 +50,8 @@ class EditItemForm extends EditMapObjectForm {
 
   void updateForm() {
     this.fields.get(1).setValueIfNotFocused(Float.toString(this.item.curr_health));
-    this.fields.get(2).setValueIfNotFocused(Float.toString(this.item.hunger));
-    this.fields.get(3).setValueIfNotFocused(Float.toString(this.item.thirst));
+    this.fields.get(2).setValueIfNotFocused(Integer.toString(this.item.hunger));
+    this.fields.get(3).setValueIfNotFocused(Integer.toString(this.item.thirst));
     this.fields.get(4).setValueIfNotFocused(Float.toString(this.item.money));
     this.fields.get(5).setValueIfNotFocused(Float.toString(this.item.health));
     this.fields.get(6).setValueIfNotFocused(Float.toString(this.item.attack));
@@ -80,8 +80,8 @@ class Item extends MapObject {
   protected int tier = 1;
 
   protected float curr_health = 0;
-  protected float hunger = 0;
-  protected float thirst = 0;
+  protected int hunger = 0;
+  protected int thirst = 0;
   protected float money = 0;
 
   protected float health = 0;
@@ -2031,10 +2031,10 @@ class Item extends MapObject {
         this.curr_health = toFloat(data);
         break;
       case "hunger":
-        this.hunger = toFloat(data);
+        this.hunger = toInt(data);
         break;
       case "thirst":
-        this.thirst = toFloat(data);
+        this.thirst = toInt(data);
         break;
       case "money":
         this.money = toFloat(data);
