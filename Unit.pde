@@ -899,6 +899,12 @@ class Unit extends MapObject {
       case NONE:
         break;
     }
+    // update gear items
+    for (Map.Entry<GearSlot, Item> slot : this.gear.entrySet()) {
+      if (slot.getValue() != null && slot.getValue().remove) {
+        this.gear.put(slot.getKey(), null);
+      }
+    }
   }
 
   // timers independent of curr action

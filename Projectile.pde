@@ -42,8 +42,16 @@ class Projectile extends MapObject {
   void setID() {
     switch(ID) {
       case 3312: // M1911
-        this.speed = 1;
+        this.speed = 90;
         this.decay = 1.11317;
+        break;
+      case 3931: // rock
+        this.speed = 5;
+        this.decay = 0.5;
+        break;
+      case 3133: // pebble
+        this.speed = 5;
+        this.decay = 0.5;
         break;
       default:
         global.errorMessage("ERROR: Projectile ID " + ID + " not found.");
@@ -138,6 +146,12 @@ class Projectile extends MapObject {
     switch(this.ID) {
       case 3312:
         path += "45_acp.png";
+        break;
+      case 3931:
+        path += "rock.png";
+        break;
+      case 3933:
+        path += "pebble.png";
         break;
       default:
         global.errorMessage("ERROR: Projectile ID " + ID + " not found.");
