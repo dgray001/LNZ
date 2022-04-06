@@ -76,9 +76,16 @@ class Global {
   void errorMessage(String message) {
     this.error_messages.push(message);
     this.log(message);
-    if (this.menu != null) {
-      this.menu.throwError(message);
+  }
+
+  void checkErrorMessge() {
+    if (this.menu == null) {
+      return;
     }
+    if (this.error_messages.peek() == null) {
+      return;
+    }
+    this.menu.throwError(this.error_messages.pop());
   }
 
   void keyPressFX2D() {

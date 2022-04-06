@@ -1325,6 +1325,22 @@ class GameMap {
       translate(-translateX, -translateY);
     }
     // display projectiles
+    imageMode(CENTER);
+    for (Projectile p : this.projectiles) {
+      if (!p.inView(this.startSquareX, this.startSquareY, this.startSquareX + this.visSquareX, this.startSquareY + this.visSquareY)) {
+        continue;
+      }
+      if (this.draw_fog && !this.squares[int(floor(p.x))][int(floor(p.y))].visible) {
+        continue;
+      }
+      float translateX = this.xi_map + (p.x - this.startSquareX) * this.zoom;
+      float translateY = this.yi_map + (p.y - this.startSquareY) * this.zoom;
+      translate(translateX, translateY);
+      rotate(p.facingA);
+      image(p.getImage(), 0, 0, p.width() * this.zoom, p.height() * this.zoom);
+      rotate(-p.facingA);
+      translate(-translateX, -translateY);
+    }
     // display visual effects
     imageMode(CENTER);
     for (VisualEffect v : this.visualEffects) {
@@ -1546,7 +1562,7 @@ class GameMap {
         i--;
         continue;
       }
-      this.projectiles.get(i).update(timeElapsed);
+      this.projectiles.get(i).update(timeElapsed, this);
       if (this.projectiles.get(i).remove) {
         this.removeProjectile(i);
         i--;
@@ -2061,6 +2077,7 @@ class GameMap {
                 global.errorMessage("ERROR: Trying to end a projectile not inside any other object.");
                 break;
               }
+              curr_projectile.refreshFacing();
               this.addProjectile(curr_projectile);
               curr_projectile = null;
               break;
