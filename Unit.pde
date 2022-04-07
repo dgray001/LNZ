@@ -82,55 +82,87 @@ enum Element {
         switch(source) {
           case BLUE:
             return Constants.resistance_blue_blue;
+          case RED:
+            return Constants.resistance_blue_red;
+          case BROWN:
+            return Constants.resistance_blue_brown;
           default:
             return Constants.resistance_default;
         }
       case RED:
         switch(source) {
           case RED:
-            return Constants.resistance_blue_blue;
+            return Constants.resistance_red_red;
+          case CYAN:
+            return Constants.resistance_red_cyan;
+          case BLUE:
+            return Constants.resistance_red_blue;
           default:
             return Constants.resistance_default;
         }
       case CYAN:
         switch(source) {
           case CYAN:
-            return Constants.resistance_blue_blue;
+            return Constants.resistance_cyan_cyan;
+          case ORANGE:
+            return Constants.resistance_cyan_orange;
+          case RED:
+            return Constants.resistance_cyan_red;
           default:
             return Constants.resistance_default;
         }
       case ORANGE:
         switch(source) {
           case ORANGE:
-            return Constants.resistance_blue_blue;
+            return Constants.resistance_orange_orange;
+          case BROWN:
+            return Constants.resistance_orange_brown;
+          case CYAN:
+            return Constants.resistance_orange_cyan;
           default:
             return Constants.resistance_default;
         }
       case BROWN:
         switch(source) {
           case BROWN:
-            return Constants.resistance_blue_blue;
+            return Constants.resistance_brown_brown;
+          case BLUE:
+            return Constants.resistance_brown_blue;
+          case ORANGE:
+            return Constants.resistance_brown_orange;
           default:
             return Constants.resistance_default;
         }
       case PURPLE:
         switch(source) {
           case PURPLE:
-            return Constants.resistance_blue_blue;
+            return Constants.resistance_purple_purple;
+          case YELLOW:
+            return Constants.resistance_purple_yellow;
+          case MAGENTA:
+            return Constants.resistance_purple_magenta;
           default:
             return Constants.resistance_default;
         }
       case YELLOW:
         switch(source) {
           case YELLOW:
-            return Constants.resistance_blue_blue;
+            return Constants.resistance_yellow_yellow;
+          case MAGENTA:
+            return Constants.resistance_yellow_magenta;
+          case PURPLE:
+            return Constants.resistance_yellow_purple;
           default:
             return Constants.resistance_default;
         }
       case MAGENTA:
         switch(source) {
           case MAGENTA:
-            return Constants.resistance_blue_blue;
+            return Constants.resistance_magenta_magenta;
+          case PURPLE:
+            return Constants.resistance_magenta_purple;
+          case YELLOW:
+            return Constants.resistance_magenta_yellow;
           default:
             return Constants.resistance_default;
         }
@@ -237,7 +269,7 @@ class Unit extends MapObject {
 
   protected HashMap<GearSlot, Item> gear = new HashMap<GearSlot, Item>();
   protected ArrayList<Ability> abilities = new ArrayList<Ability>();
-  protected HashMap<StatusEffectCode, StatusEffect> statuses = new HashMap<StatusEffectCode, StatusEffect>();
+  protected ConcurrentHashMap<StatusEffectCode, StatusEffect> statuses = new ConcurrentHashMap<StatusEffectCode, StatusEffect>();
 
   protected float base_health = 1;
   protected float base_attack = 0;
@@ -384,7 +416,7 @@ class Unit extends MapObject {
   String selectedObjectTextboxText() {
     String text = "-- " + this.type() + " --";
     if (this.statuses.size() > 0) {
-      text += "\n\n";
+      text += "\n";
     }
     for (Map.Entry<StatusEffectCode, StatusEffect> entry : this.statuses.entrySet()) {
       text += "\n-- " + entry.getKey().code_name() + " --";
@@ -740,7 +772,7 @@ class Unit extends MapObject {
       }
     }
     else {
-      this.statuses.put(code, new StatusEffect(timer));
+      this.statuses.put(code, new StatusEffect(code, timer));
     }
   }
   void refreshStatusEffect(StatusEffectCode code, float timer) {
@@ -750,7 +782,7 @@ class Unit extends MapObject {
       }
     }
     else {
-      this.statuses.put(code, new StatusEffect(timer));
+      this.statuses.put(code, new StatusEffect(code, timer));
     }
   }
 
@@ -883,11 +915,23 @@ class Unit extends MapObject {
     // unit action
     switch(this.curr_action) {
       case MOVING:
+        boolean collision_last_move = this.last_move_collision;
         this.face(this.curr_action_x, this.curr_action_y); // pathfinding
         this.move(timeElapsed, myKey, map, MoveModifier.NONE);
         if (this.distanceFromPoint(this.curr_action_x, this.curr_action_y)
           < this.last_move_distance) {
           this.curr_action = UnitAction.NONE;
+        }
+        if (this.last_move_collision) {
+          if (collision_last_move) {
+            this.timer_actionTime -= timeElapsed;
+          }
+          else {
+            this.timer_actionTime = Constants.unit_moveCollisionStopActionTime;
+          }
+          if (this.timer_actionTime < 0) { // colliding over and over
+            this.curr_action = UnitAction.NONE;
+          }
         }
         break;
       case TARGETING_FEATURE:
@@ -1035,22 +1079,65 @@ class Unit extends MapObject {
       }
       switch(entry.getKey()) {
         case HUNGRY:
-          // dot, cause weak
+          se.number -= timeElapsed;
+          if (se.number < 0) {
+            se.number += Constants.status_hunger_tickTimer;
+            this.calculateDotDamage(Constants.status_hunger_dot, false, Constants.status_hunger_damageLimit);
+            if (randomChance(Constants.status_hunger_weakPercentage)) {
+              this.refreshStatusEffect(StatusEffectCode.WEAK, 8000);
+            }
+          }
           break;
         case THIRSTY:
-          // dot, cause woozy and confused
+          se.number -= timeElapsed;
+          if (se.number < 0) {
+            se.number += Constants.status_thirst_tickTimer;
+            this.calculateDotDamage(Constants.status_thirst_dot, false, Constants.status_thirst_damageLimit);
+            if (randomChance(Constants.status_thirst_woozyPercentage)) {
+              this.refreshStatusEffect(StatusEffectCode.WOOZY, 10000);
+            }
+            if (randomChance(Constants.status_thirst_confusedPercentage)) {
+              this.refreshStatusEffect(StatusEffectCode.CONFUSED, 10000);
+            }
+          }
           break;
         case WOOZY:
-          // randomly stop action, turn a direction
+          se.number -= timeElapsed;
+          if (se.number < 0) {
+            se.number += random(Constants.status_woozy_tickMaxTimer);
+            this.turn(Constants.status_woozy_maxAmount - 2 * random(Constants.status_woozy_maxAmount));
+            this.curr_action = UnitAction.NONE;
+          }
           break;
         case CONFUSED:
-          // randomly stop action, move a random direction
+          se.number -= timeElapsed;
+          if (se.number < 0) {
+            se.number += random(Constants.status_confused_tickMaxTimer);
+            this.moveTo(this.x + Constants.status_confused_maxAmount -
+              2 * random(Constants.status_confused_maxAmount), this.y +
+              Constants.status_confused_maxAmount - 2 * random(Constants.status_confused_maxAmount));
+          }
           break;
         case BLEEDING:
-          // dot, cause hemorrhage
+          se.number -= timeElapsed;
+          if (se.number < 0) {
+            se.number += Constants.status_bleed_tickTimer;
+            this.calculateDotDamage(Constants.status_bleed_dot, true, Constants.status_bleed_damageLimit);
+            if (randomChance(Constants.status_bleed_hemorrhagePercentage)) {
+              this.refreshStatusEffect(StatusEffectCode.HEMORRHAGING, 5000);
+            }
+          }
           break;
         case HEMORRHAGING:
-          // dot, cause hemorrhage
+          se.number -= timeElapsed;
+          if (se.number < 0) {
+            se.number += Constants.status_hemorrhage_tickTimer;
+            this.calculateDotDamage(Constants.status_hemorrhage_dot, true, Constants.status_hemorrhage_damageLimit);
+            if (randomChance(Constants.status_hemorrhage_bleedPercentage)) {
+              this.refreshStatusEffect(StatusEffectCode.BLEEDING, 5000);
+            }
+          }
+          break;
         case DROWNING:
           // dot, gives drenched
         case BURNT:
@@ -1164,6 +1251,28 @@ class Unit extends MapObject {
   }
 
 
+  void calculateDotDamage(float percent, boolean max_health) {
+    this.calculateDotDamage(percent, max_health, 0);
+  }
+  void calculateDotDamage(float percent, boolean max_health, float damage_limit) {
+    float damage = 0;
+    if (max_health) {
+      damage = percent * this.health();
+    }
+    else {
+      damage = percent * this.curr_health;
+    }
+    if (damage < 0) {
+      return;
+    }
+    float min_health = this.health() * damage_limit;
+    if (this.curr_health - damage < min_health) {
+      damage = this.curr_health - min_health;
+    }
+    this.damage(null, damage);
+  }
+
+
   void damage(Unit source, float amount) {
     if (this.remove || amount <= 0) {
       return;
@@ -1209,6 +1318,28 @@ class Unit extends MapObject {
     this.curr_action = UnitAction.NONE;
   }
 
+
+  void turnDirection(int direction) {
+    switch(direction) {
+      case LEFT:
+        this.turn(-HALF_PI);
+        break;
+      case RIGHT:
+        this.turn(HALF_PI);
+        break;
+      default:
+        global.errorMessage("ERROR: turn direction " + direction + " not recognized.");
+        break;
+    }
+  }
+  void turn(float angle_change) {
+    this.turnTo(this.facingA + angle_change);
+  }
+  void turnTo(float facingA) {
+    this.facingA = facingA;
+    this.facingX = cos(this.facingA);
+    this.facingY = sin(this.facingA);
+  }
 
   void face(MapObject object) {
     this.face(object.xCenter(), object.yCenter());

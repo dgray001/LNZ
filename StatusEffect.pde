@@ -44,16 +44,38 @@ class StatusEffect {
   private float number = 0; // usually a timer for DoTs
 
   StatusEffect() {}
-  StatusEffect(float timer) {
-    this(timer, false);
+  StatusEffect(StatusEffectCode code, float timer) {
+    this(code, timer, false);
   }
-  StatusEffect(boolean permanent) {
-    this(0, permanent);
+  StatusEffect(StatusEffectCode code, boolean permanent) {
+    this(code, 0, permanent);
   }
-  StatusEffect(float timer, boolean permanent) {
+  StatusEffect(StatusEffectCode code, float timer, boolean permanent) {
     this.timer_gone_start = timer;
     this.timer_gone = timer;
     this.permanent = permanent;
+    switch(code) {
+      case HUNGRY:
+        this.number = Constants.status_hunger_tickTimer;
+        break;
+      case THIRSTY:
+        this.number = Constants.status_thirst_tickTimer;
+        break;
+      case WOOZY:
+        this.number = Constants.status_woozy_tickMaxTimer;
+        break;
+      case CONFUSED:
+        this.number = Constants.status_confused_tickMaxTimer;
+        break;
+      case BLEEDING:
+        this.number = Constants.status_bleed_tickTimer;
+        break;
+      case HEMORRHAGING:
+        this.number = Constants.status_hemorrhage_tickTimer;
+        break;
+      default:
+        break;
+    }
   }
 
   void update(int millis) {
