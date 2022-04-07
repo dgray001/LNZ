@@ -309,6 +309,7 @@ class Unit extends MapObject {
       // Other
       case 1001:
         this.setStrings("Test Dummy", "", "");
+        this.addStatusEffect(StatusEffectCode.UNKILLABLE);
         break;
       case 1002:
         this.setStrings("Chicken", "Gaia", "");
@@ -619,6 +620,15 @@ class Unit extends MapObject {
         attack += this.weapon().attack;
       }
     }
+    if (this.weak()) {
+      attack *= Constants.status_weak_multiplier;
+    }
+    if (this.wilted()) {
+      attack *= Constants.status_wilted_multiplier;
+    }
+    if (this.withered()) {
+      attack *= Constants.status_withered_multiplier;
+    }
     return attack;
   }
 
@@ -632,6 +642,15 @@ class Unit extends MapObject {
         magic += this.weapon().magic;
       }
     }
+    if (this.weak()) {
+      magic *= Constants.status_weak_multiplier;
+    }
+    if (this.wilted()) {
+      magic *= Constants.status_wilted_multiplier;
+    }
+    if (this.withered()) {
+      magic *= Constants.status_withered_multiplier;
+    }
     return magic;
   }
 
@@ -640,6 +659,21 @@ class Unit extends MapObject {
     if (this.weapon() != null && this.weapon().weapon()) {
       defense += this.weapon().defense;
     }
+    if (this.weak()) {
+      defense *= Constants.status_weak_multiplier;
+    }
+    if (this.wilted()) {
+      defense *= Constants.status_wilted_multiplier;
+    }
+    if (this.withered()) {
+      defense *= Constants.status_withered_multiplier;
+    }
+    if (this.sick()) {
+      defense *= Constants.status_sick_defenseMultiplier;
+    }
+    if (this.diseased()) {
+      defense *= Constants.status_diseased_defenseMultiplier;
+    }
     return defense;
   }
 
@@ -647,6 +681,21 @@ class Unit extends MapObject {
     float resistance = this.base_resistance;
     if (this.weapon() != null && this.weapon().weapon()) {
       resistance += this.weapon().resistance;
+    }
+    if (this.weak()) {
+      resistance *= Constants.status_weak_multiplier;
+    }
+    if (this.wilted()) {
+      resistance *= Constants.status_wilted_multiplier;
+    }
+    if (this.withered()) {
+      resistance *= Constants.status_withered_multiplier;
+    }
+    if (this.sick()) {
+      resistance *= Constants.status_sick_defenseMultiplier;
+    }
+    if (this.diseased()) {
+      resistance *= Constants.status_diseased_defenseMultiplier;
     }
     return resistance;
   }
@@ -660,6 +709,15 @@ class Unit extends MapObject {
       else {
         piercing += this.weapon().piercing;
       }
+    }
+    if (this.weak()) {
+      piercing *= Constants.status_weak_multiplier;
+    }
+    if (this.wilted()) {
+      piercing *= Constants.status_wilted_multiplier;
+    }
+    if (this.withered()) {
+      piercing *= Constants.status_withered_multiplier;
     }
     if (piercing > 1) {
       piercing = 1;
@@ -676,6 +734,15 @@ class Unit extends MapObject {
       else {
         penetration += this.weapon().penetration;
       }
+    }
+    if (this.weak()) {
+      penetration *= Constants.status_weak_multiplier;
+    }
+    if (this.wilted()) {
+      penetration *= Constants.status_wilted_multiplier;
+    }
+    if (this.withered()) {
+      penetration *= Constants.status_withered_multiplier;
     }
     if (penetration > 1) {
       penetration = 1;
@@ -738,6 +805,17 @@ class Unit extends MapObject {
     if (this.weapon() != null && this.weapon().weapon()) {
       speed += this.weapon().speed;
     }
+    if (this.chilled) {
+      if (this.element == Element.CYAN) {
+        speed *= Constants.status_chilled_speedMultiplierCyan;
+      }
+      else {
+        speed *= Constants.status_chilled_speedMultiplier;
+      }
+    }
+    if (this.frozen()) {
+      return 0;
+    }
     return speed;
   }
 
@@ -745,6 +823,21 @@ class Unit extends MapObject {
     float tenacity = this.base_tenacity;
     if (this.weapon() != null && this.weapon().weapon()) {
       tenacity += this.weapon().tenacity;
+    }
+    if (this.weak()) {
+      tenacity *= Constants.status_weak_multiplier;
+    }
+    if (this.wilted()) {
+      tenacity *= Constants.status_wilted_multiplier;
+    }
+    if (this.withered()) {
+      tenacity *= Constants.status_withered_multiplier;
+    }
+    if (this.sick()) {
+      tenacity *= Constants.status_sick_defenseMultiplier;
+    }
+    if (this.diseased()) {
+      tenacity *= Constants.status_diseased_defenseMultiplier;
     }
     if (tenacity > 1) {
       tenacity = 1;
@@ -765,7 +858,16 @@ class Unit extends MapObject {
     this.statuses.remove(code);
   }
 
+  void addStatusEffect(StatusEffectCode code) {
+    if (this.statuses.containsKey(code)) {
+      this.statuses.get(code).permanent = true;
+    }
+    else {
+      this.statuses.put(code, new StatusEffect(code, true));
+    }
+  }
   void addStatusEffect(StatusEffectCode code, float timer) {
+    timer *= this.element.resistanceFactorTo(code.element());
     if (this.statuses.containsKey(code)) {
       if (!this.statuses.get(code).permanent) {
         this.statuses.get(code).addTime(timer);
@@ -776,6 +878,7 @@ class Unit extends MapObject {
     }
   }
   void refreshStatusEffect(StatusEffectCode code, float timer) {
+    timer *= this.element.resistanceFactorTo(code.element());
     if (this.statuses.containsKey(code)) {
       if (!this.statuses.get(code).permanent) {
         this.statuses.get(code).refreshTime(timer);
@@ -1138,16 +1241,96 @@ class Unit extends MapObject {
             }
           }
           break;
+        case DRENCHED:
+          se.number -= timeElapsed;
+          if (se.number < 0) {
+            se.number += Constants.status_drenched_tickTimer;
+            if (this.element == Element.RED) {
+              this.calculateDotDamage(Constants.status_drenched_dot, true, Constants.status_drenched_damageLimit);
+            }
+          }
+          break;
         case DROWNING:
-          // dot, gives drenched
+          se.number -= timeElapsed;
+          if (se.number < 0) {
+            se.number += Constants.status_drowning_tickTimer;
+            if (this.element == Element.BLUE) {
+              this.calculateDotDamage(Constants.status_drowning_dot, true, Constants.status_drowning_damageLimitBlue);
+            }
+            else {
+              this.calculateDotDamage(Constants.status_drowning_dot, true, Constants.status_drowning_damageLimit);
+            }
+            if (randomChance(Constants.status_drowning_drenchedPercentage)) {
+              this.refreshStatusEffect(StatusEffectCode.DRENCHED, 5000);
+            }
+          }
+          break;
         case BURNT:
-          // dot, cause charred
+          se.number -= timeElapsed;
+          if (se.number < 0) {
+            se.number += Constants.status_burnt_tickTimer;
+            if (this.element == Element.RED) {
+              this.calculateDotDamage(Constants.status_burnt_dot, true, Constants.status_burnt_damageLimitRed);
+            }
+            else {
+              this.calculateDotDamage(Constants.status_burnt_dot, true, Constants.status_burnt_damageLimit);
+            }
+            if (randomChance(Constants.status_burnt_charredPercentage)) {
+              this.refreshStatusEffect(StatusEffectCode.CHARRED, 5000);
+            }
+          }
+          break;
         case CHARRED:
-          // dot
+          se.number -= timeElapsed;
+          if (se.number < 0) {
+            se.number += Constants.status_charred_tickTimer;
+            if (this.element == Element.RED) {
+              this.calculateDotDamage(Constants.status_charred_dot, true, Constants.status_charred_damageLimitRed);
+            }
+            else {
+              this.calculateDotDamage(Constants.status_charred_dot, true, Constants.status_charred_damageLimit);
+            }
+          }
+          break;
+        case FROZEN:
+          se.number -= timeElapsed;
+          if (se.number < 0) {
+            se.number += Constants.status_frozen_tickTimer;
+            if (this.element == Element.ORANGE) {
+              this.calculateDotDamage(Constants.status_frozen_dot, true, Constants.status_frozen_damageLimit);
+            }
+          }
+          break;
         case ROTTING:
-          // dot, cause decay
+          se.number -= timeElapsed;
+          if (se.number < 0) {
+            se.number += Constants.status_rotting_tickTimer;
+            if (this.element == Element.BROWN) {
+              this.calculateDotDamage(Constants.status_rotting_dot, true, Constants.status_rotting_damageLimitBrown);
+            }
+            else if (this.element == Element.BLUE) {
+              this.calculateDotDamage(Constants.status_rotting_dot, true, Constants.status_rotting_damageLimitBlue);
+            }
+            else {
+              this.calculateDotDamage(Constants.status_rotting_dot, true, Constants.status_rotting_damageLimit);
+            }
+            if (randomChance(Constants.status_rotting_decayedPercentage)) {
+              this.refreshStatusEffect(StatusEffectCode.DECAYED, 5000);
+            }
+          }
+          break;
         case DECAYED:
-          // dot
+          se.number -= timeElapsed;
+          if (se.number < 0) {
+            se.number += Constants.status_decayed_tickTimer;
+            if (this.element == Element.BROWN) {
+              this.calculateDotDamage(Constants.status_decayed_dot, true, Constants.status_decayed_damageLimitBrown);
+            }
+            else {
+              this.calculateDotDamage(Constants.status_decayed_dot, true, Constants.status_decayed_damageLimit);
+            }
+          }
+          break;
         default:
           break;
       }
@@ -1157,7 +1340,20 @@ class Unit extends MapObject {
   // timers independent of curr action
   void update(int timeElapsed) {
     if (this.timer_attackCooldown > 0) {
-      this.timer_attackCooldown -= timeElapsed;
+      if (this.frozen()) {
+        this.timer_attackCooldown = this.attackCooldown();
+      }
+      else if (this.chilled()) {
+        if (this.element == Element.CYAN) {
+          this.timer_attackCooldown -= timeElapsed * Constants.status_chilled_cooldownMultiplierCyan;
+        }
+        else {
+          this.timer_attackCooldown -= timeElapsed * Constants.status_chilled_cooldownMultiplier;
+        }
+      }
+      else {
+        this.timer_attackCooldown -= timeElapsed;
+      }
     }
   }
 
@@ -1247,7 +1443,17 @@ class Unit extends MapObject {
         effectiveDefense = 0;
         break;
     }
-    return max(0, power - effectiveDefense) * this.element.resistanceFactorTo(element);
+    float subtotal = max(0, power - effectiveDefense) * this.element.resistanceFactorTo(element);
+    if (element == Element.BLUE && this.drenched()) {
+      subtotal *= Constants.status_drenched_multiplier;
+    }
+    if (this.sick()) {
+      subtotal *= Constants.status_sick_damageMultiplier;
+    }
+    if (this.diseased()) {
+      subtotal *= Constants.status_diseased_damageMultiplier;
+    }
+    return subtotal;
   }
 
 
@@ -1277,7 +1483,15 @@ class Unit extends MapObject {
     if (this.remove || amount <= 0) {
       return;
     }
+    if (this.invulnerable()) {
+      return;
+    }
     this.curr_health -= amount;
+    if (this.unkillable()) {
+      if (this.curr_health < this.statuses.get(StatusEffectCode.UNKILLABLE).number) {
+        this.curr_health = this.statuses.get(StatusEffectCode.UNKILLABLE).number;
+      }
+    }
     if (this.curr_health <= 0) {
       this.curr_health = 0;
       this.remove = true;
@@ -1287,6 +1501,14 @@ class Unit extends MapObject {
       source.damaged(this, amount);
       if (this.remove) {
         source.killed(this);
+      }
+    }
+    if (this.ID == 1001) {
+      if (source == null) {
+        this.description += "\n" + amount + " damage.";
+      }
+      else {
+        this.description += "\n" + amount + " damage from " + source.display_name() + ".";
       }
     }
   }

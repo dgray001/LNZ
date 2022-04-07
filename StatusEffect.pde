@@ -34,6 +34,40 @@ enum StatusEffectCode {
     }
     return StatusEffectCode.ERROR;
   }
+
+  public Element element() {
+    return StatusEffectCode.element(this);
+  }
+  public static element(StatusEffectCode code) {
+    switch(code) {
+      case DRENCHED:
+      case DROWNING:
+        return Element.BLUE;
+      case BURNT:
+      case CHARRED:
+        return Element.RED;
+      case CHILLED:
+      case FROZEN:
+        return Element.CYAN;
+      case SICK:
+      case DISEASED:
+        return Element.ORANGE;
+      case ROTTING:
+      case DECAYED:
+        return Element.BROWN;
+      case SHAKEN:
+      case FALLEN:
+        return Element.PURPLE;
+      case SHOCKED:
+      case PARALYZED:
+        return Element.YELLOW;
+      case UNSTABLE:
+      case RADIOACTIVE:
+        return Element.MAGENTA;
+      default:
+        return Element.GRAY;
+    }
+  }
 }
 
 
@@ -72,6 +106,9 @@ class StatusEffect {
         break;
       case HEMORRHAGING:
         this.number = Constants.status_hemorrhage_tickTimer;
+        break;
+      case UNKILLABLE:
+        this.number = 1;
         break;
       default:
         break;
