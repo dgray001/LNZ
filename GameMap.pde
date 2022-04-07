@@ -1441,7 +1441,7 @@ class GameMap {
         2 * Constants.item_defaultSize * this.zoom);
       translate(-translateItemX, -translateItemY);
     }
-    g.removeCache(u.getImage());
+    //g.removeCache(u.getImage()); (CAUSES HUGE LAG WHEN 5+ UNITS ARE UNCACHED EACH FRAME)
     noTint();
     rotate(-net_rotation);
     if (flip) {
