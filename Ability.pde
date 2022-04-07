@@ -5,7 +5,19 @@ class Ability {
   private int target_key = -1;
 
   Ability(int ID) {
-    switch(ID) {
+    this.ID = ID;
+    switch(this.ID) {
+      case 101:
+      case 102:
+      case 103:
+      case 104:
+      case 105:
+      case 106:
+      case 107:
+      case 108:
+      case 109:
+      case 110:
+        break;
       default:
         global.errorMessage("ERROR: Ability ID " + this.ID + " not found.");
         break;
@@ -14,6 +26,26 @@ class Ability {
 
   String displayName() {
     switch(this.ID) {
+      case 101:
+        return "Fearless Leader";
+      case 102:
+        return "Mighty Pen";
+      case 103:
+        return "Nelson Glare";
+      case 104:
+        return "Senseless Grit";
+      case 105:
+        return "Rage of the Ben";
+      case 106:
+        return "Fearless Leader II";
+      case 107:
+        return "Mighty Pen II";
+      case 108:
+        return "Nelson Glare II";
+      case 109:
+        return "Senseless Grit II";
+      case 110:
+        return "Rage of the Ben II";
       default:
         return "ERROR";
     }
@@ -21,6 +53,26 @@ class Ability {
 
   String description() {
     switch(this.ID) {
+      case 101:
+        return "";
+      case 102:
+        return "";
+      case 103:
+        return "";
+      case 104:
+        return "";
+      case 105:
+        return "";
+      case 106:
+        return "";
+      case 107:
+        return "";
+      case 108:
+        return "";
+      case 109:
+        return "";
+      case 110:
+        return "";
       default:
         return "-- error -- ";
     }
@@ -73,6 +125,11 @@ class Ability {
   }
 
 
+  PImage getImage() {
+    return global.images.getImage("abilities/" + this.ID + ".png");
+  }
+
+
   void activate(Unit u, GameMap map) {
     this.activate(u, map, -1);
   }
@@ -91,7 +148,12 @@ class Ability {
   }
 
 
-  void update(Unit u, GameMap map) {
+  void update(int timeElapsed, Unit u, GameMap map) {
+    this.update(timeElapsed);
+    switch(this.ID) {
+      default:
+        break;
+    }
   }
 
 
@@ -101,105 +163,6 @@ class Ability {
     }
     if (this.timer_other > 0) {
       this.timer_other -= timeElapsed;
-    }
-  }
-
-
-  float health(float curr_health) {
-    switch(this.ID) {
-      default:
-        return curr_health;
-    }
-  }
-
-  float attack(float curr_attack) {
-    switch(this.ID) {
-      default:
-        return curr_attack;
-    }
-  }
-
-  float magic(float curr_magic) {
-    switch(this.ID) {
-      default:
-        return curr_magic;
-    }
-  }
-
-  float defense(float curr_defense) {
-    switch(this.ID) {
-      default:
-        return curr_defense;
-    }
-  }
-
-  float resistance(float curr_resistance) {
-    switch(this.ID) {
-      default:
-        return curr_resistance;
-    }
-  }
-
-  float piercing(float curr_piercing) {
-    switch(this.ID) {
-      default:
-        return curr_piercing;
-    }
-  }
-
-  float penetration(float curr_penetration) {
-    switch(this.ID) {
-      default:
-        return curr_penetration;
-    }
-  }
-
-  float attackRange(float curr_attackRange) {
-    switch(this.ID) {
-      default:
-        return curr_attackRange;
-    }
-  }
-
-  float attackCooldown(float curr_attackCooldown) {
-    switch(this.ID) {
-      default:
-        return curr_attackCooldown;
-    }
-  }
-
-  float attackTime(float curr_attackTime) {
-    switch(this.ID) {
-      default:
-        return curr_attackTime;
-    }
-  }
-
-  float sight(float curr_sight) {
-    switch(this.ID) {
-      default:
-        return curr_sight;
-    }
-  }
-
-  float speed(float curr_speed) {
-    switch(this.ID) {
-      default:
-        return curr_speed;
-    }
-  }
-
-  float tenacity(float curr_tenacity) {
-    switch(this.ID) {
-      default:
-        return curr_tenacity;
-    }
-  }
-
-  int agility(int curr_agility) {
-    switch(this.ID) {
-      default:
-        return curr_agility;
     }
   }
 }

@@ -169,7 +169,16 @@ enum Alliance {
 
 
 enum StatusEffectCode {
-  ERROR("Error");
+  ERROR("Error"), HUNGRY("Hungry"), WEAK("Weak"), THIRSTY("Thirsty"), WOOZY("Woozy"),
+  CONFUSED("Confused"), INVULNERABLE("Invulnerable"), UNKILLABLE("Unkillable"),
+  BLEEDING("Bleeding"), HEMORRHAGING("Hemorrhaging"), WILTED("Wilted"), WITHERED("Withered"),
+  DRENCHED("Drenched"), DROWNING("Drowning"), BURNT("Burnt"), CHARRED("Charred"),
+  CHILLED("Chilled"), FROZEN("Frozen"), SICK("Sick"), DISEASED("Diseased"), ROTTING("Rotting"),
+  DECAYED("Decayed"), SHAKEN("Shaken"), FALLEN("Fallen"), SHOCKED("Shocked"),
+  PARALYZED("Paralyzed"), UNSTABLE("Unstable"), RADIOACTIVE("Radioactive"),
+
+  NELSON_GLARE("Nelson Glared"), SENSELESS_GRIT("Senseless Grit"),
+  ;
 
   private static final List<StatusEffectCode> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 
@@ -199,7 +208,40 @@ enum StatusEffectCode {
 
 
 class StatusEffect {
-  private StatusEffectCode code = StatusEffectCode.ERROR;
+  private boolean permanent = false;
+  private float timer_gone_start = 0;
+  private float timer_gone = 0;
+  private float number = 0; // usually a timer for DoTs
+
+  StatusEffect() {}
+  StatusEffect(float timer) {
+    this(timer, false);
+  }
+  StatusEffect(boolean permanent) {
+    this(0, permanent);
+  }
+  StatusEffect(float timer, boolean permanent) {
+    this.timer_gone_start = timer;
+    this.timer_gone = timer;
+    this.permanent = permanent;
+  }
+
+  void update(int millis) {
+    if (!this.permanent) {
+      this.timer_gone -= millis;
+    }
+  }
+
+  void startTimer(float timer) {
+    this.permanent = false;
+    this.timer_gone_start = timer;
+    this.timer_gone = timer;
+  }
+
+  void addTime(float extra_time) {
+    this.timer_gone_start += extra_time;
+    this.timer_gone += extra_time;
+  }
 }
 
 
@@ -271,6 +313,8 @@ class Unit extends MapObject {
   protected float facingA = 0; // angle in radians
 
   protected HashMap<GearSlot, Item> gear = new HashMap<GearSlot, Item>();
+  protected ArrayList<Ability> abilities = new ArrayList<Ability>();
+  protected HashMap<StatusEffectCode, StatusEffect> statuses = new HashMap<StatusEffectCode, StatusEffect>();
 
   protected float base_health = 1;
   protected float base_attack = 0;
@@ -756,6 +800,113 @@ class Unit extends MapObject {
   }
 
 
+  void removeStatusEffect(StatusEffectCode code) {
+    this.statuses.remove(code);
+  }
+
+  void addStatusEffect(StatusEffectCode code, float timer) {
+    if (this.statuses.containsKey(code)) {
+      if (!this.statuses.get(code).permanent) {
+        this.statuses.get(code).addTime(timer);
+      }
+    }
+    else {
+      this.statuses.put(code, new StatusEffect(timer));
+    }
+  }
+
+  boolean hasStatusEffect(StatusEffectCode code) {
+    return this.statuses.containsKey(code);
+  }
+  boolean invulnerable() {
+    return this.hasStatusEffect(StatusEffectCode.INVULNERABLE);
+  }
+  boolean unkillable() {
+    return this.hasStatusEffect(StatusEffectCode.UNKILLABLE);
+  }
+  boolean hungry() {
+    return this.hasStatusEffect(StatusEffectCode.HUNGRY);
+  }
+  boolean weak() {
+    return this.hasStatusEffect(StatusEffectCode.WEAK);
+  }
+  boolean thirsty() {
+    return this.hasStatusEffect(StatusEffectCode.THIRSTY);
+  }
+  boolean woozy() {
+    return this.hasStatusEffect(StatusEffectCode.WOOZY);
+  }
+  boolean confused() {
+    return this.hasStatusEffect(StatusEffectCode.CONFUSED);
+  }
+  boolean bleeding() {
+    return this.hasStatusEffect(StatusEffectCode.BLEEDING);
+  }
+  boolean hemorrhaging() {
+    return this.hasStatusEffect(StatusEffectCode.HEMORRHAGING);
+  }
+  boolean wilted() {
+    return this.hasStatusEffect(StatusEffectCode.WILTED);
+  }
+  boolean withered() {
+    return this.hasStatusEffect(StatusEffectCode.WITHERED);
+  }
+  boolean drenched() {
+    return this.hasStatusEffect(StatusEffectCode.DRENCHED);
+  }
+  boolean drowning() {
+    return this.hasStatusEffect(StatusEffectCode.DROWNING);
+  }
+  boolean burnt() {
+    return this.hasStatusEffect(StatusEffectCode.BURNT);
+  }
+  boolean charred() {
+    return this.hasStatusEffect(StatusEffectCode.CHARRED);
+  }
+  boolean chilled() {
+    return this.hasStatusEffect(StatusEffectCode.CHILLED);
+  }
+  boolean frozen() {
+    return this.hasStatusEffect(StatusEffectCode.FROZEN);
+  }
+  boolean sick() {
+    return this.hasStatusEffect(StatusEffectCode.SICK);
+  }
+  boolean diseased() {
+    return this.hasStatusEffect(StatusEffectCode.DISEASED);
+  }
+  boolean rotting() {
+    return this.hasStatusEffect(StatusEffectCode.ROTTING);
+  }
+  boolean decayed() {
+    return this.hasStatusEffect(StatusEffectCode.DECAYED);
+  }
+  boolean shaken() {
+    return this.hasStatusEffect(StatusEffectCode.SHAKEN);
+  }
+  boolean fallen() {
+    return this.hasStatusEffect(StatusEffectCode.FALLEN);
+  }
+  boolean shocked() {
+    return this.hasStatusEffect(StatusEffectCode.SHOCKED);
+  }
+  boolean paralyzed() {
+    return this.hasStatusEffect(StatusEffectCode.PARALYZED);
+  }
+  boolean unstable() {
+    return this.hasStatusEffect(StatusEffectCode.UNSTABLE);
+  }
+  boolean radioactive() {
+    return this.hasStatusEffect(StatusEffectCode.RADIOACTIVE);
+  }
+  boolean nelsonGlare() {
+    return this.hasStatusEffect(StatusEffectCode.NELSON_GLARE);
+  }
+  boolean senselessGrit() {
+    return this.hasStatusEffect(StatusEffectCode.SENSELESS_GRIT);
+  }
+
+
   void update(int timeElapsed, int myKey, GameMap map) {
     // timers
     this.update(timeElapsed);
@@ -928,6 +1079,25 @@ class Unit extends MapObject {
     for (Map.Entry<GearSlot, Item> slot : this.gear.entrySet()) {
       if (slot.getValue() != null && slot.getValue().remove) {
         this.gear.put(slot.getKey(), null);
+      }
+    }
+    // update status timers
+    Iterator status_iterator = this.statuses.entrySet().iterator();
+    while(status_iterator.hasNext()) {
+      Map.Entry<StatusEffectCode, ArrayList<StatusEffect>> entry =
+        (Map.Entry<StatusEffectCode, ArrayList<StatusEffect>>)status_iterator.next();
+      for (int i = 0; i < entry.getValue().size(); i++) {
+        StatusEffect se = entry.getValue().get(i);
+        if (!se.permanent) {
+          se.timer_gone -= timeElapsed;
+          if (se.timer_gone < 0) {
+            entry.getValue().remove(i);
+            i--;
+          }
+        }
+      }
+      if (entry.getValue().size() == 0) {
+        unit_iterator.remove();
       }
     }
   }
