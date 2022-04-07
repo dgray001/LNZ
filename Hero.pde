@@ -701,8 +701,11 @@ class Hero extends Unit {
     private float yi_picture = 0;
     private float xf_picture = 0;
     private float yf_picture = 0;
+    private float ability_width = 0;
+    private float slot_width = 0;
 
     protected color color_background = color(210, 153, 108);
+    protected color color_ability_border = color(120, 70, 40);
 
     InventoryBar() {
       this.setHeight(Constants.hero_defaultInventoryBarHeight);
@@ -720,6 +723,7 @@ class Hero extends Unit {
       this.yi_picture = this.yi + border_thickness;
       this.xf_picture = this.xf_border - border_thickness;
       this.yf_picture = this.yf - border_thickness;
+      this.ability_width = 0.2 * (this.xf_bar - this.xi_bar) - 4;
     }
 
     PImage getBorderImage() {
@@ -752,10 +756,24 @@ class Hero extends Unit {
       rectMode(CORNERS);
       noStroke();
       fill(this.color_background);
-      rect(this.xi_bar, this.yi, this.xf_bar, this.yf);
+      rect(this.xi_bar, this.yi, this.xf_bar, this.yf, 12);
       imageMode(CORNERS);
       image(this.getBorderImage(), this.xi_border, this.yi, this.xf_border, this.yf);
       image(this.getHeroImage(), this.xi_picture, this.yi_picture, this.xf_picture, this.yf_picture);
+      float xi = this.xi_bar + 2;
+      float yi = this.yf - this.ability_width - 4;
+      imageMode(CORNER);
+      for (int i = 0; i < Constants.hero_abilityNumber; i++, xi += this.ability_width + 4) {
+        rectMode(CORNER);
+        fill(0);
+        strokeWeight(2);
+        stroke(this.color_ability_border);
+        rect(xi, yi, this.ability_width, this.ability_width, 10);
+        //image(ability border)
+        if (Hero.this.ability_activated.get(i)) {
+          image(Hero.this.abilities.get(i).getImage(), xi, yi, this.ability_width, this.ability_width);
+        }
+      }
     }
 
     void mouseMove(float mX, float mY) {
@@ -787,16 +805,56 @@ class Hero extends Unit {
   protected LeftPanelMenu left_panel_menu = LeftPanelMenu.MAIN;
   protected HeroInventory inventory = new HeroInventory();
   protected InventoryBar inventory_bar = new InventoryBar();
+  protected ArrayList<Boolean> ability_activated = new ArrayList<Boolean>();
 
   protected Queue<String> messages = new LinkedList<String>();
 
   Hero(int ID) {
     super(ID);
     this.code = HeroCode.heroCodeFromId(ID);
+    this.addAbilities();
   }
   Hero(HeroCode code) {
     super(HeroCode.unit_id(code));
     this.code = code;
+    this.addAbilities();
+  }
+
+
+  void addAbilities() {
+    this.addAbilities(false);
+  }
+  void addAbilities(boolean powerful_version) {
+    for (int i = 0; i < Constants.hero_abilityNumber; i++) {
+      int ability_id = 2 * Constants.hero_abilityNumber * (this.ID - 1101) + i + 101;
+      if (powerful_version) {
+        ability_id += Constants.hero_abilityNumber;
+      }
+      this.abilities.add(new Ability(ability_id));
+      this.ability_activated.add(false);
+    }
+  }
+
+  void activateAbility(int index) {
+    if (index < 0 || index >= this.ability_activated.size()) {
+      global.log("WARNING: Trying to activate ability index " + index + " but it doesn't exist.");
+      return;
+    }
+    this.ability_activated.set(index, true);
+  }
+
+  void updgradeAbility(int index) {
+    if (index < 0 || index >= this.abilities.size()) {
+      global.log("WARNING: Trying to upgrade ability index " + index + " but it doesn't exist.");
+      return;
+    }
+    Ability a = this.abilities.get(index);
+    if (a.ID % 10 > 5) {
+      global.log("WARNING: Trying to upgrade a tier II ability.");
+      return;
+    }
+    int upgrade_ability_id = a.ID + 5;
+    a = new Ability(upgrade_ability_id);
   }
 
 
