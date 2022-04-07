@@ -22,6 +22,7 @@ abstract class Button {
   protected boolean stay_dehovered = false;
   protected boolean adjust_for_text_descent = false;
   protected boolean hover_check_after_release = true;
+  protected boolean use_time_elapsed = false;
   // timer
   protected int hold_timer = 0;
   protected int lastUpdateTime = millis();
@@ -107,10 +108,17 @@ abstract class Button {
     if (!this.hidden) {
       drawButton();
       if (this.clicked) {
-        this.hold_timer += millis - this.lastUpdateTime;
+        if (this.use_time_elapsed) {
+          this.hold_timer += millis;
+        }
+        else {
+          this.hold_timer += millis - this.lastUpdateTime;
+        }
       }
     }
-    this.lastUpdateTime = millis;
+    if (!this.use_time_elapsed) {
+      this.lastUpdateTime = millis;
+    }
   }
 
   void mouseMove(float mX, float mY) {

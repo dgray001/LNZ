@@ -58,7 +58,7 @@ enum GameMapCode {
 enum ReadFileObject {
   NONE("None"), MAP("Map"), FEATURE("Feature"), UNIT("Unit"), ITEM("Item"),
   PROJECTILE("Projectile"), LEVEL("Level"), LINKER("Linker"), TRIGGER("Trigger"),
-  CONDITION("Condition"), EFFECT("Effect");
+  CONDITION("Condition"), EFFECT("Effect"), STATUS_EFFECT("StatusEffect");
 
   private static final List<ReadFileObject> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 
@@ -1963,6 +1963,8 @@ class GameMap {
     int max_item_key = 0;
     Item curr_item = null;
     Projectile curr_projectile = null;
+    StatusEffectCode curr_status_code = StatusEffectCode.ERROR;
+    StatusEffect curr_status = null;
 
     for (String line : lines) {
       String[] parameters = split(line, ':');
@@ -2012,6 +2014,10 @@ class GameMap {
             }
             object_queue.push(type);
             curr_projectile = new Projectile(toInt(trim(parameters[2])));
+            break;
+          case STATUS_EFFECT:
+            object_queue.push(type);
+            curr_status = new StatusEffect();
             break;
           default:
             global.errorMessage("ERROR: Can't add a " + type + " type to GameMap data.");
@@ -2103,6 +2109,24 @@ class GameMap {
               this.addProjectile(curr_projectile);
               curr_projectile = null;
               break;
+            case STATUS_EFFECT:
+              if (curr_status == null) {
+                global.errorMessage("ERROR: Trying to end a null status effect.");
+              }
+              if (object_queue.empty()) {
+                global.errorMessage("ERROR: Trying to end a status effect not inside any other object.");
+                break;
+              }
+              if (object_queue.peek() != ReadFileObject.UNIT) {
+                global.errorMessage("ERROR: Trying to end a status effect not inside a unit.");
+                break;
+              }
+              if (curr_unit == null) {
+                global.errorMessage("ERROR: Trying to end a status effect inside a null unit.");
+                break;
+              }
+              curr_unit.statuses.put(curr_status_code, curr_status);
+              break;
             default:
               break;
           }
@@ -2126,7 +2150,12 @@ class GameMap {
             if (curr_unit == null) {
               global.errorMessage("ERROR: Trying to add unit data to null unit.");
             }
-            curr_unit.addData(dataname, data);
+            if (dataname.equals("next_status_code")) {
+              curr_status_code = StatusEffectCode.code(data);
+            }
+            else {
+              curr_unit.addData(dataname, data);
+            }
             break;
           case ITEM:
             if (curr_item == null) {
@@ -2139,6 +2168,12 @@ class GameMap {
               global.errorMessage("ERROR: Trying to add projectile data to null projectile.");
             }
             curr_projectile.addData(dataname, data);
+            break;
+          case STATUS_EFFECT:
+            if (curr_status == null) {
+              global.errorMessage("ERROR: Trying to add status effect data to null status effect.");
+            }
+            curr_status.addData(dataname, data);
             break;
           default:
             break;

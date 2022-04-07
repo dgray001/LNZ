@@ -327,9 +327,9 @@ class Level {
 
 
   void update(int millis) {
+    int timeElapsed = millis - this.last_update_time;
     if (this.currMap != null) {
       this.currMap.update(millis);
-      int timeElapsed = millis - this.last_update_time;
       for (Map.Entry<Integer, Trigger> entry : this.triggers.entrySet()) {
         entry.getValue().update(timeElapsed, this);
       }
@@ -348,7 +348,6 @@ class Level {
           this.currMap.addHeaderMessage(this.player.messages.poll());
         }
       }
-      this.last_update_time = millis;
     }
     else {
       rectMode(CORNERS);
@@ -357,8 +356,9 @@ class Level {
       rect(this.xi, this.yi, this.xf, this.yf);
     }
     if (this.player != null) {
-      this.player.update_hero(millis);
+      this.player.update_hero(timeElapsed);
     }
+    this.last_update_time = millis;
   }
 
   void mouseMove(float mX, float mY) {

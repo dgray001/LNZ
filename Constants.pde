@@ -226,4 +226,6 @@ static class Constants {
   static final int hero_hungerTimer = 4500;
   static final int hero_thirstTimer = 2000;
   static final int hero_abilityNumber = 5;
+  static final int hero_hungerThreshhold = 20;
+  static final int hero_thirstThreshhold = 20;
 }

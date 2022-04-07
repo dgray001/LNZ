@@ -12,6 +12,7 @@ class Inventory {
         this.setStroke(color(142, 75, 50), 3);
         this.setSize(button_size);
         this.roundness = 0;
+        this.use_time_elapsed = true;
       }
 
       void setSize(float size) {
@@ -39,11 +40,11 @@ class Inventory {
       this.button = new InventoryButton(button_size);
     }
 
-    void update(int millis) {
+    void update(int timeElapsed) {
       if (this.item != null) {
         image(this.item.getImage(), this.button.xi, this.button.yi, this.button.xf, this.button.yf);
       }
-      this.button.update(millis);
+      this.button.update(timeElapsed);
       if (this.item != null && this.item.remove) {
         this.item = null;
       }
@@ -169,7 +170,7 @@ class Inventory {
   }
 
 
-  void update(int millis) {
+  void update(int timeElapsed) {
     rectMode(CORNER);
     fill(this.color_background);
     noStroke();
@@ -182,7 +183,7 @@ class Inventory {
           break;
         }
         translate(2 + x * this.button_size, 2 + y * this.button_size);
-        this.slots.get(i).update(millis);
+        this.slots.get(i).update(timeElapsed);
         translate(-2 - x * this.button_size, -2 - y * this.button_size);
       }
     }
