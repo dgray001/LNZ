@@ -1,3 +1,10 @@
+boolean randomChance(float percent) {
+  if (random(1) < percent) {
+    return true;
+  }
+  return false;
+}
+
 // String to primitive casts
 boolean isInt(String str) {
   try {

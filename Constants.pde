@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220407: v0.6.5s" +
+  "\n20220407: v0.6.5u" +
   "\nLines: 19828 (v0.6.5q)" +
   "";
   static final String version_history =
@@ -153,6 +153,7 @@ static class Constants {
   static final int unit_defaultHeight = 5;
   static final float unit_defaultSight = 5.5;
   static final float unit_sneakSpeed = 0.5;
+  static final float unit_moveCollisionStopActionTime = 300;
   static final float unit_small_facing_threshhold = 0.01;
   static final float unit_defaultBaseAttackCooldown = 1200;
   static final float unit_defaultBaseAttackTime = 300;
@@ -182,14 +183,53 @@ static class Constants {
 
   // Resistances
   static final float resistance_default = 1;
-  static final float resistance_blue_blue = 0.95;
-  static final float resistance_red_red = 0.95;
-  static final float resistance_cyan_cyan = 0.95;
-  static final float resistance_orange_orange = 0.95;
-  static final float resistance_brown_brown = 0.95;
-  static final float resistance_purple_purple = 0.95;
-  static final float resistance_yellow_yellow = 0.95;
-  static final float resistance_magenta_magenta = 0.95;
+  static final float resistance_blue_blue = 0.85;
+  static final float resistance_blue_red = 0.8;
+  static final float resistance_blue_brown = 1.2;
+  static final float resistance_red_red = 0.85;
+  static final float resistance_red_cyan = 0.8;
+  static final float resistance_red_blue = 1.2;
+  static final float resistance_cyan_cyan = 0.85;
+  static final float resistance_cyan_orange = 0.8;
+  static final float resistance_cyan_red = 1.2;
+  static final float resistance_orange_orange = 0.85;
+  static final float resistance_orange_brown = 0.8;
+  static final float resistance_orange_cyan = 1.2;
+  static final float resistance_brown_brown = 0.85;
+  static final float resistance_brown_blue = 0.8;
+  static final float resistance_brown_orange = 1.2;
+  static final float resistance_purple_purple = 0.85;
+  static final float resistance_purple_yellow = 0.8;
+  static final float resistance_purple_magenta = 1.2;
+  static final float resistance_yellow_yellow = 0.85;
+  static final float resistance_yellow_magenta = 0.8;
+  static final float resistance_yellow_purple = 1.2;
+  static final float resistance_magenta_magenta = 0.85;
+  static final float resistance_magenta_purple = 0.8;
+  static final float resistance_magenta_yellow = 1.2;
+
+  // Status Effects
+  static final float status_hunger_tickTimer = 1400;
+  static final float status_hunger_dot = 0.02;
+  static final float status_hunger_damageLimit = 0.5;
+  static final float status_hunger_weakPercentage = 0.1;
+  static final float status_thirst_tickTimer = 1400;
+  static final float status_thirst_dot = 0.02;
+  static final float status_thirst_damageLimit = 0.35;
+  static final float status_thirst_woozyPercentage = 0.07;
+  static final float status_thirst_confusedPercentage = 0.07;
+  static final float status_woozy_tickMaxTimer = 10000;
+  static final float status_woozy_maxAmount = HALF_PI;
+  static final float status_confused_tickMaxTimer = 10000;
+  static final float status_confused_maxAmount = 3;
+  static final float status_bleed_tickTimer = 1200;
+  static final float status_bleed_dot = 0.02;
+  static final float status_bleed_damageLimit = 0.1;
+  static final float status_bleed_hemorrhagePercentage = 0.1;
+  static final float status_hemorrhage_tickTimer = 900;
+  static final float status_hemorrhage_dot = 0.04;
+  static final float status_hemorrhage_damageLimit = 0;
+  static final float status_hemorrhage_bleedPercentage = 0.7;
 
   // AI
   static final float ai_chickenMoveDistance = 2;
