@@ -218,7 +218,7 @@ class Hero extends Unit {
     }
 
     @Override
-    void update(int millis) {
+    void update(int timeElapsed) {
       rectMode(CORNER);
       fill(this.color_background);
       noStroke();
@@ -227,25 +227,25 @@ class Hero extends Unit {
       for (Map.Entry<GearSlot, Item> entry : Hero.this.gear.entrySet()) {
         switch(entry.getKey()) {
           case WEAPON:
-            this.updateSlot(millis, 3, entry.getValue());
+            this.updateSlot(timeElapsed, 3, entry.getValue());
             break;
           case HEAD:
-            this.updateSlot(millis, 1, entry.getValue());
+            this.updateSlot(timeElapsed, 1, entry.getValue());
             break;
           case CHEST:
-            this.updateSlot(millis, 4, entry.getValue());
+            this.updateSlot(timeElapsed, 4, entry.getValue());
             break;
           case LEGS:
-            this.updateSlot(millis, 7, entry.getValue());
+            this.updateSlot(timeElapsed, 7, entry.getValue());
             break;
           case FEET:
-            this.updateSlot(millis, 10, entry.getValue());
+            this.updateSlot(timeElapsed, 10, entry.getValue());
             break;
         }
       }
     }
 
-    void updateSlot(int millis, int index, Item i) {
+    void updateSlot(int timeElapsed, int index, Item i) {
       int x = index % this.max_cols;
       if (x < 0 || x >= this.max_cols) {
         return;
@@ -256,7 +256,7 @@ class Hero extends Unit {
       }
       this.slots.get(index).item = i;
       translate(2 + x * this.button_size, 2 + y * this.button_size);
-      this.slots.get(index).update(millis);
+      this.slots.get(index).update(timeElapsed);
       if (this.slots.get(index).item == null) {
         String iconName = "icons/";
         switch(index) {
@@ -472,21 +472,21 @@ class Hero extends Unit {
 
 
     @Override
-    void update(int millis) {
+    void update(int timeElapsed) {
       // main inventory
-      super.update(millis);
+      super.update(timeElapsed);
       // gear
       float gearInventoryTranslateX = - this.gear_inventory.display_width - 2;
       float gearInventoryTranslateY = 0.5 * (this.display_height - this.gear_inventory.display_height);
       translate(gearInventoryTranslateX, gearInventoryTranslateY);
-      this.gear_inventory.update(millis);
+      this.gear_inventory.update(timeElapsed);
       translate(-gearInventoryTranslateX, -gearInventoryTranslateY);
       // feature
       if (this.feature_inventory != null) {
         float featureInventoryTranslateX = 0.5 * (this.display_width - this.feature_inventory.display_width);
         float featureInventoryTranslateY = - this.feature_inventory.display_height - 2;
         translate(featureInventoryTranslateX, featureInventoryTranslateY);
-        this.feature_inventory.update(millis);
+        this.feature_inventory.update(timeElapsed);
         translate(-featureInventoryTranslateX, -featureInventoryTranslateY);
       }
       // item holding
@@ -752,7 +752,7 @@ class Hero extends Unit {
       return global.images.getImage(imageName);
     }
 
-    void update(int millis) {
+    void update(int timeElapsed) {
       rectMode(CORNERS);
       noStroke();
       fill(this.color_background);
@@ -797,8 +797,8 @@ class Hero extends Unit {
   protected float money = 0;
   protected float base_mana = 0;
   protected float curr_mana = 0;
-  protected int hunger = 100;
-  protected int thirst = 100;
+  protected int hunger = 21;
+  protected int thirst = 21;
   protected int hunger_timer = Constants.hero_hungerTimer;
   protected int thirst_timer = Constants.hero_thirstTimer;
 
@@ -958,10 +958,10 @@ class Hero extends Unit {
   }
 
 
-  void drawLeftPanel(int millis, float panel_width) {
+  void drawLeftPanel(int timeElapsed, float panel_width) {
     switch(this.left_panel_menu) {
       case MAIN:
-        this.drawMainPanel(millis, panel_width);
+        this.drawMainPanel(timeElapsed, panel_width);
         break;
       case NONE:
       default:
@@ -969,7 +969,7 @@ class Hero extends Unit {
     }
   }
 
-  void drawMainPanel(int millis, float panel_width) {
+  void drawMainPanel(int timeElapsed, float panel_width) {
     // draw left panel
   }
 
@@ -1039,22 +1039,28 @@ class Hero extends Unit {
   }
 
 
-  void update_hero(int millis) {
-    this.hunger_timer -= millis;
+  void update_hero(int timeElapsed) {
+    this.hunger_timer -= timeElapsed;
     if (this.hunger_timer < 0) {
       this.hungerTick();
     }
-    this.thirst_timer -= millis;
+    this.thirst_timer -= timeElapsed;
     if (this.thirst_timer < 0) {
       this.thirstTick();
     }
-    this.inventory_bar.update(millis);
+    this.inventory_bar.update(timeElapsed);
     if (this.inventory.viewing) {
       float inventoryTranslateX = 0.5 * (width - this.inventory.display_width);
       float inventoryTranslateY = 0.5 * (height - this.inventory.display_height);
       translate(inventoryTranslateX, inventoryTranslateY);
-      this.inventory.update(millis);
+      this.inventory.update(timeElapsed);
       translate(-inventoryTranslateX, -inventoryTranslateY);
+    }
+    if (this.hunger < Constants.hero_hungerThreshhold) {
+      this.refreshStatusEffect(StatusEffectCode.HUNGRY, 3000);
+    }
+    if (this.thirst < Constants.hero_thirstThreshhold) {
+      this.refreshStatusEffect(StatusEffectCode.THIRSTY, 3000);
     }
   }
 
