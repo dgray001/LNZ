@@ -777,7 +777,7 @@ class Hero extends Unit {
   protected float experience = 0;
   protected int experience_next_level = 1;
   protected float money = 0;
-  protected float mana = 0;
+  protected float base_mana = 0;
   protected float curr_mana = 0;
   protected int hunger = 100;
   protected int thirst = 100;
@@ -819,6 +819,12 @@ class Hero extends Unit {
       default:
         return "Error";
     }
+  }
+
+
+  float mana() {
+    float mana = this.base_mana;
+    return mana;
   }
 
 
@@ -953,6 +959,24 @@ class Hero extends Unit {
     }
     else if (this.thirst < 0) {
       this.thirst = 0;
+    }
+  }
+
+  void increaseMana(int amount) {
+    this.changeMana(amount);
+  }
+
+  void decreaseMana(int amount) {
+    this.changeMana(-amount);
+  }
+
+  void changeMana(int amount) {
+    this.curr_mana += amount;
+    if (this.curr_mana < 0) {
+      this.curr_mana = 0;
+    }
+    else if (this.curr_mana > this.mana()) {
+      this.curr_mana = this.mana();
     }
   }
 
