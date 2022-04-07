@@ -4,8 +4,8 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220407: v0.6.5u" +
-  "\nLines: 19828 (v0.6.5q)" +
+  "\n20220407: v0.6.5v" +
+  "\nLines: 20454 (v0.6.5v)" +
   "";
   static final String version_history =
   "Liberal Nazi Zombies" +
@@ -213,6 +213,7 @@ static class Constants {
   static final float status_hunger_dot = 0.02;
   static final float status_hunger_damageLimit = 0.5;
   static final float status_hunger_weakPercentage = 0.1;
+  static final float status_weak_multiplier = 0.9;
   static final float status_thirst_tickTimer = 1400;
   static final float status_thirst_dot = 0.02;
   static final float status_thirst_damageLimit = 0.35;
@@ -230,6 +231,47 @@ static class Constants {
   static final float status_hemorrhage_dot = 0.04;
   static final float status_hemorrhage_damageLimit = 0;
   static final float status_hemorrhage_bleedPercentage = 0.7;
+  static final float status_wilted_multiplier = 0.8;
+  static final float status_withered_multiplier = 0.7;
+  static final float status_drenched_multiplier = 1.3;
+  static final float status_drenched_tickTimer = 1200;
+  static final float status_drenched_dot = 0.025;
+  static final float status_drenched_damageLimit = 0.2;
+  static final float status_drowning_tickTimer = 500;
+  static final float status_drowning_dot = 0.05;
+  static final float status_drowning_damageLimit = 0;
+  static final float status_drowning_damageLimitBlue = 0.05;
+  static final float status_drowning_drenchedPercentage = 0.7;
+  static final float status_burnt_tickTimer = 1200;
+  static final float status_burnt_dot = 0.025;
+  static final float status_burnt_damageLimit = 0;
+  static final float status_burnt_damageLimitRed = 0.1;
+  static final float status_burnt_charredPercentage = 0.2;
+  static final float status_charred_tickTimer = 600;
+  static final float status_charred_dot = 0.03;
+  static final float status_charred_damageLimit = 0;
+  static final float status_charred_damageLimitRed = 0.05;
+  static final float status_chilled_speedMultiplier = 0.5;
+  static final float status_chilled_speedMultiplierCyan = 0.8;
+  static final float status_chilled_cooldownMultiplier = 0.5;
+  static final float status_chilled_cooldownMultiplierCyan = 0.8;
+  static final float status_frozen_tickTimer = 1600;
+  static final float status_frozen_dot = 0.025;
+  static final float status_frozen_damageLimit = 0.1;
+  static final float status_sick_damageMultiplier = 1.15;
+  static final float status_sick_defenseMultiplier = 0.85;
+  static final float status_diseased_damageMultiplier = 1.3;
+  static final float status_diseased_defenseMultiplier = 0.7;
+  static final float status_rotting_tickTimer = 1000;
+  static final float status_rotting_dot = 0.015;
+  static final float status_rotting_damageLimit = 0.1;
+  static final float status_rotting_damageLimitBrown = 0.2;
+  static final float status_rotting_damageLimitBlue = 0.0;
+  static final float status_rotting_decayedPercentage = 0.2;
+  static final float status_decayed_tickTimer = 1000;
+  static final float status_decayed_dot = 0.025;
+  static final float status_decayed_damageLimit = 0;
+  static final float status_decayed_damageLimitBrown = 0.1;
 
   // AI
   static final float ai_chickenMoveDistance = 2;
