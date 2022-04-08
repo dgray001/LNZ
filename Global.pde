@@ -12,6 +12,7 @@ class Global {
   private Sounds sounds;
   private Configuration configuration = new Configuration();
   private PImage cursor;
+  private String last_cursor_string = "";
   private boolean holding_shift = false;
   private boolean holding_ctrl = false;
   private boolean holding_alt = false;
@@ -64,6 +65,20 @@ class Global {
   void gainFocus() {
     if (this.menu != null) {
       this.menu.gainFocus();
+    }
+  }
+
+  void setCursor(String cursor_path) {
+    this.cursor = this.images.getImage(cursor_path);
+    this.last_cursor_string = cursor_path;
+  }
+
+  // The api calling default cursor has to provide the other cursors it can cause
+  void defaultCursor(String ... possible_cursors) {
+    for (String s : possible_cursors) {
+      if (s.equals(this.last_cursor_string)) {
+        this.setCursor("icons/cursor_default.png");
+      }
     }
   }
 
