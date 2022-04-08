@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220407: v0.6.5v" +
+  "\n20220407: v0.6.5w" +
   "\nLines: 20454 (v0.6.5v)" +
   "";
   static final String version_history =
@@ -180,6 +180,9 @@ static class Constants {
       return Constants.unit_attackAnimation_amount3 * (1 - timerRatio) / (1 - Constants.unit_attackAnimation_ratio2);
     }
   }
+  static final float unit_healthbarWidth = 0.9;
+  static final float unit_healthbarHeight = 0.13;
+  static final float unit_healthbarDamageAnimationTime = 150;
 
   // Resistances
   static final float resistance_default = 1;

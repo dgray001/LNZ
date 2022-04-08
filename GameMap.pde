@@ -1405,9 +1405,10 @@ class GameMap {
   void displayUnit(Unit u) {
     this.displayUnit(u, false);
   }
-  void displayUnit(Unit u, boolean display_hand) {
+  void displayUnit(Unit u, boolean player_unit) {
     float translateX = this.xi_map + (u.x - this.startSquareX) * this.zoom;
     float translateY = this.yi_map + (u.y - this.startSquareY) * this.zoom;
+    boolean removeCache = false;
     translate(translateX, translateY);
     float net_rotation = 0;
     boolean flip = false;
@@ -1432,7 +1433,7 @@ class GameMap {
         u.weapon().height() * this.zoom);
       translate(-translateItemX, -translateItemY);
     }
-    else if (display_hand) {
+    else if (player_unit) {
       float translateItemX = 0.9 * (u.xRadius() + Constants.unit_weaponDisplayScaleFactor * Constants.item_defaultSize) * this.zoom;
       float translateItemY = 0.4 * (u.yRadius() + Constants.unit_weaponDisplayScaleFactor * Constants.item_defaultSize) * this.zoom;
       translate(translateItemX, translateItemY);
@@ -1441,12 +1442,64 @@ class GameMap {
         2 * Constants.item_defaultSize * this.zoom);
       translate(-translateItemX, -translateItemY);
     }
-    //g.removeCache(u.getImage()); (CAUSES HUGE LAG WHEN 5+ UNITS ARE UNCACHED EACH FRAME)
-    noTint();
+    if (removeCache) {
+      g.removeCache(u.getImage());
+      noTint();
+    }
     rotate(-net_rotation);
     if (flip) {
       scale(-1, 1);
     }
+    //if (player unlocked it in AchievementTree) {
+      float healthbarWidth = Constants.unit_healthbarWidth * this.zoom;
+      float healthbarHeight = Constants.unit_healthbarHeight * this.zoom;
+      float translateHealthBarX = -0.5 * healthbarWidth;
+      float translateHealthBarY = -1.2 * u.size * this.zoom - healthbarHeight;
+      textSize(healthbarHeight - 0.5);
+      translate(translateHealthBarX, translateHealthBarY);
+      stroke(200);
+      strokeWeight(0.8);
+      fill(0);
+      rectMode(CORNER);
+      rect(0, 0, healthbarWidth, healthbarHeight);
+      rect(0, 0, healthbarHeight, healthbarHeight);
+      fill(255);
+      textSize(healthbarHeight - 1);
+      textAlign(CENTER, TOP);
+      text(u.level, 0.5 * healthbarHeight, 1 - textDescent());
+      if (player_unit) {
+        fill(50, 255, 50);
+      }
+      else if (u.alliance == Alliance.BEN) {
+        fill(50, 50, 255);
+      }
+      else {
+        fill(255, 50, 50);
+      }
+      noStroke();
+      float health_ratio = u.curr_health / u.health();
+      if (health_ratio >= 1) {
+        rect(healthbarHeight, 0, healthbarWidth - healthbarHeight, healthbarHeight);
+        fill(255);
+        health_ratio = min(1, health_ratio - 1);
+        rectMode(CORNERS);
+        rect(healthbarWidth - health_ratio * (healthbarWidth - healthbarHeight), 0, healthbarWidth, healthbarHeight);
+      }
+      else {
+        rect(healthbarHeight, 0, health_ratio * (healthbarWidth - healthbarHeight), healthbarHeight);
+        if (u.timer_last_damage > 0) {
+          fill(255, 220, 50, int(255 * u.timer_last_damage / Constants.unit_healthbarDamageAnimationTime));
+          float damage_ratio = u.last_damage_amount / u.health();
+          rect(healthbarHeight + health_ratio * (healthbarWidth - healthbarHeight),
+            0, damage_ratio * (healthbarWidth - healthbarHeight), healthbarHeight);
+        }
+      }
+      textSize(healthbarHeight + 1);
+      fill(255);
+      textAlign(CENTER, BOTTOM);
+      text(u.display_name(), 0.5 * healthbarWidth, - 1 - textDescent());
+      translate(-translateHealthBarX, -translateHealthBarY);
+    //}
     translate(-translateX, -translateY);
   }
 
@@ -1798,6 +1851,9 @@ class GameMap {
         this.selectHoveredObject();
         break;
       case RIGHT:
+        if (!this.hovered_area) {
+          break;
+        }
         if (this.units.containsKey(0)) {
           Unit player = this.units.get(0);
           if (player.weapon() != null && player.weapon().shootable() && global.holding_ctrl) {
