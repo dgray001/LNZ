@@ -31,7 +31,7 @@ class Feature extends MapObject {
 
   protected int number = 0;
   protected boolean toggle = false;
-  //protected Inventory inventory; // for items with inventory
+  protected Inventory inventory = null;
 
   Feature(int ID) {
     super(ID);
@@ -198,6 +198,7 @@ class Feature extends MapObject {
       case 171:
         this.setStrings("Stove", "Appliance", "");
         this.setSize(1, 1, 4);
+        this.inventory = new Inventory(2, 2, true);
         break;
       case 172:
         this.setStrings("Vending Machine", "Appliance", "");
@@ -210,34 +211,42 @@ class Feature extends MapObject {
       case 174:
         this.setStrings("Minifridge", "Appliance", "");
         this.setSize(1, 1, 3);
+        this.inventory = new Inventory(2, 2, true);
         break;
       case 175:
         this.setStrings("Refridgerator", "Appliance", "");
         this.setSize(1, 1, 7);
+        this.inventory = new Inventory(4, 2, true);
         break;
       case 176:
         this.setStrings("Washer", "Appliance", "");
         this.setSize(1, 1, 4);
+        this.inventory = new Inventory(3, 3, true);
         break;
       case 177:
         this.setStrings("Dryer", "Appliance", "");
         this.setSize(1, 1, 4);
+        this.inventory = new Inventory(3, 3, true);
         break;
       case 181:
         this.setStrings("Garbage Can", "Furniture", "");
         this.setSize(1, 1, 4);
+        this.inventory = new Inventory(3, 1, true);
         break;
       case 182:
         this.setStrings("Recycle Can", "Furniture", "");
         this.setSize(1, 1, 4);
+        this.inventory = new Inventory(3, 1, true);
         break;
       case 183:
         this.setStrings("Crate", "Furniture", "");
         this.setSize(1, 1, 2);
+        this.inventory = new Inventory(2, 2, true);
         break;
       case 184:
         this.setStrings("Cardboard Box", "Furniture", "");
         this.setSize(1, 1, 2);
+        this.inventory = new Inventory(2, 2, true);
         break;
       case 185:
         this.setStrings("Pickle Jar", "Furniture", "");
@@ -956,11 +965,12 @@ class Feature extends MapObject {
 
   boolean targetableByUnit() {
     switch(this.ID) {
-      case 161:
-      case 162:
-      case 163:
-      case 164:
-      case 165:
+      case 161: // water fountain
+      case 162: // sink
+      case 163: // shower stall
+      case 164: // urinal
+      case 165: // toilet
+      case 185: // pickle jar
         return true;
       default:
         return false;
@@ -969,6 +979,16 @@ class Feature extends MapObject {
 
   boolean targetableByHeroOnly() {
     switch(this.ID) {
+      case 171: // stove
+      case 174: // minifridge
+      case 175: // refridgerator
+      case 176: // washer
+      case 177: // dryer
+      case 181: // garbage can
+      case 182: // recycle can
+      case 183: // crate
+      case 184: // cardboard box
+        return true;
       default:
         return false;
     }
@@ -985,9 +1005,18 @@ class Feature extends MapObject {
 
   boolean onInteractionCooldown() {
     switch(this.ID) {
+      case 163: // shower stall
+      case 164: // urinal
+      case 165: // toilet
+      case 185: // pickle jar
+        if (this.number > 0) {
+          return true;
+        }
+        break;
       default:
         return false;
     }
+    return false;
   }
 
 
@@ -1016,6 +1045,8 @@ class Feature extends MapObject {
         break;
       case 165: // toilet
         break;
+      case 185: // pickle jar
+        break;
       default:
         global.errorMessage("ERROR: Unit " + u.display_name() + " trying to " +
           "interact with feature " + this.display_name() + " but no interaction logic found.");
@@ -1026,6 +1057,15 @@ class Feature extends MapObject {
 
   void update(int timeElapsed) {
     switch(this.ID) {
+      case 163: // shower stall
+      case 164: // urinal
+      case 165: // toilet
+      case 185: // pickle jar
+        if (this.number < 0) {
+          break;
+        }
+        this.number -= timeElapsed;
+        break;
       default:
         break;
     }

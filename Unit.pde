@@ -575,6 +575,17 @@ class Unit extends MapObject {
     return null;
   }
 
+  boolean canPickup() {
+    if (this.gear.containsKey(GearSlot.WEAPON) && this.weapon() == null) {
+      return true;
+    }
+    return false;
+  }
+
+  void pickup(Item i) {
+    this.gear.put(GearSlot.WEAPON, i);
+  }
+
   Item headgear() {
     if (this.gear.containsKey(GearSlot.HEAD)) {
       return this.gear.get(GearSlot.HEAD);
