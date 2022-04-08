@@ -104,8 +104,8 @@ enum HeroCode {
 
 
 
-enum LeftPanelMenu {
-  NONE, MAIN; // others in future as game becomes more complex
+enum LeftPanelMenuPage {
+  NONE, PLAYER; // others in future as game becomes more complex
 }
 
 
@@ -724,6 +724,7 @@ class Hero extends Unit {
     private float yi_picture = 0;
     private float xf_picture = 0;
     private float yf_picture = 0;
+    private float radius_picture = 0;
     private float ability_width = 0;
     private float slot_width = 0;
     private float status_width = 0;
@@ -733,6 +734,9 @@ class Hero extends Unit {
     private float last_mY = 0;
     private StatusEffectCode code_hovered = null;
     private StatusEffectTextBox code_description = new StatusEffectTextBox();
+
+    private boolean portrait_hovered = false;
+    private boolean portrait_clicked = false;
 
     protected color color_background = color(210, 153, 108);
     protected color color_ability_border = color(120, 70, 40);
@@ -753,6 +757,7 @@ class Hero extends Unit {
       this.yi_picture = this.yi + border_thickness;
       this.xf_picture = this.xf_border - border_thickness;
       this.yf_picture = this.yf - border_thickness;
+      this.radius_picture = 0.5 * (this.xf_picture - this.xi_picture);
       this.ability_width = 0.2 * (this.xf_bar - this.xi_bar) - 4;
       this.status_width = 0.08 * (this.xf_bar - this.xi_bar);
       this.yi_status = this.yi - 2 - this.status_width;
@@ -791,7 +796,14 @@ class Hero extends Unit {
       rect(this.xi_bar, this.yi, this.xf_bar, this.yf, 12);
       imageMode(CORNERS);
       image(this.getBorderImage(), this.xi_border, this.yi, this.xf_border, this.yf);
+      if (this.portrait_clicked) {
+        tint(150);
+      }
       image(this.getHeroImage(), this.xi_picture, this.yi_picture, this.xf_picture, this.yf_picture);
+      if (this.portrait_clicked) {
+        g.removeCache(this.getHeroImage());
+        noTint();
+      }
       float xi = this.xi_bar + 2;
       float yi = this.yf - this.ability_width - 4;
       imageMode(CORNER);
@@ -811,13 +823,20 @@ class Hero extends Unit {
       for (Map.Entry<StatusEffectCode, StatusEffect> entry : Hero.this.statuses.entrySet()) {
         imageMode(CORNER);
         rectMode(CORNER);
+        ellipseMode(CENTER);
         fill(255, 150);
         stroke(0);
         strokeWeight(1);
         rect(xi, this.yi_status, this.status_width, this.status_width);
         image(global.images.getImage(entry.getKey().getImageString()), xi, this.yi_status, this.status_width, this.status_width);
         if (!entry.getValue().permanent) {
-          // draw timer thing
+          fill(100, 100, 255, 140);
+          noStroke();
+          try {
+            float angle = -HALF_PI + 2 * PI * entry.getValue().timer_gone / entry.getValue().timer_gone_start;
+            arc(xi + 0.5 * this.status_width, this.yi_status + 0.5 * this.status_width,
+              this.status_width, this.status_width, -HALF_PI, angle, PIE);
+          } catch(Exception e) {}
         }
         if (this.last_mX > xi && this.last_mX < xi + this.status_width &&
           this.last_mY > this.yi_status && this.last_mY < this.yi_status + this.status_width) {
@@ -847,9 +866,17 @@ class Hero extends Unit {
       if (this.code_description.display) {
         this.code_description.mouseMove(mX, mY);
       }
-      if ((this.code_hovered == null || this.code_hovered.code_name().equals(
+      if ((this.code_hovered == null || !this.code_hovered.code_name().equals(
         this.code_description.text_title)) && !this.code_description.hovered) {
         this.code_description.display = false;
+      }
+      float portrait_distance_x = mX - this.xi_picture - this.radius_picture;
+      float portrait_distance_y = mY - this.yi_picture - this.radius_picture;
+      if (sqrt(portrait_distance_x * portrait_distance_x + portrait_distance_y * portrait_distance_y) < this.radius_picture) {
+        this.portrait_hovered = true;
+      }
+      else {
+        this.portrait_hovered = false;
       }
     }
 
@@ -867,21 +894,67 @@ class Hero extends Unit {
         this.code_description.setTitleText(this.code_hovered.code_name());
         this.code_description.setText(this.code_hovered.description());
       }
+      if (this.portrait_hovered) {
+        this.portrait_clicked = true;
+      }
       // click ability for more info
       // click item to select (in left panel)
-      // click player icon to open player info form
     }
 
     void mouseRelease(float mX, float mY) {
       if (this.code_description.display) {
         this.code_description.mouseRelease(mX, mY);
       }
+      if (this.portrait_hovered && this.portrait_clicked) {
+        Hero.this.openLeftPanelMenu(LeftPanelMenuPage.PLAYER);
+      }
+      this.portrait_clicked = false;
     }
 
     void scroll(int amount) {
       if (this.code_description.display) {
         this.code_description.scroll(amount);
       }
+    }
+  }
+
+
+  abstract class LeftPanelMenu {
+    LeftPanelMenu() {
+    }
+    abstract void drawPanel(float timeElapsed, float panel_width);
+  }
+
+
+  class PlayerLeftPanelMenu extends LeftPanelMenu {
+    PlayerLeftPanelMenu() {
+    }
+
+    void drawPanel(float timeElapsed, float panel_width) {
+      float currY = 0.5 * height + Constants.map_selectedObjectPanelGap;
+      fill(255);
+      textSize(Constants.map_selectedObjectTitleTextSize);
+      textAlign(CENTER, TOP);
+      text(Hero.this.display_name(), 0.5 * panel_width, currY);
+      currY += textAscent() + textDescent() + Constants.map_selectedObjectPanelGap;
+      float image_size = min(0.5 * panel_width, 0.5 * (height - currY));
+      imageMode(CORNER);
+      image(Hero.this.getImage(), 1, currY, image_size, image_size);
+      currY += image_size + Constants.map_selectedObjectPanelGap;
+      fill(0);
+      textSize(18);
+      text("Level " + Hero.this.level, 0.5 * panel_width, currY);
+      currY += textAscent() + textDescent() + Constants.map_selectedObjectPanelGap;
+      noFill();
+      strokeWeight(1.5);
+      stroke(0);
+      rectMode(CORNER);
+      rect(Constants.map_selectedObjectPanelGap, currY, panel_width - 2 *
+        Constants.map_selectedObjectPanelGap, 10);
+      float xp_ratio = Hero.this.experience / Hero.this.experience_next_level;
+      fill(0);
+      rect(Constants.map_selectedObjectPanelGap, currY, xp_ratio * (panel_width -
+        2 * Constants.map_selectedObjectPanelGap), 10);
     }
   }
 
@@ -901,7 +974,7 @@ class Hero extends Unit {
   protected int hunger_timer = Constants.hero_hungerTimer;
   protected int thirst_timer = Constants.hero_thirstTimer;
 
-  protected LeftPanelMenu left_panel_menu = LeftPanelMenu.MAIN;
+  protected LeftPanelMenu left_panel_menu = new PlayerLeftPanelMenu();
   protected HeroInventory inventory = new HeroInventory();
   protected InventoryBar inventory_bar = new InventoryBar();
   protected ArrayList<Boolean> ability_activated = new ArrayList<Boolean>();
@@ -917,6 +990,18 @@ class Hero extends Unit {
     super(HeroCode.unit_id(code));
     this.code = code;
     this.addAbilities();
+  }
+
+
+  void openLeftPanelMenu(LeftPanelMenuPage menu) {
+    switch(menu) {
+      case PLAYER:
+        this.left_panel_menu = new PlayerLeftPanelMenu();
+        break;
+      default:
+        this.left_panel_menu = null;
+        break;
+    }
   }
 
 
@@ -1058,18 +1143,9 @@ class Hero extends Unit {
 
 
   void drawLeftPanel(int timeElapsed, float panel_width) {
-    switch(this.left_panel_menu) {
-      case MAIN:
-        this.drawMainPanel(timeElapsed, panel_width);
-        break;
-      case NONE:
-      default:
-        break;
+    if (this.left_panel_menu != null) {
+      this.left_panel_menu.drawPanel(timeElapsed, panel_width);
     }
-  }
-
-  void drawMainPanel(int timeElapsed, float panel_width) {
-    // draw left panel
   }
 
 
