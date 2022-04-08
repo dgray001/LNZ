@@ -1236,6 +1236,14 @@ class ScrollBar {
     this.button_bar.setColors(c_dis, c_def, c_hov, c_cli, c_tex);
   }
 
+  void useElapsedTime() {
+    this.button_up.use_time_elapsed = true;
+    this.button_down.use_time_elapsed = true;
+    this.button_upspace.use_time_elapsed = true;
+    this.button_downspace.use_time_elapsed = true;
+    this.button_bar.use_time_elapsed = true;
+  }
+
   void move(float xMove, float yMove) {
     this.xi += xMove;
     this.yi += yMove;
@@ -1444,6 +1452,13 @@ class TextBox {
   }
   TextBox(float xi, float yi, float xf, float yf) {
     this.setLocation(xi, yi, xf, yf);
+  }
+
+  void useElapsedTime() {
+    this.scrollbar.useElapsedTime();
+    if (this.scrollbar_horizontal != null) {
+      this.scrollbar_horizontal.useElapsedTime();
+    }
   }
 
   void setXLocation(float xi, float xf) {

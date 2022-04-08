@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220407: v0.6.5w" +
+  "\n20220408: v0.6.5x" +
   "\nLines: 20454 (v0.6.5v)" +
   "";
   static final String version_history =
@@ -249,7 +249,7 @@ static class Constants {
   static final float status_burnt_dot = 0.025;
   static final float status_burnt_damageLimit = 0;
   static final float status_burnt_damageLimitRed = 0.1;
-  static final float status_burnt_charredPercentage = 0.2;
+  static final float status_burnt_charredPercentage = 0.1;
   static final float status_charred_tickTimer = 600;
   static final float status_charred_dot = 0.03;
   static final float status_charred_damageLimit = 0;
@@ -270,7 +270,7 @@ static class Constants {
   static final float status_rotting_damageLimit = 0.1;
   static final float status_rotting_damageLimitBrown = 0.2;
   static final float status_rotting_damageLimitBlue = 0.0;
-  static final float status_rotting_decayedPercentage = 0.2;
+  static final float status_rotting_decayedPercentage = 0.1;
   static final float status_decayed_tickTimer = 1000;
   static final float status_decayed_dot = 0.025;
   static final float status_decayed_damageLimit = 0;
@@ -313,4 +313,6 @@ static class Constants {
   static final int hero_abilityNumber = 5;
   static final int hero_hungerThreshhold = 20;
   static final int hero_thirstThreshhold = 20;
+  static final float hero_statusDescription_width = 160;
+  static final float hero_statusDescription_height = 120;
 }
