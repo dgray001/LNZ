@@ -1,6 +1,6 @@
 enum UnitAction {
   NONE, MOVING, TARGETING_FEATURE, TARGETING_UNIT, TARGETING_ITEM, ATTACKING,
-  SHOOTING, AIMING, USING_ITEM;
+  SHOOTING, AIMING, USING_ITEM, FEATURE_INTERACTION, HERO_INTERACTING_WITH_FEATURE;
 }
 
 
@@ -1049,13 +1049,36 @@ class Unit extends MapObject {
           break;
         }
         Feature f = (Feature)this.object_targeting;
+        if (!f.targetable(this)) {
+          this.curr_action = UnitAction.NONE;
+          break;
+        }
         this.face(f);
         if (this.distance(f) > f.interactionDistance()) {
           this.move(timeElapsed, myKey, map, MoveModifier.NONE);
+          break;
         }
-        else {
-          // unit interact with feature
+        if (f.onInteractionCooldown()) {
+          break;
+        }
+        this.curr_action = UnitAction.FEATURE_INTERACTION;
+        this.timer_actionTime = f.interactionTime();
+        break;
+      case FEATURE_INTERACTION:
+        if (this.object_targeting == null || this.object_targeting.remove) {
           this.curr_action = UnitAction.NONE;
+          break;
+        }
+        this.timer_actionTime -= timeElapsed;
+        if (this.timer_actionTime < 0) {
+          this.curr_action = UnitAction.NONE; // must be before since interact() can set HERO_INTERACTING_WITH_FEATURE
+          ((Feature)this.object_targeting).interact(this, map);
+        }
+        break;
+      case HERO_INTERACTING_WITH_FEATURE:
+        if (this.object_targeting == null || this.object_targeting.remove) {
+          this.curr_action = UnitAction.NONE;
+          break;
         }
         break;
       case TARGETING_UNIT:
@@ -1064,6 +1087,10 @@ class Unit extends MapObject {
           break;
         }
         Unit u = (Unit)this.object_targeting;
+        if (!u.targetable(this)) {
+          this.curr_action = UnitAction.NONE;
+          break;
+        }
         this.face(u);
         float distance = this.distance(u);
         if (distance > this.attackRange()) {
@@ -1103,7 +1130,7 @@ class Unit extends MapObject {
           break;
         }
         Item i = (Item)this.object_targeting;
-        if (i.tier > this.tier()) {
+        if (!i.targetable(this)) {
           this.curr_action = UnitAction.NONE;
           break;
         }

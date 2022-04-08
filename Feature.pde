@@ -945,7 +945,33 @@ class Feature extends MapObject {
 
 
   boolean targetable(Unit u) {
+    if (this.targetableByUnit()) {
+      return true;
+    }
+    else if (this.targetableByHeroOnly() && Hero.class.isInstance(u)) {
+      return true;
+    }
     return false;
+  }
+
+  boolean targetableByUnit() {
+    switch(this.ID) {
+      case 161:
+      case 162:
+      case 163:
+      case 164:
+      case 165:
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  boolean targetableByHeroOnly() {
+    switch(this.ID) {
+      default:
+        return false;
+    }
   }
 
 
@@ -953,6 +979,47 @@ class Feature extends MapObject {
     switch(this.ID) {
       default:
         return Constants.feature_defaultInteractionDistance;
+    }
+  }
+
+
+  boolean onInteractionCooldown() {
+    switch(this.ID) {
+      default:
+        return false;
+    }
+  }
+
+
+  float interactionTime() {
+    switch(this.ID) {
+      default:
+        return 0;
+    }
+  }
+
+
+  void interact(Unit u, GameMap map) {
+    if (Hero.class.isInstance(u)) {
+      u.curr_action = UnitAction.HERO_INTERACTING_WITH_FEATURE;
+      return;
+    }
+    // Non-hero interaction with feature
+    switch(this.ID) {
+      case 161: // water fountain
+        break;
+      case 162: // sink
+        break;
+      case 163: // shower stall
+        break;
+      case 164: // urinal
+        break;
+      case 165: // toilet
+        break;
+      default:
+        global.errorMessage("ERROR: Unit " + u.display_name() + " trying to " +
+          "interact with feature " + this.display_name() + " but no interaction logic found.");
+        break;
     }
   }
 
