@@ -54,6 +54,10 @@ abstract class InterfaceLNZ {
       this.addField(new SpacerFormField(20));
       SubmitCancelFormField buttons = new SubmitCancelFormField("Continue\n(may crash)", "Exit");
       textSize(buttons.button1.text_size);
+      buttons.button1.setColors(color(180), color(240, 160, 160),
+        color(190, 110, 110), color(140, 70, 70), color(0));
+      buttons.button2.setColors(color(180), color(240, 160, 160),
+        color(190, 110, 110), color(140, 70, 70), color(0));
       buttons.setButtonHeight(2 * (textAscent() + textDescent() + 2));
       this.addField(buttons);
       this.img.save("data/logs/screenshot.jpg");

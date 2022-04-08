@@ -326,6 +326,35 @@ class Level {
   }
 
 
+  void heroFeatureInteraction(Hero h) {
+    if (this.currMap == null || h == null || h.object_targeting == null || h.object_targeting.remove) {
+      return;
+    }
+    if (!Feature.class.isInstance(h.object_targeting)) {
+      global.errorMessage("ERROR: Hero " + h.display_name() + " trying to " +
+        "interact with feature " + h.display_name() + " but it's not a feature.");
+      return;
+    }
+    Feature f = (Feature)h.object_targeting;
+    switch(f.ID) {
+      case 161: // water fountain
+        break;
+      case 162: // sink
+        break;
+      case 163: // shower stall
+        break;
+      case 164: // urinal
+        break;
+      case 165: // toilet
+        break;
+      default:
+        global.errorMessage("ERROR: Hero " + h.display_name() + " trying to " +
+          "interact with feature " + f.display_name() + " but no interaction logic found.");
+        break;
+    }
+  }
+
+
   void update(int millis) {
     int timeElapsed = millis - this.last_update_time;
     if (this.currMap != null) {
@@ -334,6 +363,10 @@ class Level {
         entry.getValue().update(timeElapsed, this);
       }
       if (this.player != null) {
+        if (this.player.curr_action == UnitAction.HERO_INTERACTING_WITH_FEATURE) {
+          this.player.curr_action = UnitAction.NONE;
+          this.heroFeatureInteraction(this.player);
+        }
         for (Linker linker : this.linkers) {
           if (linker.rect1.contains(this.player, this.currMapName)) {
             this.movePlayerTo(linker.rect2);
