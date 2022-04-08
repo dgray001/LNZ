@@ -1322,8 +1322,8 @@ class MapEditorInterface extends InterfaceLNZ {
     this.buttons[2] = new MapEditorButton3();
     this.buttons[3] = new MapEditorButton4();
     this.buttons[4] = new MapEditorButton5();
-    this.leftPanel.addIcon(global.images.getImage("icons/triangle.png"));
-    this.rightPanel.addIcon(global.images.getImage("icons/triangle.png"));
+    this.leftPanel.addIcon(global.images.getImage("icons/triangle_gray.png"));
+    this.rightPanel.addIcon(global.images.getImage("icons/triangle_gray.png"));
     this.leftPanel.color_background = global.color_panelBackground;
     this.rightPanel.color_background = global.color_panelBackground;
     this.navigate(MapEditorPage.MAPS);
@@ -2289,13 +2289,13 @@ class MapEditorInterface extends InterfaceLNZ {
     // cursor icon resolution
     if (this.leftPanel.clicked || this.rightPanel.clicked) {
       this.resizeButtons();
-      global.cursor = global.images.getImage("icons/cursor_resizeh_white.png");
+      global.setCursor("icons/cursor_resizeh_white.png");
     }
     else if (this.leftPanel.hovered || this.rightPanel.hovered) {
-      global.cursor = global.images.getImage("icons/cursor_resizeh.png");
+      global.setCursor("icons/cursor_resizeh.png");
     }
     else {
-      global.cursor = global.images.getImage("icons/cursor_default.png");
+      global.defaultCursor("icons/cursor_resizeh_white.png", "icons/cursor_resizeh.png");
     }
   }
 
@@ -2309,7 +2309,10 @@ class MapEditorInterface extends InterfaceLNZ {
     this.leftPanel.mousePress();
     this.rightPanel.mousePress();
     if (this.leftPanel.clicked || this.rightPanel.clicked) {
-      global.cursor = global.images.getImage("icons/cursor_resizeh_white.png");
+      global.setCursor("icons/cursor_resizeh_white.png");
+    }
+    else {
+      global.defaultCursor("icons/cursor_resizeh_white.png");
     }
     if (this.rightPanel.open && !this.rightPanel.collapsing) {
       for (MapEditorButton button : this.buttons) {
@@ -2337,10 +2340,10 @@ class MapEditorInterface extends InterfaceLNZ {
     this.leftPanel.mouseRelease(mX, mY);
     this.rightPanel.mouseRelease(mX, mY);
     if (this.leftPanel.hovered || this.rightPanel.hovered) {
-      global.cursor = global.images.getImage("icons/cursor_resizeh.png");
+      global.setCursor("icons/cursor_resizeh.png");
     }
     else {
-      global.cursor = global.images.getImage("icons/cursor_default.png");
+      global.defaultCursor("icons/cursor_resizeh.png");
     }
     if (this.rightPanel.open && !this.rightPanel.collapsing) {
       for (MapEditorButton button : this.buttons) {

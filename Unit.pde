@@ -1103,6 +1103,10 @@ class Unit extends MapObject {
           break;
         }
         Item i = (Item)this.object_targeting;
+        if (i.tier > this.tier()) {
+          this.curr_action = UnitAction.NONE;
+          break;
+        }
         this.face(i);
         if (this.distance(i) > i.interactionDistance()) {
           this.move(timeElapsed, myKey, map, MoveModifier.NONE);

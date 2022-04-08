@@ -1737,6 +1737,7 @@ class GameMap {
       this.hovered_explored = true;
       this.hovered_visible = true;
     }
+    boolean default_cursor = true;
     if (mX > this.xi_map && mY > this.yi_map && mX < this.xf_map && mY < this.yf_map) {
       this.hovered = true;
       this.hovered_area = true;
@@ -1773,6 +1774,10 @@ class GameMap {
             continue;
           }
           this.hovered_object = u;
+          if (this.units.containsKey(0) && u.alliance != this.units.get(0).alliance) {
+            global.setCursor("icons/cursor_attack.png");
+            default_cursor = false;
+          }
         }
       }
       for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
@@ -1784,6 +1789,10 @@ class GameMap {
             continue;
           }
           this.hovered_object = i;
+          if (this.units.containsKey(0) && this.units.get(0).tier() >= i.tier) {
+            global.setCursor("icons/cursor_pickup.png");
+            default_cursor = false;
+          }
         }
       }
       // hovered for header message
@@ -1836,6 +1845,9 @@ class GameMap {
           this.units.get(0).face(this.mX, this.mY);
           break;
       }
+    }
+    if (default_cursor) {
+      global.defaultCursor("icons/cursor_attack.png", "icons/cursor_pickup.png");
     }
   }
 
