@@ -982,6 +982,10 @@ class Unit extends MapObject {
     return this.hasStatusEffect(StatusEffectCode.SENSELESS_GRIT);
   }
 
+  StatusEffectCode priorityStatusEffect() {
+    return null;
+  }
+
 
   void update(int timeElapsed, int myKey, GameMap map) {
     // timers
@@ -1119,7 +1123,21 @@ class Unit extends MapObject {
           break;
         }
         Unit unit_attacking = (Unit)this.object_targeting;
-        this.timer_actionTime -= timeElapsed;
+        if (this.frozen()) {
+          this.curr_action = UnitAction.NONE;
+          break;
+        }
+        else if (this.chilled()) {
+          if (this.element == Element.CYAN) {
+            this.timer_actionTime -= timeElapsed * Constants.status_chilled_cooldownMultiplierCyan;
+          }
+          else {
+            this.timer_actionTime -= timeElapsed * Constants.status_chilled_cooldownMultiplier;
+          }
+        }
+        else {
+          this.timer_actionTime -= timeElapsed;
+        }
         if (this.timer_actionTime < 0) {
           this.curr_action = UnitAction.TARGETING_UNIT;
           this.attack(unit_attacking);

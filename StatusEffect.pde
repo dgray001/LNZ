@@ -2,7 +2,7 @@ enum StatusEffectCode {
   ERROR("Error"), HUNGRY("Hungry"), WEAK("Weak"), THIRSTY("Thirsty"), WOOZY("Woozy"),
   CONFUSED("Confused"), INVULNERABLE("Invulnerable"), UNKILLABLE("Unkillable"),
   BLEEDING("Bleeding"), HEMORRHAGING("Hemorrhaging"), WILTED("Wilted"), WITHERED("Withered"),
-  DRENCHED("Drenched"), DROWNING("Drowning"), BURNT("Burnt"), CHARRED("Charred"),
+  DRENCHED("Drenched"), DROWNING("Drowning"), BURNT("Burning"), CHARRED("Charred"),
   CHILLED("Chilled"), FROZEN("Frozen"), SICK("Sick"), DISEASED("Diseased"), ROTTING("Rotting"),
   DECAYED("Decayed"), SHAKEN("Shaken"), FALLEN("Fallen"), SHOCKED("Shocked"),
   PARALYZED("Paralyzed"), UNSTABLE("Unstable"), RADIOACTIVE("Radioactive"),
@@ -66,6 +66,158 @@ enum StatusEffectCode {
         return Element.MAGENTA;
       default:
         return Element.GRAY;
+    }
+  }
+
+  public String getImageString() {
+    String image_path = "statuses/";
+    switch(this) {
+      case INVULNERABLE:
+        image_path += "invulnerable.png";
+        break;
+      case UNKILLABLE:
+        image_path += "unkillable.png";
+        break;
+      case HUNGRY:
+        image_path += "hungry.png";
+        break;
+      case WEAK:
+        image_path += "weak.png";
+        break;
+      case THIRSTY:
+        image_path += "thirsty.png";
+        break;
+      case WOOZY:
+        image_path += "woozy.png";
+        break;
+      case CONFUSED:
+        image_path += "confused.png";
+        break;
+      case BLEEDING:
+        image_path += "bleeding.png";
+        break;
+      case HEMORRHAGING:
+        image_path += "hemorrhaging.png";
+        break;
+      case WILTED:
+        image_path += "wilted.png";
+        break;
+      case WITHERED:
+        image_path += "withered.png";
+        break;
+      case DRENCHED:
+        image_path += "drenched.png";
+        break;
+      case DROWNING:
+        image_path += "drowning.png";
+        break;
+      case BURNT:
+        image_path += "burning.png";
+        break;
+      case CHARRED:
+        image_path += "charred.png";
+        break;
+      case CHILLED:
+        image_path += "chilled.png";
+        break;
+      case FROZEN:
+        image_path += "frozen.jpg";
+        break;
+      case SICK:
+        image_path += "sick.png";
+        break;
+      case DISEASED:
+        image_path += "diseased.png";
+        break;
+      case ROTTING:
+        image_path += "rotting.png";
+        break;
+      case DECAYED:
+        image_path += "decayed.png";
+        break;
+      default:
+        image_path += "default.png";
+        break;
+    }
+    return image_path;
+  }
+
+  public String description() {
+    switch(this) {
+      case INVULNERABLE:
+        return "This unit does not take damage from any source.";
+      case UNKILLABLE:
+        return "This unit cannot be killed.";
+      case HUNGRY:
+        return "This unit is hungry and will slowly take damage to 50% max health." +
+          "\nHunger can also lead to weakness.";
+      case WEAK:
+        return "This unit is weak and has 90% effective stats (attack, defense, etc.).";
+      case THIRSTY:
+        return "This unit is thirsty and will slowly take damage to 35% max health." +
+          "\nThirst can also lead to becoming woozy or confused.";
+      case WOOZY:
+        return "This unit is woozy and will randomly stop what they are " +
+          " doing and turn another direction.";
+      case CONFUSED:
+        return "This unit is confused and will randomly stop what they are " +
+          " doing and move in a random direction.";
+      case BLEEDING:
+        return "This unit is bleeding and will take damage to 10% max health." +
+          "\nBleeding can also lead to hemorrhaging";
+      case HEMORRHAGING:
+        return "This unit is hemorraghing and will quickly die if it is not stopped.";
+      case WILTED:
+        return "This unit is wilted and has 80% effective stats (attack, defense, etc.).";
+      case WITHERED:
+        return "This unit is withered and has 70% effective stats (attack, defense, etc.).";
+      case DRENCHED:
+        return "This unit is drenched so will take more damage from blue damage." +
+          "\nIf this unit is red it will also slowly take damage to 20% max health.";
+      case DROWNING:
+        return "This unit is drowning and will quickly take damage to their death." +
+          "\nDrowning will also make the unit drenched." +
+          "\nIf this unit is blue it will only take damage to 5% max health.";
+      case BURNT:
+        return "This unit is burning and will take damage to its death." +
+          "\nBurning also has chance to make this unit charred." +
+          "\nIf this unit is red they cannot die from burning.";
+      case CHARRED:
+        return "This unit is charred and will quickly take damage to its death." +
+          "\nIf this unit is red they cannot die from being charred.";
+      case CHILLED:
+        return "This unit is chilled and has 50% reduced movement speed and attack speed." +
+          "\nIf this unit is cyan being chilled will only decrease their speed by 20%.";
+      case FROZEN:
+        return "This unit is frozen and cannot move or attack." +
+          "\nIf this unit is orange they will take small damage to 10% max health.";
+      case SICK:
+        return "This unit is sick and cannot defend themselves. They will take 15% " +
+          "more damage and have their defensive stats reduced by 15%.";
+      case DISEASED:
+        return "This unit is sick and cannot defend themselves. They will take 30% " +
+          "more damage and have their defensive stats reduced by 30%.";
+      case ROTTING:
+        return "This unit is rotting and will take damage to 10% max health." +
+          "\nIf this unit is blue they can die from rotting; if this unit is " +
+          "brown they only take damage to 20% max health.";
+      case DECAYED:
+        return "This unit is decayed and will take damage to their death." +
+          "\nIf this unit is brown they will only take damage to 10% max health.";
+      case SHAKEN:
+        return "";
+      case FALLEN:
+        return "";
+      case SHOCKED:
+        return "";
+      case PARALYZED:
+        return "";
+      case UNSTABLE:
+        return "";
+      case RADIOACTIVE:
+        return "";
+      default:
+        return "";
     }
   }
 }

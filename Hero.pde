@@ -691,6 +691,29 @@ class Hero extends Unit {
 
 
   class InventoryBar {
+    class StatusEffectTextBox extends TextBox {
+      private boolean display = false;
+      StatusEffectTextBox() {
+        super(0, 0, 0, 0);
+        this.setTitleSize(15);
+        this.setTextSize(13);
+        this.color_background = global.color_nameDisplayed_background;
+        this.color_header = global.color_nameDisplayed_background;
+        this.color_stroke = color(1, 0);
+        this.color_text = color(255);
+        this.color_title = color(255);
+        this.scrollbar.setButtonColors(color(170),
+          adjust_color_brightness(global.color_nameDisplayed_background, 1.1),
+          adjust_color_brightness(global.color_nameDisplayed_background, 1.2),
+          adjust_color_brightness(global.color_nameDisplayed_background, 0.95), color(0));
+        this.scrollbar.button_upspace.setColors(color(1, 0), color(1, 0),
+          color(1, 0), color(0), color(0));
+        this.scrollbar.button_downspace.setColors(color(1, 0), color(1, 0),
+          color(1, 0), color(0), color(0));
+        this.useElapsedTime();
+      }
+    }
+
     private float xi_border = 0;
     private float yi = 0;
     private float xf_border = 0;
@@ -703,6 +726,13 @@ class Hero extends Unit {
     private float yf_picture = 0;
     private float ability_width = 0;
     private float slot_width = 0;
+    private float status_width = 0;
+    private float yi_status = 0;
+
+    private float last_mX = 0;
+    private float last_mY = 0;
+    private StatusEffectCode code_hovered = null;
+    private StatusEffectTextBox code_description = new StatusEffectTextBox();
 
     protected color color_background = color(210, 153, 108);
     protected color color_ability_border = color(120, 70, 40);
@@ -724,6 +754,8 @@ class Hero extends Unit {
       this.xf_picture = this.xf_border - border_thickness;
       this.yf_picture = this.yf - border_thickness;
       this.ability_width = 0.2 * (this.xf_bar - this.xi_bar) - 4;
+      this.status_width = 0.08 * (this.xf_bar - this.xi_bar);
+      this.yi_status = this.yi - 2 - this.status_width;
     }
 
     PImage getBorderImage() {
@@ -774,15 +806,82 @@ class Hero extends Unit {
           image(Hero.this.abilities.get(i).getImage(), xi, yi, this.ability_width, this.ability_width);
         }
       }
+      xi = this.xi_bar;
+      this.code_hovered = null;
+      for (Map.Entry<StatusEffectCode, StatusEffect> entry : Hero.this.statuses.entrySet()) {
+        imageMode(CORNER);
+        rectMode(CORNER);
+        fill(255, 150);
+        stroke(0);
+        strokeWeight(1);
+        rect(xi, this.yi_status, this.status_width, this.status_width);
+        image(global.images.getImage(entry.getKey().getImageString()), xi, this.yi_status, this.status_width, this.status_width);
+        if (!entry.getValue().permanent) {
+          // draw timer thing
+        }
+        if (this.last_mX > xi && this.last_mX < xi + this.status_width &&
+          this.last_mY > this.yi_status && this.last_mY < this.yi_status + this.status_width) {
+          if (!this.code_description.display) {
+            noStroke();
+            fill(global.color_nameDisplayed_background);
+            textSize(14);
+            float rect_height = textAscent() + textDescent() + 2;
+            float rect_width = textWidth(entry.getKey().code_name()) + 2;
+            rect(this.last_mX - rect_width - 1, this.last_mY - rect_height - 1, rect_width, rect_height);
+            fill(255);
+            textAlign(LEFT, TOP);
+            text(entry.getKey().code_name(), this.last_mX - rect_width - 1, this.last_mY - rect_height - 1);
+          }
+          this.code_hovered = entry.getKey();
+        }
+        if (this.code_description.display) {
+          this.code_description.update(timeElapsed);
+        }
+        xi += this.status_width + 2;
+      }
     }
 
     void mouseMove(float mX, float mY) {
+      this.last_mX = mX;
+      this.last_mY = mY;
+      if (this.code_description.display) {
+        this.code_description.mouseMove(mX, mY);
+      }
+      if ((this.code_hovered == null || this.code_hovered.code_name().equals(
+        this.code_description.text_title)) && !this.code_description.hovered) {
+        this.code_description.display = false;
+      }
     }
 
     void mousePress() {
+      if (this.code_description.display) {
+        this.code_description.mousePress();
+      }
+      if (this.code_hovered == null && !this.code_description.hovered) {
+        this.code_description.display = false;
+      }
+      else if (code_hovered != null) {
+        this.code_description.display = true;
+        this.code_description.setLocation(this.last_mX - Constants.hero_statusDescription_width,
+          this.last_mY - Constants.hero_statusDescription_height, this.last_mX, this.last_mY);
+        this.code_description.setTitleText(this.code_hovered.code_name());
+        this.code_description.setText(this.code_hovered.description());
+      }
+      // click ability for more info
+      // click item to select (in left panel)
+      // click player icon to open player info form
     }
 
     void mouseRelease(float mX, float mY) {
+      if (this.code_description.display) {
+        this.code_description.mouseRelease(mX, mY);
+      }
+    }
+
+    void scroll(int amount) {
+      if (this.code_description.display) {
+        this.code_description.scroll(amount);
+      }
     }
   }
 
@@ -1090,7 +1189,7 @@ class Hero extends Unit {
   }
 
   void scroll_hero(int amount) {
-    // scroll through inventory bar if available
+    this.inventory_bar.scroll(amount);
   }
 
   void keyPress_hero() {
