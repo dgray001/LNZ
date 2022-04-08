@@ -38,7 +38,7 @@ enum StatusEffectCode {
   public Element element() {
     return StatusEffectCode.element(this);
   }
-  public static element(StatusEffectCode code) {
+  public static Element element(StatusEffectCode code) {
     switch(code) {
       case DRENCHED:
       case DROWNING:

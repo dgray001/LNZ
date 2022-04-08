@@ -289,10 +289,12 @@ class Unit extends MapObject {
   protected float curr_health = 1;
   protected float timer_attackCooldown = 0;
   protected float timer_actionTime = 0;
+  protected float timer_last_damage = 0;
 
   protected UnitAction curr_action = UnitAction.NONE;
   protected MapObject object_targeting = null;
   protected MapObject last_damage_from = null;
+  protected float last_damage_amount = 0;
   protected float curr_action_x = 0;
   protected float curr_action_y = 0;
   protected float last_move_distance = 0;
@@ -805,7 +807,7 @@ class Unit extends MapObject {
     if (this.weapon() != null && this.weapon().weapon()) {
       speed += this.weapon().speed;
     }
-    if (this.chilled) {
+    if (this.chilled()) {
       if (this.element == Element.CYAN) {
         speed *= Constants.status_chilled_speedMultiplierCyan;
       }
@@ -1339,6 +1341,9 @@ class Unit extends MapObject {
 
   // timers independent of curr action
   void update(int timeElapsed) {
+    if (this.timer_last_damage > 0) {
+      this.timer_last_damage -= timeElapsed;
+    }
     if (this.timer_attackCooldown > 0) {
       if (this.frozen()) {
         this.timer_attackCooldown = this.attackCooldown();
@@ -1480,6 +1485,7 @@ class Unit extends MapObject {
 
 
   void damage(Unit source, float amount) {
+    float last_health = this.curr_health;
     if (this.remove || amount <= 0) {
       return;
     }
@@ -1511,6 +1517,8 @@ class Unit extends MapObject {
         this.description += "\n" + amount + " damage from " + source.display_name() + ".";
       }
     }
+    this.timer_last_damage = Constants.unit_healthbarDamageAnimationTime;
+    this.last_damage_amount = last_health - this.curr_health;
   }
 
 
