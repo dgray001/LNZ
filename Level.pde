@@ -338,14 +338,113 @@ class Level {
     Feature f = (Feature)h.object_targeting;
     switch(f.ID) {
       case 161: // water fountain
+        // if holding water bottle that isn't full fill it
+        // if holding a dirty item clean it (?)
+        h.increaseThirst(3);
+        // sound effect
         break;
       case 162: // sink
+        // if holding water bottle that isn't full fill it
+        // if holding a dirty item clean it (?)
+        h.increaseThirst(2);
+        // sound effect
         break;
       case 163: // shower stall
+        f.number = Constants.feature_showerStallCooldown;
+        // if holding a dirty item clean it (?)
+        // if you are dirty clean yourself
+        h.increaseThirst(1);
+        // sound effect
         break;
       case 164: // urinal
+        f.number = Constants.feature_urinalCooldown;
+        // if parched drink from urinal
+        // sound effect
         break;
       case 165: // toilet
+        f.number = Constants.feature_toiletCooldown;
+        // if parched drink from toilet
+        // sound effect
+        break;
+      case 171: // stove
+        if (h.inventory.viewing) {
+          break;
+        }
+        h.inventory.featureInventory(f.inventory);
+        h.inventory.viewing = true;
+        // StoveInventory which has 4 spots to cook items
+        // sound effect
+        break;
+      case 174: // minifridge
+        if (h.inventory.viewing) {
+          break;
+        }
+        h.inventory.featureInventory(f.inventory);
+        h.inventory.viewing = true;
+        // sound effect
+        break;
+      case 175: // refridgerator
+        if (h.inventory.viewing) {
+          break;
+        }
+        h.inventory.featureInventory(f.inventory);
+        h.inventory.viewing = true;
+        // sound effect
+        break;
+      case 176: // washer
+        if (h.inventory.viewing) {
+          break;
+        }
+        h.inventory.featureInventory(f.inventory);
+        h.inventory.viewing = true;
+        // sound effect
+        break;
+      case 177: // dryer
+        if (h.inventory.viewing) {
+          break;
+        }
+        h.inventory.featureInventory(f.inventory);
+        h.inventory.viewing = true;
+        // sound effect
+        break;
+      case 181: // garbage can
+        if (h.inventory.viewing) {
+          break;
+        }
+        h.inventory.featureInventory(f.inventory);
+        h.inventory.viewing = true;
+        // sound effect
+        break;
+      case 182: // recycle can
+        if (h.inventory.viewing) {
+          break;
+        }
+        h.inventory.featureInventory(f.inventory);
+        h.inventory.viewing = true;
+        // sound effect
+        break;
+      case 183: // crate
+        if (h.inventory.viewing) {
+          break;
+        }
+        h.inventory.featureInventory(f.inventory);
+        h.inventory.viewing = true;
+        // sound effect
+        break;
+      case 184: // cardboard box
+        if (h.inventory.viewing) {
+          break;
+        }
+        h.inventory.featureInventory(f.inventory);
+        h.inventory.viewing = true;
+        // sound effect
+        break;
+      case 185: // pickle jar
+        if (h.canPickup()) {
+          f.number = Constants.feature_pickleJarCooldown;
+          h.pickup(new Item(2106));
+          // sound effect
+        }
         break;
       default:
         global.errorMessage("ERROR: Hero " + h.display_name() + " trying to " +

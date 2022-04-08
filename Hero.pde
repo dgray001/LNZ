@@ -459,6 +459,12 @@ class Hero extends Unit {
     }
 
 
+    void featureInventory(Inventory feature_inventory) {
+      this.feature_inventory = feature_inventory;
+      this.setButtonSize(this.button_size);
+    }
+
+
     @Override
     void setButtonSize(float button_size) {
       super.setButtonSize(button_size);
@@ -1287,7 +1293,8 @@ class Hero extends Unit {
         case 'E':
           this.inventory.viewing = !this.inventory.viewing;
           if (!this.inventory.viewing) {
-            // return item clicked item
+            this.inventory.feature_inventory = null;
+            this.inventory.dropItemHolding();
           }
           break;
         case 'r':
