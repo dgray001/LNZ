@@ -1537,22 +1537,28 @@ class GameMap {
 
   void updateView(int timeElapsed) {
     boolean refreshView = false;
-    // moving view
-    if (this.view_moving_left) {
-      this.moveView(-timeElapsed * global.profile.options.map_viewMoveSpeedFactor, 0, false);
-      refreshView = true;
+    // lockscreen
+    if (global.holding_space && this.units.containsKey(0)) {
+      this.setViewLocation(this.units.get(0).x, this.units.get(0).y);
     }
-    if (this.view_moving_right) {
-      this.moveView(timeElapsed * global.profile.options.map_viewMoveSpeedFactor, 0, false);
-      refreshView = true;
-    }
-    if (this.view_moving_up) {
-      this.moveView(0, -timeElapsed * global.profile.options.map_viewMoveSpeedFactor, false);
-      refreshView = true;
-    }
-    if (this.view_moving_down) {
-      this.moveView(0, timeElapsed * global.profile.options.map_viewMoveSpeedFactor, false);
-      refreshView = true;
+    else {
+      // moving view
+      if (this.view_moving_left) {
+        this.moveView(-timeElapsed * global.profile.options.map_viewMoveSpeedFactor, 0, false);
+        refreshView = true;
+      }
+      if (this.view_moving_right) {
+        this.moveView(timeElapsed * global.profile.options.map_viewMoveSpeedFactor, 0, false);
+        refreshView = true;
+      }
+      if (this.view_moving_up) {
+        this.moveView(0, -timeElapsed * global.profile.options.map_viewMoveSpeedFactor, false);
+        refreshView = true;
+      }
+      if (this.view_moving_down) {
+        this.moveView(0, timeElapsed * global.profile.options.map_viewMoveSpeedFactor, false);
+        refreshView = true;
+      }
     }
     if (refreshView) {
       this.refreshDisplayMapParameters();
@@ -1907,6 +1913,11 @@ class GameMap {
     }
     else {
       switch(key) {
+        case ' ':
+          if (this.units.containsKey(0)) {
+            this.selected_object = this.units.get(0);
+          }
+          break;
         case 'q':
         case 'Q':
           if (this.units.containsKey(0)) {

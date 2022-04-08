@@ -15,6 +15,7 @@ class Global {
   private boolean holding_shift = false;
   private boolean holding_ctrl = false;
   private boolean holding_alt = false;
+  private boolean holding_space = false;
   private Deque<String> error_messages = new ArrayDeque<String>();
   private PrintWriter log;
   private boolean focused_last_frame = true;
@@ -54,6 +55,7 @@ class Global {
     this.holding_shift = false;
     this.holding_ctrl = false;
     this.holding_alt = false;
+    this.holding_space = false;
     if (this.menu != null) {
       this.menu.loseFocus();
     }
@@ -108,6 +110,9 @@ class Global {
     }
     else {
       this.fixKeyFX2D();
+      if (key == ' ') {
+        this.holding_space = true;
+      }
     }
   }
   void keyReleaseFX2D() {
@@ -126,6 +131,9 @@ class Global {
     }
     else {
       this.fixKeyFX2D();
+      if (key == ' ') {
+        this.holding_space = false;
+      }
     }
   }
   void fixKeyFX2D() {

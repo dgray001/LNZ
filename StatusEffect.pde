@@ -158,10 +158,10 @@ enum StatusEffectCode {
           "\nThirst can also lead to becoming woozy or confused.";
       case WOOZY:
         return "This unit is woozy and will randomly stop what they are " +
-          " doing and turn another direction.";
+          "doing and turn another direction.";
       case CONFUSED:
         return "This unit is confused and will randomly stop what they are " +
-          " doing and move in a random direction.";
+          "doing and move in a random direction.";
       case BLEEDING:
         return "This unit is bleeding and will take damage to 10% max health." +
           "\nBleeding can also lead to hemorrhaging";
