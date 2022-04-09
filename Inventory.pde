@@ -32,6 +32,7 @@ class Inventory {
 
     protected InventoryButton button = new InventoryButton();
     protected Item item = null;
+    protected boolean deactivated = false;
 
     InventorySlot() {
       this(0);
@@ -41,6 +42,9 @@ class Inventory {
     }
 
     void update(int timeElapsed) {
+      if (this.deactivated) {
+        return;
+      }
       if (this.item != null) {
         image(this.item.getImage(), this.button.xi, this.button.yi, this.button.xf, this.button.yf);
       }
@@ -51,14 +55,23 @@ class Inventory {
     }
 
     void mouseMove(float mX, float mY) {
+      if (this.deactivated) {
+        return;
+      }
       this.button.mouseMove(mX, mY);
     }
 
     void mousePress() {
+      if (this.deactivated) {
+        return;
+      }
       this.button.mousePress();
     }
 
     void mouseRelease(float mX, float mY) {
+      if (this.deactivated) {
+        return;
+      }
       this.button.mouseRelease(mX, mY);
     }
   }
@@ -241,5 +254,17 @@ class Inventory {
         global.errorMessage("ERROR: Datakey " + datakey + " not found for inventory data.");
         break;
     }
+  }
+}
+
+
+class DeskInventory extends Inventory {
+  DeskInventory() {
+    super(3, 3, true);
+    this.slots.get(2).deactivated = true;
+    this.slots.get(3).deactivated = true;
+    this.slots.get(4).deactivated = true;
+    this.slots.get(6).deactivated = true;
+    this.slots.get(7).deactivated = true;
   }
 }

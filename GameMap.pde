@@ -209,6 +209,8 @@ class GameMapSquare {
       case 132:
       case 133:
         return "Sidewalk";
+      case 134:
+        return "Gravel";
       case 141:
       case 142:
       case 143:
