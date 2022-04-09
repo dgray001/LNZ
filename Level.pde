@@ -336,7 +336,33 @@ class Level {
       return;
     }
     Feature f = (Feature)h.object_targeting;
+    Feature new_f;
     switch(f.ID) {
+      case 102: // desk
+      case 103:
+        if (h.inventory.viewing) {
+          break;
+        }
+        h.inventory.featureInventory(f.inventory);
+        h.inventory.viewing = true;
+        // sound effect
+        break;
+      case 151: // sign
+      case 152:
+      case 153:
+      case 154:
+      case 155:
+      case 156:
+      case 157:
+      case 158:
+        try {
+          this.currMap.addHeaderMessage(trim(split(f.description,
+            Constants.feature_signDescriptionDelimiter)[1]));
+        } catch(ArrayIndexOutOfBoundsException e) {
+          this.currMap.addHeaderMessage("-- the sign has nothing written on it --");
+        }
+        f.number = Constants.feature_signCooldown;
+        break;
       case 161: // water fountain
         // if holding water bottle that isn't full fill it
         // if holding a dirty item clean it (?)
@@ -444,6 +470,188 @@ class Level {
           f.number = Constants.feature_pickleJarCooldown;
           h.pickup(new Item(2106));
           // sound effect
+        }
+        break;
+      case 301: // movable brick wall
+      case 302:
+      case 303:
+      case 304:
+      case 305:
+      case 306:
+      case 307:
+        f.remove = true;
+        // sound effect (?)
+        break;
+      case 331: // door open (up)
+        f.remove = true;
+        new_f = new Feature(339, f.x, f.y, false);
+        this.currMap.addFeature(new_f);
+        new_f.hovered = true;
+        this.currMap.hovered_object = new_f;
+        // sound effect
+        break;
+      case 332:
+        f.remove = true;
+        new_f = new Feature(339, f.x, f.y, true);
+        this.currMap.addFeature(new_f);
+        new_f.hovered = true;
+        this.currMap.hovered_object = new_f;
+        // sound effect
+        break;
+      case 333: // door open (left)
+        f.remove = true;
+        new_f = new Feature(340, f.x, f.y, false);
+        this.currMap.addFeature(new_f);
+        new_f.hovered = true;
+        this.currMap.hovered_object = new_f;
+        // sound effect
+        break;
+      case 334:
+        f.remove = true;
+        new_f = new Feature(340, f.x, f.y, true);
+        this.currMap.addFeature(new_f);
+        new_f.hovered = true;
+        this.currMap.hovered_object = new_f;
+        // sound effect
+        break;
+      case 335: // door open (diagonal left)
+        f.remove = true;
+        new_f = new Feature(341, f.x, f.y, false);
+        this.currMap.addFeature(new_f);
+        new_f.hovered = true;
+        this.currMap.hovered_object = new_f;
+        // sound effect
+        break;
+      case 336:
+        f.remove = true;
+        new_f = new Feature(341, f.x, f.y, true);
+        this.currMap.addFeature(new_f);
+        new_f.hovered = true;
+        this.currMap.hovered_object = new_f;
+        // sound effect
+        break;
+      case 337: // door open (diagonal right)
+        f.remove = true;
+        new_f = new Feature(342, f.x, f.y, false);
+        this.currMap.addFeature(new_f);
+        new_f.hovered = true;
+        this.currMap.hovered_object = new_f;
+        // sound effect
+        break;
+      case 338:
+        f.remove = true;
+        new_f = new Feature(342, f.x, f.y, true);
+        this.currMap.addFeature(new_f);
+        new_f.hovered = true;
+        this.currMap.hovered_object = new_f;
+        // sound effect
+        break;
+      case 339: // door closed (up)
+        f.remove = true;
+        if (f.toggle) {
+          new_f = new Feature(332, f.x, f.y);
+        }
+        else {
+          new_f = new Feature(331, f.x, f.y);
+        }
+        this.currMap.addFeature(new_f);
+        new_f.hovered = true;
+        this.currMap.hovered_object = new_f;
+        // sound effect
+        break;
+      case 340: // door closed (left)
+        f.remove = true;
+        if (f.toggle) {
+          new_f = new Feature(334, f.x, f.y);
+        }
+        else {
+          new_f = new Feature(333, f.x, f.y);
+        }
+        this.currMap.addFeature(new_f);
+        new_f.hovered = true;
+        this.currMap.hovered_object = new_f;
+        // sound effect
+        break;
+      case 341: // door closed (diagonal left)
+        f.remove = true;
+        if (f.toggle) {
+          new_f = new Feature(336, f.x, f.y);
+        }
+        else {
+          new_f = new Feature(335, f.x, f.y);
+        }
+        this.currMap.addFeature(new_f);
+        new_f.hovered = true;
+        this.currMap.hovered_object = new_f;
+        // sound effect
+        break;
+      case 342: // door closed (diagonal right)
+        f.remove = true;
+        if (f.toggle) {
+          new_f = new Feature(338, f.x, f.y);
+        }
+        else {
+          new_f = new Feature(337, f.x, f.y);
+        }
+        this.currMap.addFeature(new_f);
+        new_f.hovered = true;
+        this.currMap.hovered_object = new_f;
+        // sound effect
+        break;
+      case 343: // door locked (up)
+        if (h.weapon() == null) {
+          break;
+        }
+        boolean unlock = false;
+        switch(h.weapon().ID) {
+          case 2901: // key
+            break;
+          case 2902: // master key
+            break;
+          case 2903: // skeleton key
+            break;
+        }
+        if (unlock) {
+          // sound effect
+        }
+        break;
+      case 344: // door locked (left)
+        break;
+      case 345: // door locked (diagonal left)
+        break;
+      case 346: // door locked (diagonal right)
+        break;
+      case 401: // dandelion
+        if (h.canPickup()) {
+          f.remove = true;
+          h.pickup(new Item(2961));
+          // sound effect
+        }
+        break;
+      case 411: // gravel (pebbles)
+        if (h.canPickup()) {
+          h.pickup(new Item(2933));
+          f.number--;
+          if (f.number < 1) {
+            f.remove = true;
+            new_f = new Feature(134, f.x, f.y);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+          }
+        }
+        break;
+      case 412: // gravel (rocks)
+        if (h.canPickup()) {
+          h.pickup(new Item(2931));
+          f.number--;
+          if (f.number < 1) {
+            f.remove = true;
+            new_f = new Feature(411, f.x, f.y);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+          }
         }
         break;
       default:

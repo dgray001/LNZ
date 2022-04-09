@@ -104,10 +104,12 @@ class Feature extends MapObject {
       case 102:
         this.setStrings("Wooden Desk", "Furniture", "");
         this.setSize(2, 1, 4);
+        this.inventory = new DeskInventory();
         break;
       case 103:
         this.setStrings("Wooden Desk", "Furniture", "");
         this.setSize(1, 2, 4);
+        this.inventory = new DeskInventory();
         break;
       case 111:
       case 112:
@@ -172,7 +174,7 @@ class Feature extends MapObject {
       case 156:
       case 157:
       case 158:
-        this.setStrings("Sign", "Sign", "");
+        this.setStrings("Sign", "Sign", Constants.feature_signDescriptionDelimiter);
         this.setSize(1, 1, 2);
         break;
       case 161:
@@ -371,6 +373,7 @@ class Feature extends MapObject {
       case 412:
         this.setStrings("Gravel", "Nature", "");
         this.setSize(1, 1, 0);
+        this.number = int(ceil(random(Constants.feature_gravelMaxNumberRocks)));
         break;
       case 421:
       case 422:
@@ -437,6 +440,17 @@ class Feature extends MapObject {
         break;
     }
   }
+  Feature(int ID, float x, float y) {
+    this(ID);
+    this.x = x;
+    this.y = y;
+  }
+  Feature(int ID, float x, float y, boolean toggle) {
+    this(ID);
+    this.x = x;
+    this.y = y;
+    this.toggle = toggle;
+  }
 
   String display_name() {
     return this.display_name;
@@ -445,7 +459,19 @@ class Feature extends MapObject {
     return this.type;
   }
   String description() {
-    return this.description;
+    switch(this.ID) {
+      case 151: // sign
+      case 152:
+      case 153:
+      case 154:
+      case 155:
+      case 156:
+      case 157:
+      case 158:
+        return trim(split(this.description, Constants.feature_signDescriptionDelimiter)[0]);
+      default:
+        return this.description;
+    }
   }
   String selectedObjectTextboxText() {
     String text = "-- " + this.type() + " --";
@@ -971,6 +997,28 @@ class Feature extends MapObject {
       case 164: // urinal
       case 165: // toilet
       case 185: // pickle jar
+      case 321: // window (open)
+      case 322: // window (closed)
+      case 323: // window (locked)
+      case 331: // wooden door (open)
+      case 332:
+      case 333:
+      case 334:
+      case 335:
+      case 336:
+      case 337:
+      case 338:
+      case 339: // wooden door (closed)
+      case 340:
+      case 341:
+      case 342:
+      case 343: // wooden door (locked)
+      case 344:
+      case 345:
+      case 346:
+      case 401: // dandelion
+      case 411: // gravel
+      case 412:
         return true;
       default:
         return false;
@@ -979,6 +1027,16 @@ class Feature extends MapObject {
 
   boolean targetableByHeroOnly() {
     switch(this.ID) {
+      case 102: // desk
+      case 103:
+      case 151: // sign
+      case 152:
+      case 153:
+      case 154:
+      case 155:
+      case 156:
+      case 157:
+      case 158:
       case 171: // stove
       case 174: // minifridge
       case 175: // refridgerator
@@ -988,6 +1046,13 @@ class Feature extends MapObject {
       case 182: // recycle can
       case 183: // crate
       case 184: // cardboard box
+      case 301: // movable brick wall
+      case 302:
+      case 303:
+      case 304:
+      case 305:
+      case 306:
+      case 307:
         return true;
       default:
         return false;
@@ -1005,6 +1070,14 @@ class Feature extends MapObject {
 
   boolean onInteractionCooldown() {
     switch(this.ID) {
+      case 151: // sign
+      case 152:
+      case 153:
+      case 154:
+      case 155:
+      case 156:
+      case 157:
+      case 158:
       case 163: // shower stall
       case 164: // urinal
       case 165: // toilet
@@ -1022,9 +1095,33 @@ class Feature extends MapObject {
 
   float interactionTime() {
     switch(this.ID) {
+      case 301: // movable brick wall
+      case 302:
+      case 303:
+      case 304:
+      case 305:
+      case 306:
+      case 307:
+        return Constants.feature_movableBrickWallInteractionTime;
+      case 321:
+      case 322:
+        return Constants.feature_windowInteractionTime;
+      case 411:
+      case 412:
+        return Constants.feature_gravelInteractionTime;
       default:
         return 0;
     }
+  }
+
+
+  void beginInteractionSoundEffect(float viewX, float viewY) {
+    // sound effects at beginning of interactionTime()
+    // instead of these two functions have one at class Sounds which takes (sound name, difX, difY)
+  }
+
+  void atInteractionSoundEffect(float viewX, float viewY) {
+    // sound effect at interact();
   }
 
 
@@ -1046,6 +1143,128 @@ class Feature extends MapObject {
       case 165: // toilet
         break;
       case 185: // pickle jar
+        break;
+      case 321: // window (open)
+        this.remove = true;
+        map.addFeature(new Feature(322, this.x, this.y));
+        break;
+      case 322: // window (closed)
+        this.remove = true;
+        map.addFeature(new Feature(321, this.x, this.y));
+        break;
+      case 323: // window (locked)
+        break;
+      case 331: // door open (up)
+        this.remove = true;
+        map.addFeature(new Feature(339, this.x, this.y, false));
+        // sound effect
+        break;
+      case 332:
+        this.remove = true;
+        map.addFeature(new Feature(339, this.x, this.y, true));
+        // sound effect
+        break;
+      case 333: // door open (left)
+        this.remove = true;
+        map.addFeature(new Feature(340, this.x, this.y, false));
+        // sound effect
+        break;
+      case 334:
+        this.remove = true;
+        map.addFeature(new Feature(340, this.x, this.y, true));
+        // sound effect
+        break;
+      case 335: // door open (diagonal left)
+        this.remove = true;
+        map.addFeature(new Feature(341, this.x, this.y, false));
+        // sound effect
+        break;
+      case 336:
+        this.remove = true;
+        map.addFeature(new Feature(341, this.x, this.y, true));
+        // sound effect
+        break;
+      case 337: // door open (diagonal right)
+        this.remove = true;
+        map.addFeature(new Feature(342, this.x, this.y, false));
+        // sound effect
+        break;
+      case 338:
+        this.remove = true;
+        map.addFeature(new Feature(342, this.x, this.y, true));
+        // sound effect
+        break;
+      case 339: // door closed (up)
+        this.remove = true;
+        if (this.toggle) {
+          map.addFeature(new Feature(332, this.x, this.y));
+        }
+        else {
+          map.addFeature(new Feature(331, this.x, this.y));
+        }
+        // sound effect
+        break;
+      case 340: // door closed (left)
+        this.remove = true;
+        if (this.toggle) {
+          map.addFeature(new Feature(334, this.x, this.y));
+        }
+        else {
+          map.addFeature(new Feature(333, this.x, this.y));
+        }
+        // sound effect
+        break;
+      case 341: // door closed (diagonal left)
+        this.remove = true;
+        if (this.toggle) {
+          map.addFeature(new Feature(336, this.x, this.y));
+        }
+        else {
+          map.addFeature(new Feature(335, this.x, this.y));
+        }
+        // sound effect
+        break;
+      case 342: // door closed (diagonal right)
+        this.remove = true;
+        if (this.toggle) {
+          map.addFeature(new Feature(338, this.x, this.y));
+        }
+        else {
+          map.addFeature(new Feature(337, this.x, this.y));
+        }
+        // sound effect
+        break;
+      case 343: // door (locked)
+      case 344:
+      case 345:
+      case 346:
+        break;
+      case 401: // dandelion
+        if (u.canPickup()) {
+          this.remove = true;
+          u.pickup(new Item(2961));
+          // sound effect
+        }
+        break;
+      case 411: // gravel (pebbles)
+        if (u.canPickup()) {
+          u.pickup(new Item(2933));
+          this.number--;
+          if (this.number < 1) {
+            this.remove = true;
+            map.setTerrain(134, int(floor(this.x)), int(floor(this.y)));
+          }
+        }
+        break;
+      case 412: // gravel (rocks)
+        if (u.canPickup()) {
+          u.pickup(new Item(2931));
+          this.number--;
+          if (this.number < 1) {
+            this.remove = true;
+            map.addFeature(new Feature(411, this.x, this.y));
+          }
+        }
         break;
       default:
         global.errorMessage("ERROR: Unit " + u.display_name() + " trying to " +

@@ -1074,6 +1074,7 @@ class Unit extends MapObject {
         }
         this.curr_action = UnitAction.FEATURE_INTERACTION;
         this.timer_actionTime = f.interactionTime();
+        f.beginInteractionSoundEffect(map.viewX, map.viewY);
         break;
       case FEATURE_INTERACTION:
         if (this.object_targeting == null || this.object_targeting.remove) {
