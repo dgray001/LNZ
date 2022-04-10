@@ -337,6 +337,9 @@ class Level {
     }
     Feature f = (Feature)h.object_targeting;
     Feature new_f;
+    int item_id = 0;
+    Item new_i;
+    float random_number = random(1);
     switch(f.ID) {
       case 102: // desk
       case 103:
@@ -345,6 +348,130 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
+        // sound effect
+        break;
+      case 115: // coordinator chair
+      case 121: // couch
+      case 122:
+      case 123:
+      case 124:
+        if (!f.toggle) {
+          this.currMap.addHeaderMessage("This " + f.display_name() + " has nothing in it.");
+          break;
+        }
+        if (random_number > 0.99) {
+          item_id = 2154;
+        }
+        else if (random_number > 0.96) {
+          item_id = 2153;
+        }
+        else if (random_number > 0.9) {
+          item_id = 2152;
+        }
+        else if (random_number > 0.75) {
+          item_id = 2151;
+        }
+        else if (random_number > 0.72) {
+          item_id = 2101;
+        }
+        else if (random_number > 0.69) {
+          item_id = 2102;
+        }
+        else if (random_number > 0.66) {
+          item_id = 2103;
+        }
+        else if (random_number > 0.63) {
+          item_id = 2104;
+        }
+        else if (random_number > 0.6) {
+          item_id = 2105;
+        }
+        else if (random_number > 0.58) {
+          item_id = 2107;
+        }
+        else if (random_number > 0.57) {
+          item_id = 2110;
+        }
+        else if (random_number > 0.56) {
+          item_id = 2112;
+        }
+        else if (random_number > 0.55) {
+          item_id = 2113;
+        }
+        else if (random_number > 0.54) {
+          item_id = 2132;
+        }
+        else if (random_number > 0.53) {
+          item_id = 2134;
+        }
+        else if (random_number > 0.52) {
+          item_id = 2402;
+        }
+        else if (random_number > 0.51) {
+          item_id = 2502;
+        }
+        else if (random_number > 0.5) {
+          item_id = 2602;
+        }
+        else if (random_number > 0.49) {
+          item_id = 2603;
+        }
+        else if (random_number > 0.48) {
+          item_id = 2604;
+        }
+        else if (random_number > 0.45) {
+          item_id = 2702;
+        }
+        else if (random_number > 0.44) {
+          item_id = 2703;
+        }
+        else if (random_number > 0.43) {
+          item_id = 2911;
+        }
+        else if (random_number > 0.42) {
+          item_id = 2912;
+        }
+        else if (random_number > 0.41) {
+          item_id = 2913;
+        }
+        else if (random_number > 0.39) {
+          item_id = 2916;
+        }
+        else if (random_number > 0.38) {
+          item_id = 2917;
+        }
+        else if (random_number > 0.35) {
+          item_id = 2924;
+        }
+        else if (random_number > 0.33) {
+          item_id = 2931;
+        }
+        else if (random_number > 0.31) {
+          item_id = 2933;
+        }
+        else {
+          f.toggle = false;
+          this.currMap.addHeaderMessage("This " + f.display_name() + " has nothing left in it.");
+          break;
+        }
+        new_i = new Item(item_id, h.frontX(), h.frontY());
+        if (h.canPickup()) {
+          h.pickup(new_i);
+        }
+        else {
+          this.currMap.addItem(new_i);
+        }
+        this.currMap.addHeaderMessage("You found a " + new_i.display_name() + ".");
+        // sound effect
+        break;
+      case 131: // bed
+      case 132:
+      case 133:
+      case 134:
+        // sound effect
+        break;
+      case 141: // wardrobe
+      case 142:
         // sound effect
         break;
       case 151: // sign
@@ -677,13 +804,75 @@ class Level {
           }
         }
         break;
+      case 421: // tree (maple)
+      case 422: // tree (unknown)
+      case 423: // tree (cedar)
+      case 424: // tree (dead)
+      case 425: // tree (large)
+      case 426: // tree (pine)
+        int branch_id = 0;
+        switch(f.ID) {
+          case 421:
+            branch_id = 2965;
+            break;
+          case 422:
+            branch_id = 2966;
+            break;
+          case 423:
+            branch_id = 2967;
+            break;
+          case 424:
+            branch_id = 2963;
+            break;
+          case 425:
+            branch_id = 2965;
+            break;
+          case 426:
+            branch_id = 2968;
+            break;
+        }
+        if (h.holding(2977, 2979, 2983)) {
+          switch(h.weapon().ID) {
+            case 2977: // ax
+              f.number -= 2;
+              break;
+            case 2979: // saw
+              f.number -= 1;
+              break;
+            case 2983: // chainsaw
+              f.number -= 4;
+              break;
+          }
+          if (f.toggle) {
+          this.currMap.addItem(new Item(branch_id, h.frontX(), h.frontY()));
+            if (randomChance(Constants.feature_treeChanceEndBranches)) {
+              f.toggle = false;
+            }
+          }
+          else if (randomChance(Constants.feature_treeDropChance)) {
+          this.currMap.addItem(new Item(branch_id, h.frontX(), h.frontY()));
+          }
+          if (f.number < 1) {
+            f.remove = true;
+            // drop wooden blocks
+          }
+          // sound effect (based on item)
+        }
+        else if (f.toggle) {
+          this.currMap.addItem(new Item(branch_id, h.frontX(), h.frontY()));
+          if (randomChance(Constants.feature_treeChanceEndBranches)) {
+            f.toggle = false;
+          }
+          // sound effect
+        }
+        break;
       case 441: // bush
       case 442:
       case 443:
         if (h.holding(2204, 2211)) {
           f.number--;
           if (randomChance(Constants.feature_bushDropChance)) {
-            this.currMap.addItem(2964, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6));
+            this.currMap.addItem(new Item(2964, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6)));
           }
           if (f.number < 1) {
             f.remove = true;
@@ -708,8 +897,8 @@ class Level {
       }
       if (this.player != null) {
         if (this.player.curr_action == UnitAction.HERO_INTERACTING_WITH_FEATURE) {
-          this.player.curr_action = UnitAction.NONE;
           this.heroFeatureInteraction(this.player);
+          this.player.stopAction();
         }
         for (Linker linker : this.linkers) {
           if (linker.rect1.contains(this.player, this.currMapName)) {

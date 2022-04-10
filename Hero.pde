@@ -975,8 +975,8 @@ class Hero extends Unit {
   protected float money = 0;
   protected float base_mana = 0;
   protected float curr_mana = 0;
-  protected int hunger = 21;
-  protected int thirst = 21;
+  protected int hunger = 100;
+  protected int thirst = 100;
   protected int hunger_timer = Constants.hero_hungerTimer;
   protected int thirst_timer = Constants.hero_thirstTimer;
 
