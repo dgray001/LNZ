@@ -472,6 +472,29 @@ class Level {
           // sound effect
         }
         break;
+      case 211: // wire fence
+      case 212:
+      case 213:
+      case 214:
+      case 215:
+      case 216:
+      case 217:
+      case 218:
+      case 219:
+      case 220:
+      case 221:
+      case 222:
+      case 223:
+      case 224:
+      case 225:
+      case 226:
+        // climb over
+        if (h.holding(2978)) {
+          f.remove = true;
+          this.currMap.addItem(new Item(2806, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6)));
+          // sonud effect
+        }
+        break;
       case 301: // movable brick wall
       case 302:
       case 303:
@@ -652,6 +675,20 @@ class Level {
             new_f.hovered = true;
             this.currMap.hovered_object = new_f;
           }
+        }
+        break;
+      case 441: // bush
+      case 442:
+      case 443:
+        if (h.holding(2204, 2211)) {
+          f.number--;
+          if (randomChance(Constants.feature_bushDropChance)) {
+            this.currMap.addItem(2964, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6));
+          }
+          if (f.number < 1) {
+            f.remove = true;
+          }
+          // sound effect
         }
         break;
       default:

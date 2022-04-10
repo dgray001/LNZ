@@ -586,6 +586,18 @@ class Unit extends MapObject {
     this.gear.put(GearSlot.WEAPON, i);
   }
 
+  boolean holding(int ... item_ids) {
+    if (this.weapon() == null) {
+      return false;
+    }
+    for (int item_id : item_ids) {
+      if (this.weapon().ID == item_id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   Item headgear() {
     if (this.gear.containsKey(GearSlot.HEAD)) {
       return this.gear.get(GearSlot.HEAD);

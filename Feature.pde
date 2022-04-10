@@ -381,14 +381,20 @@ class Feature extends MapObject {
       case 424:
         this.setStrings("Tree", "Nature", "");
         this.setSize(2, 2, 20);
+        this.toggle = true;
+        this.number = Constants.feature_treeHealth;
         break;
       case 425:
         this.setStrings("Tree", "Nature", "");
         this.setSize(3, 3, 35);
+        this.toggle = true;
+        this.number = Constants.feature_treeBigHealth;
         break;
       case 426:
         this.setStrings("Tree", "Nature", "");
         this.setSize(2, 2, 20);
+        this.toggle = true;
+        this.number = Constants.feature_treeHealth;
         break;
       case 431:
         this.setStrings("Rock", "Nature", "");
@@ -399,6 +405,7 @@ class Feature extends MapObject {
       case 443:
         this.setStrings("Bush", "Nature", "");
         this.setSize(1, 1, 5);
+        this.number = Constants.feature_bushHealth;
         break;
 
       // Vehicles
@@ -997,6 +1004,22 @@ class Feature extends MapObject {
       case 164: // urinal
       case 165: // toilet
       case 185: // pickle jar
+      case 211: // wire fence
+      case 212:
+      case 213:
+      case 214:
+      case 215:
+      case 216:
+      case 217:
+      case 218:
+      case 219:
+      case 220:
+      case 221:
+      case 222:
+      case 223:
+      case 224:
+      case 225:
+      case 226:
       case 321: // window (open)
       case 322: // window (closed)
       case 323: // window (locked)
@@ -1019,6 +1042,15 @@ class Feature extends MapObject {
       case 401: // dandelion
       case 411: // gravel
       case 412:
+      case 421: // tree
+      case 422:
+      case 423:
+      case 424:
+      case 425:
+      case 426:
+      case 441: // bush
+      case 442:
+      case 443:
         return true;
       default:
         return false;
@@ -1095,6 +1127,23 @@ class Feature extends MapObject {
 
   float interactionTime() {
     switch(this.ID) {
+      case 211: // wire fence
+      case 212:
+      case 213:
+      case 214:
+      case 215:
+      case 216:
+      case 217:
+      case 218:
+      case 219:
+      case 220:
+      case 221:
+      case 222:
+      case 223:
+      case 224:
+      case 225:
+      case 226:
+        return Constants.feature_wireFenceInteractionTime;
       case 301: // movable brick wall
       case 302:
       case 303:
@@ -1103,12 +1152,23 @@ class Feature extends MapObject {
       case 306:
       case 307:
         return Constants.feature_movableBrickWallInteractionTime;
-      case 321:
+      case 321: // window
       case 322:
         return Constants.feature_windowInteractionTime;
-      case 411:
+      case 411: // gravel
       case 412:
         return Constants.feature_gravelInteractionTime;
+      case 421: // tree
+      case 422:
+      case 423:
+      case 424:
+      case 425:
+      case 426:
+        return Constants.feature_treeInteractionTime;
+      case 441: // bush
+      case 442:
+      case 443:
+        return Constants.feature_bushInteractionTime;
       default:
         return 0;
     }
@@ -1143,6 +1203,24 @@ class Feature extends MapObject {
       case 165: // toilet
         break;
       case 185: // pickle jar
+        break;
+      case 211: // wire fence
+      case 212:
+      case 213:
+      case 214:
+      case 215:
+      case 216:
+      case 217:
+      case 218:
+      case 219:
+      case 220:
+      case 221:
+      case 222:
+      case 223:
+      case 224:
+      case 225:
+      case 226:
+        // climb over
         break;
       case 321: // window (open)
         this.remove = true;
@@ -1264,6 +1342,55 @@ class Feature extends MapObject {
             this.remove = true;
             map.addFeature(new Feature(411, this.x, this.y));
           }
+        }
+        break;
+      case 421: // tree (maple)
+        if (u.holding(2977, 2979, 2983)) {
+          f.number -= 2;
+          if (f.toggle) {
+            map.addItem(2965, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6));
+            if (randomChance(Constants.feature_treeChanceEndBranches)) {
+              f.toggle = false;
+            }
+          }
+          else if (randomChance(Constants.feature_treeDropChance)) {
+            map.addItem(2965, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6));
+          }
+          if (f.number < 1) {
+            f.remove = true;
+          }
+          // sound effect (based on item)
+        }
+        else if (f.toggle) {
+          map.addItem(2965, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6));
+          if (randomChance(Constants.feature_treeChanceEndBranches)) {
+            f.toggle = false;
+          }
+          // sound effect
+        }
+        break;
+      case 422: // tree (unknown)
+        break;
+      case 423: // tree (cedar)
+        break;
+      case 424: // tree (dead)
+        break;
+      case 425: // tree (large)
+        break;
+      case 426: // tree (pine)
+        break;
+      case 441: // bush
+      case 442:
+      case 443:
+        if (u.holding(2204, 2211)) {
+          f.number--;
+          if (randomChance(Constants.feature_bushDropChance)) {
+            map.addItem(2964, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6));
+          }
+          if (f.number < 1) {
+            f.remove = true;
+          }
+          // sound effect
         }
         break;
       default:
