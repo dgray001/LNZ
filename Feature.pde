@@ -121,16 +121,19 @@ class Feature extends MapObject {
       case 115:
         this.setStrings("Coordinator Chair", "Furniture", "");
         this.setSize(1, 1, 2);
+        this.toggle = true;
         break;
       case 121:
       case 122:
         this.setStrings("Couch", "Furniture", "");
         this.setSize(3, 1, 2);
+        this.toggle = true;
         break;
       case 123:
       case 124:
         this.setStrings("Couch", "Furniture", "");
         this.setSize(1, 3, 2);
+        this.toggle = true;
         break;
       case 125:
         this.setStrings("Bench", "Furniture", "");
@@ -152,19 +155,23 @@ class Feature extends MapObject {
       case 132:
         this.setStrings("Bed", "Furniture", "");
         this.setSize(2, 3, 3);
+        this.toggle = true;
         break;
       case 133:
       case 134:
         this.setStrings("Bed", "Furniture", "");
         this.setSize(3, 2, 3);
+        this.toggle = true;
         break;
       case 141:
         this.setStrings("Wardrobe", "Furniture", "");
         this.setSize(2, 1, 9);
+        this.toggle = true;
         break;
       case 142:
         this.setStrings("Wardrobe", "Furniture", "");
         this.setSize(1, 2, 9);
+        this.toggle = true;
         break;
       case 151:
       case 152:
@@ -941,6 +948,9 @@ class Feature extends MapObject {
       case 425:
         path += "tree_large.png";
         break;
+      case 426:
+        path += "tree_pine.png";
+        break;
       case 431:
         path += "rock.png";
         break;
@@ -1061,6 +1071,17 @@ class Feature extends MapObject {
     switch(this.ID) {
       case 102: // desk
       case 103:
+      case 115: // coordinator chair
+      case 121: // couch
+      case 122:
+      case 123:
+      case 124:
+      case 131: // bed
+      case 132:
+      case 133:
+      case 134:
+      case 141: // wardrobe
+      case 142:
       case 151: // sign
       case 152:
       case 153:
@@ -1127,6 +1148,18 @@ class Feature extends MapObject {
 
   float interactionTime() {
     switch(this.ID) {
+      case 115: // coordinator chair
+      case 121: // couch
+      case 122:
+      case 123:
+      case 124:
+      case 131: // bed
+      case 132:
+      case 133:
+      case 134:
+      case 141: // wardrobe
+      case 142:
+        return Constants.feature_rummageInteractionTime;
       case 211: // wire fence
       case 212:
       case 213:
@@ -1345,50 +1378,77 @@ class Feature extends MapObject {
         }
         break;
       case 421: // tree (maple)
+      case 422: // tree (unknown)
+      case 423: // tree (cedar)
+      case 424: // tree (dead)
+      case 425: // tree (large)
+      case 426: // tree (pine)
+        int branch_id = 0;
+        switch(this.ID) {
+          case 421:
+            branch_id = 2965;
+            break;
+          case 422:
+            branch_id = 2966;
+            break;
+          case 423:
+            branch_id = 2967;
+            break;
+          case 424:
+            branch_id = 2963;
+            break;
+          case 425:
+            branch_id = 2965;
+            break;
+          case 426:
+            branch_id = 2968;
+            break;
+        }
         if (u.holding(2977, 2979, 2983)) {
-          f.number -= 2;
-          if (f.toggle) {
-            map.addItem(2965, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6));
+          switch(u.weapon().ID) {
+            case 2977: // ax
+              this.number -= 2;
+              break;
+            case 2979: // saw
+              this.number -= 1;
+              break;
+            case 2983: // chainsaw
+              this.number -= 4;
+              break;
+          }
+          if (this.toggle) {
+          map.addItem(new Item(branch_id, u.frontX(), u.frontY()));
             if (randomChance(Constants.feature_treeChanceEndBranches)) {
-              f.toggle = false;
+              this.toggle = false;
             }
           }
           else if (randomChance(Constants.feature_treeDropChance)) {
-            map.addItem(2965, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6));
+          map.addItem(new Item(branch_id, u.frontX(), u.frontY()));
           }
-          if (f.number < 1) {
-            f.remove = true;
+          if (this.number < 1) {
+            this.remove = true;
+            // drop wooden blocks
           }
           // sound effect (based on item)
         }
-        else if (f.toggle) {
-          map.addItem(2965, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6));
+        else if (this.toggle) {
+          map.addItem(new Item(branch_id, u.frontX(), u.frontY()));
           if (randomChance(Constants.feature_treeChanceEndBranches)) {
-            f.toggle = false;
+            this.toggle = false;
           }
           // sound effect
         }
-        break;
-      case 422: // tree (unknown)
-        break;
-      case 423: // tree (cedar)
-        break;
-      case 424: // tree (dead)
-        break;
-      case 425: // tree (large)
-        break;
-      case 426: // tree (pine)
         break;
       case 441: // bush
       case 442:
       case 443:
         if (u.holding(2204, 2211)) {
-          f.number--;
+          this.number--;
           if (randomChance(Constants.feature_bushDropChance)) {
-            map.addItem(2964, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6));
+            map.addItem(new Item(2964, this.x + 0.2 + random(0.6), this.y + 0.2 + random(0.6)));
           }
-          if (f.number < 1) {
-            f.remove = true;
+          if (this.number < 1) {
+            this.remove = true;
           }
           // sound effect
         }

@@ -1301,7 +1301,7 @@ class Item extends MapObject {
         path += "talc_chestplate.png";
         break;
       case 2502:
-        path += "t-shirt.png";
+        path += "tshirt.png";
         break;
       case 2503:
         path += "bra.png";

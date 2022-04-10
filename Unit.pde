@@ -1068,12 +1068,12 @@ class Unit extends MapObject {
         break;
       case TARGETING_FEATURE:
         if (this.object_targeting == null || this.object_targeting.remove) {
-          this.curr_action = UnitAction.NONE;
+          this.stopAction();
           break;
         }
         Feature f = (Feature)this.object_targeting;
         if (!f.targetable(this)) {
-          this.curr_action = UnitAction.NONE;
+          this.stopAction();
           break;
         }
         this.face(f);
@@ -1090,29 +1090,32 @@ class Unit extends MapObject {
         break;
       case FEATURE_INTERACTION:
         if (this.object_targeting == null || this.object_targeting.remove) {
-          this.curr_action = UnitAction.NONE;
+          this.stopAction();
           break;
         }
         this.timer_actionTime -= timeElapsed;
         if (this.timer_actionTime < 0) {
           this.curr_action = UnitAction.NONE; // must be before since interact() can set HERO_INTERACTING_WITH_FEATURE
           ((Feature)this.object_targeting).interact(this, map);
+          if (this.curr_action == UnitAction.NONE) {
+            this.stopAction();
+          }
         }
         break;
       case HERO_INTERACTING_WITH_FEATURE:
         if (this.object_targeting == null || this.object_targeting.remove) {
-          this.curr_action = UnitAction.NONE;
+          this.stopAction();
           break;
         }
         break;
       case TARGETING_UNIT:
         if (this.object_targeting == null || this.object_targeting.remove) {
-          this.curr_action = UnitAction.NONE;
+          this.stopAction();
           break;
         }
         Unit u = (Unit)this.object_targeting;
         if (!u.targetable(this)) {
-          this.curr_action = UnitAction.NONE;
+          this.stopAction();
           break;
         }
         this.face(u);
@@ -1139,7 +1142,7 @@ class Unit extends MapObject {
         break;
       case AIMING:
         if (this.weapon() == null || !this.weapon().shootable()) {
-          this.curr_action = UnitAction.NONE;
+          this.stopAction();
           break;
         }
         this.face(this.curr_action_x, this.curr_action_y);
@@ -1150,12 +1153,12 @@ class Unit extends MapObject {
         break;
       case TARGETING_ITEM:
         if (this.object_targeting == null || this.object_targeting.remove) {
-          this.curr_action = UnitAction.NONE;
+          this.stopAction();
           break;
         }
         Item i = (Item)this.object_targeting;
         if (!i.targetable(this)) {
-          this.curr_action = UnitAction.NONE;
+          this.stopAction();
           break;
         }
         this.face(i);
@@ -1169,17 +1172,17 @@ class Unit extends MapObject {
               i.remove = true;
             }
           }
-          this.curr_action = UnitAction.NONE;
+          this.stopAction();
         }
         break;
       case ATTACKING:
         if (this.object_targeting == null || this.object_targeting.remove) {
-          this.curr_action = UnitAction.NONE;
+          this.stopAction();
           break;
         }
         Unit unit_attacking = (Unit)this.object_targeting;
         if (this.frozen()) {
-          this.curr_action = UnitAction.NONE;
+          this.stopAction();
           break;
         }
         else if (this.chilled()) {
@@ -1200,7 +1203,7 @@ class Unit extends MapObject {
         break;
       case SHOOTING:
         if (this.weapon() == null || !this.weapon().shootable()) {
-          this.curr_action = UnitAction.NONE;
+          this.stopAction();
           break;
         }
         if (this.object_targeting != null) {
@@ -1218,19 +1221,19 @@ class Unit extends MapObject {
             }
           }
           else {
-            this.curr_action = UnitAction.NONE;
+            this.stopAction();
           }
         }
         break;
       case USING_ITEM:
         if (this.weapon() == null || !this.weapon().usable()) {
-          this.curr_action = UnitAction.NONE;
+          this.stopAction();
           break;
         }
         this.timer_actionTime -= timeElapsed;
         if (this.timer_actionTime < 0) {
           this.useItem(map);
-          this.curr_action = UnitAction.NONE;
+          this.stopAction();
         }
         break;
       case NONE:
@@ -1459,6 +1462,9 @@ class Unit extends MapObject {
 
 
   void target(MapObject object) {
+    if (this.object_targeting == object) {
+      return;
+    }
     this.object_targeting = object;
     if (Feature.class.isInstance(this.object_targeting)) {
       this.curr_action = UnitAction.TARGETING_FEATURE;
@@ -1619,6 +1625,7 @@ class Unit extends MapObject {
 
   void stopAction() {
     this.curr_action = UnitAction.NONE;
+    this.object_targeting = null;
   }
 
 

@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220410: v0.6.6d" +
+  "\n20220410: v0.6.6e" +
   "\nLines: 20919 (v0.6.6)" +
   "";
   static final String version_history =
@@ -147,6 +147,8 @@ static class Constants {
 
   // Features
   static final float feature_defaultInteractionDistance = 0.3;
+  static final int feature_rummageInteractionTime = 200;
+  static final int feature_couchHealth = 2;
   static final int feature_signCooldown = 5000;
   static final String feature_signDescriptionDelimiter = "***";
   static final int feature_showerStallCooldown = 6000;
