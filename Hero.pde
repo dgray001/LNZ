@@ -996,6 +996,7 @@ class Hero extends Unit {
     super(HeroCode.unit_id(code));
     this.code = code;
     this.addAbilities();
+    this.level = 100;
   }
 
 

@@ -863,12 +863,9 @@ class Item extends MapObject {
         this.setStrings("Kindling", "Nature", "");
         break;
       case 2965:
-        this.setStrings("Branch", "Nature", "");
-        break;
       case 2966:
-        this.setStrings("Branch", "Nature", "");
-        break;
       case 2967:
+      case 2968:
         this.setStrings("Branch", "Nature", "");
         break;
       case 2971:
@@ -925,6 +922,11 @@ class Item extends MapObject {
         global.errorMessage("ERROR: Item ID " + ID + " not found.");
         break;
     }
+  }
+  Item(int ID, float x, float y) {
+    this(ID);
+    this.x = x;
+    this.y = y;
   }
 
   String display_name() {
@@ -1643,6 +1645,9 @@ class Item extends MapObject {
         break;
       case 2967:
         path += "branch_cedar.png";
+        break;
+      case 2968:
+        path += "branch_pine.png";
         break;
       case 2971:
         path += "paintbrush.png";
