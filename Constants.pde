@@ -4,8 +4,8 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220410: v0.6.6g" +
-  "\nLines: 22318 (v0.6.6f)" +
+  "\n20220410: v0.6.6h" +
+  "\nLines: 22650 (v0.6.6h)" +
   "";
   static final String version_history =
   "Liberal Nazi Zombies" +
@@ -147,8 +147,15 @@ static class Constants {
 
   // Features
   static final float feature_defaultInteractionDistance = 0.3;
-  static final int feature_rummageInteractionTime = 200;
-  static final int feature_couchHealth = 2;
+  static final int feature_woodenTableHealth = 4;
+  static final int feature_woodenDeskHealth = 10;
+  static final int feature_woodenChairHealth = 2;
+  static final int feature_furnitureInteractionTime = 200;
+  static final int feature_couchHealth = 4;
+  static final int feature_woodenBenchSmallHealth = 4;
+  static final int feature_woodenBenchLargeHealth = 8;
+  static final int feature_bedHealth = 8;
+  static final int feature_wardrobeHealth = 10;
   static final int feature_signCooldown = 5000;
   static final String feature_signDescriptionDelimiter = "***";
   static final int feature_showerStallCooldown = 6000;
@@ -156,7 +163,6 @@ static class Constants {
   static final int feature_toiletCooldown = 10000;
   static final int feature_pickleJarCooldown = 2000;
   static final int feature_movableBrickWallInteractionTime = 1500;
-  static final int feature_windowInteractionTime = 800;
   static final int feature_gravelInteractionTime = 300;
   static final float feature_gravelMaxNumberRocks = 4;
   static final int feature_wireFenceInteractionTime = 400;

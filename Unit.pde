@@ -1,6 +1,7 @@
 enum UnitAction {
   NONE, MOVING, TARGETING_FEATURE, TARGETING_UNIT, TARGETING_ITEM, ATTACKING,
-  SHOOTING, AIMING, USING_ITEM, FEATURE_INTERACTION, HERO_INTERACTING_WITH_FEATURE;
+  SHOOTING, AIMING, USING_ITEM, FEATURE_INTERACTION, HERO_INTERACTING_WITH_FEATURE,
+  TARGETING_FEATURE_WITH_ITEM, HERO_INTERACTING_WITH_FEATURE_WITH_ITEM;
 }
 
 
@@ -1067,6 +1068,7 @@ class Unit extends MapObject {
         }
         break;
       case TARGETING_FEATURE:
+      case TARGETING_FEATURE_WITH_ITEM:
         if (this.object_targeting == null || this.object_targeting.remove) {
           this.stopAction();
           break;
@@ -1084,11 +1086,17 @@ class Unit extends MapObject {
         if (f.onInteractionCooldown()) {
           break;
         }
-        this.curr_action = UnitAction.FEATURE_INTERACTION;
+        if (this.curr_action == UnitAction.TARGETING_FEATURE_WITH_ITEM) {
+          this.curr_action = UnitAction.FEATURE_INTERACTION_WITH_ITEM;
+        }
+        else {
+          this.curr_action = UnitAction.FEATURE_INTERACTION;
+        }
         this.timer_actionTime = f.interactionTime();
         f.beginInteractionSoundEffect(map.viewX, map.viewY);
         break;
       case FEATURE_INTERACTION:
+      case FEATURE_INTERACTION_WITH_ITEM:
         if (this.object_targeting == null || this.object_targeting.remove) {
           this.stopAction();
           break;
@@ -1096,13 +1104,14 @@ class Unit extends MapObject {
         this.timer_actionTime -= timeElapsed;
         if (this.timer_actionTime < 0) {
           this.curr_action = UnitAction.NONE; // must be before since interact() can set HERO_INTERACTING_WITH_FEATURE
-          ((Feature)this.object_targeting).interact(this, map);
+          ((Feature)this.object_targeting).interact(this, map, this.curr_action == UnitAction.FEATURE_INTERACTION_WITH_ITEM);
           if (this.curr_action == UnitAction.NONE) {
             this.stopAction();
           }
         }
         break;
       case HERO_INTERACTING_WITH_FEATURE:
+      case HERO_INTERACTING_WITH_FEATURE_WITH_ITEM:
         if (this.object_targeting == null || this.object_targeting.remove) {
           this.stopAction();
           break;
@@ -1467,7 +1476,12 @@ class Unit extends MapObject {
     }
     this.object_targeting = object;
     if (Feature.class.isInstance(this.object_targeting)) {
-      this.curr_action = UnitAction.TARGETING_FEATURE;
+      if (this.weapon() != null && global.holding_ctrl) {
+        this.curr_action = UnitAction.TARGETING_FEATURE_WITH_ITEM;
+      }
+      else {
+        this.curr_action = UnitAction.TARGETING_FEATURE;
+      }
     }
     else if (Unit.class.isInstance(this.object_targeting)) {
       this.curr_action = UnitAction.TARGETING_UNIT;
