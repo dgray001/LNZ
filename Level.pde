@@ -846,6 +846,26 @@ class Level {
         f.remove = true;
         // sound effect (?)
         break;
+      case 321: // window (open)
+        f.remove = true;
+        this.currMap.addFeature(new Feature(322, f.x, f.y));
+        // sound effect
+        break;
+      case 322: // window (closed)
+        f.remove = true;
+        this.currMap.addFeature(new Feature(321, f.x, f.y));
+        // sound effect
+        break;
+      case 323: // window (locked)
+        if (!h.holding(2976)) {
+          this.currMap.addHeaderMessage("The window is locked");
+          break;
+        }
+        f.remove = true;
+        this.currMap.addItem(new Item(2805, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6)));
+        this.currMap.addItem(new Item(2805, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6)));
+        // sound effect
+        break;
       case 331: // door open (up)
         f.remove = true;
         new_f = new Feature(339, f.x, f.y, false);
@@ -963,27 +983,60 @@ class Level {
         // sound effect
         break;
       case 343: // door locked (up)
-        if (h.weapon() == null) {
+        if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
+          this.currMap.addHeaderMessage("The door is locked");
           break;
         }
-        boolean unlock = false;
-        switch(h.weapon().ID) {
-          case 2901: // key
-            break;
-          case 2902: // master key
-            break;
-          case 2903: // skeleton key
-            break;
+        f.remove = true;
+        if (f.toggle) {
+          this.currMap.addFeature(new Feature(332, f.x, f.y));
         }
-        if (unlock) {
-          // sound effect
+        else {
+          this.currMap.addFeature(new Feature(331, f.x, f.y));
         }
+        // sound effect
         break;
       case 344: // door locked (left)
+        if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
+          this.currMap.addHeaderMessage("The door is locked");
+          break;
+        }
+        f.remove = true;
+        if (f.toggle) {
+          this.currMap.addFeature(new Feature(334, f.x, f.y));
+        }
+        else {
+          this.currMap.addFeature(new Feature(333, f.x, f.y));
+        }
+        // sound effect
         break;
       case 345: // door locked (diagonal left)
+        if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
+          this.currMap.addHeaderMessage("The door is locked");
+          break;
+        }
+        f.remove = true;
+        if (f.toggle) {
+          this.currMap.addFeature(new Feature(336, f.x, f.y));
+        }
+        else {
+          this.currMap.addFeature(new Feature(335, f.x, f.y));
+        }
+        // sound effect
         break;
       case 346: // door locked (diagonal right)
+        if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
+          this.currMap.addHeaderMessage("The door is locked");
+          break;
+        }
+        f.remove = true;
+        if (f.toggle) {
+          this.currMap.addFeature(new Feature(338, f.x, f.y));
+        }
+        else {
+          this.currMap.addFeature(new Feature(337, f.x, f.y));
+        }
+        // sound effect
         break;
       case 401: // dandelion
         if (h.canPickup()) {

@@ -1258,12 +1258,21 @@ class Feature extends MapObject {
       case 321: // window (open)
         this.remove = true;
         map.addFeature(new Feature(322, this.x, this.y));
+        // sound effect
         break;
       case 322: // window (closed)
         this.remove = true;
         map.addFeature(new Feature(321, this.x, this.y));
+        // sound effect
         break;
       case 323: // window (locked)
+        if (!u.holding(2976)) {
+          break;
+        }
+        this.remove = true;
+        map.addItem(new Item(2805, this.x + 0.2 + random(0.6), this.y + 0.2 + random(0.6)));
+        map.addItem(new Item(2805, this.x + 0.2 + random(0.6), this.y + 0.2 + random(0.6)));
+        // sound effect
         break;
       case 331: // door open (up)
         this.remove = true;
@@ -1345,10 +1354,57 @@ class Feature extends MapObject {
         }
         // sound effect
         break;
-      case 343: // door (locked)
-      case 344:
-      case 345:
-      case 346:
+      case 343: // door locked (up)
+        if (u.weapon() == null || !u.weapon().unlocks(this.number)) {
+          break;
+        }
+        this.remove = true;
+        if (this.toggle) {
+          map.addFeature(new Feature(332, this.x, this.y));
+        }
+        else {
+          map.addFeature(new Feature(331, this.x, this.y));
+        }
+        // sound effect
+        break;
+      case 344: // door locked (left)
+        if (u.weapon() == null || !u.weapon().unlocks(this.number)) {
+          break;
+        }
+        this.remove = true;
+        if (this.toggle) {
+          map.addFeature(new Feature(334, this.x, this.y));
+        }
+        else {
+          map.addFeature(new Feature(333, this.x, this.y));
+        }
+        // sound effect
+        break;
+      case 345: // door locked (diagonal left)
+        if (u.weapon() == null || !u.weapon().unlocks(this.number)) {
+          break;
+        }
+        this.remove = true;
+        if (this.toggle) {
+          map.addFeature(new Feature(336, this.x, this.y));
+        }
+        else {
+          map.addFeature(new Feature(335, this.x, this.y));
+        }
+        // sound effect
+        break;
+      case 346: // door locked (diagonal right)
+        if (u.weapon() == null || !u.weapon().unlocks(this.number)) {
+          break;
+        }
+        this.remove = true;
+        if (this.toggle) {
+          map.addFeature(new Feature(338, this.x, this.y));
+        }
+        else {
+          map.addFeature(new Feature(337, this.x, this.y));
+        }
+        // sound effect
         break;
       case 401: // dandelion
         if (u.canPickup()) {

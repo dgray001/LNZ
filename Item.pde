@@ -99,7 +99,7 @@ class Item extends MapObject {
   protected float tenacity = 0; // percentage from 0 - 1
   protected int agility = 0;
 
-  protected int ammo = 0;
+  protected int ammo = 0; // also used for other things (like key code)
 
   // graphics
   protected BounceInt bounce = new BounceInt(Constants.item_bounceConstant);
@@ -930,7 +930,16 @@ class Item extends MapObject {
   }
 
   String display_name() {
-    return this.display_name;
+    switch(this.ID) {
+      case 2901: // key
+        return this.display_name + " (" + this.ammo + ")";
+      case 2902: // master key
+        return this.display_name + " (" + this.ammo * 10 + " - " + this.ammo * 10 + 9 + ")";
+      case 2903: // skeleton key
+        return this.display_name + " (" + this.ammo * 100 + " - " + this.ammo * 100 + 99 + ")";
+      default:
+        return this.display_name;
+    }
   }
   String type() {
     return this.type;
@@ -1761,6 +1770,19 @@ class Item extends MapObject {
 
   void consumed() {
     this.removeStack();
+  }
+
+  boolean unlocks(int lock_code) {
+    switch(this.ID) {
+      case 2901: // key
+        return this.ammo == lock_code;
+      case 2902: // master key
+        return this.ammo == lock_code / 10;
+      case 2903: // skeleton key
+        return this.ammo == lock_code / 100;
+      default:
+        return false;
+    }
   }
 
   boolean reloadable() {
