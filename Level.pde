@@ -468,10 +468,224 @@ class Level {
       case 132:
       case 133:
       case 134:
+        if (!f.toggle) {
+          this.currMap.addHeaderMessage("This " + f.display_name() + " has nothing in it.");
+          break;
+        }
+        if (random_number > 0.99) {
+          item_id = 2154;
+        }
+        else if (random_number > 0.96) {
+          item_id = 2153;
+        }
+        else if (random_number > 0.91) {
+          item_id = 2152;
+        }
+        else if (random_number > 0.73) {
+          item_id = 2151;
+        }
+        else if (random_number > 0.7) {
+          item_id = 2101;
+        }
+        else if (random_number > 0.69) {
+          item_id = 2102;
+        }
+        else if (random_number > 0.68) {
+          item_id = 2103;
+        }
+        else if (random_number > 0.67) {
+          item_id = 2104;
+        }
+        else if (random_number > 0.66) {
+          item_id = 2105;
+        }
+        else if (random_number > 0.65) {
+          item_id = 2134;
+        }
+        else if (random_number > 0.63) {
+          item_id = 2402;
+        }
+        else if (random_number > 0.6) {
+          item_id = 2502;
+        }
+        else if (random_number > 0.57) {
+          item_id = 2602;
+        }
+        else if (random_number > 0.55) {
+          item_id = 2603;
+        }
+        else if (random_number > 0.54) {
+          item_id = 2604;
+        }
+        else if (random_number > 0.52) {
+          item_id = 2916;
+        }
+        else if (random_number > 0.51) {
+          item_id = 2925;
+        }
+        else if (random_number > 0.5) {
+          item_id = 2933;
+        }
+        else {
+          f.toggle = false;
+          this.currMap.addHeaderMessage("This " + f.display_name() + " has nothing left in it.");
+          break;
+        }
+        new_i = new Item(item_id, h.frontX(), h.frontY());
+        if (h.canPickup()) {
+          h.pickup(new_i);
+        }
+        else {
+          this.currMap.addItem(new_i);
+        }
+        this.currMap.addHeaderMessage("You found a " + new_i.display_name() + ".");
         // sound effect
         break;
       case 141: // wardrobe
       case 142:
+        if (!f.toggle) {
+          this.currMap.addHeaderMessage("This " + f.display_name() + " has nothing in it.");
+          break;
+        }
+        if (random_number > 0.99) {
+          item_id = 2154;
+        }
+        else if (random_number > 0.98) {
+          item_id = 2153;
+        }
+        else if (random_number > 0.95) {
+          item_id = 2152;
+        }
+        else if (random_number > 0.9) {
+          item_id = 2151;
+        }
+        else if (random_number > 0.88) {
+          item_id = 2101;
+        }
+        else if (random_number > 0.87) {
+          item_id = 2102;
+        }
+        else if (random_number > 0.86) {
+          item_id = 2103;
+        }
+        else if (random_number > 0.85) {
+          item_id = 2104;
+        }
+        else if (random_number > 0.84) {
+          item_id = 2105;
+        }
+        else if (random_number > 0.83) {
+          item_id = 2107;
+        }
+        else if (random_number > 0.82) {
+          item_id = 2110;
+        }
+        else if (random_number > 0.81) {
+          item_id = 2111;
+        }
+        else if (random_number > 0.8) {
+          item_id = 2112;
+        }
+        else if (random_number > 0.785) {
+          item_id = 2113;
+        }
+        else if (random_number > 0.77) {
+          item_id = 2132;
+        }
+        else if (random_number > 0.755) {
+          item_id = 2133;
+        }
+        else if (random_number > 0.74) {
+          item_id = 2134;
+        }
+        else if (random_number > 0.73) {
+          item_id = 2141;
+        }
+        else if (random_number > 0.71) {
+          item_id = 2203;
+        }
+        else if (random_number > 0.68) {
+          item_id = 2402;
+        }
+        else if (random_number > 0.65) {
+          item_id = 2502;
+        }
+        else if (random_number > 0.63) {
+          item_id = 2504;
+        }
+        else if (random_number > 0.62) {
+          item_id = 2513;
+        }
+        else if (random_number > 0.6) {
+          item_id = 2602;
+        }
+        else if (random_number > 0.58) {
+          item_id = 2603;
+        }
+        else if (random_number > 0.56) {
+          item_id = 2604;
+        }
+        else if (random_number > 0.53) {
+          item_id = 2702;
+        }
+        else if (random_number > 0.51) {
+          item_id = 2703;
+        }
+        else if (random_number > 0.5) {
+          item_id = 2704;
+        }
+        else if (random_number > 0.49) {
+          item_id = 2705;
+        }
+        else if (random_number > 0.48) {
+          item_id = 2712;
+        }
+        else if (random_number > 0.47) {
+          item_id = 2713;
+        }
+        else if (random_number > 0.46) {
+          item_id = 2714;
+        }
+        else if (random_number > 0.45) {
+          item_id = 2911;
+        }
+        else if (random_number > 0.44) {
+          item_id = 2912;
+        }
+        else if (random_number > 0.43) {
+          item_id = 2913;
+        }
+        else if (random_number > 0.42) {
+          item_id = 2914;
+        }
+        else if (random_number > 0.41) {
+          item_id = 2916;
+        }
+        else if (random_number > 0.4) {
+          item_id = 2917;
+        }
+        else if (random_number > 0.38) {
+          item_id = 2918;
+        }
+        else if (random_number > 0.37) {
+          item_id = 2924;
+        }
+        else if (random_number > 0.36) {
+          item_id = 2925;
+        }
+        else {
+          f.toggle = false;
+          this.currMap.addHeaderMessage("This " + f.display_name() + " has nothing left in it.");
+          break;
+        }
+        new_i = new Item(item_id, h.frontX(), h.frontY());
+        if (h.canPickup()) {
+          h.pickup(new_i);
+        }
+        else {
+          this.currMap.addItem(new_i);
+        }
+        this.currMap.addHeaderMessage("You found a " + new_i.display_name() + ".");
         // sound effect
         break;
       case 151: // sign
