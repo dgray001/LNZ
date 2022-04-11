@@ -934,9 +934,9 @@ class Item extends MapObject {
       case 2901: // key
         return this.display_name + " (" + this.ammo + ")";
       case 2902: // master key
-        return this.display_name + " (" + this.ammo * 10 + " - " + this.ammo * 10 + 9 + ")";
+        return this.display_name + " (" + this.ammo * 10 + " - " + int(this.ammo * 10 + 9) + ")";
       case 2903: // skeleton key
-        return this.display_name + " (" + this.ammo * 100 + " - " + this.ammo * 100 + 99 + ")";
+        return this.display_name + " (" + this.ammo * 100 + " - " + int(this.ammo * 100 + 99) + ")";
       default:
         return this.display_name;
     }

@@ -100,16 +100,19 @@ class Feature extends MapObject {
       case 101:
         this.setStrings("Wooden Table", "Furniture", "");
         this.setSize(2, 2, 3);
+        this.number = Constants.feature_woodenTableHealth;
         break;
       case 102:
         this.setStrings("Wooden Desk", "Furniture", "");
         this.setSize(2, 1, 4);
         this.inventory = new DeskInventory();
+        this.number = Constants.feature_woodenDeskHealth;
         break;
       case 103:
         this.setStrings("Wooden Desk", "Furniture", "");
         this.setSize(1, 2, 4);
         this.inventory = new DeskInventory();
+        this.number = Constants.feature_woodenDeskHealth;
         break;
       case 111:
       case 112:
@@ -117,61 +120,73 @@ class Feature extends MapObject {
       case 114:
         this.setStrings("Wooden Chair", "Furniture", "");
         this.setSize(1, 1, 2);
+        this.number = Constants.feature_woodenChairHealth;
         break;
       case 115:
         this.setStrings("Coordinator Chair", "Furniture", "");
         this.setSize(1, 1, 2);
         this.toggle = true;
+        this.number = Constants.feature_couchHealth;
         break;
       case 121:
       case 122:
         this.setStrings("Couch", "Furniture", "");
         this.setSize(3, 1, 2);
         this.toggle = true;
+        this.number = Constants.feature_couchHealth;
         break;
       case 123:
       case 124:
         this.setStrings("Couch", "Furniture", "");
         this.setSize(1, 3, 2);
         this.toggle = true;
+        this.number = Constants.feature_couchHealth;
         break;
       case 125:
         this.setStrings("Bench", "Furniture", "");
         this.setSize(2, 1, 2);
+        this.number = Constants.feature_woodenBenchSmallHealth;
         break;
       case 126:
         this.setStrings("Bench", "Furniture", "");
         this.setSize(1, 2, 2);
+        this.number = Constants.feature_woodenBenchSmallHealth;
         break;
       case 127:
         this.setStrings("Bench", "Furniture", "");
         this.setSize(2, 3, 3);
+        this.number = Constants.feature_woodenBenchLargeHealth;
         break;
       case 128:
         this.setStrings("Bench", "Furniture", "");
         this.setSize(3, 2, 3);
+        this.number = Constants.feature_woodenBenchLargeHealth;
         break;
       case 131:
       case 132:
         this.setStrings("Bed", "Furniture", "");
         this.setSize(2, 3, 3);
         this.toggle = true;
+        this.number = Constants.feature_bedHealth;
         break;
       case 133:
       case 134:
         this.setStrings("Bed", "Furniture", "");
         this.setSize(3, 2, 3);
         this.toggle = true;
+        this.number = Constants.feature_woodenTableHealth;
         break;
       case 141:
         this.setStrings("Wardrobe", "Furniture", "");
         this.setSize(2, 1, 9);
         this.toggle = true;
+        this.number = Constants.feature_wardrobeHealth;
         break;
       case 142:
         this.setStrings("Wardrobe", "Furniture", "");
         this.setSize(1, 2, 9);
         this.toggle = true;
+        this.number = Constants.feature_wardrobeHealth;
         break;
       case 151:
       case 152:
@@ -1008,6 +1023,28 @@ class Feature extends MapObject {
 
   boolean targetableByUnit() {
     switch(this.ID) {
+      case 101: // wooden table
+      case 102: // desk
+      case 103:
+      case 111: // wooden chair
+      case 112:
+      case 113:
+      case 114:
+      case 115: // coordinator chair
+      case 121: // couch
+      case 122:
+      case 123:
+      case 124:
+      case 125: // wooden bench
+      case 126:
+      case 127:
+      case 128:
+      case 131: // bed
+      case 132:
+      case 133:
+      case 134:
+      case 141: // wardrobe
+      case 142:
       case 161: // water fountain
       case 162: // sink
       case 163: // shower stall
@@ -1069,19 +1106,6 @@ class Feature extends MapObject {
 
   boolean targetableByHeroOnly() {
     switch(this.ID) {
-      case 102: // desk
-      case 103:
-      case 115: // coordinator chair
-      case 121: // couch
-      case 122:
-      case 123:
-      case 124:
-      case 131: // bed
-      case 132:
-      case 133:
-      case 134:
-      case 141: // wardrobe
-      case 142:
       case 151: // sign
       case 152:
       case 153:
@@ -1148,6 +1172,11 @@ class Feature extends MapObject {
 
   float interactionTime() {
     switch(this.ID) {
+      case 101: // wooden table
+      case 111: // wooden chair
+      case 112:
+      case 113:
+      case 114:
       case 115: // coordinator chair
       case 121: // couch
       case 122:
@@ -1159,7 +1188,7 @@ class Feature extends MapObject {
       case 134:
       case 141: // wardrobe
       case 142:
-        return Constants.feature_rummageInteractionTime;
+        return Constants.feature_furnitureInteractionTime;
       case 211: // wire fence
       case 212:
       case 213:
@@ -1185,9 +1214,6 @@ class Feature extends MapObject {
       case 306:
       case 307:
         return Constants.feature_movableBrickWallInteractionTime;
-      case 321: // window
-      case 322:
-        return Constants.feature_windowInteractionTime;
       case 411: // gravel
       case 412:
         return Constants.feature_gravelInteractionTime;
@@ -1219,12 +1245,65 @@ class Feature extends MapObject {
 
 
   void interact(Unit u, GameMap map) {
+    this.interact(u, map, false);
+  }
+  void interact(Unit u, GameMap map, boolean use_item) {
     if (Hero.class.isInstance(u)) {
-      u.curr_action = UnitAction.HERO_INTERACTING_WITH_FEATURE;
+      if (use_item) {
+        u.curr_action = UnitAction.HERO_INTERACTING_WITH_FEATURE;
+      }
+      else {
+        u.curr_action = UnitAction.HERO_INTERACTING_WITH_FEATURE_WITH_ITEM;
+      }
       return;
+    }
+    if (u.weapon() == null) {
+      use_item = false;
     }
     // Non-hero interaction with feature
     switch(this.ID) {
+      case 101: // wooden table
+      case 102: // wooden desk
+      case 103:
+      case 111: // wooden chair
+      case 112:
+      case 113:
+      case 114:
+      case 115: // coordinator chair
+      case 121: // couch
+      case 122:
+      case 123:
+      case 124:
+      case 125: // wooden bench
+      case 126:
+      case 127:
+      case 128:
+      case 131: // bed
+      case 132:
+      case 141: // wardrobe
+      case 142:
+        if (!u.holding(2977, 2979, 2980, 2983)) {
+          break;
+        }
+        switch(u.weapon().ID) {
+          case 2977: // ax
+            this.number -= 3;
+            break;
+          case 2979: // saw
+            this.number -= 1;
+            break;
+          case 2980: // drill
+            this.number -= 1;
+            break;
+          case 2983: // chainsaw
+            this.number -= 2;
+            break;
+        }
+        if (this.number < 1) {
+          this.remove = true;
+          // drop wooden board, maybe nails / screws / wooden "piece" (small piece)
+        }
+        break;
       case 161: // water fountain
         break;
       case 162: // sink
@@ -1261,6 +1340,13 @@ class Feature extends MapObject {
         // sound effect
         break;
       case 322: // window (closed)
+        if (!u.holding(2976)) {
+          this.remove = true;
+          map.addItem(new Item(2805, this.x + 0.2 + random(0.6), this.y + 0.2 + random(0.6)));
+          map.addItem(new Item(2805, this.x + 0.2 + random(0.6), this.y + 0.2 + random(0.6)));
+          // sound effect
+          break;
+        }
         this.remove = true;
         map.addFeature(new Feature(321, this.x, this.y));
         // sound effect
@@ -1359,12 +1445,7 @@ class Feature extends MapObject {
           break;
         }
         this.remove = true;
-        if (this.toggle) {
-          map.addFeature(new Feature(332, this.x, this.y));
-        }
-        else {
-          map.addFeature(new Feature(331, this.x, this.y));
-        }
+        map.addFeature(new Feature(339, this.x, this.y, this.toggle));
         // sound effect
         break;
       case 344: // door locked (left)
@@ -1372,12 +1453,7 @@ class Feature extends MapObject {
           break;
         }
         this.remove = true;
-        if (this.toggle) {
-          map.addFeature(new Feature(334, this.x, this.y));
-        }
-        else {
-          map.addFeature(new Feature(333, this.x, this.y));
-        }
+        map.addFeature(new Feature(340, this.x, this.y, this.toggle));
         // sound effect
         break;
       case 345: // door locked (diagonal left)
@@ -1385,12 +1461,7 @@ class Feature extends MapObject {
           break;
         }
         this.remove = true;
-        if (this.toggle) {
-          map.addFeature(new Feature(336, this.x, this.y));
-        }
-        else {
-          map.addFeature(new Feature(335, this.x, this.y));
-        }
+        map.addFeature(new Feature(341, this.x, this.y, this.toggle));
         // sound effect
         break;
       case 346: // door locked (diagonal right)
@@ -1398,12 +1469,7 @@ class Feature extends MapObject {
           break;
         }
         this.remove = true;
-        if (this.toggle) {
-          map.addFeature(new Feature(338, this.x, this.y));
-        }
-        else {
-          map.addFeature(new Feature(337, this.x, this.y));
-        }
+        map.addFeature(new Feature(342, this.x, this.y, this.toggle));
         // sound effect
         break;
       case 401: // dandelion
@@ -1460,7 +1526,15 @@ class Feature extends MapObject {
             branch_id = 2968;
             break;
         }
-        if (u.holding(2977, 2979, 2983)) {
+        if (!use_item || !u.holding(2977, 2979, 2983)) {
+          if (this.toggle) {
+            map.addItem(new Item(branch_id, u.frontX(), u.frontY()));
+            if (randomChance(Constants.feature_treeChanceEndBranches)) {
+              this.toggle = false;
+            }
+          }
+        }
+        else {
           switch(u.weapon().ID) {
             case 2977: // ax
               this.number -= 2;
@@ -1472,27 +1546,14 @@ class Feature extends MapObject {
               this.number -= 4;
               break;
           }
-          if (this.toggle) {
-          map.addItem(new Item(branch_id, u.frontX(), u.frontY()));
-            if (randomChance(Constants.feature_treeChanceEndBranches)) {
-              this.toggle = false;
-            }
-          }
-          else if (randomChance(Constants.feature_treeDropChance)) {
-          map.addItem(new Item(branch_id, u.frontX(), u.frontY()));
+          if (randomChance(Constants.feature_treeDropChance)) {
+            map.addItem(new Item(branch_id, u.frontX(), u.frontY()));
           }
           if (this.number < 1) {
             this.remove = true;
             // drop wooden blocks
           }
           // sound effect (based on item)
-        }
-        else if (this.toggle) {
-          map.addItem(new Item(branch_id, u.frontX(), u.frontY()));
-          if (randomChance(Constants.feature_treeChanceEndBranches)) {
-            this.toggle = false;
-          }
-          // sound effect
         }
         break;
       case 441: // bush

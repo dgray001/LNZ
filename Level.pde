@@ -326,9 +326,12 @@ class Level {
   }
 
 
-  void heroFeatureInteraction(Hero h) {
+  void heroFeatureInteraction(Hero h, boolean use_item) {
     if (this.currMap == null || h == null || h.object_targeting == null || h.object_targeting.remove) {
       return;
+    }
+    if (h.weapon() == null) {
+      use_item = false;
     }
     if (!Feature.class.isInstance(h.object_targeting)) {
       global.errorMessage("ERROR: Hero " + h.display_name() + " trying to " +
@@ -341,8 +344,60 @@ class Level {
     Item new_i;
     float random_number = random(1);
     switch(f.ID) {
+      case 101: // wooden table
+      case 111: // wooden chair
+      case 112:
+      case 113:
+      case 114:
+      case 125: // wooden bench
+      case 126:
+      case 127:
+      case 128:
+        if (!h.holding(2977, 2979, 2980, 2983)) {
+          break;
+        }
+        switch(h.weapon().ID) {
+          case 2977: // ax
+            f.number -= 3;
+            break;
+          case 2979: // saw
+            f.number -= 1;
+            break;
+          case 2980: // drill
+            f.number -= 1;
+            break;
+          case 2983: // chainsaw
+            f.number -= 2;
+            break;
+        }
+        if (f.number < 1) {
+          f.remove = true;
+          // drop wooden board, maybe nails / screws / wooden "piece" (small piece)
+        }
+        break;
       case 102: // desk
       case 103:
+        if (use_item && h.holding(2977, 2979, 2980, 2983)) {
+          switch(h.weapon().ID) {
+            case 2977: // ax
+              f.number -= 3;
+              break;
+            case 2979: // saw
+              f.number -= 1;
+              break;
+            case 2980: // drill
+              f.number -= 1;
+              break;
+            case 2983: // chainsaw
+              f.number -= 2;
+              break;
+          }
+          if (f.number < 1) {
+            f.remove = true;
+            // drop wooden board, maybe nails / screws / wooden "piece" (small piece)
+          }
+          break;
+        }
         if (h.inventory.viewing) {
           break;
         }
@@ -355,6 +410,27 @@ class Level {
       case 122:
       case 123:
       case 124:
+        if (use_item && h.holding(2977, 2979, 2980, 2983)) {
+          switch(h.weapon().ID) {
+            case 2977: // ax
+              f.number -= 3;
+              break;
+            case 2979: // saw
+              f.number -= 1;
+              break;
+            case 2980: // drill
+              f.number -= 1;
+              break;
+            case 2983: // chainsaw
+              f.number -= 2;
+              break;
+          }
+          if (f.number < 1) {
+            f.remove = true;
+            // drop wooden board, maybe nails / screws / wooden "piece" (small piece)
+          }
+          break;
+        }
         if (!f.toggle) {
           this.currMap.addHeaderMessage("This " + f.display_name() + " has nothing in it.");
           break;
@@ -468,6 +544,27 @@ class Level {
       case 132:
       case 133:
       case 134:
+        if (use_item && h.holding(2977, 2979, 2980, 2983)) {
+          switch(h.weapon().ID) {
+            case 2977: // ax
+              f.number -= 3;
+              break;
+            case 2979: // saw
+              f.number -= 1;
+              break;
+            case 2980: // drill
+              f.number -= 1;
+              break;
+            case 2983: // chainsaw
+              f.number -= 2;
+              break;
+          }
+          if (f.number < 1) {
+            f.remove = true;
+            // drop wooden board, maybe nails / screws / wooden "piece" (small piece)
+          }
+          break;
+        }
         if (!f.toggle) {
           this.currMap.addHeaderMessage("This " + f.display_name() + " has nothing in it.");
           break;
@@ -543,6 +640,27 @@ class Level {
         break;
       case 141: // wardrobe
       case 142:
+        if (use_item && h.holding(2977, 2979, 2980, 2983)) {
+          switch(h.weapon().ID) {
+            case 2977: // ax
+              f.number -= 3;
+              break;
+            case 2979: // saw
+              f.number -= 1;
+              break;
+            case 2980: // drill
+              f.number -= 1;
+              break;
+            case 2983: // chainsaw
+              f.number -= 2;
+              break;
+          }
+          if (f.number < 1) {
+            f.remove = true;
+            // drop wooden board, maybe nails / screws / wooden "piece" (small piece)
+          }
+          break;
+        }
         if (!f.toggle) {
           this.currMap.addHeaderMessage("This " + f.display_name() + " has nothing in it.");
           break;
@@ -848,12 +966,24 @@ class Level {
         break;
       case 321: // window (open)
         f.remove = true;
-        this.currMap.addFeature(new Feature(322, f.x, f.y));
+        new_f = new Feature(322, f.x, f.y, false);
+        this.currMap.addFeature(new_f);
+        new_f.hovered = true;
+        this.currMap.hovered_object = new_f;
         // sound effect
         break;
       case 322: // window (closed)
+        if (h.holding(2976)) {
+          f.remove = true;
+          this.currMap.addItem(new Item(2805, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6)));
+          this.currMap.addItem(new Item(2805, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6)));
+          // sound effect
+        }
         f.remove = true;
-        this.currMap.addFeature(new Feature(321, f.x, f.y));
+        new_f = new Feature(321, f.x, f.y, false);
+        this.currMap.addFeature(new_f);
+        new_f.hovered = true;
+        this.currMap.hovered_object = new_f;
         // sound effect
         break;
       case 323: // window (locked)
@@ -988,12 +1118,10 @@ class Level {
           break;
         }
         f.remove = true;
-        if (f.toggle) {
-          this.currMap.addFeature(new Feature(332, f.x, f.y));
-        }
-        else {
-          this.currMap.addFeature(new Feature(331, f.x, f.y));
-        }
+        new_f = new Feature(339, f.x, f.y, f.toggle);
+        this.currMap.addFeature(new_f);
+        new_f.hovered = true;
+        this.currMap.hovered_object = new_f;
         // sound effect
         break;
       case 344: // door locked (left)
@@ -1002,12 +1130,10 @@ class Level {
           break;
         }
         f.remove = true;
-        if (f.toggle) {
-          this.currMap.addFeature(new Feature(334, f.x, f.y));
-        }
-        else {
-          this.currMap.addFeature(new Feature(333, f.x, f.y));
-        }
+        new_f = new Feature(340, f.x, f.y, f.toggle);
+        this.currMap.addFeature(new_f);
+        new_f.hovered = true;
+        this.currMap.hovered_object = new_f;
         // sound effect
         break;
       case 345: // door locked (diagonal left)
@@ -1016,12 +1142,10 @@ class Level {
           break;
         }
         f.remove = true;
-        if (f.toggle) {
-          this.currMap.addFeature(new Feature(336, f.x, f.y));
-        }
-        else {
-          this.currMap.addFeature(new Feature(335, f.x, f.y));
-        }
+        new_f = new Feature(341, f.x, f.y, f.toggle);
+        this.currMap.addFeature(new_f);
+        new_f.hovered = true;
+        this.currMap.hovered_object = new_f;
         // sound effect
         break;
       case 346: // door locked (diagonal right)
@@ -1030,12 +1154,10 @@ class Level {
           break;
         }
         f.remove = true;
-        if (f.toggle) {
-          this.currMap.addFeature(new Feature(338, f.x, f.y));
-        }
-        else {
-          this.currMap.addFeature(new Feature(337, f.x, f.y));
-        }
+        new_f = new Feature(342, f.x, f.y, f.toggle);
+        this.currMap.addFeature(new_f);
+        new_f.hovered = true;
+        this.currMap.hovered_object = new_f;
         // sound effect
         break;
       case 401: // dandelion
@@ -1098,7 +1220,15 @@ class Level {
             branch_id = 2968;
             break;
         }
-        if (h.holding(2977, 2979, 2983)) {
+        if (!use_item || !h.holding(2977, 2979, 2983)) {
+          if (f.toggle) {
+            this.currMap.addItem(new Item(branch_id, h.frontX(), h.frontY()));
+            if (randomChance(Constants.feature_treeChanceEndBranches)) {
+              f.toggle = false;
+            }
+          }
+        }
+        else {
           switch(h.weapon().ID) {
             case 2977: // ax
               f.number -= 2;
@@ -1110,27 +1240,14 @@ class Level {
               f.number -= 4;
               break;
           }
-          if (f.toggle) {
-          this.currMap.addItem(new Item(branch_id, h.frontX(), h.frontY()));
-            if (randomChance(Constants.feature_treeChanceEndBranches)) {
-              f.toggle = false;
-            }
-          }
-          else if (randomChance(Constants.feature_treeDropChance)) {
-          this.currMap.addItem(new Item(branch_id, h.frontX(), h.frontY()));
+          if (randomChance(Constants.feature_treeDropChance)) {
+            this.currMap.addItem(new Item(branch_id, h.frontX(), h.frontY()));
           }
           if (f.number < 1) {
             f.remove = true;
             // drop wooden blocks
           }
           // sound effect (based on item)
-        }
-        else if (f.toggle) {
-          this.currMap.addItem(new Item(branch_id, h.frontX(), h.frontY()));
-          if (randomChance(Constants.feature_treeChanceEndBranches)) {
-            f.toggle = false;
-          }
-          // sound effect
         }
         break;
       case 441: // bush
@@ -1164,7 +1281,11 @@ class Level {
       }
       if (this.player != null) {
         if (this.player.curr_action == UnitAction.HERO_INTERACTING_WITH_FEATURE) {
-          this.heroFeatureInteraction(this.player);
+          this.heroFeatureInteraction(this.player, false);
+          this.player.stopAction();
+        }
+        else if (this.player.curr_action == UnitActino.HERO_INTERACTING_WITH_FEATURE_WITH_ITEM) {
+          this.heroFeatureInteraction(this.player, true);
           this.player.stopAction();
         }
         for (Linker linker : this.linkers) {
