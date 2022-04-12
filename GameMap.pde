@@ -1514,11 +1514,13 @@ class GameMap {
       textAlign(CENTER, TOP);
       text(this.selected_object.display_name(), 0.5 * this.xi, currY);
       currY += textAscent() + textDescent() + Constants.map_selectedObjectPanelGap;
-      float image_size = min(this.selected_object_textbox.yi - 2 * Constants.
+      float image_height = min(this.selected_object_textbox.yi - 2 * Constants.
         map_selectedObjectImageGap - currY, this.xi - 2 * Constants.map_selectedObjectPanelGap);
+      float image_width = min(this.xi - 2 * Constants.map_selectedObjectPanelGap,
+        image_height * this.selected_object.width() / this.selected_object.height());
       imageMode(CENTER);
-      image(this.selected_object.getImage(), 0.5 * this.xi, currY + 0.5 * image_size +
-        Constants.map_selectedObjectImageGap, image_size, image_size);
+      image(this.selected_object.getImage(), 0.5 * this.xi, currY + 0.5 * image_height +
+        Constants.map_selectedObjectImageGap, image_width, image_height);
       this.selected_object_textbox.setText(this.selected_object.selectedObjectTextboxText());
       this.selected_object_textbox.update(millis);
     }
@@ -2155,7 +2157,27 @@ class GameMap {
                   this.addItem(curr_item);
                   break;
                 case FEATURE:
-                  // feature inventory
+                  if (parameters.length < 3 || !isInt(trim(parameters[2]))) {
+                    global.errorMessage("ERROR: Ending item in feature inventory " +
+                      "but no slot number given.");
+                    break;
+                  }
+                  if (curr_feature == null) {
+                    global.errorMessage("ERROR: Trying to add item to null feature.");
+                    break;
+                  }
+                  if (curr_feature.inventory == null) {
+                    global.errorMessage("ERROR: Trying to add item to feature " +
+                      "inventory but curr_feature has no inventory.");
+                    break;
+                  }
+                  int slot_number = toInt(trim(parameters[2]));
+                  if (slot_number < 0 || slot_number >= curr_feature.inventory.slots.size()) {
+                    global.errorMessage("ERROR: Trying to add item to feature " +
+                      "inventory but slot number " + slot_number + " out of range.");
+                    break;
+                  }
+                  curr_feature.inventory.slots.get(slot_number).item = curr_item;
                   break;
                 case UNIT:
                   if (parameters.length < 3) {
