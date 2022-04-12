@@ -1,7 +1,7 @@
 enum UnitAction {
   NONE, MOVING, TARGETING_FEATURE, TARGETING_UNIT, TARGETING_ITEM, ATTACKING,
-  SHOOTING, AIMING, USING_ITEM, FEATURE_INTERACTION, HERO_INTERACTING_WITH_FEATURE,
-  TARGETING_FEATURE_WITH_ITEM, HERO_INTERACTING_WITH_FEATURE_WITH_ITEM;
+  SHOOTING, AIMING, USING_ITEM, FEATURE_INTERACTION, FEATURE_INTERACTION_WITH_ITEM,
+  HERO_INTERACTING_WITH_FEATURE, TARGETING_FEATURE_WITH_ITEM, HERO_INTERACTING_WITH_FEATURE_WITH_ITEM;
 }
 
 
@@ -1103,8 +1103,9 @@ class Unit extends MapObject {
         }
         this.timer_actionTime -= timeElapsed;
         if (this.timer_actionTime < 0) {
+          boolean use_item = this.curr_action == UnitAction.FEATURE_INTERACTION_WITH_ITEM;
           this.curr_action = UnitAction.NONE; // must be before since interact() can set HERO_INTERACTING_WITH_FEATURE
-          ((Feature)this.object_targeting).interact(this, map, this.curr_action == UnitAction.FEATURE_INTERACTION_WITH_ITEM);
+          ((Feature)this.object_targeting).interact(this, map, use_item);
           if (this.curr_action == UnitAction.NONE) {
             this.stopAction();
           }
@@ -1471,12 +1472,15 @@ class Unit extends MapObject {
 
 
   void target(MapObject object) {
+    this.target(object, false);
+  }
+  void target(MapObject object, boolean use_item) {
     if (this.object_targeting == object) {
       return;
     }
     this.object_targeting = object;
     if (Feature.class.isInstance(this.object_targeting)) {
-      if (this.weapon() != null && global.holding_ctrl) {
+      if (this.weapon() != null && use_item) {
         this.curr_action = UnitAction.TARGETING_FEATURE_WITH_ITEM;
       }
       else {

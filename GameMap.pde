@@ -1884,7 +1884,7 @@ class GameMap {
             this.addVisualEffect(4001, this.mX, this.mY);
           }
           else {
-            player.target(this.hovered_object);
+            player.target(this.hovered_object, global.holding_ctrl);
           }
         }
         break;
