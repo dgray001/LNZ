@@ -82,7 +82,7 @@ class Inventory {
   protected ArrayList<InventorySlot> slots = new ArrayList<InventorySlot>();
   protected float button_size = 0;
 
-  protected color color_background = color(210, 153, 108);
+  protected color color_background = global.color_inventoryBackground;
 
   protected float display_width = 0;
   protected float display_height = 0;
@@ -277,4 +277,15 @@ class DeskInventory extends Inventory {
     this.slots.get(6).deactivated = true;
     this.slots.get(7).deactivated = true;
   }
+}
+
+
+class StoveInventory extends Inventory {
+  StoveInventory() {
+    super(5, 2, true);
+    this.slots.get(4).deactivated = true;
+    this.slots.get(5).deactivated = true;
+  }
+
+  // add on/off switch for inside oven and knobs for burners
 }

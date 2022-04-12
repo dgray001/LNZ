@@ -222,7 +222,7 @@ class Feature extends MapObject {
       case 171:
         this.setStrings("Stove", "Appliance", "");
         this.setSize(1, 1, 4);
-        this.inventory = new Inventory(2, 2, true);
+        this.inventory = new StoveInventory();
         break;
       case 172:
         this.setStrings("Vending Machine", "Appliance", "");
@@ -1115,6 +1115,8 @@ class Feature extends MapObject {
       case 157:
       case 158:
       case 171: // stove
+      case 172: // vending machine
+      case 173:
       case 174: // minifridge
       case 175: // refridgerator
       case 176: // washer
