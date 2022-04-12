@@ -2223,7 +2223,7 @@ class MapEditorInterface extends InterfaceLNZ {
       if (this.curr_level != null) {
         this.curr_level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
       }
-      else {
+      else if (this.curr_map != null) {
         this.curr_map.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
       }
     }

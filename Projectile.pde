@@ -22,6 +22,9 @@ class Projectile extends MapObject {
     this.setID();
   }
   Projectile(int ID, int source_key, Unit u) {
+    this(ID, source_key, u, 0);
+  }
+  Projectile(int ID, int source_key, Unit u, float inaccuracy) {
     super(ID);
     this.source_key = source_key;
     // assume autoattack unless stated otherwise
@@ -36,6 +39,7 @@ class Projectile extends MapObject {
       this.power = u.attack();
       this.piercing = u.piercing();
       this.penetration = u.penetration();
+      this.turn(inaccuracy - 2 * random(inaccuracy));
     }
     this.setID();
   }
@@ -78,6 +82,15 @@ class Projectile extends MapObject {
     this.facingX = facingX;
     this.facingY = facingY;
     this.facingA = (float)Math.atan2(this.facingY, this.facingX);
+  }
+
+  void turn(float angle_change) {
+    this.turnTo(this.facingA + angle_change);
+  }
+  void turnTo(float facingA) {
+    this.facingA = facingA;
+    this.facingX = cos(this.facingA);
+    this.facingY = sin(this.facingA);
   }
 
   void refreshFacing() {

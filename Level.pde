@@ -856,6 +856,10 @@ class Level {
         // StoveInventory which has 4 spots to cook items
         // sound effect
         break;
+      case 172: // vending machine
+      case 173:
+        this.level_form = new VendingForm(f);
+        break;
       case 174: // minifridge
         if (h.inventory.viewing) {
           break;
@@ -1292,6 +1296,10 @@ class Level {
 
 
   void update(int millis) {
+    if (this.level_form != null) {
+      this.level_form.update(millis);
+      return;
+    }
     int timeElapsed = millis - this.last_update_time;
     if (this.currMap != null) {
       this.currMap.update(millis);
@@ -1335,6 +1343,10 @@ class Level {
   }
 
   void mouseMove(float mX, float mY) {
+    if (this.level_form != null) {
+      this.level_form.mouseMove(mX, mY);
+      return;
+    }
     if (this.currMap != null) {
       this.currMap.mouseMove(mX, mY);
     }
@@ -1344,6 +1356,10 @@ class Level {
   }
 
   void mousePress() {
+    if (this.level_form != null) {
+      this.level_form.mousePress();
+      return;
+    }
     if (this.currMap != null) {
       this.currMap.mousePress();
     }
@@ -1353,6 +1369,10 @@ class Level {
   }
 
   void mouseRelease(float mX, float mY) {
+    if (this.level_form != null) {
+      this.level_form.mouseRelease(mX, mY);
+      return;
+    }
     if (this.currMap != null) {
       this.currMap.mouseRelease(mX, mY);
     }
@@ -1362,6 +1382,10 @@ class Level {
   }
 
   void scroll(int amount) {
+    if (this.level_form != null) {
+      this.level_form.scroll(amount);
+      return;
+    }
     if (this.currMap != null) {
       this.currMap.scroll(amount);
     }
@@ -1371,6 +1395,10 @@ class Level {
   }
 
   void keyPress() {
+    if (this.level_form != null) {
+      this.level_form.keyPress();
+      return;
+    }
     if (this.currMap != null) {
       this.currMap.keyPress();
     }
@@ -1380,6 +1408,10 @@ class Level {
   }
 
   void keyRelease() {
+    if (this.level_form != null) {
+      this.level_form.keyRelease();
+      return;
+    }
     if (this.currMap != null) {
       this.currMap.keyRelease();
     }
@@ -1664,8 +1696,18 @@ class Level {
 
 
   class VendingForm extends LevelForm {
-    VendingForm() {
-      super(0, 0, 0, 0);
+    protected Feature vending_machine;
+
+    VendingForm(Feature f) {
+      super(0.5 * (width - Constants.level_vendingFormWidth), 0.5 * (height - Constants.level_vendingFormHeight),
+        0.5 * (width + Constants.level_vendingFormWidth), 0.5 * (height + Constants.level_vendingFormHeight));
+      this.vending_machine = f;
+
+      this.setTitleText(this.vending_machine.display_name());
+      this.setTitleSize(18);
+      this.setFieldCushion(0);
+      this.color_background = color(250, 180, 180);
+      this.color_header = color(180, 50, 50);
     }
 
     void submit() {

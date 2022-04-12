@@ -1,7 +1,8 @@
 enum UnitAction {
   NONE, MOVING, TARGETING_FEATURE, TARGETING_UNIT, TARGETING_ITEM, ATTACKING,
   SHOOTING, AIMING, USING_ITEM, FEATURE_INTERACTION, FEATURE_INTERACTION_WITH_ITEM,
-  HERO_INTERACTING_WITH_FEATURE, TARGETING_FEATURE_WITH_ITEM, HERO_INTERACTING_WITH_FEATURE_WITH_ITEM;
+  HERO_INTERACTING_WITH_FEATURE, TARGETING_FEATURE_WITH_ITEM,
+  HERO_INTERACTING_WITH_FEATURE_WITH_ITEM, MOVING_AND_USING_ITEM;
 }
 
 
@@ -1513,7 +1514,7 @@ class Unit extends MapObject {
     if (this.weapon() == null || !this.weapon().shootable()) {
       return;
     }
-    map.addProjectile(new Projectile(this.weapon().ID + 1000, myKey, this));
+    map.addProjectile(new Projectile(this.weapon().ID + 1000, myKey, this, this.weapon().shootInaccuracy()));
     this.weapon().shot();
     this.timer_attackCooldown = this.attackCooldown();
   }
