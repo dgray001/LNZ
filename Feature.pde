@@ -1244,6 +1244,102 @@ class Feature extends MapObject {
   }
 
 
+  ArrayList<Integer> drops() {
+    ArrayList<Integer> id_list = new ArrayList<Integer>();
+    switch(this.ID) {
+      case 101: // wooden table
+      case 102: // desk
+      case 103:
+      case 111: // wooden chair
+      case 112:
+      case 113:
+      case 114:
+      case 125: // wooden bench
+      case 126:
+      case 127:
+      case 128:
+      case 115: // coordinator chair
+      case 121: // couch
+      case 122:
+      case 123:
+      case 124:
+      case 131: // bed
+      case 132:
+      case 133:
+      case 134:
+      case 141: // wardrobe
+      case 142:
+        // wooden board, maybe nails / screws / wooden "piece" (small piece)
+        break;
+      case 185: // pickle jar
+        id_list.add(2805);
+        break;
+      case 211: // wire fence
+      case 212:
+      case 213:
+      case 214:
+      case 215:
+      case 216:
+      case 217:
+      case 218:
+      case 219:
+      case 220:
+      case 221:
+      case 222:
+      case 223:
+      case 224:
+      case 225:
+      case 226:
+        id_list.add(2806);
+        break;
+      case 321: // window
+      case 322:
+      case 323:
+        id_list.add(2805);
+        id_list.add(2805);
+        break;
+      case 331: // wooden door
+      case 332:
+      case 333:
+      case 334:
+      case 335:
+      case 336:
+      case 337:
+      case 338:
+      case 339:
+      case 340:
+      case 341:
+      case 342:
+      case 343:
+      case 344:
+      case 345:
+      case 346:
+        // wooden board, maybe nails / screws / wooden "piece" (small piece)
+        break;
+      case 421: // tree
+      case 422:
+      case 423:
+      case 424:
+      case 425:
+      case 426:
+        // wooden logs
+        break;
+      default:
+        break;
+    }
+    return id_list;
+  }
+
+
+  void destroy(GameMap map) {
+    this.remove = true;
+    for (int id : this.drops()) {
+      map.addItem(new Item(id, this.x + 0.2 + random(0.6), this.y + 0.2 + random(0.6)));
+    }
+    // sound effect
+  }
+
+
   void interact(Unit u, GameMap map) {
     this.interact(u, map, false);
   }
@@ -1300,8 +1396,7 @@ class Feature extends MapObject {
             break;
         }
         if (this.number < 1) {
-          this.remove = true;
-          // drop wooden board, maybe nails / screws / wooden "piece" (small piece)
+          this.destroy(map);
         }
         break;
       case 161: // water fountain
@@ -1333,18 +1428,22 @@ class Feature extends MapObject {
       case 225:
       case 226:
         // climb over
+        if (u.holding(2978)) {
+          this.destroy(map);
+        }
         break;
       case 321: // window (open)
+        if (use_item && u.holding(2976)) {
+          this.destroy(map);
+          break;
+        }
         this.remove = true;
         map.addFeature(new Feature(322, this.x, this.y));
         // sound effect
         break;
       case 322: // window (closed)
-        if (!u.holding(2976)) {
-          this.remove = true;
-          map.addItem(new Item(2805, this.x + 0.2 + random(0.6), this.y + 0.2 + random(0.6)));
-          map.addItem(new Item(2805, this.x + 0.2 + random(0.6), this.y + 0.2 + random(0.6)));
-          // sound effect
+        if (use_item && u.holding(2976)) {
+          this.destroy(map);
           break;
         }
         this.remove = true;
@@ -1355,122 +1454,142 @@ class Feature extends MapObject {
         if (!u.holding(2976)) {
           break;
         }
-        this.remove = true;
-        map.addItem(new Item(2805, this.x + 0.2 + random(0.6), this.y + 0.2 + random(0.6)));
-        map.addItem(new Item(2805, this.x + 0.2 + random(0.6), this.y + 0.2 + random(0.6)));
-        // sound effect
+        this.destroy(map);
         break;
-      case 331: // door open (up)
-        this.remove = true;
-        map.addFeature(new Feature(339, this.x, this.y, false));
-        // sound effect
-        break;
+      case 331: // wooden door (open)
       case 332:
-        this.remove = true;
-        map.addFeature(new Feature(339, this.x, this.y, true));
-        // sound effect
-        break;
-      case 333: // door open (left)
-        this.remove = true;
-        map.addFeature(new Feature(340, this.x, this.y, false));
-        // sound effect
-        break;
+      case 333:
       case 334:
-        this.remove = true;
-        map.addFeature(new Feature(340, this.x, this.y, true));
-        // sound effect
-        break;
-      case 335: // door open (diagonal left)
-        this.remove = true;
-        map.addFeature(new Feature(341, this.x, this.y, false));
-        // sound effect
-        break;
+      case 335:
       case 336:
-        this.remove = true;
-        map.addFeature(new Feature(341, this.x, this.y, true));
-        // sound effect
-        break;
-      case 337: // door open (diagonal right)
-        this.remove = true;
-        map.addFeature(new Feature(342, this.x, this.y, false));
-        // sound effect
-        break;
+      case 337:
       case 338:
-        this.remove = true;
-        map.addFeature(new Feature(342, this.x, this.y, true));
-        // sound effect
-        break;
-      case 339: // door closed (up)
-        this.remove = true;
-        if (this.toggle) {
-          map.addFeature(new Feature(332, this.x, this.y));
-        }
-        else {
-          map.addFeature(new Feature(331, this.x, this.y));
-        }
-        // sound effect
-        break;
-      case 340: // door closed (left)
-        this.remove = true;
-        if (this.toggle) {
-          map.addFeature(new Feature(334, this.x, this.y));
-        }
-        else {
-          map.addFeature(new Feature(333, this.x, this.y));
-        }
-        // sound effect
-        break;
-      case 341: // door closed (diagonal left)
-        this.remove = true;
-        if (this.toggle) {
-          map.addFeature(new Feature(336, this.x, this.y));
-        }
-        else {
-          map.addFeature(new Feature(335, this.x, this.y));
-        }
-        // sound effect
-        break;
-      case 342: // door closed (diagonal right)
-        this.remove = true;
-        if (this.toggle) {
-          map.addFeature(new Feature(338, this.x, this.y));
-        }
-        else {
-          map.addFeature(new Feature(337, this.x, this.y));
-        }
-        // sound effect
-        break;
-      case 343: // door locked (up)
-        if (u.weapon() == null || !u.weapon().unlocks(this.number)) {
+      case 339: // wooden door (closed)
+      case 340:
+      case 341:
+      case 342:
+      case 343: // wooden door (locked)
+      case 344:
+      case 345:
+      case 346:
+        if (use_item && u.holding(2977, 2979, 2983)) {
+          this.destroy(map);
           break;
         }
-        this.remove = true;
-        map.addFeature(new Feature(339, this.x, this.y, this.toggle));
-        // sound effect
-        break;
-      case 344: // door locked (left)
-        if (u.weapon() == null || !u.weapon().unlocks(this.number)) {
-          break;
+        switch(this.ID) {
+          case 331: // door open (up)
+            this.remove = true;
+            map.addFeature(new Feature(339, this.x, this.y, false));
+            // sound effect
+            break;
+          case 332:
+            this.remove = true;
+            map.addFeature(new Feature(339, this.x, this.y, true));
+            // sound effect
+            break;
+          case 333: // door open (left)
+            this.remove = true;
+            map.addFeature(new Feature(340, this.x, this.y, false));
+            // sound effect
+            break;
+          case 334:
+            this.remove = true;
+            map.addFeature(new Feature(340, this.x, this.y, true));
+            // sound effect
+            break;
+          case 335: // door open (diagonal left)
+            this.remove = true;
+            map.addFeature(new Feature(341, this.x, this.y, false));
+            // sound effect
+            break;
+          case 336:
+            this.remove = true;
+            map.addFeature(new Feature(341, this.x, this.y, true));
+            // sound effect
+            break;
+          case 337: // door open (diagonal right)
+            this.remove = true;
+            map.addFeature(new Feature(342, this.x, this.y, false));
+            // sound effect
+            break;
+          case 338:
+            this.remove = true;
+            map.addFeature(new Feature(342, this.x, this.y, true));
+            // sound effect
+            break;
+          case 339: // door closed (up)
+            this.remove = true;
+            if (this.toggle) {
+              map.addFeature(new Feature(332, this.x, this.y));
+            }
+            else {
+              map.addFeature(new Feature(331, this.x, this.y));
+            }
+            // sound effect
+            break;
+          case 340: // door closed (left)
+            this.remove = true;
+            if (this.toggle) {
+              map.addFeature(new Feature(334, this.x, this.y));
+            }
+            else {
+              map.addFeature(new Feature(333, this.x, this.y));
+            }
+            // sound effect
+            break;
+          case 341: // door closed (diagonal left)
+            this.remove = true;
+            if (this.toggle) {
+              map.addFeature(new Feature(336, this.x, this.y));
+            }
+            else {
+              map.addFeature(new Feature(335, this.x, this.y));
+            }
+            // sound effect
+            break;
+          case 342: // door closed (diagonal right)
+            this.remove = true;
+            if (this.toggle) {
+              map.addFeature(new Feature(338, this.x, this.y));
+            }
+            else {
+              map.addFeature(new Feature(337, this.x, this.y));
+            }
+            // sound effect
+            break;
+          case 343: // door locked (up)
+            if (u.weapon() == null || !u.weapon().unlocks(this.number)) {
+              break;
+            }
+            this.remove = true;
+            map.addFeature(new Feature(339, this.x, this.y, this.toggle));
+            // sound effect
+            break;
+          case 344: // door locked (left)
+            if (u.weapon() == null || !u.weapon().unlocks(this.number)) {
+              break;
+            }
+            this.remove = true;
+            map.addFeature(new Feature(340, this.x, this.y, this.toggle));
+            // sound effect
+            break;
+          case 345: // door locked (diagonal left)
+            if (u.weapon() == null || !u.weapon().unlocks(this.number)) {
+              break;
+            }
+            this.remove = true;
+            map.addFeature(new Feature(341, this.x, this.y, this.toggle));
+            // sound effect
+            break;
+          case 346: // door locked (diagonal right)
+            if (u.weapon() == null || !u.weapon().unlocks(this.number)) {
+              break;
+            }
+            this.remove = true;
+            map.addFeature(new Feature(342, this.x, this.y, this.toggle));
+            // sound effect
+            break;
         }
-        this.remove = true;
-        map.addFeature(new Feature(340, this.x, this.y, this.toggle));
-        // sound effect
-        break;
-      case 345: // door locked (diagonal left)
-        if (u.weapon() == null || !u.weapon().unlocks(this.number)) {
-          break;
-        }
-        this.remove = true;
-        map.addFeature(new Feature(341, this.x, this.y, this.toggle));
-        // sound effect
-        break;
-      case 346: // door locked (diagonal right)
-        if (u.weapon() == null || !u.weapon().unlocks(this.number)) {
-          break;
-        }
-        this.remove = true;
-        map.addFeature(new Feature(342, this.x, this.y, this.toggle));
-        // sound effect
         break;
       case 401: // dandelion
         if (u.canPickup()) {
@@ -1550,8 +1669,7 @@ class Feature extends MapObject {
             map.addItem(new Item(branch_id, u.frontX(), u.frontY()));
           }
           if (this.number < 1) {
-            this.remove = true;
-            // drop wooden blocks
+            this.destroy(map);
           }
           // sound effect (based on item)
         }
