@@ -43,10 +43,14 @@ void draw() {
     case INITIAL_INTERFACE:
       break;
     case ENTERING_MAINMENU:
+      global.timer_exiting -= timeElapsed;
       background(30, 0, 0);
-      global.state = ProgramState.MAINMENU_INTERFACE;
-      global.menu = new MainMenuInterface();
-      global.sounds.play_background("main");
+      if (global.timer_exiting < 0) {
+        global.timer_exiting = Constants.exit_delay;
+        global.state = ProgramState.MAINMENU_INTERFACE;
+        global.menu = new MainMenuInterface();
+        global.sounds.play_background("main");
+      }
       break;
     case MAINMENU_INTERFACE:
       break;

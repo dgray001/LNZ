@@ -102,6 +102,7 @@ class Level {
   protected Location location = Location.ERROR;
   protected boolean nullify = false;
 
+  protected LevelForm level_form = null;
   protected GameMap currMap;
   protected String currMapName = null;
   protected ArrayList<String> mapNames = new ArrayList<String>();
@@ -965,6 +966,13 @@ class Level {
         // sound effect (?)
         break;
       case 321: // window (open)
+        if (use_item && h.holding(2976)) {
+          f.remove = true;
+          this.currMap.addItem(new Item(2805, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6)));
+          this.currMap.addItem(new Item(2805, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6)));
+          // sound effect
+          break;
+        }
         f.remove = true;
         new_f = new Feature(322, f.x, f.y, false);
         this.currMap.addFeature(new_f);
@@ -973,11 +981,12 @@ class Level {
         // sound effect
         break;
       case 322: // window (closed)
-        if (h.holding(2976)) {
+        if (use_item && h.holding(2976)) {
           f.remove = true;
           this.currMap.addItem(new Item(2805, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6)));
           this.currMap.addItem(new Item(2805, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6)));
           // sound effect
+          break;
         }
         f.remove = true;
         new_f = new Feature(321, f.x, f.y, false);
@@ -1253,7 +1262,7 @@ class Level {
       case 441: // bush
       case 442:
       case 443:
-        if (h.holding(2204, 2211)) {
+        if (use_item && h.holding(2204, 2211)) {
           f.number--;
           if (randomChance(Constants.feature_bushDropChance)) {
             this.currMap.addItem(new Item(2964, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6)));
@@ -1284,7 +1293,7 @@ class Level {
           this.heroFeatureInteraction(this.player, false);
           this.player.stopAction();
         }
-        else if (this.player.curr_action == UnitActino.HERO_INTERACTING_WITH_FEATURE_WITH_ITEM) {
+        else if (this.player.curr_action == UnitAction.HERO_INTERACTING_WITH_FEATURE_WITH_ITEM) {
           this.heroFeatureInteraction(this.player, true);
           this.player.stopAction();
         }
@@ -1631,6 +1640,47 @@ class Level {
       default:
         global.errorMessage("ERROR: Datakey " + datakey + " not recognized for Level object.");
         break;
+    }
+  }
+
+
+
+  abstract class LevelForm extends FormLNZ {
+    LevelForm(float xi, float yi, float xf, float yf) {
+      super(xi, yi, xf, yf);
+    }
+  }
+
+
+
+  class VendingForm extends LevelForm {
+    VendingForm() {
+      super(0, 0, 0, 0);
+    }
+
+    void submit() {
+    }
+  }
+
+
+
+  class KhalilForm extends LevelForm {
+    KhalilForm() {
+      super(0, 0, 0, 0);
+    }
+
+    void submit() {
+    }
+  }
+
+
+
+  class QuizmoForm extends LevelForm {
+    QuizmoForm() {
+      super(0, 0, 0, 0);
+    }
+
+    void submit() {
     }
   }
 }

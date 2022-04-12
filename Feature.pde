@@ -1250,10 +1250,10 @@ class Feature extends MapObject {
   void interact(Unit u, GameMap map, boolean use_item) {
     if (Hero.class.isInstance(u)) {
       if (use_item) {
-        u.curr_action = UnitAction.HERO_INTERACTING_WITH_FEATURE;
+        u.curr_action = UnitAction.HERO_INTERACTING_WITH_FEATURE_WITH_ITEM;
       }
       else {
-        u.curr_action = UnitAction.HERO_INTERACTING_WITH_FEATURE_WITH_ITEM;
+        u.curr_action = UnitAction.HERO_INTERACTING_WITH_FEATURE;
       }
       return;
     }
