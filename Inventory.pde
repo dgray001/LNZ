@@ -245,6 +245,16 @@ class Inventory {
     return fileString;
   }
 
+  String internalFileString() {
+    String fileString = "";
+    for (int i = 0; i < this.slots.size(); i++) {
+      if (this.slots.get(i).item != null) {
+        fileString += this.slots.get(i).item.fileString() + ": " + i;
+      }
+    }
+    return fileString;
+  }
+
   void addData(String datakey, String data) {
     switch(datakey) {
       case "addSlot":

@@ -1717,6 +1717,9 @@ class Feature extends MapObject {
     fileString += this.objectFileString();
     fileString += "\nnumber: " + this.number;
     fileString += "\ntoggle: " + this.toggle;
+    if (this.inventory != null) {
+      fileString += this.inventory.internalFileString();
+    }
     fileString += "\nend: Feature\n";
     return fileString;
   }
