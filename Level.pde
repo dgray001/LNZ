@@ -372,8 +372,7 @@ class Level {
             break;
         }
         if (f.number < 1) {
-          f.remove = true;
-          // drop wooden board, maybe nails / screws / wooden "piece" (small piece)
+          f.destroy(this.currMap);
         }
         break;
       case 102: // desk
@@ -394,8 +393,7 @@ class Level {
               break;
           }
           if (f.number < 1) {
-            f.remove = true;
-            // drop wooden board, maybe nails / screws / wooden "piece" (small piece)
+            f.destroy(this.currMap);
           }
           break;
         }
@@ -427,8 +425,7 @@ class Level {
               break;
           }
           if (f.number < 1) {
-            f.remove = true;
-            // drop wooden board, maybe nails / screws / wooden "piece" (small piece)
+            f.destroy(this.currMap);
           }
           break;
         }
@@ -561,8 +558,7 @@ class Level {
               break;
           }
           if (f.number < 1) {
-            f.remove = true;
-            // drop wooden board, maybe nails / screws / wooden "piece" (small piece)
+            f.destroy(this.currMap);
           }
           break;
         }
@@ -657,8 +653,7 @@ class Level {
               break;
           }
           if (f.number < 1) {
-            f.remove = true;
-            // drop wooden board, maybe nails / screws / wooden "piece" (small piece)
+            f.destroy(this.currMap);
           }
           break;
         }
@@ -926,6 +921,10 @@ class Level {
         // sound effect
         break;
       case 185: // pickle jar
+        if (use_item && h.holding(2975)) {
+          f.destroy(this.currMap);
+          break;
+        }
         if (h.canPickup()) {
           f.number = Constants.feature_pickleJarCooldown;
           h.pickup(new Item(2106));
@@ -948,11 +947,9 @@ class Level {
       case 224:
       case 225:
       case 226:
-        // climb over
+        // climb over (?)
         if (h.holding(2978)) {
-          f.remove = true;
-          this.currMap.addItem(new Item(2806, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6)));
-          // sonud effect
+          f.destroy(this.currMap);
         }
         break;
       case 301: // movable brick wall
@@ -967,10 +964,7 @@ class Level {
         break;
       case 321: // window (open)
         if (use_item && h.holding(2976)) {
-          f.remove = true;
-          this.currMap.addItem(new Item(2805, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6)));
-          this.currMap.addItem(new Item(2805, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6)));
-          // sound effect
+          f.destroy(this.currMap);
           break;
         }
         f.remove = true;
@@ -982,10 +976,7 @@ class Level {
         break;
       case 322: // window (closed)
         if (use_item && h.holding(2976)) {
-          f.remove = true;
-          this.currMap.addItem(new Item(2805, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6)));
-          this.currMap.addItem(new Item(2805, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6)));
-          // sound effect
+          f.destroy(this.currMap);
           break;
         }
         f.remove = true;
@@ -1000,174 +991,194 @@ class Level {
           this.currMap.addHeaderMessage("The window is locked");
           break;
         }
-        f.remove = true;
-        this.currMap.addItem(new Item(2805, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6)));
-        this.currMap.addItem(new Item(2805, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6)));
-        // sound effect
+        f.destroy(this.currMap);
         break;
-      case 331: // door open (up)
-        f.remove = true;
-        new_f = new Feature(339, f.x, f.y, false);
-        this.currMap.addFeature(new_f);
-        new_f.hovered = true;
-        this.currMap.hovered_object = new_f;
-        // sound effect
-        break;
+      case 331: // wooden door (open)
       case 332:
-        f.remove = true;
-        new_f = new Feature(339, f.x, f.y, true);
-        this.currMap.addFeature(new_f);
-        new_f.hovered = true;
-        this.currMap.hovered_object = new_f;
-        // sound effect
-        break;
-      case 333: // door open (left)
-        f.remove = true;
-        new_f = new Feature(340, f.x, f.y, false);
-        this.currMap.addFeature(new_f);
-        new_f.hovered = true;
-        this.currMap.hovered_object = new_f;
-        // sound effect
-        break;
+      case 333:
       case 334:
-        f.remove = true;
-        new_f = new Feature(340, f.x, f.y, true);
-        this.currMap.addFeature(new_f);
-        new_f.hovered = true;
-        this.currMap.hovered_object = new_f;
-        // sound effect
-        break;
-      case 335: // door open (diagonal left)
-        f.remove = true;
-        new_f = new Feature(341, f.x, f.y, false);
-        this.currMap.addFeature(new_f);
-        new_f.hovered = true;
-        this.currMap.hovered_object = new_f;
-        // sound effect
-        break;
+      case 335:
       case 336:
-        f.remove = true;
-        new_f = new Feature(341, f.x, f.y, true);
-        this.currMap.addFeature(new_f);
-        new_f.hovered = true;
-        this.currMap.hovered_object = new_f;
-        // sound effect
-        break;
-      case 337: // door open (diagonal right)
-        f.remove = true;
-        new_f = new Feature(342, f.x, f.y, false);
-        this.currMap.addFeature(new_f);
-        new_f.hovered = true;
-        this.currMap.hovered_object = new_f;
-        // sound effect
-        break;
+      case 337:
       case 338:
-        f.remove = true;
-        new_f = new Feature(342, f.x, f.y, true);
-        this.currMap.addFeature(new_f);
-        new_f.hovered = true;
-        this.currMap.hovered_object = new_f;
-        // sound effect
-        break;
-      case 339: // door closed (up)
-        f.remove = true;
-        if (f.toggle) {
-          new_f = new Feature(332, f.x, f.y);
-        }
-        else {
-          new_f = new Feature(331, f.x, f.y);
-        }
-        this.currMap.addFeature(new_f);
-        new_f.hovered = true;
-        this.currMap.hovered_object = new_f;
-        // sound effect
-        break;
-      case 340: // door closed (left)
-        f.remove = true;
-        if (f.toggle) {
-          new_f = new Feature(334, f.x, f.y);
-        }
-        else {
-          new_f = new Feature(333, f.x, f.y);
-        }
-        this.currMap.addFeature(new_f);
-        new_f.hovered = true;
-        this.currMap.hovered_object = new_f;
-        // sound effect
-        break;
-      case 341: // door closed (diagonal left)
-        f.remove = true;
-        if (f.toggle) {
-          new_f = new Feature(336, f.x, f.y);
-        }
-        else {
-          new_f = new Feature(335, f.x, f.y);
-        }
-        this.currMap.addFeature(new_f);
-        new_f.hovered = true;
-        this.currMap.hovered_object = new_f;
-        // sound effect
-        break;
-      case 342: // door closed (diagonal right)
-        f.remove = true;
-        if (f.toggle) {
-          new_f = new Feature(338, f.x, f.y);
-        }
-        else {
-          new_f = new Feature(337, f.x, f.y);
-        }
-        this.currMap.addFeature(new_f);
-        new_f.hovered = true;
-        this.currMap.hovered_object = new_f;
-        // sound effect
-        break;
-      case 343: // door locked (up)
-        if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
-          this.currMap.addHeaderMessage("The door is locked");
+      case 339: // wooden door (closed)
+      case 340:
+      case 341:
+      case 342:
+      case 343: // wooden door (locked)
+      case 344:
+      case 345:
+      case 346:
+        if (use_item && h.holding(2977, 2979, 2983)) {
+          f.destroy(this.currMap);
           break;
         }
-        f.remove = true;
-        new_f = new Feature(339, f.x, f.y, f.toggle);
-        this.currMap.addFeature(new_f);
-        new_f.hovered = true;
-        this.currMap.hovered_object = new_f;
-        // sound effect
-        break;
-      case 344: // door locked (left)
-        if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
-          this.currMap.addHeaderMessage("The door is locked");
-          break;
+        switch(f.ID) {
+          case 331: // door open (up)
+            f.remove = true;
+            new_f = new Feature(339, f.x, f.y, false);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            // sound effect
+            break;
+          case 332:
+            f.remove = true;
+            new_f = new Feature(339, f.x, f.y, true);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            // sound effect
+            break;
+          case 333: // door open (left)
+            f.remove = true;
+            new_f = new Feature(340, f.x, f.y, false);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            // sound effect
+            break;
+          case 334:
+            f.remove = true;
+            new_f = new Feature(340, f.x, f.y, true);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            // sound effect
+            break;
+          case 335: // door open (diagonal left)
+            f.remove = true;
+            new_f = new Feature(341, f.x, f.y, false);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            // sound effect
+            break;
+          case 336:
+            f.remove = true;
+            new_f = new Feature(341, f.x, f.y, true);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            // sound effect
+            break;
+          case 337: // door open (diagonal right)
+            f.remove = true;
+            new_f = new Feature(342, f.x, f.y, false);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            // sound effect
+            break;
+          case 338:
+            f.remove = true;
+            new_f = new Feature(342, f.x, f.y, true);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            // sound effect
+            break;
+          case 339: // door closed (up)
+            f.remove = true;
+            if (f.toggle) {
+              new_f = new Feature(332, f.x, f.y);
+            }
+            else {
+              new_f = new Feature(331, f.x, f.y);
+            }
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            // sound effect
+            break;
+          case 340: // door closed (left)
+            f.remove = true;
+            if (f.toggle) {
+              new_f = new Feature(334, f.x, f.y);
+            }
+            else {
+              new_f = new Feature(333, f.x, f.y);
+            }
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            // sound effect
+            break;
+          case 341: // door closed (diagonal left)
+            f.remove = true;
+            if (f.toggle) {
+              new_f = new Feature(336, f.x, f.y);
+            }
+            else {
+              new_f = new Feature(335, f.x, f.y);
+            }
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            // sound effect
+            break;
+          case 342: // door closed (diagonal right)
+            f.remove = true;
+            if (f.toggle) {
+              new_f = new Feature(338, f.x, f.y);
+            }
+            else {
+              new_f = new Feature(337, f.x, f.y);
+            }
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            // sound effect
+            break;
+          case 343: // door locked (up)
+            if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
+              this.currMap.addHeaderMessage("The door is locked");
+              break;
+            }
+            f.remove = true;
+            new_f = new Feature(339, f.x, f.y, f.toggle);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            // sound effect
+            break;
+          case 344: // door locked (left)
+            if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
+              this.currMap.addHeaderMessage("The door is locked");
+              break;
+            }
+            f.remove = true;
+            new_f = new Feature(340, f.x, f.y, f.toggle);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            // sound effect
+            break;
+          case 345: // door locked (diagonal left)
+            if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
+              this.currMap.addHeaderMessage("The door is locked");
+              break;
+            }
+            f.remove = true;
+            new_f = new Feature(341, f.x, f.y, f.toggle);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            // sound effect
+            break;
+          case 346: // door locked (diagonal right)
+            if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
+              this.currMap.addHeaderMessage("The door is locked");
+              break;
+            }
+            f.remove = true;
+            new_f = new Feature(342, f.x, f.y, f.toggle);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            // sound effect
+            break;
         }
-        f.remove = true;
-        new_f = new Feature(340, f.x, f.y, f.toggle);
-        this.currMap.addFeature(new_f);
-        new_f.hovered = true;
-        this.currMap.hovered_object = new_f;
-        // sound effect
-        break;
-      case 345: // door locked (diagonal left)
-        if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
-          this.currMap.addHeaderMessage("The door is locked");
-          break;
-        }
-        f.remove = true;
-        new_f = new Feature(341, f.x, f.y, f.toggle);
-        this.currMap.addFeature(new_f);
-        new_f.hovered = true;
-        this.currMap.hovered_object = new_f;
-        // sound effect
-        break;
-      case 346: // door locked (diagonal right)
-        if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
-          this.currMap.addHeaderMessage("The door is locked");
-          break;
-        }
-        f.remove = true;
-        new_f = new Feature(342, f.x, f.y, f.toggle);
-        this.currMap.addFeature(new_f);
-        new_f.hovered = true;
-        this.currMap.hovered_object = new_f;
-        // sound effect
         break;
       case 401: // dandelion
         if (h.canPickup()) {
@@ -1253,8 +1264,7 @@ class Level {
             this.currMap.addItem(new Item(branch_id, h.frontX(), h.frontY()));
           }
           if (f.number < 1) {
-            f.remove = true;
-            // drop wooden blocks
+            f.destroy(this.currMap);
           }
           // sound effect (based on item)
         }
