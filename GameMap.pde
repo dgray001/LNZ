@@ -1767,6 +1767,8 @@ class GameMap {
             continue;
           }
           this.hovered_object = f;
+          global.setCursor("icons/cursor_interact.png");
+          default_cursor = false;
         }
       }
       for (Map.Entry<Integer, Unit> entry : this.units.entrySet()) {
@@ -1851,7 +1853,7 @@ class GameMap {
       }
     }
     if (default_cursor) {
-      global.defaultCursor("icons/cursor_attack.png", "icons/cursor_pickup.png");
+      global.defaultCursor("icons/cursor_interact.png", "icons/cursor_attack.png", "icons/cursor_pickup.png");
     }
   }
 

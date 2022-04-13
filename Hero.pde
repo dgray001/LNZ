@@ -928,39 +928,253 @@ class Hero extends Unit {
   abstract class LeftPanelMenu {
     LeftPanelMenu() {
     }
-    abstract void drawPanel(float timeElapsed, float panel_width);
+    Hero hero() {
+      return Hero.this;
+    }
+    abstract void drawPanel(int timeElapsed, float panel_width);
+    abstract void mouseMove(float mX, float mY);
+    abstract void mousePress();
+    abstract void mouseRelease(float mX, float mY);
   }
 
 
   class PlayerLeftPanelMenu extends LeftPanelMenu {
-    PlayerLeftPanelMenu() {
+    abstract class LeftPanelButton extends RectangleButton {
+      protected float hover_timer = Constants.hero_leftPanelButtonHoverTimer;
+      protected boolean show_hover_message = false;
+      protected String hover_message = "";
+      protected float hover_message_text_size = 15;
+      protected float hover_message_offset = 0;
+
+      LeftPanelButton(float xi, float yi, float xf, float yf) {
+        super(xi, yi, xf, yf);
+        textSize(15);
+        this.hover_message_offset = 0.5 * (textAscent() + textDescent()) + 2;
+      }
+
+      @Override
+      void update(int millis) {
+        int time_elapsed = millis - this.lastUpdateTime;
+        super.update(millis);
+        if (this.show_hover_message) {
+          fill(global.color_nameDisplayed_background);
+          stroke(1, 0);
+          rectMode(CENTER);
+          textSize(this.hover_message_text_size);
+          float xCenter = mouseX + 0.5 * textWidth(this.hover_message + 2);
+          float yCenter = mouseY - this.hover_message_offset;
+          rect(xCenter, yCenter, textWidth(this.hover_message + 2), textAscent() + textDescent());
+          textAlign(CENTER, CENTER);
+          fill(255);
+          text(this.hover_message, xCenter, yCenter);
+          stroke(0);
+        }
+        else if (this.hovered) {
+          this.hover_timer -= time_elapsed;
+          if (this.hover_timer < 0) {
+            this.show_hover_message = true;
+          }
+        }
+      }
+
+      void hover() {
+        this.updateHoverMessage();
+      }
+      void dehover() {
+        this.hover_timer = Constants.hero_leftPanelButtonHoverTimer;
+        this.show_hover_message = false;
+      }
+      void click() {
+        this.updateHoverMessage();
+        this.show_hover_message = true;
+      }
+      void release() {}
+
+      abstract void updateHoverMessage();
     }
 
-    void drawPanel(float timeElapsed, float panel_width) {
-      float currY = 0.5 * height + Constants.map_selectedObjectPanelGap;
+    class LevelButton extends LeftPanelButton {
+      LevelButton(float yi, float yf) {
+        super(0, yi, 0, yf);
+        this.setColors(color(100, 100), color(1, 0), color(1, 0), color(1, 0), color(0));
+        this.text_size = 18;
+        this.show_message = true;
+        this.noStroke();
+      }
+
+      void updateHoverMessage() {
+        this.hover_message = "Tier: " + PlayerLeftPanelMenu.this.hero().tier();
+      }
+    }
+
+
+    class ExperienceButton extends LeftPanelButton {
+      ExperienceButton(float yi, float yf) {
+        super(0, yi, 0, yf);
+        this.setColors(color(1, 0), color(1, 0), color(1, 0), color(1, 0), color(1, 0));
+        this.setStroke(color(0), 1.5);
+        this.roundness = 0;
+      }
+
+      void updateHoverMessage() {
+        this.hover_message = "Experience: " + PlayerLeftPanelMenu.this.hero().experience +
+          "/" + PlayerLeftPanelMenu.this.hero().experience_next_level;
+      }
+    }
+
+
+    class HungerButton extends LeftPanelButton {
+      protected float bar_xi = 0;
+      protected float bar_yi = 0;
+      protected float bar_yf = 0;
+
+      HungerButton(float yi, float yf) {
+        super(0, yi, 0, yf);
+        this.setColors(color(1, 0), color(1, 0), color(1, 0), color(1, 0), color(1, 0));
+        this.noStroke();
+        this.roundness = 0;
+        this.bar_xi = 4 + 2 * Constants.hero_leftPanelBarHeight;
+        this.bar_yi = yi + 0.25 * (yf - yi);
+        this.bar_yf = yi + 0.75 * (yf - yi);
+      }
+
+      @Override
+      void drawButton() {
+        super.drawButton();
+        imageMode(CORNERS);
+        image(global.images.getImage("icons/hunger.png"), this.xi, this.yi,
+          this.bar_xi - 2, this.yf);
+        rectMode(CORNERS);
+        fill(255, 0, 0);
+        noStroke();
+        rect(this.bar_xi, this.bar_yi, this.xf, this.bar_yf);
+      }
+
+      void updateHoverMessage() {
+        this.hover_message = "Hunger: " + (100 * PlayerLeftPanelMenu.this.hero().hunger /
+          float(Constants.hero_maxHunger)) + "%";
+      }
+    }
+
+
+    class ThirstButton extends LeftPanelButton {
+      protected float bar_xi = 0;
+      protected float bar_yi = 0;
+      protected float bar_yf = 0;
+
+      ThirstButton(float yi, float yf) {
+        super(0, yi, 0, yf);
+        this.setColors(color(1, 0), color(1, 0), color(1, 0), color(1, 0), color(1, 0));
+        this.noStroke();
+        this.roundness = 0;
+        this.bar_xi = 4 + 2 * Constants.hero_leftPanelBarHeight;
+        this.bar_yi = yi + 0.25 * (yf - yi);
+        this.bar_yf = yi + 0.75 * (yf - yi);
+      }
+
+      @Override
+      void drawButton() {
+        super.drawButton();
+        imageMode(CORNERS);
+        image(global.images.getImage("icons/thirst.png"), this.xi, this.yi,
+          this.bar_xi - 2, this.yf);
+        rectMode(CORNERS);
+        fill(255, 0, 0);
+        noStroke();
+        rect(this.bar_xi, this.bar_yi, this.xf, this.bar_yf);
+      }
+
+      void updateHoverMessage() {
+        this.hover_message = "Thirst: " + (100 * PlayerLeftPanelMenu.this.hero().thirst /
+          float(Constants.hero_maxThirst)) + "%";
+      }
+    }
+
+
+    protected float yi;
+    protected float image_yi;
+    protected float image_size;
+    protected LevelButton level;
+    protected ExperienceButton experience;
+    protected HungerButton hunger;
+    protected ThirstButton thirst;
+
+    PlayerLeftPanelMenu() {
+      this.yi = 0.5 * height + Constants.map_selectedObjectPanelGap;
+      textSize(Constants.map_selectedObjectTitleTextSize);
+      float currY = this.yi + textAscent() + textDescent() + Constants.map_selectedObjectPanelGap;
+      this.image_yi = currY;
+      this.image_size = 0.1 * height;
+      currY += image_size + Constants.map_selectedObjectPanelGap;
+      textSize(18);
+      this.level = new LevelButton(currY, currY + textAscent() + textDescent() + Constants.map_selectedObjectPanelGap);
+      currY += textAscent() + textDescent() + Constants.map_selectedObjectPanelGap;
+      this.experience = new ExperienceButton(currY, currY + Constants.hero_leftPanelBarHeight);
+      currY += 2 * Constants.hero_leftPanelBarHeight + Constants.map_selectedObjectPanelGap;
+      this.hunger = new HungerButton(currY, currY + 2 * Constants.hero_leftPanelBarHeight);
+      currY += 2 * Constants.hero_leftPanelBarHeight + Constants.map_selectedObjectPanelGap;
+      this.thirst = new ThirstButton(currY, currY + 2 * Constants.hero_leftPanelBarHeight);
+      currY += Constants.hero_leftPanelBarHeight + Constants.map_selectedObjectPanelGap;
+    }
+
+    void drawPanel(int millis, float panel_width) {
+      // name
       fill(255);
       textSize(Constants.map_selectedObjectTitleTextSize);
       textAlign(CENTER, TOP);
-      text(Hero.this.display_name(), 0.5 * panel_width, currY);
-      currY += textAscent() + textDescent() + Constants.map_selectedObjectPanelGap;
-      float image_size = min(0.5 * panel_width, 0.5 * (height - currY));
+      text(Hero.this.display_name(), 0.5 * panel_width, this.yi);
+      // picture
       imageMode(CORNER);
-      image(Hero.this.getImage(), 1, currY, image_size, image_size);
-      currY += image_size + Constants.map_selectedObjectPanelGap;
-      fill(0);
-      textSize(18);
-      text("Level " + Hero.this.level, 0.5 * panel_width, currY);
-      currY += textAscent() + textDescent() + Constants.map_selectedObjectPanelGap;
-      noFill();
-      strokeWeight(1.5);
-      stroke(0);
+      image(Hero.this.getImage(), 1, this.image_yi, this.image_size, this.image_size);
+      // level
+      this.level.message = "Level " + Hero.this.level;
+      this.level.setXLocation(2, panel_width - 2);
+      this.level.update(millis);
+      // experience
+      this.experience.setXLocation(2, panel_width - 2);
+      this.experience.update(millis);
       rectMode(CORNER);
-      rect(Constants.map_selectedObjectPanelGap, currY, panel_width - 2 *
-        Constants.map_selectedObjectPanelGap, 10);
       float xp_ratio = Hero.this.experience / Hero.this.experience_next_level;
       fill(0);
-      rect(Constants.map_selectedObjectPanelGap, currY, xp_ratio * (panel_width -
-        2 * Constants.map_selectedObjectPanelGap), 10);
+      rect(this.experience.xi, this.experience.yi, xp_ratio * (panel_width - 2),
+        Constants.hero_leftPanelBarHeight);
+      // hunger
+      this.hunger.setXLocation(2, panel_width - 2);
+      this.hunger.update(millis);
+      rectMode(CORNER);
+      float hunger_ratio = Hero.this.hunger / float(Constants.hero_maxHunger);
+      fill(0, 255, 0);
+      rect(this.hunger.bar_xi, this.hunger.bar_yi, hunger_ratio * (panel_width -
+        2 - this.thirst.bar_xi), Constants.hero_leftPanelBarHeight);
+      // thirst
+      this.thirst.setXLocation(2, panel_width - 2);
+      this.thirst.update(millis);
+      rectMode(CORNER);
+      float thirst_ratio = Hero.this.thirst / float(Constants.hero_maxThirst);
+      fill(0, 255, 0);
+      rect(this.thirst.bar_xi, this.thirst.bar_yi, thirst_ratio * (panel_width -
+        2 - this.thirst.bar_xi), Constants.hero_leftPanelBarHeight);
+    }
+
+    void mouseMove(float mX, float mY) {
+      this.level.mouseMove(mX, mY);
+      this.experience.mouseMove(mX, mY);
+      this.hunger.mouseMove(mX, mY);
+      this.thirst.mouseMove(mX, mY);
+    }
+
+    void mousePress() {
+      this.level.mousePress();
+      this.experience.mousePress();
+      this.hunger.mousePress();
+      this.thirst.mousePress();
+    }
+
+    void mouseRelease(float mX, float mY) {
+      this.level.mouseRelease(mX, mY);
+      this.experience.mouseRelease(mX, mY);
+      this.hunger.mouseRelease(mX, mY);
+      this.thirst.mouseRelease(mX, mY);
     }
   }
 
@@ -996,7 +1210,6 @@ class Hero extends Unit {
     super(HeroCode.unit_id(code));
     this.code = code;
     this.addAbilities();
-    this.level = 100;
   }
 
 
@@ -1270,12 +1483,18 @@ class Hero extends Unit {
       float inventoryTranslateY = 0.5 * (height - this.inventory.display_height);
       this.inventory.mouseMove(mX - inventoryTranslateX, mY - inventoryTranslateY);
     }
+    if (this.left_panel_menu != null) {
+      this.left_panel_menu.mouseMove(mX, mY);
+    }
   }
 
   void mousePress_hero() {
     this.inventory_bar.mousePress();
     if (this.inventory.viewing) {
       this.inventory.mousePress();
+    }
+    if (this.left_panel_menu != null) {
+      this.left_panel_menu.mousePress();
     }
   }
 
@@ -1285,6 +1504,9 @@ class Hero extends Unit {
       float inventoryTranslateX = 0.5 * (width - this.inventory.display_width);
       float inventoryTranslateY = 0.5 * (height - this.inventory.display_height);
       this.inventory.mouseRelease(mX - inventoryTranslateX, mY - inventoryTranslateY);
+    }
+    if (this.left_panel_menu != null) {
+      this.left_panel_menu.mouseRelease(mX, mY);
     }
   }
 

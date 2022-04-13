@@ -1338,7 +1338,14 @@ class Feature extends MapObject {
   void destroy(GameMap map) {
     this.remove = true;
     for (int id : this.drops()) {
-      map.addItem(new Item(id, this.x + 0.2 + random(0.6), this.y + 0.2 + random(0.6)));
+      map.addItem(new Item(id, this.x + 0.2 + random(0.6 + this.sizeX - 1),
+        this.y + 0.2 + random(0.6 + this.sizeY - 1)));
+    }
+    if (this.inventory != null) {
+      for (Item i : this.inventory.items()) {
+        map.addItem(new Item(i, this.x + 0.2 + random(0.6 + this.sizeX - 1),
+          this.y + 0.2 + random(0.6 + this.sizeY - 1)));
+      }
     }
     // sound effect
   }
