@@ -972,7 +972,7 @@ class Hero extends Unit {
   protected int level_tokens = 0;
   protected float experience = 0;
   protected int experience_next_level = 1;
-  protected float money = 0;
+  protected float money = 20;
   protected float base_mana = 0;
   protected float curr_mana = 0;
   protected int hunger = 100;
@@ -1142,6 +1142,23 @@ class Hero extends Unit {
         if (noAmmo) {
           break;
         }
+      }
+      return;
+    }
+    if (this.weapon().money()) {
+      // deposit if can
+      return;
+    }
+    if (this.weapon().utility()) {
+      switch(this.weapon().ID) {
+        case 2924: // water bottles
+        case 2925:
+        case 2926:
+        case 2927:
+          int thirst_quenched = min(100 - this.thirst, this.weapon().ammo);
+          this.weapon().ammo -= thirst_quenched;
+          this.increaseThirst(thirst_quenched);
+          break;
       }
       return;
     }

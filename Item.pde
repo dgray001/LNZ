@@ -149,65 +149,68 @@ class Item extends MapObject {
     switch(ID) {
       // Consumables
       case 2101:
-        this.setStrings("Crumb", "Consumable", "");
+        this.setStrings("Crumb", "Food", "");
         break;
       case 2102:
-        this.setStrings("Unknown Food", "Consumable", "");
+        this.setStrings("Unknown Food", "Food", "");
         break;
       case 2103:
-        this.setStrings("Unknown Food", "Consumable", "");
+        this.setStrings("Unknown Food", "Food", "");
         break;
       case 2104:
-        this.setStrings("Unknown Food", "Consumable", "");
+        this.setStrings("Unknown Food", "Food", "");
         break;
       case 2105:
-        this.setStrings("Unknown Food", "Consumable", "");
+        this.setStrings("Unknown Food", "Food", "");
         break;
       case 2106:
-        this.setStrings("Pickle", "Consumable", "");
+        this.setStrings("Pickle", "Food", "");
         break;
       case 2107:
-        this.setStrings("Ketchup", "Consumable", "");
+        this.setStrings("Ketchup", "Food", "");
         break;
       case 2108:
-        this.setStrings("Chicken Wing", "Consumable", "");
+        this.setStrings("Chicken Wing", "Food", "");
         break;
       case 2109:
-        this.setStrings("Steak", "Consumable", "");
+        this.setStrings("Steak", "Food", "");
         break;
       case 2110:
-        this.setStrings("Poptart", "Consumable", "");
+        this.setStrings("Poptart", "Food", "");
         break;
       case 2111:
-        this.setStrings("Donut", "Consumable", "");
+        this.setStrings("Donut", "Food", "");
         break;
       case 2112:
-        this.setStrings("Chocolate", "Consumable", "");
+        this.setStrings("Chocolate", "Food", "");
         break;
       case 2113:
-        this.setStrings("Chips", "Consumable", "");
+        this.setStrings("Chips", "Food", "");
         break;
       case 2114:
-        this.setStrings("Cheese", "Consumable", "");
+        this.setStrings("Cheese", "Food", "");
+        break;
+      case 2115:
+        this.setStrings("Peanuts", "Food", "");
         break;
       case 2131:
-        this.setStrings("Water Cup", "Consumable", "");
+        this.setStrings("Water Cup", "Drink", "");
         break;
       case 2132:
-        this.setStrings("Coke", "Consumable", "");
+        this.setStrings("Coke", "Drink", "");
         break;
       case 2133:
-        this.setStrings("Wine", "Consumable", "");
+        this.setStrings("Wine", "Drink", "");
         break;
       case 2134:
-        this.setStrings("Beer", "Consumable", "");
+        this.setStrings("Beer", "Drink", "");
         break;
       case 2141:
-        this.setStrings("Holy Water", "Consumable", "");
+        this.setStrings("Holy Water", "Drink", "");
         this.tier = 2;
         break;
       case 2142:
-        this.setStrings("Golden Apple", "Consumable", "");
+        this.setStrings("Golden Apple", "Food", "");
         this.tier = 3;
         break;
       case 2151:
@@ -1091,6 +1094,9 @@ class Item extends MapObject {
       case 2114:
         path += "cheese.png";
         break;
+      case 2115:
+        path += "peanuts.png";
+        break;
       case 2131:
         path += "water_cup.png";
         break;
@@ -1590,7 +1596,31 @@ class Item extends MapObject {
         path += "purse.png";
         break;
       case 2924:
-        path += "glass_bottle.png";
+        float water_percent = float(this.ammo) / this.maximumAmmo();
+        if (water_percent > 0.95) {
+          path += "glass_bottle_water_full.png";
+        }
+        else if (water_percent > 0.8) {
+          path += "glass_bottle_water_85.png";
+        }
+        else if (water_percent > 0.65) {
+          path += "glass_bottle_water_70.png";
+        }
+        else if (water_percent > 0.5) {
+          path += "glass_bottle_water_55.png";
+        }
+        else if (water_percent > 0.35) {
+          path += "glass_bottle_water_40.png";
+        }
+        else if (water_percent > 0.2) {
+          path += "glass_bottle_water_25.png";
+        }
+        else if (water_percent > 0) {
+          path += "glass_bottle_water_10.png";
+        }
+        else {
+          path += "glass_bottle.png";
+        }
         break;
       case 2925:
         path += "water_bottle.png";
@@ -1761,11 +1791,19 @@ class Item extends MapObject {
   }
 
   boolean usable() {
-    return this.consumable() || this.reloadable();
+    return this.consumable() || this.reloadable() || this.money() || this.utility();
+  }
+
+  boolean utility() {
+    return this.type.equals("Utility");
+  }
+
+  boolean money() {
+    return this.type.equals("Money");
   }
 
   boolean consumable() {
-    return this.type.equals("Consumable");
+    return this.type.equals("Food") || this.type.equals("Drink");
   }
 
   void consumed() {
@@ -1978,6 +2016,14 @@ class Item extends MapObject {
         return 1;
       case 2312:
         return 8;
+      case 2924:
+        return 30;
+      case 2925:
+        return 100;
+      case 2926:
+        return 400;
+      case 2927:
+        return 2500;
       default:
         return 0;
     }

@@ -3103,6 +3103,7 @@ class RadiosFormField extends MessageFormField {
   protected ArrayList<RadioButton> radios = new ArrayList<RadioButton>();
   protected float radio_padding = 6;
   protected int index_selected = -1;
+  protected boolean message_first = false;
 
   RadiosFormField(String message) {
     super(message);
@@ -3126,8 +3127,12 @@ class RadiosFormField extends MessageFormField {
     textSize(this.text_size - 2);
     for (RadioButton radio : this.radios) {
       radio.text_size = this.text_size - 2;
-      float radius = 0.5 * min(0.8 * (textAscent() + textDescent() + 2), abs(this.field_width - textWidth(radio.message)));
-      float xc = textWidth(radio.message) + radius;
+      float radius = 0.5 * min(0.8 * (textAscent() + textDescent() + 2),
+        abs(this.field_width - textWidth(radio.message) - 2 * this.radio_padding));
+      float xc = radius + this.radio_padding;
+      if (message_first) {
+        xc += textWidth(radio.message) + this.radio_padding;
+      }
       float yc = currY + 0.5 * (textAscent() + textDescent() + 2);
       radio.setLocation(xc, yc, radius);
       currY += textAscent() + textDescent() + 2 + this.radio_padding;
@@ -3165,7 +3170,12 @@ class RadiosFormField extends MessageFormField {
       textSize(radio.text_size);
       textAlign(LEFT, TOP);
       fill(radio.color_text);
-      text(radio.message, 1, radio.yCenter() - radio.radius() + 1);
+      if (this.message_first) {
+        text(radio.message, this.radio_padding, radio.yCenter() - radio.radius() + 1);
+      }
+      else {
+        text(radio.message, radio.button_width() + 2 * this.radio_padding, radio.yCenter() - radio.radius() + 1);
+      }
       radio.update(millis);
     }
     return returnValue;
