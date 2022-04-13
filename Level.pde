@@ -1731,6 +1731,7 @@ class Level {
       this.setTitleSize(18);
       this.color_background = color(211, 188, 141);
       this.color_header = color(220, 200, 150);
+      global.defaultCursor();
     }
   }
 
@@ -1887,9 +1888,59 @@ class Level {
       this.chuck_quizmo = f;
       this.hero = h;
       this.setTitleText(this.chuck_quizmo.display_name());
+
+      RadiosFormField question = new RadiosFormField("");
+      switch(this.chuck_quizmo.number) {
+        case 0:
+          question.setMessage("Test Question.");
+          question.addRadio("Answer 1");
+          question.addRadio("Answer 2");
+          question.addRadio("Answer 3");
+          question.addRadio("Answer 4");
+          break;
+        default:
+          global.errorMessage("ERROR: Chuck Quizmo ID " + this.chuck_quizmo.number +
+            " not found.");
+          break;
+      }
+
+      this.addField(new SpacerFormField(20));
+      this.addField(question);
+      this.addField(new SpacerFormField(20));
+      this.addField(new SubmitCancelFormField("Guess!", "Leave"));
+    }
+
+    @Override
+    void cancel() {
+      this.canceled = true;
+      // Chuck says goodbye
     }
 
     void submit() {
+      int guess = toInt(this.fields.get(1).getValue());
+      if (guess < 0) {
+        // male a guess please
+        return;
+      }
+      int correct_answer = -1;
+      switch(this.chuck_quizmo.number) {
+        case 0:
+          correct_answer = 1;
+          break;
+        default:
+          global.errorMessage("ERROR: Chuck Quizmo ID " + this.chuck_quizmo.number +
+            " not found.");
+          break;
+      }
+      if (guess == correct_answer) {
+        println("correct");
+        // star piece
+      }
+      else {
+        println("incorrect");
+        // nuthin
+      }
+      this.canceled = true;
     }
   }
 

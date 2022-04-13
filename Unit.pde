@@ -1628,6 +1628,21 @@ class Unit extends MapObject {
   }
 
 
+  ArrayList<Item> drops() {
+    ArrayList<Item> drops = new ArrayList<Item>();
+    switch(this.ID) {
+      default:
+        break;
+    }
+    for (Map.Entry<GearSlot, Item> entry : this.gear.entrySet()) {
+      if (entry.getValue() != null) {
+        drops.add(entry.getValue());
+      }
+    }
+    return drops;
+  }
+
+
   void heal(float amount) {
     this.heal(amount, false);
   }

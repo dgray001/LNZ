@@ -1379,6 +1379,16 @@ class Hero extends Unit {
   }
 
 
+  @Override
+  ArrayList<Item> drops() {
+    ArrayList<Item> drops = super.drops();
+    for (Item i : this.inventory.items()) {
+      drops.add(i);
+    }
+    return drops;
+  }
+
+
   void drawLeftPanel(int timeElapsed, float panel_width) {
     if (this.left_panel_menu != null) {
       this.left_panel_menu.drawPanel(timeElapsed, panel_width);

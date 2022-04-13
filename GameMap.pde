@@ -1209,15 +1209,28 @@ class GameMap {
 
   // add item
   void addItem(Item i) {
-    this.addItem(i, this.nextItemKey);
+    this.addItem(i, true);
+  }
+  void addItem(Item i, boolean auto_disappear) {
+    this.addItem(i, this.nextItemKey, auto_disappear);
     this.nextItemKey++;
   }
   void addItem(Item i, float x, float y) {
+    this.addItem(i, x, y, true);
+  }
+  void addItem(Item i, float x, float y, boolean auto_disappear) {
     i.setLocation(x, y);
-    this.addItem(i, this.nextItemKey);
+    this.addItem(i, this.nextItemKey, auto_disappear);
     this.nextItemKey++;
   }
   void addItem(Item i, int code) {
+    this.addItem(i, code, true);
+  }
+  void addItem(Item i, int code, boolean auto_disappear) {
+    if (auto_disappear) {
+      i.disappearing = true;
+      i.disappear_timer = Constants.item_disappearTimer;
+    }
     this.items.put(code, i);
   }
   // remove item
@@ -1605,6 +1618,9 @@ class GameMap {
       }
       u.update(timeElapsed, entry.getKey(), this);
       if (u.remove) {
+        for (Item i : u.drops()) {
+          this.addItem(i, u.x + u.size - random(u.size), u.y + u.size - random(u.size));
+        }
         unit_iterator.remove();
       }
     }
