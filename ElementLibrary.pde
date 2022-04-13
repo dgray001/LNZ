@@ -553,6 +553,45 @@ abstract class RippleRectangleButton extends ImageButton {
 }
 
 
+abstract class IconButton extends RippleRectangleButton {
+  protected color background_color = color(255);
+  protected PImage icon;
+  protected float icon_width = 0;
+
+  IconButton(float xi, float yi, float xf, float yf, PImage icon) {
+    super(xi, yi, xf, yf);
+    this.icon = icon;
+    this.icon_width = yf - yi;
+  }
+
+  @Override
+  void update(int millis) {
+    rectMode(CORNERS);
+    this.setFill();
+    fill(this.background_color);
+    rect(this.xi, this.yi, this.xf, this.yf);
+    imageMode(CORNER);
+    image(this.icon, this.xi, this.yi, this.icon_width, this.icon_width);
+    super.update(millis);
+  }
+
+  @Override
+  void writeText() {
+    if (this.show_message) {
+      fill(this.color_text);
+      textAlign(LEFT, CENTER);
+      textSize(this.text_size);
+      if (this.adjust_for_text_descent) {
+        text(this.message, this.icon_width + 1, this.yCenter() - textDescent());
+      }
+      else {
+        text(this.message, this.icon_width + 1, this.yCenter());
+      }
+    }
+  }
+}
+
+
 abstract class RippleCircleButton extends RippleRectangleButton {
   private ArrayList<Pixel> transparentPixels = new ArrayList<Pixel>();
 

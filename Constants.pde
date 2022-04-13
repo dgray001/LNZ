@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220412: v0.6.6n" +
+  "\n20220413: v0.6.6o" +
   "\nLines: 23184 (v0.6.6n)" +
   "";
   static final String version_history =
@@ -336,6 +336,8 @@ static class Constants {
   static final int hero_maxLevel = 100;
   static final float hero_defaultInventoryBarHeight = 110;
   static final float hero_inventoryBarGap = 10;
+  static final int hero_maxHunger = 100;
+  static final int hero_maxThirst = 100;
   static final int hero_hungerTimer = 4500;
   static final int hero_thirstTimer = 2000;
   static final int hero_abilityNumber = 5;
@@ -343,6 +345,8 @@ static class Constants {
   static final int hero_thirstThreshhold = 20;
   static final float hero_statusDescription_width = 160;
   static final float hero_statusDescription_height = 120;
+  static final float hero_leftPanelBarHeight = 10;
+  static final float hero_leftPanelButtonHoverTimer = 200;
 
   // Level
   static final float level_vendingFormWidth = 300;

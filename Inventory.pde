@@ -182,6 +182,16 @@ class Inventory {
     return i;
   }
 
+  ArrayList<Item> items() {
+    ArrayList<Item> items = new ArrayList<Item>();
+    for (InventorySlot slot : this.slots) {
+      if (slot.item != null) {
+        items.add(slot.item);
+      }
+    }
+    return items;
+  }
+
 
   void update(int timeElapsed) {
     rectMode(CORNER);
