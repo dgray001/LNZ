@@ -74,6 +74,9 @@ class EditItemForm extends EditMapObjectForm {
 
 
 class Item extends MapObject {
+  protected boolean disappearing = false;
+  protected int disappear_timer = 0;
+
   protected int stack = 1;
 
   protected float size = Constants.item_defaultSize; // radius
@@ -2063,8 +2066,13 @@ class Item extends MapObject {
 
 
   void update(int timeElapsed) {
-    // remove timer if active
     this.bounce.add(timeElapsed);
+    if (this.disappearing) {
+      this.disappear_timer -= timeElapsed;
+      if (disappear_timer < 0) {
+        this.remove = true;
+      }
+    }
   }
 
   String fileString() {
@@ -2073,6 +2081,8 @@ class Item extends MapObject {
   String fileString(GearSlot slot) {
     String fileString = "\nnew: Item: " + this.ID;
     fileString += this.objectFileString();
+    fileString += "\ndisappearing: " + this.disappearing;
+    fileString += "\ndisappear_timer: " + this.disappear_timer;
     fileString += "\nstack: " + this.stack;
     fileString += "\nsize: " + this.size;
     fileString += "\ncurr_health: " + this.curr_health;
@@ -2106,6 +2116,12 @@ class Item extends MapObject {
       return;
     }
     switch(datakey) {
+      case "disappearing":
+        this.disappearing = toBoolean(data);
+        break;
+      case "disappear_timer":
+        this.disappear_timer = toInt(data);
+        break;
       case "stack":
         this.size = toInt(data);
         break;

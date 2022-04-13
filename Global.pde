@@ -82,6 +82,9 @@ class Global {
       }
     }
   }
+  void defaultCursor() {
+    this.setCursor("icons/cursor_default.png");
+  }
 
   void log(String message) {
     this.log.println(message);

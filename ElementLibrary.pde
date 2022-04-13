@@ -3201,6 +3201,9 @@ class RadiosFormField extends MessageFormField {
       this.uncheckOthers();
     }
   }
+  void setMessage(String message) {
+    super.setValue(message);
+  }
 
   @Override
   FormFieldSubmit update(int millis) {
