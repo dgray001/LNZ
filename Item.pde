@@ -2005,6 +2005,15 @@ class Item extends MapObject {
   }
 
 
+  void changeAmmo(int amount) {
+    this.ammo += amount;
+    if (this.ammo < 0) {
+      this.ammo = 0;
+    }
+    if (this.ammo > this.maximumAmmo()) {
+      this.ammo = this.maximumAmmo();
+    }
+  }
   int availableAmmo() {
     return this.ammo;
   }

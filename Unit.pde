@@ -1715,6 +1715,7 @@ class Unit extends MapObject {
 
   void moveTo(float targetX, float targetY) {
     this.curr_action = UnitAction.MOVING;
+    this.object_targeting = null;
     this.curr_action_x = targetX;
     this.curr_action_y = targetY;
   }
