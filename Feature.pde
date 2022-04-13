@@ -1106,6 +1106,8 @@ class Feature extends MapObject {
 
   boolean targetableByHeroOnly() {
     switch(this.ID) {
+      case 11: // khalil
+      case 12: // chuck quizmo
       case 151: // sign
       case 152:
       case 153:
@@ -1406,10 +1408,16 @@ class Feature extends MapObject {
       case 162: // sink
         break;
       case 163: // shower stall
+        this.number = Constants.feature_showerStallCooldown;
+        // sound effect
         break;
       case 164: // urinal
+        this.number = Constants.feature_urinalCooldown;
+        // sound effect
         break;
       case 165: // toilet
+        this.number = Constants.feature_toiletCooldown;
+        // sound effect
         break;
       case 185: // pickle jar
         break;

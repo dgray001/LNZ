@@ -345,6 +345,28 @@ class Level {
     Item new_i;
     float random_number = random(1);
     switch(f.ID) {
+      case 11: // khalil
+        if (f.toggle) {
+          this.level_form = new KhalilForm(f, h);
+          f.toggle = false;
+        }
+        else {
+          // khalil chats the following quote
+          // "????"
+          f.toggle = true;
+        }
+        break;
+      case 12: // chuck quizmo
+        if (f.toggle) {
+          this.level_form = new QuizmoForm(f, h);
+          f.toggle = false;
+        }
+        else {
+          // quizmo chats the following quote
+          // "Chuck Quizmo's the name, and quizzes are my game! You want quizzes, I got 'em! If you can manage to answer my brain-busting questions correctly, then... Y... Yaa... Yaaaaaahooo! I'll give you a Star Piece!"
+          f.toggle = true;
+        }
+        break;
       case 101: // wooden table
       case 111: // wooden chair
       case 112:
@@ -819,15 +841,23 @@ class Level {
         f.number = Constants.feature_signCooldown;
         break;
       case 161: // water fountain
-        // if holding water bottle that isn't full fill it
+        if (use_item && h.holding(2924, 2925, 2926, 2927)) {
+          h.weapon().changeAmmo(3);
+        }
         // if holding a dirty item clean it (?)
-        h.increaseThirst(3);
+        else {
+          h.increaseThirst(3);
+        }
         // sound effect
         break;
       case 162: // sink
-        // if holding water bottle that isn't full fill it
+        if (use_item && h.holding(2924, 2925, 2926, 2927)) {
+          h.weapon().changeAmmo(4);
+        }
         // if holding a dirty item clean it (?)
-        h.increaseThirst(2);
+        else {
+          h.increaseThirst(2);
+        }
         // sound effect
         break;
       case 163: // shower stall
@@ -1698,6 +1728,9 @@ class Level {
   abstract class LevelForm extends FormLNZ {
     LevelForm(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
+      this.setTitleSize(18);
+      this.color_background = color(211, 188, 141);
+      this.color_header = color(220, 200, 150);
     }
   }
 
@@ -1712,11 +1745,7 @@ class Level {
         0.5 * (width + Constants.level_vendingFormWidth), 0.5 * (height + Constants.level_vendingFormHeight));
       this.vending_machine = f;
       this.hero_looking = h;
-
       this.setTitleText(this.vending_machine.display_name());
-      this.setTitleSize(18);
-      this.color_background = color(211, 188, 141);
-      this.color_header = color(220, 200, 150);
 
       this.addField(new SpacerFormField(20));
       this.addField(new ButtonsFormField("Insert $1", "Insert $5"));
@@ -1848,9 +1877,16 @@ class Level {
 
 
 
-  class KhalilForm extends LevelForm {
-    KhalilForm() {
-      super(0, 0, 0, 0);
+  class QuizmoForm extends LevelForm {
+    protected Feature chuck_quizmo;
+    protected Hero hero;
+
+    QuizmoForm(Feature f, Hero h) {
+      super(0.5 * (width - Constants.level_quizmoFormWidth), 0.5 * (height - Constants.level_quizmoFormHeight),
+        0.5 * (width + Constants.level_quizmoFormWidth), 0.5 * (height + Constants.level_quizmoFormHeight));
+      this.chuck_quizmo = f;
+      this.hero = h;
+      this.setTitleText(this.chuck_quizmo.display_name());
     }
 
     void submit() {
@@ -1859,9 +1895,16 @@ class Level {
 
 
 
-  class QuizmoForm extends LevelForm {
-    QuizmoForm() {
-      super(0, 0, 0, 0);
+  class KhalilForm extends LevelForm {
+    protected Feature khalil;
+    protected Hero hero;
+
+    KhalilForm(Feature f, Hero h) {
+      super(0.5 * (width - Constants.level_khalilFormWidth), 0.5 * (height - Constants.level_khalilFormHeight),
+        0.5 * (width + Constants.level_khalilFormWidth), 0.5 * (height + Constants.level_khalilFormHeight));
+      this.khalil = f;
+      this.hero = h;
+      this.setTitleText(this.khalil.display_name());
     }
 
     void submit() {
