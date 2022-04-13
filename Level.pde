@@ -858,7 +858,7 @@ class Level {
         break;
       case 172: // vending machine
       case 173:
-        this.level_form = new VendingForm(f);
+        this.level_form = new VendingForm(f, h);
         break;
       case 174: // minifridge
         if (h.inventory.viewing) {
@@ -1298,6 +1298,9 @@ class Level {
   void update(int millis) {
     if (this.level_form != null) {
       this.level_form.update(millis);
+      if (this.level_form.canceled) {
+        this.level_form = null;
+      }
       return;
     }
     int timeElapsed = millis - this.last_update_time;
@@ -1324,6 +1327,11 @@ class Level {
           this.currMap.addItem(new Item(this.player.inventory.item_dropping,
             this.player.frontX(), this.player.frontY()));
           this.player.inventory.item_dropping = null;
+        }
+        if (this.player.inventory.viewing) {
+          if (this.player.inventory.item_holding != null) {
+            this.currMap.selected_object = this.player.inventory.item_holding;
+          }
         }
         if (this.player.messages.peek() != null) {
           this.currMap.addHeaderMessage(this.player.messages.poll());
@@ -1697,20 +1705,144 @@ class Level {
 
   class VendingForm extends LevelForm {
     protected Feature vending_machine;
+    protected Hero hero_looking;
 
-    VendingForm(Feature f) {
+    VendingForm(Feature f, Hero h) {
       super(0.5 * (width - Constants.level_vendingFormWidth), 0.5 * (height - Constants.level_vendingFormHeight),
         0.5 * (width + Constants.level_vendingFormWidth), 0.5 * (height + Constants.level_vendingFormHeight));
       this.vending_machine = f;
+      this.hero_looking = h;
 
       this.setTitleText(this.vending_machine.display_name());
       this.setTitleSize(18);
-      this.setFieldCushion(0);
-      this.color_background = color(250, 180, 180);
-      this.color_header = color(180, 50, 50);
+      this.color_background = color(211, 188, 141);
+      this.color_header = color(220, 200, 150);
+
+      this.addField(new SpacerFormField(20));
+      this.addField(new ButtonsFormField("Insert $1", "Insert $5"));
+      this.addField(new MessageFormField("$" + this.vending_machine.number));
+      this.addField(new MessageFormField(""));
+      RadiosFormField choices = new RadiosFormField("Choices");
+      switch(this.vending_machine.ID) {
+        case 172: // food
+          choices.addRadio("Chips, $1");
+          choices.addRadio("Pretzels, $1");
+          choices.addRadio("Chocolate, $2");
+          choices.addRadio("Donut, $2");
+          choices.addRadio("Poptart, $2");
+          choices.addRadio("Peanuts, $1");
+          break;
+        case 173: // drink
+          choices.addRadio("Water, $1");
+          choices.addRadio("Coke, $1");
+          choices.addRadio("Diet Coke, $1");
+          choices.addRadio("Juice, $1");
+          choices.addRadio("Energy Drink, $2");
+          break;
+        default:
+          global.errorMessage("ERROR: Can't create VendingForm with feature of " +
+            "ID " + this.vending_machine.ID + ".");
+          break;
+      }
+      this.addField(choices);
+      this.addField(new SubmitFormField(" Vend "));
+    }
+
+    @Override
+    void buttonPress(int i) {
+      if (i != 1) {
+        global.errorMessage("ERROR: Pressed button other than insert on VendingForm.");
+        return;
+      }
+      int money_inserted = 1 + 4 * toInt(this.fields.get(1).getValue());
+      if (this.hero_looking.money < money_inserted) {
+        this.fields.get(3).setValue("You don't have $" + money_inserted + " to insert.");
+        return;
+      }
+      this.hero_looking.money -= money_inserted;
+      // sound effect
+      if (randomChance(Constants.feature_vendingEatMoneyChance)) {
+        this.fields.get(3).setValue("The vending machine ate your money.");
+        return;
+      }
+      this.vending_machine.number += money_inserted;
+      this.fields.get(2).setValue("$" + this.vending_machine.number);
+      this.fields.get(3).setValue("Please make your selection.");
     }
 
     void submit() {
+      int selection = toInt(this.fields.get(4).getValue());
+      if (selection < 0) {
+        this.fields.get(3).setValue("Please make a selection.");
+        return;
+      }
+      int cost = 0;
+      int item_id = 0;
+      switch(this.vending_machine.ID) {
+        case 172: // food
+          switch(selection) {
+            case 0:
+              cost = 1;
+              item_id = 2113;
+              break;
+            case 1:
+              this.fields.get(3).setValue("Out of stock.");
+              return;
+            case 2:
+              cost = 2;
+              item_id = 2112;
+              break;
+            case 3:
+              cost = 2;
+              item_id = 2111;
+              break;
+            case 4:
+              cost = 2;
+              item_id = 2110;
+              break;
+            case 5:
+              cost = 1;
+              item_id = 2115;
+              break;
+          }
+          break;
+        case 173: // drink
+          switch(selection) {
+            case 0:
+              cost = 1;
+              item_id = 2924;
+              break;
+            case 1:
+              cost = 1;
+              item_id = 2132;
+              break;
+            case 2:
+              this.fields.get(3).setValue("Out of stock.");
+              return;
+            case 3:
+              cost = 1;
+              item_id = 2133;
+              break;
+            case 4:
+              this.fields.get(3).setValue("Out of stock.");
+              return;
+          }
+          break;
+      }
+      if (this.vending_machine.number < cost) {
+        this.fields.get(3).setValue("Please insert more money to purchase.");
+        return;
+      }
+      this.vending_machine.number -= cost;
+      Item new_item = new Item(item_id, this.vending_machine.x +
+        0.2 + random(0.4), this.vending_machine.y + 0.85);
+      if (item_id == 2924) {
+        new_item.ammo = new_item.maximumAmmo();
+      }
+      Level.this.currMap.addItem(new_item);
+      // sound effect
+      this.fields.get(2).setValue("$" + this.vending_machine.number);
+      this.fields.get(3).setValue("Thank you for your purchase.");
     }
   }
 
