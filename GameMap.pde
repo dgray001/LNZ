@@ -1292,6 +1292,9 @@ class GameMap {
     rect(this.xi + Constants.map_borderSize, this.yi + Constants.map_borderSize,
       this.xf - Constants.map_borderSize, this.yf - Constants.map_borderSize);
     // hovered info
+    if (this.hovered_object != null && this.hovered_object.remove) {
+      this.hovered_object = null;
+    }
     String nameDisplayed = null;
     color ellipseColor = color(255);
     float ellipseWeight = 0.8;

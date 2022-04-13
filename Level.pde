@@ -1325,11 +1325,21 @@ class Level {
   }
 
 
+  void restartTimers(int millis) {
+    this.last_update_time = millis;
+    if (this.currMap != null) {
+      this.currMap.lastUpdateTime = millis;
+    }
+    // triggers
+  }
+
+
   void update(int millis) {
     if (this.level_form != null) {
       this.level_form.update(millis);
       if (this.level_form.canceled) {
         this.level_form = null;
+        this.restartTimers(millis);
       }
       return;
     }
@@ -1933,13 +1943,18 @@ class Level {
           break;
       }
       if (guess == correct_answer) {
-        println("correct");
-        // star piece
+        if (hero.canPickup()) {
+          hero.pickup(new Item(2825));
+        }
+        else {
+          Level.this.currMap.addItem(new Item(2825, this.hero.frontX(), this.hero.frontY()));
+        }
+        // congrats!
       }
       else {
-        println("incorrect");
-        // nuthin
+        // too bad!
       }
+      this.chuck_quizmo.destroy(Level.this.currMap);
       this.canceled = true;
     }
   }

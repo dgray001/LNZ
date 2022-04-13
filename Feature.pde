@@ -1347,6 +1347,12 @@ class Feature extends MapObject {
           this.y + 0.2 + random(0.6 + this.sizeY - 1)));
       }
     }
+    // visual effects
+    switch(this.ID) {
+      case 12: // chuck quizmo
+        map.addVisualEffect(4101, this.xCenter(), this.yCenter());
+        break;
+    }
     // sound effect
   }
 
