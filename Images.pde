@@ -35,6 +35,10 @@ class Images {
     for (int i = 0; i <= Constants.gif_move_frames; i++) {
       this.loadImageFile("gifs/move/" + i + ".png");
     }
+    // poof gif
+    for (int i = 0; i <= Constants.gif_poof_frames; i++) {
+      this.loadImageFile("gifs/poof/" + i + ".png");
+    }
   }
 
   PImage getBlackPixel() {

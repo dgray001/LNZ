@@ -7,10 +7,13 @@ class VisualEffect extends MapObject {
   VisualEffect(int ID) {
     super(ID);
     switch(ID) {
-      case 4001:
+      case 4001: // move gif
         this.setValues(1.3 * global.configuration.cursor_size,
           1.3 * global.configuration.cursor_size, Constants.gif_move_time);
         this.scale_size = false;
+        break;
+      case 4101: // chuck quizmo poof
+        this.setValues(1, 1, 1000 + Constants.gif_poof_time);
         break;
       default:
         global.errorMessage("ERROR: VisualEffect ID " + ID + " not found.");
@@ -92,12 +95,25 @@ class VisualEffect extends MapObject {
 
   PImage getImage() {
     String path = "gifs/";
+    int frame = 0;
     switch(this.ID) {
       case 4001:
         path += "move/";
-        int frame = int(floor(Constants.gif_move_frames *
+        frame = int(floor(Constants.gif_move_frames *
           (1.0 - float(this.timer) / (1 + Constants.gif_move_time))));
         path += frame + ".png";
+        break;
+      case 4101:
+        if (this.timer > Constants.gif_poof_time) {
+          path = "features/chuck_quizmo.png";
+        }
+        else {
+          this.size_width = 1.6;
+          path += "poof/";
+          frame = int(floor(Constants.gif_poof_frames *
+            (1.0 - float(this.timer) / (1 + Constants.gif_poof_time))));
+          path += frame + ".png";
+        }
         break;
       default:
         global.errorMessage("ERROR: Visual Effect ID " + ID + " not found.");
