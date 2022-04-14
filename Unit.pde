@@ -1245,7 +1245,7 @@ class Unit extends MapObject {
         this.timer_actionTime -= timeElapsed;
         if (this.timer_actionTime < 0) {
           this.shoot(myKey, map);
-          if (this.weapon().shootable()) {
+          if (this.weapon().shootable() && this.weapon().automatic()) {
             if (myKey == 0 && global.holding_ctrl) {
               this.curr_action = UnitAction.AIMING;
             }
