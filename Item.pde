@@ -360,220 +360,181 @@ class Item extends MapObject {
       case 2312:
         this.setStrings("M1911", "Ranged Weapon", "Semi-automatic with medium capacity and power. Effective at close range.");
         this.tier = 2;
-        this.attack = 20;
-        this.attackRange = 6;
-        this.piercing = 12;
+        this.attack = 2;
         break;
       case 2321:
         this.setStrings("War Machine", "Ranged Weapon", "6 round semi-automatic grenade launcher.");
         this.tier = 3;
-        this.attack = 200;
-        this.attackRange = 10;
-        this.piercing = 10;
+        this.attack = 3;
+        this.attackRange = 0.04;
         break;
       case 2322:
         this.setStrings("Five-Seven", "Ranged Weapon", "Semi-automatic pistol. Versatile and strong overall with a large magazine.");
         this.tier = 3;
-        this.attack = 160;
-        this.attackRange = 7;
-        this.piercing = 10;
+        this.attack = 2;
         break;
       case 2323:
         this.setStrings("Type25", "Ranged Weapon", "Fully automatic assault rifle. High rate of fire with moderate recoil.");
         this.tier = 3;
-        this.attack = 110;
-        this.attackRange = 9;
-        this.piercing = 18;
+        this.attack = 3;
+        this.attackRange = 0.04;
         break;
       case 2331:
         this.setStrings("Mustang and Sally", "Ranged Weapon", "");
         this.tier = 4;
-        this.attack = 1000;
-        this.attackRange = 12;
-        this.piercing = 5;
+        this.attack = 3;
         break;
       case 2332:
         this.setStrings("FAL", "Ranged Weapon", "Fully automatic assault rifle with high damage. Effective at medium to long range.");
         this.tier = 4;
-        this.attack = 160;
-        this.attackRange = 10;
-        this.piercing = 15;
+        this.attack = 3;
+        this.attackRange = 0.04;
         break;
       case 2333:
         this.setStrings("Python", "Ranged Weapon", "The Python .357 magnum revolver. No thank you, I have reproductive organs of my own.");
         this.tier = 4;
-        this.attack = 1000;
-        this.attackRange = 7;
-        this.piercing = 15;
+        this.attack = 3;
         break;
       case 2341:
         this.setStrings("RPG", "Ranged Weapon", "Free-fire shoulder mounted rocket launcher.");
         this.tier = 5;
-        this.attack = 600;
-        this.attackRange = 10;
-        this.piercing = 6;
+        this.attack = 3;
+        this.attackRange = 0.04;
         this.speed = -1;
         break;
       case 2342:
         this.setStrings("Dystopic Demolisher", "Ranged Weapon", "");
         this.tier = 5;
-        this.attack = 600;
-        this.attackRange = 12;
-        this.piercing = 15;
+        this.attack = 3;
+        this.attackRange = 0.04;
         break;
       case 2343:
         this.setStrings("Ultra", "Ranged Weapon", "");
         this.tier = 5;
-        this.attack = 300;
-        this.attackRange = 8;
-        this.piercing = 15;
+        this.attack = 3;
         break;
       case 2344:
         this.setStrings("Strain25", "Ranged Weapon", "");
         this.tier = 5;
-        this.attack = 160;
-        this.attackRange = 10;
-        this.piercing = 24;
+        this.attack = 3;
+        this.attackRange = 0.04;
         break;
       case 2345:
         this.setStrings("Executioner", "Ranged Weapon", "Double-action revolver pistol. Fires 28 gauge shotgun shells.");
         this.tier = 5;
-        this.attack = 1040;
-        this.attackRange = 4;
-        this.piercing = 10;
+        this.attack = 3;
         break;
       case 2351:
         this.setStrings("Galil", "Ranged Weapon", "Fully automatic assault rifle. Effective at medium to long range.");
         this.tier = 6;
-        this.attack = 150;
-        this.attackRange = 10;
-        this.piercing = 16;
+        this.attack = 3;
+        this.attackRange = 0.04;
         break;
       case 2352:
         this.setStrings("WN", "Ranged Weapon", "");
         this.tier = 6;
-        this.attack = 240;
-        this.attackRange = 11;
-        this.piercing = 20;
+        this.attack = 3;
+        this.attackRange = 0.04;
         break;
       case 2353:
         this.setStrings("Ballistic Knife", "Ranged Weapon", "Spring-action knife launcher. Increases melee speed and can fire the blade as a projectile.");
         this.tier = 6;
-        this.attack = 500;
-        this.attackRange = 7;
-        this.piercing = 25;
+        this.attack = 3;
+        this.attackRange = 0.04;
         this.speed = 1;
         this.lifesteal = 0.1;
         break;
       case 2354:
         this.setStrings("Cobra", "Ranged Weapon", "");
         this.tier = 6;
-        this.attack = 1000;
-        this.attackRange = 7;
-        this.piercing = 15;
+        this.attack = 3;
+        this.attackRange = 0.04;
         break;
       case 2355:
         this.setStrings("MTAR", "Ranged Weapon", "Fully automatic assault rifle. Versatile and strong overall.");
         this.tier = 6;
-        this.attack = 140;
-        this.attackRange = 11;
-        this.piercing = 16;
+        this.attack = 3;
+        this.attackRange = 0.04;
         break;
       case 2361:
         this.setStrings("RPD", "Ranged Weapon", "Fully automatic with good power and quick fire rate. Effective at medium to long range.");
         this.tier = 7;
-        this.attack = 140;
-        this.attackRange = 11;
-        this.piercing = 15;
+        this.attack = 3;
+        this.attackRange = 0.04;
         break;
       case 2362:
         this.setStrings("Rocket-Propelled Grievance", "Ranged Weapon", "");
         this.tier = 7;
-        this.attack = 1200;
-        this.attackRange = 12;
-        this.piercing = 8;
+        this.attack = 3;
+        this.attackRange = 0.04;
         break;
       case 2363:
         this.setStrings("DSR-50", "Ranged Weapon", "");
         this.tier = 7;
-        this.attack = 800;
-        this.attackRange = 16;
-        this.piercing = 30;
+        this.attack = 3;
+        this.attackRange = 0.04;
         this.speed = -1;
         break;
       case 2364:
         this.setStrings("Voice of Justice", "Ranged Weapon", "");
         this.tier = 7;
-        this.attack = 4200;
-        this.attackRange = 5;
-        this.piercing = 12;
+        this.attack = 3;
         break;
       case 2371:
         this.setStrings("HAMR", "Ranged Weapon", "Fully automatic LMG. Reduces recoil during sustained fire.");
         this.tier = 8;
-        this.attack = 190;
-        this.attackRange = 10;
-        this.piercing = 20;
+        this.attack = 3;
+        this.attackRange = 0.04;
         break;
       case 2372:
         this.setStrings("Ray Gun", "Ranged Weapon", "It's weird, but it works.");
         this.tier = 8;
-        this.attack = 500;
-        this.magic = 500;
-        this.attackRange = 9;
-        this.penetration = 8;
+        this.attack = 3;
+        this.attackRange = 0.04;
         break;
       case 2373:
         this.setStrings("Lamentation", "Ranged Weapon", "");
         this.tier = 8;
-        this.attack = 220;
-        this.attackRange = 11;
-        this.piercing = 22;
+        this.attack = 3;
+        this.attackRange = 0.04;
         break;
       case 2374:
         this.setStrings("The Krauss Refibrillator", "Ranged Weapon", "");
         this.tier = 8;
-        this.attack = 1000;
-        this.attackRange = 8;
-        this.piercing = 35;
+        this.attack = 3;
+        this.attackRange = 0.04;
         this.speed = 1.5;
         this.lifesteal = 0.15;
         break;
       case 2375:
         this.setStrings("Malevolent Taxonomic Anodized Redeemer", "Ranged Weapon", "");
         this.tier = 8;
-        this.attack = 210;
-        this.attackRange = 12;
-        this.piercing = 20;
+        this.attack = 3;
+        this.attackRange = 0.04;
         break;
       case 2381:
         this.setStrings("Relativistic Punishment Device", "Ranged Weapon", "");
         this.tier = 9;
-        this.attack = 180;
-        this.attackRange = 12;
-        this.piercing = 20;
+        this.attack = 3;
+        this.attackRange = 0.04;
         break;
       case 2382:
         this.setStrings("Dead Specimen Reactor 5000", "Ranged Weapon", "");
         this.tier = 9;
-        this.attack = 1000;
-        this.attackRange = 18;
-        this.piercing = 45;
+        this.attack = 3;
+        this.attackRange = 0.04;
         break;
       case 2391:
         this.setStrings("SLDG HAMR", "Ranged Weapon", "");
         this.tier = 10;
-        this.attack = 250;
-        this.attackRange = 11;
-        this.piercing = 25;
+        this.attack = 3;
+        this.attackRange = 0.04;
         break;
       case 2392:
         this.setStrings("Porter's X2 Ray Gun", "Ranged Weapon", "");
         this.tier = 10;
-        this.attack = 600;
-        this.magic = 600;
-        this.attackRange = 9;
-        this.penetration = 12;
+        this.attack = 3;
+        this.attackRange = 0.04;
         break;
 
       // Headgear
@@ -2176,21 +2137,103 @@ class Item extends MapObject {
   }
 
 
+  boolean automatic() {
+    switch(this.ID) {
+      case 2323: // Type25
+      case 2344: // Strain25
+      case 2351: // Galil
+      case 2355: // MTAR
+      case 2361: // RPD
+      case 2362: // Rocket-Propelled Grievance
+      case 2371: // HAMR
+      case 2372: // Ray Gun
+      case 2373: // Lamentation
+      case 2375: // MAlevolent Taxonomic Anodized Redeemer
+      case 2381: // Relativistic Punishment Device
+      case 2391: // SLDG HAMR
+      case 2392: // Porter's X2 Ray Gun
+        return true;
+      default:
+        return false;
+    }
+  }
+
+
   float shootAttack() {
     switch(this.ID) {
-      case 2301:
+      case 2301: // Slingshot
         return 5;
-      case 2311:
+      case 2311: // Recurve Bow
         return 8;
-      case 2312:
+      case 2312: // M1911
         return 20;
-      case 2924:
+      case 2321: // War Machine
+        return 8;
+      case 2322: // Five-Seven
+        return 160;
+      case 2323: // Type25
+        return 110;
+      case 2331: // Mustang and Sally
+        return 1000;
+      case 2332: // FAL
+        return 160;
+      case 2333: // Python
+        return 1000;
+      case 2341: // RPG
+        return 600;
+      case 2342: // Dystopic Demolisher
+        return 600;
+      case 2343: // Ultra
+        return 300;
+      case 2344: // Strain25
+        return 160;
+      case 2345: // Executioner
+        return 1040;
+      case 2351: // Galil
+        return 150;
+      case 2352: // WN
+        return 240;
+      case 2353: // Ballistic Knife
+        return 500;
+      case 2354: // Cobra
+        return 1000;
+      case 2355: // MTAR
+        return 140;
+      case 2361: // RPD
+        return 140;
+      case 2362: // Rocket-Propelled Grievance
+        return 1200;
+      case 2363: // DSR-50
+        return 800;
+      case 2364: // Voice of Justice
+        return 4200;
+      case 2371: // HAMR
+        return 190;
+      case 2372: // Ray Gun
+        return 500;
+      case 2373: // Lamentation
+        return 220;
+      case 2374: // The Krauss Refibrillator
+        return 1000;
+      case 2375: // Malevolent Taxonomic Anodized Redeemer
+        return 210;
+      case 2381: // Relativistic Punishment Device
+        return 180;
+      case 2382: // Dead Specimen Reactor 5000
+        return 1000;
+      case 2391: // SLDG HAMR
+        return 250;
+      case 2392: // Porter's X2 Ray Gun
+        return 600;
+      case 2924: // Glass Bottle (thrown)
         return 1;
-      case 2931:
+      case 2931: // Rock (thrown)
         return 2;
-      case 2933:
+      case 2932: // Arrow (thrown)
+        return 2;
+      case 2933: // Pebble (thrown)
         return 1;
-      case 2944:
+      case 2944: // Grenade (thrown)
         return 3;
       default:
         return 0;
@@ -2199,6 +2242,10 @@ class Item extends MapObject {
 
   float shootMagic() {
     switch(this.ID) {
+      case 2372: // Ray Gun
+        return 500;
+      case 2392: // Porter's X2 Ray Gun
+        return 600;
       default:
         return 0;
     }
@@ -2206,11 +2253,71 @@ class Item extends MapObject {
 
   float shootPiercing() {
     switch(this.ID) {
-      case 2311:
+      case 2311: // Recurve Bow
         return 0.15;
-      case 2312:
+      case 2312: // M1911
         return 0.12;
-      case 2924:
+      case 2321: // War Machine
+        return 0.05;
+      case 2322: // Five-Seven
+        return 0.1;
+      case 2323: // Type25
+        return 0.18;
+      case 2331: // Mustang and Sally
+        return 0.05;
+      case 2332: // FAL
+        return 0.15;
+      case 2333: // Python
+        return 0.15;
+      case 2341: // RPG
+        return 0.06;
+      case 2342: // Dystopic Demolisher
+        return 0.15;
+      case 2343: // Ultra
+        return 0.15;
+      case 2344: // Strain25
+        return 0.24;
+      case 2345: // Executioner
+        return 0.1;
+      case 2351: // Galil
+        return 0.16;
+      case 2352: // WN
+        return 0.2;
+      case 2353: // Ballistic Knife
+        return 0.25;
+      case 2354: // Cobra
+        return 0.15;
+      case 2355: // MTAR
+        return 0.16;
+      case 2361: // RPD
+        return 0.15;
+      case 2362: // Rocket-Propelled Grievance
+        return 0.08;
+      case 2363: // DSR-50
+        return 0.3;
+      case 2364: // Voice of Justice
+        return 0.12;
+      case 2371: // HAMR
+        return 0.2;
+      case 2372: // Ray Gun
+        return 0;
+      case 2373: // Lamentation
+        return 0.22;
+      case 2374: // The Krauss Refibrillator
+        return 0.35;
+      case 2375: // Malevolent Taxonomic Anodized Redeemer
+        return 0.2;
+      case 2381: // Relativistic Punishment Device
+        return 0.2;
+      case 2382: // Dead Specimen Reactor 5000
+        return 0.45;
+      case 2391: // SLDG HAMR
+        return 0.25;
+      case 2392: // Porter's X2 Ray Gun
+        return 0;
+      case 2924: // Glass Bottle (thrown)
+        return 0.06;
+      case 2932: // Arrow (thrown)
         return 0.06;
       default:
         return 0;
@@ -2219,6 +2326,10 @@ class Item extends MapObject {
 
   float shootPenetration() {
     switch(this.ID) {
+      case 2372: // Ray Gun
+        return 0.08;
+      case 2392: // Porter's X2 Ray Gun
+        return 0.12;
       default:
         return 0;
     }
@@ -2226,21 +2337,79 @@ class Item extends MapObject {
 
   float shootRange() {
     switch(this.ID) {
-      case 2301:
+      case 2301: // Slingshot
         return 3;
-      case 2311:
+      case 2311: // Recurve Bow
         return 5;
-      case 2312:
+      case 2312: // M1911
         return 6;
-      case 2924:
+      case 2321: // War Machine
+        return 10;
+      case 2322: // Five-Seven
+        return 7;
+      case 2323: // Type25
+        return 9;
+      case 2331: // Mustang and Sally
+        return 12;
+      case 2332: // FAL
+        return 10;
+      case 2333: // Python
+        return 7;
+      case 2341: // RPG
+        return 10;
+      case 2342: // Dystopic Demolisher
+        return 12;
+      case 2343: // Ultra
+        return 8;
+      case 2344: // Strain25
+        return 10;
+      case 2345: // Executioner
+        return 4;
+      case 2351: // Galil
+        return 10;
+      case 2352: // WN
+        return 11;
+      case 2353: // Ballistic Knife
+        return 7;
+      case 2354: // Cobra
+        return 7;
+      case 2355: // MTAR
+        return 11;
+      case 2361: // RPD
+        return 11;
+      case 2362: // Rocket-Propelled Grievance
+        return 12;
+      case 2363: // DSR-50
+        return 16;
+      case 2364: // Voice of Justice
+        return 5;
+      case 2371: // HAMR
+        return 10;
+      case 2372: // Ray Gun
+        return 9;
+      case 2373: // Lamentation
+        return 11;
+      case 2374: // The Krauss Refibrillator
+        return 8;
+      case 2375: // Malevolent Taxonomic Anodized Redeemer
+        return 12;
+      case 2381: // Relativistic Punishment Device
+        return 12;
+      case 2382: // Dead Specimen Reactor 5000
+        return 18;
+      case 2391: // SLDG HAMR
+        return 11;
+      case 2392: // Porter's X2 Ray Gun
+        return 9;
+      case 2924: // Glass Bottle (thrown)
         return 2.5;
-      case 2931:
+      case 2931: // Rock (thrown)
         return 2.5;
-      case 2932:
+      case 2932: // Arrow (thrown)
         return 2;
-      case 2933:
+      case 2933: // Pebble (thrown)
         return 2;
-      case 2944:
+      case 2944: // Grenade (thrown)
         return 3.5;
       default:
         return 0;
@@ -2249,19 +2418,79 @@ class Item extends MapObject {
 
   float shootCooldown() {
     switch(this.ID) {
-      case 2301:
+      case 2301: // Slingshot
         return 1300;
-      case 2311:
+      case 2311: // Recurve Bow
         return 1500;
-      case 2312:
+      case 2312: // M1911
         return 96;
-      case 2924:
+      case 2321: // War Machine
+        return 250;
+      case 2322: // Five-Seven
+        return 80;
+      case 2323: // Type25
+        return 64;
+      case 2331: // Mustang and Sally
+        return 200;
+      case 2332: // FAL
+        return 112;
+      case 2333: // Python
+        return 96;
+      case 2341: // RPG
+        return 320;
+      case 2342: // Dystopic Demolisher
+        return 250;
+      case 2343: // Ultra
+        return 80;
+      case 2344: // Strain25
+        return 64;
+      case 2345: // Executioner
+        return 128;
+      case 2351: // Galil
+        return 80;
+      case 2352: // WN
+        return 112;
+      case 2353: // Ballistic Knife
+        return 200;
+      case 2354: // Cobra
+        return 96;
+      case 2355: // MTAR
+        return 80;
+      case 2361: // RPD
+        return 80;
+      case 2362: // Rocket-Propelled Grievance
+        return 320;
+      case 2363: // DSR-50
+        return 1200;
+      case 2364: // Voice of Justice
+        return 128;
+      case 2371: // HAMR
+        return 96;
+      case 2372: // Ray Gun
+        return 331;
+      case 2373: // Lamentation
+        return 80;
+      case 2374: // The Krauss Refibrillator
+        return 200;
+      case 2375: // Malevolent Taxonomic Anodized Redeemer
+        return 80;
+      case 2381: // Relativistic Punishment Device
+        return 80;
+      case 2382: // Dead Specimen Reactor 5000
+        return 1200;
+      case 2391: // SLDG HAMR
+        return 96;
+      case 2392: // Porter's X2 Ray Gun
+        return 331;
+      case 2924: // Glass Bottle (thrown)
         return 300;
-      case 2931:
+      case 2931: // Rock (thrown)
         return 300;
-      case 2932:
+      case 2932: // Arrow (thrown)
         return 300;
-      case 2933:
+      case 2933: // Pebble (thrown)
+        return 300;
+      case 2944: // Grenade (thrown)
         return 300;
       default:
         return 0;
@@ -2270,19 +2499,79 @@ class Item extends MapObject {
 
   float shootTime() {
     switch(this.ID) {
-      case 2301:
+      case 2301: // Slingshot
         return 350;
-      case 2311:
+      case 2311: // Recurve Bow
         return 300;
-      case 2312:
+      case 2312: // M1911
         return 10;
-      case 2924:
+      case 2321: // War Machine
+        return 25;
+      case 2322: // Five-Seven
+        return 8;
+      case 2323: // Type25
+        return 6;
+      case 2331: // Mustang and Sally
+        return 20;
+      case 2332: // FAL
+        return 11;
+      case 2333: // Python
+        return 10;
+      case 2341: // RPG
+        return 32;
+      case 2342: // Dystopic Demolisher
+        return 25;
+      case 2343: // Ultra
+        return 8;
+      case 2344: // Strain25
+        return 6;
+      case 2345: // Executioner
+        return 13;
+      case 2351: // Galil
+        return 8;
+      case 2352: // WN
+        return 11;
+      case 2353: // Ballistic Knife
+        return 5;
+      case 2354: // Cobra
+        return 10;
+      case 2355: // MTAR
+        return 8;
+      case 2361: // RPD
+        return 8;
+      case 2362: // Rocket-Propelled Grievance
+        return 32;
+      case 2363: // DSR-50
+        return 120;
+      case 2364: // Voice of Justice
+        return 13;
+      case 2371: // HAMR
+        return 10;
+      case 2372: // Ray Gun
+        return 33;
+      case 2373: // Lamentation
+        return 8;
+      case 2374: // The Krauss Refibrillator
+        return 5;
+      case 2375: // Malevolent Taxonomic Anodized Redeemer
+        return 8;
+      case 2381: // Relativistic Punishment Device
+        return 8;
+      case 2382: // Dead Specimen Reactor 5000
+        return 120;
+      case 2391: // SLDG HAMR
+        return 10;
+      case 2392: // Porter's X2 Ray Gun
+        return 33;
+      case 2924: // Glass Bottle (thrown)
         return 60;
-      case 2931:
+      case 2931: // Rock (thrown)
         return 60;
-      case 2932:
+      case 2932: // Arrow (thrown)
         return 60;
-      case 2933:
+      case 2933: // Pebble (thrown)
+        return 60;
+      case 2944: // Grenade (thrown)
         return 60;
       default:
         return 0;
@@ -2291,8 +2580,66 @@ class Item extends MapObject {
 
   float shootRecoil() {
     switch(this.ID) {
-      case 2312:
+      case 2312: // M1911
         return 0.005;
+      case 2321: // War Machine
+        return 0.1;
+      case 2322: // Five-Seven
+        return 0.002;
+      case 2323: // Type25
+        return 0.02;
+      case 2331: // Mustang and Sally
+        return 0.08;
+      case 2332: // FAL
+        return 0.02;
+      case 2333: // Python
+        return 0.015;
+      case 2341: // RPG
+        return 0.12;
+      case 2342: // Dystopic Demolisher
+        return 0.1;
+      case 2343: // Ultra
+        return 0.002;
+      case 2344: // Strain25
+        return 0.015;
+      case 2345: // Executioner
+        return 0.02;
+      case 2351: // Galil
+        return 0.01;
+      case 2352: // WN
+        return 0.02;
+      case 2353: // Ballistic Knife
+        return 0;
+      case 2354: // Cobra
+        return 0.015;
+      case 2355: // MTAR
+        return 0.015;
+      case 2361: // RPD
+        return 0.02;
+      case 2362: // Rocket-Propelled Grievance
+        return 0.12;
+      case 2363: // DSR-50
+        return 0.25;
+      case 2364: // Voice of Justice
+        return 0.02;
+      case 2371: // HAMR
+        return 0.02;
+      case 2372: // Ray Gun
+        return 0;
+      case 2373: // Lamentation
+        return 0.01;
+      case 2374: // The Krauss Refibrillator
+        return 0;
+      case 2375: // Malevolent Taxonomic Anodized Redeemer
+        return 0.015;
+      case 2381: // Relativistic Punishment Device
+        return 0.02;
+      case 2382: // Dead Specimen Reactor 5000
+        return 0.2;
+      case 2391: // SLDG HAMR
+        return 0.02;
+      case 2392: // Porter's X2 Ray Gun
+        return 0;
       default:
         return 0;
     }
@@ -2300,19 +2647,79 @@ class Item extends MapObject {
 
   float shootInaccuracy() {
     switch(this.ID) {
-      case 2301:
+      case 2301: // Slingshot
         return 0.12;
-      case 2311:
+      case 2311: // Recurve Bow
         return 0.12;
-      case 2312:
+      case 2312: // M1911
         return 0.12;
-      case 2924:
+      case 2321: // War Machine
+        return 0.05;
+      case 2322: // Five-Seven
+        return 0.08;
+      case 2323: // Type25
         return 0.15;
-      case 2931:
+      case 2331: // Mustang and Sally
+        return 0.08;
+      case 2332: // FAL
         return 0.1;
-      case 2932:
+      case 2333: // Python
+        return 0.08;
+      case 2341: // RPG
+        return 0.08;
+      case 2342: // Dystopic Demolisher
+        return 0.05;
+      case 2343: // Ultra
+        return 0.06;
+      case 2344: // Strain25
+        return 0.1;
+      case 2345: // Executioner
+        return 0.05;
+      case 2351: // Galil
+        return 0.06;
+      case 2352: // WN
+        return 0.08;
+      case 2353: // Ballistic Knife
+        return 0.05;
+      case 2354: // Cobra
+        return 0.07;
+      case 2355: // MTAR
+        return 0.08;
+      case 2361: // RPD
+        return 0.1;
+      case 2362: // Rocket-Propelled Grievance
+        return 0.08;
+      case 2363: // DSR-50
+        return 0.04;
+      case 2364: // Voice of Justice
+        return 0.05;
+      case 2371: // HAMR
+        return 0.1;
+      case 2372: // Ray Gun
+        return 0.05;
+      case 2373: // Lamentation
+        return 0.06;
+      case 2374: // The Krauss Refibrillator
+        return 0.03;
+      case 2375: // Malevolent Taxonomic Anodized Redeemer
+        return 0.08;
+      case 2381: // Relativistic Punishment Device
+        return 0.08;
+      case 2382: // Dead Specimen Reactor 5000
+        return 0.02;
+      case 2391: // SLDG HAMR
+        return 0.08;
+      case 2392: // Porter's X2 Ray Gun
+        return 0.05;
+      case 2924: // Glass Bottle
         return 0.15;
-      case 2933:
+      case 2931: // Rock (throw)
+        return 0.1;
+      case 2932: // Arrow (throw)
+        return 0.15;
+      case 2933: // Pebble (throw)
+        return 0.1;
+      case 2944: // Grenade (throw)
         return 0.1;
       default:
         return 0;
@@ -2334,19 +2741,77 @@ class Item extends MapObject {
   }
   int maximumAmmo() {
     switch(this.ID) {
-      case 2301:
+      case 2301: // Slingshot
         return 1;
-      case 2311:
+      case 2311: // Recurve Bow
         return 1;
-      case 2312:
+      case 2312: // M1911
         return 8;
-      case 2924:
+      case 2321: // War Machine
+        return 6;
+      case 2322: // Five-Seven
+        return 20;
+      case 2323: // Type25
         return 30;
-      case 2925:
+      case 2331: // Mustang and Sally
+        return 6;
+      case 2332: // FAL
+        return 20;
+      case 2333: // Python
+        return 6;
+      case 2341: // RPG
+        return 1;
+      case 2342: // Dystopic Demolisher
+        return 6;
+      case 2343: // Ultra
+        return 20;
+      case 2344: // Strain25
+        return 30;
+      case 2345: // Executioner
+        return 5;
+      case 2351: // Galil
+        return 35;
+      case 2352: // WN
+        return 30;
+      case 2353: // Ballistic Knife
+        return 1;
+      case 2354: // Cobra
+        return 12;
+      case 2355: // MTAR
+        return 30;
+      case 2361: // RPD
         return 100;
-      case 2926:
+      case 2362: // Rocket-Propelled Grievance
+        return 8;
+      case 2363: // DSR-50
+        return 4;
+      case 2364: // Voice of Justice
+        return 5;
+      case 2371: // HAMR
+        return 125;
+      case 2372: // Ray Gun
+        return 20;
+      case 2373: // Lamentation
+        return 35;
+      case 2374: // The Krauss Refibrillator
+        return 1;
+      case 2375: // Malevolent Taxonomic Anodized Redeemer
+        return 30;
+      case 2381: // Relativistic Punishment Device
+        return 125;
+      case 2382: // Dead Specimen Reactor 5000
+        return 8;
+      case 2391: // SLDG HAMR
+        return 125;
+      case 2392: // Porter's X2 Ray Gun
+        return 40;
+      case 2924: // Glass Bottle
+        return 30;
+      case 2925: // Water Bottle
+        return 100;
+      case 2926: // Canteen
         return 400;
-      case 2927:
+      case 2927: // Water Jug
         return 2500;
       default:
         return 0;
