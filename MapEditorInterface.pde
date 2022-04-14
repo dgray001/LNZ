@@ -1691,7 +1691,7 @@ class MapEditorInterface extends InterfaceLNZ {
       return;
     }
     if (entryExists("data/maps/" + targetName + ".map.lnz")) {
-      global.errorMessage("ERROR: Can't rename map file to a name that already exists.");
+      // name exists
       return;
     }
     GameMap map = new GameMap();
