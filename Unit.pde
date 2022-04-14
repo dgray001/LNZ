@@ -287,6 +287,7 @@ class Unit extends MapObject {
   protected float base_speed = 0;
   protected float base_tenacity = 0; // percentage from 0 - 1
   protected int base_agility = 1;
+  protected float base_lifesteal = 0; // percentage
 
   protected float curr_health = 1;
   protected float timer_attackCooldown = 0;
@@ -459,6 +460,10 @@ class Unit extends MapObject {
     int agility = this.agility();
     if (attack > 0) {
       text += "\nAgility: " + agility;
+    }
+    float lifesteal = this.lifesteal();
+    if (lifesteal > 0) {
+      text += "\nLifesteal: " + int(round(lifesteal * 100)) + "%";
     }
     return text + "\n\n" + this.description();
   }
@@ -878,6 +883,23 @@ class Unit extends MapObject {
       agility += this.weapon().agility;
     }
     return agility;
+  }
+
+  float lifesteal() {
+    float lifesteal = this.base_lifesteal;
+    if (this.weapon() != null && this.weapon().weapon()) {
+      lifesteal += this.weapon().lifesteal;
+    }
+    if (this.weak()) {
+      lifesteal *= Constants.status_weak_multiplier;
+    }
+    if (this.wilted()) {
+      lifesteal *= Constants.status_wilted_multiplier;
+    }
+    if (this.withered()) {
+      lifesteal *= Constants.status_withered_multiplier;
+    }
+    return lifesteal;
   }
 
 
@@ -1621,6 +1643,7 @@ class Unit extends MapObject {
 
 
   void damaged(Unit u, float damage) {
+    this.heal(max(0, this.lifesteal() * damage), false);
   }
 
 
@@ -1969,6 +1992,7 @@ class Unit extends MapObject {
     fileString += "\nbase_speed: " + this.base_speed;
     fileString += "\nbase_tenacity: " + this.base_tenacity;
     fileString += "\nbase_agility: " + this.base_agility;
+    fileString += "\nbase_lifesteal: " + this.base_lifesteal;
     fileString += "\ncurr_health: " + this.curr_health;
     fileString += "\ntimer_attackCooldown: " + this.timer_attackCooldown;
     fileString += "\ntimer_actionTime: " + this.timer_actionTime;
@@ -2047,6 +2071,9 @@ class Unit extends MapObject {
         break;
       case "base_agility":
         this.base_agility = toInt(data);
+        break;
+      case "base_lifesteal":
+        this.base_lifesteal = toFloat(data);
         break;
       case "curr_health":
         this.curr_health = toFloat(data);

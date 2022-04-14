@@ -58,12 +58,24 @@ class Projectile extends MapObject {
         this.speed = 90;
         this.decay = 1.11317;
         break;
+      case 3924: // glass bottle (thrown)
+        this.speed = 4;
+        this.decay = 0.5;
+        break;
       case 3931: // rock (thrown)
         this.speed = 5;
         this.decay = 0.5;
         break;
+      case 3932: // arrow (thrown)
+        this.speed = 4;
+        this.decay = 0.5;
+        break;
       case 3933: // pebble (thrown)
         this.speed = 5;
+        this.decay = 0.5;
+        break;
+      case 3944: // grenade (thrown)
+        this.speed = 7;
         this.decay = 0.5;
         break;
       default:
@@ -175,11 +187,20 @@ class Projectile extends MapObject {
       case 3312:
         path += "45_acp.png";
         break;
+      case 3924:
+        path += "glass_bottle.png";
+        break;
       case 3931:
         path += "rock.png";
         break;
+      case 3932:
+        path += "arrow.png";
+        break;
       case 3933:
         path += "pebble.png";
+        break;
+      case 3944:
+        path += "grenade.png";
         break;
       default:
         global.errorMessage("ERROR: Projectile ID " + ID + " not found.");
@@ -228,7 +249,7 @@ class Projectile extends MapObject {
 
 
   void update(int timeElapsed) {
-    // any needed timers (like grenade exploding
+    // any needed timers (like grenade exploding)
   }
 
 
@@ -361,8 +382,14 @@ class Projectile extends MapObject {
   ArrayList<Item> droppedItems(boolean hitUnit) {
     ArrayList<Item> droppedItems = new ArrayList<Item>();
     switch(this.ID) {
+      case 3924: // glass bottle
+        droppedItems.add(new Item(2805));
+        break;
       case 3931: // rock
         droppedItems.add(new Item(2931));
+        break;
+      case 3932: // arrow
+        droppedItems.add(new Item(2932));
         break;
       case 3933: // pebble
         droppedItems.add(new Item(2933));
