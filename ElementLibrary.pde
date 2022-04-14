@@ -4149,8 +4149,17 @@ abstract class Form {
     if (this.cancel != null) {
       this.cancel.mousePress();
     }
-    for (FormField field : this.fields) {
-      field.mousePress();
+    for (int i = 0; i < int(floor(this.scrollbar.value)); i++) {
+      this.fields.get(i).defocus();
+    }
+    float currY = this.yStart;
+    for (int i = int(floor(this.scrollbar.value)); i < this.fields.size(); i++) {
+      if (currY + this.fields.get(i).getHeight() > this.yf) {
+        this.fields.get(i).defocus();
+        continue;
+      }
+      this.fields.get(i).mousePress();
+      currY += this.fields.get(i).getHeight() + this.fieldCushion;
     }
     if (this.hovered_header) {
       this.dragging = true;

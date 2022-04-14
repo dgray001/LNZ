@@ -209,18 +209,18 @@ class EditUnitForm extends EditMapObjectForm {
   EditUnitForm(Unit unit) {
     super(unit);
     this.unit = unit;
-    this.addField(new FloatFormField("  ", "base health", 0, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "base attack", 0, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "base magic", 0, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "base defense", 0, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "base resistance", 0, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "base piercing", 0, 1));
-    this.addField(new FloatFormField("  ", "base penetration", 0, 1));
-    this.addField(new FloatFormField("  ", "base attack range", 0, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "base sight", 0, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "base speed", 0, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "base tenacity", 0, 1));
-    this.addField(new IntegerFormField("  ", "base agility", 0, 10));
+    this.addField(new FloatFormField("Base Health: ", "base health", 0, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("Base Attack: ", "base attack", 0, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("Base Magic: ", "base magic", 0, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("Base Defense: ", "base defense", 0, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("Base Resistance: ", "base resistance", 0, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("Base Piercing: ", "base piercing", 0, 1));
+    this.addField(new FloatFormField("Base Penetration: ", "base penetration", 0, 1));
+    this.addField(new FloatFormField("Base Attack Range: ", "base attack range", 0, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("Base Sight: ", "base sight", 0, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("Base Speed: ", "base speed", 0, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("Base Tenacity: ", "base tenacity", 0, 1));
+    this.addField(new IntegerFormField("Base Agility: ", "base agility", 0, 10));
     this.updateForm();
   }
 
@@ -789,9 +789,11 @@ class Unit extends MapObject {
     float attackRange = this.base_attackRange;
     if (this.weapon() != null && this.weapon().weapon()) {
       if (!forceMelee && this.weapon().shootable()) {
-        return this.weapon().shootRange();
+        attackRange = this.weapon().shootRange();
       }
-      attackRange += this.weapon().attackRange;
+      else {
+        attackRange += this.weapon().attackRange;
+      }
     }
     return attackRange;
   }
@@ -803,9 +805,11 @@ class Unit extends MapObject {
     float attackCooldown = this.base_attackCooldown;
     if (this.weapon() != null && this.weapon().weapon()) {
       if (!forceMelee && this.weapon().shootable()) {
-        return this.weapon().shootCooldown();
+        attackCooldown = this.weapon().shootCooldown();
       }
-      attackCooldown += this.weapon().attackCooldown;
+      else {
+        attackCooldown += this.weapon().attackCooldown;
+      }
     }
     return attackCooldown;
   }
@@ -817,9 +821,11 @@ class Unit extends MapObject {
     float attackTime = this.base_attackTime;
     if (this.weapon() != null && this.weapon().weapon()) {
       if (!forceMelee && this.weapon().shootable()) {
-        return this.weapon().shootTime();
+        attackTime = this.weapon().shootTime();
       }
-      attackTime += this.weapon().attackTime;
+      else {
+        attackTime += this.weapon().attackTime;
+      }
     }
     return attackTime;
   }
@@ -1245,7 +1251,7 @@ class Unit extends MapObject {
         this.timer_actionTime -= timeElapsed;
         if (this.timer_actionTime < 0) {
           this.shoot(myKey, map);
-          if (this.weapon().shootable() && this.weapon().automatic()) {
+          if (this.weapon().shootable() && this.weapon().automatic() && global.holding_rightclick) {
             if (myKey == 0 && global.holding_ctrl) {
               this.curr_action = UnitAction.AIMING;
             }
@@ -1538,6 +1544,7 @@ class Unit extends MapObject {
     }
     map.addProjectile(new Projectile(this.weapon().ID + 1000, myKey, this, this.weapon().shootInaccuracy()));
     this.weapon().shot();
+    this.move(this.weapon().shootRecoil(), myKey, map, MoveModifier.RECOIL);
     this.timer_attackCooldown = this.attackCooldown();
   }
 
@@ -1759,7 +1766,7 @@ class Unit extends MapObject {
   }
 
 
-  void move(int timeElapsed, int myKey, GameMap map, MoveModifier modifier) {
+  void move(float timeElapsed, int myKey, GameMap map, MoveModifier modifier) {
     // calculate attempted move distances
     float seconds = timeElapsed / 1000.0;
     float effectiveDistance = 0;
@@ -1771,6 +1778,7 @@ class Unit extends MapObject {
         effectiveDistance = Constants.unit_sneakSpeed * seconds;
         break;
       case RECOIL:
+        effectiveDistance = -timeElapsed; // just use timeElapsed as the distance
         break;
     }
     float tryMoveX = effectiveDistance * this.facingX;

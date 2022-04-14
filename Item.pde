@@ -4,25 +4,25 @@ class EditItemForm extends EditMapObjectForm {
   EditItemForm(Item item) {
     super(item);
     this.item = item;
-    this.addField(new FloatFormField("  ", "curr health", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
-    this.addField(new IntegerFormField("  ", "hunger", -100, 100));
-    this.addField(new IntegerFormField("  ", "thirst", -100, 100));
-    this.addField(new FloatFormField("  ", "money", 0, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "health", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "attack", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "magic", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "defense", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "resistance", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "piercing", -1, 1));
-    this.addField(new FloatFormField("  ", "penetration", -1, 1));
-    this.addField(new FloatFormField("  ", "attack range", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "attack cooldown", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "attack time", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "sight", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "speed", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
-    this.addField(new FloatFormField("  ", "tenacity", -1, 1));
-    this.addField(new IntegerFormField("  ", "agility", -10, 10));
-    this.addField(new IntegerFormField("  ", "ammo", 0, Integer.MAX_VALUE - 1));
+    this.addField(new FloatFormField("Heals: ", "curr health", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new IntegerFormField("Hunger: ", "hunger", -100, 100));
+    this.addField(new IntegerFormField("Thirst: ", "thirst", -100, 100));
+    this.addField(new FloatFormField("Money: ", "money", 0, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("Health: ", "health", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("Attack: ", "attack", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("Magic: ", "magic", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("Defense: ", "defense", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("Resistance: ", "resistance", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("Piercing: ", "piercing", -1, 1));
+    this.addField(new FloatFormField("Penetration: ", "penetration", -1, 1));
+    this.addField(new FloatFormField("Attack Range: ", "attack range", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("Attack Cooldown: ", "attack cooldown", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("Attack Time: ", "attack time", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("Sight: ", "sight", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("Speed: ", "speed", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+    this.addField(new FloatFormField("Tenacity: ", "tenacity", -1, 1));
+    this.addField(new IntegerFormField("Agility: ", "agility", -10, 10));
+    this.addField(new IntegerFormField("Ammo: ", "ammo", 0, Integer.MAX_VALUE - 1));
     this.updateForm();
   }
 
@@ -1473,7 +1473,12 @@ class Item extends MapObject {
         path += "wn.png";
         break;
       case 2353:
-        path += "ballistic_knife.png";
+        if (this.ammo > 0) {
+          path += "ballistic_knife_loaded.png";
+        }
+        else {
+          path += "ballistic_knife.png";
+        }
         break;
       case 2354:
         path += "cobra.png";
