@@ -100,12 +100,18 @@ void mouseMoved() {
 }
 
 void mousePressed() {
+  if (mouseButton == RIGHT) {
+    global.holding_rightclick = true;
+  }
   if (global.menu != null) {
     global.menu.LNZ_mousePress();
   }
 }
 
 void mouseReleased() {
+  if (mouseButton == RIGHT) {
+    global.holding_rightclick = false;
+  }
   if (global.menu != null) {
     global.menu.LNZ_mouseRelease(mouseX, mouseY);
   }

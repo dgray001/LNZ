@@ -4,7 +4,7 @@ class EditFeatureForm extends EditMapObjectForm {
   EditFeatureForm(Feature feature) {
     super(feature);
     this.feature = feature;
-    this.addField(new IntegerFormField("  ", "number", Integer.MIN_VALUE + 1, Integer.MAX_VALUE - 1));
+    this.addField(new IntegerFormField("Number: ", "number", Integer.MIN_VALUE + 1, Integer.MAX_VALUE - 1));
     this.addField(new CheckboxFormField("Toggle:  "));
     this.addField(new SubmitFormField("Finished", false));
     this.updateForm();

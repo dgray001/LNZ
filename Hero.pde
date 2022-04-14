@@ -1016,6 +1016,16 @@ class Hero extends Unit {
         this.roundness = 0;
       }
 
+      @Override
+      void drawButton() {
+        super.drawButton();
+        rectMode(CORNER);
+        float xp_ratio = PlayerLeftPanelMenu.this.hero().experience /
+          PlayerLeftPanelMenu.this.hero().experience_next_level;
+        fill(0);
+        rect(this.xi, this.yi, xp_ratio * this.button_width(), Constants.hero_leftPanelBarHeight);
+      }
+
       void updateHoverMessage() {
         this.hover_message = "Experience: " + PlayerLeftPanelMenu.this.hero().experience +
           "/" + PlayerLeftPanelMenu.this.hero().experience_next_level;
@@ -1048,10 +1058,14 @@ class Hero extends Unit {
         fill(255, 0, 0);
         noStroke();
         rect(this.bar_xi, this.bar_yi, this.xf, this.bar_yf);
+        rectMode(CORNER);
+        float hunger_ratio = PlayerLeftPanelMenu.this.hero().hunger / float(Constants.hero_maxHunger);
+        fill(0, 255, 0);
+        rect(this.bar_xi, this.bar_yi, hunger_ratio * (this.xf - this.bar_xi), Constants.hero_leftPanelBarHeight);
       }
 
       void updateHoverMessage() {
-        this.hover_message = "Hunger: " + (100 * PlayerLeftPanelMenu.this.hero().hunger /
+        this.hover_message = "Hunger: " + int(100 * PlayerLeftPanelMenu.this.hero().hunger /
           float(Constants.hero_maxHunger)) + "%";
       }
     }
@@ -1082,10 +1096,14 @@ class Hero extends Unit {
         fill(255, 0, 0);
         noStroke();
         rect(this.bar_xi, this.bar_yi, this.xf, this.bar_yf);
+        rectMode(CORNER);
+        float thirst_ratio = PlayerLeftPanelMenu.this.hero().thirst / float(Constants.hero_maxThirst);
+        fill(0, 255, 0);
+        rect(this.bar_xi, this.bar_yi, thirst_ratio * (this.xf - this.bar_xi), Constants.hero_leftPanelBarHeight);
       }
 
       void updateHoverMessage() {
-        this.hover_message = "Thirst: " + (100 * PlayerLeftPanelMenu.this.hero().thirst /
+        this.hover_message = "Thirst: " + int(100 * PlayerLeftPanelMenu.this.hero().thirst /
           float(Constants.hero_maxThirst)) + "%";
       }
     }
@@ -1133,27 +1151,12 @@ class Hero extends Unit {
       // experience
       this.experience.setXLocation(2, panel_width - 2);
       this.experience.update(millis);
-      rectMode(CORNER);
-      float xp_ratio = Hero.this.experience / Hero.this.experience_next_level;
-      fill(0);
-      rect(this.experience.xi, this.experience.yi, xp_ratio * (panel_width - 2),
-        Constants.hero_leftPanelBarHeight);
       // hunger
       this.hunger.setXLocation(2, panel_width - 2);
       this.hunger.update(millis);
-      rectMode(CORNER);
-      float hunger_ratio = Hero.this.hunger / float(Constants.hero_maxHunger);
-      fill(0, 255, 0);
-      rect(this.hunger.bar_xi, this.hunger.bar_yi, hunger_ratio * (panel_width -
-        2 - this.thirst.bar_xi), Constants.hero_leftPanelBarHeight);
       // thirst
       this.thirst.setXLocation(2, panel_width - 2);
       this.thirst.update(millis);
-      rectMode(CORNER);
-      float thirst_ratio = Hero.this.thirst / float(Constants.hero_maxThirst);
-      fill(0, 255, 0);
-      rect(this.thirst.bar_xi, this.thirst.bar_yi, thirst_ratio * (panel_width -
-        2 - this.thirst.bar_xi), Constants.hero_leftPanelBarHeight);
     }
 
     void mouseMove(float mX, float mY) {

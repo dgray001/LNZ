@@ -36,7 +36,16 @@ class Projectile extends MapObject {
       this.facingY = u.facingY;
       this.facingA = u.facingA;
       this.alliance = u.alliance;
-      this.power = u.attack();
+      switch(ID) {
+        case 3372: // Ray Gun
+        case 3392: // Porter's X2 Ray Gun
+          this.power = u.attack() + u.magic();
+          this.damageType = DamageType.MIXED;
+          break;
+        default:
+          this.power = u.attack();
+          break;
+      }
       this.piercing = u.piercing();
       this.penetration = u.penetration();
       this.turn(inaccuracy - 2 * random(inaccuracy));
@@ -55,6 +64,122 @@ class Projectile extends MapObject {
         this.decay = 0.5;
         break;
       case 3312: // M1911
+        this.speed = 90;
+        this.decay = 1.11317;
+        break;
+      case 3321: // War Machine
+        this.speed = 18;
+        this.decay = 0.84961;
+        break;
+      case 3322: // Five-Seven
+        this.speed = 90;
+        //this.decay = 0.0;
+        break;
+      case 3323: // Type25
+        this.speed = 90;
+        this.decay = 5.55011;
+        break;
+      case 3331: // Mustang and Sally
+        this.speed = 60;
+        this.decay = 0.82305;
+        break;
+      case 3332: // FAL
+        this.speed = 100;
+        this.decay = 3.25;
+        break;
+      case 3333: // Python
+        this.speed = 100;
+        this.decay = 0.82397;
+        break;
+      case 3341: // RPG
+        this.speed = 30;
+        //this.decay = 0;
+        break;
+      case 3342: // Dystopic Demolisher
+        this.speed = 30;
+        this.decay = 0.99432;
+        break;
+      case 3343: // Ultra
+        this.speed = 90;
+        //this.decay = 1.11317;
+        break;
+      case 3344: // Strain25
+        this.speed = 90;
+        this.decay = 4.91735;
+        break;
+      case 3345: // Executioner
+        this.speed = 90;
+        this.decay = 1.00186;
+        break;
+      case 3351: // Galil
+        this.speed = 90;
+        //this.decay = 1.11317;
+        break;
+      case 3352: // WN
+        this.speed = 100;
+        this.decay = 2.28571;
+        break;
+      case 3353: // Ballistic Knife
+        this.speed = 40;
+        this.decay = 1.4876;
+        break;
+      case 3354: // Cobra
+        this.speed = 100;
+        //this.decay = 1.11317;
+        break;
+      case 3355: // MTAR
+        this.speed = 90;
+        this.decay = 1.11317;
+        break;
+      case 3361: // RPD
+        this.speed = 90;
+        this.decay = 1.11317;
+        break;
+      case 3362: // Rocket-Propelled Grievance
+        this.speed = 90;
+        this.decay = 1.11317;
+        break;
+      case 3363: // DSR-50
+        this.speed = 90;
+        this.decay = 1.11317;
+        break;
+      case 3364: // Voice of Justice
+        this.speed = 90;
+        this.decay = 1.11317;
+        break;
+      case 3371: // HAMR
+        this.speed = 90;
+        this.decay = 1.11317;
+        break;
+      case 3372: // Ray Gun
+        this.speed = 90;
+        this.decay = 1.11317;
+        break;
+      case 3373: // Lamentation
+        this.speed = 90;
+        this.decay = 1.11317;
+        break;
+      case 3374: // The Krauss Refibrillator
+        this.speed = 90;
+        this.decay = 1.11317;
+        break;
+      case 3375: // Malevolent Taxonomic Anodized Redeemer
+        this.speed = 90;
+        this.decay = 1.11317;
+        break;
+      case 3381: // Relativistic Punishment Device
+        this.speed = 90;
+        this.decay = 1.11317;
+        break;
+      case 3382: // Dead Specimen Reactor 5000
+        this.speed = 90;
+        this.decay = 1.11317;
+        break;
+      case 3391: // SLDG HAMR
+        this.speed = 90;
+        this.decay = 1.11317;
+        break;
+      case 3392: // Porter's X2 Ray Gun
         this.speed = 90;
         this.decay = 1.11317;
         break;
@@ -186,6 +311,93 @@ class Projectile extends MapObject {
         break;
       case 3312:
         path += "45_acp.png";
+        break;
+      case 3321:
+        path += "grenade.png";
+        break;
+      case 3322:
+        path += "fn_57_28mm.png";
+        break;
+      case 3323:
+        path += "556_45mm.png";
+        break;
+      case 3331:
+        path += "grenade.png";
+        break;
+      case 3332:
+        path += "762_39mm.png";
+        break;
+      case 3333:
+        path += "357_magnum.png";
+        break;
+      case 3341:
+        path += "grenade.png";
+        break;
+      case 3342:
+        path += "grenade.png";
+        break;
+      case 3343:
+        path += "fn_57_28mm.png";
+        break;
+      case 3344:
+        path += "556_45mm.png";
+        break;
+      case 3345:
+        path += "28_gauge.png";
+        break;
+      case 3351:
+        path += "556_45mm.png";
+        break;
+      case 3352:
+        path += "762_39mm.png";
+        break;
+      case 3353:
+        path += "ballistic_knife.png";
+        break;
+      case 3354:
+        path += "357_magnum.png";
+        break;
+      case 3355:
+        path += "556_45mm.png";
+        break;
+      case 3361:
+        path += "762_39mm.png";
+        break;
+      case 3362:
+        path += "grenade.png";
+        break;
+      case 3363:
+        path += "50_bmg.png";
+        break;
+      case 3364:
+        path += "28_gauge.png";
+        break;
+      case 3371:
+        path += "762_39mm.png";
+        break;
+      case 3372:
+        path += "ray.png";
+        break;
+      case 3373:
+        path += "762_39mm.png";
+        break;
+      case 3374:
+        path += "ballistic_knife.png";
+        break;
+      case 3375:
+        path += "762_39mm.png";
+        break;
+      case 3381:
+        path += "762_39mm.png";
+        break;
+      case 3382:
+        path += "50_bmg.png";
+        break;
+      case 3391:
+        path += "762_39mm.png";
+        break;
+      case 3392:
+        path += "ray.png";
         break;
       case 3924:
         path += "glass_bottle.png";
