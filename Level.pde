@@ -822,7 +822,6 @@ class Level {
           this.currMap.addItem(new_i);
         }
         this.currMap.addHeaderMessage("You found a " + new_i.display_name() + ".");
-        // sound effect
         break;
       case 151: // sign
       case 152:
@@ -847,8 +846,9 @@ class Level {
         // if holding a dirty item clean it (?)
         else {
           h.increaseThirst(3);
+          global.sounds.trigger_environment("features/water_fountain_drink",
+            f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         }
-        // sound effect
         break;
       case 162: // sink
         if (use_item && h.holding(2924, 2925, 2926, 2927)) {
@@ -857,25 +857,23 @@ class Level {
         // if holding a dirty item clean it (?)
         else {
           h.increaseThirst(2);
+          global.sounds.trigger_environment("features/water_fountain_drink",
+            f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         }
-        // sound effect
         break;
       case 163: // shower stall
         f.number = Constants.feature_showerStallCooldown;
         // if holding a dirty item clean it (?)
         // if you are dirty clean yourself
         h.increaseThirst(1);
-        // sound effect
         break;
       case 164: // urinal
         f.number = Constants.feature_urinalCooldown;
         // if parched drink from urinal
-        // sound effect
         break;
       case 165: // toilet
         f.number = Constants.feature_toiletCooldown;
         // if parched drink from toilet
-        // sound effect
         break;
       case 171: // stove
         if (h.inventory.viewing) {
@@ -884,7 +882,6 @@ class Level {
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
         // StoveInventory which has 4 spots to cook items
-        // sound effect
         break;
       case 172: // vending machine
       case 173:
@@ -896,7 +893,6 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
-        // sound effect
         break;
       case 175: // refridgerator
         if (h.inventory.viewing) {
@@ -904,7 +900,6 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
-        // sound effect
         break;
       case 176: // washer
         if (h.inventory.viewing) {
@@ -912,7 +907,6 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
-        // sound effect
         break;
       case 177: // dryer
         if (h.inventory.viewing) {
@@ -920,7 +914,6 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
-        // sound effect
         break;
       case 181: // garbage can
         if (h.inventory.viewing) {
@@ -928,7 +921,6 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
-        // sound effect
         break;
       case 182: // recycle can
         if (h.inventory.viewing) {
@@ -936,7 +928,6 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
-        // sound effect
         break;
       case 183: // crate
         if (h.inventory.viewing) {
@@ -952,7 +943,6 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
-        // sound effect
         break;
       case 185: // pickle jar
         if (use_item && h.holding(2975)) {
@@ -1054,7 +1044,8 @@ class Level {
             this.currMap.addFeature(new_f);
             new_f.hovered = true;
             this.currMap.hovered_object = new_f;
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_close",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
           case 332:
             f.remove = true;
@@ -1062,7 +1053,8 @@ class Level {
             this.currMap.addFeature(new_f);
             new_f.hovered = true;
             this.currMap.hovered_object = new_f;
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_close",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
           case 333: // door open (left)
             f.remove = true;
@@ -1070,7 +1062,8 @@ class Level {
             this.currMap.addFeature(new_f);
             new_f.hovered = true;
             this.currMap.hovered_object = new_f;
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_close",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
           case 334:
             f.remove = true;
@@ -1078,7 +1071,8 @@ class Level {
             this.currMap.addFeature(new_f);
             new_f.hovered = true;
             this.currMap.hovered_object = new_f;
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_close",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
           case 335: // door open (diagonal left)
             f.remove = true;
@@ -1086,7 +1080,8 @@ class Level {
             this.currMap.addFeature(new_f);
             new_f.hovered = true;
             this.currMap.hovered_object = new_f;
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_close",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
           case 336:
             f.remove = true;
@@ -1094,7 +1089,8 @@ class Level {
             this.currMap.addFeature(new_f);
             new_f.hovered = true;
             this.currMap.hovered_object = new_f;
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_close",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
           case 337: // door open (diagonal right)
             f.remove = true;
@@ -1102,7 +1098,8 @@ class Level {
             this.currMap.addFeature(new_f);
             new_f.hovered = true;
             this.currMap.hovered_object = new_f;
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_close",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
           case 338:
             f.remove = true;
@@ -1110,7 +1107,8 @@ class Level {
             this.currMap.addFeature(new_f);
             new_f.hovered = true;
             this.currMap.hovered_object = new_f;
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_close",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
           case 339: // door closed (up)
             f.remove = true;
@@ -1123,7 +1121,8 @@ class Level {
             this.currMap.addFeature(new_f);
             new_f.hovered = true;
             this.currMap.hovered_object = new_f;
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_open",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
           case 340: // door closed (left)
             f.remove = true;
@@ -1136,7 +1135,8 @@ class Level {
             this.currMap.addFeature(new_f);
             new_f.hovered = true;
             this.currMap.hovered_object = new_f;
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_open",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
           case 341: // door closed (diagonal left)
             f.remove = true;
@@ -1149,7 +1149,8 @@ class Level {
             this.currMap.addFeature(new_f);
             new_f.hovered = true;
             this.currMap.hovered_object = new_f;
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_open",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
           case 342: // door closed (diagonal right)
             f.remove = true;
@@ -1162,7 +1163,8 @@ class Level {
             this.currMap.addFeature(new_f);
             new_f.hovered = true;
             this.currMap.hovered_object = new_f;
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_open",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
           case 343: // door locked (up)
             if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
@@ -1174,7 +1176,8 @@ class Level {
             this.currMap.addFeature(new_f);
             new_f.hovered = true;
             this.currMap.hovered_object = new_f;
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_unlock",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
           case 344: // door locked (left)
             if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
@@ -1186,7 +1189,8 @@ class Level {
             this.currMap.addFeature(new_f);
             new_f.hovered = true;
             this.currMap.hovered_object = new_f;
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_unlock",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
           case 345: // door locked (diagonal left)
             if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
@@ -1198,7 +1202,8 @@ class Level {
             this.currMap.addFeature(new_f);
             new_f.hovered = true;
             this.currMap.hovered_object = new_f;
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_unlock",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
           case 346: // door locked (diagonal right)
             if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
@@ -1210,7 +1215,8 @@ class Level {
             this.currMap.addFeature(new_f);
             new_f.hovered = true;
             this.currMap.hovered_object = new_f;
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_unlock",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
         }
         break;
@@ -1800,7 +1806,8 @@ class Level {
         return;
       }
       this.hero_looking.money -= money_inserted;
-      // sound effect
+      global.sounds.trigger_environment("features/vending_machine_coin",
+        f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
       if (randomChance(Constants.feature_vendingEatMoneyChance)) {
         this.fields.get(3).setValue("The vending machine ate your money.");
         return;
@@ -1880,7 +1887,8 @@ class Level {
         new_item.ammo = new_item.maximumAmmo();
       }
       Level.this.currMap.addItem(new_item);
-      // sound effect
+      global.sounds.trigger_environment("features/vending_machine_vend",
+        f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
       this.fields.get(2).setValue("$" + this.vending_machine.number);
       this.fields.get(3).setValue("Thank you for your purchase.");
     }

@@ -122,6 +122,9 @@ class Sounds {
   }
 
   void trigger_environment(String soundPath) {
+    this.trigger_environment(soundPath, 0, 0);
+  }
+  void trigger_environment(String soundPath, float xDif, float yDif) {
     if (this.sounds_environment.containsKey(soundPath)) {
       this.sounds_environment.get(soundPath).trigger();
     }
