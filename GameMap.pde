@@ -1671,6 +1671,26 @@ class GameMap {
   }
 
 
+  void splashDamage(float explode_x, float explode_y, float explode_range,
+    float explode_maxPower, float explode_minPower, int source_key,
+    DamageType damageType, Element element, float piercing, float penetration) {
+    if (explode_range <= 0) {
+      return;
+    }
+    for (Map.Entry<Integer, Unit> entry : this.units.entrySet()) {
+      Unit u = entry.getValue();
+      float distance = u.distanceFromPoint(explode_x, explode_y);
+      float distance_ratio = 1 - distance / explode_range;
+      if (distance_ratio <= 0) {
+        continue;
+      }
+      float net_power = explode_minPower + distance_ratio * (explode_maxPower - explode_minPower);
+      u.damage(this.units.get(source_key), u.calculateDamageFrom(net_power,
+        damageType, element, piercing, penetration));
+    }
+  }
+
+
   // return max height from list of map squares
   int maxHeightOfSquares(ArrayList<IntegerCoordinate> coordinates, boolean moving_onto) {
     int max_height = -100;
