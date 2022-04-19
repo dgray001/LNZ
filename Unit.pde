@@ -1122,7 +1122,6 @@ class Unit extends MapObject {
           this.curr_action = UnitAction.FEATURE_INTERACTION;
         }
         this.timer_actionTime = f.interactionTime();
-        f.beginInteractionSoundEffect(f.xCenter() - map.viewX, f.yCenter() - map.viewY);
         break;
       case FEATURE_INTERACTION:
       case FEATURE_INTERACTION_WITH_ITEM:

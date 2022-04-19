@@ -1238,59 +1238,6 @@ class Feature extends MapObject {
   }
 
 
-  void beginInteractionSoundEffect(float viewX, float viewY) {
-    // sound effects at beginning of interactionTime()
-    // instead of these two functions have one at class Sounds which takes (sound name, difX, difY)
-  }
-
-  void interactionSoundEffect(float viewX, float viewY) {
-    String sound_name = "features/";
-    switch(this.ID) {
-      case 161:
-        sound_name += "water_fountain";
-        break;
-      case 162:
-        sound_name += "sink";
-        break;
-      case 163:
-        sound_name += "shower_stall";
-        break;
-      case 164:
-        sound_name += "urinal";
-        break;
-      case 165:
-        sound_name += "toilet";
-        break;
-      case 171:
-        sound_name += "stove_open";
-        break;
-      case 174:
-      case 175:
-        sound_name += "fridge";
-        break;
-      case 176:
-        sound_name += "washer";
-        break;
-      case 177:
-        sound_name += "dryer";
-        break;
-      case 181:
-      case 182:
-        sound_name += "trash_can";
-        break;
-      case 183:
-        sound_name += "crate";
-        break;
-      case 184:
-        sound_name += "cardboard_box";
-        break;
-      default:
-        return;
-    }
-    global.sounds.trigger_environment(sound_name);
-  }
-
-
   ArrayList<Integer> drops() {
     ArrayList<Integer> id_list = new ArrayList<Integer>();
     switch(this.ID) {
@@ -1404,7 +1351,6 @@ class Feature extends MapObject {
     this.interact(u, map, false);
   }
   void interact(Unit u, GameMap map, boolean use_item) {
-    this.interactionSoundEffect(this.xCenter() - map.viewX, this.yCenter() - map.viewY);
     if (Hero.class.isInstance(u)) {
       if (use_item) {
         u.curr_action = UnitAction.HERO_INTERACTING_WITH_FEATURE_WITH_ITEM;

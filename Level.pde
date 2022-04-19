@@ -840,6 +840,8 @@ class Level {
         f.number = Constants.feature_signCooldown;
         break;
       case 161: // water fountain
+        global.sounds.trigger_environment("features/water_fountain",
+          f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         if (use_item && h.holding(2924, 2925, 2926, 2927)) {
           h.weapon().changeAmmo(3);
         }
@@ -860,20 +862,32 @@ class Level {
           global.sounds.trigger_environment("features/water_fountain_drink",
             f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         }
+        global.sounds.trigger_environment("features/sink",
+          f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         break;
       case 163: // shower stall
         f.number = Constants.feature_showerStallCooldown;
         // if holding a dirty item clean it (?)
         // if you are dirty clean yourself
         h.increaseThirst(1);
+        global.sounds.trigger_environment("features/shower_stall",
+          f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         break;
       case 164: // urinal
         f.number = Constants.feature_urinalCooldown;
-        // if parched drink from urinal
+        if (h.thirst < Constants.hero_thirstThreshhold) {
+          h.increaseThirst(3);
+        }
+        global.sounds.trigger_environment("features/urinal",
+          f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         break;
       case 165: // toilet
         f.number = Constants.feature_toiletCooldown;
-        // if parched drink from toilet
+        if (h.thirst < Constants.hero_thirstThreshhold) {
+          h.increaseThirst(3);
+        }
+        global.sounds.trigger_environment("features/toilet",
+          f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         break;
       case 171: // stove
         if (h.inventory.viewing) {
@@ -881,7 +895,8 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
-        // StoveInventory which has 4 spots to cook items
+        global.sounds.trigger_environment("features/stove_open",
+          f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         break;
       case 172: // vending machine
       case 173:
@@ -893,6 +908,8 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
+        global.sounds.trigger_environment("features/fridge",
+          f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         break;
       case 175: // refridgerator
         if (h.inventory.viewing) {
@@ -900,6 +917,8 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
+        global.sounds.trigger_environment("features/fridge",
+          f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         break;
       case 176: // washer
         if (h.inventory.viewing) {
@@ -907,6 +926,8 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
+        global.sounds.trigger_environment("features/washer",
+          f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         break;
       case 177: // dryer
         if (h.inventory.viewing) {
@@ -914,6 +935,8 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
+        global.sounds.trigger_environment("features/dryer",
+          f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         break;
       case 181: // garbage can
         if (h.inventory.viewing) {
@@ -921,6 +944,8 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
+        global.sounds.trigger_environment("features/trash_can",
+          f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         break;
       case 182: // recycle can
         if (h.inventory.viewing) {
@@ -928,6 +953,8 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
+        global.sounds.trigger_environment("features/trash_can",
+          f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         break;
       case 183: // crate
         if (h.inventory.viewing) {
@@ -935,6 +962,8 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
+        global.sounds.trigger_environment("features/crate",
+          f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         // sound effect
         break;
       case 184: // cardboard box
@@ -943,6 +972,8 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
+        global.sounds.trigger_environment("features/cardboard_box",
+          f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         break;
       case 185: // pickle jar
         if (use_item && h.holding(2975)) {
@@ -1807,7 +1838,8 @@ class Level {
       }
       this.hero_looking.money -= money_inserted;
       global.sounds.trigger_environment("features/vending_machine_coin",
-        f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+        this.vending_machine.xCenter() - Level.this.currMap.viewX,
+        this.vending_machine.yCenter() - Level.this.currMap.viewY);
       if (randomChance(Constants.feature_vendingEatMoneyChance)) {
         this.fields.get(3).setValue("The vending machine ate your money.");
         return;
@@ -1888,7 +1920,8 @@ class Level {
       }
       Level.this.currMap.addItem(new_item);
       global.sounds.trigger_environment("features/vending_machine_vend",
-        f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+        this.vending_machine.xCenter() - Level.this.currMap.viewX,
+        this.vending_machine.yCenter() - Level.this.currMap.viewY);
       this.fields.get(2).setValue("$" + this.vending_machine.number);
       this.fields.get(3).setValue("Thank you for your purchase.");
     }
@@ -1937,7 +1970,7 @@ class Level {
     void submit() {
       int guess = toInt(this.fields.get(1).getValue());
       if (guess < 0) {
-        // male a guess please
+        // make a guess please
         return;
       }
       int correct_answer = -1;

@@ -15,7 +15,9 @@ class Projectile extends MapObject {
 
   protected float speed = 0;
   protected float decay = 0;
+  protected float range_left = 0;
   protected boolean friendly_fire = false;
+  protected boolean waiting_to_explode = false;
 
   Projectile(int ID) {
     super(ID);
@@ -58,150 +60,187 @@ class Projectile extends MapObject {
       case 3301: // Slingshot
         this.speed = 8;
         this.decay = 0.5;
+        this.range_left = 10;
         break;
       case 3311: // Bow
         this.speed = 12;
         this.decay = 0.5;
+        this.range_left = 10;
         break;
       case 3312: // M1911
         this.speed = 90;
         this.decay = 1.11317;
+        this.range_left = 10;
         break;
       case 3321: // War Machine
         this.speed = 18;
         this.decay = 0.84961;
+        this.range_left = 10;
         break;
       case 3322: // Five-Seven
         this.speed = 90;
         //this.decay = 0.0;
+        this.range_left = 10;
         break;
       case 3323: // Type25
         this.speed = 90;
         this.decay = 5.55011;
+        this.range_left = 10;
         break;
       case 3331: // Mustang and Sally
         this.speed = 60;
         this.decay = 0.82305;
+        this.range_left = 10;
         break;
       case 3332: // FAL
         this.speed = 100;
         this.decay = 3.25;
+        this.range_left = 10;
         break;
       case 3333: // Python
         this.speed = 100;
         this.decay = 0.82397;
+        this.range_left = 10;
         break;
       case 3341: // RPG
         this.speed = 30;
         //this.decay = 0;
+        this.range_left = 10;
         break;
       case 3342: // Dystopic Demolisher
         this.speed = 30;
         this.decay = 0.99432;
+        this.range_left = 10;
         break;
       case 3343: // Ultra
         this.speed = 90;
         //this.decay = 1.11317;
+        this.range_left = 10;
         break;
       case 3344: // Strain25
         this.speed = 90;
         this.decay = 4.91735;
+        this.range_left = 10;
         break;
       case 3345: // Executioner
         this.speed = 90;
         this.decay = 1.00186;
+        this.range_left = 10;
         break;
       case 3351: // Galil
         this.speed = 90;
         //this.decay = 1.11317;
+        this.range_left = 10;
         break;
       case 3352: // WN
         this.speed = 100;
         this.decay = 2.28571;
+        this.range_left = 10;
         break;
       case 3353: // Ballistic Knife
         this.speed = 40;
         this.decay = 1.4876;
+        this.range_left = 10;
         break;
       case 3354: // Cobra
         this.speed = 100;
         //this.decay = 1.11317;
+        this.range_left = 10;
         break;
       case 3355: // MTAR
         this.speed = 90;
         this.decay = 1.11317;
+        this.range_left = 10;
         break;
       case 3361: // RPD
         this.speed = 90;
         this.decay = 1.11317;
+        this.range_left = 10;
         break;
       case 3362: // Rocket-Propelled Grievance
         this.speed = 90;
         this.decay = 1.11317;
+        this.range_left = 10;
         break;
       case 3363: // DSR-50
         this.speed = 90;
         this.decay = 1.11317;
+        this.range_left = 10;
         break;
       case 3364: // Voice of Justice
         this.speed = 90;
         this.decay = 1.11317;
+        this.range_left = 10;
         break;
       case 3371: // HAMR
         this.speed = 90;
         this.decay = 1.11317;
+        this.range_left = 10;
         break;
       case 3372: // Ray Gun
         this.speed = 90;
         this.decay = 1.11317;
+        this.range_left = 10;
         break;
       case 3373: // Lamentation
         this.speed = 90;
         this.decay = 1.11317;
+        this.range_left = 10;
         break;
       case 3374: // The Krauss Refibrillator
         this.speed = 90;
         this.decay = 1.11317;
+        this.range_left = 10;
         break;
       case 3375: // Malevolent Taxonomic Anodized Redeemer
         this.speed = 90;
         this.decay = 1.11317;
+        this.range_left = 10;
         break;
       case 3381: // Relativistic Punishment Device
         this.speed = 90;
         this.decay = 1.11317;
+        this.range_left = 10;
         break;
       case 3382: // Dead Specimen Reactor 5000
         this.speed = 90;
         this.decay = 1.11317;
+        this.range_left = 10;
         break;
       case 3391: // SLDG HAMR
         this.speed = 90;
         this.decay = 1.11317;
+        this.range_left = 10;
         break;
       case 3392: // Porter's X2 Ray Gun
         this.speed = 90;
         this.decay = 1.11317;
+        this.range_left = 10;
         break;
       case 3924: // glass bottle (thrown)
         this.speed = 4;
         this.decay = 0.5;
+        this.range_left = 10;
         break;
       case 3931: // rock (thrown)
         this.speed = 5;
         this.decay = 0.5;
+        this.range_left = 10;
         break;
       case 3932: // arrow (thrown)
         this.speed = 4;
         this.decay = 0.5;
+        this.range_left = 10;
         break;
       case 3933: // pebble (thrown)
         this.speed = 5;
         this.decay = 0.5;
+        this.range_left = 10;
         break;
       case 3944: // grenade (thrown)
-        this.speed = 7;
+        this.speed = 6;
         this.decay = 0.5;
+        this.range_left = 10;
         break;
       default:
         global.errorMessage("ERROR: Projectile ID " + ID + " not found.");
@@ -433,6 +472,13 @@ class Projectile extends MapObject {
       return;
     }
     this.update(timeElapsed);
+    if (this.waiting_to_explode) {
+      this.range_left -= timeElapsed;
+      if (this.range_left < 0) {
+        this.explode(map);
+      }
+      return;
+    }
     float distance_moved = this.speed * timeElapsed / 1000.0;
     float tryMoveX = distance_moved * this.facingX;
     float tryMoveY = distance_moved * this.facingY;
@@ -457,12 +503,14 @@ class Projectile extends MapObject {
     if (speed < Constants.projectile_threshholdSpeed) {
       this.dropOnGround(map);
     }
+    this.range_left -= distance_moved;
+    if (this.range_left < 0) {
+      this.dropOnGround(map);
+    }
   }
 
 
-  void update(int timeElapsed) {
-    // any needed timers (like grenade exploding)
-  }
+  void update(int timeElapsed) {}
 
 
   void moveX(float tryMoveX, GameMap map) {
@@ -616,23 +664,118 @@ class Projectile extends MapObject {
     for (Item i : this.droppedItems(false)) {
       map.addItem(i, this.x, this.y);
     }
-    // explode on impact (splash damage)
-    // if (doesn't explode on impact) {
-    //     start timer } else {
-    this.remove = true;
-    // potentially interact with terrain / features
+    if (this.waitsToExplode()) {
+      this.startExplodeTimer();
+    }
+    else if (this.explodesOnImpact()) {
+      this.explode(map);
+    }
+    else {
+      this.remove = true;
+    }
   }
 
   void collideWithUnit(GameMap map, Unit u) {
     for (Item i : this.droppedItems(true)) {
       map.addItem(i, this.x, this.y);
     }
-    // explode on impact (splash damage)
-    // if (doesn't explode on impact) {
-    //     start timer } else {
-    this.remove = true;
-    u.damage(map.units.get(this.source_key), u.calculateDamageFrom(this.power,
+    u.damage(map.units.get(this.source_key), u.calculateDamageFrom(this.collidePower(),
       this.damageType, this.element, this.piercing, this.penetration));
+    if (this.waitsToExplode()) {
+      this.startExplodeTimer();
+    }
+    else if (this.explodesOnImpact()) {
+      this.explode(map);
+    }
+    else {
+      this.remove = true;
+    }
+  }
+
+
+  float collidePower() {
+    switch(this.ID) {
+      // explosion ones won't do 1000 damage on collision
+      default:
+        return this.power;
+    }
+  }
+
+
+  boolean waitsToExplode() {
+    switch(this.ID) {
+      case 3321: // War Machine
+      case 3944: // Grenade
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  void startExplodeTimer() {
+    this.waiting_to_explode = true;
+    switch(this.ID) {
+      case 3321: // War Machine
+        this.range_left = 2000;
+        break;
+      case 3944: // Grenade
+        this.range_left = 2000;
+        break;
+      default:
+        global.errorMessage("ERROR: Projectile ID " + this.ID + " doesn't wait to explode.");
+        this.waiting_to_explode = false;
+        return;
+    }
+  }
+
+  boolean explodesOnImpact() {
+    switch(this.ID) {
+      case 3331: // Mustang and Sally
+      case 3341: // RPG
+      case 3342: // Dystopic Demolisher
+      case 3362: // Rocket-Propelled Grievance
+      case 3372: // Ray Gun
+      case 3392: // Porter's X2 Ray Gun
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  void explode(GameMap map) {
+    float explode_x = this.x;
+    float explode_y = this.y;
+    float explode_range = 0;
+    float explode_maxPower = 0;
+    float explode_minPower = 0;
+    switch(this.ID) { // set values and add visual effects
+      case 3321: // War Machine
+        break;
+      case 3331: // Mustang and Sally
+        break;
+      case 3341: // RPG
+        break;
+      case 3342: // Dystopic Demolisher
+        break;
+      case 3362: // Rocket-Propelled Grievance
+        break;
+      case 3372: // Ray Gun
+        break;
+      case 3392: // Porter's X2 Ray Gun
+        break;
+      case 3944: // Grenade
+        explode_range = 3;
+        explode_minPower = 100;
+        explode_maxPower = 400;
+        break;
+      default:
+        global.errorMessage("ERROR: Projectile ID " + this.ID + " doesn't explode.");
+        break;
+    }
+    map.splashDamage(explode_x, explode_y, explode_range, explode_maxPower,
+      explode_minPower, this.source_key, this.damageType, this.element,
+      this.piercing, this.penetration);
+    this.remove = true;
   }
 
 
@@ -648,6 +791,8 @@ class Projectile extends MapObject {
     fileString += "\npower: " + this.power;
     fileString += "\npiercing: " + this.piercing;
     fileString += "\npenetration: " + this.penetration;
+    fileString += "\nrangeLeft: " + this.range_left;
+    fileString += "\nwaitingToExplode: " + this.waiting_to_explode;
     fileString += "\nend: Projectile\n";
     return fileString;
   }
@@ -683,6 +828,12 @@ class Projectile extends MapObject {
         break;
       case "penetration":
         this.penetration = toFloat(data);
+        break;
+      case "rangeLeft":
+        this.range_left = toFloat(data);
+        break;
+      case "waitingToExplode":
+        this.waiting_to_explode = toBoolean(data);
         break;
       default:
         global.errorMessage("ERROR: Datakey " + datakey + " not found for projectile data.");
