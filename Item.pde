@@ -1210,32 +1210,50 @@ class Item extends MapObject {
     if (this.money != 0) {
       text += "\nMoney: " + this.money;
     }
-    if (this.type.equals("Ranged Weapon")) {
-      text += "\nAmmo: " + this.ammo + "/" + this.maximumAmmo();
-    }
     if (this.health != 0) {
       text += "\nHealth: " + this.health;
     }
-    if (this.attack != 0) {
-      text += "\nAttack: " + this.attack;
+    if (this.type.equals("Ranged Weapon")) {
+      text += "\nAmmo: " + this.ammo + "/" + this.maximumAmmo();
+      if (this.shootAttack() != 0) {
+        text += "\nAttack: " + this.shootAttack();
+      }
+      if (this.shootMagic() != 0) {
+        text += "\nMagic: " + this.shootMagic();
+      }
+      if (this.shootPiercing() != 0) {
+        text += "\nPiercing: " + this.shootPiercing();
+      }
+      if (this.shootPenetration() != 0) {
+        text += "\nPenetration: " + this.shootPenetration();
+      }
+      if (this.shootRange() != 0) {
+        text += "\nRange: " + this.shootRange();
+      }
+      text += "\nInaccuracy: " + this.shootInaccuracy();
     }
-    if (this.magic != 0) {
-      text += "\nMagic: " + this.magic;
+    else {
+      if (this.attack != 0) {
+        text += "\nAttack: " + this.attack;
+      }
+      if (this.magic != 0) {
+        text += "\nMagic: " + this.magic;
+      }
+      if (this.piercing != 0) {
+        text += "\nPiercing: " + this.piercing;
+      }
+      if (this.penetration != 0) {
+        text += "\nPenetration: " + this.penetration;
+      }
+      if (this.attackRange != 0) {
+        text += "\nRange: " + this.attackRange;
+      }
     }
     if (this.defense != 0) {
       text += "\nDefense: " + this.defense;
     }
     if (this.resistance != 0) {
       text += "\nResistance: " + this.resistance;
-    }
-    if (this.piercing != 0) {
-      text += "\nPiercing: " + this.piercing;
-    }
-    if (this.penetration != 0) {
-      text += "\nPenetration: " + this.penetration;
-    }
-    if (this.attackRange != 0) {
-      text += "\nRange: " + this.attackRange;
     }
     if (this.attackCooldown != 0) {
       text += "\nAttack Cooldown: " + this.attackCooldown;
@@ -2407,13 +2425,13 @@ class Item extends MapObject {
       case 2392: // Porter's X2 Ray Gun
         return 9;
       case 2924: // Glass Bottle (thrown)
-        return 2.5;
+        return 3;
       case 2931: // Rock (thrown)
-        return 2.5;
+        return 3;
       case 2932: // Arrow (thrown)
-        return 2;
+        return 2.5;
       case 2933: // Pebble (thrown)
-        return 2;
+        return 2.5;
       case 2944: // Grenade (thrown)
         return 3.5;
       default:

@@ -51,6 +51,7 @@ class Projectile extends MapObject {
       this.piercing = u.piercing();
       this.penetration = u.penetration();
       this.turn(inaccuracy - 2 * random(inaccuracy));
+      this.range_left = 1.1 * u.attackRange();
     }
     this.setID();
   }
@@ -59,188 +60,151 @@ class Projectile extends MapObject {
     switch(ID) {
       case 3301: // Slingshot
         this.speed = 8;
-        this.decay = 0.5;
-        this.range_left = 10;
+        this.decay = 0.4267;
         break;
       case 3311: // Bow
         this.speed = 12;
-        this.decay = 0.5;
-        this.range_left = 10;
+        this.decay = 0.3656;
         break;
       case 3312: // M1911
         this.speed = 90;
-        this.decay = 1.11317;
-        this.range_left = 10;
+        this.decay = 0;
         break;
       case 3321: // War Machine
         this.speed = 18;
-        this.decay = 0.84961;
-        this.range_left = 10;
+        this.decay = 0;
         break;
       case 3322: // Five-Seven
         this.speed = 90;
-        //this.decay = 0.0;
-        this.range_left = 10;
+        this.decay = 2.1973;
         break;
       case 3323: // Type25
         this.speed = 90;
-        this.decay = 5.55011;
-        this.range_left = 10;
+        this.decay = 1.4876;
         break;
       case 3331: // Mustang and Sally
         this.speed = 60;
-        this.decay = 0.82305;
-        this.range_left = 10;
+        this.decay = 0;
         break;
       case 3332: // FAL
         this.speed = 100;
-        this.decay = 3.25;
-        this.range_left = 10;
+        this.decay = 0.8496;
         break;
       case 3333: // Python
         this.speed = 100;
-        this.decay = 0.82397;
-        this.range_left = 10;
+        this.decay = 3.25;
         break;
       case 3341: // RPG
         this.speed = 30;
-        //this.decay = 0;
-        this.range_left = 10;
+        this.decay = 0;
         break;
       case 3342: // Dystopic Demolisher
         this.speed = 30;
-        this.decay = 0.99432;
-        this.range_left = 10;
+        this.decay = 0;
         break;
       case 3343: // Ultra
         this.speed = 90;
-        //this.decay = 1.11317;
-        this.range_left = 10;
+        this.decay = 1.8;
         break;
       case 3344: // Strain25
         this.speed = 90;
-        this.decay = 4.91735;
-        this.range_left = 10;
+        this.decay = 1.1865;
         break;
       case 3345: // Executioner
         this.speed = 90;
-        this.decay = 1.00186;
-        this.range_left = 10;
+        this.decay = 5.5501;
         break;
       case 3351: // Galil
         this.speed = 90;
-        //this.decay = 1.11317;
-        this.range_left = 10;
+        this.decay = 1.25;
         break;
       case 3352: // WN
         this.speed = 100;
-        this.decay = 2.28571;
-        this.range_left = 10;
+        this.decay = 0.9943;
         break;
       case 3353: // Ballistic Knife
         this.speed = 40;
-        this.decay = 1.4876;
-        this.range_left = 10;
+        this.decay = 0;
         break;
       case 3354: // Cobra
         this.speed = 100;
-        //this.decay = 1.11317;
-        this.range_left = 10;
+        this.decay = 2.2857;
         break;
       case 3355: // MTAR
         this.speed = 90;
-        this.decay = 1.11317;
-        this.range_left = 10;
+        this.decay = 1.0019;
         break;
       case 3361: // RPD
         this.speed = 90;
-        this.decay = 1.11317;
-        this.range_left = 10;
+        this.decay = 1.1132;
         break;
       case 3362: // Rocket-Propelled Grievance
         this.speed = 90;
-        this.decay = 1.11317;
-        this.range_left = 10;
+        this.decay = 0;
         break;
       case 3363: // DSR-50
         this.speed = 90;
-        this.decay = 1.11317;
-        this.range_left = 10;
+        this.decay = 0.8240;
         break;
       case 3364: // Voice of Justice
         this.speed = 90;
-        this.decay = 1.11317;
-        this.range_left = 10;
+        this.decay = 4.9173;
         break;
       case 3371: // HAMR
         this.speed = 90;
-        this.decay = 1.11317;
-        this.range_left = 10;
+        this.decay = 1.5028;
         break;
       case 3372: // Ray Gun
         this.speed = 90;
-        this.decay = 1.11317;
-        this.range_left = 10;
+        this.decay = 0;
         break;
       case 3373: // Lamentation
         this.speed = 90;
-        this.decay = 1.11317;
-        this.range_left = 10;
+        this.decay = 1.2162;
         break;
       case 3374: // The Krauss Refibrillator
         this.speed = 90;
-        this.decay = 1.11317;
-        this.range_left = 10;
+        this.decay = 0;
         break;
       case 3375: // Malevolent Taxonomic Anodized Redeemer
         this.speed = 90;
-        this.decay = 1.11317;
-        this.range_left = 10;
+        this.decay = 1.0204;
         break;
       case 3381: // Relativistic Punishment Device
         this.speed = 90;
-        this.decay = 1.11317;
-        this.range_left = 10;
+        this.decay = 0.8230;
         break;
       case 3382: // Dead Specimen Reactor 5000
         this.speed = 90;
-        this.decay = 1.11317;
-        this.range_left = 10;
+        this.decay = 0;
         break;
       case 3391: // SLDG HAMR
         this.speed = 90;
-        this.decay = 1.11317;
-        this.range_left = 10;
+        this.decay = 0.9600;
         break;
       case 3392: // Porter's X2 Ray Gun
         this.speed = 90;
-        this.decay = 1.11317;
-        this.range_left = 10;
+        this.decay = 0;
         break;
       case 3924: // glass bottle (thrown)
         this.speed = 4;
-        this.decay = 0.5;
-        this.range_left = 10;
+        this.decay = 0.3;
         break;
       case 3931: // rock (thrown)
         this.speed = 5;
-        this.decay = 0.5;
-        this.range_left = 10;
+        this.decay = 0.3;
         break;
       case 3932: // arrow (thrown)
         this.speed = 4;
-        this.decay = 0.5;
-        this.range_left = 10;
+        this.decay = 0.3;
         break;
       case 3933: // pebble (thrown)
         this.speed = 5;
-        this.decay = 0.5;
-        this.range_left = 10;
+        this.decay = 0.3;
         break;
       case 3944: // grenade (thrown)
         this.speed = 6;
-        this.decay = 0.5;
-        this.range_left = 10;
+        this.decay = 0.3;
         break;
       default:
         global.errorMessage("ERROR: Projectile ID " + ID + " not found.");
