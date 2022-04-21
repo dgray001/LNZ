@@ -3,6 +3,8 @@ class Ability {
   private int timer_cooldown = 0;
   private int timer_other = 0;
   private int target_key = -1;
+  private int stacks = 0;
+  private boolean toggle = false;
 
   Ability(int ID) {
     this.ID = ID;
@@ -54,7 +56,11 @@ class Ability {
   String description() {
     switch(this.ID) {
       case 101:
-        return "";
+        return "Each time you damage, are damaged, or receive a negative status " +
+          "effect, gain 2% rage, to a maximum of 100. Also gain 6% rage for " +
+          "a kill. After not increasing rage for 4s your rage will decrease " +
+          "by 1% every 1s. Gain +0.25% bonus tenacity and attack speed for " +
+          "every rage you have.";
       case 102:
         return "";
       case 103:
@@ -64,7 +70,11 @@ class Ability {
       case 105:
         return "";
       case 106:
-        return "";
+        return "Each time you damage, are damaged, or receive a negative status " +
+          "effect, gain 4% rage, to a maximum of 100. Also gain 10% rage for " +
+          "a kill. After not increasing rage for 6s your rage will decrease " +
+          "by 1% every 1.5s. Gain +0.4% bonus tenacity and attack speed for " +
+          "every rage you have.";
       case 107:
         return "";
       case 108:
@@ -151,6 +161,28 @@ class Ability {
   void update(int timeElapsed, Unit u, GameMap map) {
     this.update(timeElapsed);
     switch(this.ID) {
+      case 101: // Fearless Leader I
+        if (this.timer_other <= 0) {
+          if (Hero.class.isInstance(u)) {
+            ((Hero)u).decreaseMana(1);
+          }
+          else {
+            global.errorMessage("ERROR: Only Hero units can have Ability " + this.ID + ".");
+          }
+          this.timer_other = 500;
+        }
+        break;
+      case 106: // Fearless Leader II
+        if (this.timer_other <= 0) {
+          if (Hero.class.isInstance(u)) {
+            ((Hero)u).decreaseMana(1);
+          }
+          else {
+            global.errorMessage("ERROR: Only Hero units can have Ability " + this.ID + ".");
+          }
+          this.timer_other = 800;
+        }
+        break;
       default:
         break;
     }
@@ -163,6 +195,50 @@ class Ability {
     }
     if (this.timer_other > 0) {
       this.timer_other -= timeElapsed;
+    }
+  }
+
+
+  void addStack() {
+    this.stacks++;
+    switch(this.ID) {
+      default:
+        global.errorMessage("ERROR: Ability ID " + this.ID + " can't add stack.");
+        break;
+    }
+  }
+
+
+  String fileString() {
+    String fileString = "\nnew: Ability: " + this.ID;
+    fileString += "\ntimer_cooldown: " + this.timer_cooldown;
+    fileString += "\ntimer_other: " + this.timer_other;
+    fileString += "\ntarget_key: " + this.target_key;
+    fileString += "\nstacks: " + this.stacks;
+    fileString += "\ntoggle: " + this.toggle;
+    return fileString;
+  }
+
+  void addData(String datakey, String data) {
+    switch(datakey) {
+      case "timer_cooldown":
+        this.timer_cooldown = toInt(data);
+        break;
+      case "timer_other":
+        this.timer_other = toInt(data);
+        break;
+      case "target_key":
+        this.target_key = toInt(data);
+        break;
+      case "stacks":
+        this.stacks = toInt(data);
+        break;
+      case "toggle":
+        this.toggle = toBoolean(data);
+        break;
+      default:
+        global.errorMessage("ERROR: Datakey " + datakey + " not found for Ability data.");
+        break;
     }
   }
 }
