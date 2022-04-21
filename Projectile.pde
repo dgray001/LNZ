@@ -41,21 +41,25 @@ class Projectile extends MapObject {
       switch(ID) {
         case 3001: // mighty Pen
           if (u.holding(2911, 2912)) {
-            this.power = 5 + u.power(0.7, 0.7);
+            this.power = Constants.ability_102_powerBasePen + u.power(Constants.
+              ability_102_powerRatioPen, Constants.ability_102_powerRatioPen);
             u.pickup(null);
           }
           else {
-            this.power = 1 + u.power(0.35, 0.35);
+            this.power = Constants.ability_102_powerBase + u.power(Constants.
+              ability_102_powerRatio, Constants.ability_102_powerRatio);
           }
           this.damageType = DamageType.MIXED;
           break;
         case 3002: // Mighty Pen II
           if (u.holding(2911, 2912)) {
-            this.power = 50 + u.power(1, 1);
+            this.power = Constants.ability_107_powerBasePen + u.power(Constants.
+              ability_107_powerRatioPen, Constants.ability_107_powerRatioPen);
             u.pickup(null);
           }
           else {
-            this.power = 10 + u.power(0.5, 0.5);
+            this.power = Constants.ability_107_powerBase + u.power(Constants.
+              ability_107_powerRatio, Constants.ability_107_powerRatio);
           }
           this.damageType = DamageType.MIXED;
           break;
@@ -74,10 +78,10 @@ class Projectile extends MapObject {
       this.range_left = 1.1 * u.attackRange();
       switch(ID) {
         case 3001: // Mighty Pen
-          this.range_left = 5;
+          this.range_left = Constants.ability_102_distance;
           break;
         case 3002: // Mighty Pen II
-          this.range_left = 5;
+          this.range_left = Constants.ability_107_distance;
           break;
         default:
           this.range_left = 1.1 * u.attackRange();
@@ -695,10 +699,10 @@ class Projectile extends MapObject {
     u.damage(map.units.get(this.source_key), damage);
     switch(this.ID) {
       case 3001: // Mighty Pen
-        u.heal(0.2 * damage);
+        u.heal(Constants.ability_102_healRatio * damage);
         break;
       case 3002: // Mighty Pen II
-        u.heal(0.3 * damage);
+        u.heal(Constants.ability_107_healRatio * damage);
         break;
       default:
         break;

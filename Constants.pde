@@ -4,8 +4,8 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220420: v0.6.7b" +
-  "\nLines: 24845 (v0.6.7)" +
+  "\n20220421: v0.6.7c" +
+  "\nLines: 25641 (v0.6.7c)" +
   "";
   static final String version_history =
   "Liberal Nazi Zombies" +
@@ -350,6 +350,60 @@ static class Constants {
   static final float hero_statusDescription_height = 120;
   static final float hero_leftPanelBarHeight = 10;
   static final float hero_leftPanelButtonHoverTimer = 200;
+
+  // Ability
+  static final int ability_101_rageGain = 2;
+  static final int ability_101_rageGainKill = 6;
+  static final float ability_101_cooldownTimer = 4000;
+  static final float ability_101_tickTimer = 500;
+  static final float ability_101_bonusAmount = 0.0025;
+  static final float ability_102_powerBase = 1;
+  static final float ability_102_powerRatio = 0.35;
+  static final float ability_102_distance = 5;
+  static final float ability_102_powerBasePen = 5;
+  static final float ability_102_powerRatioPen = 0.7;
+  static final float ability_102_healRatio = 0.2;
+  static final float ability_103_range = 2;
+  static final float ability_103_castTime = 800;
+  static final float ability_103_coneAngle = 0.15 * PI;
+  static final float ability_103_debuff = 0.85;
+  static final float ability_103_time = 3000;
+  static final float ability_104_passiveHealAmount = 0.01;
+  static final float ability_104_passiveHealTimer = 3000;
+  static final float ability_104_activeHealAmount = 0.15;
+  static final float ability_104_speedBuff = 0.25;
+  static final float ability_104_speedBuffTimer = 3000;
+  static final int ability_105_rageGain = 40;
+  static final float ability_105_buffAmount = 0.4;
+  static final float ability_105_buffTime = 4500;
+  static final float ability_105_rageGainBonus = 0.8;
+  static final float ability_105_fullRageBonus = 0.3;
+  static final int ability_106_rageGain = 5;
+  static final int ability_106_rageGainKill = 10;
+  static final float ability_106_cooldownTimer = 6000;
+  static final float ability_106_tickTimer = 800;
+  static final float ability_106_bonusAmount = 0.004;
+  static final float ability_107_powerBase = 10;
+  static final float ability_107_powerRatio = 0.5;
+  static final float ability_107_distance = 5;
+  static final float ability_107_powerBasePen = 50;
+  static final float ability_107_powerRatioPen = 1;
+  static final float ability_107_healRatio = 0.3;
+  static final float ability_108_range = 3;
+  static final float ability_108_castTime = 800;
+  static final float ability_108_coneAngle = 0.15 * PI;
+  static final float ability_108_debuff = 0.75;
+  static final float ability_108_time = 5000;
+  static final float ability_109_passiveHealAmount = 0.01;
+  static final float ability_109_passiveHealTimer = 1500;
+  static final float ability_109_activeHealAmount = 0.25;
+  static final float ability_109_speedBuff = 0.35;
+  static final float ability_109_speedBuffTimer = 4500;
+  static final int ability_110_rageGain = 60;
+  static final float ability_110_buffAmount = 0.5;
+  static final float ability_110_buffTime = 7000;
+  static final float ability_110_rageGainBonus = 1.6;
+  static final float ability_110_fullRageBonus = 0.5;
 
   // Level
   static final float level_vendingFormWidth = 300;

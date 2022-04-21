@@ -2,7 +2,7 @@ enum UnitAction {
   NONE, MOVING, TARGETING_FEATURE, TARGETING_UNIT, TARGETING_ITEM, ATTACKING,
   SHOOTING, AIMING, USING_ITEM, FEATURE_INTERACTION, FEATURE_INTERACTION_WITH_ITEM,
   HERO_INTERACTING_WITH_FEATURE, TARGETING_FEATURE_WITH_ITEM,
-  HERO_INTERACTING_WITH_FEATURE_WITH_ITEM, MOVING_AND_USING_ITEM;
+  HERO_INTERACTING_WITH_FEATURE_WITH_ITEM, MOVING_AND_USING_ITEM, CASTING;
 }
 
 
@@ -677,6 +677,12 @@ class Unit extends MapObject {
     if (this.withered()) {
       attack *= Constants.status_withered_multiplier;
     }
+    if (this.nelsonGlare()) {
+      attack *= Constants.ability_103_debuff;
+    }
+    if (this.nelsonGlareII()) {
+      attack *= Constants.ability_108_debuff;
+    }
     for (Ability a : this.abilities) {
       if (a == null) {
         continue;
@@ -900,10 +906,10 @@ class Unit extends MapObject {
       }
       switch(a.ID) {
         case 101: // Fearless Leader I
-          attackCooldown *= (1 - 0.0025 * this.currMana());
+          attackCooldown *= (1 - Constants.ability_101_bonusAmount * this.currMana());
           break;
         case 106: // Fearless Leader II
-          attackCooldown *= (1 - 0.004 * this.currMana());
+          attackCooldown *= (1 - Constants.ability_106_bonusAmount * this.currMana());
           break;
         default:
           break;
@@ -931,10 +937,10 @@ class Unit extends MapObject {
       }
       switch(a.ID) {
         case 101: // Fearless Leader I
-          attackTime *= (1 - 0.0025 * this.currMana());
+          attackTime *= (1 - Constants.ability_101_bonusAmount * this.currMana());
           break;
         case 106: // Fearless Leader II
-          attackTime *= (1 - 0.004 * this.currMana());
+          attackTime *= (1 - Constants.ability_106_bonusAmount * this.currMana());
           break;
         default:
           break;
@@ -976,6 +982,12 @@ class Unit extends MapObject {
     if (this.frozen()) {
       return 0;
     }
+    if (this.nelsonGlare()) {
+      speed *= Constants.ability_103_debuff;
+    }
+    if (this.nelsonGlareII()) {
+      speed *= Constants.ability_108_debuff;
+    }
     for (Ability a : this.abilities) {
       if (a == null) {
         continue;
@@ -1014,10 +1026,10 @@ class Unit extends MapObject {
       }
       switch(a.ID) {
         case 101: // Fearless Leader I
-          tenacity += 0.0025 * this.currMana();
+          tenacity += Constants.ability_101_bonusAmount * this.currMana();
           break;
         case 106: // Fearless Leader II
-          tenacity += 0.004 * this.currMana();
+          tenacity += Constants.ability_106_bonusAmount * this.currMana();
           break;
         default:
           break;
@@ -1086,7 +1098,28 @@ class Unit extends MapObject {
     }
   }
   void addStatusEffect(StatusEffectCode code, float timer) {
-    timer *= this.element.resistanceFactorTo(code.element());
+    if (code.negative()) {
+      timer *= this.element.resistanceFactorTo(code.element());
+      for (Ability a : this.abilities) {
+        if (a == null) {
+          continue;
+        }
+        switch(a.ID) {
+          case 101: // Fearless Leader I
+            this.increaseMana(Constants.ability_101_rageGain);
+            a.timer_other = Constants.ability_101_cooldownTimer;
+            break;
+          case 106: // Fearless Leader II
+            this.increaseMana(Constants.ability_106_rageGain);
+            a.timer_other = Constants.ability_106_cooldownTimer;
+            break;
+          default:
+            break;
+        }
+      }
+    }
+    else {
+    }
     if (this.statuses.containsKey(code)) {
       if (!this.statuses.get(code).permanent) {
         this.statuses.get(code).addTime(timer);
@@ -1195,8 +1228,14 @@ class Unit extends MapObject {
   boolean nelsonGlare() {
     return this.hasStatusEffect(StatusEffectCode.NELSON_GLARE);
   }
+  boolean nelsonGlareII() {
+    return this.hasStatusEffect(StatusEffectCode.NELSON_GLAREII);
+  }
   boolean senselessGrit() {
     return this.hasStatusEffect(StatusEffectCode.SENSELESS_GRIT);
+  }
+  boolean rageOfTheBen() {
+    return this.hasStatusEffect(StatusEffectCode.RAGE_OF_THE_BEN);
   }
 
   StatusEffectCode priorityStatusEffect() {
@@ -1848,12 +1887,12 @@ class Unit extends MapObject {
       }
       switch(a.ID) {
         case 101: // Fearless Leader I
-          this.increaseMana(2);
-          a.timer_other = 4000;
+          this.increaseMana(Constants.ability_101_rageGain);
+          a.timer_other = Constants.ability_101_cooldownTimer;
           break;
         case 106: // Fearless Leader II
-          this.increaseMana(4);
-          a.timer_other = 6000;
+          this.increaseMana(Constants.ability_106_rageGain);
+          a.timer_other = Constants.ability_106_cooldownTimer;
           break;
         default:
           break;
@@ -1880,12 +1919,12 @@ class Unit extends MapObject {
       }
       switch(a.ID) {
         case 101: // Fearless Leader I
-          this.increaseMana(2);
-          a.timer_other = 4000;
+          this.increaseMana(Constants.ability_101_rageGain);
+          a.timer_other = Constants.ability_101_cooldownTimer;
           break;
         case 106: // Fearless Leader II
-          this.increaseMana(4);
-          a.timer_other = 6000;
+          this.increaseMana(Constants.ability_106_rageGain);
+          a.timer_other = Constants.ability_106_cooldownTimer;
           break;
         default:
           break;
@@ -1901,12 +1940,12 @@ class Unit extends MapObject {
       }
       switch(a.ID) {
         case 101: // Fearless Leader I
-          this.increaseMana(6);
-          a.timer_other = 4000;
+          this.increaseMana(Constants.ability_101_rageGainKill);
+          a.timer_other = Constants.ability_101_cooldownTimer;
           break;
         case 106: // Fearless Leader II
-          this.increaseMana(10);
-          a.timer_other = 6000;
+          this.increaseMana(Constants.ability_106_rageGainKill);
+          a.timer_other = Constants.ability_106_cooldownTimer;
           break;
         default:
           break;

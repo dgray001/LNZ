@@ -1,19 +1,24 @@
 class VisualEffect extends MapObject {
   protected float size_width = 0;
   protected float size_height = 0;
-  protected int timer = 0;
+  protected float timer = 0;
   protected boolean scale_size = true;
 
   VisualEffect(int ID) {
     super(ID);
     switch(ID) {
+      // gifs
       case 4001: // move gif
         this.setValues(1.3 * global.configuration.cursor_size,
           1.3 * global.configuration.cursor_size, Constants.gif_move_time);
         this.scale_size = false;
         break;
-      case 4101: // chuck quizmo poof
+      case 4002: // chuck quizmo poof
         this.setValues(1, 1, 1000 + Constants.gif_poof_time);
+        break;
+      // abilities
+      case 4103: // nelson glare
+      case 4108: // nelson glare II
         break;
       default:
         global.errorMessage("ERROR: VisualEffect ID " + ID + " not found.");
@@ -21,7 +26,7 @@ class VisualEffect extends MapObject {
     }
   }
 
-  void setValues(float size_width, float size_height, int timer) {
+  void setValues(float size_width, float size_height, float timer) {
     this.size_width = size_width;
     this.size_height = size_height;
     this.timer = timer;
@@ -100,10 +105,10 @@ class VisualEffect extends MapObject {
       case 4001:
         path += "move/";
         frame = int(floor(Constants.gif_move_frames *
-          (1.0 - float(this.timer) / (1 + Constants.gif_move_time))));
+          (1.0 - this.timer / (1 + Constants.gif_move_time))));
         path += frame + ".png";
         break;
-      case 4101:
+      case 4002:
         if (this.timer > Constants.gif_poof_time) {
           path = "features/chuck_quizmo.png";
         }
@@ -111,7 +116,7 @@ class VisualEffect extends MapObject {
           this.size_width = 1.6;
           path += "poof/";
           frame = int(floor(Constants.gif_poof_frames *
-            (1.0 - float(this.timer) / (1 + Constants.gif_poof_time))));
+            (1.0 - this.timer / (1 + Constants.gif_poof_time))));
           path += frame + ".png";
         }
         break;
@@ -137,11 +142,41 @@ class VisualEffect extends MapObject {
   }
 
 
+  void display(float zoom) {
+    float range = 0;
+    switch(this.ID) {
+      case 4103: // nelson glare
+        ellipseMode(RADIUS);
+        fill(170, 160);
+        noStroke();
+        range = Constants.ability_103_range * (1 - this.timer / Constants.ability_103_castTime);
+        arc(0, 0, range * zoom, range * zoom, this.size_width, this.size_height, PIE);
+        break;
+      case 4108: // nelson glare II
+        ellipseMode(RADIUS);
+        fill(170, 200);
+        noStroke();
+        range = Constants.ability_108_range * (1 - this.timer / Constants.ability_108_castTime);
+        arc(0, 0, range * zoom, range * zoom, this.size_width, this.size_height, PIE);
+        break;
+      default:
+        if (this.scale_size) {
+          image(this.getImage(), 0, 0, this.size_width * zoom, this.size_height * zoom);
+        }
+        else {
+          image(this.getImage(), 0, 0, this.size_width, this.size_height);
+        }
+        break;
+    }
+  }
+
+
   String fileString() {
     String fileString = "\nnew: VisualEffect: " + this.ID;
     fileString += this.objectFileString();
     fileString += "\nsize_width: " + this.size_width;
     fileString += "\nsize_height: " + this.size_height;
+    fileString += "\ntimer: " + this.timer;
     fileString += "\nend: VisualEffect\n";
     return fileString;
   }
@@ -156,6 +191,9 @@ class VisualEffect extends MapObject {
         break;
       case "size_height":
         this.size_height = toFloat(data);
+        break;
+      case "timer":
+        this.timer = toFloat(data);
         break;
       default:
         global.errorMessage("ERROR: Datakey " + datakey + " not found for visual effect data.");
