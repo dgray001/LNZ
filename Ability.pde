@@ -96,11 +96,11 @@ class Ability {
       case 105:
         return "Ben unleashes the totality of his rage.\nInstantly gain " +
           Constants.ability_105_rageGain + " rage, become invulnerable and " +
-          "gain +" + round(Constants.ability_105_buffAmount*100) + "% attack " +
+          "gain +" + round((Constants.ability_105_buffAmount-1)*100) + "% attack " +
           "for " + (Constants.ability_105_buffTime/1000) + "s.\nDuring Rage of " +
           "the Ben:\n - Your passive rage increases are increased by " + round(
-          Constants.ability_105_rageGainBonus*100) + "%\n - You gain a " + round(
-          Constants.ability_105_fullRageBonus*100) + "% bonus to tenacity and " +
+          (Constants.ability_105_rageGainBonus-1)*100) + "%\n - You gain a " + round(
+          (Constants.ability_105_fullRageBonus-1)*100) + "% bonus to tenacity and " +
           "attack speed if your rage is at 100%\n - You cannot cast Mighty Pen (a)";
       case 106:
         return "Ben is our fearless leader so never backs down from a fight.\n" +
@@ -140,11 +140,11 @@ class Ability {
       case 110:
         return "Ben unleashes the totality of his rage.\nInstantly gain " +
           Constants.ability_110_rageGain + " rage, become invulnerable and " +
-          "gain +" + round(Constants.ability_110_buffAmount*100) + "% attack " +
+          "gain +" + round((Constants.ability_110_buffAmount-1)*100) + "% attack " +
           "for " + (Constants.ability_110_buffTime/1000) + "s.\nDuring Rage of " +
           "the Ben:\n - Your passive rage increases are increased by " + round(
-          Constants.ability_110_rageGainBonus*100) + "%\n - You gain a " + round(
-          Constants.ability_110_fullRageBonus*100) + "% bonus to tenacity and " +
+          (Constants.ability_110_rageGainBonus-1)*100) + "%\n - You gain a " + round(
+          (Constants.ability_110_fullRageBonus-1)*100) + "% bonus to tenacity and " +
           "attack speed if your rage is at 100%\n - You cannot cast Mighty Pen (a)";
       default:
         return "-- error -- ";
@@ -290,6 +290,11 @@ class Ability {
         u.healPercent(Constants.ability_104_activeHealAmount, false);
         u.addStatusEffect(StatusEffectCode.SENSELESS_GRIT, Constants.ability_104_speedBuffTimer);
         break;
+      case 105: // Rage of the Ben
+        u.increaseMana(Constants.ability_105_rageGain);
+        u.addStatusEffect(StatusEffectCode.INVULNERABLE, Constants.ability_105_buffTime);
+        u.addStatusEffect(StatusEffectCode.RAGE_OF_THE_BEN, Constants.ability_105_buffTime);
+        break;
       case 107: // Mighty Pen II
         map.addProjectile(new Projectile(3002, source_key, u));
         break;
@@ -305,6 +310,11 @@ class Ability {
       case 109: // Senseless Grit II
         u.healPercent(Constants.ability_109_activeHealAmount, false);
         u.addStatusEffect(StatusEffectCode.SENSELESS_GRITII, Constants.ability_109_speedBuffTimer);
+        break;
+      case 110: // Rage of the Ben II
+        u.increaseMana(Constants.ability_110_rageGain);
+        u.addStatusEffect(StatusEffectCode.INVULNERABLE, Constants.ability_110_buffTime);
+        u.addStatusEffect(StatusEffectCode.RAGE_OF_THE_BENII, Constants.ability_110_buffTime);
         break;
       default:
         global.errorMessage("ERROR: Can't activate ability with ID " + this.ID + ".");

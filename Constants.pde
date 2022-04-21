@@ -4,8 +4,8 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220421: v0.6.7d" +
-  "\nLines: 25641 (v0.6.7c)" +
+  "\n20220421: v0.6.7e" +
+  "\nLines: 25949 (v0.6.7e)" +
   "";
   static final String version_history =
   "Liberal Nazi Zombies" +
@@ -339,6 +339,7 @@ static class Constants {
   static final int hero_maxLevel = 100;
   static final float hero_defaultInventoryBarHeight = 110;
   static final float hero_inventoryBarGap = 10;
+  static final float hero_abilityDescriptionMinWidth = 250;
   static final int hero_maxHunger = 100;
   static final int hero_maxThirst = 100;
   static final int hero_hungerTimer = 4500;
@@ -376,8 +377,9 @@ static class Constants {
   static final int ability_105_rageGain = 40;
   static final float ability_105_buffAmount = 1.4;
   static final float ability_105_buffTime = 4500;
-  static final float ability_105_rageGainBonus = 0.8;
-  static final float ability_105_fullRageBonus = 0.3;
+  static final float ability_105_rageGainBonus = 1.8;
+  static final float ability_105_fullRageBonus = 1.3;
+  static final float ability_105_shakeConstant = 4;
   static final int ability_106_rageGain = 5;
   static final int ability_106_rageGainKill = 10;
   static final float ability_106_cooldownTimer = 6000;
@@ -403,7 +405,8 @@ static class Constants {
   static final float ability_110_buffAmount = 1.5;
   static final float ability_110_buffTime = 7000;
   static final float ability_110_rageGainBonus = 1.6;
-  static final float ability_110_fullRageBonus = 0.5;
+  static final float ability_110_fullRageBonus = 1.5;
+  static final float ability_110_shakeConstant = 6;
 
   // Level
   static final float level_vendingFormWidth = 300;

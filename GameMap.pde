@@ -1439,6 +1439,21 @@ class GameMap {
       scale(-1, 1);
     }
     rotate(net_rotation);
+    float extra_translate_x = 0;
+    float extra_translate_y = 0;
+    if (u.rageOfTheBenII()) {
+      tint(255, 160, 160);
+      removeCache = true;
+      extra_translate_x = Constants.ability_110_shakeConstant - random(2 * Constants.ability_110_shakeConstant);
+      extra_translate_y = Constants.ability_110_shakeConstant - random(2 * Constants.ability_110_shakeConstant);
+    }
+    else if (u.rageOfTheBen()) {
+      tint(255, 80, 80);
+      removeCache = true;
+      extra_translate_x = Constants.ability_105_shakeConstant - random(2 * Constants.ability_105_shakeConstant);
+      extra_translate_y = Constants.ability_105_shakeConstant - random(2 * Constants.ability_105_shakeConstant);
+    }
+    translate(extra_translate_x, extra_translate_y);
     image(u.getImage(), 0, 0, u.width() * this.zoom, u.height() * this.zoom);
     if (u.weapon() != null) {
       float translateItemX = 0.9 * (u.xRadius() + Constants.unit_weaponDisplayScaleFactor * Constants.item_defaultSize) * this.zoom;
@@ -1459,9 +1474,10 @@ class GameMap {
       translate(-translateItemX, -translateItemY);
     }
     if (removeCache) {
-      g.removeCache(u.getImage());
       noTint();
+      g.removeCache(u.getImage());
     }
+    translate(-extra_translate_x, -extra_translate_y);
     rotate(-net_rotation);
     if (flip) {
       scale(-1, 1);
