@@ -1340,7 +1340,7 @@ class Feature extends MapObject {
     // visual effects
     switch(this.ID) {
       case 12: // chuck quizmo
-        map.addVisualEffect(4101, this.xCenter(), this.yCenter());
+        map.addVisualEffect(4002, this.xCenter(), this.yCenter());
         break;
     }
     // sound effect

@@ -1373,12 +1373,7 @@ class GameMap {
       float translateX = this.xi_map + (v.x - this.startSquareX) * this.zoom;
       float translateY = this.yi_map + (v.y - this.startSquareY) * this.zoom;
       translate(translateX, translateY);
-      if (v.scale_size) {
-        image(v.getImage(), 0, 0, v.size_width * this.zoom, v.size_height * this.zoom);
-      }
-      else {
-        image(v.getImage(), 0, 0, v.size_width, v.size_height);
-      }
+      v.display(this.zoom);
       translate(-translateX, -translateY);
     }
     // name displayed

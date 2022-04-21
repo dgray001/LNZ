@@ -7,7 +7,8 @@ enum StatusEffectCode {
   DECAYED("Decayed"), SHAKEN("Shaken"), FALLEN("Fallen"), SHOCKED("Shocked"),
   PARALYZED("Paralyzed"), UNSTABLE("Unstable"), RADIOACTIVE("Radioactive"),
 
-  NELSON_GLARE("Nelson Glared"), SENSELESS_GRIT("Senseless Grit"),
+  NELSON_GLARE("Nelson Glared"), NELSON_GLAREII("Nelson Glared"), SENSELESS_GRIT(
+  "Senseless Grit"), RAGE_OF_THE_BEN("Rage of the Ben"),
   ;
 
   private static final List<StatusEffectCode> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
@@ -33,6 +34,21 @@ enum StatusEffectCode {
       }
     }
     return StatusEffectCode.ERROR;
+  }
+
+  public boolean negative() {
+    return StatusEffectCode.negative(this);
+  }
+  public static boolean negative(StatusEffectCode code) {
+    switch(code) {
+      case INVULNERABLE:
+      case UNKILLABLE:
+      case SENSELESS_GRIT:
+      case RAGE_OF_THE_BEN:
+        return false;
+      default:
+        return true;
+    }
   }
 
   public Element element() {

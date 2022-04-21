@@ -1598,6 +1598,7 @@ class Hero extends Unit {
         case 't':
           this.activateAbility(0);
           this.activateAbility(1);
+          this.activateAbility(2);
           break;
         default:
           break;

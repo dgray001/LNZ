@@ -110,6 +110,11 @@ abstract class MapObject {
     float yDistance = max(0, abs(this.yCenter() - object.yCenter()) - this.yRadius() - object.yRadius());
     return sqrt(xDistance * xDistance + yDistance * yDistance);
   }
+  float centerDistance(MapObject object) {
+    float xDistance = abs(this.xCenter() - object.xCenter());
+    float yDistance = abs(this.yCenter() - object.yCenter());
+    return sqrt(xDistance * xDistance + yDistance * yDistance);
+  }
   float distance(float pointX, float pointY) {
     float xDistance = max(0, abs(this.xCenter() - pointX) - this.xRadius());
     float yDistance = max(0, abs(this.yCenter() - pointY) - this.yRadius());
