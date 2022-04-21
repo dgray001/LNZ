@@ -723,10 +723,10 @@ class Hero extends Unit {
     class AbilityButton extends RectangleButton {
       class AbilityTextBox extends TextBox {
         private boolean display = false;
-        AbilityTextBox() {
-          super(0, 0, 0, 0);
-          this.setTitleSize(15);
-          this.setTextSize(13);
+        AbilityTextBox(float xi, float yi, float xf, float yf) {
+          super(xi, yi, xf, yf);
+          this.setTitleSize(18);
+          this.setTextSize(15);
           this.color_background = global.color_nameDisplayed_background;
           this.color_header = global.color_nameDisplayed_background;
           this.color_stroke = color(1, 0);
@@ -749,18 +749,47 @@ class Hero extends Unit {
 
       AbilityButton(float xi, float yi, float xf, float yf, Ability a, String letter) {
         super(xi, yi, xf, yf);
-        this.a = a;
         this.message = letter;
         this.roundness = 10;
         this.setColors(color(0), color(0), color(0), color(0), color(0));
         this.setStroke(InventoryBar.this.color_ability_border, 2);
         this.use_time_elapsed = true;
+        this.description = new AbilityTextBox(xi, yi, xi, yi);
+        this.setAbility(a);
+      }
+
+      void setAbility(Ability a) {
+        this.a = a;
+        if (a == null) {
+          this.description.setTitleText("");
+          this.description.setText("");
+          this.description.setXLocation(this.xi, this.xi);
+          this.description.setYLocation(this.yi, this.yi);
+        }
+        else {
+          textSize(18);
+          float description_width = max(Constants.hero_abilityDescriptionMinWidth, 4 + textWidth(a.displayName()));
+          this.description.setXLocation(this.xi - 0.5 * description_width, this.xf + 0.5 * description_width);
+          float description_height = textAscent() + textDescent() + 6;
+          textSize(15);
+          this.description.setTitleText(a.displayName());
+          this.description.setText(a.description());
+          description_height += (2 + this.description.text_lines.size()) * (textAscent() + textDescent() + this.description.text_leading);
+          this.description.setYLocation(this.yi - description_height, this.yi);
+        }
+      }
+
+      @Override
+      void update(int timeElapsed) {
+        super.update(timeElapsed);
+        if (this.description.display) {
+          this.description.update(timeElapsed);
+        }
       }
 
       @Override
       void drawButton() {
         super.drawButton();
-          //image(ability border)
         if (this.a != null) {
           imageMode(CORNERS);
           ellipseMode(CENTER);
@@ -785,8 +814,14 @@ class Hero extends Unit {
         }
       }
 
-      void hover() {}
-      void dehover() {}
+      void hover() {
+        if (this.a != null) {
+          this.description.display = true;
+        }
+      }
+      void dehover() {
+        this.description.display = false;
+      }
       void click() {}
       void release() {}
     }
@@ -1338,7 +1373,7 @@ class Hero extends Unit {
     }
     int ability_id = 2 * Constants.hero_abilityNumber * (this.ID - 1101) + index + 101;
     this.abilities.set(index, new Ability(ability_id));
-    this.inventory_bar.ability_buttons.get(index).a = this.abilities.get(index);
+    this.inventory_bar.ability_buttons.get(index).setAbility(this.abilities.get(index));
   }
 
   void updgradeAbility(int index) {
@@ -1387,6 +1422,7 @@ class Hero extends Unit {
     return this.curr_mana;
   }
 
+  @Override
   float mana() {
     switch(this.code) {
       case BEN:

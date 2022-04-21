@@ -655,6 +655,9 @@ class Unit extends MapObject {
   float currMana() {
     return 0;
   }
+  float mana() {
+    return 0;
+  }
   void increaseMana(int amount) {}
   void decreaseMana(int amount) {}
 
@@ -682,6 +685,12 @@ class Unit extends MapObject {
     }
     if (this.nelsonGlareII()) {
       attack *= Constants.ability_108_debuff;
+    }
+    if (this.rageOfTheBen()) {
+      attack *= Constants.ability_105_buffAmount;
+    }
+    if (this.rageOfTheBenII()) {
+      attack *= Constants.ability_110_buffAmount;
     }
     for (Ability a : this.abilities) {
       if (a == null) {
@@ -906,10 +915,26 @@ class Unit extends MapObject {
       }
       switch(a.ID) {
         case 101: // Fearless Leader I
-          attackCooldown *= (1 - Constants.ability_101_bonusAmount * this.currMana());
+          if (this.rageOfTheBen() && this.currMana() == this.mana()) {
+            attackCooldown *= (1 - Constants.ability_101_bonusAmount * this.currMana() * Constants.ability_105_fullRageBonus);
+          }
+          if (this.rageOfTheBenII() && this.currMana() == this.mana()) {
+            attackCooldown *= (1 - Constants.ability_101_bonusAmount * this.currMana() * Constants.ability_110_fullRageBonus);
+          }
+          else {
+            attackCooldown *= (1 - Constants.ability_101_bonusAmount * this.currMana());
+          }
           break;
         case 106: // Fearless Leader II
-          attackCooldown *= (1 - Constants.ability_106_bonusAmount * this.currMana());
+          if (this.rageOfTheBen() && this.currMana() == this.mana()) {
+            attackCooldown *= (1 - Constants.ability_106_bonusAmount * this.currMana() * Constants.ability_105_fullRageBonus);
+          }
+          if (this.rageOfTheBenII() && this.currMana() == this.mana()) {
+            attackCooldown *= (1 - Constants.ability_106_bonusAmount * this.currMana() * Constants.ability_110_fullRageBonus);
+          }
+          else {
+            attackCooldown *= (1 - Constants.ability_106_bonusAmount * this.currMana());
+          }
           break;
         default:
           break;
@@ -937,10 +962,26 @@ class Unit extends MapObject {
       }
       switch(a.ID) {
         case 101: // Fearless Leader I
-          attackTime *= (1 - Constants.ability_101_bonusAmount * this.currMana());
+          if (this.rageOfTheBen() && this.currMana() == this.mana()) {
+            attackTime *= (1 - Constants.ability_101_bonusAmount * this.currMana() * Constants.ability_105_fullRageBonus);
+          }
+          if (this.rageOfTheBenII() && this.currMana() == this.mana()) {
+            attackTime *= (1 - Constants.ability_101_bonusAmount * this.currMana() * Constants.ability_110_fullRageBonus);
+          }
+          else {
+            attackTime *= (1 - Constants.ability_101_bonusAmount * this.currMana());
+          }
           break;
         case 106: // Fearless Leader II
-          attackTime *= (1 - Constants.ability_106_bonusAmount * this.currMana());
+          if (this.rageOfTheBen() && this.currMana() == this.mana()) {
+            attackTime *= (1 - Constants.ability_106_bonusAmount * this.currMana() * Constants.ability_105_fullRageBonus);
+          }
+          if (this.rageOfTheBenII() && this.currMana() == this.mana()) {
+            attackTime *= (1 - Constants.ability_106_bonusAmount * this.currMana() * Constants.ability_110_fullRageBonus);
+          }
+          else {
+            attackTime *= (1 - Constants.ability_106_bonusAmount * this.currMana());
+          }
           break;
         default:
           break;
@@ -1032,10 +1073,26 @@ class Unit extends MapObject {
       }
       switch(a.ID) {
         case 101: // Fearless Leader I
-          tenacity += Constants.ability_101_bonusAmount * this.currMana();
+          if (this.rageOfTheBen() && this.currMana() == this.mana()) {
+            tenacity += Constants.ability_101_bonusAmount * this.currMana() * Constants.ability_105_fullRageBonus;
+          }
+          if (this.rageOfTheBenII() && this.currMana() == this.mana()) {
+            tenacity += Constants.ability_101_bonusAmount * this.currMana() * Constants.ability_110_fullRageBonus;
+          }
+          else {
+            tenacity += Constants.ability_101_bonusAmount * this.currMana();
+          }
           break;
         case 106: // Fearless Leader II
-          tenacity += Constants.ability_106_bonusAmount * this.currMana();
+          if (this.rageOfTheBen() && this.currMana() == this.mana()) {
+            tenacity += Constants.ability_106_bonusAmount * this.currMana() * Constants.ability_105_fullRageBonus;
+          }
+          if (this.rageOfTheBenII() && this.currMana() == this.mana()) {
+            tenacity += Constants.ability_106_bonusAmount * this.currMana() * Constants.ability_110_fullRageBonus;
+          }
+          else {
+            tenacity += Constants.ability_106_bonusAmount * this.currMana();
+          }
           break;
         default:
           break;
@@ -1112,11 +1169,27 @@ class Unit extends MapObject {
         }
         switch(a.ID) {
           case 101: // Fearless Leader I
-            this.increaseMana(Constants.ability_101_rageGain);
+            if (this.rageOfTheBenII()) {
+              this.increaseMana(int(Constants.ability_101_rageGain * Constants.ability_110_rageGainBonus));
+            }
+            else if (this.rageOfTheBen()) {
+              this.increaseMana(int(Constants.ability_101_rageGain * Constants.ability_105_rageGainBonus));
+            }
+            else {
+              this.increaseMana(Constants.ability_101_rageGain);
+            }
             a.timer_other = Constants.ability_101_cooldownTimer;
             break;
           case 106: // Fearless Leader II
-            this.increaseMana(Constants.ability_106_rageGain);
+            if (this.rageOfTheBenII()) {
+              this.increaseMana(int(Constants.ability_106_rageGain * Constants.ability_110_rageGainBonus));
+            }
+            else if (this.rageOfTheBen()) {
+              this.increaseMana(int(Constants.ability_106_rageGain * Constants.ability_105_rageGainBonus));
+            }
+            else {
+              this.increaseMana(Constants.ability_106_rageGain);
+            }
             a.timer_other = Constants.ability_106_cooldownTimer;
             break;
           default:
@@ -1899,11 +1972,27 @@ class Unit extends MapObject {
       }
       switch(a.ID) {
         case 101: // Fearless Leader I
-          this.increaseMana(Constants.ability_101_rageGain);
+          if (this.rageOfTheBenII()) {
+            this.increaseMana(int(Constants.ability_101_rageGain * Constants.ability_110_rageGainBonus));
+          }
+          else if (this.rageOfTheBen()) {
+            this.increaseMana(int(Constants.ability_101_rageGain * Constants.ability_105_rageGainBonus));
+          }
+          else {
+            this.increaseMana(Constants.ability_101_rageGain);
+          }
           a.timer_other = Constants.ability_101_cooldownTimer;
           break;
         case 106: // Fearless Leader II
-          this.increaseMana(Constants.ability_106_rageGain);
+          if (this.rageOfTheBenII()) {
+            this.increaseMana(int(Constants.ability_106_rageGain * Constants.ability_110_rageGainBonus));
+          }
+          else if (this.rageOfTheBen()) {
+            this.increaseMana(int(Constants.ability_106_rageGain * Constants.ability_105_rageGainBonus));
+          }
+          else {
+            this.increaseMana(Constants.ability_106_rageGain);
+          }
           a.timer_other = Constants.ability_106_cooldownTimer;
           break;
         default:
@@ -1931,11 +2020,27 @@ class Unit extends MapObject {
       }
       switch(a.ID) {
         case 101: // Fearless Leader I
-          this.increaseMana(Constants.ability_101_rageGain);
+          if (this.rageOfTheBenII()) {
+            this.increaseMana(int(Constants.ability_101_rageGain * Constants.ability_110_rageGainBonus));
+          }
+          else if (this.rageOfTheBen()) {
+            this.increaseMana(int(Constants.ability_101_rageGain * Constants.ability_105_rageGainBonus));
+          }
+          else {
+            this.increaseMana(Constants.ability_101_rageGain);
+          }
           a.timer_other = Constants.ability_101_cooldownTimer;
           break;
         case 106: // Fearless Leader II
-          this.increaseMana(Constants.ability_106_rageGain);
+          if (this.rageOfTheBenII()) {
+            this.increaseMana(int(Constants.ability_106_rageGain * Constants.ability_110_rageGainBonus));
+          }
+          else if (this.rageOfTheBen()) {
+            this.increaseMana(int(Constants.ability_106_rageGain * Constants.ability_105_rageGainBonus));
+          }
+          else {
+            this.increaseMana(Constants.ability_106_rageGain);
+          }
           a.timer_other = Constants.ability_106_cooldownTimer;
           break;
         default:
@@ -1952,11 +2057,27 @@ class Unit extends MapObject {
       }
       switch(a.ID) {
         case 101: // Fearless Leader I
-          this.increaseMana(Constants.ability_101_rageGainKill);
+          if (this.rageOfTheBenII()) {
+            this.increaseMana(int(Constants.ability_101_rageGainKill * Constants.ability_110_rageGainBonus));
+          }
+          else if (this.rageOfTheBen()) {
+            this.increaseMana(int(Constants.ability_101_rageGainKill * Constants.ability_105_rageGainBonus));
+          }
+          else {
+            this.increaseMana(Constants.ability_101_rageGainKill);
+          }
           a.timer_other = Constants.ability_101_cooldownTimer;
           break;
         case 106: // Fearless Leader II
-          this.increaseMana(Constants.ability_106_rageGainKill);
+          if (this.rageOfTheBenII()) {
+            this.increaseMana(int(Constants.ability_106_rageGainKill * Constants.ability_110_rageGainBonus));
+          }
+          else if (this.rageOfTheBen()) {
+            this.increaseMana(int(Constants.ability_106_rageGainKill * Constants.ability_105_rageGainBonus));
+          }
+          else {
+            this.increaseMana(Constants.ability_106_rageGainKill);
+          }
           a.timer_other = Constants.ability_106_cooldownTimer;
           break;
         default:
