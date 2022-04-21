@@ -988,6 +988,12 @@ class Unit extends MapObject {
     if (this.nelsonGlareII()) {
       speed *= Constants.ability_108_debuff;
     }
+    if (this.senselessGrit()) {
+      speed *= Constants.ability_104_speedBuff;
+    }
+    if (this.senselessGritII()) {
+      speed *= Constants.ability_109_speedBuff;
+    }
     for (Ability a : this.abilities) {
       if (a == null) {
         continue;
@@ -1234,8 +1240,14 @@ class Unit extends MapObject {
   boolean senselessGrit() {
     return this.hasStatusEffect(StatusEffectCode.SENSELESS_GRIT);
   }
+  boolean senselessGritII() {
+    return this.hasStatusEffect(StatusEffectCode.SENSELESS_GRITII);
+  }
   boolean rageOfTheBen() {
     return this.hasStatusEffect(StatusEffectCode.RAGE_OF_THE_BEN);
+  }
+  boolean rageOfTheBenII() {
+    return this.hasStatusEffect(StatusEffectCode.RAGE_OF_THE_BENII);
   }
 
   StatusEffectCode priorityStatusEffect() {
@@ -1969,6 +1981,14 @@ class Unit extends MapObject {
   }
 
 
+  void healPercent(float amount, boolean max_heath) {
+    if (max_heath) {
+      this.heal(amount * this.health());
+    }
+    else {
+      this.heal(amount * (this.health() - this.curr_health));
+    }
+  }
   void heal(float amount) {
     this.heal(amount, false);
   }

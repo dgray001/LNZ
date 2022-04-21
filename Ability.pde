@@ -90,7 +90,7 @@ class Ability {
           Constants.ability_104_passiveHealAmount*100) + "% missing health " +
           "every " + (Constants.ability_104_passiveHealTimer/1000) + "s.\nActive: " +
           "Heal " + round(Constants.ability_104_activeHealAmount*100) + "% " +
-          "missing health and gain " + round(Constants.ability_104_speedBuff*100) +
+          "missing health and gain " + round((Constants.ability_104_speedBuff-1)*100) +
           "% move speed when targeting enemies for " + (Constants.
           ability_104_speedBuffTimer/1000) + "s.";
       case 105:
@@ -134,7 +134,7 @@ class Ability {
           Constants.ability_109_passiveHealAmount*100) + "% missing health " +
           "every " + (Constants.ability_109_passiveHealTimer/1000) + "s.\nActive: " +
           "Heal " + round(Constants.ability_109_activeHealAmount*100) + "% " +
-          "missing health and gain " + round(Constants.ability_109_speedBuff*100) +
+          "missing health and gain " + round((Constants.ability_109_speedBuff-1)*100) +
           "% move speed when targeting enemies for " + (Constants.
           ability_109_speedBuffTimer/1000) + "s.";
       case 110:
@@ -286,6 +286,10 @@ class Ability {
           Constants.ability_103_coneAngle, Constants.ability_103_castTime);
         map.addVisualEffect(ve);
         break;
+      case 104: // Senseless Grit
+        u.healPercent(Constants.ability_104_activeHealAmount, false);
+        u.addStatusEffect(StatusEffectCode.SENSELESS_GRIT, Constants.ability_104_speedBuffTimer);
+        break;
       case 107: // Mighty Pen II
         map.addProjectile(new Projectile(3002, source_key, u));
         break;
@@ -297,6 +301,10 @@ class Ability {
         ve.setValues(u.facingA - Constants.ability_108_coneAngle, u.facingA +
           Constants.ability_108_coneAngle, Constants.ability_108_castTime);
         map.addVisualEffect(ve);
+        break;
+      case 109: // Senseless Grit II
+        u.healPercent(Constants.ability_109_activeHealAmount, false);
+        u.addStatusEffect(StatusEffectCode.SENSELESS_GRITII, Constants.ability_109_speedBuffTimer);
         break;
       default:
         global.errorMessage("ERROR: Can't activate ability with ID " + this.ID + ".");
@@ -347,6 +355,12 @@ class Ability {
           this.toggle = false;
         }
         break;
+      case 104: // Senseless Grit
+        if (this.timer_other <= 0) {
+          u.healPercent(Constants.ability_104_passiveHealAmount, false);
+          this.timer_other = Constants.ability_104_passiveHealTimer;
+        }
+        break;
       case 106: // Fearless Leader II
         if (this.timer_other <= 0) {
           u.decreaseMana(1);
@@ -383,6 +397,12 @@ class Ability {
         }
         if (this.timer_other <= 0) {
           this.toggle = false;
+        }
+        break;
+      case 109: // Senseless Grit II
+        if (this.timer_other <= 0) {
+          u.healPercent(Constants.ability_109_passiveHealAmount, false);
+          this.timer_other = Constants.ability_109_passiveHealTimer;
         }
         break;
       default:

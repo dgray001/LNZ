@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220421: v0.6.7c" +
+  "\n20220421: v0.6.7d" +
   "\nLines: 25641 (v0.6.7c)" +
   "";
   static final String version_history =
@@ -369,12 +369,12 @@ static class Constants {
   static final float ability_103_debuff = 0.85;
   static final float ability_103_time = 3000;
   static final float ability_104_passiveHealAmount = 0.01;
-  static final float ability_104_passiveHealTimer = 3000;
-  static final float ability_104_activeHealAmount = 0.15;
-  static final float ability_104_speedBuff = 0.25;
+  static final float ability_104_passiveHealTimer = 2000;
+  static final float ability_104_activeHealAmount = 0.2;
+  static final float ability_104_speedBuff = 1.25;
   static final float ability_104_speedBuffTimer = 3000;
   static final int ability_105_rageGain = 40;
-  static final float ability_105_buffAmount = 0.4;
+  static final float ability_105_buffAmount = 1.4;
   static final float ability_105_buffTime = 4500;
   static final float ability_105_rageGainBonus = 0.8;
   static final float ability_105_fullRageBonus = 0.3;
@@ -397,10 +397,10 @@ static class Constants {
   static final float ability_109_passiveHealAmount = 0.01;
   static final float ability_109_passiveHealTimer = 1500;
   static final float ability_109_activeHealAmount = 0.25;
-  static final float ability_109_speedBuff = 0.35;
+  static final float ability_109_speedBuff = 1.35;
   static final float ability_109_speedBuffTimer = 4500;
   static final int ability_110_rageGain = 60;
-  static final float ability_110_buffAmount = 0.5;
+  static final float ability_110_buffAmount = 1.5;
   static final float ability_110_buffTime = 7000;
   static final float ability_110_rageGainBonus = 1.6;
   static final float ability_110_fullRageBonus = 0.5;

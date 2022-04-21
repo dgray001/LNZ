@@ -720,6 +720,77 @@ class Hero extends Unit {
       }
     }
 
+    class AbilityButton extends RectangleButton {
+      class AbilityTextBox extends TextBox {
+        private boolean display = false;
+        AbilityTextBox() {
+          super(0, 0, 0, 0);
+          this.setTitleSize(15);
+          this.setTextSize(13);
+          this.color_background = global.color_nameDisplayed_background;
+          this.color_header = global.color_nameDisplayed_background;
+          this.color_stroke = color(1, 0);
+          this.color_text = color(255);
+          this.color_title = color(255);
+          this.scrollbar.setButtonColors(color(170),
+            adjust_color_brightness(global.color_nameDisplayed_background, 1.1),
+            adjust_color_brightness(global.color_nameDisplayed_background, 1.2),
+            adjust_color_brightness(global.color_nameDisplayed_background, 0.95), color(0));
+          this.scrollbar.button_upspace.setColors(color(1, 0), color(1, 0),
+            color(1, 0), color(0), color(0));
+          this.scrollbar.button_downspace.setColors(color(1, 0), color(1, 0),
+            color(1, 0), color(0), color(0));
+          this.useElapsedTime();
+        }
+      }
+
+      Ability a = null;
+      AbilityTextBox description;
+
+      AbilityButton(float xi, float yi, float xf, float yf, Ability a, String letter) {
+        super(xi, yi, xf, yf);
+        this.a = a;
+        this.message = letter;
+        this.roundness = 10;
+        this.setColors(color(0), color(0), color(0), color(0), color(0));
+        this.setStroke(InventoryBar.this.color_ability_border, 2);
+        this.use_time_elapsed = true;
+      }
+
+      @Override
+      void drawButton() {
+        super.drawButton();
+          //image(ability border)
+        if (this.a != null) {
+          imageMode(CORNERS);
+          ellipseMode(CENTER);
+          image(this.a.getImage(), this.xi, this.yi, this.xf, this.yf);
+          if (this.a.timer_cooldown > 0) {
+            fill(100, 100, 255, 140);
+            noStroke();
+            try {
+              float angle = -HALF_PI + 2 * PI * this.a.timer_cooldown / this.a.timer_cooldown();
+              arc(this.xCenter(), this.yCenter(), this.button_width(),
+                this.button_height(), -HALF_PI, angle, PIE);
+            } catch(Exception e) {}
+            fill(255);
+            textSize(24);
+            textAlign(CENTER, CENTER);
+            text(int(ceil(0.001 * this.a.timer_cooldown)), this.xCenter(), this.yCenter());
+          }
+          fill(255);
+          textSize(18);
+          textAlign(LEFT, TOP);
+          text(this.message, this.xi + 2, this.yi + 1);
+        }
+      }
+
+      void hover() {}
+      void dehover() {}
+      void click() {}
+      void release() {}
+    }
+
     private float xi_border = 0;
     private float yi = 0;
     private float xf_border = 0;
@@ -740,7 +811,7 @@ class Hero extends Unit {
     private float last_mY = 0;
     private StatusEffectCode code_hovered = null;
     private StatusEffectTextBox code_description = new StatusEffectTextBox();
-
+    private ArrayList<AbilityButton> ability_buttons = new ArrayList<AbilityButton>();
     private boolean portrait_hovered = false;
     private boolean portrait_clicked = false;
 
@@ -767,6 +838,32 @@ class Hero extends Unit {
       this.ability_width = 0.2 * (this.xf_bar - this.xi_bar) - 4;
       this.status_width = 0.08 * (this.xf_bar - this.xi_bar);
       this.yi_status = this.yi - 2 - this.status_width;
+      float xi = this.xi_bar + 2;
+      float yi = this.yf - this.ability_width - 4;
+      this.ability_buttons.clear();
+      for (int i = 0; i < Constants.hero_abilityNumber; i++, xi += this.ability_width + 4) {
+        String letter = "";
+        switch(i) {
+          case 1:
+            letter = "A";
+            break;
+          case 2:
+            letter = "S";
+            break;
+          case 3:
+            letter = "D";
+            break;
+          case 4:
+            letter = "F";
+            break;
+        }
+        Ability a = null;
+        try {
+          a = Hero.this.abilities.get(i);
+        } catch(Exception e) {}
+        this.ability_buttons.add(new AbilityButton(xi, yi, xi + this.ability_width,
+          yi + this.ability_width, a, letter));
+      }
     }
 
     PImage getBorderImage() {
@@ -810,32 +907,10 @@ class Hero extends Unit {
         g.removeCache(this.getHeroImage());
         noTint();
       }
-      float xi = this.xi_bar + 2;
-      float yi = this.yf - this.ability_width - 4;
-      imageMode(CORNER);
-      ellipseMode(CENTER);
-      for (int i = 0; i < Constants.hero_abilityNumber; i++, xi += this.ability_width + 4) {
-        rectMode(CORNER);
-        fill(0);
-        strokeWeight(2);
-        stroke(this.color_ability_border);
-        rect(xi, yi, this.ability_width, this.ability_width, 10);
-        //image(ability border)
-        if (Hero.this.abilities.get(i) != null) {
-          Ability a = Hero.this.abilities.get(i);
-          image(a.getImage(), xi, yi, this.ability_width, this.ability_width);
-          if (a.timer_cooldown > 0) {
-            fill(100, 100, 255, 140);
-            noStroke();
-            try {
-              float angle = -HALF_PI + 2 * PI * a.timer_cooldown / a.timer_cooldown();
-              arc(xi + 0.5 * this.ability_width, yi + 0.5 * this.ability_width,
-                this.ability_width, this.ability_width, -HALF_PI, angle, PIE);
-            } catch(Exception e) {}
-          }
-        }
+      for (AbilityButton ability : this.ability_buttons) {
+        ability.update(timeElapsed);
       }
-      xi = this.xi_bar;
+      float xi = this.xi_bar;
       this.code_hovered = null;
       for (Map.Entry<StatusEffectCode, StatusEffect> entry : Hero.this.statuses.entrySet()) {
         imageMode(CORNER);
@@ -870,16 +945,19 @@ class Hero extends Unit {
           }
           this.code_hovered = entry.getKey();
         }
-        if (this.code_description.display) {
-          this.code_description.update(timeElapsed);
-        }
         xi += this.status_width + 2;
+      }
+      if (this.code_description.display) {
+        this.code_description.update(timeElapsed);
       }
     }
 
     void mouseMove(float mX, float mY) {
       this.last_mX = mX;
       this.last_mY = mY;
+      for (AbilityButton ability : this.ability_buttons) {
+        ability.mouseMove(mX, mY);
+      }
       if (this.code_description.display) {
         this.code_description.mouseMove(mX, mY);
       }
@@ -898,6 +976,9 @@ class Hero extends Unit {
     }
 
     void mousePress() {
+      for (AbilityButton ability : this.ability_buttons) {
+        ability.mousePress();
+      }
       if (this.code_description.display) {
         this.code_description.mousePress();
       }
@@ -914,11 +995,13 @@ class Hero extends Unit {
       if (this.portrait_hovered) {
         this.portrait_clicked = true;
       }
-      // click ability for more info
       // click item to select (in left panel)
     }
 
     void mouseRelease(float mX, float mY) {
+      for (AbilityButton ability : this.ability_buttons) {
+        ability.mouseRelease(mX, mY);
+      }
       if (this.code_description.display) {
         this.code_description.mouseRelease(mX, mY);
       }
@@ -1255,6 +1338,7 @@ class Hero extends Unit {
     }
     int ability_id = 2 * Constants.hero_abilityNumber * (this.ID - 1101) + index + 101;
     this.abilities.set(index, new Ability(ability_id));
+    this.inventory_bar.ability_buttons.get(index).a = this.abilities.get(index);
   }
 
   void updgradeAbility(int index) {
@@ -1599,6 +1683,8 @@ class Hero extends Unit {
           this.activateAbility(0);
           this.activateAbility(1);
           this.activateAbility(2);
+          this.activateAbility(3);
+          this.activateAbility(4);
           break;
         default:
           break;
