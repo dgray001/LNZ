@@ -2,13 +2,15 @@ enum StatusEffectCode {
   ERROR("Error"), HUNGRY("Hungry"), WEAK("Weak"), THIRSTY("Thirsty"), WOOZY("Woozy"),
   CONFUSED("Confused"), INVULNERABLE("Invulnerable"), UNKILLABLE("Unkillable"),
   BLEEDING("Bleeding"), HEMORRHAGING("Hemorrhaging"), WILTED("Wilted"), WITHERED("Withered"),
+  
   DRENCHED("Drenched"), DROWNING("Drowning"), BURNT("Burning"), CHARRED("Charred"),
   CHILLED("Chilled"), FROZEN("Frozen"), SICK("Sick"), DISEASED("Diseased"), ROTTING("Rotting"),
   DECAYED("Decayed"), SHAKEN("Shaken"), FALLEN("Fallen"), SHOCKED("Shocked"),
   PARALYZED("Paralyzed"), UNSTABLE("Unstable"), RADIOACTIVE("Radioactive"),
 
   NELSON_GLARE("Nelson Glared"), NELSON_GLAREII("Nelson Glared"), SENSELESS_GRIT(
-  "Senseless Grit"), RAGE_OF_THE_BEN("Rage of the Ben"),
+  "Senseless Grit"), SENSELESS_GRITII("Senseless Grit"), RAGE_OF_THE_BEN(
+  "Rage of the Ben"), RAGE_OF_THE_BENII("Rage of the Ben"),
   ;
 
   private static final List<StatusEffectCode> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
