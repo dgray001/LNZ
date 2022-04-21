@@ -817,12 +817,15 @@ class Hero extends Unit {
       void hover() {
         if (this.a != null) {
           this.description.display = true;
+          // show cast indicators
         }
       }
       void dehover() {
         this.description.display = false;
       }
-      void click() {}
+      void click() {
+        InventoryBar.this.tryCast(this.message);
+      }
       void release() {}
     }
 
@@ -879,6 +882,9 @@ class Hero extends Unit {
       for (int i = 0; i < Constants.hero_abilityNumber; i++, xi += this.ability_width + 4) {
         String letter = "";
         switch(i) {
+          case 0:
+            letter = "P";
+            break;
           case 1:
             letter = "A";
             break;
@@ -898,6 +904,23 @@ class Hero extends Unit {
         } catch(Exception e) {}
         this.ability_buttons.add(new AbilityButton(xi, yi, xi + this.ability_width,
           yi + this.ability_width, a, letter));
+      }
+    }
+
+    void tryCast(String letter) {
+      switch(letter) {
+        case "A":
+          Hero.this.bufferCast(1);
+          break;
+        case "S":
+          Hero.this.bufferCast(2);
+          break;
+        case "D":
+          Hero.this.bufferCast(3);
+          break;
+        case "F":
+          Hero.this.bufferCast(4);
+          break;
       }
     }
 
@@ -1162,6 +1185,84 @@ class Hero extends Unit {
     }
 
 
+    class HealthButton extends LeftPanelButton {
+      protected float bar_xi = 0;
+      protected float bar_yi = 0;
+      protected float bar_yf = 0;
+
+      HealthButton(float yi, float yf) {
+        super(0, yi, 0, yf);
+        this.setColors(color(1, 0), color(1, 0), color(1, 0), color(1, 0), color(1, 0));
+        this.noStroke();
+        this.roundness = 0;
+        this.bar_xi = 4 + 2 * Constants.hero_leftPanelBarHeight;
+        this.bar_yi = yi + 0.25 * (yf - yi);
+        this.bar_yf = yi + 0.75 * (yf - yi);
+      }
+
+      @Override
+      void drawButton() {
+        super.drawButton();
+        imageMode(CORNERS);
+        image(global.images.getImage("icons/health.png"), this.xi, this.yi,
+          this.bar_xi - 2, this.yf);
+        rectMode(CORNERS);
+        fill(0);
+        noStroke();
+        rect(this.bar_xi, this.bar_yi, this.xf, this.bar_yf);
+        rectMode(CORNER);
+        float health_ratio = PlayerLeftPanelMenu.this.hero().curr_health / PlayerLeftPanelMenu.this.hero().health();
+        fill(0, 255, 0);
+        rect(this.bar_xi, this.bar_yi, health_ratio * (this.xf - this.bar_xi), Constants.hero_leftPanelBarHeight);
+      }
+
+      void updateHoverMessage() {
+        this.hover_message = "Health: " + int(round(PlayerLeftPanelMenu.this.
+          hero().curr_health * 10.0)) / 10.0 + "/" + int(round(PlayerLeftPanelMenu.
+          this.hero().health() * 10.0)) / 10.0;
+      }
+    }
+
+
+    class ManaButton extends LeftPanelButton {
+      protected float bar_xi = 0;
+      protected float bar_yi = 0;
+      protected float bar_yf = 0;
+
+      ManaButton(float yi, float yf) {
+        super(0, yi, 0, yf);
+        this.setColors(color(1, 0), color(1, 0), color(1, 0), color(1, 0), color(1, 0));
+        this.noStroke();
+        this.roundness = 0;
+        this.bar_xi = 4 + 2 * Constants.hero_leftPanelBarHeight;
+        this.bar_yi = yi + 0.25 * (yf - yi);
+        this.bar_yf = yi + 0.75 * (yf - yi);
+      }
+
+      @Override
+      void drawButton() {
+        super.drawButton();
+        imageMode(CORNERS);
+        image(global.images.getImage("icons/mana.png"), this.xi, this.yi,
+          this.bar_xi - 2, this.yf);
+        rectMode(CORNERS);
+        fill(0);
+        noStroke();
+        rect(this.bar_xi, this.bar_yi, this.xf, this.bar_yf);
+        rectMode(CORNER);
+        float mana_ratio = PlayerLeftPanelMenu.this.hero().currMana() / PlayerLeftPanelMenu.this.hero().mana();
+        fill(255, 255, 0);
+        rect(this.bar_xi, this.bar_yi, mana_ratio * (this.xf - this.bar_xi), Constants.hero_leftPanelBarHeight);
+      }
+
+      void updateHoverMessage() {
+        this.hover_message = PlayerLeftPanelMenu.this.hero().manaDisplayName() +
+          ": " + int(round(PlayerLeftPanelMenu.this.hero().currMana())) + "/" +
+          int(round(PlayerLeftPanelMenu.this.hero().mana()));
+      }
+    }
+
+
     class HungerButton extends LeftPanelButton {
       protected float bar_xi = 0;
       protected float bar_yi = 0;
@@ -1184,12 +1285,12 @@ class Hero extends Unit {
         image(global.images.getImage("icons/hunger.png"), this.xi, this.yi,
           this.bar_xi - 2, this.yf);
         rectMode(CORNERS);
-        fill(255, 0, 0);
+        fill(0);
         noStroke();
         rect(this.bar_xi, this.bar_yi, this.xf, this.bar_yf);
         rectMode(CORNER);
         float hunger_ratio = PlayerLeftPanelMenu.this.hero().hunger / float(Constants.hero_maxHunger);
-        fill(0, 255, 0);
+        fill(140, 70, 20);
         rect(this.bar_xi, this.bar_yi, hunger_ratio * (this.xf - this.bar_xi), Constants.hero_leftPanelBarHeight);
       }
 
@@ -1222,12 +1323,12 @@ class Hero extends Unit {
         image(global.images.getImage("icons/thirst.png"), this.xi, this.yi,
           this.bar_xi - 2, this.yf);
         rectMode(CORNERS);
-        fill(255, 0, 0);
+        fill(0);
         noStroke();
         rect(this.bar_xi, this.bar_yi, this.xf, this.bar_yf);
         rectMode(CORNER);
         float thirst_ratio = PlayerLeftPanelMenu.this.hero().thirst / float(Constants.hero_maxThirst);
-        fill(0, 255, 0);
+        fill(0, 0, 255);
         rect(this.bar_xi, this.bar_yi, thirst_ratio * (this.xf - this.bar_xi), Constants.hero_leftPanelBarHeight);
       }
 
@@ -1238,13 +1339,234 @@ class Hero extends Unit {
     }
 
 
+    abstract class StatButton extends LeftPanelButton {
+      protected float icon_xf = 0;
+      protected String icon_name = "";
+
+      StatButton(float yi, float yf) {
+        super(0, yi, 0, yf);
+        this.show_message = true;
+        this.updateMessage();
+        this.setColors(color(1, 0), color(1, 0), color(1, 0), color(1, 0), color(0));
+        this.noStroke();
+        this.roundness = 0;
+        this.icon_xf = yf - yi;
+        this.text_size = 17;
+      }
+
+      @Override
+      void setXLocation(float xi, float xf) {
+        super.setXLocation(xi, xf);
+        this.icon_xf = this.xi + this.yf - this.yi;
+      }
+
+      @Override
+      void writeText() {
+        if (this.show_message) {
+          fill(this.color_text);
+          textAlign(LEFT, CENTER);
+          textSize(this.text_size);
+          if (this.adjust_for_text_descent) {
+            text(this.message, this.icon_xf + 6, this.yCenter() - textDescent());
+          }
+          else {
+            text(this.message, this.icon_xf + 6, this.yCenter());
+          }
+        }
+      }
+
+      @Override
+      void drawButton() {
+        this.updateMessage();
+        super.drawButton();
+        imageMode(CORNERS);
+        image(global.images.getImage("icons/" + this.icon_name + ".png"),
+          this.xi, this.yi, this.icon_xf, this.yf);
+      }
+
+      abstract void updateMessage();
+    }
+
+
+    class AttackButton extends StatButton {
+      AttackButton(float yi, float yf) {
+        super(yi, yf);
+        this.icon_name = "stat_attack";
+      }
+
+      void updateMessage() {
+        this.message = Integer.toString(int(round(PlayerLeftPanelMenu.this.hero().attack())));
+      }
+
+      void updateHoverMessage() {
+        this.hover_message = "Attack: " + PlayerLeftPanelMenu.this.hero().attack();
+      }
+    }
+
+
+    class MagicButton extends StatButton {
+      MagicButton(float yi, float yf) {
+        super(yi, yf);
+        this.icon_name = "stat_magic";
+      }
+
+      void updateMessage() {
+        this.message = Integer.toString(int(round(PlayerLeftPanelMenu.this.hero().magic())));
+      }
+
+      void updateHoverMessage() {
+        this.hover_message = "Magic: " + PlayerLeftPanelMenu.this.hero().magic();
+      }
+    }
+
+
+    class DefenseButton extends StatButton {
+      DefenseButton(float yi, float yf) {
+        super(yi, yf);
+        this.icon_name = "stat_defense";
+      }
+
+      void updateMessage() {
+        this.message = Integer.toString(int(round(PlayerLeftPanelMenu.this.hero().defense())));
+      }
+
+      void updateHoverMessage() {
+        this.hover_message = "Defense: " + PlayerLeftPanelMenu.this.hero().defense();
+      }
+    }
+
+
+    class ResistanceButton extends StatButton {
+      ResistanceButton(float yi, float yf) {
+        super(yi, yf);
+        this.icon_name = "stat_resistance";
+      }
+
+      void updateMessage() {
+        this.message = Integer.toString(int(round(PlayerLeftPanelMenu.this.hero().resistance())));
+      }
+
+      void updateHoverMessage() {
+        this.hover_message = "Resistance: " + PlayerLeftPanelMenu.this.hero().resistance();
+      }
+    }
+
+
+    class PiercingButton extends StatButton {
+      PiercingButton(float yi, float yf) {
+        super(yi, yf);
+        this.icon_name = "stat_piercing";
+      }
+
+      void updateMessage() {
+        this.message = Integer.toString(int(round(100.0 * PlayerLeftPanelMenu.this.hero().piercing()))) + "%";
+      }
+
+      void updateHoverMessage() {
+        this.hover_message = "Piercing: " + int(round(1000.0 * PlayerLeftPanelMenu.this.hero().piercing())) / 10.0 + "%";
+      }
+    }
+
+
+    class PenetrationButton extends StatButton {
+      PenetrationButton(float yi, float yf) {
+        super(yi, yf);
+        this.icon_name = "stat_penetration";
+      }
+
+      void updateMessage() {
+        this.message = Integer.toString(int(round(100.0 * PlayerLeftPanelMenu.this.hero().penetration()))) + "%";
+      }
+
+      void updateHoverMessage() {
+        this.hover_message = "Penetration: " + int(round(1000.0 * PlayerLeftPanelMenu.this.hero().penetration())) / 10.0 + "%";
+      }
+    }
+
+
+    class RangeButton extends StatButton {
+      RangeButton(float yi, float yf) {
+        super(yi, yf);
+        this.icon_name = "stat_range";
+      }
+
+      void updateMessage() {
+        this.message = Float.toString(int(round(10 * PlayerLeftPanelMenu.this.hero().attackRange())) / 10.0);
+      }
+
+      void updateHoverMessage() {
+        this.hover_message = "Attack Range: " + PlayerLeftPanelMenu.this.hero().attackRange() + " m";
+      }
+    }
+
+
+    class SpeedButton extends StatButton {
+      SpeedButton(float yi, float yf) {
+        super(yi, yf);
+        this.icon_name = "stat_speed";
+      }
+
+      void updateMessage() {
+        this.message = Float.toString(int(round(10 * PlayerLeftPanelMenu.this.hero().speed())) / 10.0);
+      }
+
+      void updateHoverMessage() {
+        this.hover_message = "Speed: " + PlayerLeftPanelMenu.this.hero().speed() + " m/s";
+      }
+    }
+
+
+    class TenacityButton extends StatButton {
+      TenacityButton(float yi, float yf) {
+        super(yi, yf);
+        this.icon_name = "stat_tenacity";
+      }
+
+      void updateMessage() {
+        this.message = Integer.toString(int(round(100 * PlayerLeftPanelMenu.this.hero().tenacity()))) + "%";
+      }
+
+      void updateHoverMessage() {
+        this.hover_message = "Tenacity: " + int(round(1000.0 * PlayerLeftPanelMenu.this.hero().tenacity())) / 10.0 + "%";
+      }
+    }
+
+
+    class AgilityButton extends StatButton {
+      AgilityButton(float yi, float yf) {
+        super(yi, yf);
+        this.icon_name = "stat_agility";
+      }
+
+      void updateMessage() {
+        this.message = Integer.toString(int(round(PlayerLeftPanelMenu.this.hero().agility())));
+      }
+
+      void updateHoverMessage() {
+        this.hover_message = "Agility: " + PlayerLeftPanelMenu.this.hero().agility();
+      }
+    }
+
+
     protected float yi;
     protected float image_yi;
     protected float image_size;
     protected LevelButton level;
     protected ExperienceButton experience;
+    protected HealthButton health;
+    protected ManaButton mana;
     protected HungerButton hunger;
     protected ThirstButton thirst;
+    protected AttackButton attack;
+    protected MagicButton magic;
+    protected DefenseButton defense;
+    protected ResistanceButton resistance;
+    protected PiercingButton piercing;
+    protected PenetrationButton penetration;
+    protected RangeButton range;
+    protected SpeedButton speed;
+    protected TenacityButton tenacity;
+    protected AgilityButton agility;
 
     PlayerLeftPanelMenu() {
       this.yi = 0.5 * height + Constants.map_selectedObjectPanelGap;
@@ -1258,18 +1580,40 @@ class Hero extends Unit {
       currY += textAscent() + textDescent() + Constants.map_selectedObjectPanelGap;
       this.experience = new ExperienceButton(currY, currY + Constants.hero_leftPanelBarHeight);
       currY += 2 * Constants.hero_leftPanelBarHeight + Constants.map_selectedObjectPanelGap;
+      this.health = new HealthButton(currY, currY + 2 * Constants.hero_leftPanelBarHeight);
+      currY += 2 * Constants.hero_leftPanelBarHeight + Constants.map_selectedObjectPanelGap;
+      this.mana = new ManaButton(currY, currY + 2 * Constants.hero_leftPanelBarHeight);
+      currY += 2 * Constants.hero_leftPanelBarHeight + Constants.map_selectedObjectPanelGap;
       this.hunger = new HungerButton(currY, currY + 2 * Constants.hero_leftPanelBarHeight);
       currY += 2 * Constants.hero_leftPanelBarHeight + Constants.map_selectedObjectPanelGap;
       this.thirst = new ThirstButton(currY, currY + 2 * Constants.hero_leftPanelBarHeight);
-      currY += Constants.hero_leftPanelBarHeight + Constants.map_selectedObjectPanelGap;
+      currY += 2 * Constants.hero_leftPanelBarHeight + 4 * Constants.map_selectedObjectPanelGap;
+      // Stats
+      float stat_button_height = max(0, 0.2 * (height - currY - 6 * Constants.map_selectedObjectPanelGap));
+      this.attack = new AttackButton(currY, currY + stat_button_height);
+      this.magic = new MagicButton(currY, currY + stat_button_height);
+      currY += stat_button_height + Constants.map_selectedObjectPanelGap;
+      this.defense = new DefenseButton(currY, currY + stat_button_height);
+      this.resistance = new ResistanceButton(currY, currY + stat_button_height);
+      currY += stat_button_height + Constants.map_selectedObjectPanelGap;
+      this.piercing = new PiercingButton(currY, currY + stat_button_height);
+      this.penetration = new PenetrationButton(currY, currY + stat_button_height);
+      currY += stat_button_height + Constants.map_selectedObjectPanelGap;
+      this.range = new RangeButton(currY, currY + stat_button_height);
+      this.speed = new SpeedButton(currY, currY + stat_button_height);
+      currY += stat_button_height + Constants.map_selectedObjectPanelGap;
+      this.tenacity = new TenacityButton(currY, currY + stat_button_height);
+      this.agility = new AgilityButton(currY, currY + stat_button_height);
+      currY += stat_button_height + Constants.map_selectedObjectPanelGap;
     }
 
     void drawPanel(int millis, float panel_width) {
+      float half_panel_width = 0.5 * panel_width;
       // name
       fill(255);
       textSize(Constants.map_selectedObjectTitleTextSize);
       textAlign(CENTER, TOP);
-      text(Hero.this.display_name(), 0.5 * panel_width, this.yi);
+      text(Hero.this.display_name(), half_panel_width, this.yi);
       // picture
       imageMode(CORNER);
       image(Hero.this.getImage(), 1, this.image_yi, this.image_size, this.image_size);
@@ -1280,33 +1624,96 @@ class Hero extends Unit {
       // experience
       this.experience.setXLocation(2, panel_width - 2);
       this.experience.update(millis);
+      // health
+      this.health.setXLocation(2, panel_width - 2);
+      this.health.update(millis);
+      // mana
+      this.mana.setXLocation(2, panel_width - 2);
+      this.mana.update(millis);
       // hunger
       this.hunger.setXLocation(2, panel_width - 2);
       this.hunger.update(millis);
       // thirst
       this.thirst.setXLocation(2, panel_width - 2);
       this.thirst.update(millis);
+      // stats
+      this.magic.setXLocation(half_panel_width + 2, panel_width - 2);
+      this.magic.update(millis);
+      this.attack.setXLocation(2, half_panel_width);
+      this.attack.update(millis);
+      this.resistance.setXLocation(half_panel_width + 2, panel_width - 2);
+      this.resistance.update(millis);
+      this.defense.setXLocation(2, 0.5 * panel_width);
+      this.defense.update(millis);
+      this.penetration.setXLocation(half_panel_width + 2, panel_width - 2);
+      this.penetration.update(millis);
+      this.piercing.setXLocation(2, 0.5 * panel_width);
+      this.piercing.update(millis);
+      this.speed.setXLocation(half_panel_width + 2, panel_width - 2);
+      this.speed.update(millis);
+      this.range.setXLocation(2, 0.5 * panel_width);
+      this.range.update(millis);
+      this.agility.setXLocation(half_panel_width + 2, panel_width - 2);
+      this.agility.update(millis);
+      this.tenacity.setXLocation(2, 0.5 * panel_width);
+      this.tenacity.update(millis);
     }
 
     void mouseMove(float mX, float mY) {
       this.level.mouseMove(mX, mY);
       this.experience.mouseMove(mX, mY);
+      this.health.mouseMove(mX, mY);
+      this.mana.mouseMove(mX, mY);
       this.hunger.mouseMove(mX, mY);
       this.thirst.mouseMove(mX, mY);
+      this.attack.mouseMove(mX, mY);
+      this.magic.mouseMove(mX, mY);
+      this.defense.mouseMove(mX, mY);
+      this.resistance.mouseMove(mX, mY);
+      this.piercing.mouseMove(mX, mY);
+      this.penetration.mouseMove(mX, mY);
+      this.speed.mouseMove(mX, mY);
+      this.range.mouseMove(mX, mY);
+      this.tenacity.mouseMove(mX, mY);
+      this.agility.mouseMove(mX, mY);
     }
 
     void mousePress() {
       this.level.mousePress();
       this.experience.mousePress();
+      this.health.mousePress();
+      this.mana.mousePress();
       this.hunger.mousePress();
       this.thirst.mousePress();
+      this.attack.mousePress();
+      this.magic.mousePress();
+      this.defense.mousePress();
+      this.resistance.mousePress();
+      this.piercing.mousePress();
+      this.penetration.mousePress();
+      this.speed.mousePress();
+      this.range.mousePress();
+      this.tenacity.mousePress();
+      this.agility.mousePress();
     }
 
     void mouseRelease(float mX, float mY) {
       this.level.mouseRelease(mX, mY);
       this.experience.mouseRelease(mX, mY);
+      this.health.mouseRelease(mX, mY);
+      this.mana.mouseRelease(mX, mY);
       this.hunger.mouseRelease(mX, mY);
       this.thirst.mouseRelease(mX, mY);
+      this.attack.mouseRelease(mX, mY);
+      this.magic.mouseRelease(mX, mY);
+      this.defense.mouseRelease(mX, mY);
+      this.resistance.mouseRelease(mX, mY);
+      this.piercing.mouseRelease(mX, mY);
+      this.penetration.mouseRelease(mX, mY);
+      this.speed.mouseRelease(mX, mY);
+      this.range.mouseRelease(mX, mY);
+      this.tenacity.mouseRelease(mX, mY);
+      this.agility.mouseRelease(mX, mY);
     }
   }
 

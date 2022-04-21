@@ -301,6 +301,7 @@ class Unit extends MapObject {
   protected float curr_action_x = 0;
   protected float curr_action_y = 0;
   protected float last_move_distance = 0;
+  protected int buffer_cast = -1;
   protected boolean last_move_collision = false;
 
   protected ArrayList<IntegerCoordinate> curr_squares_on = new ArrayList<IntegerCoordinate>(); // squares unit is on
@@ -1746,6 +1747,11 @@ class Unit extends MapObject {
       }
       a.update(timeElapsed, this, map);
     }
+    // Cast ability
+    if (this.buffer_cast > -1) {
+      this.cast(myKey, this.buffer_cast, map);
+      this.buffer_cast = -1;
+    }
   }
 
   // timers independent of curr action
@@ -1832,6 +1838,17 @@ class Unit extends MapObject {
 
 
   // Cast ability
+  void bufferCast(int index) {
+    if (index < 0 || index >= this.abilities.size()) {
+      return;
+    }
+    Ability a = this.abilities.get(index);
+    if (a == null) {
+      return;
+    }
+    this.buffer_cast = index;
+  }
+
   void cast(int myKey, int index, GameMap map) {
     if (index < 0 || index >= this.abilities.size()) {
       return;
