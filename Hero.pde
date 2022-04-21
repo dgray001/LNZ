@@ -813,6 +813,7 @@ class Hero extends Unit {
       float xi = this.xi_bar + 2;
       float yi = this.yf - this.ability_width - 4;
       imageMode(CORNER);
+      ellipseMode(CENTER);
       for (int i = 0; i < Constants.hero_abilityNumber; i++, xi += this.ability_width + 4) {
         rectMode(CORNER);
         fill(0);
@@ -821,7 +822,17 @@ class Hero extends Unit {
         rect(xi, yi, this.ability_width, this.ability_width, 10);
         //image(ability border)
         if (Hero.this.abilities.get(i) != null) {
-          image(Hero.this.abilities.get(i).getImage(), xi, yi, this.ability_width, this.ability_width);
+          Ability a = Hero.this.abilities.get(i);
+          image(a.getImage(), xi, yi, this.ability_width, this.ability_width);
+          if (a.timer_cooldown > 0) {
+            fill(100, 100, 255, 140);
+            noStroke();
+            try {
+              float angle = -HALF_PI + 2 * PI * a.timer_cooldown / a.timer_cooldown();
+              arc(xi + 0.5 * this.ability_width, yi + 0.5 * this.ability_width,
+                this.ability_width, this.ability_width, -HALF_PI, angle, PIE);
+            } catch(Exception e) {}
+          }
         }
       }
       xi = this.xi_bar;
@@ -1586,6 +1597,7 @@ class Hero extends Unit {
           break;
         case 't':
           this.activateAbility(0);
+          this.activateAbility(1);
           break;
         default:
           break;
