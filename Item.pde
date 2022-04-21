@@ -2990,7 +2990,7 @@ class Item extends MapObject {
         this.ammo = toInt(data);
         break;
       default:
-        global.errorMessage("ERROR: Datakey " + datakey + " not found for item data.");
+        global.errorMessage("ERROR: Datakey " + datakey + " not found for Item data.");
         break;
     }
   }

@@ -639,8 +639,24 @@ class Unit extends MapObject {
     if (this.weapon() != null && this.weapon().weapon()) {
       health += this.weapon().health;
     }
+    for (Ability a : this.abilities) {
+      if (a == null) {
+        continue;
+      }
+      switch(a.ID) {
+        default:
+          break;
+      }
+    }
     return health;
   }
+
+  // To make abilities array in Unit instead of Hero
+  float currMana() {
+    return 0;
+  }
+  void increaseMana(int amount) {}
+  void decreaseMana(int amount) {}
 
   float attack() {
     float attack = this.base_attack;
@@ -660,6 +676,15 @@ class Unit extends MapObject {
     }
     if (this.withered()) {
       attack *= Constants.status_withered_multiplier;
+    }
+    for (Ability a : this.abilities) {
+      if (a == null) {
+        continue;
+      }
+      switch(a.ID) {
+        default:
+          break;
+      }
     }
     return attack;
   }
@@ -682,6 +707,15 @@ class Unit extends MapObject {
     }
     if (this.withered()) {
       magic *= Constants.status_withered_multiplier;
+    }
+    for (Ability a : this.abilities) {
+      if (a == null) {
+        continue;
+      }
+      switch(a.ID) {
+        default:
+          break;
+      }
     }
     return magic;
   }
@@ -706,6 +740,15 @@ class Unit extends MapObject {
     if (this.diseased()) {
       defense *= Constants.status_diseased_defenseMultiplier;
     }
+    for (Ability a : this.abilities) {
+      if (a == null) {
+        continue;
+      }
+      switch(a.ID) {
+        default:
+          break;
+      }
+    }
     return defense;
   }
 
@@ -728,6 +771,15 @@ class Unit extends MapObject {
     }
     if (this.diseased()) {
       resistance *= Constants.status_diseased_defenseMultiplier;
+    }
+    for (Ability a : this.abilities) {
+      if (a == null) {
+        continue;
+      }
+      switch(a.ID) {
+        default:
+          break;
+      }
     }
     return resistance;
   }
@@ -754,6 +806,15 @@ class Unit extends MapObject {
     if (piercing > 1) {
       piercing = 1;
     }
+    for (Ability a : this.abilities) {
+      if (a == null) {
+        continue;
+      }
+      switch(a.ID) {
+        default:
+          break;
+      }
+    }
     return piercing;
   }
 
@@ -779,6 +840,15 @@ class Unit extends MapObject {
     if (penetration > 1) {
       penetration = 1;
     }
+    for (Ability a : this.abilities) {
+      if (a == null) {
+        continue;
+      }
+      switch(a.ID) {
+        default:
+          break;
+      }
+    }
     return penetration;
   }
 
@@ -793,6 +863,15 @@ class Unit extends MapObject {
       }
       else {
         attackRange += this.weapon().attackRange;
+      }
+    }
+    for (Ability a : this.abilities) {
+      if (a == null) {
+        continue;
+      }
+      switch(a.ID) {
+        default:
+          break;
       }
     }
     return attackRange;
@@ -811,6 +890,21 @@ class Unit extends MapObject {
         attackCooldown += this.weapon().attackCooldown;
       }
     }
+    for (Ability a : this.abilities) {
+      if (a == null) {
+        continue;
+      }
+      switch(a.ID) {
+        case 101: // Fearless Leader I
+          attackCooldown *= (1 - 0.0025 * this.currMana());
+          break;
+        case 106: // Fearless Leader II
+          attackCooldown *= (1 - 0.004 * this.currMana());
+          break;
+        default:
+          break;
+      }
+    }
     return attackCooldown;
   }
 
@@ -827,6 +921,21 @@ class Unit extends MapObject {
         attackTime += this.weapon().attackTime;
       }
     }
+    for (Ability a : this.abilities) {
+      if (a == null) {
+        continue;
+      }
+      switch(a.ID) {
+        case 101: // Fearless Leader I
+          attackTime *= (1 - 0.0025 * this.currMana());
+          break;
+        case 106: // Fearless Leader II
+          attackTime *= (1 - 0.004 * this.currMana());
+          break;
+        default:
+          break;
+      }
+    }
     return attackTime;
   }
 
@@ -834,6 +943,15 @@ class Unit extends MapObject {
     float sight = this.base_sight;
     if (this.weapon() != null) {
       sight += this.weapon().sight;
+    }
+    for (Ability a : this.abilities) {
+      if (a == null) {
+        continue;
+      }
+      switch(a.ID) {
+        default:
+          break;
+      }
     }
     return sight;
   }
@@ -853,6 +971,15 @@ class Unit extends MapObject {
     }
     if (this.frozen()) {
       return 0;
+    }
+    for (Ability a : this.abilities) {
+      if (a == null) {
+        continue;
+      }
+      switch(a.ID) {
+        default:
+          break;
+      }
     }
     return speed;
   }
@@ -877,6 +1004,21 @@ class Unit extends MapObject {
     if (this.diseased()) {
       tenacity *= Constants.status_diseased_defenseMultiplier;
     }
+    for (Ability a : this.abilities) {
+      if (a == null) {
+        continue;
+      }
+      switch(a.ID) {
+        case 101: // Fearless Leader I
+          tenacity += 0.0025 * this.currMana();
+          break;
+        case 106: // Fearless Leader II
+          tenacity += 0.004 * this.currMana();
+          break;
+        default:
+          break;
+      }
+    }
     if (tenacity > 1) {
       tenacity = 1;
     }
@@ -887,6 +1029,15 @@ class Unit extends MapObject {
     int agility = this.base_agility;
     if (this.weapon() != null && this.weapon().weapon()) {
       agility += this.weapon().agility;
+    }
+    for (Ability a : this.abilities) {
+      if (a == null) {
+        continue;
+      }
+      switch(a.ID) {
+        default:
+          break;
+      }
     }
     return agility;
   }
@@ -904,6 +1055,15 @@ class Unit extends MapObject {
     }
     if (this.withered()) {
       lifesteal *= Constants.status_withered_multiplier;
+    }
+    for (Ability a : this.abilities) {
+      if (a == null) {
+        continue;
+      }
+      switch(a.ID) {
+        default:
+          break;
+      }
     }
     return lifesteal;
   }
@@ -1451,6 +1611,13 @@ class Unit extends MapObject {
           break;
       }
     }
+    // Update abilities
+    for (Ability a : this.abilities) {
+      if (a == null) {
+        continue;
+      }
+      a.update(timeElapsed, this, map);
+    }
   }
 
   // timers independent of curr action
@@ -1635,7 +1802,24 @@ class Unit extends MapObject {
         source.killed(this);
       }
     }
-    if (this.ID == 1001) {
+    for (Ability a : this.abilities) {
+      if (a == null) {
+        continue;
+      }
+      switch(a.ID) {
+        case 101: // Fearless Leader I
+          this.increaseMana(2);
+          a.timer_other = 4000;
+          break;
+        case 106: // Fearless Leader II
+          this.increaseMana(4);
+          a.timer_other = 6000;
+          break;
+        default:
+          break;
+      }
+    }
+    if (this.ID == 1001) { // Target Dummy
       if (source == null) {
         this.description += "\n" + amount + " damage.";
       }
@@ -1650,10 +1834,44 @@ class Unit extends MapObject {
 
   void damaged(Unit u, float damage) {
     this.heal(max(0, this.lifesteal() * damage), false);
+    for (Ability a : this.abilities) {
+      if (a == null) {
+        continue;
+      }
+      switch(a.ID) {
+        case 101: // Fearless Leader I
+          this.increaseMana(2);
+          a.timer_other = 4000;
+          break;
+        case 106: // Fearless Leader II
+          this.increaseMana(4);
+          a.timer_other = 6000;
+          break;
+        default:
+          break;
+      }
+    }
   }
 
 
   void killed(Unit u) {
+    for (Ability a : this.abilities) {
+      if (a == null) {
+        continue;
+      }
+      switch(a.ID) {
+        case 101: // Fearless Leader I
+          this.increaseMana(6);
+          a.timer_other = 4000;
+          break;
+        case 106: // Fearless Leader II
+          this.increaseMana(10);
+          a.timer_other = 6000;
+          break;
+        default:
+          break;
+      }
+    }
   }
 
 

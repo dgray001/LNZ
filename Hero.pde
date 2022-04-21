@@ -820,7 +820,7 @@ class Hero extends Unit {
         stroke(this.color_ability_border);
         rect(xi, yi, this.ability_width, this.ability_width, 10);
         //image(ability border)
-        if (Hero.this.ability_activated.get(i)) {
+        if (Hero.this.abilities.get(i) != null) {
           image(Hero.this.abilities.get(i).getImage(), xi, yi, this.ability_width, this.ability_width);
         }
       }
@@ -1200,7 +1200,6 @@ class Hero extends Unit {
   protected LeftPanelMenu left_panel_menu = new PlayerLeftPanelMenu();
   protected HeroInventory inventory = new HeroInventory();
   protected InventoryBar inventory_bar = new InventoryBar();
-  protected ArrayList<Boolean> ability_activated = new ArrayList<Boolean>();
 
   protected Queue<String> messages = new LinkedList<String>();
 
@@ -1234,21 +1233,17 @@ class Hero extends Unit {
   }
   void addAbilities(boolean powerful_version) {
     for (int i = 0; i < Constants.hero_abilityNumber; i++) {
-      int ability_id = 2 * Constants.hero_abilityNumber * (this.ID - 1101) + i + 101;
-      if (powerful_version) {
-        ability_id += Constants.hero_abilityNumber;
-      }
-      this.abilities.add(new Ability(ability_id));
-      this.ability_activated.add(false);
+      this.abilities.add(null);
     }
   }
 
   void activateAbility(int index) {
-    if (index < 0 || index >= this.ability_activated.size()) {
+    if (index < 0 || index >= this.abilities.size()) {
       global.log("WARNING: Trying to activate ability index " + index + " but it doesn't exist.");
       return;
     }
-    this.ability_activated.set(index, true);
+    int ability_id = 2 * Constants.hero_abilityNumber * (this.ID - 1101) + index + 101;
+    this.abilities.set(index, new Ability(ability_id));
   }
 
   void updgradeAbility(int index) {
@@ -1257,12 +1252,16 @@ class Hero extends Unit {
       return;
     }
     Ability a = this.abilities.get(index);
+    if (a == null) {
+      global.log("WARNING: Trying to upgrade a null ability.");
+      return;
+    }
     if (a.ID % 10 > 5) {
       global.log("WARNING: Trying to upgrade a tier II ability.");
       return;
     }
-    int upgrade_ability_id = a.ID + 5;
-    a = new Ability(upgrade_ability_id);
+    int upgraded_ability_id = a.ID + 5;
+    a = new Ability(upgraded_ability_id);
   }
 
 
@@ -1281,14 +1280,25 @@ class Hero extends Unit {
   String manaDisplayName() {
     switch(this.code) {
       case BEN:
-        return "Rage";
+        return "% Rage";
       default:
         return "Error";
     }
   }
 
 
+  @Override
+  float currMana() {
+    return this.curr_mana;
+  }
+
   float mana() {
+    switch(this.code) {
+      case BEN:
+        return 100;
+      default:
+        break;
+    }
     float mana = this.base_mana;
     return mana;
   }
@@ -1446,10 +1456,12 @@ class Hero extends Unit {
     }
   }
 
+  @Override
   void increaseMana(int amount) {
     this.changeMana(amount);
   }
 
+  @Override
   void decreaseMana(int amount) {
     this.changeMana(-amount);
   }
@@ -1571,6 +1583,9 @@ class Hero extends Unit {
             this.curr_action = UnitAction.USING_ITEM;
             this.timer_actionTime = this.weapon().useTime();
           }
+          break;
+        case 't':
+          this.activateAbility(0);
           break;
         default:
           break;
