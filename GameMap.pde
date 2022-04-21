@@ -855,8 +855,10 @@ class GameMap {
   protected boolean hovered_visible = false;
   protected float mX = 0;
   protected float mY = 0;
-  protected MapObject hovered_object;
-  protected MapObject selected_object;
+  protected MapObject hovered_object = null;
+  protected int hovered_key = -10;
+  protected MapObject selected_object = null;
+  protected int selected_key = -10;
   protected SelectedObjectTextbox selected_object_textbox = new SelectedObjectTextbox();
 
   protected ArrayList<Feature> features = new ArrayList<Feature>();
@@ -1294,6 +1296,7 @@ class GameMap {
     // hovered info
     if (this.hovered_object != null && this.hovered_object.remove) {
       this.hovered_object = null;
+      this.hovered_key = -10;
     }
     String nameDisplayed = null;
     color ellipseColor = color(255);
@@ -1789,6 +1792,7 @@ class GameMap {
       this.mY = this.startSquareY + (mY - this.yi_map) / this.zoom;
       // update hovered for map objects
       this.hovered_object = null;
+      this.hovered_key = -10;
       try {
         if (!this.draw_fog || this.squares[int(floor(this.mX))][int(floor(this.mY))].visible) {
           hovered_explored = true;
@@ -1798,7 +1802,8 @@ class GameMap {
           hovered_explored = true;
         }
       } catch(ArrayIndexOutOfBoundsException e) {}
-      for (Feature f : this.features) {
+      for (int i = 0; i < this.features.size(); i++) {
+        Feature f = this.features.get(i);
         f.mouseMove(this.mX, this.mY);
         if (f.hovered) {
           if (!hovered_explored) {
@@ -1806,6 +1811,7 @@ class GameMap {
             continue;
           }
           this.hovered_object = f;
+          this.hovered_key = i;
           global.setCursor("icons/cursor_interact.png");
           default_cursor = false;
         }
@@ -1819,6 +1825,7 @@ class GameMap {
             continue;
           }
           this.hovered_object = u;
+          this.hovered_key = entry.getKey();
           if (this.units.containsKey(0) && u.alliance != this.units.get(0).alliance) {
             global.setCursor("icons/cursor_attack.png");
             default_cursor = false;
@@ -1834,6 +1841,7 @@ class GameMap {
             continue;
           }
           this.hovered_object = i;
+          this.hovered_key = entry.getKey();
           if (this.units.containsKey(0) && this.units.get(0).tier() >= i.tier) {
             global.setCursor("icons/cursor_pickup.png");
             default_cursor = false;
@@ -1899,6 +1907,7 @@ class GameMap {
   void selectHoveredObject() {
     if (this.hovered_area && !this.hovered_border) {
       this.selected_object = this.hovered_object;
+      this.selected_key = this.hovered_key;
     }
   }
 
@@ -1973,12 +1982,37 @@ class GameMap {
         case ' ':
           if (this.units.containsKey(0)) {
             this.selected_object = this.units.get(0);
+            this.selected_key = 0;
           }
           break;
         case 'q':
         case 'Q':
           if (this.units.containsKey(0)) {
             this.units.get(0).dropWeapon(this);
+          }
+          break;
+        case 'a':
+        case 'A':
+          if (this.units.containsKey(0)) {
+            this.units.get(0).cast(0, 1, this);
+          }
+          break;
+        case 's':
+        case 'S':
+          if (this.units.containsKey(0)) {
+            this.units.get(0).cast(0, 2, this);
+          }
+          break;
+        case 'd':
+        case 'D':
+          if (this.units.containsKey(0)) {
+            this.units.get(0).cast(0, 3, this);
+          }
+          break;
+        case 'f':
+        case 'F':
+          if (this.units.containsKey(0)) {
+            this.units.get(0).cast(0, 4, this);
           }
           break;
       }

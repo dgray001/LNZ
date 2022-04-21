@@ -29,7 +29,7 @@ class Projectile extends MapObject {
   Projectile(int ID, int source_key, Unit u, float inaccuracy) {
     super(ID);
     this.source_key = source_key;
-    // assume autoattack unless stated otherwise
+    this.setID();
     if (u != null) {
       this.x = u.frontX();
       this.y = u.frontY();
@@ -39,6 +39,26 @@ class Projectile extends MapObject {
       this.facingA = u.facingA;
       this.alliance = u.alliance;
       switch(ID) {
+        case 3001: // mighty Pen
+          if (u.holding(2911, 2912)) {
+            this.power = 5 + u.power(0.7, 0.7);
+            u.pickup(null);
+          }
+          else {
+            this.power = 1 + u.power(0.35, 0.35);
+          }
+          this.damageType = DamageType.MIXED;
+          break;
+        case 3002: // Mighty Pen II
+          if (u.holding(2911, 2912)) {
+            this.power = 50 + u.power(1, 1);
+            u.pickup(null);
+          }
+          else {
+            this.power = 10 + u.power(0.5, 0.5);
+          }
+          this.damageType = DamageType.MIXED;
+          break;
         case 3372: // Ray Gun
         case 3392: // Porter's X2 Ray Gun
           this.power = u.attack() + u.magic();
@@ -52,12 +72,31 @@ class Projectile extends MapObject {
       this.penetration = u.penetration();
       this.turn(inaccuracy - 2 * random(inaccuracy));
       this.range_left = 1.1 * u.attackRange();
+      switch(ID) {
+        case 3001: // Mighty Pen
+          this.range_left = 5;
+          break;
+        case 3002: // Mighty Pen II
+          this.range_left = 5;
+          break;
+        default:
+          this.range_left = 1.1 * u.attackRange();
+          break;
+      }
     }
-    this.setID();
   }
 
   void setID() {
     switch(ID) {
+      // abilities
+      case 3001: // Mighty Pen
+        this.speed = 9;
+        this.decay = 0;
+        break;
+      case 3002: // Mighty Pen II
+        this.speed = 9;
+        this.decay = 0;
+        break;
       case 3301: // Slingshot
         this.speed = 8;
         this.decay = 0.4267;
@@ -306,6 +345,10 @@ class Projectile extends MapObject {
   PImage getImage() {
     String path = "projectiles/";
     switch(this.ID) {
+      case 3001:
+      case 3002:
+        path += "pen.png";
+        break;
       case 3301:
         path += "rock.png";
         break;
@@ -606,6 +649,10 @@ class Projectile extends MapObject {
   ArrayList<Item> droppedItems(boolean hitUnit) {
     ArrayList<Item> droppedItems = new ArrayList<Item>();
     switch(this.ID) {
+      case 3001: // Mighty Pen
+      case 3002: // Mighty Pen II
+        droppedItems.add(new Item(2911));
+        break;
       case 3924: // glass bottle
         droppedItems.add(new Item(2805));
         break;
@@ -643,8 +690,19 @@ class Projectile extends MapObject {
     for (Item i : this.droppedItems(true)) {
       map.addItem(i, this.x, this.y);
     }
-    u.damage(map.units.get(this.source_key), u.calculateDamageFrom(this.collidePower(),
-      this.damageType, this.element, this.piercing, this.penetration));
+    float damage = u.calculateDamageFrom(this.collidePower(), this.damageType,
+      this.element, this.piercing, this.penetration);
+    u.damage(map.units.get(this.source_key), damage);
+    switch(this.ID) {
+      case 3001: // Mighty Pen
+        u.heal(0.2 * damage);
+        break;
+      case 3002: // Mighty Pen II
+        u.heal(0.3 * damage);
+        break;
+      default:
+        break;
+    }
     if (this.waitsToExplode()) {
       this.startExplodeTimer();
     }

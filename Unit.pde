@@ -720,6 +720,10 @@ class Unit extends MapObject {
     return magic;
   }
 
+  float power(float attack_ratio, float magic_ratio) {
+    return this.attack() * attack_ratio + this.magic() * magic_ratio;
+  }
+
   float defense() {
     float defense = this.base_defense;
     if (this.weapon() != null && this.weapon().weapon()) {
@@ -1700,6 +1704,42 @@ class Unit extends MapObject {
     this.object_targeting = null;
     this.curr_action_x = targetX;
     this.curr_action_y = targetY;
+  }
+
+
+  // Cast ability
+  void cast(int myKey, int index, GameMap map) {
+    if (index < 0 || index >= this.abilities.size()) {
+      return;
+    }
+    Ability a = this.abilities.get(index);
+    if (a == null) {
+      return;
+    }
+    if (a.timer_cooldown > 0) {
+      return;
+    }
+    if (a.checkMana()) {
+      if (a.manaCost() > this.currMana()) {
+        return;
+      }
+    }
+    if (a.castsOnTarget()) {
+      if (map.hovered_object == null) {
+        return;
+      }
+      if (a.turnsCaster()) {
+        this.face(map.hovered_object);
+      }
+      // check hovered object class to ensure is correct
+      a.activate(this, myKey, map, map.hovered_key);
+    }
+    else {
+      if (a.turnsCaster()) {
+        this.face(map.mX, map.mY);
+      }
+      a.activate(this, myKey, map);
+    }
   }
 
 
