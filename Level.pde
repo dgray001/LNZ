@@ -140,7 +140,7 @@ class Level {
     this.levelName = testMap.mapName;
     this.currMap = testMap;
     this.currMapName = testMap.mapName;
-    this.player = new Hero(HeroCode.BEN);
+    this.player = global_hero;
     this.player.setLocation(0.5, 0.5);
     this.currMap.addPlayer(this.player);
   }
@@ -302,6 +302,9 @@ class Level {
     this.yf = yf;
     if (this.currMap != null) {
       this.currMap.setLocation(xi, yi, xf, yf);
+    }
+    if (this.player != null) {
+      this.player.heroTree.setLocation(xi, yi, xf, yf);
     }
   }
 
@@ -1372,15 +1375,21 @@ class Level {
 
 
   void update(int millis) {
+    int timeElapsed = millis - this.last_update_time;
+    if (this.player != null && this.player.heroTree.curr_viewing) {
+      this.player.heroTree.update(timeElapsed);
+      this.last_update_time = millis;
+      return;
+    }
     if (this.level_form != null) {
       this.level_form.update(millis);
       if (this.level_form.canceled) {
         this.level_form = null;
         this.restartTimers(millis);
       }
+      this.last_update_time = millis;
       return;
     }
-    int timeElapsed = millis - this.last_update_time;
     if (this.currMap != null) {
       this.currMap.update(millis);
       for (Map.Entry<Integer, Trigger> entry : this.triggers.entrySet()) {
@@ -1428,6 +1437,15 @@ class Level {
   }
 
   void mouseMove(float mX, float mY) {
+    if (this.player != null) {
+      if (this.player.heroTree.curr_viewing) {
+        this.player.heroTree.mouseMove(mX, mY);
+        return;
+      }
+      else {
+        this.player.mouseMove_hero(mX, mY);
+      }
+    }
     if (this.level_form != null) {
       this.level_form.mouseMove(mX, mY);
       return;
@@ -1435,12 +1453,18 @@ class Level {
     if (this.currMap != null) {
       this.currMap.mouseMove(mX, mY);
     }
-    if (this.player != null) {
-      this.player.mouseMove_hero(mX, mY);
-    }
   }
 
   void mousePress() {
+    if (this.player != null) {
+      if (this.player.heroTree.curr_viewing) {
+        this.player.heroTree.mousePress();
+        return;
+      }
+      else {
+        this.player.mousePress_hero();
+      }
+    }
     if (this.level_form != null) {
       this.level_form.mousePress();
       return;
@@ -1448,12 +1472,18 @@ class Level {
     if (this.currMap != null) {
       this.currMap.mousePress();
     }
-    if (this.player != null) {
-      this.player.mousePress_hero();
-    }
   }
 
   void mouseRelease(float mX, float mY) {
+    if (this.player != null) {
+      if (this.player.heroTree.curr_viewing) {
+        this.player.heroTree.mouseRelease(mX, mY);
+        return;
+      }
+      else {
+        this.player.mouseRelease_hero(mX, mY);
+      }
+    }
     if (this.level_form != null) {
       this.level_form.mouseRelease(mX, mY);
       return;
@@ -1461,12 +1491,18 @@ class Level {
     if (this.currMap != null) {
       this.currMap.mouseRelease(mX, mY);
     }
-    if (this.player != null) {
-      this.player.mouseRelease_hero(mX, mY);
-    }
   }
 
   void scroll(int amount) {
+    if (this.player != null) {
+      if (this.player.heroTree.curr_viewing) {
+        this.player.heroTree.scroll(amount);
+        return;
+      }
+      else {
+        this.player.scroll_hero(amount);
+      }
+    }
     if (this.level_form != null) {
       this.level_form.scroll(amount);
       return;
@@ -1474,12 +1510,18 @@ class Level {
     if (this.currMap != null) {
       this.currMap.scroll(amount);
     }
-    if (this.player != null) {
-      this.player.scroll_hero(amount);
-    }
   }
 
   void keyPress() {
+    if (this.player != null) {
+      if (this.player.heroTree.curr_viewing) {
+        this.player.heroTree.keyPress();
+        return;
+      }
+      else {
+        this.player.keyPress_hero();
+      }
+    }
     if (this.level_form != null) {
       this.level_form.keyPress();
       return;
@@ -1487,21 +1529,38 @@ class Level {
     if (this.currMap != null) {
       this.currMap.keyPress();
     }
-    if (this.player != null) {
-      this.player.keyPress_hero();
+    if (key == CODED) {
+      switch(keyCode) {
+      }
+    }
+    else {
+      switch(key) {
+        case 't':
+        case 'T':
+          if (global.holding_ctrl && this.player != null) {
+            this.player.heroTree.curr_viewing = true;
+          }
+          break;
+      }
     }
   }
 
   void keyRelease() {
+    if (this.player != null) {
+      if (this.player.heroTree.curr_viewing) {
+        this.player.heroTree.keyRelease();
+        return;
+      }
+      else {
+        this.player.keyRelease_hero();
+      }
+    }
     if (this.level_form != null) {
       this.level_form.keyRelease();
       return;
     }
     if (this.currMap != null) {
       this.currMap.keyRelease();
-    }
-    if (this.player != null) {
-      this.player.keyRelease_hero();
     }
   }
 

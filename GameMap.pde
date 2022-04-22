@@ -758,17 +758,17 @@ class GameMap {
     SelectedObjectTextbox() {
       super(Constants.map_selectedObjectPanelGap, 0.2 * height, Constants.
         map_selectedObjectPanelGap, 0.5 * height - 5);
-      this.color_background = color(1, 0);
-      this.color_header = color(1, 0);
-      this.color_stroke = color(1, 0);
+      this.color_background = Constants.color_transparent;
+      this.color_header = Constants.color_transparent;
+      this.color_stroke = Constants.color_transparent;
       this.scrollbar.setButtonColors(color(170),
         adjust_color_brightness(global.color_panelBackground, 1.1),
         adjust_color_brightness(global.color_panelBackground, 1.2),
-        adjust_color_brightness(global.color_panelBackground, 0.95), color(0));
-      this.scrollbar.button_upspace.setColors(color(1, 0), color(1, 0),
-        color(1, 0), color(0), color(0));
-      this.scrollbar.button_downspace.setColors(color(1, 0), color(1, 0),
-        color(1, 0), color(0), color(0));
+        adjust_color_brightness(global.color_panelBackground, 0.95), Constants.color_black);
+      this.scrollbar.button_upspace.setColors(Constants.color_transparent, Constants.color_transparent,
+        Constants.color_transparent, Constants.color_black, Constants.color_black);
+      this.scrollbar.button_downspace.setColors(Constants.color_transparent, Constants.color_transparent,
+        Constants.color_transparent, Constants.color_black, Constants.color_black);
       this.scrollbar.button_up.raised_border = false;
       this.scrollbar.button_down.raised_border = false;
     }
@@ -859,7 +859,7 @@ class GameMap {
   protected int hovered_key = -10;
   protected MapObject selected_object = null;
   protected int selected_key = -10;
-  protected SelectedObjectTextbox selected_object_textbox = new SelectedObjectTextbox();
+  protected SelectedObjectTextbox selected_object_textbox = null;
 
   protected ArrayList<Feature> features = new ArrayList<Feature>();
   protected HashMap<Integer, Unit> units = new HashMap<Integer, Unit>();
@@ -921,8 +921,10 @@ class GameMap {
     this.yi = yi;
     this.xf = xf;
     this.yf = yf;
-    this.selected_object_textbox.setXLocation(Constants.map_selectedObjectPanelGap,
-      xi - Constants.map_selectedObjectPanelGap);
+    if (this.selected_object_textbox != null) {
+      this.selected_object_textbox.setXLocation(Constants.map_selectedObjectPanelGap,
+        xi - Constants.map_selectedObjectPanelGap);
+    }
     this.refreshDisplayMapParameters();
   }
 
@@ -1538,7 +1540,7 @@ class GameMap {
 
   void drawLeftPanel(int millis) {
     float currY = Constants.map_selectedObjectPanelGap;
-    if (this.selected_object != null) {
+    if (this.selected_object != null && this.selected_object_textbox != null) {
       fill(255);
       textSize(Constants.map_selectedObjectTitleTextSize);
       textAlign(CENTER, TOP);
@@ -1560,7 +1562,7 @@ class GameMap {
   }
 
   boolean leftPanelElementsHovered() {
-    if (this.selected_object != null) {
+    if (this.selected_object != null && this.selected_object_textbox != null) {
       if (this.selected_object_textbox.hovered) {
         return true;
       }
@@ -1783,7 +1785,7 @@ class GameMap {
   }
 
   void mouseMove(float mX, float mY) {
-    if (this.selected_object != null) {
+    if (this.selected_object != null && this.selected_object_textbox != null) {
       this.selected_object_textbox.mouseMove(mX, mY);
     }
     if (this.draw_fog) {
@@ -1926,7 +1928,7 @@ class GameMap {
     if (this.headerMessages.peek() != null) {
       this.headerMessages.peek().mousePress();
     }
-    if (this.selected_object != null) {
+    if (this.selected_object != null && this.selected_object_textbox != null) {
       this.selected_object_textbox.mousePress();
     }
     switch(mouseButton) {
@@ -1957,13 +1959,13 @@ class GameMap {
   }
 
   void mouseRelease(float mX, float mY) {
-    if (this.selected_object != null) {
+    if (this.selected_object != null && this.selected_object_textbox != null) {
       this.selected_object_textbox.mouseRelease(mX, mY);
     }
   }
 
   void scroll(int amount) {
-    if (this.selected_object != null) {
+    if (this.selected_object != null && this.selected_object_textbox != null) {
       this.selected_object_textbox.scroll(amount);
     }
     if (this.hovered_area) {
@@ -2647,7 +2649,7 @@ class GameMapEditor extends GameMap {
     if (this.headerMessages.peek() != null) {
       this.headerMessages.peek().mousePress();
     }
-    if (this.selected_object != null) {
+    if (this.selected_object != null && this.selected_object_textbox != null) {
       this.selected_object_textbox.mousePress();
     }
     switch(mouseButton) {
@@ -2999,7 +3001,7 @@ class GameMapLevelEditor extends GameMapEditor {
     if (this.headerMessages.peek() != null) {
       this.headerMessages.peek().mousePress();
     }
-    if (this.selected_object != null) {
+    if (this.selected_object != null && this.selected_object_textbox != null) {
       this.selected_object_textbox.mousePress();
     }
     switch(mouseButton) {

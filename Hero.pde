@@ -1753,6 +1753,7 @@ class Hero extends Unit {
   class HeroTree {
     class HeroTreeButton extends RippleCircleButton {
       protected HeroTreeCode code;
+      protected ArrayList<HeroTreeCode> dependencies = new ArrayList<HeroTreeCode>();
       protected boolean in_view = false;
       protected boolean visible = false;
       protected boolean unlocked = false;
@@ -1763,10 +1764,181 @@ class Hero extends Unit {
         Element e = HeroTree.this.hero().element;
         this.setColors(color(170), elementalColorLight(e), elementalColor(e),
           elementalColorDark(e), elementalColorText(e));
-        this.setStroke(elementalColorDark(e), 5);
-        this.show_message = true;
-        this.message = HeroTree.this.upgradeName(code);
+        this.setStroke(elementalColorDark(e), 12);
+        this.message = HeroTree.this.shortMessage(code);
         this.use_time_elapsed = true;
+        this.text_size = 16;
+        this.setDependencies();
+      }
+
+      void setDependencies() {
+        switch(this.code) {
+          case INVENTORYI:
+            break;
+          case PASSIVEI:
+            this.dependencies.add(HeroTreeCode.INVENTORYI);
+            break;
+          case AI:
+            this.dependencies.add(HeroTreeCode.INVENTORYI);
+            break;
+          case SI:
+            this.dependencies.add(HeroTreeCode.INVENTORYI);
+            break;
+          case DI:
+            this.dependencies.add(HeroTreeCode.INVENTORYI);
+            break;
+          case FI:
+            this.dependencies.add(HeroTreeCode.PASSIVEI);
+            this.dependencies.add(HeroTreeCode.AI);
+            this.dependencies.add(HeroTreeCode.SI);
+            this.dependencies.add(HeroTreeCode.DI);
+            break;
+          case PASSIVEII:
+            this.dependencies.add(HeroTreeCode.FI);
+            break;
+          case AII:
+            this.dependencies.add(HeroTreeCode.FI);
+            break;
+          case SII:
+            this.dependencies.add(HeroTreeCode.FI);
+            break;
+          case DII:
+            this.dependencies.add(HeroTreeCode.FI);
+            break;
+          case FII:
+            this.dependencies.add(HeroTreeCode.PASSIVEII);
+            this.dependencies.add(HeroTreeCode.AII);
+            this.dependencies.add(HeroTreeCode.SII);
+            this.dependencies.add(HeroTreeCode.DII);
+            break;
+          case HEALTHI:
+            break;
+          case ATTACKI:
+            break;
+          case DEFENSEI:
+            break;
+          case PIERCINGI:
+            break;
+          case SPEEDI:
+            break;
+          case SIGHTI:
+            break;
+          case AGILITYI:
+            break;
+          case MAGICI:
+            break;
+          case RESISTANCEI:
+            break;
+          case PENETRATIONI:
+            break;
+          case HEALTHII:
+            break;
+          case ATTACKII:
+            break;
+          case DEFENSEII:
+            break;
+          case PIERCINGII:
+            break;
+          case SPEEDII:
+            break;
+          case SIGHTII:
+            break;
+          case AGILITYII:
+            break;
+          case MAGICII:
+            break;
+          case RESISTANCEII:
+            break;
+          case PENETRATIONII:
+            break;
+          case HEALTHIII:
+            break;
+          case OFFHAND:
+            break;
+          case BELTI:
+            break;
+          case BELTII:
+            break;
+          case INVENTORYII:
+            break;
+          case INVENTORY_BARI:
+            break;
+          case INVENTORY_BARII:
+            break;
+          case FOLLOWERI:
+            break;
+          default:
+            global.errorMessage("ERROR: HeroTreeCode " + this.code + " not recognized.");
+            break;
+        }
+      }
+
+      void visible() {
+        this.visible = true;
+        this.show_message = true;
+      }
+
+      void unlock() {
+        this.unlocked = true;
+        Element e = HeroTree.this.hero().element;
+        this.setColors(color(170), elementalColorDark(e), elementalColorDark(e),
+          elementalColorDark(e), elementalColorText(e));
+      }
+
+      @Override
+      color fillColor() {
+        if (this.disabled) {
+          return this.color_disabled;
+        }
+        else if (this.clicked && this.visible) {
+          return this.color_click;
+        }
+        else if (this.hovered) {
+          return this.color_hover;
+        }
+        else {
+          return this.color_default;
+        }
+      }
+
+      @Override
+      void drawButton() {
+        super.drawButton();
+        fill(1, 0);
+        stroke(this.color_stroke);
+        strokeWeight(this.stroke_weight);
+        ellipseMode(CORNERS);
+        ellipse(this.xi, this.yi, this.xf, this.yf);
+      }
+
+      @Override
+      void hover() {
+        super.hover();
+        this.message = HeroTree.this.longMessage(code);
+      }
+
+      @Override
+      void dehover() {
+        super.hover();
+        this.message = HeroTree.this.shortMessage(code);
+      }
+
+      @Override
+      void click() {
+        if (this.unlocked || this.visible) {
+          super.click();
+        }
+      }
+
+      @Override
+      void release() {
+        super.release();
+        if (this.hovered) {
+          if (this.unlocked || this.visible) {
+            HeroTree.this.unlockNode(this.code);
+            // display info form
+          }
+        }
       }
     }
 
@@ -1774,11 +1946,23 @@ class Hero extends Unit {
     protected float yi = 0;
     protected float xf = 0;
     protected float yf = 0;
+    protected float xCenter = 0.5 * width;
+    protected float yCenter = 0.5 * height;
 
     protected float viewX = 0;
     protected float viewY = 0;
     protected float zoom = 1.0;
-    protected boolean display = false;
+    protected float inverse_zoom = 1.0;
+    protected boolean curr_viewing = false;
+
+    protected boolean dragging = false;
+    protected float last_mX = mouseX;
+    protected float last_mY = mouseY;
+
+    protected float lowestX = 0;
+    protected float lowestY = 0;
+    protected float highestX = 0;
+    protected float highestY = 0;
 
     protected color color_background = color(30);
     protected color color_connectorStroke_locked = color(70);
@@ -1790,28 +1974,110 @@ class Hero extends Unit {
 
     protected HashMap<HeroTreeCode, HeroTreeButton> nodes = new HashMap<HeroTreeCode, HeroTreeButton>();
 
+
     HeroTree() {
       this.initializeNodes();
+      this.updateDependencies();
       this.setView(0, 0);
     }
 
 
+    void unlockNode(HeroTreeCode code) {
+      if (!this.nodes.containsKey(code)) {
+        return;
+      }
+      if (this.nodes.get(code).unlocked || !this.nodes.get(code).visible) {
+        return;
+      }
+      // check hero tokens, etc.
+      this.nodes.get(code).unlock();
+      this.updateDependencies();
+    }
+
+    void updateDependencies() {
+      for (Map.Entry<HeroTreeCode, HeroTreeButton> entry : this.nodes.entrySet()) {
+        if (entry.getValue().visible) {
+          continue;
+        }
+        boolean visible = true;
+        for (HeroTreeCode code : entry.getValue().dependencies) {
+          if (!this.nodes.get(code).unlocked) {
+            visible = false;
+            break;
+          }
+        }
+        if (visible) {
+          entry.getValue().visible();
+        }
+      }
+    }
+
+
+    void setLocation(float xi, float yi, float xf, float yf) {
+      this.xi = xi;
+      this.yi = yi;
+      this.xf = xf;
+      this.yf = yf;
+      this.setView(this.viewX, this.viewY);
+    }
+
+    void moveView(float moveX, float moveY) {
+      this.setView(this.viewX + moveX, this.viewY + moveY);
+    }
     void setView(float viewX, float viewY) {
+      if (viewX < this.lowestX) {
+        viewX = this.lowestX;
+      }
+      else if (viewX > this.highestX) {
+        viewX = this.highestX;
+      }
+      if (viewY < this.lowestY) {
+        viewY = this.lowestY;
+      }
+      else if (viewY > this.highestY) {
+        viewY = this.highestY;
+      }
       this.viewX = viewX;
       this.viewY = viewY;
-      //this.
+      for (Map.Entry<HeroTreeCode, HeroTreeButton> entry : this.nodes.entrySet()) {
+        float node_xi = this.xCenter + entry.getValue().xi - viewX;
+        float node_yi = this.yCenter + entry.getValue().yi - viewY;
+        float node_xf = this.xCenter + entry.getValue().xf - viewX;
+        float node_yf = this.yCenter + entry.getValue().yf - viewY;
+        if (node_xi > this.xi && node_yi > this.yi && node_xf < this.xf && node_yf < this.yf) {
+          entry.getValue().in_view = true;
+        }
+        else {
+          entry.getValue().in_view = false;
+        }
+      }
     }
 
 
     void update(int timeElapsed) {
+      rectMode(CORNERS);
+      fill(this.color_background);
+      noStroke();
+      rect(this.xi, this.yi, this.xf, this.yf);
+      translate(this.xCenter + this.viewX, this.yCenter + this.viewY);
+      scale(this.zoom, this.zoom);
       for (Map.Entry<HeroTreeCode, HeroTreeButton> entry : this.nodes.entrySet()) {
         if (entry.getValue().in_view) {
           entry.getValue().update(timeElapsed);
         }
       }
+      scale(this.inverse_zoom, this.inverse_zoom);
+      translate(- this.xCenter - this.viewX, - this.yCenter - this.viewY);
     }
 
     void mouseMove(float mX, float mY) {
+      if (this.dragging) {
+        this.moveView(mX - this.last_mX, mY - this.last_mY);
+      }
+      this.last_mX = mX;
+      this.last_mY = mY;
+      mX -= this.xCenter + this.viewX;
+      mY -= this.yCenter + this.viewY;
       for (Map.Entry<HeroTreeCode, HeroTreeButton> entry : this.nodes.entrySet()) {
         if (entry.getValue().in_view) {
           entry.getValue().mouseMove(mX, mY);
@@ -1820,19 +2086,51 @@ class Hero extends Unit {
     }
 
     void mousePress() {
+      boolean button_hovered = false;
       for (Map.Entry<HeroTreeCode, HeroTreeButton> entry : this.nodes.entrySet()) {
         if (entry.getValue().in_view) {
           entry.getValue().mousePress();
+          if (entry.getValue().hovered) {
+            button_hovered = true;
+          }
         }
+      }
+      if (!button_hovered && mouseButton == LEFT) {
+        this.dragging = true;
       }
     }
 
     void mouseRelease(float mX, float mY) {
+      if (mouseButton == LEFT) {
+        this.dragging = false;
+      }
+      mX -= this.xCenter + this.viewX;
+      mY -= this.yCenter + this.viewY;
       for (Map.Entry<HeroTreeCode, HeroTreeButton> entry : this.nodes.entrySet()) {
         if (entry.getValue().in_view) {
           entry.getValue().mouseRelease(mX, mY);
         }
       }
+    }
+
+    void scroll(int amount) {
+    }
+
+    void keyPress() {
+      if (key == CODED) {
+        switch(keyCode) {
+        }
+      }
+      else {
+        switch(key) {
+          case ESC:
+            this.curr_viewing = false;
+            break;
+        }
+      }
+    }
+
+    void keyRelease() {
     }
 
 
@@ -1846,155 +2144,155 @@ class Hero extends Unit {
             r = Constants.hero_treeButtonCenterRadius;
             break;
           case PASSIVEI:
-            xc = 0;
-            yc = 0;
+            xc = 3 * Constants.hero_treeButtonDefaultRadius + Constants.hero_treeButtonCenterRadius;
+            yc = -3.45 * Constants.hero_treeButtonDefaultRadius;
             break;
           case AI:
-            xc = 0;
-            yc = 0;
+            xc = 3 * Constants.hero_treeButtonDefaultRadius + Constants.hero_treeButtonCenterRadius;
+            yc = -1.15 * Constants.hero_treeButtonDefaultRadius;
             break;
           case SI:
-            xc = 0;
-            yc = 0;
+            xc = 3 * Constants.hero_treeButtonDefaultRadius + Constants.hero_treeButtonCenterRadius;
+            yc = 1.15 * Constants.hero_treeButtonDefaultRadius;
             break;
           case DI:
-            xc = 0;
-            yc = 0;
+            xc = 3 * Constants.hero_treeButtonDefaultRadius + Constants.hero_treeButtonCenterRadius;
+            yc = 3.45 * Constants.hero_treeButtonDefaultRadius;
             break;
           case FI:
-            xc = 0;
+            xc = 7 * Constants.hero_treeButtonDefaultRadius + Constants.hero_treeButtonCenterRadius;
             yc = 0;
             break;
           case PASSIVEII:
-            xc = 0;
-            yc = 0;
+            xc = 11 * Constants.hero_treeButtonDefaultRadius + Constants.hero_treeButtonCenterRadius;
+            yc = -3.45 * Constants.hero_treeButtonDefaultRadius;
             break;
           case AII:
-            xc = 0;
-            yc = 0;
+            xc = 11 * Constants.hero_treeButtonDefaultRadius + Constants.hero_treeButtonCenterRadius;
+            yc = -1.15 * Constants.hero_treeButtonDefaultRadius;
             break;
           case SII:
-            xc = 0;
-            yc = 0;
+            xc = 11 * Constants.hero_treeButtonDefaultRadius + Constants.hero_treeButtonCenterRadius;
+            yc = 1.15 * Constants.hero_treeButtonDefaultRadius;
             break;
           case DII:
-            xc = 0;
-            yc = 0;
+            xc = 11 * Constants.hero_treeButtonDefaultRadius + Constants.hero_treeButtonCenterRadius;
+            yc = 3.45 * Constants.hero_treeButtonDefaultRadius;
             break;
           case FII:
-            xc = 0;
+            xc = 15 * Constants.hero_treeButtonDefaultRadius + Constants.hero_treeButtonCenterRadius;
             yc = 0;
             break;
           case HEALTHI:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case ATTACKI:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case DEFENSEI:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case PIERCINGI:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case SPEEDI:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case SIGHTI:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case AGILITYI:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case MAGICI:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case RESISTANCEI:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case PENETRATIONI:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case HEALTHII:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case ATTACKII:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case DEFENSEII:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case PIERCINGII:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case SPEEDII:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case SIGHTII:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case AGILITYII:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case MAGICII:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case RESISTANCEII:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case PENETRATIONII:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case HEALTHIII:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case OFFHAND:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case BELTI:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case BELTII:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case INVENTORYII:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case INVENTORY_BARI:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case INVENTORY_BARII:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           case FOLLOWERI:
-            xc = 0;
+            xc = -200;
             yc = 0;
             break;
           default:
@@ -2002,7 +2300,23 @@ class Hero extends Unit {
             break;
         }
         this.nodes.put(code, new HeroTreeButton(code, xc, yc, r));
+        if (xc - r < this.lowestX) {
+          this.lowestX = xc - r;
+        }
+        else if (xc + r > this.highestX) {
+          this.highestX = xc + r;
+        }
+        if (yc - r < this.lowestY) {
+          this.lowestY = yc - r;
+        }
+        else if (yc + r > this.highestY) {
+          this.highestY = yc + r;
+        }
       }
+      this.lowestX -= Constants.hero_treeButtonDefaultRadius;
+      this.lowestY -= Constants.hero_treeButtonDefaultRadius;
+      this.highestX += Constants.hero_treeButtonDefaultRadius;
+      this.highestY += Constants.hero_treeButtonDefaultRadius;
     }
 
     Hero hero() {
@@ -2089,6 +2403,176 @@ class Hero extends Unit {
           return "Inventory Bar II";
         case FOLLOWERI:
           return "Unlock Follower";
+        default:
+          return "-- Error --";
+      }
+    }
+
+    String shortMessage(HeroTreeCode code) {
+      switch(code) {
+        case INVENTORYI:
+          return "Inventory";
+        case PASSIVEI:
+          return "Passive";
+        case AI:
+          return "A";
+        case SI:
+          return "S";
+        case DI:
+          return "D";
+        case FI:
+          return "F";
+        case PASSIVEII:
+          return "Passive II";
+        case AII:
+          return "A II";
+        case SII:
+          return "S II";
+        case DII:
+          return "D II";
+        case FII:
+          return "F II";
+        case HEALTHI:
+          return "Health";
+        case ATTACKI:
+          return "Attack";
+        case DEFENSEI:
+          return "Defense";
+        case PIERCINGI:
+          return "Piercing";
+        case SPEEDI:
+          return "Speed";
+        case SIGHTI:
+          return "Sight";
+        case AGILITYI:
+          return "Agility";
+        case MAGICI:
+          return "Magic";
+        case RESISTANCEI:
+          return "Resistance";
+        case PENETRATIONI:
+          return "Penetration";
+        case HEALTHII:
+          return "Health II";
+        case ATTACKII:
+          return "Attack II";
+        case DEFENSEII:
+          return "Defense II";
+        case PIERCINGII:
+          return "Piercing II";
+        case SPEEDII:
+          return "Speed II";
+        case SIGHTII:
+          return "Sight II";
+        case AGILITYII:
+          return "Health II";
+        case MAGICII:
+          return "Magic II";
+        case RESISTANCEII:
+          return "Resistance II";
+        case PENETRATIONII:
+          return "Penetration II";
+        case HEALTHIII:
+          return "Health III";
+        case OFFHAND:
+          return "Offhand";
+        case BELTI:
+          return "Belt";
+        case BELTII:
+          return "Belt II";
+        case INVENTORYII:
+          return "Inventory II";
+        case INVENTORY_BARI:
+          return "Inventory Bar";
+        case INVENTORY_BARII:
+          return "Inventory Bar II";
+        case FOLLOWERI:
+          return "Follower";
+        default:
+          return "-- Error --";
+      }
+    }
+
+    String longMessage(HeroTreeCode code) {
+      switch(code) {
+        case INVENTORYI:
+          return "Unlock\nInventory";
+        case PASSIVEI:
+          return "Unlock\nPassive\nAbility";
+        case AI:
+          return "Unlock\nA\nAbility";
+        case SI:
+          return "Unlock\nS\nAbility";
+        case DI:
+          return "Unlock\nD\nAbility";
+        case FI:
+          return "Unlock\nF\nAbility";
+        case PASSIVEII:
+          return "Upgrade\nPassive\nAbility";
+        case AII:
+          return "Upgrade\nA\nAbility";
+        case SII:
+          return "Upgrade\nS\nAbility";
+        case DII:
+          return "Upgrade\nD\nAbility";
+        case FII:
+          return "Upgrade\nF\nAbility";
+        case HEALTHI:
+          return "Increase\nHealth";
+        case ATTACKI:
+          return "Increase\nAttack";
+        case DEFENSEI:
+          return "Increase\nDefense";
+        case PIERCINGI:
+          return "Increase\nPiercing";
+        case SPEEDI:
+          return "Increase\nSpeed";
+        case SIGHTI:
+          return "Increase\nSight";
+        case AGILITYI:
+          return "Increase\nAgility";
+        case MAGICI:
+          return "Increase\nMagic";
+        case RESISTANCEI:
+          return "Increase\nResistance";
+        case PENETRATIONI:
+          return "Increase\nPenetration";
+        case HEALTHII:
+          return "Increase\nHealth";
+        case ATTACKII:
+          return "Increase\nAttack";
+        case DEFENSEII:
+          return "Increase\nDefense";
+        case PIERCINGII:
+          return "Increase\nPiercing";
+        case SPEEDII:
+          return "Increase\nSpeed";
+        case SIGHTII:
+          return "Increase\nSight";
+        case AGILITYII:
+          return "Increase\nAgility";
+        case MAGICII:
+          return "Increase\nMagic";
+        case RESISTANCEII:
+          return "Increase\nResistance";
+        case PENETRATIONII:
+          return "Increase\nPenetration";
+        case HEALTHIII:
+          return "Increase\nHealth";
+        case OFFHAND:
+          return "Unlock\nOffhand\nGear Slot";
+        case BELTI:
+          return "Unlock\nBelt\nGear Slot";
+        case BELTII:
+          return "Unlock\nBelt II\nGear Slot";
+        case INVENTORYII:
+          return "More\nInventory\nSlots";
+        case INVENTORY_BARI:
+          return "Unlock\nInventory Bar";
+        case INVENTORY_BARII:
+          return "Upgrade\nInventory Bar";
+        case FOLLOWERI:
+          return "Unlock\nFollower";
         default:
           return "-- Error --";
       }

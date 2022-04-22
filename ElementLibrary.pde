@@ -466,6 +466,8 @@ abstract class RippleRectangleButton extends ImageButton {
   protected int rippleTimer = 0;
   protected int number_buckets = 50;
   protected HashMap<Integer, ArrayList<Pixel>> buckets;
+  protected float last_mX = 0;
+  protected float last_mY = 0;
   protected float clickX = 0;
   protected float clickY = 0;
   protected float maxRippleDistance;
@@ -479,6 +481,9 @@ abstract class RippleRectangleButton extends ImageButton {
   @Override
   void update(int millis) {
     int timeElapsed = millis - this.lastUpdateTime;
+    if (this.use_time_elapsed) {
+      timeElapsed = millis;
+    }
     super.update(millis);
     if (this.rippleTimer > 0) {
       this.rippleTimer -= timeElapsed;
@@ -533,6 +538,13 @@ abstract class RippleRectangleButton extends ImageButton {
     }
   }
 
+  @Override
+  void mouseMove(float mX, float mY) {
+    this.last_mX = mX;
+    this.last_mY = mY;
+    super.mouseMove(mX, mY);
+  }
+
   void hover() {
     this.refreshColor();
   }
@@ -542,8 +554,8 @@ abstract class RippleRectangleButton extends ImageButton {
   }
 
   void click() {
-    this.clickX = mouseX;
-    this.clickY = mouseY;
+    this.clickX = this.last_mX;
+    this.clickY = this.last_mY;
     this.initializeRipple();
   }
 
