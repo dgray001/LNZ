@@ -117,6 +117,19 @@ enum InventoryLocation {
 
 
 
+enum HeroTreeCode {
+  INVENTORYI, PASSIVEI, AI, SI, DI, FI, PASSIVEII, AII, SII, DII, FII,
+  HEALTHI, ATTACKI, DEFENSEI, PIERCINGI, SPEEDI, SIGHTI, AGILITYI, MAGICI,
+    RESISTANCEI, PENETRATIONI, HEALTHII, ATTACKII, DEFENSEII, PIERCINGII, SPEEDII,
+    SIGHTII, AGILITYII, MAGICII, RESISTANCEII, PENETRATIONII, HEALTHIII,
+  OFFHAND, BELTI, BELTII, INVENTORYII, INVENTORY_BARI, INVENTORY_BARII,
+  FOLLOWERI
+  ;
+  private static final List<HeroTreeCode> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+}
+
+
+
 class Hero extends Unit {
 
   class GearInventory extends Inventory {
@@ -1243,8 +1256,8 @@ class Hero extends Unit {
       void drawButton() {
         super.drawButton();
         imageMode(CORNERS);
-        image(global.images.getImage("icons/mana.png"), this.xi, this.yi,
-          this.bar_xi - 2, this.yf);
+        image(global.images.getImage("icons/mana_" + PlayerLeftPanelMenu.
+          this.hero().manaFileName() + ".png"), this.xi, this.yi, this.bar_xi - 2, this.yf);
         rectMode(CORNERS);
         fill(0);
         noStroke();
@@ -1718,6 +1731,372 @@ class Hero extends Unit {
   }
 
 
+  class XpLeftPanelMenu extends LeftPanelMenu {
+    XpLeftPanelMenu() {
+    }
+
+    void drawPanel(int timeElapsed, float panel_width) {
+    }
+
+    void mouseMove(float mX, float mY) {
+    }
+
+    void mousePress() {
+    }
+
+    void mouseRelease(float mX, float mY) {
+    }
+  }
+
+
+
+  class HeroTree {
+    class HeroTreeButton extends RippleCircleButton {
+      protected HeroTreeCode code;
+      protected boolean in_view = false;
+      protected boolean visible = false;
+      protected boolean unlocked = false;
+
+      HeroTreeButton(HeroTreeCode code, float xc, float yc, float r) {
+        super(xc, yc, r);
+        this.code = code;
+        Element e = HeroTree.this.hero().element;
+        this.setColors(color(170), elementalColorLight(e), elementalColor(e),
+          elementalColorDark(e), elementalColorText(e));
+        this.setStroke(elementalColorDark(e), 5);
+        this.show_message = true;
+        this.message = HeroTree.this.upgradeName(code);
+        this.use_time_elapsed = true;
+      }
+    }
+
+    protected float xi = 0;
+    protected float yi = 0;
+    protected float xf = 0;
+    protected float yf = 0;
+
+    protected float viewX = 0;
+    protected float viewY = 0;
+    protected float zoom = 1.0;
+    protected boolean display = false;
+
+    protected color color_background = color(30);
+    protected color color_connectorStroke_locked = color(70);
+    protected color color_connectorStroke_visible = color(140);
+    protected color color_connectorStroke_unlocked = elementalColorDark(Hero.this.element);
+    protected color color_connectorFill_locked = elementalColorDark(Hero.this.element);
+    protected color color_connectorFill_visible = elementalColor(Hero.this.element);
+    protected color color_connectorFill_unlocked = elementalColorLight(Hero.this.element);
+
+    protected HashMap<HeroTreeCode, HeroTreeButton> nodes = new HashMap<HeroTreeCode, HeroTreeButton>();
+
+    HeroTree() {
+      this.initializeNodes();
+      this.setView(0, 0);
+    }
+
+
+    void setView(float viewX, float viewY) {
+      this.viewX = viewX;
+      this.viewY = viewY;
+      //this.
+    }
+
+
+    void update(int timeElapsed) {
+      for (Map.Entry<HeroTreeCode, HeroTreeButton> entry : this.nodes.entrySet()) {
+        if (entry.getValue().in_view) {
+          entry.getValue().update(timeElapsed);
+        }
+      }
+    }
+
+    void mouseMove(float mX, float mY) {
+      for (Map.Entry<HeroTreeCode, HeroTreeButton> entry : this.nodes.entrySet()) {
+        if (entry.getValue().in_view) {
+          entry.getValue().mouseMove(mX, mY);
+        }
+      }
+    }
+
+    void mousePress() {
+      for (Map.Entry<HeroTreeCode, HeroTreeButton> entry : this.nodes.entrySet()) {
+        if (entry.getValue().in_view) {
+          entry.getValue().mousePress();
+        }
+      }
+    }
+
+    void mouseRelease(float mX, float mY) {
+      for (Map.Entry<HeroTreeCode, HeroTreeButton> entry : this.nodes.entrySet()) {
+        if (entry.getValue().in_view) {
+          entry.getValue().mouseRelease(mX, mY);
+        }
+      }
+    }
+
+
+    void initializeNodes() {
+      for (HeroTreeCode code : HeroTreeCode.VALUES) {
+        float xc = 0;
+        float yc = 0;
+        float r = Constants.hero_treeButtonDefaultRadius;
+        switch(code) {
+          case INVENTORYI:
+            r = Constants.hero_treeButtonCenterRadius;
+            break;
+          case PASSIVEI:
+            xc = 0;
+            yc = 0;
+            break;
+          case AI:
+            xc = 0;
+            yc = 0;
+            break;
+          case SI:
+            xc = 0;
+            yc = 0;
+            break;
+          case DI:
+            xc = 0;
+            yc = 0;
+            break;
+          case FI:
+            xc = 0;
+            yc = 0;
+            break;
+          case PASSIVEII:
+            xc = 0;
+            yc = 0;
+            break;
+          case AII:
+            xc = 0;
+            yc = 0;
+            break;
+          case SII:
+            xc = 0;
+            yc = 0;
+            break;
+          case DII:
+            xc = 0;
+            yc = 0;
+            break;
+          case FII:
+            xc = 0;
+            yc = 0;
+            break;
+          case HEALTHI:
+            xc = 0;
+            yc = 0;
+            break;
+          case ATTACKI:
+            xc = 0;
+            yc = 0;
+            break;
+          case DEFENSEI:
+            xc = 0;
+            yc = 0;
+            break;
+          case PIERCINGI:
+            xc = 0;
+            yc = 0;
+            break;
+          case SPEEDI:
+            xc = 0;
+            yc = 0;
+            break;
+          case SIGHTI:
+            xc = 0;
+            yc = 0;
+            break;
+          case AGILITYI:
+            xc = 0;
+            yc = 0;
+            break;
+          case MAGICI:
+            xc = 0;
+            yc = 0;
+            break;
+          case RESISTANCEI:
+            xc = 0;
+            yc = 0;
+            break;
+          case PENETRATIONI:
+            xc = 0;
+            yc = 0;
+            break;
+          case HEALTHII:
+            xc = 0;
+            yc = 0;
+            break;
+          case ATTACKII:
+            xc = 0;
+            yc = 0;
+            break;
+          case DEFENSEII:
+            xc = 0;
+            yc = 0;
+            break;
+          case PIERCINGII:
+            xc = 0;
+            yc = 0;
+            break;
+          case SPEEDII:
+            xc = 0;
+            yc = 0;
+            break;
+          case SIGHTII:
+            xc = 0;
+            yc = 0;
+            break;
+          case AGILITYII:
+            xc = 0;
+            yc = 0;
+            break;
+          case MAGICII:
+            xc = 0;
+            yc = 0;
+            break;
+          case RESISTANCEII:
+            xc = 0;
+            yc = 0;
+            break;
+          case PENETRATIONII:
+            xc = 0;
+            yc = 0;
+            break;
+          case HEALTHIII:
+            xc = 0;
+            yc = 0;
+            break;
+          case OFFHAND:
+            xc = 0;
+            yc = 0;
+            break;
+          case BELTI:
+            xc = 0;
+            yc = 0;
+            break;
+          case BELTII:
+            xc = 0;
+            yc = 0;
+            break;
+          case INVENTORYII:
+            xc = 0;
+            yc = 0;
+            break;
+          case INVENTORY_BARI:
+            xc = 0;
+            yc = 0;
+            break;
+          case INVENTORY_BARII:
+            xc = 0;
+            yc = 0;
+            break;
+          case FOLLOWERI:
+            xc = 0;
+            yc = 0;
+            break;
+          default:
+            global.errorMessage("ERROR: No place to put " + code + " in HeroTree.");
+            break;
+        }
+        this.nodes.put(code, new HeroTreeButton(code, xc, yc, r));
+      }
+    }
+
+    Hero hero() {
+      return Hero.this;
+    }
+
+    String upgradeName(HeroTreeCode code) {
+      switch(code) {
+        case INVENTORYI:
+          return "Unlock Inventory";
+        case PASSIVEI:
+          return "Unlock Passive Ability";
+        case AI:
+          return "Unlock A Ability";
+        case SI:
+          return "Unlock S Ability";
+        case DI:
+          return "Unlock D Ability";
+        case FI:
+          return "Unlock F Ability";
+        case PASSIVEII:
+          return "Upgrade Passive Ability";
+        case AII:
+          return "Upgrade A Ability";
+        case SII:
+          return "Upgrade S Ability";
+        case DII:
+          return "Upgrade D Ability";
+        case FII:
+          return "Upgrade F Ability";
+        case HEALTHI:
+          return "Increase Health";
+        case ATTACKI:
+          return "Increase Attack";
+        case DEFENSEI:
+          return "Increase Defense";
+        case PIERCINGI:
+          return "Increase Piercing";
+        case SPEEDI:
+          return "Increase Speed";
+        case SIGHTI:
+          return "Increase Sight";
+        case AGILITYI:
+          return "Increase Agility";
+        case MAGICI:
+          return "Increase Magic";
+        case RESISTANCEI:
+          return "Increase Resistance";
+        case PENETRATIONI:
+          return "Increase Penetration";
+        case HEALTHII:
+          return "Increase Health II";
+        case ATTACKII:
+          return "Increase Attack II";
+        case DEFENSEII:
+          return "Increase Defense II";
+        case PIERCINGII:
+          return "Increase Piercing II";
+        case SPEEDII:
+          return "Increase Speed II";
+        case SIGHTII:
+          return "Increase Sight II";
+        case AGILITYII:
+          return "Increase Health II";
+        case MAGICII:
+          return "Increase Magic II";
+        case RESISTANCEII:
+          return "Increase Resistance II";
+        case PENETRATIONII:
+          return "Increase Penetration II";
+        case HEALTHIII:
+          return "Increase Health III";
+        case OFFHAND:
+          return "Offhand Gear Slot";
+        case BELTI:
+          return "Belt Gear Slot";
+        case BELTII:
+          return "Belt Gear Slot II";
+        case INVENTORYII:
+          return "Inventory Slots";
+        case INVENTORY_BARI:
+          return "Inventory Bar";
+        case INVENTORY_BARII:
+          return "Inventory Bar II";
+        case FOLLOWERI:
+          return "Unlock Follower";
+        default:
+          return "-- Error --";
+      }
+    }
+  }
+
+
+
   protected HeroCode code;
 
   protected Location location = Location.ERROR;
@@ -1736,6 +2115,7 @@ class Hero extends Unit {
   protected LeftPanelMenu left_panel_menu = new PlayerLeftPanelMenu();
   protected HeroInventory inventory = new HeroInventory();
   protected InventoryBar inventory_bar = new InventoryBar();
+  protected HeroTree heroTree = new HeroTree();
 
   protected Queue<String> messages = new LinkedList<String>();
 
@@ -1820,6 +2200,15 @@ class Hero extends Unit {
         return "% Rage";
       default:
         return "Error";
+    }
+  }
+
+  String manaFileName() {
+    switch(this.code) {
+      case BEN:
+        return "rage";
+      default:
+        return "error";
     }
   }
 

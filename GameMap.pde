@@ -816,7 +816,7 @@ class GameMap {
   protected DImg terrain_dimg;
   protected DImg fog_dimg;
   protected MapFogHandling fogHandling = MapFogHandling.DEFAULT;
-  protected color fogColor = color(170, 100);
+  protected color fogColor = Constants.color_fog;
   protected boolean draw_fog = true;
   protected PImage terrain_display = createImage(0, 0, RGB);
   protected PImage fog_display = createImage(0, 0, ARGB);
@@ -934,13 +934,13 @@ class GameMap {
         for (int i = 0; i < this.mapWidth; i++) {
           for (int j = 0; j < this.mapHeight; j++) {
             if (!this.squares[i][j].explored) {
-              this.fog_dimg.colorGrid(color(0), i, j);
+              this.fog_dimg.colorGrid(Constants.color_black, i, j);
             }
             else if (!this.squares[i][j].visible) {
               this.fog_dimg.colorGrid(this.fogColor, i, j);
             }
             else {
-              this.fog_dimg.colorGrid(color(1, 0), i, j);
+              this.fog_dimg.colorGrid(Constants.color_transparent, i, j);
             }
           }
         }
@@ -958,10 +958,10 @@ class GameMap {
           for (int j = 0; j < this.mapHeight; j++) {
             this.setTerrainVisible(true, i, j, false);
             if (!this.squares[i][j].explored) {
-              this.fog_dimg.colorGrid(color(0), i, j);
+              this.fog_dimg.colorGrid(Constants.color_black, i, j);
             }
             else {
-              this.fog_dimg.colorGrid(color(1, 0), i, j);
+              this.fog_dimg.colorGrid(Constants.color_transparent, i, j);
             }
           }
         }
@@ -974,7 +974,7 @@ class GameMap {
               this.fog_dimg.colorGrid(this.fogColor, i, j);
             }
             else {
-              this.fog_dimg.colorGrid(color(1, 0), i, j);
+              this.fog_dimg.colorGrid(Constants.color_transparent, i, j);
             }
           }
         }
@@ -1572,7 +1572,7 @@ class GameMap {
   void updateView(int timeElapsed) {
     boolean refreshView = false;
     // lockscreen
-    if (global.holding_space && this.units.containsKey(0)) {
+    if (true || (global.holding_space && this.units.containsKey(0))) {
       this.setViewLocation(this.units.get(0).x, this.units.get(0).y);
     }
     else {

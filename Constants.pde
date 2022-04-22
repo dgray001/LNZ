@@ -25,6 +25,9 @@ static class Constants {
   static final float inverse_root_two = 0.70710678;
   static final float errorForm_width = 400;
   static final float errorForm_height = 400;
+  static final color color_black = -16777216;
+  static final color color_fog = 1688906410;
+  static final color color_transparent = 65793;
 
   // Initial Interface
   static final int initialInterface_size = 400;
@@ -350,7 +353,9 @@ static class Constants {
   static final float hero_statusDescription_width = 160;
   static final float hero_statusDescription_height = 120;
   static final float hero_leftPanelBarHeight = 10;
-  static final float hero_leftPanelButtonHoverTimer = 200;
+  static final float hero_leftPanelButtonHoverTimer = 400;
+  static final float hero_treeButtonDefaultRadius = 60;
+  static final float hero_treeButtonCenterRadius = 90;
 
   // Ability
   static final int ability_101_rageGain = 2;
