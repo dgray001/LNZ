@@ -1247,7 +1247,9 @@ class MapEditorInterface extends InterfaceLNZ {
         delay(2500);
         return;
       }
+      this.curr_status += "\nCreating Level";
       this.level_opening = new Level(map_testing);
+      delay(500);
     }
   }
 
@@ -2088,6 +2090,8 @@ class MapEditorInterface extends InterfaceLNZ {
             this.curr_map.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
             this.navigate(MapEditorPage.TERRAIN);
           }
+          this.create_map_thread = null;
+          return;
         }
         break;
       case OPENING_MAPEDITOR:
@@ -2115,6 +2119,8 @@ class MapEditorInterface extends InterfaceLNZ {
             this.curr_map.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
             this.navigate(MapEditorPage.TERRAIN);
           }
+          this.open_mapEditor_thread = null;
+          return;
         }
         break;
       case OPENING_TESTMAP:
@@ -2142,6 +2148,8 @@ class MapEditorInterface extends InterfaceLNZ {
             this.curr_level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
             this.navigate(MapEditorPage.TESTMAP);
           }
+          this.open_testMap_thread = null;
+          return;
         }
         break;
       case OPENING_TESTLEVEL:
@@ -2169,6 +2177,8 @@ class MapEditorInterface extends InterfaceLNZ {
             this.curr_level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
             this.navigate(MapEditorPage.TESTLEVEL);
           }
+          this.open_testLevel_thread = null;
+          return;
         }
         break;
       default:
