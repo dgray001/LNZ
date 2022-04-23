@@ -1440,6 +1440,9 @@ class Level {
     if (this.player != null) {
       if (this.player.heroTree.curr_viewing) {
         this.player.heroTree.mouseMove(mX, mY);
+        if (this.player.left_panel_menu != null) {
+          this.player.left_panel_menu.mouseMove(mX, mY);
+        }
         return;
       }
       else {
@@ -1459,6 +1462,9 @@ class Level {
     if (this.player != null) {
       if (this.player.heroTree.curr_viewing) {
         this.player.heroTree.mousePress();
+        if (this.player.left_panel_menu != null) {
+          this.player.left_panel_menu.mousePress();
+        }
         return;
       }
       else {
@@ -1478,6 +1484,9 @@ class Level {
     if (this.player != null) {
       if (this.player.heroTree.curr_viewing) {
         this.player.heroTree.mouseRelease(mX, mY);
+        if (this.player.left_panel_menu != null) {
+          this.player.left_panel_menu.mouseRelease(mX, mY);
+        }
         return;
       }
       else {
@@ -1535,10 +1544,19 @@ class Level {
     }
     else {
       switch(key) {
+        case ESC:
+          if (this.player != null && this.player.heroTree.curr_viewing) {
+            this.player.heroTree.curr_viewing = false;
+            this.restartTimers();
+          }
+          break;
         case 't':
         case 'T':
           if (global.holding_ctrl && this.player != null) {
-            this.player.heroTree.curr_viewing = true;
+            this.player.heroTree.curr_viewing = !this.player.heroTree.curr_viewing;
+            if (!this.player.heroTree.curr_viewing) {
+              this.restartTimers();
+            }
           }
           break;
       }
