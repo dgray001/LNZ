@@ -3048,7 +3048,7 @@ class Hero extends Unit {
   protected int experience_next_level = 1;
   protected float money = 0;
   protected float base_mana = 0;
-  protected float curr_mana = 0;
+  protected float curr_mana = 60;
   protected int hunger = 100;
   protected int thirst = 100;
   protected int hunger_timer = Constants.hero_hungerTimer;
@@ -3304,13 +3304,16 @@ class Hero extends Unit {
 
   @Override
   float mana() {
+    float mana = 0;
     switch(this.code) {
       case BEN:
         return 100;
+      case DAN:
+        mana = 80;
+        break;
       default:
         break;
     }
-    float mana = this.base_mana;
     return mana;
   }
 

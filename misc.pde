@@ -81,11 +81,12 @@ color elementalColorText(Element e) {
     case RED:
     case CYAN:
     case ORANGE:
-    case BROWN:
     case PURPLE:
     case YELLOW:
     case MAGENTA:
       return color(0);
+    case BROWN:
+      return color(255);
     default:
       global.errorMessage("ERROR: Element " + e.element_name() + " doesn't have a color.");
       return color(0);

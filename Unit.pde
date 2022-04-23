@@ -295,6 +295,7 @@ class Unit extends MapObject {
   protected float timer_last_damage = 0;
 
   protected UnitAction curr_action = UnitAction.NONE;
+  protected int curr_action_id = 0;
   protected MapObject object_targeting = null;
   protected MapObject last_damage_from = null;
   protected float last_damage_amount = 0;
@@ -1048,6 +1049,9 @@ class Unit extends MapObject {
         speed *= Constants.ability_109_speedBuff;
       }
     }
+    if (this.tongueLash()) {
+      speed *= Constants.ability_112_slowAmount;
+    }
     for (Ability a : this.abilities) {
       if (a == null) {
         continue;
@@ -1349,6 +1353,9 @@ class Unit extends MapObject {
   }
   boolean aposematicCamouflageII() {
     return this.hasStatusEffect(StatusEffectCode.APOSEMATIC_CAMOUFLAGEII);
+  }
+  boolean tongueLash() {
+    return this.hasStatusEffect(StatusEffectCode.TONGUE_LASH);
   }
 
   StatusEffectCode priorityStatusEffect() {
@@ -1914,6 +1921,7 @@ class Unit extends MapObject {
     if (index < 0 || index >= this.abilities.size()) {
       return;
     }
+    this.curr_action_id = index;
     Ability a = this.abilities.get(index);
     if (a == null) {
       return;
