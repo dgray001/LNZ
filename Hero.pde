@@ -119,9 +119,9 @@ enum InventoryLocation {
 
 enum HeroTreeCode {
   INVENTORYI, PASSIVEI, AI, SI, DI, FI, PASSIVEII, AII, SII, DII, FII,
-  HEALTHI, ATTACKI, DEFENSEI, PIERCINGI, SPEEDI, SIGHTI, AGILITYI, MAGICI,
+  HEALTHI, ATTACKI, DEFENSEI, PIERCINGI, SPEEDI, SIGHTI, TENACITYI, AGILITYI, MAGICI,
     RESISTANCEI, PENETRATIONI, HEALTHII, ATTACKII, DEFENSEII, PIERCINGII, SPEEDII,
-    SIGHTII, AGILITYII, MAGICII, RESISTANCEII, PENETRATIONII, HEALTHIII,
+    SIGHTII, TENACITYII, AGILITYII, MAGICII, RESISTANCEII, PENETRATIONII, HEALTHIII,
   OFFHAND, BELTI, BELTII, INVENTORYII, INVENTORY_BARI, INVENTORY_BARII,
   FOLLOWERI
   ;
@@ -1830,6 +1830,9 @@ class Hero extends Unit {
           case SIGHTI:
             this.dependencies.add(HeroTreeCode.HEALTHI);
             break;
+          case TENACITYI:
+            this.dependencies.add(HeroTreeCode.HEALTHI);
+            break;
           case AGILITYI:
             this.dependencies.add(HeroTreeCode.HEALTHI);
             break;
@@ -1859,6 +1862,9 @@ class Hero extends Unit {
             break;
           case SIGHTII:
             this.dependencies.add(HeroTreeCode.SIGHTI);
+            break;
+          case TENACITYII:
+            this.dependencies.add(HeroTreeCode.TENACITYI);
             break;
           case AGILITYII:
             this.dependencies.add(HeroTreeCode.AGILITYI);
@@ -1984,8 +1990,65 @@ class Hero extends Unit {
 
 
     class NodeDetailsForm extends Form {
-      NodeDetailsForm(HeroTreeButton) {
+      protected boolean canceled = false;
+      protected HeroTreeButton button;
+      protected float shadow_distance = 10;
+      protected PImage img;
+
+      NodeDetailsForm(HeroTreeButton button) {
+        super(0.5 * (width - Constants.hero_treeForm_width), 0.5 * (height - Constants.hero_treeForm_height),
+          0.5 * (width + Constants.hero_treeForm_width), 0.5 * (height + Constants.hero_treeForm_height));
+        this.img = getCurrImage();
+        this.cancelButton();
+        this.draggable = false;
+        this.button = button;
+        this.setTitleText(HeroTree.this.upgradeName(button.code));
+        this.setTitleSize(20);
+        this.setFieldCushion(0);
+        Element e = HeroTree.this.hero().element;
+        this.color_background = elementalColorLocked(e);
+        this.color_header = elementalColorLight(e);
+        this.color_stroke = elementalColorDark(e);
+        this.color_title = elementalColorText(e);
+
+        this.addField(new SpacerFormField(20));
+        this.addField(new TextBoxFormField(HeroTree.this.upgradeDescription(button.code), 200));
+        this.addField(new SpacerFormField(20));
+        boolean has_enough = HeroTree.this.hero().level_tokens >= HeroTree.this.upgradeCost(button.code);
+        SubmitCancelFormField buttons = new SubmitCancelFormField(HeroTree.this.hero().
+          level_tokens + "/" + HeroTree.this.upgradeCost(button.code), "Cancel");
+        if (has_enough && button.visible && !button.unlocked) {
+        }
+        else {
+          buttons.button1.disabled = true;
+        }
+        this.addField(buttons);
       }
+
+      @Override
+      void update(int millis) {
+        rectMode(CORNERS);
+        fill(0);
+        imageMode(CORNER);
+        image(this.img, 0, 0);
+        fill(0, 150);
+        stroke(0, 1);
+        translate(shadow_distance, shadow_distance);
+        rect(this.xi, this.yi, this.xf, this.yf);
+        translate(-shadow_distance, -shadow_distance);
+        super.update(millis);
+      }
+
+      void cancel() {
+        this.canceled = true;
+      }
+
+      void submit() {
+        HeroTree.this.unlockNode(this.button.code);
+        this.canceled = true;
+      }
+
+      void buttonPress(int index) {}
     }
 
 
@@ -2028,7 +2091,7 @@ class Hero extends Unit {
     protected color color_connectorFill_unlocked = elementalColor(Hero.this.element);
 
     protected HashMap<HeroTreeCode, HeroTreeButton> nodes = new HashMap<HeroTreeCode, HeroTreeButton>();
-    protected DetailsForm node_details = null;
+    protected NodeDetailsForm node_details = null;
 
 
     HeroTree() {
@@ -2042,7 +2105,7 @@ class Hero extends Unit {
       if (!this.nodes.containsKey(code)) {
         return;
       }
-
+      this.node_details = new NodeDetailsForm(this.nodes.get(code));
     }
 
     void unlockNode(HeroTreeCode code) {
@@ -2052,9 +2115,13 @@ class Hero extends Unit {
       if (this.nodes.get(code).unlocked || !this.nodes.get(code).visible) {
         return;
       }
-      // check hero tokens, etc.
+      if (Hero.this.level_tokens < this.upgradeCost(code)) {
+        return;
+      }
+      Hero.this.level_tokens -= this.upgradeCost(code);
       this.nodes.get(code).unlock();
       this.updateDependencies();
+      Hero.this.upgrade(code);
     }
 
     void updateDependencies() {
@@ -2121,6 +2188,13 @@ class Hero extends Unit {
 
 
     void update(int timeElapsed) {
+      if (this.node_details != null) {
+        this.node_details.update(timeElapsed);
+        if (this.node_details.canceled) {
+          this.node_details = null;
+        }
+        return;
+      }
       rectMode(CORNERS);
       fill(this.color_background);
       noStroke();
@@ -2170,6 +2244,10 @@ class Hero extends Unit {
     }
 
     void mouseMove(float mX, float mY) {
+      if (this.node_details != null) {
+        this.node_details.mouseMove(mX, mY);
+        return;
+      }
       if (this.dragging) {
         this.moveView(this.inverse_zoom * (this.last_mX - mX), this.inverse_zoom * (this.last_mY - mY));
       }
@@ -2193,6 +2271,10 @@ class Hero extends Unit {
     }
 
     void mousePress() {
+      if (this.node_details != null) {
+        this.node_details.mousePress();
+        return;
+      }
       boolean button_hovered = false;
       for (Map.Entry<HeroTreeCode, HeroTreeButton> entry : this.nodes.entrySet()) {
         if (entry.getValue().in_view) {
@@ -2208,6 +2290,10 @@ class Hero extends Unit {
     }
 
     void mouseRelease(float mX, float mY) {
+      if (this.node_details != null) {
+        this.node_details.mouseRelease(mX, mY);
+        return;
+      }
       if (mouseButton == LEFT) {
         this.dragging = false;
       }
@@ -2221,6 +2307,10 @@ class Hero extends Unit {
     }
 
     void scroll(int amount) {
+      if (this.node_details != null) {
+        this.node_details.scroll(amount);
+        return;
+      }
       this.zoom -= amount * 0.01;
       if (this.zoom < 0.5) {
         this.zoom = 0.5;
@@ -2233,6 +2323,10 @@ class Hero extends Unit {
     }
 
     void keyPress() {
+      if (this.node_details != null) {
+        this.node_details.keyPress();
+        return;
+      }
       if (key == CODED) {
         switch(keyCode) {
         }
@@ -2244,6 +2338,10 @@ class Hero extends Unit {
     }
 
     void keyRelease() {
+      if (this.node_details != null) {
+        this.node_details.keyRelease();
+        return;
+      }
     }
 
 
@@ -2320,8 +2418,12 @@ class Hero extends Unit {
             xc = 11.5 * Constants.hero_treeButtonDefaultRadius;
             yc = -8 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
-          case AGILITYI:
+          case TENACITYI:
             xc = 13.8 * Constants.hero_treeButtonDefaultRadius;
+            yc = -8 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
+            break;
+          case AGILITYI:
+            xc = 16.1 * Constants.hero_treeButtonDefaultRadius;
             yc = -8 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case MAGICI:
@@ -2360,8 +2462,12 @@ class Hero extends Unit {
             xc = 11.5 * Constants.hero_treeButtonDefaultRadius;
             yc = -13 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
-          case AGILITYII:
+          case TENACITYII:
             xc = 13.8 * Constants.hero_treeButtonDefaultRadius;
+            yc = -13 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
+            break;
+          case AGILITYII:
+            xc = 16.1 * Constants.hero_treeButtonDefaultRadius;
             yc = -13 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case MAGICII:
@@ -2437,25 +2543,25 @@ class Hero extends Unit {
         case INVENTORYI:
           return "Unlock Inventory";
         case PASSIVEI:
-          return "Unlock Passive Ability";
+          return (new Ability(Hero.this.abilityId(0))).displayName();
         case AI:
-          return "Unlock A Ability";
+          return (new Ability(Hero.this.abilityId(1))).displayName();
         case SI:
-          return "Unlock S Ability";
+          return (new Ability(Hero.this.abilityId(2))).displayName();
         case DI:
-          return "Unlock D Ability";
+          return (new Ability(Hero.this.abilityId(3))).displayName();
         case FI:
-          return "Unlock F Ability";
+          return (new Ability(Hero.this.abilityId(4))).displayName();
         case PASSIVEII:
-          return "Upgrade Passive Ability";
+          return (new Ability(Hero.this.upgradedAbilityId(0))).displayName();
         case AII:
-          return "Upgrade A Ability";
+          return (new Ability(Hero.this.upgradedAbilityId(1))).displayName();
         case SII:
-          return "Upgrade S Ability";
+          return (new Ability(Hero.this.upgradedAbilityId(2))).displayName();
         case DII:
-          return "Upgrade D Ability";
+          return (new Ability(Hero.this.upgradedAbilityId(3))).displayName();
         case FII:
-          return "Upgrade F Ability";
+          return (new Ability(Hero.this.upgradedAbilityId(4))).displayName();
         case HEALTHI:
           return "Increase Health";
         case ATTACKI:
@@ -2468,6 +2574,8 @@ class Hero extends Unit {
           return "Increase Speed";
         case SIGHTI:
           return "Increase Sight";
+        case TENACITYI:
+          return "Increase Tenacity";
         case AGILITYI:
           return "Increase Agility";
         case MAGICI:
@@ -2488,8 +2596,10 @@ class Hero extends Unit {
           return "Increase Speed II";
         case SIGHTII:
           return "Increase Sight II";
+        case TENACITYII:
+          return "Increase Tenacity II";
         case AGILITYII:
-          return "Increase Health II";
+          return "Increase Agility II";
         case MAGICII:
           return "Increase Magic II";
         case RESISTANCEII:
@@ -2553,6 +2663,8 @@ class Hero extends Unit {
           return "Speed";
         case SIGHTI:
           return "Sight";
+        case TENACITYI:
+          return "Tenacity";
         case AGILITYI:
           return "Agility";
         case MAGICI:
@@ -2573,8 +2685,10 @@ class Hero extends Unit {
           return "Speed II";
         case SIGHTII:
           return "Sight II";
+        case TENACITYII:
+          return "Tenacity II";
         case AGILITYII:
-          return "Health II";
+          return "Agility II";
         case MAGICII:
           return "Magic II";
         case RESISTANCEII:
@@ -2638,6 +2752,8 @@ class Hero extends Unit {
           return "Increase\nSpeed";
         case SIGHTI:
           return "Increase\nSight";
+        case TENACITYI:
+          return "Increase\nTenacity";
         case AGILITYI:
           return "Increase\nAgility";
         case MAGICI:
@@ -2658,6 +2774,8 @@ class Hero extends Unit {
           return "Increase\nSpeed";
         case SIGHTII:
           return "Increase\nSight";
+        case TENACITYII:
+          return "Increase\nTenacity";
         case AGILITYII:
           return "Increase\nAgility";
         case MAGICII:
@@ -2686,6 +2804,187 @@ class Hero extends Unit {
           return "-- Error --";
       }
     }
+
+    String upgradeDescription(HeroTreeCode code) {
+      switch(code) {
+        case INVENTORYI:
+          return "Unlock your inventory and increase your available slots by " +
+            Constants.upgrade_inventoryI + ".";
+        case PASSIVEI:
+          return (new Ability(Hero.this.abilityId(0))).description();
+        case AI:
+          return (new Ability(Hero.this.abilityId(1))).description();
+        case SI:
+          return (new Ability(Hero.this.abilityId(2))).description();
+        case DI:
+          return (new Ability(Hero.this.abilityId(3))).description();
+        case FI:
+          return (new Ability(Hero.this.abilityId(4))).description();
+        case PASSIVEII:
+          return (new Ability(Hero.this.upgradedAbilityId(0))).description();
+        case AII:
+          return (new Ability(Hero.this.upgradedAbilityId(1))).description();
+        case SII:
+          return (new Ability(Hero.this.upgradedAbilityId(2))).description();
+        case DII:
+          return (new Ability(Hero.this.upgradedAbilityId(3))).description();
+        case FII:
+          return (new Ability(Hero.this.upgradedAbilityId(4))).description();
+        case HEALTHI:
+          return "Increase your base health by " + Constants.upgrade_healthI + ".";
+        case ATTACKI:
+          return "Increase your base attack by " + Constants.upgrade_attackI + ".";
+        case DEFENSEI:
+          return "Increase your base defense by " + Constants.upgrade_defenseI + ".";
+        case PIERCINGI:
+          return "Increase your base piercing by " + (100.0 * Constants.upgrade_piercingI) + "%.";
+        case SPEEDI:
+          return "Increase your base speed by " + Constants.upgrade_speedI + ".";
+        case SIGHTI:
+          return "Increase your base sight by " + Constants.upgrade_sightI + ".";
+        case TENACITYI:
+          return "Increase your base tenacity by " + (100.0 * Constants.upgrade_tenacityI) + "%.";
+        case AGILITYI:
+          return "Increase your base agility by " + Constants.upgrade_agilityI + ".";
+        case MAGICI:
+          return "Increase your base magic by " + Constants.upgrade_magicI + ".";
+        case RESISTANCEI:
+          return "Increase your base resistance by " + Constants.upgrade_resistanceI + ".";
+        case PENETRATIONI:
+          return "Increase your base penetration by " + (100.0 * Constants.upgrade_penetrationI) + "%.";
+        case HEALTHII:
+          return "Increase your base health by " + Constants.upgrade_healthII + ".";
+        case ATTACKII:
+          return "Increase your base attack by " + Constants.upgrade_attackII + ".";
+        case DEFENSEII:
+          return "Increase your base defense by " + Constants.upgrade_defenseII + ".";
+        case PIERCINGII:
+          return "Increase your base piercing by " + (100.0 * Constants.upgrade_piercingII) + "%.";
+        case SPEEDII:
+          return "Increase your base speed by " + Constants.upgrade_speedII + ".";
+        case SIGHTII:
+          return "Increase your base sight by " + Constants.upgrade_sightII + ".";
+        case TENACITYII:
+          return "Increase your base tenacity by " + (100.0 * Constants.upgrade_tenacityII) + "%.";
+        case AGILITYII:
+          return "Increase your base agility by " + Constants.upgrade_agilityII + ".";
+        case MAGICII:
+          return "Increase your base magic by " + Constants.upgrade_magicII + ".";
+        case RESISTANCEII:
+          return "Increase your base resistance by " + Constants.upgrade_resistanceII + ".";
+        case PENETRATIONII:
+          return "Increase your base penetration by " + (100.0 * Constants.upgrade_penetrationII) + "%.";
+        case HEALTHIII:
+          return "Increase your base health by " + Constants.upgrade_healthIII + ".";
+        case OFFHAND:
+          return "Unlock the Offhand gear slot, allowing you to wield offhand items.";
+        case BELTI:
+          return "Unlock the first Belt gear slot, allowing you to wield belt items.";
+        case BELTII:
+          return "Unlock the second Belt gear slot, allowing you to wield two belt items.";
+        case INVENTORYII:
+          return "Increase your available inventory slots by " + Constants.upgrade_inventoryII + ".";
+        case INVENTORY_BARI:
+          return "Unlock the inventory bar, which allows you to view and quickly " +
+            "switch between active items using the number keys or by scrolling.";
+        case INVENTORY_BARII:
+          return "Upgrade the inventory bar, doubling its capacity and allowing " +
+            "direct use of items in it without first switching to them.";
+        case FOLLOWERI:
+          return "Unlock your follower (will be released in future update).";
+        default:
+          return "-- Error --";
+      }
+    }
+
+    int upgradeCost(HeroTreeCode code) {
+      switch(code) {
+        case INVENTORYI:
+          return 1;
+        case PASSIVEI:
+          return 5;
+        case AI:
+          return 7;
+        case SI:
+          return 7;
+        case DI:
+          return 7;
+        case FI:
+          return 20;
+        case PASSIVEII:
+          return 100;
+        case AII:
+          return 100;
+        case SII:
+          return 100;
+        case DII:
+          return 100;
+        case FII:
+          return 300;
+        case HEALTHI:
+          return 2;
+        case ATTACKI:
+          return 3;
+        case DEFENSEI:
+          return 3;
+        case PIERCINGI:
+          return 3;
+        case SPEEDI:
+          return 3;
+        case SIGHTI:
+          return 3;
+        case TENACITYI:
+          return 3;
+        case AGILITYI:
+          return 3;
+        case MAGICI:
+          return 7;
+        case RESISTANCEI:
+          return 7;
+        case PENETRATIONI:
+          return 7;
+        case HEALTHII:
+          return 15;
+        case ATTACKII:
+          return 30;
+        case DEFENSEII:
+          return 30;
+        case PIERCINGII:
+          return 30;
+        case SPEEDII:
+          return 30;
+        case SIGHTII:
+          return 30;
+        case TENACITYII:
+          return 30;
+        case AGILITYII:
+          return 30;
+        case MAGICII:
+          return 35;
+        case RESISTANCEII:
+          return 35;
+        case PENETRATIONII:
+          return 35;
+        case HEALTHIII:
+          return 70;
+        case OFFHAND:
+          return 150;
+        case BELTI:
+          return 50;
+        case BELTII:
+          return 150;
+        case INVENTORYII:
+          return 12;
+        case INVENTORY_BARI:
+          return 40;
+        case INVENTORY_BARII:
+          return 75;
+        case FOLLOWERI:
+          return 25000;
+        default:
+          return 0;
+      }
+    }
   }
 
 
@@ -2697,7 +2996,7 @@ class Hero extends Unit {
   protected int level_tokens = 0;
   protected float experience = 0;
   protected int experience_next_level = 1;
-  protected float money = 20;
+  protected float money = ;
   protected float base_mana = 0;
   protected float curr_mana = 0;
   protected int hunger = 100;
@@ -2707,6 +3006,7 @@ class Hero extends Unit {
 
   protected LeftPanelMenu left_panel_menu = new PlayerLeftPanelMenu();
   protected HeroInventory inventory = new HeroInventory();
+  protected boolean can_view_inventory = false;
   protected InventoryBar inventory_bar = new InventoryBar();
   protected HeroTree heroTree = new HeroTree();
 
@@ -2721,7 +3021,139 @@ class Hero extends Unit {
     super(HeroCode.unit_id(code));
     this.code = code;
     this.addAbilities();
-    this.level = 100;
+  }
+
+
+  void upgrade(HeroTreeCode code) {
+    switch(code) {
+      case INVENTORYI:
+        this.can_view_inventory = true;
+        this.inventory.addSlots(Constants.upgrade_inventoryI);
+        break;
+      case PASSIVEI:
+        this.activateAbility(0);
+        break;
+      case AI:
+        this.activateAbility(1);
+        break;
+      case SI:
+        this.activateAbility(2);
+        break;
+      case DI:
+        this.activateAbility(3);
+        break;
+      case FI:
+        this.activateAbility(4);
+        break;
+      case PASSIVEII:
+        this.upgradeAbility(0);
+        break;
+      case AII:
+        this.upgradeAbility(1);
+        break;
+      case SII:
+        this.upgradeAbility(2);
+        break;
+      case DII:
+        this.upgradeAbility(3);
+        break;
+      case FII:
+        this.upgradeAbility(4);
+        break;
+      case HEALTHI:
+        this.base_health += Constants.upgrade_healthI;
+        break;
+      case ATTACKI:
+        this.base_attack += Constants.upgrade_attackI;
+        break;
+      case DEFENSEI:
+        this.base_defense += Constants.upgrade_defenseI;
+        break;
+      case PIERCINGI:
+        this.base_piercing += Constants.upgrade_piercingI;
+        break;
+      case SPEEDI:
+        this.base_speed += Constants.upgrade_speedI;
+        break;
+      case SIGHTI:
+        this.base_sight += Constants.upgrade_sightI;
+        break;
+      case TENACITYI:
+        this.base_tenacity += Constants.upgrade_tenacityI;
+        break;
+      case AGILITYI:
+        this.base_agility += Constants.upgrade_agilityI;
+        break;
+      case MAGICI:
+        this.base_magic += Constants.upgrade_magicI;
+        break;
+      case RESISTANCEI:
+        this.base_resistance += Constants.upgrade_resistanceI;
+        break;
+      case PENETRATIONI:
+        this.base_penetration += Constants.upgrade_penetrationI;
+        break;
+      case HEALTHII:
+        this.base_health += Constants.upgrade_healthII;
+        break;
+      case ATTACKII:
+        this.base_attack += Constants.upgrade_attackII;
+        break;
+      case DEFENSEII:
+        this.base_defense += Constants.upgrade_defenseII;
+        break;
+      case PIERCINGII:
+        this.base_piercing += Constants.upgrade_piercingII;
+        break;
+      case SPEEDII:
+        this.base_speed += Constants.upgrade_speedII;
+        break;
+      case SIGHTII:
+        this.base_sight += Constants.upgrade_sightII;
+        break;
+      case TENACITYII:
+        this.base_tenacity += Constants.upgrade_tenacityII;
+        break;
+      case AGILITYII:
+        this.base_agility += Constants.upgrade_agilityII;
+        break;
+      case MAGICII:
+        this.base_magic += Constants.upgrade_magicII;
+        break;
+      case RESISTANCEII:
+        this.base_resistance += Constants.upgrade_resistanceII;
+        break;
+      case PENETRATIONII:
+        this.base_penetration += Constants.upgrade_penetrationII;
+        break;
+      case HEALTHIII:
+        this.base_health += Constants.upgrade_healthIII;
+        break;
+      case OFFHAND:
+        this.gearSlots("Offhand");
+        break;
+      case BELTI:
+        this.gearSlots("Belt (left)");
+        break;
+      case BELTII:
+        this.gearSlots("Belt (right)");
+        break;
+      case INVENTORYII:
+        this.inventory.addSlots(Constants.upgrade_inventoryII);
+        break;
+      case INVENTORY_BARI:
+        // inventory bar I
+        break;
+      case INVENTORY_BARII:
+        // inventory bar II
+        break;
+      case FOLLOWERI:
+        // follower
+        break;
+      default:
+        global.errorMessage("ERROR: Trying to upgrade but code " + code + " not found.");
+        break;
+    }
   }
 
 
@@ -2746,17 +3178,23 @@ class Hero extends Unit {
     }
   }
 
+  int abilityId(int index) {
+    return 2 * Constants.hero_abilityNumber * (this.ID - 1101) + index + 101;
+  }
+  int upgradedAbilityId(int index) {
+    return 2 * Constants.hero_abilityNumber * (this.ID - 1101) + index + 101 + 5;
+  }
+
   void activateAbility(int index) {
     if (index < 0 || index >= this.abilities.size()) {
       global.log("WARNING: Trying to activate ability index " + index + " but it doesn't exist.");
       return;
     }
-    int ability_id = 2 * Constants.hero_abilityNumber * (this.ID - 1101) + index + 101;
-    this.abilities.set(index, new Ability(ability_id));
+    this.abilities.set(index, new Ability(this.abilityId(index)));
     this.inventory_bar.ability_buttons.get(index).setAbility(this.abilities.get(index));
   }
 
-  void updgradeAbility(int index) {
+  void upgradeAbility(int index) {
     if (index < 0 || index >= this.abilities.size()) {
       global.log("WARNING: Trying to upgrade ability index " + index + " but it doesn't exist.");
       return;
@@ -2770,8 +3208,7 @@ class Hero extends Unit {
       global.log("WARNING: Trying to upgrade a tier II ability.");
       return;
     }
-    int upgraded_ability_id = a.ID + 5;
-    a = new Ability(upgraded_ability_id);
+    a = new Ability(this.upgradedAbilityId(index));
   }
 
 
@@ -3103,13 +3540,6 @@ class Hero extends Unit {
             this.curr_action = UnitAction.USING_ITEM;
             this.timer_actionTime = this.weapon().useTime();
           }
-          break;
-        case 't':
-          this.activateAbility(0);
-          this.activateAbility(1);
-          this.activateAbility(2);
-          this.activateAbility(3);
-          this.activateAbility(4);
           break;
         default:
           break;

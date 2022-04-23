@@ -121,6 +121,7 @@ class Level {
   protected Hero player;
 
   protected int last_update_time = millis();
+  protected boolean restart_timers = false;
 
   Level() {}
   Level(String folderPath, String levelName) {
@@ -1365,6 +1366,9 @@ class Level {
   }
 
 
+  void restartTimers() {
+    this.restart_timers = true;
+  }
   void restartTimers(int millis) {
     this.last_update_time = millis;
     if (this.currMap != null) {
@@ -1375,6 +1379,10 @@ class Level {
 
 
   void update(int millis) {
+    if (this.restart_timers) {
+      this.restart_timers = false;
+      this.restartTimers(millis);
+    }
     int timeElapsed = millis - this.last_update_time;
     if (this.player != null && this.player.heroTree.curr_viewing) {
       this.player.heroTree.update(timeElapsed);
@@ -1525,6 +1533,25 @@ class Level {
     if (this.player != null) {
       if (this.player.heroTree.curr_viewing) {
         this.player.heroTree.keyPress();
+        if (key == CODED) {
+          switch(keyCode) {
+          }
+        }
+        else {
+          switch(key) {
+            case ESC:
+              this.player.heroTree.curr_viewing = false;
+              this.restartTimers();
+              break;
+            case 't':
+            case 'T':
+              if (global.holding_ctrl) {
+                this.player.heroTree.curr_viewing = false;
+                this.restartTimers();
+              }
+              break;
+          }
+        }
         return;
       }
       else {
@@ -1544,19 +1571,10 @@ class Level {
     }
     else {
       switch(key) {
-        case ESC:
-          if (this.player != null && this.player.heroTree.curr_viewing) {
-            this.player.heroTree.curr_viewing = false;
-            this.restartTimers();
-          }
-          break;
         case 't':
         case 'T':
           if (global.holding_ctrl && this.player != null) {
-            this.player.heroTree.curr_viewing = !this.player.heroTree.curr_viewing;
-            if (!this.player.heroTree.curr_viewing) {
-              this.restartTimers();
-            }
+            this.player.heroTree.curr_viewing = true;
           }
           break;
       }
