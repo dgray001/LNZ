@@ -1039,10 +1039,14 @@ class Unit extends MapObject {
       speed *= Constants.ability_108_debuff;
     }
     if (this.senselessGrit()) {
-      speed *= Constants.ability_104_speedBuff;
+      if (this.curr_action == UnitAction.TARGETING_UNIT) {
+        speed *= Constants.ability_104_speedBuff;
+      }
     }
     if (this.senselessGritII()) {
-      speed *= Constants.ability_109_speedBuff;
+      if (this.curr_action == UnitAction.TARGETING_UNIT) {
+        speed *= Constants.ability_109_speedBuff;
+      }
     }
     for (Ability a : this.abilities) {
       if (a == null) {
@@ -1760,7 +1764,7 @@ class Unit extends MapObject {
           }
           break;
         case APOSEMATIC_CAMOUFLAGE:
-          if (this.visible() || this.curr_action != UnitAction.NONE) {
+          if (this.visible()) {
             status_iterator.remove();
             continue;
           }
@@ -1771,13 +1775,13 @@ class Unit extends MapObject {
             float distance = this.distance(entryI.getValue());
             if (distance < Constants.ability_111_distance) {
               status_iterator.remove();
-              this.addStatusEffect(StatusEffectCode.VISIBLE, 2000);
+              this.addStatusEffect(StatusEffectCode.VISIBLE, 1000);
               continue;
             }
           }
           break;
         case APOSEMATIC_CAMOUFLAGEII:
-          if (this.visible() || this.curr_action != UnitAction.NONE) {
+          if (this.visible()) {
             status_iterator.remove();
             continue;
           }
@@ -1788,7 +1792,7 @@ class Unit extends MapObject {
             float distance = this.distance(entryII.getValue());
             if (distance < Constants.ability_116_distance) {
               status_iterator.remove();
-              this.addStatusEffect(StatusEffectCode.VISIBLE, 2000);
+              this.addStatusEffect(StatusEffectCode.VISIBLE, 1000);
               continue;
             }
           }
@@ -1958,9 +1962,11 @@ class Unit extends MapObject {
     float power = attack();
     if (this.aposematicCamouflage()) {
       power *= Constants.ability_111_powerBuff;
+      this.removeStatusEffect(StatusEffectCode.APOSEMATIC_CAMOUFLAGE);
     }
     if (this.aposematicCamouflageII()) {
       power *= Constants.ability_116_powerBuff;
+      this.removeStatusEffect(StatusEffectCode.APOSEMATIC_CAMOUFLAGEII);
     }
     u.damage(this, u.calculateDamageFrom(this, power, DamageType.PHYSICAL, this.element));
     this.timer_attackCooldown = this.attackCooldown(true);
@@ -2285,6 +2291,13 @@ class Unit extends MapObject {
 
 
   void move(float timeElapsed, int myKey, GameMap map, MoveModifier modifier) {
+    // remove camouflage
+    if (this.aposematicCamouflage()) {
+      this.removeStatusEffect(StatusEffectCode.APOSEMATIC_CAMOUFLAGE);
+    }
+    if (this.aposematicCamouflageII()) {
+      this.removeStatusEffect(StatusEffectCode.APOSEMATIC_CAMOUFLAGEII);
+    }
     // calculate attempted move distances
     float seconds = timeElapsed / 1000.0;
     float effectiveDistance = 0;

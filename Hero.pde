@@ -1028,9 +1028,6 @@ class Hero extends Unit {
         g.removeCache(this.getHeroImage());
         noTint();
       }
-      for (AbilityButton ability : this.ability_buttons) {
-        ability.update(timeElapsed);
-      }
       float xi = this.xi_bar;
       this.code_hovered = null;
       for (Map.Entry<StatusEffectCode, StatusEffect> entry : Hero.this.statuses.entrySet()) {
@@ -1067,6 +1064,9 @@ class Hero extends Unit {
           this.code_hovered = entry.getKey();
         }
         xi += this.status_width + 2;
+      }
+      for (AbilityButton ability : this.ability_buttons) {
+        ability.update(timeElapsed);
       }
       if (this.code_description.display) {
         this.code_description.update(timeElapsed);

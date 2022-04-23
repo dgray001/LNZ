@@ -165,22 +165,6 @@ enum StatusEffectCode {
       case DECAYED:
         image_path += "decayed.png";
         break;
-      case NELSON_GLARE:
-      case NELSON_GLAREII:
-        image_path += "nelson_glare.png";
-        break;
-      case SENSELESS_GRIT:
-      case SENSELESS_GRITII:
-        image_path += "senseless_grit.png";
-        break;
-      case RAGE_OF_THE_BEN:
-      case RAGE_OF_THE_BENII:
-        image_path += "rage_of_the_ben.png";
-        break;
-      case APOSEMATIC_CAMOUFLAGE:
-      case APOSEMATIC_CAMOUFLAGEII:
-        image_path += "camouflaged.png";
-        break;
       case SHAKEN:
         image_path += "shaken.png";
         break;
@@ -198,6 +182,22 @@ enum StatusEffectCode {
         break;
       case RADIOACTIVE:
         image_path += "radioactive.png";
+        break;
+      case NELSON_GLARE:
+      case NELSON_GLAREII:
+        image_path += "nelson_glare.png";
+        break;
+      case SENSELESS_GRIT:
+      case SENSELESS_GRITII:
+        image_path += "senseless_grit.png";
+        break;
+      case RAGE_OF_THE_BEN:
+      case RAGE_OF_THE_BENII:
+        image_path += "rage_of_the_ben.png";
+        break;
+      case APOSEMATIC_CAMOUFLAGE:
+      case APOSEMATIC_CAMOUFLAGEII:
+        image_path += "camouflaged.jpg";
         break;
       default:
         image_path += "default.png";
@@ -236,11 +236,11 @@ enum StatusEffectCode {
       case WITHERED:
         return "This unit is withered and has 70% effective stats (attack, defense, etc.).";
       case VISIBLE:
-        return "";
+        return "This unit is visible and can be seen by enemies.";
       case SUPPRESSED:
-        return "";
+        return "This unit is suppressed and cannot perform any action";
       case UNTARGETABLE:
-        return "";
+        return "This unit is untargetable and cannot be targeted by attacks, abilities, or spells.";
       case DRENCHED:
         return "This unit is drenched so will take more damage from blue damage." +
           "\nIf this unit is red it will also slowly take damage to 20% max health.";
@@ -275,21 +275,25 @@ enum StatusEffectCode {
         return "This unit is decayed and will take damage to their death." +
           "\nIf this unit is brown they will only take damage to 10% max health.";
       case NELSON_GLARE:
-        return "";
+        return "This unit is Nelson glared and has 15% reduced attack and speed.";
       case NELSON_GLAREII:
-        return "";
+        return "This unit is Nelson glared and has 25% reduced attack and speed.";
       case SENSELESS_GRIT:
-        return "";
+        return "This unit has senseless grit and has +25% move speed when targeting enemies.";
       case SENSELESS_GRITII:
-        return "";
+        return "This unit has senseless grit and has +35% move speed when targeting enemies.";
       case RAGE_OF_THE_BEN:
-        return "";
+        return "This unit has the rage of the Ben and has 40% increased attack and incrased rage gains.";
       case RAGE_OF_THE_BENII:
-        return "";
+        return "This unit has the rage of the Ben and has 50% increased attack and incrased rage gains.";
       case APOSEMATIC_CAMOUFLAGE:
-        return "";
+        return "This unit is camouflaged and cannot be seen by enemies.\nThis " +
+        "unit will also have +40% bonus power the first attack they deliver " +
+        "while camouflaged.";
       case APOSEMATIC_CAMOUFLAGEII:
-        return "";
+        return "This unit is camouflaged and cannot be seen by enemies.\nThis " +
+        "unit will also have +70% bonus power the first attack they deliver " +
+        "while camouflaged.";
       case SHAKEN:
         return "";
       case FALLEN:
