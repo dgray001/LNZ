@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220422: v0.6.7j" +
+  "\n20220423: v0.6.7k" +
   "\nLines: 27940 (v0.6.7j)" +
   "";
   static final String version_history =
@@ -386,7 +386,8 @@ static class Constants {
   static final float upgrade_penetrationII = 0.07;
   static final float upgrade_healthIII = 120;
 
-  // Ability
+  // Abilities
+  // Ben Nelson
   static final int ability_101_rageGain = 2;
   static final int ability_101_rageGainKill = 6;
   static final float ability_101_cooldownTimer = 4000;
@@ -441,6 +442,15 @@ static class Constants {
   static final float ability_110_rageGainBonus = 1.6;
   static final float ability_110_fullRageBonus = 1.5;
   static final float ability_110_shakeConstant = 6;
+  // Daniel Gray
+  static final float ability_111_stillTime = 3500;
+  static final float ability_111_distance = 0.2;
+  static final float ability_111_powerBuff = 1.4;
+  static final float ability_111_regenTime = 750;
+  static final float ability_116_stillTime = 2000;
+  static final float ability_116_distance = 0.1;
+  static final float ability_116_powerBuff = 1.7;
+  static final float ability_116_regenTime = 500;
 
   // Level
   static final float level_vendingFormWidth = 300;

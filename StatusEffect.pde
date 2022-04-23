@@ -2,7 +2,8 @@ enum StatusEffectCode {
   ERROR("Error"), HUNGRY("Hungry"), WEAK("Weak"), THIRSTY("Thirsty"), WOOZY("Woozy"),
   CONFUSED("Confused"), INVULNERABLE("Invulnerable"), UNKILLABLE("Unkillable"),
   BLEEDING("Bleeding"), HEMORRHAGING("Hemorrhaging"), WILTED("Wilted"), WITHERED("Withered"),
-  
+  VISIBLE("Visible"), SUPPRESSED("Suppressed"), UNTARGETABLE("Untargetable"),
+
   DRENCHED("Drenched"), DROWNING("Drowning"), BURNT("Burning"), CHARRED("Charred"),
   CHILLED("Chilled"), FROZEN("Frozen"), SICK("Sick"), DISEASED("Diseased"), ROTTING("Rotting"),
   DECAYED("Decayed"), SHAKEN("Shaken"), FALLEN("Fallen"), SHOCKED("Shocked"),
@@ -11,6 +12,8 @@ enum StatusEffectCode {
   NELSON_GLARE("Nelson Glared"), NELSON_GLAREII("Nelson Glared"), SENSELESS_GRIT(
   "Senseless Grit"), SENSELESS_GRITII("Senseless Grit"), RAGE_OF_THE_BEN(
   "Rage of the Ben"), RAGE_OF_THE_BENII("Rage of the Ben"),
+
+  APOSEMATIC_CAMOUFLAGE("Camouflaged"), APOSEMATIC_CAMOUFLAGEII("Camouflaged"),
   ;
 
   private static final List<StatusEffectCode> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
@@ -123,6 +126,15 @@ enum StatusEffectCode {
       case WITHERED:
         image_path += "withered.png";
         break;
+      case VISIBLE:
+        image_path += "visible.png";
+        break;
+      case SUPPRESSED:
+        image_path += "suppressed.png";
+        break;
+      case UNTARGETABLE:
+        image_path += "untargetable.png";
+        break;
       case DRENCHED:
         image_path += "drenched.png";
         break;
@@ -152,6 +164,40 @@ enum StatusEffectCode {
         break;
       case DECAYED:
         image_path += "decayed.png";
+        break;
+      case NELSON_GLARE:
+      case NELSON_GLAREII:
+        image_path += "nelson_glare.png";
+        break;
+      case SENSELESS_GRIT:
+      case SENSELESS_GRITII:
+        image_path += "senseless_grit.png";
+        break;
+      case RAGE_OF_THE_BEN:
+      case RAGE_OF_THE_BENII:
+        image_path += "rage_of_the_ben.png";
+        break;
+      case APOSEMATIC_CAMOUFLAGE:
+      case APOSEMATIC_CAMOUFLAGEII:
+        image_path += "camouflaged.png";
+        break;
+      case SHAKEN:
+        image_path += "shaken.png";
+        break;
+      case FALLEN:
+        image_path += "fallen.png";
+        break;
+      case SHOCKED:
+        image_path += "shocked.png";
+        break;
+      case PARALYZED:
+        image_path += "paralyzed.png";
+        break;
+      case UNSTABLE:
+        image_path += "unstable.png";
+        break;
+      case RADIOACTIVE:
+        image_path += "radioactive.png";
         break;
       default:
         image_path += "default.png";
@@ -189,6 +235,12 @@ enum StatusEffectCode {
         return "This unit is wilted and has 80% effective stats (attack, defense, etc.).";
       case WITHERED:
         return "This unit is withered and has 70% effective stats (attack, defense, etc.).";
+      case VISIBLE:
+        return "";
+      case SUPPRESSED:
+        return "";
+      case UNTARGETABLE:
+        return "";
       case DRENCHED:
         return "This unit is drenched so will take more damage from blue damage." +
           "\nIf this unit is red it will also slowly take damage to 20% max health.";
@@ -222,6 +274,22 @@ enum StatusEffectCode {
       case DECAYED:
         return "This unit is decayed and will take damage to their death." +
           "\nIf this unit is brown they will only take damage to 10% max health.";
+      case NELSON_GLARE:
+        return "";
+      case NELSON_GLAREII:
+        return "";
+      case SENSELESS_GRIT:
+        return "";
+      case SENSELESS_GRITII:
+        return "";
+      case RAGE_OF_THE_BEN:
+        return "";
+      case RAGE_OF_THE_BENII:
+        return "";
+      case APOSEMATIC_CAMOUFLAGE:
+        return "";
+      case APOSEMATIC_CAMOUFLAGEII:
+        return "";
       case SHAKEN:
         return "";
       case FALLEN:

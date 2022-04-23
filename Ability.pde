@@ -21,6 +21,18 @@ class Ability {
       case 109:
       case 110:
         break;
+      // Daniel Gray
+      case 111:
+      case 112:
+      case 113:
+      case 114:
+      case 115:
+      case 116:
+      case 117:
+      case 118:
+      case 119:
+      case 120:
+        break;
       default:
         global.errorMessage("ERROR: Ability ID " + this.ID + " not found.");
         break;
@@ -50,6 +62,27 @@ class Ability {
         return "Senseless Grit II";
       case 110:
         return "Rage of the Ben II";
+      // Daniel Gray
+      case 111:
+        return "Aposematic Camouflage";
+      case 112:
+        return "Tongue Lash";
+      case 113:
+        return "Amphibious Leap";
+      case 114:
+        return "Alkaloid Excretion";
+      case 115:
+        return "Anuran Appetite";
+      case 116:
+        return "Aposematic Camouflage II";
+      case 117:
+        return "Tongue Lash II";
+      case 118:
+        return "Amphibious Leap II";
+      case 119:
+        return "Alkaloid Excretion II";
+      case 120:
+        return "Anuran Appetite II";
       default:
         return "ERROR";
     }
@@ -146,6 +179,39 @@ class Ability {
           (Constants.ability_110_rageGainBonus-1)*100) + "%\n - You gain a " + round(
           (Constants.ability_110_fullRageBonus-1)*100) + "% bonus to tenacity and " +
           "attack speed if your rage is at 100%\n - You cannot cast Mighty Pen (a)";
+      // Daniel Gray
+      case 111:
+        return "If still for " + int(round(Constants.ability_111_stillTime)) +
+          "s, enemies cannot see you without getting within " + Constants.
+          ability_111_distance + "m.\nWhile Dan is camouflaged, attacking or " +
+          "casting \'Tongue Lash\' or \'Amphibious Leap\' will have " + int(
+          100.0 * (Constants.ability_111_powerBuff-1)) + "% more power.\n\nDan " +
+          "also absorbs frog energy from his surroundings, regenerating a frog " +
+          "energy every " + Constants.ability_111_regenTime + " ms.";
+      case 112:
+        return "";
+      case 113:
+        return "";
+      case 114:
+        return "";
+      case 115:
+        return "";
+      case 116:
+        return "If still for " + int(round(Constants.ability_116_stillTime)) +
+          "s, enemies cannot see you without getting within " + Constants.
+          ability_116_distance + "m.\nWhile Dan is camouflaged, attacking or " +
+          "casting \'Tongue Lash\' or \'Amphibious Leap\' will have " + int(
+          100.0 * (Constants.ability_116_powerBuff-1)) + "% more power.\n\nDan " +
+          "also absorbs frog energy from his surroundings, regenerating a frog " +
+          "energy every " + Constants.ability_116_regenTime + " ms.";
+      case 117:
+        return "";
+      case 118:
+        return "";
+      case 119:
+        return "";
+      case 120:
+        return "";
       default:
         return "-- error -- ";
     }
@@ -170,6 +236,23 @@ class Ability {
         return 0;
       case 110:
         return -60;
+      // Daniel Gray
+      case 112:
+        return 10;
+      case 113:
+        return 20;
+      case 114:
+        return 2;
+      case 115:
+        return 60;
+      case 117:
+        return 15;
+      case 118:
+        return 30;
+      case 119:
+        return 3;
+      case 120:
+        return 90;
       default:
         return 0;
     }
@@ -194,6 +277,23 @@ class Ability {
         return 10000;
       case 110:
         return 100000;
+      // Daniel Gray
+      case 112:
+        return 6000;
+      case 113:
+        return 18000;
+      case 114:
+        return 2000;
+      case 115:
+        return 120000;
+      case 117:
+        return 5000;
+      case 118:
+        return 15000;
+      case 119:
+        return 1200;
+      case 120:
+        return 90000;
       default:
         return 0;
     }
@@ -205,6 +305,10 @@ class Ability {
       case 103:
       case 107:
       case 108:
+      case 112:
+      case 113:
+      case 117:
+      case 118:
         return true;
       default:
         return false;
@@ -248,6 +352,21 @@ class Ability {
       case 105:
       case 110:
         image_id = 105;
+      case 111:
+      case 116:
+        image_id = 111;
+      case 112:
+      case 117:
+        image_id = 112;
+      case 113:
+      case 118:
+        image_id = 113;
+      case 114:
+      case 119:
+        image_id = 114;
+      case 115:
+      case 120:
+        image_id = 115;
       default:
         break;
     }
@@ -413,6 +532,34 @@ class Ability {
         if (this.timer_other <= 0) {
           u.healPercent(Constants.ability_109_passiveHealAmount, false);
           this.timer_other = Constants.ability_109_passiveHealTimer;
+        }
+        break;
+      case 111: // Aposematic Camouflage
+        if (this.timer_other <= 0) {
+          u.increaseMana(1);
+          this.timer_other = Constants.ability_111_regenTime;
+        }
+        if (u.curr_action == UnitAction.NONE) {
+          if (this.timer_cooldown <= 0 && !u.aposematicCamouflage() && !u.visible()) {
+            u.addStatusEffect(StatusEffectCode.APOSEMATIC_CAMOUFLAGE);
+          }
+        }
+        else {
+          this.timer_cooldown = Constants.ability_111_stillTime;
+        }
+        break;
+      case 116: // Aposematic Camouflage II
+        if (this.timer_other <= 0) {
+          u.increaseMana(1);
+          this.timer_other = Constants.ability_116_regenTime;
+        }
+        if (u.curr_action == UnitAction.NONE) {
+          if (this.timer_cooldown <= 0 && !u.aposematicCamouflageII() && !u.visible()) {
+            u.addStatusEffect(StatusEffectCode.APOSEMATIC_CAMOUFLAGEII);
+          }
+        }
+        else {
+          this.timer_cooldown = Constants.ability_116_stillTime;
         }
         break;
       default:

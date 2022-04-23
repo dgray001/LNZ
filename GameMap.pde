@@ -859,7 +859,7 @@ class GameMap {
   protected int hovered_key = -10;
   protected MapObject selected_object = null;
   protected int selected_key = -10;
-  protected SelectedObjectTextbox selected_object_textbox = null;
+  protected SelectedObjectTextbox selected_object_textbox = new SelectedObjectTextbox();
 
   protected ArrayList<Feature> features = new ArrayList<Feature>();
   protected HashMap<Integer, Unit> units = new HashMap<Integer, Unit>();
@@ -1455,6 +1455,10 @@ class GameMap {
       extra_translate_x = Constants.ability_105_shakeConstant - random(2 * Constants.ability_105_shakeConstant);
       extra_translate_y = Constants.ability_105_shakeConstant - random(2 * Constants.ability_105_shakeConstant);
     }
+    if (u.aposematicCamouflage() || u.aposematicCamouflageII()) {
+      tint(255, 150);
+      removeCache = true;
+    }
     translate(extra_translate_x, extra_translate_y);
     image(u.getImage(), 0, 0, u.width() * this.zoom, u.height() * this.zoom);
     if (u.weapon() != null) {
@@ -1476,6 +1480,7 @@ class GameMap {
       translate(-translateItemX, -translateItemY);
     }
     if (removeCache) {
+      g.removeCache(u.getImage());
       noTint();
       g.removeCache(u.getImage());
     }
