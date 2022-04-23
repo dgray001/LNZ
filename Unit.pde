@@ -1365,6 +1365,12 @@ class Unit extends MapObject {
   boolean tongueLash() {
     return this.hasStatusEffect(StatusEffectCode.TONGUE_LASH);
   }
+  boolean alkaloidSecretion() {
+    return this.hasStatusEffect(StatusEffectCode.ALKALOID_SECRETION);
+  }
+  boolean alkaloidSecretionII() {
+    return this.hasStatusEffect(StatusEffectCode.ALKALOID_SECRETIONII);
+  }
 
   StatusEffectCode priorityStatusEffect() {
     return null;

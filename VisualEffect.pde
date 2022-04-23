@@ -36,6 +36,12 @@ class VisualEffect extends MapObject {
         this.setValues(2 * Constants.ability_118_drenchedSplashRadius, 2 * Constants.
           ability_118_drenchedSplashRadius, Constants.gif_amphibiousLeap_time);
         break;
+      case 4007: // alkaloid secretion
+        this.setValues(2 * Constants.ability_114_range, 2 * Constants.ability_114_range, 100);
+        break;
+      case 4008: // alkaloid secretion II
+        this.setValues(2 * Constants.ability_119_range, 2 * Constants.ability_119_range, 100);
+        break;
       default:
         global.errorMessage("ERROR: VisualEffect ID " + ID + " not found.");
         break;
@@ -170,6 +176,13 @@ class VisualEffect extends MapObject {
   void display(float zoom) {
     float range = 0;
     switch(this.ID) {
+      case 4007:
+      case 4008:
+        ellipseMode(CENTER);
+        fill(98, 52, 18, 130);
+        noStroke();
+        ellipse(0, 0, this.size_width * zoom, this.size_height * zoom);
+        break;
       case 4003:
       case 4004:
       case 4005:

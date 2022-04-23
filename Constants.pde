@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220423: v0.6.7n" +
+  "\n20220423: v0.6.7o" +
   "\nLines: 28798 (v0.6.7n)" +
   "";
   static final String version_history =
@@ -448,7 +448,7 @@ static class Constants {
   static final float ability_111_stillTime = 3500;
   static final float ability_111_distance = 0.2;
   static final float ability_111_powerBuff = 1.4;
-  static final float ability_111_regenTime = 14;
+  static final float ability_111_regenTime = 1400;
   static final float ability_112_basePower = 5;
   static final float ability_112_physicalRatio = 0.15;
   static final float ability_112_magicalRatio = 0.4;
