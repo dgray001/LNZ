@@ -4,8 +4,8 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220422: v0.6.7i" +
-  "\nLines: 25949 (v0.6.7e)" +
+  "\n20220422: v0.6.7j" +
+  "\nLines: 27940 (v0.6.7j)" +
   "";
   static final String version_history =
   "Liberal Nazi Zombies" +
@@ -356,6 +356,35 @@ static class Constants {
   static final float hero_leftPanelButtonHoverTimer = 400;
   static final float hero_treeButtonDefaultRadius = 60;
   static final float hero_treeButtonCenterRadius = 90;
+  static final float hero_treeForm_width = 300;
+  static final float hero_treeForm_height = 340;
+
+  // Upgrade
+  static final int upgrade_inventoryI = 2;
+  static final int upgrade_inventoryII = 4;
+  static final float upgrade_healthI = 4;
+  static final float upgrade_attackI = 3;
+  static final float upgrade_defenseI = 2;
+  static final float upgrade_piercingI = 0.05;
+  static final float upgrade_speedI = 0.3;
+  static final float upgrade_sightI = 1.5;
+  static final float upgrade_tenacityI = 0.05;
+  static final int upgrade_agilityI = 1;
+  static final float upgrade_magicI = 5;
+  static final float upgrade_resistanceI = 3;
+  static final float upgrade_penetrationI = 0.05;
+  static final float upgrade_healthII = 25;
+  static final float upgrade_attackII = 10;
+  static final float upgrade_defenseII = 5;
+  static final float upgrade_piercingII = 0.07;
+  static final float upgrade_speedII = 0.5;
+  static final float upgrade_sightII = 2;
+  static final float upgrade_tenacityII = 0.07;
+  static final int upgrade_agilityII = 1;
+  static final float upgrade_magicII = 20;
+  static final float upgrade_resistanceII = 7;
+  static final float upgrade_penetrationII = 0.07;
+  static final float upgrade_healthIII = 120;
 
   // Ability
   static final int ability_101_rageGain = 2;

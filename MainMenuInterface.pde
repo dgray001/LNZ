@@ -116,8 +116,10 @@ class MainMenuInterface extends InterfaceLNZ {
 
     @Override
     void release() {
+      if (this.hovered) {
+        global.exitDelay();
+      }
       super.release();
-      global.exitDelay();
     }
   }
 
@@ -132,8 +134,10 @@ class MainMenuInterface extends InterfaceLNZ {
 
     @Override
     void release() {
+      if (this.hovered) {
+        MainMenuInterface.this.form = new OptionsForm();
+      }
       super.release();
-      MainMenuInterface.this.form = new OptionsForm();
     }
   }
 
@@ -148,8 +152,10 @@ class MainMenuInterface extends InterfaceLNZ {
 
     @Override
     void release() {
+      if (this.hovered) {
+        MainMenuInterface.this.form = new AchievementsForm();
+      }
       super.release();
-      MainMenuInterface.this.form = new AchievementsForm();
     }
   }
 
@@ -169,8 +175,10 @@ class MainMenuInterface extends InterfaceLNZ {
 
     @Override
     void release() {
+      if (this.hovered) {
+        global.state = ProgramState.ENTERING_MAPEDITOR;
+      }
       super.release();
-      global.state = ProgramState.ENTERING_MAPEDITOR;
     }
   }
 
@@ -211,6 +219,8 @@ class MainMenuInterface extends InterfaceLNZ {
       if (this.hovered) {
         this.setImg(global.images.getImage("banner_default.png"));
         MainMenuInterface.this.form = new CreditsForm();
+        this.hovered = false;
+        this.clicked = false;
       }
     }
   }

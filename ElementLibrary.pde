@@ -4173,7 +4173,7 @@ abstract class Form {
       this.fields.get(i).mousePress();
       currY += this.fields.get(i).getHeight() + this.fieldCushion;
     }
-    if (this.hovered_header) {
+    if (this.hovered_header && this.draggable) {
       this.dragging = true;
       this.dragX = mouseX;
       this.dragY = mouseY;
