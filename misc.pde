@@ -91,6 +91,31 @@ color elementalColorText(Element e) {
       return color(0);
   }
 }
+color elementalColorLocked(Element e) {
+  switch(e) {
+    case GRAY:
+      return color(120);
+    case BLUE:
+      return color(100, 100, 150);
+    case RED:
+      return color(150, 100, 100);
+    case CYAN:
+      return color(100, 150, 150);
+    case ORANGE:
+      return color(160, 120, 100);
+    case BROWN:
+      return color(80, 75, 70);
+    case PURPLE:
+      return color(90, 50, 90);
+    case YELLOW:
+      return color(150, 150, 100);
+    case MAGENTA:
+      return color(150, 100, 150);
+    default:
+      global.errorMessage("ERROR: Element " + e.element_name() + " doesn't have a color.");
+      return color(0);
+  }
+}
 
 boolean randomChance(float percent) {
   if (random(1) < percent) {

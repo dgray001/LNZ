@@ -1762,13 +1762,14 @@ class Hero extends Unit {
         super(xc, yc, r);
         this.code = code;
         Element e = HeroTree.this.hero().element;
-        this.setColors(color(170), elementalColorLight(e), elementalColor(e),
+        this.setColors(elementalColorLocked(e), elementalColorLocked(e), elementalColorLocked(e),
           elementalColorDark(e), elementalColorText(e));
-        this.setStroke(elementalColorDark(e), 12);
+        this.setStroke(elementalColorDark(e), 6);
         this.message = HeroTree.this.shortMessage(code);
         this.use_time_elapsed = true;
         this.text_size = 16;
         this.setDependencies();
+        this.refreshColor();
       }
 
       void setDependencies() {
@@ -1812,60 +1813,88 @@ class Hero extends Unit {
             this.dependencies.add(HeroTreeCode.DII);
             break;
           case HEALTHI:
+            this.dependencies.add(HeroTreeCode.INVENTORYI);
             break;
           case ATTACKI:
+            this.dependencies.add(HeroTreeCode.HEALTHI);
             break;
           case DEFENSEI:
+            this.dependencies.add(HeroTreeCode.HEALTHI);
             break;
           case PIERCINGI:
+            this.dependencies.add(HeroTreeCode.HEALTHI);
             break;
           case SPEEDI:
+            this.dependencies.add(HeroTreeCode.HEALTHI);
             break;
           case SIGHTI:
+            this.dependencies.add(HeroTreeCode.HEALTHI);
             break;
           case AGILITYI:
+            this.dependencies.add(HeroTreeCode.HEALTHI);
             break;
           case MAGICI:
+            this.dependencies.add(HeroTreeCode.HEALTHI);
             break;
           case RESISTANCEI:
+            this.dependencies.add(HeroTreeCode.HEALTHI);
             break;
           case PENETRATIONI:
+            this.dependencies.add(HeroTreeCode.HEALTHI);
             break;
           case HEALTHII:
+            this.dependencies.add(HeroTreeCode.HEALTHI);
             break;
           case ATTACKII:
+            this.dependencies.add(HeroTreeCode.ATTACKI);
             break;
           case DEFENSEII:
+            this.dependencies.add(HeroTreeCode.DEFENSEI);
             break;
           case PIERCINGII:
+            this.dependencies.add(HeroTreeCode.PIERCINGI);
             break;
           case SPEEDII:
+            this.dependencies.add(HeroTreeCode.SPEEDI);
             break;
           case SIGHTII:
+            this.dependencies.add(HeroTreeCode.SIGHTI);
             break;
           case AGILITYII:
+            this.dependencies.add(HeroTreeCode.AGILITYI);
             break;
           case MAGICII:
+            this.dependencies.add(HeroTreeCode.MAGICI);
             break;
           case RESISTANCEII:
+            this.dependencies.add(HeroTreeCode.RESISTANCEI);
             break;
           case PENETRATIONII:
+            this.dependencies.add(HeroTreeCode.PENETRATIONI);
             break;
           case HEALTHIII:
+            this.dependencies.add(HeroTreeCode.HEALTHII);
             break;
           case OFFHAND:
+            this.dependencies.add(HeroTreeCode.INVENTORYII);
             break;
           case BELTI:
+            this.dependencies.add(HeroTreeCode.INVENTORYII);
             break;
           case BELTII:
+            this.dependencies.add(HeroTreeCode.BELTI);
             break;
           case INVENTORYII:
+            this.dependencies.add(HeroTreeCode.INVENTORYI);
             break;
           case INVENTORY_BARI:
+            this.dependencies.add(HeroTreeCode.INVENTORYII);
             break;
           case INVENTORY_BARII:
+            this.dependencies.add(HeroTreeCode.INVENTORY_BARI);
             break;
           case FOLLOWERI:
+            this.dependencies.add(HeroTreeCode.INVENTORYI);
             break;
           default:
             global.errorMessage("ERROR: HeroTreeCode " + this.code + " not recognized.");
@@ -1876,13 +1905,20 @@ class Hero extends Unit {
       void visible() {
         this.visible = true;
         this.show_message = true;
+        Element e = HeroTree.this.hero().element;
+        this.setColors(elementalColorLocked(e), elementalColorDark(e), elementalColor(e),
+          elementalColorLight(e), elementalColorText(e));
+        this.setStroke(elementalColorLight(e), 9);
+        this.refreshColor();
       }
 
       void unlock() {
         this.unlocked = true;
         Element e = HeroTree.this.hero().element;
-        this.setColors(color(170), elementalColorDark(e), elementalColorDark(e),
-          elementalColorDark(e), elementalColorText(e));
+        this.setColors(elementalColorLocked(e), elementalColorLight(e), elementalColorLight(e),
+          elementalColorLight(e), elementalColorText(e));
+        this.setStroke(elementalColorLight(e), 12);
+        this.refreshColor();
       }
 
       @Override
@@ -1914,7 +1950,12 @@ class Hero extends Unit {
       @Override
       void hover() {
         super.hover();
-        this.message = HeroTree.this.longMessage(code);
+        if (this.unlocked) {
+          this.message = "Unlocked";
+        }
+        else {
+          this.message = HeroTree.this.longMessage(code);
+        }
       }
 
       @Override
@@ -1935,12 +1976,18 @@ class Hero extends Unit {
         super.release();
         if (this.hovered) {
           if (this.unlocked || this.visible) {
-            HeroTree.this.unlockNode(this.code);
-            // display info form
+            HeroTree.this.showDetails(this.code);
           }
         }
       }
     }
+
+
+    class NodeDetailsForm extends Form {
+      NodeDetailsForm(HeroTreeButton) {
+      }
+    }
+
 
     protected float xi = 0;
     protected float yi = 0;
@@ -1948,6 +1995,13 @@ class Hero extends Unit {
     protected float yf = 0;
     protected float xCenter = 0.5 * width;
     protected float yCenter = 0.5 * height;
+
+    protected float tree_xi = 0;
+    protected float tree_yi = 0;
+    protected float tree_xf = 0;
+    protected float tree_yf = 0;
+    protected float translateX = 0;
+    protected float translateY = 0;
 
     protected float viewX = 0;
     protected float viewY = 0;
@@ -1958,6 +2012,7 @@ class Hero extends Unit {
     protected boolean dragging = false;
     protected float last_mX = mouseX;
     protected float last_mY = mouseY;
+    protected boolean hovered = false;
 
     protected float lowestX = 0;
     protected float lowestY = 0;
@@ -1965,14 +2020,15 @@ class Hero extends Unit {
     protected float highestY = 0;
 
     protected color color_background = color(30);
-    protected color color_connectorStroke_locked = color(70);
-    protected color color_connectorStroke_visible = color(140);
-    protected color color_connectorStroke_unlocked = elementalColorDark(Hero.this.element);
-    protected color color_connectorFill_locked = elementalColorDark(Hero.this.element);
-    protected color color_connectorFill_visible = elementalColor(Hero.this.element);
-    protected color color_connectorFill_unlocked = elementalColorLight(Hero.this.element);
+    protected color color_connectorStroke_locked = elementalColorDark(Hero.this.element);
+    protected color color_connectorStroke_visible = elementalColor(Hero.this.element);
+    protected color color_connectorStroke_unlocked = elementalColorLight(Hero.this.element);
+    protected color color_connectorFill_locked = elementalColorLocked(Hero.this.element);
+    protected color color_connectorFill_visible = elementalColorDark(Hero.this.element);
+    protected color color_connectorFill_unlocked = elementalColor(Hero.this.element);
 
     protected HashMap<HeroTreeCode, HeroTreeButton> nodes = new HashMap<HeroTreeCode, HeroTreeButton>();
+    protected DetailsForm node_details = null;
 
 
     HeroTree() {
@@ -1981,6 +2037,13 @@ class Hero extends Unit {
       this.setView(0, 0);
     }
 
+
+    void showDetails(HeroTreeCode code) {
+      if (!this.nodes.containsKey(code)) {
+        return;
+      }
+
+    }
 
     void unlockNode(HeroTreeCode code) {
       if (!this.nodes.containsKey(code)) {
@@ -2039,12 +2102,15 @@ class Hero extends Unit {
       }
       this.viewX = viewX;
       this.viewY = viewY;
+      this.tree_xi = viewX - this.inverse_zoom * (this.xCenter - this.xi);
+      this.tree_yi = viewY - this.inverse_zoom * (this.yCenter - this.yi);
+      this.tree_xf = viewX - this.inverse_zoom * (this.xCenter - this.xf);
+      this.tree_yf = viewY - this.inverse_zoom * (this.yCenter - this.yf);
+      this.translateX = this.xCenter - this.zoom * viewX;
+      this.translateY = this.yCenter - this.zoom * viewY;
       for (Map.Entry<HeroTreeCode, HeroTreeButton> entry : this.nodes.entrySet()) {
-        float node_xi = this.xCenter + entry.getValue().xi - viewX;
-        float node_yi = this.yCenter + entry.getValue().yi - viewY;
-        float node_xf = this.xCenter + entry.getValue().xf - viewX;
-        float node_yf = this.yCenter + entry.getValue().yf - viewY;
-        if (node_xi > this.xi && node_yi > this.yi && node_xf < this.xf && node_yf < this.yf) {
+        if (entry.getValue().xi > this.tree_xi && entry.getValue().yi > this.tree_yi &&
+          entry.getValue().xf < this.tree_xf && entry.getValue().yf < this.tree_yf) {
           entry.getValue().in_view = true;
         }
         else {
@@ -2059,25 +2125,66 @@ class Hero extends Unit {
       fill(this.color_background);
       noStroke();
       rect(this.xi, this.yi, this.xf, this.yf);
-      translate(this.xCenter + this.viewX, this.yCenter + this.viewY);
+      translate(this.translateX, this.translateY);
       scale(this.zoom, this.zoom);
+      for (Map.Entry<HeroTreeCode, HeroTreeButton> entry : this.nodes.entrySet()) {
+        rectMode(CORNERS);
+        translate(entry.getValue().xCenter(), entry.getValue().yCenter());
+        for (HeroTreeCode dependency : entry.getValue().dependencies) {
+          HeroTreeButton dependent = this.nodes.get(dependency);
+          strokeWeight(2);
+          float connector_width = 6;
+          if (entry.getValue().unlocked) {
+            fill(this.color_connectorFill_unlocked);
+            stroke(this.color_connectorStroke_unlocked);
+            strokeWeight(4);
+            connector_width = 10;
+          }
+          else if (entry.getValue().visible || dependent.unlocked) {
+            fill(this.color_connectorFill_visible);
+            stroke(this.color_connectorStroke_visible);
+            strokeWeight(3);
+            connector_width = 8;
+          }
+          else {
+            fill(this.color_connectorFill_locked);
+            stroke(this.color_connectorStroke_locked);
+          }
+          float xDif = dependent.xCenter() - entry.getValue().xCenter();
+          float yDif = dependent.yCenter() - entry.getValue().yCenter();
+          float rotation = (float)Math.atan2(yDif, xDif);
+          float distance = sqrt(xDif * xDif + yDif * yDif);
+          rotate(rotation);
+          rect(0, -connector_width, distance, connector_width);
+          rotate(-rotation);
+        }
+        translate(-entry.getValue().xCenter(), -entry.getValue().yCenter());
+      }
       for (Map.Entry<HeroTreeCode, HeroTreeButton> entry : this.nodes.entrySet()) {
         if (entry.getValue().in_view) {
           entry.getValue().update(timeElapsed);
         }
       }
       scale(this.inverse_zoom, this.inverse_zoom);
-      translate(- this.xCenter - this.viewX, - this.yCenter - this.viewY);
+      translate(-this.translateX, -this.translateY);
     }
 
     void mouseMove(float mX, float mY) {
       if (this.dragging) {
-        this.moveView(mX - this.last_mX, mY - this.last_mY);
+        this.moveView(this.inverse_zoom * (this.last_mX - mX), this.inverse_zoom * (this.last_mY - mY));
       }
       this.last_mX = mX;
       this.last_mY = mY;
-      mX -= this.xCenter + this.viewX;
-      mY -= this.yCenter + this.viewY;
+      if (mX > this.xi && mY > this.yi && mX < this.xf && mY < this.yf) {
+        this.hovered = true;
+      }
+      else {
+        this.hovered = false;
+      }
+      mX -= this.translateX;
+      mY -= this.translateY;
+      mX *= this.inverse_zoom;
+      mY *= this.inverse_zoom;
       for (Map.Entry<HeroTreeCode, HeroTreeButton> entry : this.nodes.entrySet()) {
         if (entry.getValue().in_view) {
           entry.getValue().mouseMove(mX, mY);
@@ -2095,7 +2202,7 @@ class Hero extends Unit {
           }
         }
       }
-      if (!button_hovered && mouseButton == LEFT) {
+      if (!button_hovered && mouseButton == LEFT && this.hovered) {
         this.dragging = true;
       }
     }
@@ -2104,8 +2211,8 @@ class Hero extends Unit {
       if (mouseButton == LEFT) {
         this.dragging = false;
       }
-      mX -= this.xCenter + this.viewX;
-      mY -= this.yCenter + this.viewY;
+      mX -= this.translateX;
+      mY -= this.translateY;
       for (Map.Entry<HeroTreeCode, HeroTreeButton> entry : this.nodes.entrySet()) {
         if (entry.getValue().in_view) {
           entry.getValue().mouseRelease(mX, mY);
@@ -2114,6 +2221,15 @@ class Hero extends Unit {
     }
 
     void scroll(int amount) {
+      this.zoom -= amount * 0.01;
+      if (this.zoom < 0.5) {
+        this.zoom = 0.5;
+      }
+      if (this.zoom > 1.5) {
+        this.zoom = 1.5;
+      }
+      this.inverse_zoom = 1 / this.zoom;
+      this.setView(this.viewX, this.viewY);
     }
 
     void keyPress() {
@@ -2123,9 +2239,6 @@ class Hero extends Unit {
       }
       else {
         switch(key) {
-          case ESC:
-            this.curr_viewing = false;
-            break;
         }
       }
     }
@@ -2184,115 +2297,115 @@ class Hero extends Unit {
             yc = 0;
             break;
           case HEALTHI:
-            xc = -200;
-            yc = 0;
+            xc = 0;
+            yc = -3 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case ATTACKI:
-            xc = -200;
-            yc = 0;
+            xc = 2.3 * Constants.hero_treeButtonDefaultRadius;
+            yc = -8 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case DEFENSEI:
-            xc = -200;
-            yc = 0;
+            xc = 4.6 * Constants.hero_treeButtonDefaultRadius;
+            yc = -8 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case PIERCINGI:
-            xc = -200;
-            yc = 0;
+            xc = 6.9 * Constants.hero_treeButtonDefaultRadius;
+            yc = -8 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case SPEEDI:
-            xc = -200;
-            yc = 0;
+            xc = 9.2 * Constants.hero_treeButtonDefaultRadius;
+            yc = -8 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case SIGHTI:
-            xc = -200;
-            yc = 0;
+            xc = 11.5 * Constants.hero_treeButtonDefaultRadius;
+            yc = -8 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case AGILITYI:
-            xc = -200;
-            yc = 0;
+            xc = 13.8 * Constants.hero_treeButtonDefaultRadius;
+            yc = -8 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case MAGICI:
-            xc = -200;
-            yc = 0;
+            xc = -2.3 * Constants.hero_treeButtonDefaultRadius;
+            yc = -8 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case RESISTANCEI:
-            xc = -200;
-            yc = 0;
+            xc = -4.6 * Constants.hero_treeButtonDefaultRadius;
+            yc = -8 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case PENETRATIONI:
-            xc = -200;
-            yc = 0;
+            xc = -6.9 * Constants.hero_treeButtonDefaultRadius;
+            yc = -8 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case HEALTHII:
-            xc = -200;
-            yc = 0;
+            xc = 0;
+            yc = -8 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case ATTACKII:
-            xc = -200;
-            yc = 0;
+            xc = 2.3 * Constants.hero_treeButtonDefaultRadius;
+            yc = -13 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case DEFENSEII:
-            xc = -200;
-            yc = 0;
+            xc = 4.6 * Constants.hero_treeButtonDefaultRadius;
+            yc = -13 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case PIERCINGII:
-            xc = -200;
-            yc = 0;
+            xc = 6.9 * Constants.hero_treeButtonDefaultRadius;
+            yc = -13 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case SPEEDII:
-            xc = -200;
-            yc = 0;
+            xc = 9.2 * Constants.hero_treeButtonDefaultRadius;
+            yc = -13 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case SIGHTII:
-            xc = -200;
-            yc = 0;
+            xc = 11.5 * Constants.hero_treeButtonDefaultRadius;
+            yc = -13 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case AGILITYII:
-            xc = -200;
-            yc = 0;
+            xc = 13.8 * Constants.hero_treeButtonDefaultRadius;
+            yc = -13 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case MAGICII:
-            xc = -200;
-            yc = 0;
+            xc = -2.3 * Constants.hero_treeButtonDefaultRadius;
+            yc = -13 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case RESISTANCEII:
-            xc = -200;
-            yc = 0;
+            xc = -4.6 * Constants.hero_treeButtonDefaultRadius;
+            yc = -13 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case PENETRATIONII:
-            xc = -200;
-            yc = 0;
+            xc = -6.9 * Constants.hero_treeButtonDefaultRadius;
+            yc = -13 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case HEALTHIII:
-            xc = -200;
-            yc = 0;
+            xc = 0;
+            yc = -13 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             break;
           case OFFHAND:
-            xc = -200;
-            yc = 0;
+            xc = 1.15 * Constants.hero_treeButtonDefaultRadius;
+            yc = 7 * Constants.hero_treeButtonDefaultRadius + Constants.hero_treeButtonCenterRadius;
             break;
           case BELTI:
-            xc = -200;
-            yc = 0;
+            xc = 3.45 * Constants.hero_treeButtonDefaultRadius;
+            yc = 7 * Constants.hero_treeButtonDefaultRadius + Constants.hero_treeButtonCenterRadius;
             break;
           case BELTII:
-            xc = -200;
-            yc = 0;
+            xc = 3.45 * Constants.hero_treeButtonDefaultRadius;
+            yc = 11 * Constants.hero_treeButtonDefaultRadius + Constants.hero_treeButtonCenterRadius;
             break;
           case INVENTORYII:
-            xc = -200;
-            yc = 0;
+            xc = 0;
+            yc = 3 * Constants.hero_treeButtonDefaultRadius + Constants.hero_treeButtonCenterRadius;
             break;
           case INVENTORY_BARI:
-            xc = -200;
-            yc = 0;
+            xc = -1.15 * Constants.hero_treeButtonDefaultRadius;
+            yc = 7 * Constants.hero_treeButtonDefaultRadius + Constants.hero_treeButtonCenterRadius;
             break;
           case INVENTORY_BARII:
-            xc = -200;
-            yc = 0;
+            xc = -1.15 * Constants.hero_treeButtonDefaultRadius;
+            yc = 11 * Constants.hero_treeButtonDefaultRadius + Constants.hero_treeButtonCenterRadius;
             break;
           case FOLLOWERI:
-            xc = -200;
+            xc = -3 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             yc = 0;
             break;
           default:
@@ -2313,10 +2426,6 @@ class Hero extends Unit {
           this.highestY = yc + r;
         }
       }
-      this.lowestX -= Constants.hero_treeButtonDefaultRadius;
-      this.lowestY -= Constants.hero_treeButtonDefaultRadius;
-      this.highestX += Constants.hero_treeButtonDefaultRadius;
-      this.highestY += Constants.hero_treeButtonDefaultRadius;
     }
 
     Hero hero() {
