@@ -1459,6 +1459,18 @@ class GameMap {
       tint(255, 150);
       removeCache = true;
     }
+    if (u.alkaloidSecretion()) {
+      ellipseMode(CENTER);
+      fill(128, 82, 48, 100);
+      noStroke();
+      ellipse(0, 0, 2 * Constants.ability_114_range * this.zoom, 2 * Constants.ability_114_range * this.zoom);
+    }
+    if (u.alkaloidSecretionII()) {
+      ellipseMode(CENTER);
+      fill(128, 82, 48, 100);
+      noStroke();
+      ellipse(0, 0, 2 * Constants.ability_119_range * this.zoom, 2 * Constants.ability_119_range * this.zoom);
+    }
     translate(extra_translate_x, extra_translate_y);
     image(u.getImage(), 0, 0, u.width() * this.zoom, u.height() * this.zoom);
     if (u.weapon() != null) {

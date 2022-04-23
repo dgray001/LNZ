@@ -70,7 +70,7 @@ class Ability {
       case 113:
         return "Amphibious Leap";
       case 114:
-        return "Alkaloid Excretion";
+        return "Alkaloid Secretion";
       case 115:
         return "Anuran Appetite";
       case 116:
@@ -80,7 +80,7 @@ class Ability {
       case 118:
         return "Amphibious Leap II";
       case 119:
-        return "Alkaloid Excretion II";
+        return "Alkaloid Secretion II";
       case 120:
         return "Anuran Appetite II";
       default:
@@ -209,14 +209,14 @@ class Ability {
           "%.\nIf drenched, the jump distance is " + Constants.ability_113_drenchedJumpDistance +
           "m and the splash radius is " + Constants.ability_113_drenchedSplashRadius + "m.";
       case 114:
-        return "Dan excrete poisonous alkaloids in all directions around him.\n" +
+        return "Dan secretes poisonous alkaloids in all directions around him.\n" +
           "While this ability is active, Dan will deal " + round(100*
           Constants.ability_114_currHealth) + "% curr health and additional " +
           "damage with " + Constants.ability_114_basePower + " + (0% attack " +
           "power + " + round(Constants.ability_114_magicRatio*100) + "% magic " +
           "power) magical power to all enemies within " + round(10 * Constants.
           ability_114_range)/10.0 + "m of him every " + Constants.ability_114_tickTime +
-          "ms.\nEnemies hit by \'Alkaloid Excretion\' will also be rotting for " +
+          "ms.\nEnemies hit by \'Alkaloid Secretion\' will also be rotting for " +
           (Constants.ability_114_rotTime/1000.0) + "s.\nThe mana cost is consumed " +
           "every time damage is dealt.";
       case 115:
@@ -259,14 +259,14 @@ class Ability {
           "%.\nIf drenched, the jump distance is " + Constants.ability_118_drenchedJumpDistance +
           "m and the splash radius is " + Constants.ability_118_drenchedSplashRadius + "m.";
       case 119:
-        return "Dan excrete poisonous alkaloids in all directions around him.\n" +
+        return "Dan secretes poisonous alkaloids in all directions around him.\n" +
           "While this ability is active, Dan will deal " + round(100*
           Constants.ability_119_currHealth) + "% curr health and additional " +
           "damage with " + Constants.ability_119_basePower + " + (0% attack " +
           "power + " + round(Constants.ability_119_magicRatio*100) + "% magic " +
           "power) magical power to all enemies within " + round(10 * Constants.
           ability_119_range)/10.0 + " m of him every " + Constants.ability_114_tickTime +
-          "ms.\nEnemies hit by \'Alkaloid Excretion\' will also be rotting for " +
+          "ms.\nEnemies hit by \'Alkaloid Secretion\' will also be rotting for " +
           (Constants.ability_114_rotTime/1000.0) + "s.\nThe mana cost is consumed " +
           "every time damage is dealt.";
       case 120:
@@ -349,11 +349,11 @@ class Ability {
       case 111:
         return Constants.ability_111_stillTime;
       case 112:
-        return 600;
+        return 6000;
       case 113:
-        return 1800;
+        return 18000;
       case 114:
-        return 200;
+        return 2000;
       case 115:
         return 1200;
       case 116:
@@ -515,7 +515,15 @@ class Ability {
         u.curr_action_unhaltable = true;
         u.curr_action = UnitAction.CASTING;
         break;
-      case 114: // Alkaloid Excretion
+      case 114: // Alkaloid Secretion
+        if (u.alkaloidSecretion()) {
+          u.removeStatusEffect(StatusEffectCode.ALKALOID_SECRETION);
+        }
+        else {
+          u.addStatusEffect(StatusEffectCode.ALKALOID_SECRETION);
+          u.increaseMana(this.manaCost());
+          this.timer_cooldown = 0;
+        }
         break;
       case 115: // Anuran Appetite
         break;
@@ -535,7 +543,15 @@ class Ability {
         u.curr_action_unhaltable = true;
         u.curr_action = UnitAction.CASTING;
         break;
-      case 119: // Alkaloid Excretion II
+      case 119: // Alkaloid Secretion II
+        if (u.alkaloidSecretionII()) {
+          u.removeStatusEffect(StatusEffectCode.ALKALOID_SECRETIONII);
+        }
+        else {
+          u.addStatusEffect(StatusEffectCode.ALKALOID_SECRETIONII);
+          u.increaseMana(this.manaCost());
+          this.timer_cooldown = 0;
+        }
         break;
       case 120: // Anuran Appetite II
         break;
@@ -696,7 +712,7 @@ class Ability {
             float damage = target.calculateDamageFrom(power, DamageType.MAGICAL,
               Element.BROWN, u.piercing(), u.penetration());
             target.damage(u, damage);
-            target.addStatusEffect(StatusEffectCode.TONGUE_LASH, Constants.ability_112_slowTime);
+            target.refreshStatusEffect(StatusEffectCode.TONGUE_LASH, Constants.ability_112_slowTime);
             this.toggle = false;
             u.curr_action = UnitAction.NONE;
             break;
@@ -744,9 +760,40 @@ class Ability {
             }
             target.damage(u, target.calculateDamageFrom(power, DamageType.MAGICAL,
               Element.BROWN, u.piercing(), u.penetration()));
-            target.addStatusEffect(StatusEffectCode.STUNNED, Constants.ability_113_stunTime);
+            target.refreshStatusEffect(StatusEffectCode.STUNNED, Constants.ability_113_stunTime);
           }
         }
+        break;
+      case 114: // Alkaloid Secretion
+        if (!u.alkaloidSecretion()) {
+          break;
+        }
+        if (this.timer_other <= 0) {
+          if (u.currMana() < this.manaCost()) {
+            u.removeStatusEffect(StatusEffectCode.ALKALOID_SECRETION);
+            break;
+          }
+          else {
+            u.decreaseMana(this.manaCost());
+          }
+          this.timer_other = Constants.ability_114_tickTime;
+          float power = Constants.ability_114_basePower + u.power(0, Constants.ability_114_magicRatio);
+          for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
+            Unit target = entry.getValue();
+            if (target.alliance == u.alliance) {
+              continue;
+            }
+            if (u.distance(target) > Constants.ability_114_range) {
+              continue;
+            }
+            target.damage(u, Constants.ability_114_currHealth * target.curr_health);
+            target.damage(u, power);
+            target.refreshStatusEffect(StatusEffectCode.ROTTING, Constants.ability_114_rotTime);
+          }
+          map.addVisualEffect(4007, u.x, u.y);
+        }
+        break;
+      case 115: // Anuran Appetite
         break;
       case 116: // Aposematic Camouflage II
         if (this.timer_other <= 0) {
@@ -794,7 +841,7 @@ class Ability {
               power *= Constants.ability_111_powerBuff;
             }
             target.damage(u, damage);
-            target.addStatusEffect(StatusEffectCode.TONGUE_LASH, Constants.ability_117_slowTime);
+            target.refreshStatusEffect(StatusEffectCode.TONGUE_LASH, Constants.ability_117_slowTime);
             this.toggle = false;
             u.curr_action = UnitAction.NONE;
             break;
@@ -842,10 +889,42 @@ class Ability {
             }
             target.damage(u, target.calculateDamageFrom(power, DamageType.MAGICAL,
               Element.BROWN, u.piercing(), u.penetration()));
-            target.addStatusEffect(StatusEffectCode.STUNNED, Constants.ability_118_stunTime);
+            target.refreshStatusEffect(StatusEffectCode.STUNNED, Constants.ability_118_stunTime);
           }
         }
         break;
+      case 119: // Alkaloid Secretion II
+        if (!u.alkaloidSecretionII()) {
+          break;
+        }
+        if (this.timer_other <= 0) {
+          if (u.currMana() < this.manaCost()) {
+            u.removeStatusEffect(StatusEffectCode.ALKALOID_SECRETIONII);
+            break;
+          }
+          else {
+            u.decreaseMana(this.manaCost());
+          }
+          this.timer_other = Constants.ability_114_tickTime;
+          float power = Constants.ability_119_basePower + u.power(0, Constants.ability_119_magicRatio);
+          for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
+            Unit target = entry.getValue();
+            if (target.alliance == u.alliance) {
+              continue;
+            }
+            if (u.distance(target) > Constants.ability_119_range) {
+              continue;
+            }
+            target.damage(u, Constants.ability_119_currHealth * target.curr_health);
+            target.damage(u, power);
+            target.refreshStatusEffect(StatusEffectCode.ROTTING, Constants.ability_114_rotTime);
+          }
+          map.addVisualEffect(4008, u.x, u.y);
+        }
+        break;
+      case 120: // Anuran Appetite II
+        break;
+
       default:
         break;
     }

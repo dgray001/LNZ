@@ -14,7 +14,8 @@ enum StatusEffectCode {
   "Rage of the Ben"), RAGE_OF_THE_BENII("Rage of the Ben"),
 
   APOSEMATIC_CAMOUFLAGE("Camouflaged"), APOSEMATIC_CAMOUFLAGEII("Camouflaged"),
-  TONGUE_LASH("Slowed"),
+  TONGUE_LASH("Slowed"), ALKALOID_SECRETION("Secreting Alkaloids"), ALKALOID_SECRETIONII(
+  "Secreting Alkaloids"),
   ;
 
   private static final List<StatusEffectCode> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
@@ -56,6 +57,8 @@ enum StatusEffectCode {
       case RAGE_OF_THE_BENII:
       case APOSEMATIC_CAMOUFLAGE:
       case APOSEMATIC_CAMOUFLAGEII:
+      case ALKALOID_SECRETION:
+      case ALKALOID_SECRETIONII:
         return false;
       default:
         return true;
@@ -84,6 +87,8 @@ enum StatusEffectCode {
       case APOSEMATIC_CAMOUFLAGE:
       case APOSEMATIC_CAMOUFLAGEII:
       case TONGUE_LASH:
+      case ALKALOID_SECRETION:
+      case ALKALOID_SECRETIONII:
         return Element.BROWN;
       case SHAKEN:
       case FALLEN:
@@ -214,6 +219,10 @@ enum StatusEffectCode {
       case TONGUE_LASH:
         image_path += "slowed.png";
         break;
+      case ALKALOID_SECRETION:
+      case ALKALOID_SECRETIONII:
+        image_path += "slowed.png";
+        break;
       default:
         image_path += "default.png";
         break;
@@ -325,6 +334,10 @@ enum StatusEffectCode {
         "while camouflaged.";
       case TONGUE_LASH:
         return "This unit has been tongue lashed and is slowed by 30%.";
+      case ALKALOID_SECRETION:
+      case ALKALOID_SECRETIONII:
+        return "This unit is secreting alkaloids and damaging nearby enemy units " +
+        "every 500ms while also making them rot.";
       default:
         return "";
     }
