@@ -115,7 +115,7 @@ class Ability {
         return "We all cower when Ben throws his glare our way.\nFace target " +
           "direction and glare at all enemies in a cone " + Constants.
           ability_103_range + "m long, lowering their attack and movement speed " +
-          "by " + round((1 - Constants.ability_103_debuff)*100) + "% for " + (Constants.
+          "by " + round((1-Constants.ability_103_debuff)*100) + "% for " + (Constants.
           ability_103_time/1000) + "s.\nEnemies in the center of the cone are " +
           "also silenced for the duration.";
       case 104:
@@ -159,7 +159,7 @@ class Ability {
         return "We all cower when Ben throws his glare our way.\nFace target " +
           "direction and glare at all enemies in a cone " + Constants.
           ability_108_range + "m long, lowering their attack and movement speed " +
-          "by " + round((1 - Constants.ability_108_debuff)*100) + "% for " + (Constants.
+          "by " + round((1-Constants.ability_108_debuff)*100) + "% for " + (Constants.
           ability_108_time/1000) + "s.\nEnemies in the center of the cone are " +
           "also silenced for the duration.";
       case 109:
@@ -181,7 +181,8 @@ class Ability {
           "attack speed if your rage is at 100%\n - You cannot cast Mighty Pen (a)";
       // Daniel Gray
       case 111:
-        return "If still for " + int(round(Constants.ability_111_stillTime)) +
+        return "As a Frog-Human hybrid, Dan can express his inner frog enery.\n" +
+          "If still for " + int(round(Constants.ability_111_stillTime)) +
           "s, enemies cannot see you without getting within " + Constants.
           ability_111_distance + "m.\nWhile Dan is camouflaged, attacking or " +
           "casting \'Tongue Lash\' or \'Amphibious Leap\' will have " + int(
@@ -189,15 +190,31 @@ class Ability {
           "also absorbs frog energy from his surroundings, regenerating a frog " +
           "energy every " + Constants.ability_111_regenTime + " ms.";
       case 112:
-        return "";
+        return "Dan lashes out his frog-like tongue.\nLash your tongue " + Constants.
+        ability_112_distance + " m and damage the first enemy it hits for " +
+        Constants.ability_112_basePower + " + (" + round(Constants.ability_112_physicalRatio
+        *100) + "% attack power + " + round(Constants.ability_112_magicalRatio*100) +
+        "% magic power) magical power.\nThe enemy hit will also be slowed " +
+        int((1-Constants.ability_112_slowAmount)*100) + "% for " + (Constants.
+        ability_112_slowTime/1000) + " s.";
       case 113:
-        return "";
+        return "Dan leaps like the frog he always wanted to be.\nJump " + Constants.
+        ability_113_jumpDistance + "m and with " + Constants.ability_113_basePower +
+        " + (" + round(Constants.ability_113_physicalRatio*100) + "% attack power " +
+        "+ " + round(Constants.ability_113_magicalRatio*100) + "% magic power) " +
+        "magical power deal splash damage and stun for " + (Constants.ability_113_stunTime/
+        1000) + " s all enemies within a " + Constants.ability_113_splashRadius +
+        " m radius of where you land.\nKills decrease the remaining cooldown of " +
+        "\'Tongue Lash\' by " + ((1-Constants.ability_113_killCooldownReduction)*100) +
+        "%.\nIf drenched, the jump distance is " + Constants.ability_113_drenchedJumpDistance +
+        " m and the splash radius is " + Constants.ability_113_drenchedSplashRadius + " m.";
       case 114:
         return "";
       case 115:
         return "";
       case 116:
-        return "If still for " + int(round(Constants.ability_116_stillTime)) +
+        return "As a Frog-Human hybrid, Dan can express his inner frog enery.\n" +
+          "If still for " + int(round(Constants.ability_116_stillTime)) +
           "s, enemies cannot see you without getting within " + Constants.
           ability_116_distance + "m.\nWhile Dan is camouflaged, attacking or " +
           "casting \'Tongue Lash\' or \'Amphibious Leap\' will have " + int(
@@ -205,9 +222,24 @@ class Ability {
           "also absorbs frog energy from his surroundings, regenerating a frog " +
           "energy every " + Constants.ability_116_regenTime + " ms.";
       case 117:
-        return "";
+        return "Dan lashes out his frog-like tongue.\nLash your tongue " + Constants.
+        ability_117_distance + " m and damage the first enemy it hits for " +
+        Constants.ability_117_basePower + " + (" + round(Constants.ability_117_physicalRatio
+        *100) + "% attack power + " + round(Constants.ability_117_magicalRatio*100) +
+        "% magic power) magical power.\nThe enemy hit will also be slowed " +
+        int((1-Constants.ability_112_slowAmount)*100) + "% for " + (Constants.
+        ability_117_slowTime/1000) + " s.";
       case 118:
-        return "";
+        return "Dan leaps like the frog he always wanted to be.\nJump " + Constants.
+        ability_118_jumpDistance + "m and with " + Constants.ability_118_basePower +
+        " + (" + round(Constants.ability_118_physicalRatio*100) + "% attack power " +
+        "+ " + round(Constants.ability_118_magicalRatio*100) + "% magic power) " +
+        "magical power deal splash damage and stun for " + (Constants.ability_118_stunTime/
+        1000) + " s all enemies within a " + Constants.ability_118_splashRadius +
+        " m radius of where you land.\nKills decrease the remaining cooldown of " +
+        "\'Tongue Lash\' by " + ((1-Constants.ability_118_killCooldownReduction)*100) +
+        "%.\nIf drenched, the jump distance is " + Constants.ability_118_drenchedJumpDistance +
+        " m and the splash radius is " + Constants.ability_118_drenchedSplashRadius + " m.";
       case 119:
         return "";
       case 120:
@@ -293,7 +325,7 @@ class Ability {
       case 117:
         return 5000;
       case 118:
-        return 15000;
+        return 16000;
       case 119:
         return 1200;
       case 120:
@@ -403,11 +435,7 @@ class Ability {
       case 103: // Nelson Glare
         this.timer_other = Constants.ability_103_castTime;
         this.toggle = true;
-        ve = new VisualEffect(4103);
-        ve.setLocation(u.x, u.y);
-        ve.setValues(u.facingA - Constants.ability_103_coneAngle, u.facingA +
-          Constants.ability_103_coneAngle, Constants.ability_103_castTime);
-        map.addVisualEffect(ve);
+        u.curr_action = UnitAction.CASTING;
         break;
       case 104: // Senseless Grit
         u.healPercent(Constants.ability_104_activeHealAmount, false);
@@ -424,11 +452,7 @@ class Ability {
       case 108: // Nelson Glare II
         this.timer_other = Constants.ability_108_castTime;
         this.toggle = true;
-        ve = new VisualEffect(4108);
-        ve.setLocation(u.x, u.y);
-        ve.setValues(u.facingA - Constants.ability_108_coneAngle, u.facingA +
-          Constants.ability_108_coneAngle, Constants.ability_108_castTime);
-        map.addVisualEffect(ve);
+        u.curr_action = UnitAction.CASTING;
         break;
       case 109: // Senseless Grit II
         u.healPercent(Constants.ability_109_activeHealAmount, false);
@@ -438,6 +462,16 @@ class Ability {
         u.increaseMana(Constants.ability_110_rageGain);
         u.addStatusEffect(StatusEffectCode.INVULNERABLE, Constants.ability_110_buffTime);
         u.addStatusEffect(StatusEffectCode.RAGE_OF_THE_BENII, Constants.ability_110_buffTime);
+        break;
+      case 112: // Tongue Lash
+        this.timer_other = Constants.ability_112_castTime;
+        this.toggle = true;
+        u.curr_action = UnitAction.CASTING;
+        break;
+      case 117: // Tongue Last II
+        this.timer_other = Constants.ability_112_castTime;
+        this.toggle = true;
+        u.curr_action = UnitAction.CASTING;
         break;
       default:
         global.errorMessage("ERROR: Can't activate ability with ID " + this.ID + ".");
@@ -449,6 +483,8 @@ class Ability {
   void update(int timeElapsed, Unit u, GameMap map) {
     this.update(timeElapsed);
     float max_distance = 0;
+    float box_width = 0;
+    float box_height = 0;
     switch(this.ID) {
       case 101: // Fearless Leader I
         if (this.timer_other <= 0) {
@@ -458,6 +494,10 @@ class Ability {
         break;
       case 103: // Nelson Glare
         if (!this.toggle) {
+          break;
+        }
+        if (u.curr_action != UnitAction.CASTING) {
+          this.toggle = false;
           break;
         }
         max_distance = Constants.ability_103_range * (1 - this.timer_other
@@ -486,6 +526,7 @@ class Ability {
         }
         if (this.timer_other <= 0) {
           this.toggle = false;
+          u.curr_action = UnitAction.NONE;
         }
         break;
       case 104: // Senseless Grit
@@ -502,6 +543,10 @@ class Ability {
         break;
       case 108: // Nelson Glare II
         if (!this.toggle) {
+          break;
+        }
+        if (u.curr_action != UnitAction.CASTING) {
+          this.toggle = false;
           break;
         }
         max_distance = Constants.ability_108_range * (1 - this.timer_other
@@ -530,6 +575,7 @@ class Ability {
         }
         if (this.timer_other <= 0) {
           this.toggle = false;
+          u.curr_action = UnitAction.NONE;
         }
         break;
       case 109: // Senseless Grit II
@@ -552,6 +598,42 @@ class Ability {
           this.timer_cooldown = this.timer_cooldown();
         }
         break;
+      case 112: // Tongue Lash
+        if (!this.toggle) {
+          break;
+        }
+        if (u.curr_action != UnitAction.CASTING) {
+          this.toggle = false;
+          break;
+        }
+        box_width = Constants.ability_112_distance * (1 - this.timer_other / Constants.ability_112_castTime);
+        box_height = u.size;
+        for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
+          Unit target = entry.getValue();
+          if (target.alliance == u.alliance) {
+            continue;
+          }
+          PVector distance = new PVector(target.x - u.x, target.y - u.y);
+          distance.rotate(-u.facingA);
+          if (distance.x + target.size > 0 && distance.y + target.size > -0.5 *
+            box_height && distance.x - target.size < box_width && distance.y -
+            target.size < 0.5 * box_height) {
+            // collision
+            float damage = target.calculateDamageFrom(Constants.ability_112_basePower +
+              u.power(Constants.ability_112_physicalRatio, Constants.ability_112_magicalRatio),
+              DamageType.MAGICAL, Element.BROWN, u.piercing(), u.penetration());
+            target.damage(u, damage);
+            target.addStatusEffect(StatusEffectCode.TONGUE_LASH, Constants.ability_112_slowTime);
+            this.toggle = false;
+            u.curr_action = UnitAction.NONE;
+            break;
+          }
+        }
+        if (this.timer_other <= 0) {
+          this.toggle = false;
+          u.curr_action = UnitAction.NONE;
+        }
+        break;
       case 116: // Aposematic Camouflage II
         if (this.timer_other <= 0) {
           u.increaseMana(1);
@@ -564,6 +646,42 @@ class Ability {
         }
         else {
           this.timer_cooldown = this.timer_cooldown();
+        }
+        break;
+      case 117: // Tongue Lash II
+        if (!this.toggle) {
+          break;
+        }
+        if (u.curr_action != UnitAction.CASTING) {
+          this.toggle = false;
+          break;
+        }
+        box_width = Constants.ability_117_distance * (1 - this.timer_other / Constants.ability_112_castTime);
+        box_height = u.size;
+        for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
+          Unit target = entry.getValue();
+          if (target.alliance == u.alliance) {
+            continue;
+          }
+          PVector distance = new PVector(target.x - u.x, target.y - u.y);
+          distance.rotate(-u.facingA);
+          if (distance.x + target.size > 0 && distance.y + target.size > -0.5 *
+            box_height && distance.x - target.size < box_width && distance.y -
+            target.size < 0.5 * box_height) {
+            // collision
+            float damage = target.calculateDamageFrom(Constants.ability_117_basePower +
+              u.power(Constants.ability_117_physicalRatio, Constants.ability_117_magicalRatio),
+              DamageType.MAGICAL, Element.BROWN, u.piercing(), u.penetration());
+            target.damage(u, damage);
+            target.addStatusEffect(StatusEffectCode.TONGUE_LASH, Constants.ability_117_slowTime);
+            this.toggle = false;
+            u.curr_action = UnitAction.NONE;
+            break;
+          }
+        }
+        if (this.timer_other <= 0) {
+          this.toggle = false;
+          u.curr_action = UnitAction.NONE;
         }
         break;
       default:

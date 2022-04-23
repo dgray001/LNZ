@@ -1479,6 +1479,45 @@ class GameMap {
         2 * Constants.item_defaultSize * this.zoom);
       translate(-translateItemX, -translateItemY);
     }
+    if (u.curr_action == UnitAction.CASTING) {
+      try {
+        Ability a = u.abilities.get(u.curr_action_id);
+        float img_width = 0;
+        float img_height = 0;
+        switch(a.ID) {
+          case 103: // Nelson Glare
+            ellipseMode(RADIUS);
+            fill(170, 200);
+            noStroke();
+            img_width = Constants.ability_103_range * (1 - a.timer_other / Constants.ability_103_castTime);
+            arc(0, 0, img_width * this.zoom, img_width * this.zoom, -Constants.
+              ability_103_coneAngle, Constants.ability_103_coneAngle, PIE);
+            break;
+          case 108: // Nelson Glare II
+            ellipseMode(RADIUS);
+            fill(170, 200);
+            noStroke();
+            img_width = Constants.ability_108_range * (1 - a.timer_other / Constants.ability_108_castTime);
+            arc(0, 0, img_width * this.zoom, img_width * this.zoom, -Constants.
+              ability_103_coneAngle, Constants.ability_103_coneAngle, PIE);
+            break;
+          case 112: // Tongue Lash
+            img_width = Constants.ability_112_distance * (1 - a.timer_other / Constants.ability_112_castTime);
+            img_height = u.size;
+            image(global.images.getImage("abilities/tongue.png"), 0.5 * img_width * this.zoom,
+              0.5 * img_height * this.zoom, img_width * this.zoom, img_height * this.zoom);
+            break;
+          case 117: // Tongue Lash II
+            img_width = Constants.ability_117_distance * (1 - a.timer_other / Constants.ability_112_castTime);
+            img_height = u.size;
+            image(global.images.getImage("abilities/tongue.png"), 0.5 * img_width * this.zoom,
+              0.5 * img_height * this.zoom, img_width * this.zoom, img_height * this.zoom);
+            break;
+          default:
+            break;
+        }
+      } catch(Exception e) {}
+    }
     if (removeCache) {
       g.removeCache(u.getImage());
       noTint();
@@ -1489,7 +1528,7 @@ class GameMap {
     if (flip) {
       scale(-1, 1);
     }
-    //if (player unlocked it in AchievementTree) {
+    // if (player unlocked it in AchievementTree) {
       float healthbarWidth = Constants.unit_healthbarWidth * this.zoom;
       float healthbarHeight = Constants.unit_healthbarHeight * this.zoom;
       float translateHealthBarX = -0.5 * healthbarWidth;

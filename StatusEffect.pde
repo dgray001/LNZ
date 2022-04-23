@@ -14,6 +14,7 @@ enum StatusEffectCode {
   "Rage of the Ben"), RAGE_OF_THE_BENII("Rage of the Ben"),
 
   APOSEMATIC_CAMOUFLAGE("Camouflaged"), APOSEMATIC_CAMOUFLAGEII("Camouflaged"),
+  TONGUE_LASH("Slowed"),
   ;
 
   private static final List<StatusEffectCode> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
@@ -48,8 +49,13 @@ enum StatusEffectCode {
     switch(code) {
       case INVULNERABLE:
       case UNKILLABLE:
+      case UNTARGETABLE:
       case SENSELESS_GRIT:
+      case SENSELESS_GRITII:
       case RAGE_OF_THE_BEN:
+      case RAGE_OF_THE_BENII:
+      case APOSEMATIC_CAMOUFLAGE:
+      case APOSEMATIC_CAMOUFLAGEII:
         return false;
       default:
         return true;
@@ -75,6 +81,9 @@ enum StatusEffectCode {
         return Element.ORANGE;
       case ROTTING:
       case DECAYED:
+      case APOSEMATIC_CAMOUFLAGE:
+      case APOSEMATIC_CAMOUFLAGEII:
+      case TONGUE_LASH:
         return Element.BROWN;
       case SHAKEN:
       case FALLEN:
@@ -199,6 +208,9 @@ enum StatusEffectCode {
       case APOSEMATIC_CAMOUFLAGEII:
         image_path += "camouflaged.jpg";
         break;
+      case TONGUE_LASH:
+        image_path += "slowed.png";
+        break;
       default:
         image_path += "default.png";
         break;
@@ -274,6 +286,18 @@ enum StatusEffectCode {
       case DECAYED:
         return "This unit is decayed and will take damage to their death." +
           "\nIf this unit is brown they will only take damage to 10% max health.";
+      case SHAKEN:
+        return "";
+      case FALLEN:
+        return "";
+      case SHOCKED:
+        return "";
+      case PARALYZED:
+        return "";
+      case UNSTABLE:
+        return "";
+      case RADIOACTIVE:
+        return "";
       case NELSON_GLARE:
         return "This unit is Nelson glared and has 15% reduced attack and speed.";
       case NELSON_GLAREII:
@@ -294,18 +318,8 @@ enum StatusEffectCode {
         return "This unit is camouflaged and cannot be seen by enemies.\nThis " +
         "unit will also have +70% bonus power the first attack they deliver " +
         "while camouflaged.";
-      case SHAKEN:
-        return "";
-      case FALLEN:
-        return "";
-      case SHOCKED:
-        return "";
-      case PARALYZED:
-        return "";
-      case UNSTABLE:
-        return "";
-      case RADIOACTIVE:
-        return "";
+      case TONGUE_LASH:
+        return "This unit has been tongue lashed and is slowed by 30%.";
       default:
         return "";
     }
