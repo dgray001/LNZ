@@ -25,6 +25,50 @@ enum HeroCode {
     }
   }
 
+  public String title() {
+    return HeroCode.title(this);
+  }
+  static public String title(HeroCode code) {
+    switch(code) {
+      case BEN:
+        return "";
+      case DAN:
+        return "";
+      case JF:
+        return "";
+      case SPINNY:
+        return "";
+      case MATTUS:
+        return "";
+      case PATRICK:
+        return "";
+      default:
+        return "-- Error --";
+    }
+  }
+
+  public String description() {
+    return HeroCode.description(this);
+  }
+  static public String description(HeroCode code) {
+    switch(code) {
+      case BEN:
+        return "";
+      case DAN:
+        return "";
+      case JF:
+        return "";
+      case SPINNY:
+        return "";
+      case MATTUS:
+        return "";
+      case PATRICK:
+        return "";
+      default:
+        return "-- Error --";
+    }
+  }
+
   public String file_name() {
     return HeroCode.file_name(this);
   }
@@ -943,6 +987,9 @@ class Hero extends Unit {
         case BEN:
           imageName += "_gray.png";
           break;
+        case DAN:
+          imageName += "_brown.png";
+          break;
         default:
           imageName += "_template.png";
           break;
@@ -955,6 +1002,9 @@ class Hero extends Unit {
       switch(Hero.this.code) {
         case BEN:
           imageName += "ben_circle.png";
+          break;
+        case DAN:
+          imageName += "dan_circle.png";
           break;
         default:
           imageName += "default.png";
@@ -2993,10 +3043,10 @@ class Hero extends Unit {
 
   protected Location location = Location.ERROR;
 
-  protected int level_tokens = 0;
+  protected int level_tokens = 40;
   protected float experience = 0;
   protected int experience_next_level = 1;
-  protected float money = ;
+  protected float money = 0;
   protected float base_mana = 0;
   protected float curr_mana = 0;
   protected int hunger = 100;
@@ -3228,6 +3278,8 @@ class Hero extends Unit {
     switch(this.code) {
       case BEN:
         return "% Rage";
+      case DAN:
+        return "Frog Energy";
       default:
         return "Error";
     }
@@ -3237,6 +3289,8 @@ class Hero extends Unit {
     switch(this.code) {
       case BEN:
         return "rage";
+      case DAN:
+        return "frog";
       default:
         return "error";
     }

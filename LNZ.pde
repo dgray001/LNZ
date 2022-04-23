@@ -24,7 +24,7 @@ void setup() {
   noCursor();
   mouseX = -50;
   mouseY = -50;
-  global_hero = new Hero(HeroCode.BEN);
+  global_hero = new Hero(HeroCode.DAN);
 }
 
 void draw() {

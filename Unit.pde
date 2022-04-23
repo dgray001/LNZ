@@ -328,11 +328,19 @@ class Unit extends MapObject {
       case 1101:
         this.setStrings("Ben Nelson", "Hero", "");
         this.baseStats(4, 1, 0, 0, 2);
+        this.base_agility = 0;
         this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
         this.alliance = Alliance.BEN;
+        this.element = Element.GRAY;
         break;
       case 1102:
         this.setStrings("Daniel Gray", "Hero", "");
+        this.baseStats(4, 1, 0, 0, 2);
+        this.base_agility = 1;
+        this.base_magic = 3;
+        this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
+        this.alliance = Alliance.BEN;
+        this.element = Element.BROWN;
         break;
       case 1103:
         this.setStrings("John-Francis", "Hero", "");
@@ -1257,6 +1265,15 @@ class Unit extends MapObject {
   boolean withered() {
     return this.hasStatusEffect(StatusEffectCode.WITHERED);
   }
+  boolean visible() {
+    return this.hasStatusEffect(StatusEffectCode.VISIBLE);
+  }
+  boolean suppressed() {
+    return this.hasStatusEffect(StatusEffectCode.SUPPRESSED);
+  }
+  boolean untargetable() {
+    return this.hasStatusEffect(StatusEffectCode.UNTARGETABLE);
+  }
   boolean drenched() {
     return this.hasStatusEffect(StatusEffectCode.DRENCHED);
   }
@@ -1322,6 +1339,12 @@ class Unit extends MapObject {
   }
   boolean rageOfTheBenII() {
     return this.hasStatusEffect(StatusEffectCode.RAGE_OF_THE_BENII);
+  }
+  boolean aposematicCamouflage() {
+    return this.hasStatusEffect(StatusEffectCode.APOSEMATIC_CAMOUFLAGE);
+  }
+  boolean aposematicCamouflageII() {
+    return this.hasStatusEffect(StatusEffectCode.APOSEMATIC_CAMOUFLAGEII);
   }
 
   StatusEffectCode priorityStatusEffect() {
@@ -1572,7 +1595,7 @@ class Unit extends MapObject {
         this.gear.put(slot.getKey(), null);
       }
     }
-    // update status timers
+    // Update status effects
     Iterator status_iterator = this.statuses.entrySet().iterator();
     while(status_iterator.hasNext()) {
       Map.Entry<StatusEffectCode, StatusEffect> entry =
@@ -1733,6 +1756,40 @@ class Unit extends MapObject {
             }
             else {
               this.calculateDotDamage(Constants.status_decayed_dot, true, Constants.status_decayed_damageLimit);
+            }
+          }
+          break;
+        case APOSEMATIC_CAMOUFLAGE:
+          if (this.visible() || this.curr_action != UnitAction.NONE) {
+            status_iterator.remove();
+            continue;
+          }
+          for (Map.Entry<Integer, Unit> entryI : map.units.entrySet()) {
+            if (entryI.getValue().alliance == this.alliance) {
+              continue;
+            }
+            float distance = this.distance(entryI.getValue());
+            if (distance < Constants.ability_111_distance) {
+              status_iterator.remove();
+              this.addStatusEffect(StatusEffectCode.VISIBLE, 2000);
+              continue;
+            }
+          }
+          break;
+        case APOSEMATIC_CAMOUFLAGEII:
+          if (this.visible() || this.curr_action != UnitAction.NONE) {
+            status_iterator.remove();
+            continue;
+          }
+          for (Map.Entry<Integer, Unit> entryII : map.units.entrySet()) {
+            if (entryII.getValue().alliance == this.alliance) {
+              continue;
+            }
+            float distance = this.distance(entryII.getValue());
+            if (distance < Constants.ability_116_distance) {
+              status_iterator.remove();
+              this.addStatusEffect(StatusEffectCode.VISIBLE, 2000);
+              continue;
             }
           }
           break;
@@ -1898,7 +1955,14 @@ class Unit extends MapObject {
 
   // Auto attack
   void attack(Unit u) {
-    u.damage(this, u.calculateDamageFrom(this, this.attack(), DamageType.PHYSICAL, this.element));
+    float power = attack();
+    if (this.aposematicCamouflage()) {
+      power *= Constants.ability_111_powerBuff;
+    }
+    if (this.aposematicCamouflageII()) {
+      power *= Constants.ability_116_powerBuff;
+    }
+    u.damage(this, u.calculateDamageFrom(this, power, DamageType.PHYSICAL, this.element));
     this.timer_attackCooldown = this.attackCooldown(true);
   }
 

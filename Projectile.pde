@@ -70,6 +70,12 @@ class Projectile extends MapObject {
           break;
         default:
           this.power = u.attack();
+          if (u.aposematicCamouflage()) {
+            this.power *= Constants.ability_111_powerBuff;
+          }
+          if (u.aposematicCamouflageII()) {
+            this.power *= Constants.ability_116_powerBuff;
+          }
           break;
       }
       this.piercing = u.piercing();
