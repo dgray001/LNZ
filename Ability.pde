@@ -188,30 +188,48 @@ class Ability {
           "casting \'Tongue Lash\' or \'Amphibious Leap\' will have " + int(
           100.0 * (Constants.ability_111_powerBuff-1)) + "% more power.\n\nDan " +
           "also absorbs frog energy from his surroundings, regenerating a frog " +
-          "energy every " + Constants.ability_111_regenTime + " ms.";
+          "energy every " + Constants.ability_111_regenTime + "ms.";
       case 112:
         return "Dan lashes out his frog-like tongue.\nLash your tongue " + Constants.
-        ability_112_distance + " m and damage the first enemy it hits for " +
-        Constants.ability_112_basePower + " + (" + round(Constants.ability_112_physicalRatio
-        *100) + "% attack power + " + round(Constants.ability_112_magicalRatio*100) +
-        "% magic power) magical power.\nThe enemy hit will also be slowed " +
-        int((1-Constants.ability_112_slowAmount)*100) + "% for " + (Constants.
-        ability_112_slowTime/1000) + " s.";
+          ability_112_distance + "m and damage the first enemy it hits for " +
+          Constants.ability_112_basePower + " + (" + round(Constants.ability_112_physicalRatio
+          *100) + "% attack power + " + round(Constants.ability_112_magicalRatio*100) +
+          "% magic power) magical power.\nThe enemy hit will also be slowed " +
+          int((1-Constants.ability_112_slowAmount)*100) + "% for " + (Constants.
+          ability_112_slowTime/1000) + "s.";
       case 113:
-        return "Dan leaps like the frog he always wanted to be.\nJump " + Constants.
-        ability_113_jumpDistance + "m and with " + Constants.ability_113_basePower +
-        " + (" + round(Constants.ability_113_physicalRatio*100) + "% attack power " +
-        "+ " + round(Constants.ability_113_magicalRatio*100) + "% magic power) " +
-        "magical power deal splash damage and stun for " + (Constants.ability_113_stunTime/
-        1000) + " s all enemies within a " + Constants.ability_113_splashRadius +
-        " m radius of where you land.\nKills decrease the remaining cooldown of " +
-        "\'Tongue Lash\' by " + ((1-Constants.ability_113_killCooldownReduction)*100) +
-        "%.\nIf drenched, the jump distance is " + Constants.ability_113_drenchedJumpDistance +
-        " m and the splash radius is " + Constants.ability_113_drenchedSplashRadius + " m.";
+        return "Dan leaps like the frog he believes he is.\nJump " + Constants.
+          ability_113_jumpDistance + "m and with " + Constants.ability_113_basePower +
+          " + (" + round(Constants.ability_113_physicalRatio*100) + "% attack power " +
+          "+ " + round(Constants.ability_113_magicalRatio*100) + "% magic power) " +
+          "magical power deal splash damage and stun for " + (Constants.ability_113_stunTime/
+          1000) + "s all enemies within a " + Constants.ability_113_splashRadius +
+          "m radius of where you land.\nKills decrease the remaining cooldown of " +
+          "\'Tongue Lash\' by " + ((1-Constants.ability_113_killCooldownReduction)*100) +
+          "%.\nIf drenched, the jump distance is " + Constants.ability_113_drenchedJumpDistance +
+          "m and the splash radius is " + Constants.ability_113_drenchedSplashRadius + "m.";
       case 114:
-        return "";
+        return "Dan excrete poisonous alkaloids in all directions around him.\n" +
+          "While this ability is active, Dan will deal " + round(100*
+          Constants.ability_114_currHealth) + "% curr health and additional " +
+          "damage with " + Constants.ability_114_basePower + " + (0% attack " +
+          "power + " + round(Constants.ability_114_magicRatio*100) + "% magic " +
+          "power) magical power to all enemies within " + round(10 * Constants.
+          ability_114_range)/10.0 + "m of him every " + Constants.ability_114_tickTime +
+          "ms.\nEnemies hit by \'Alkaloid Excretion\' will also be rotting for " +
+          (Constants.ability_114_rotTime/1000.0) + "s.\nThe mana cost is consumed " +
+          "every time damage is dealt.";
       case 115:
-        return "";
+        return "With a frog's appetite, Dan is sometimes more interested in " +
+          "eating his enemies than actually killing them.\nDevour target enemy " +
+          "within " + Constants.ability_115_range + "m, making them suppressed, " +
+          "untargetable, and decayed while devoured.\nRecast this ability to spit " +
+          "them out " + Constants.ability_115_regurgitateDistance + "m and deal " +
+          "damage with " + Constants.ability_115_basePower + " + (" + round(100*Constants.
+          ability_115_physicalRatio) + "% attack power + " + round(100*Constants.
+          ability_115_magicalRatio) + "% magic power) magic damage.\nIf this ability " +
+          "is not recast within " + (Constants.ability_115_maxTime/1000.0) + "s " +
+          "it will be automatically recast.";
       case 116:
         return "As a Frog-Human hybrid, Dan can express his inner frog enery.\n" +
           "If still for " + int(round(Constants.ability_116_stillTime)) +
@@ -220,30 +238,48 @@ class Ability {
           "casting \'Tongue Lash\' or \'Amphibious Leap\' will have " + int(
           100.0 * (Constants.ability_116_powerBuff-1)) + "% more power.\n\nDan " +
           "also absorbs frog energy from his surroundings, regenerating a frog " +
-          "energy every " + Constants.ability_116_regenTime + " ms.";
+          "energy every " + Constants.ability_116_regenTime + "ms.";
       case 117:
         return "Dan lashes out his frog-like tongue.\nLash your tongue " + Constants.
-        ability_117_distance + " m and damage the first enemy it hits for " +
-        Constants.ability_117_basePower + " + (" + round(Constants.ability_117_physicalRatio
-        *100) + "% attack power + " + round(Constants.ability_117_magicalRatio*100) +
-        "% magic power) magical power.\nThe enemy hit will also be slowed " +
-        int((1-Constants.ability_112_slowAmount)*100) + "% for " + (Constants.
-        ability_117_slowTime/1000) + " s.";
+          ability_117_distance + "m and damage the first enemy it hits for " +
+          Constants.ability_117_basePower + " + (" + round(Constants.ability_117_physicalRatio
+          *100) + "% attack power + " + round(Constants.ability_117_magicalRatio*100) +
+          "% magic power) magical power.\nThe enemy hit will also be slowed " +
+          int((1-Constants.ability_112_slowAmount)*100) + "% for " + (Constants.
+          ability_117_slowTime/1000) + "s.";
       case 118:
         return "Dan leaps like the frog he always wanted to be.\nJump " + Constants.
-        ability_118_jumpDistance + "m and with " + Constants.ability_118_basePower +
-        " + (" + round(Constants.ability_118_physicalRatio*100) + "% attack power " +
-        "+ " + round(Constants.ability_118_magicalRatio*100) + "% magic power) " +
-        "magical power deal splash damage and stun for " + (Constants.ability_118_stunTime/
-        1000) + " s all enemies within a " + Constants.ability_118_splashRadius +
-        " m radius of where you land.\nKills decrease the remaining cooldown of " +
-        "\'Tongue Lash\' by " + ((1-Constants.ability_118_killCooldownReduction)*100) +
-        "%.\nIf drenched, the jump distance is " + Constants.ability_118_drenchedJumpDistance +
-        " m and the splash radius is " + Constants.ability_118_drenchedSplashRadius + " m.";
+          ability_118_jumpDistance + "m and with " + Constants.ability_118_basePower +
+          " + (" + round(Constants.ability_118_physicalRatio*100) + "% attack power " +
+          "+ " + round(Constants.ability_118_magicalRatio*100) + "% magic power) " +
+          "magical power deal splash damage and stun for " + (Constants.ability_118_stunTime/
+          1000) + "s all enemies within a " + Constants.ability_118_splashRadius +
+          "m radius of where you land.\nKills decrease the remaining cooldown of " +
+          "\'Tongue Lash\' by " + ((1-Constants.ability_118_killCooldownReduction)*100) +
+          "%.\nIf drenched, the jump distance is " + Constants.ability_118_drenchedJumpDistance +
+          "m and the splash radius is " + Constants.ability_118_drenchedSplashRadius + "m.";
       case 119:
-        return "";
+        return "Dan excrete poisonous alkaloids in all directions around him.\n" +
+          "While this ability is active, Dan will deal " + round(100*
+          Constants.ability_119_currHealth) + "% curr health and additional " +
+          "damage with " + Constants.ability_119_basePower + " + (0% attack " +
+          "power + " + round(Constants.ability_119_magicRatio*100) + "% magic " +
+          "power) magical power to all enemies within " + round(10 * Constants.
+          ability_119_range)/10.0 + " m of him every " + Constants.ability_114_tickTime +
+          "ms.\nEnemies hit by \'Alkaloid Excretion\' will also be rotting for " +
+          (Constants.ability_114_rotTime/1000.0) + "s.\nThe mana cost is consumed " +
+          "every time damage is dealt.";
       case 120:
-        return "";
+        return "With a frog's appetite, Dan is sometimes more interested in " +
+          "eating his enemies than actually killing them.\nDevour target enemy " +
+          "within " + Constants.ability_115_range + "m, making them suppressed, " +
+          "untargetable, and decayed while devoured.\nRecast this ability to spit " +
+          "them out " + Constants.ability_115_regurgitateDistance + "m and deal " +
+          "damage with " + Constants.ability_120_basePower + " + (" + round(100*Constants.
+          ability_120_physicalRatio) + "% attack power + " + round(100*Constants.
+          ability_120_magicalRatio) + "% magic power) magic damage.\nIf this ability " +
+          "is not recast within " + (Constants.ability_120_maxTime/1000.0) + "s " +
+          "it will be automatically recast.";
       default:
         return "-- error -- ";
     }
@@ -313,13 +349,13 @@ class Ability {
       case 111:
         return Constants.ability_111_stillTime;
       case 112:
-        return 6000;
+        return 600;
       case 113:
-        return 18000;
+        return 1800;
       case 114:
-        return 2000;
+        return 200;
       case 115:
-        return 120000;
+        return 1200;
       case 116:
         return Constants.ability_116_stillTime;
       case 117:
@@ -468,10 +504,40 @@ class Ability {
         this.toggle = true;
         u.curr_action = UnitAction.CASTING;
         break;
+      case 113: // Amphibious Leap
+        if (u.drenched()) {
+          this.timer_other = Constants.ability_113_drenchedJumpDistance;
+        }
+        else {
+          this.timer_other = Constants.ability_113_jumpDistance;
+        }
+        this.toggle = true;
+        u.curr_action_unhaltable = true;
+        u.curr_action = UnitAction.CASTING;
+        break;
+      case 114: // Alkaloid Excretion
+        break;
+      case 115: // Anuran Appetite
+        break;
       case 117: // Tongue Last II
         this.timer_other = Constants.ability_112_castTime;
         this.toggle = true;
         u.curr_action = UnitAction.CASTING;
+        break;
+      case 118: // Amphibious Leap II
+        if (u.drenched()) {
+          this.timer_other = Constants.ability_118_drenchedJumpDistance;
+        }
+        else {
+          this.timer_other = Constants.ability_118_jumpDistance;
+        }
+        this.toggle = true;
+        u.curr_action_unhaltable = true;
+        u.curr_action = UnitAction.CASTING;
+        break;
+      case 119: // Alkaloid Excretion II
+        break;
+      case 120: // Anuran Appetite II
         break;
       default:
         global.errorMessage("ERROR: Can't activate ability with ID " + this.ID + ".");
@@ -619,9 +685,16 @@ class Ability {
             box_height && distance.x - target.size < box_width && distance.y -
             target.size < 0.5 * box_height) {
             // collision
-            float damage = target.calculateDamageFrom(Constants.ability_112_basePower +
-              u.power(Constants.ability_112_physicalRatio, Constants.ability_112_magicalRatio),
-              DamageType.MAGICAL, Element.BROWN, u.piercing(), u.penetration());
+            float power = Constants.ability_112_basePower + u.power(Constants.
+              ability_112_physicalRatio, Constants.ability_112_magicalRatio);
+            if (u.aposematicCamouflageII()) {
+              power *= Constants.ability_116_powerBuff;
+            }
+            else if (u.aposematicCamouflage()) {
+              power *= Constants.ability_111_powerBuff;
+            }
+            float damage = target.calculateDamageFrom(power, DamageType.MAGICAL,
+              Element.BROWN, u.piercing(), u.penetration());
             target.damage(u, damage);
             target.addStatusEffect(StatusEffectCode.TONGUE_LASH, Constants.ability_112_slowTime);
             this.toggle = false;
@@ -632,6 +705,47 @@ class Ability {
         if (this.timer_other <= 0) {
           this.toggle = false;
           u.curr_action = UnitAction.NONE;
+        }
+        break;
+      case 113: // Amphibious Leap
+        if (!this.toggle) {
+          break;
+        }
+        if (u.curr_action != UnitAction.CASTING) {
+          this.toggle = false;
+          break;
+        }
+        this.timer_other -= u.last_move_distance;
+        if (u.distanceFromPoint(u.curr_action_x, u.curr_action_y) < u.last_move_distance) {
+          this.timer_other = 0;
+        }
+        if (this.timer_other <= 0) {
+          this.toggle = false;
+          u.curr_action = UnitAction.NONE;
+          u.curr_action_unhaltable = false;
+          float splash_radius = 0;
+          if (u.drenched()) {
+            map.addVisualEffect(4004, u.x, u.y);
+            splash_radius = Constants.ability_113_drenchedSplashRadius;
+          }
+          else {
+            map.addVisualEffect(4003, u.x, u.y);
+            splash_radius = Constants.ability_113_splashRadius;
+          }
+          float power = Constants.ability_113_basePower + u.power(Constants.
+            ability_113_physicalRatio, Constants.ability_113_magicalRatio);
+          for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
+            Unit target = entry.getValue();
+            if (target.alliance == u.alliance) {
+              continue;
+            }
+            if (u.distance(target) > splash_radius) {
+              continue;
+            }
+            target.damage(u, target.calculateDamageFrom(power, DamageType.MAGICAL,
+              Element.BROWN, u.piercing(), u.penetration()));
+            target.addStatusEffect(StatusEffectCode.STUNNED, Constants.ability_113_stunTime);
+          }
         }
         break;
       case 116: // Aposematic Camouflage II
@@ -669,9 +783,16 @@ class Ability {
             box_height && distance.x - target.size < box_width && distance.y -
             target.size < 0.5 * box_height) {
             // collision
-            float damage = target.calculateDamageFrom(Constants.ability_117_basePower +
-              u.power(Constants.ability_117_physicalRatio, Constants.ability_117_magicalRatio),
-              DamageType.MAGICAL, Element.BROWN, u.piercing(), u.penetration());
+            float power = Constants.ability_117_basePower + u.power(Constants.
+              ability_117_physicalRatio, Constants.ability_117_magicalRatio);
+            float damage = target.calculateDamageFrom(power, DamageType.MAGICAL,
+              Element.BROWN, u.piercing(), u.penetration());
+            if (u.aposematicCamouflageII()) {
+              power *= Constants.ability_116_powerBuff;
+            }
+            else if (u.aposematicCamouflage()) {
+              power *= Constants.ability_111_powerBuff;
+            }
             target.damage(u, damage);
             target.addStatusEffect(StatusEffectCode.TONGUE_LASH, Constants.ability_117_slowTime);
             this.toggle = false;
@@ -682,6 +803,47 @@ class Ability {
         if (this.timer_other <= 0) {
           this.toggle = false;
           u.curr_action = UnitAction.NONE;
+        }
+        break;
+      case 118: // Amphibious Leap II
+        if (!this.toggle) {
+          break;
+        }
+        if (u.curr_action != UnitAction.CASTING) {
+          this.toggle = false;
+          break;
+        }
+        this.timer_other -= u.last_move_distance;
+        if (u.distanceFromPoint(u.curr_action_x, u.curr_action_y) < u.last_move_distance) {
+          this.timer_other = 0;
+        }
+        if (this.timer_other <= 0) {
+          this.toggle = false;
+          u.curr_action = UnitAction.NONE;
+          u.curr_action_unhaltable = false;
+          float splash_radius = 0;
+          if (u.drenched()) {
+            map.addVisualEffect(4006, u.x, u.y);
+            splash_radius = Constants.ability_118_drenchedSplashRadius;
+          }
+          else {
+            map.addVisualEffect(4005, u.x, u.y);
+            splash_radius = Constants.ability_118_splashRadius;
+          }
+          float power = Constants.ability_118_basePower + u.power(Constants.
+            ability_118_physicalRatio, Constants.ability_118_magicalRatio);
+          for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
+            Unit target = entry.getValue();
+            if (target.alliance == u.alliance) {
+              continue;
+            }
+            if (u.distance(target) > splash_radius) {
+              continue;
+            }
+            target.damage(u, target.calculateDamageFrom(power, DamageType.MAGICAL,
+              Element.BROWN, u.piercing(), u.penetration()));
+            target.addStatusEffect(StatusEffectCode.STUNNED, Constants.ability_118_stunTime);
+          }
         }
         break;
       default:
@@ -697,11 +859,18 @@ class Ability {
         this.timer_cooldown = 0;
       }
     }
-    if (this.timer_other > 0) {
-      this.timer_other -= timeElapsed;
-      if (this.timer_other < 0) {
-        this.timer_other = 0;
-      }
+    switch(this.ID) {
+      case 113: // Amphibious Leap
+      case 118: // Amphiibous Leap II
+        break;
+      default:
+        if (this.timer_other > 0) {
+          this.timer_other -= timeElapsed;
+          if (this.timer_other < 0) {
+            this.timer_other = 0;
+          }
+        }
+        break;
     }
   }
 

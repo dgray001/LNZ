@@ -4,8 +4,8 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220423: v0.6.7m" +
-  "\nLines: 28312 (v0.6.7l)" +
+  "\n20220423: v0.6.7n" +
+  "\nLines: 28798 (v0.6.7n)" +
   "";
   static final String version_history =
   "Liberal Nazi Zombies" +
@@ -329,6 +329,8 @@ static class Constants {
   static final int gif_move_time = 1200;
   static final int gif_poof_frames = 8;
   static final int gif_poof_time = 900;
+  static final int gif_amphibiousLeap_frames = 10;
+  static final int gif_amphibiousLeap_time = 400;
 
   // Hero
   static final float hero_defaultInventoryButtonSize = 45;
@@ -446,7 +448,7 @@ static class Constants {
   static final float ability_111_stillTime = 3500;
   static final float ability_111_distance = 0.2;
   static final float ability_111_powerBuff = 1.4;
-  static final float ability_111_regenTime = 1400;
+  static final float ability_111_regenTime = 14;
   static final float ability_112_basePower = 5;
   static final float ability_112_physicalRatio = 0.15;
   static final float ability_112_magicalRatio = 0.4;
@@ -455,6 +457,8 @@ static class Constants {
   static final float ability_112_slowAmount = 0.7;
   static final float ability_112_slowTime = 3000;
   static final float ability_113_jumpDistance = 2;
+  static final float ability_113_jumpHeight = 5;
+  static final float ability_113_jumpSpeed = 4.5;
   static final float ability_113_basePower = 3;
   static final float ability_113_physicalRatio = 0.1;
   static final float ability_113_magicalRatio = 0.7;
@@ -463,6 +467,19 @@ static class Constants {
   static final float ability_113_killCooldownReduction = 0.5;
   static final float ability_113_drenchedJumpDistance = 3;
   static final float ability_113_drenchedSplashRadius = 0.8;
+  static final float ability_114_currHealth = 0.01;
+  static final float ability_114_basePower = 1;
+  static final float ability_114_magicRatio = 0.05;
+  static final float ability_114_range = 0.8;
+  static final float ability_114_rotTime = 1200;
+  static final float ability_114_tickTime = 500;
+  static final float ability_115_range = 0.4;
+  static final float ability_115_maxTime = 3500;
+  static final float ability_115_basePower = 8;
+  static final float ability_115_physicalRatio = 0.1;
+  static final float ability_115_magicalRatio = 0.7;
+  static final float ability_115_regurgitateSpeed = 5;
+  static final float ability_115_regurgitateDistance = 2.5;
   static final float ability_116_stillTime = 2000;
   static final float ability_116_distance = 0.1;
   static final float ability_116_powerBuff = 1.7;
@@ -481,6 +498,14 @@ static class Constants {
   static final float ability_118_killCooldownReduction = 0.2;
   static final float ability_118_drenchedJumpDistance = 4;
   static final float ability_118_drenchedSplashRadius = 1;
+  static final float ability_119_currHealth = 0.015;
+  static final float ability_119_basePower = 2;
+  static final float ability_119_magicRatio = 0.08;
+  static final float ability_119_range = 1;
+  static final float ability_120_maxTime = 5000;
+  static final float ability_120_basePower = 15;
+  static final float ability_120_physicalRatio = 0.2;
+  static final float ability_120_magicalRatio = 1.4;
 
   // Level
   static final float level_vendingFormWidth = 300;

@@ -2,12 +2,14 @@ enum UnitAction {
   NONE, MOVING, TARGETING_FEATURE, TARGETING_UNIT, TARGETING_ITEM, ATTACKING,
   SHOOTING, AIMING, USING_ITEM, FEATURE_INTERACTION, FEATURE_INTERACTION_WITH_ITEM,
   HERO_INTERACTING_WITH_FEATURE, TARGETING_FEATURE_WITH_ITEM,
-  HERO_INTERACTING_WITH_FEATURE_WITH_ITEM, MOVING_AND_USING_ITEM, CASTING;
+  HERO_INTERACTING_WITH_FEATURE_WITH_ITEM, MOVING_AND_USING_ITEM, CASTING,
+  ;
 }
 
 
 enum MoveModifier {
-  NONE, SNEAK, RECOIL;
+  NONE, SNEAK, RECOIL,
+  AMPHIBIOUS_LEAP;
 }
 
 
@@ -296,6 +298,8 @@ class Unit extends MapObject {
 
   protected UnitAction curr_action = UnitAction.NONE;
   protected int curr_action_id = 0;
+  protected boolean curr_action_unhaltable = false;
+  protected boolean curr_action_unstoppable = false;
   protected MapObject object_targeting = null;
   protected MapObject last_damage_from = null;
   protected float last_damage_amount = 0;
@@ -304,6 +308,7 @@ class Unit extends MapObject {
   protected float last_move_distance = 0;
   protected int buffer_cast = -1;
   protected boolean last_move_collision = false;
+  protected boolean last_move_any_collision = false;
 
   protected ArrayList<IntegerCoordinate> curr_squares_on = new ArrayList<IntegerCoordinate>(); // squares unit is on
   protected int curr_height = 0; // highest height from the squares_on
@@ -1282,6 +1287,9 @@ class Unit extends MapObject {
   boolean untargetable() {
     return this.hasStatusEffect(StatusEffectCode.UNTARGETABLE);
   }
+  boolean stunned() {
+    return this.hasStatusEffect(StatusEffectCode.STUNNED);
+  }
   boolean drenched() {
     return this.hasStatusEffect(StatusEffectCode.DRENCHED);
   }
@@ -1397,6 +1405,9 @@ class Unit extends MapObject {
     else {
       this.aiLogic(timeElapsed, myKey, map);
     }
+    if (this.stunned() && !this.curr_action_unstoppable) {
+      this.curr_action = UnitAction.NONE;
+    }
     // unit action
     switch(this.curr_action) {
       case MOVING:
@@ -1417,6 +1428,23 @@ class Unit extends MapObject {
           if (this.timer_actionTime < 0) { // colliding over and over
             this.curr_action = UnitAction.NONE;
           }
+        }
+        break;
+      case CASTING:
+        if (this.curr_action_id < 0 || this.curr_action_id >= this.abilities.size()) {
+          break;
+        }
+        Ability a = this.abilities.get(this.curr_action_id);
+        switch(a.ID) {
+          case 113: // Amphibious Leap
+          case 118: // Amphibious Leap II
+            this.move(timeElapsed, myKey, map, MoveModifier.AMPHIBIOUS_LEAP);
+            if (this.last_move_any_collision) {
+              a.timer_other = 0;
+            }
+            break;
+          default:
+            break;
         }
         break;
       case TARGETING_FEATURE:
@@ -1918,10 +1946,17 @@ class Unit extends MapObject {
   }
 
   void cast(int myKey, int index, GameMap map) {
+    if (this.stunned()) {
+      return;
+    }
     if (index < 0 || index >= this.abilities.size()) {
       return;
     }
     this.curr_action_id = index;
+    if (myKey == 0) {
+      this.curr_action_x = map.mX;
+      this.curr_action_y = map.mY;
+    }
     Ability a = this.abilities.get(index);
     if (a == null) {
       return;
@@ -2175,6 +2210,12 @@ class Unit extends MapObject {
           }
           a.timer_other = Constants.ability_106_cooldownTimer;
           break;
+        case 113: // Amphibious Leap I
+          a.timer_cooldown *= Constants.ability_113_killCooldownReduction;
+          break;
+        case 118: // Amphibious Leap II
+          a.timer_cooldown *= Constants.ability_118_killCooldownReduction;
+          break;
         default:
           break;
       }
@@ -2319,12 +2360,17 @@ class Unit extends MapObject {
       case RECOIL:
         effectiveDistance = -timeElapsed; // just use timeElapsed as the distance
         break;
+      case AMPHIBIOUS_LEAP:
+        effectiveDistance = Constants.ability_113_jumpSpeed * seconds;
+        this.curr_height += Constants.ability_113_jumpHeight;
+        break;
     }
     float tryMoveX = effectiveDistance * this.facingX;
     float tryMoveY = effectiveDistance * this.facingY;
     float startX = this.x;
     float startY = this.y;
     this.last_move_collision = false;
+    this.last_move_any_collision = false;
     // move in x direction
     this.moveX(tryMoveX, myKey, map);
     // move in y direction
@@ -2340,7 +2386,6 @@ class Unit extends MapObject {
     float moveX = this.x - startX;
     float moveY = this.y - startY;
     this.last_move_distance = sqrt(moveX * moveX + moveY * moveY);
-    //this.stat_distance_traveled = this.last_move_distance;
   }
 
   void moveX(float tryMoveX, int myKey, GameMap map) {
@@ -2348,6 +2393,7 @@ class Unit extends MapObject {
       if (tryMoveX > 0) {
         if (this.collisionLogicX(Constants.map_moveLogicCap, myKey, map)) {
           this.last_move_collision = true;
+          this.last_move_any_collision = true;
           return;
         }
         tryMoveX -= Constants.map_moveLogicCap;
@@ -2355,6 +2401,7 @@ class Unit extends MapObject {
       else {
         if (this.collisionLogicX(-Constants.map_moveLogicCap, myKey, map)) {
           this.last_move_collision = true;
+          this.last_move_any_collision = true;
           return;
         }
         tryMoveX += Constants.map_moveLogicCap;
@@ -2362,10 +2409,12 @@ class Unit extends MapObject {
     }
     if (this.collisionLogicX(tryMoveX, myKey, map)) {
       this.last_move_collision = true;
+      this.last_move_any_collision = true;
       return;
     }
     if (abs(this.facingX) < Constants.unit_small_facing_threshhold) {
       this.last_move_collision = true;
+      this.last_move_any_collision = true;
     }
   }
 
@@ -2373,18 +2422,21 @@ class Unit extends MapObject {
     while(abs(tryMoveY) > Constants.map_moveLogicCap) {
       if (tryMoveY > 0) {
         if (this.collisionLogicY(Constants.map_moveLogicCap, myKey, map)) {
+          this.last_move_any_collision = true;
           return;
         }
         tryMoveY -= Constants.map_moveLogicCap;
       }
       else {
         if (this.collisionLogicY(-Constants.map_moveLogicCap, myKey, map)) {
+          this.last_move_any_collision = true;
           return;
         }
         tryMoveY += Constants.map_moveLogicCap;
       }
     }
     if (this.collisionLogicY(tryMoveY, myKey, map)) {
+      this.last_move_any_collision = true;
       return;
     }
     if (abs(this.facingY) > Constants.unit_small_facing_threshhold) {

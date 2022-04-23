@@ -1985,6 +1985,9 @@ class GameMap {
         }
         if (this.units.containsKey(0)) {
           Unit player = this.units.get(0);
+          if (player.curr_action_unhaltable) {
+            break;
+          }
           if (player.weapon() != null && player.weapon().shootable() && global.holding_ctrl) {
             player.aim(this.mX, this.mY);
           }
