@@ -5,7 +5,11 @@ class VisualEffect extends MapObject {
   protected boolean scale_size = true;
 
   VisualEffect(int ID) {
+    this(ID, 0, 0);
+  }
+  VisualEffect(int ID, float x, float y) {
     super(ID);
+    this.setLocation(x, y);
     switch(ID) {
       // gifs
       case 4001: // move gif
@@ -16,7 +20,22 @@ class VisualEffect extends MapObject {
       case 4002: // chuck quizmo poof
         this.setValues(1, 1, 1000 + Constants.gif_poof_time);
         break;
-      // abilities
+      case 4003: // amphibious leap land
+        this.setValues(2 * Constants.ability_113_splashRadius, 2 * Constants.
+          ability_113_splashRadius, Constants.gif_amphibiousLeap_time);
+        break;
+      case 4004: // amphibious leap drenched land
+        this.setValues(2 * Constants.ability_113_drenchedSplashRadius, 2 * Constants.
+          ability_113_drenchedSplashRadius, Constants.gif_amphibiousLeap_time);
+        break;
+      case 4005: // amphibious leap II land
+        this.setValues(2 * Constants.ability_118_splashRadius, 2 * Constants.
+          ability_118_splashRadius, Constants.gif_amphibiousLeap_time);
+        break;
+      case 4006: // amphibious leap II drenched land
+        this.setValues(2 * Constants.ability_118_drenchedSplashRadius, 2 * Constants.
+          ability_118_drenchedSplashRadius, Constants.gif_amphibiousLeap_time);
+        break;
       default:
         global.errorMessage("ERROR: VisualEffect ID " + ID + " not found.");
         break;
@@ -117,6 +136,15 @@ class VisualEffect extends MapObject {
           path += frame + ".png";
         }
         break;
+      case 4003:
+      case 4004:
+      case 4005:
+      case 4006:
+        path += "amphibious_leap/";
+        frame = int(floor(Constants.gif_amphibiousLeap_frames *
+          (1.0 - this.timer / (1 + Constants.gif_amphibiousLeap_time))));
+        path += frame + ".png";
+        break;
       default:
         global.errorMessage("ERROR: Visual Effect ID " + ID + " not found.");
         path = "default.png";
@@ -142,6 +170,14 @@ class VisualEffect extends MapObject {
   void display(float zoom) {
     float range = 0;
     switch(this.ID) {
+      case 4003:
+      case 4004:
+      case 4005:
+      case 4006:
+        ellipseMode(CENTER);
+        fill(98, 52, 18, 100);
+        noStroke();
+        ellipse(0, 0, this.size_width * zoom, this.size_height * zoom);
       default:
         if (this.scale_size) {
           image(this.getImage(), 0, 0, this.size_width * zoom, this.size_height * zoom);
