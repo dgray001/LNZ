@@ -1579,7 +1579,7 @@ class GameMap {
   void updateView(int timeElapsed) {
     boolean refreshView = false;
     // lockscreen
-    if (true || (global.holding_space && this.units.containsKey(0))) {
+    if ((true || global.holding_space) && this.units.containsKey(0)) {
       this.setViewLocation(this.units.get(0).x, this.units.get(0).y);
     }
     else {

@@ -258,7 +258,7 @@ class Ability {
     }
   }
 
-  int timer_cooldown() {
+  float timer_cooldown() {
     switch(this.ID) {
       // Ben Nelson
       case 102:
@@ -278,6 +278,8 @@ class Ability {
       case 110:
         return 100000;
       // Daniel Gray
+      case 111:
+        return Constants.ability_111_stillTime;
       case 112:
         return 6000;
       case 113:
@@ -286,6 +288,8 @@ class Ability {
         return 2000;
       case 115:
         return 120000;
+      case 116:
+        return Constants.ability_116_stillTime;
       case 117:
         return 5000;
       case 118:
@@ -545,7 +549,7 @@ class Ability {
           }
         }
         else {
-          this.timer_cooldown = Constants.ability_111_stillTime;
+          this.timer_cooldown = this.timer_cooldown();
         }
         break;
       case 116: // Aposematic Camouflage II
@@ -559,7 +563,7 @@ class Ability {
           }
         }
         else {
-          this.timer_cooldown = Constants.ability_116_stillTime;
+          this.timer_cooldown = this.timer_cooldown();
         }
         break;
       default:

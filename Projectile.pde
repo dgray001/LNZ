@@ -72,9 +72,11 @@ class Projectile extends MapObject {
           this.power = u.attack();
           if (u.aposematicCamouflage()) {
             this.power *= Constants.ability_111_powerBuff;
+            u.removeStatusEffect(StatusEffectCode.APOSEMATIC_CAMOUFLAGE);
           }
           if (u.aposematicCamouflageII()) {
             this.power *= Constants.ability_116_powerBuff;
+            u.removeStatusEffect(StatusEffectCode.APOSEMATIC_CAMOUFLAGEII);
           }
           break;
       }
