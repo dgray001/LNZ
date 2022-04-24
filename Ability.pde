@@ -2,7 +2,7 @@ class Ability {
   private int ID = 0;
   private float timer_cooldown = 0;
   private float timer_other = 0;
-  private int target_key = -1;
+  private Unit target_unit = null;
   private int stacks = 0;
   private boolean toggle = false;
 
@@ -355,7 +355,7 @@ class Ability {
       case 114:
         return 2000;
       case 115:
-        return 1200;
+        return 120000;
       case 116:
         return Constants.ability_116_stillTime;
       case 117:
@@ -382,6 +382,14 @@ class Ability {
       case 117:
       case 118:
         return true;
+      case 115:
+      case 120:
+        if (this.toggle) {
+          return true;
+        }
+        else {
+          return false;
+        }
       default:
         return false;
     }
@@ -389,8 +397,26 @@ class Ability {
 
   boolean castsOnTarget() {
     switch(this.ID) {
+      case 115: // Anuran Appetite
+      case 120: // Anuran Appetite II
+        if (this.toggle) {
+          return false;
+        }
+        else {
+          return true;
+        }
       default:
         return false;
+    }
+  }
+
+  float castsOnTargetRange() {
+    switch(this.ID) {
+      case 115: // Anuran Appetite
+      case 120: // Anuran Appetite II
+        return Constants.ability_115_range;
+      default:
+        return 0;
     }
   }
 
@@ -399,6 +425,14 @@ class Ability {
       case 102:
       case 103:
         return false;
+      case 115:
+      case 120:
+        if (this.toggle) {
+          return false;
+        }
+        else {
+          return true;
+        }
       default:
         return true;
     }
@@ -447,9 +481,9 @@ class Ability {
 
 
   void activate(Unit u, int source_key, GameMap map) {
-    this.activate(u, source_key, map, -10);
+    this.activate(u, source_key, map, null);
   }
-  void activate(Unit u, int source_key, GameMap map, int target_key) {
+  void activate(Unit u, int source_key, GameMap map, Unit target_unit) {
     switch(this.ID) {
       case 102: // Mighty Pen
       case 107: // Mighty Pen II
@@ -460,7 +494,15 @@ class Ability {
       default:
         break;
     }
-    this.target_key = target_key;
+    if (this.castsOnTarget()) {
+      this.target_unit = target_unit;
+      if (this.target_unit == null || this.target_unit.remove) {
+        return;
+      }
+      if (u.distance(this.target_unit) > this.castsOnTargetRange()) {
+        return;
+      }
+    }
     u.decreaseMana(this.manaCost());
     this.timer_cooldown = this.timer_cooldown();
     VisualEffect ve;
@@ -526,6 +568,21 @@ class Ability {
         }
         break;
       case 115: // Anuran Appetite
+        if (this.toggle) {
+          this.timer_other = 0;
+          u.increaseMana(this.manaCost());
+        }
+        else {
+          this.toggle = true;
+          this.timer_cooldown = 0;
+          this.timer_other = Constants.ability_115_maxTime;
+          this.target_unit.addStatusEffect(StatusEffectCode.SUPPRESSED, Constants.ability_115_maxTime);
+          this.target_unit.addStatusEffect(StatusEffectCode.UNTARGETABLE, Constants.ability_115_maxTime);
+          this.target_unit.addStatusEffect(StatusEffectCode.INVULNERABLE, Constants.ability_115_maxTime);
+          this.target_unit.addStatusEffect(StatusEffectCode.INVISIBLE, Constants.ability_115_maxTime);
+          this.target_unit.addStatusEffect(StatusEffectCode.UNCOLLIDABLE, Constants.ability_115_maxTime);
+          this.target_unit.addStatusEffect(StatusEffectCode.DECAYED, Constants.ability_115_maxTime);
+        }
         break;
       case 117: // Tongue Last II
         this.timer_other = Constants.ability_112_castTime;
@@ -554,6 +611,21 @@ class Ability {
         }
         break;
       case 120: // Anuran Appetite II
+        if (this.toggle) {
+          this.timer_other = 0;
+          u.increaseMana(this.manaCost());
+        }
+        else {
+          this.toggle = true;
+          this.timer_cooldown = 0;
+          this.timer_other = Constants.ability_120_maxTime;
+          this.target_unit.addStatusEffect(StatusEffectCode.SUPPRESSED, Constants.ability_120_maxTime);
+          this.target_unit.addStatusEffect(StatusEffectCode.UNTARGETABLE, Constants.ability_120_maxTime);
+          this.target_unit.addStatusEffect(StatusEffectCode.INVULNERABLE, Constants.ability_120_maxTime);
+          this.target_unit.addStatusEffect(StatusEffectCode.INVISIBLE, Constants.ability_120_maxTime);
+          this.target_unit.addStatusEffect(StatusEffectCode.UNCOLLIDABLE, Constants.ability_120_maxTime);
+          this.target_unit.addStatusEffect(StatusEffectCode.DECAYED, Constants.ability_120_maxTime);
+        }
         break;
       default:
         global.errorMessage("ERROR: Can't activate ability with ID " + this.ID + ".");
@@ -608,7 +680,7 @@ class Ability {
         }
         if (this.timer_other <= 0) {
           this.toggle = false;
-          u.curr_action = UnitAction.NONE;
+          u.stopAction();
         }
         break;
       case 104: // Senseless Grit
@@ -657,7 +729,7 @@ class Ability {
         }
         if (this.timer_other <= 0) {
           this.toggle = false;
-          u.curr_action = UnitAction.NONE;
+          u.stopAction();
         }
         break;
       case 109: // Senseless Grit II
@@ -714,13 +786,13 @@ class Ability {
             target.damage(u, damage);
             target.refreshStatusEffect(StatusEffectCode.TONGUE_LASH, Constants.ability_112_slowTime);
             this.toggle = false;
-            u.curr_action = UnitAction.NONE;
+            u.stopAction();
             break;
           }
         }
         if (this.timer_other <= 0) {
           this.toggle = false;
-          u.curr_action = UnitAction.NONE;
+          u.stopAction();
         }
         break;
       case 113: // Amphibious Leap
@@ -737,8 +809,7 @@ class Ability {
         }
         if (this.timer_other <= 0) {
           this.toggle = false;
-          u.curr_action = UnitAction.NONE;
-          u.curr_action_unhaltable = false;
+          u.stopAction();
           float splash_radius = 0;
           if (u.drenched()) {
             map.addVisualEffect(4004, u.x, u.y);
@@ -787,13 +858,42 @@ class Ability {
               continue;
             }
             target.damage(u, Constants.ability_114_currHealth * target.curr_health);
-            target.damage(u, power);
+            target.damage(u, target.calculateDamageFrom(power, DamageType.MAGICAL,
+              Element.BROWN, u.piercing(), u.penetration()));
             target.refreshStatusEffect(StatusEffectCode.ROTTING, Constants.ability_114_rotTime);
           }
           map.addVisualEffect(4007, u.x, u.y);
         }
         break;
       case 115: // Anuran Appetite
+        if (!this.toggle) {
+          break;
+        }
+        if (this.target_unit == null || this.target_unit.remove || u.remove) {
+          this.toggle = false;
+          break;
+        }
+        if (this.timer_other <= 0) {
+          this.toggle = false;
+          this.target_unit.removeStatusEffect(StatusEffectCode.SUPPRESSED);
+          this.target_unit.removeStatusEffect(StatusEffectCode.UNTARGETABLE);
+          this.target_unit.removeStatusEffect(StatusEffectCode.INVULNERABLE);
+          this.target_unit.removeStatusEffect(StatusEffectCode.INVISIBLE);
+          this.target_unit.removeStatusEffect(StatusEffectCode.UNCOLLIDABLE);
+          this.target_unit.x = u.frontX();
+          this.target_unit.y = u.frontY();
+          this.target_unit.setFacing(u.facingX, u.facingY);
+          this.target_unit.curr_action = UnitAction.MOVING;
+          this.target_unit.curr_action_id = 1;
+          this.target_unit.curr_action_unstoppable = true;
+          this.target_unit.curr_action_unhaltable = true;
+          this.target_unit.curr_action_x = this.target_unit.x + u.facingX * Constants.ability_115_regurgitateDistance;
+          this.target_unit.curr_action_y = this.target_unit.y + u.facingY * Constants.ability_115_regurgitateDistance;
+          float power = Constants.ability_115_basePower + u.power(Constants.
+            ability_115_physicalRatio, Constants.ability_115_magicalRatio);
+          this.target_unit.damage(u, this.target_unit.calculateDamageFrom(power,
+            DamageType.MAGICAL, Element.BROWN, u.piercing(), u.penetration()));
+        }
         break;
       case 116: // Aposematic Camouflage II
         if (this.timer_other <= 0) {
@@ -843,13 +943,13 @@ class Ability {
             target.damage(u, damage);
             target.refreshStatusEffect(StatusEffectCode.TONGUE_LASH, Constants.ability_117_slowTime);
             this.toggle = false;
-            u.curr_action = UnitAction.NONE;
+            u.stopAction();
             break;
           }
         }
         if (this.timer_other <= 0) {
           this.toggle = false;
-          u.curr_action = UnitAction.NONE;
+          u.stopAction();
         }
         break;
       case 118: // Amphibious Leap II
@@ -866,8 +966,7 @@ class Ability {
         }
         if (this.timer_other <= 0) {
           this.toggle = false;
-          u.curr_action = UnitAction.NONE;
-          u.curr_action_unhaltable = false;
+          u.stopAction();
           float splash_radius = 0;
           if (u.drenched()) {
             map.addVisualEffect(4006, u.x, u.y);
@@ -916,13 +1015,42 @@ class Ability {
               continue;
             }
             target.damage(u, Constants.ability_119_currHealth * target.curr_health);
-            target.damage(u, power);
+            target.damage(u, target.calculateDamageFrom(power, DamageType.MAGICAL,
+              Element.BROWN, u.piercing(), u.penetration()));
             target.refreshStatusEffect(StatusEffectCode.ROTTING, Constants.ability_114_rotTime);
           }
           map.addVisualEffect(4008, u.x, u.y);
         }
         break;
       case 120: // Anuran Appetite II
+        if (!this.toggle) {
+          break;
+        }
+        if (this.target_unit == null || this.target_unit.remove || u.remove) {
+          this.toggle = false;
+          break;
+        }
+        if (this.timer_other <= 0) {
+          this.toggle = false;
+          this.target_unit.removeStatusEffect(StatusEffectCode.SUPPRESSED);
+          this.target_unit.removeStatusEffect(StatusEffectCode.UNTARGETABLE);
+          this.target_unit.removeStatusEffect(StatusEffectCode.INVULNERABLE);
+          this.target_unit.removeStatusEffect(StatusEffectCode.INVISIBLE);
+          this.target_unit.removeStatusEffect(StatusEffectCode.UNCOLLIDABLE);
+          this.target_unit.x = u.frontX();
+          this.target_unit.y = u.frontY();
+          this.target_unit.setFacing(u.facingX, u.facingY);
+          this.target_unit.curr_action = UnitAction.MOVING;
+          this.target_unit.curr_action_id = 1;
+          this.target_unit.curr_action_unstoppable = true;
+          this.target_unit.curr_action_unhaltable = true;
+          this.target_unit.curr_action_x = this.target_unit.x + u.facingX * Constants.ability_115_regurgitateDistance;
+          this.target_unit.curr_action_y = this.target_unit.y + u.facingY * Constants.ability_115_regurgitateDistance;
+          float power = Constants.ability_120_basePower + u.power(Constants.
+            ability_120_physicalRatio, Constants.ability_120_magicalRatio);
+          this.target_unit.damage(u, this.target_unit.calculateDamageFrom(power,
+            DamageType.MAGICAL, Element.BROWN, u.piercing(), u.penetration()));
+        }
         break;
 
       default:
@@ -968,7 +1096,6 @@ class Ability {
     String fileString = "\nnew: Ability: " + this.ID;
     fileString += "\ntimer_cooldown: " + this.timer_cooldown;
     fileString += "\ntimer_other: " + this.timer_other;
-    fileString += "\ntarget_key: " + this.target_key;
     fileString += "\nstacks: " + this.stacks;
     fileString += "\ntoggle: " + this.toggle;
     return fileString;
@@ -981,9 +1108,6 @@ class Ability {
         break;
       case "timer_other":
         this.timer_other = toFloat(data);
-        break;
-      case "target_key":
-        this.target_key = toInt(data);
         break;
       case "stacks":
         this.stacks = toInt(data);
