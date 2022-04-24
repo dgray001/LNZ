@@ -109,7 +109,7 @@ class Item extends MapObject {
   protected BounceInt bounce = new BounceInt(Constants.item_bounceConstant);
 
   Item(Item i) {
-    this(i, i.x, i.y);
+    this(i, 0, 0);
   }
   Item(Item i, float x, float y) {
     super();
