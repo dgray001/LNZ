@@ -65,6 +65,15 @@ void draw() {
       break;
     case MAPEDITOR_INTERFACE:
       break;
+    case ENTERING_TUTORIAL:
+      background(60);
+      global.state = ProgramState.ENTERING_MAINMENU;
+      global.profile.achievement(AchievementCode.COMPLETED_TUTORIAL);
+      //global.state = ProgramState.TUTORIAL;
+      //global.menu = new TutorialInterface();
+      break;
+    case TUTORIAL:
+      break;
     case EXITING:
       global.timer_exiting -= timeElapsed;
       if (global.timer_exiting < 0) {
@@ -73,6 +82,13 @@ void draw() {
       break;
     default:
       break;
+  }
+  // global notification
+  if (global.notification != null) {
+    global.notification.update(timeElapsed);
+    if (global.notification.finished) {
+      global.notification = null;
+    }
   }
   // background music go to next track
   global.sounds.update();
@@ -95,10 +111,16 @@ void mouseDragged() {
   if (global.menu != null) {
     global.menu.LNZ_mouseMove(mouseX, mouseY);
   }
+  if (global.notification != null) {
+    global.notification.mouseMove(mouseX, mouseY);
+  }
 }
 void mouseMoved() {
   if (global.menu != null) {
     global.menu.LNZ_mouseMove(mouseX, mouseY);
+  }
+  if (global.notification != null) {
+    global.notification.mouseMove(mouseX, mouseY);
   }
 }
 
@@ -108,6 +130,9 @@ void mousePressed() {
   }
   if (global.menu != null) {
     global.menu.LNZ_mousePress();
+  }
+  if (global.notification != null) {
+    global.notification.mousePress();
   }
 }
 

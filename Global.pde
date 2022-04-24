@@ -1,11 +1,13 @@
 enum ProgramState {
-  INITIAL_INTERFACE, EXITING, ENTERING_MAINMENU, MAINMENU_INTERFACE, ENTERING_MAPEDITOR, MAPEDITOR_INTERFACE;
+  INITIAL_INTERFACE, EXITING, ENTERING_MAINMENU, MAINMENU_INTERFACE,
+  ENTERING_MAPEDITOR, MAPEDITOR_INTERFACE, ENTERING_TUTORIAL, TUTORIAL;
 }
 
 
 class Global {
   // Program
   private InterfaceLNZ menu;
+  private NotificationLNZ notification;
   private ProgramState state = ProgramState.INITIAL_INTERFACE;
   private int timer_exiting = Constants.exit_delay;
   private Images images;
