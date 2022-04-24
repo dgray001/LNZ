@@ -3043,12 +3043,12 @@ class Hero extends Unit {
 
   protected Location location = Location.ERROR;
 
-  protected int level_tokens = 40;
+  protected int level_tokens = 0;
   protected float experience = 0;
   protected int experience_next_level = 1;
   protected float money = 0;
   protected float base_mana = 0;
-  protected float curr_mana = 20;
+  protected float curr_mana = 0;
   protected int hunger = 100;
   protected int thirst = 100;
   protected int hunger_timer = Constants.hero_hungerTimer;

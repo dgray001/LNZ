@@ -9,7 +9,7 @@ enum UnitAction {
 
 enum MoveModifier {
   NONE, SNEAK, RECOIL,
-  AMPHIBIOUS_LEAP;
+  AMPHIBIOUS_LEAP, ANURAN_APPETITE;
 }
 
 
@@ -1182,9 +1182,13 @@ class Unit extends MapObject {
       this.statuses.put(code, new StatusEffect(code, true));
     }
   }
-  void addStatusEffect(StatusEffectCode code, float timer) {
+  float calculateTimerFrom(StatusEffectCode code, float timer) {
+    if (code == StatusEffectCode.SUPPRESSED) {
+      return timer;
+    }
     if (code.negative()) {
       timer *= this.element.resistanceFactorTo(code.element());
+      timer *= 1 - this.tenacity();
       for (Ability a : this.abilities) {
         if (a == null) {
           continue;
@@ -1219,8 +1223,10 @@ class Unit extends MapObject {
         }
       }
     }
-    else {
-    }
+    return timer;
+  }
+  void addStatusEffect(StatusEffectCode code, float timer) {
+    timer = this.calculateTimerFrom(code, timer);
     if (this.statuses.containsKey(code)) {
       if (!this.statuses.get(code).permanent) {
         this.statuses.get(code).addTime(timer);
@@ -1231,7 +1237,7 @@ class Unit extends MapObject {
     }
   }
   void refreshStatusEffect(StatusEffectCode code, float timer) {
-    timer *= this.element.resistanceFactorTo(code.element());
+    timer = this.calculateTimerFrom(code, timer);
     if (this.statuses.containsKey(code)) {
       if (!this.statuses.get(code).permanent) {
         this.statuses.get(code).refreshTime(timer);
@@ -1289,6 +1295,12 @@ class Unit extends MapObject {
   }
   boolean stunned() {
     return this.hasStatusEffect(StatusEffectCode.STUNNED);
+  }
+  boolean invisible() {
+    return this.hasStatusEffect(StatusEffectCode.INVISIBLE);
+  }
+  boolean uncollidable() {
+    return this.hasStatusEffect(StatusEffectCode.UNCOLLIDABLE);
   }
   boolean drenched() {
     return this.hasStatusEffect(StatusEffectCode.DRENCHED);
@@ -1411,29 +1423,39 @@ class Unit extends MapObject {
     else {
       this.aiLogic(timeElapsed, myKey, map);
     }
-    if (this.stunned() && !this.curr_action_unstoppable) {
-      this.curr_action = UnitAction.NONE;
+    if ((this.suppressed() || this.stunned()) && !this.curr_action_unstoppable) {
+      this.stopAction();
     }
     // unit action
     switch(this.curr_action) {
       case MOVING:
         boolean collision_last_move = this.last_move_collision;
-        this.face(this.curr_action_x, this.curr_action_y); // pathfinding
-        this.move(timeElapsed, myKey, map, MoveModifier.NONE);
+        switch(this.curr_action_id) {
+          case 1: // Anuran Appetite regurgitate
+            this.move(timeElapsed, myKey, map, MoveModifier.ANURAN_APPETITE);
+            if (this.last_move_collision) {
+              this.stopAction(true);
+            }
+            break;
+          default:
+            this.face(this.curr_action_x, this.curr_action_y); // pathfinding
+            this.move(timeElapsed, myKey, map, MoveModifier.NONE);
+            if (this.last_move_collision) {
+              if (collision_last_move) {
+                this.timer_actionTime -= timeElapsed;
+              }
+              else {
+                this.timer_actionTime = Constants.unit_moveCollisionStopActionTime;
+              }
+              if (this.timer_actionTime < 0) { // colliding over and over
+                this.stopAction(true);
+              }
+            }
+            break;
+        }
         if (this.distanceFromPoint(this.curr_action_x, this.curr_action_y)
           < this.last_move_distance) {
-          this.curr_action = UnitAction.NONE;
-        }
-        if (this.last_move_collision) {
-          if (collision_last_move) {
-            this.timer_actionTime -= timeElapsed;
-          }
-          else {
-            this.timer_actionTime = Constants.unit_moveCollisionStopActionTime;
-          }
-          if (this.timer_actionTime < 0) { // colliding over and over
-            this.curr_action = UnitAction.NONE;
-          }
+          this.stopAction(true);
         }
         break;
       case CASTING:
@@ -1509,6 +1531,9 @@ class Unit extends MapObject {
           break;
         }
         Unit u = (Unit)this.object_targeting;
+        if (u.untargetable()) {
+          this.stopAction();
+        }
         if (!u.targetable(this)) {
           this.stopAction();
           break;
@@ -1576,6 +1601,9 @@ class Unit extends MapObject {
           break;
         }
         Unit unit_attacking = (Unit)this.object_targeting;
+        if (unit_attacking.untargetable()) {
+          this.stopAction();
+        }
         if (this.frozen()) {
           this.stopAction();
           break;
@@ -1682,7 +1710,7 @@ class Unit extends MapObject {
           if (se.number < 0) {
             se.number += random(Constants.status_woozy_tickMaxTimer);
             this.turn(Constants.status_woozy_maxAmount - 2 * random(Constants.status_woozy_maxAmount));
-            this.curr_action = UnitAction.NONE;
+            this.stopAction();
           }
           break;
         case CONFUSED:
@@ -1952,7 +1980,7 @@ class Unit extends MapObject {
   }
 
   void cast(int myKey, int index, GameMap map) {
-    if (this.stunned()) {
+    if (this.suppressed() || this.stunned()) {
       return;
     }
     if (index < 0 || index >= this.abilities.size()) {
@@ -1976,14 +2004,15 @@ class Unit extends MapObject {
       }
     }
     if (a.castsOnTarget()) {
-      if (map.hovered_object == null) {
+      if (this.object_targeting == null) {
         return;
       }
       if (a.turnsCaster()) {
-        this.face(map.hovered_object);
+        this.face(this.object_targeting);
       }
-      // check hovered object class to ensure is correct
-      a.activate(this, myKey, map, map.hovered_key);
+      if (Unit.class.isInstance(this.object_targeting)) {
+        a.activate(this, myKey, map, (Unit)this.object_targeting);
+      }
     }
     else {
       if (a.turnsCaster()) {
@@ -2267,8 +2296,17 @@ class Unit extends MapObject {
 
 
   void stopAction() {
+    this.stopAction(false);
+  }
+  void stopAction(boolean forceStop) {
+    if (!forceStop && this.curr_action_unstoppable && this.curr_action != UnitAction.NONE) {
+      return;
+    }
     this.curr_action = UnitAction.NONE;
     this.object_targeting = null;
+    this.curr_action_unhaltable = false;
+    this.curr_action_unhaltable = false;
+    this.curr_action_id = 0;
   }
 
 
@@ -2369,6 +2407,9 @@ class Unit extends MapObject {
       case AMPHIBIOUS_LEAP:
         effectiveDistance = Constants.ability_113_jumpSpeed * seconds;
         this.curr_height += Constants.ability_113_jumpHeight;
+        break;
+      case ANURAN_APPETITE:
+        effectiveDistance = Constants.ability_115_regurgitateSpeed * seconds;
         break;
     }
     float tryMoveX = effectiveDistance * this.facingX;
@@ -2471,6 +2512,9 @@ class Unit extends MapObject {
         continue;
       }
       Unit u = entry.getValue();
+      if (u.uncollidable()) {
+        continue;
+      }
       if (u.alliance == this.alliance && this.alliance != Alliance.NONE) {
         continue;
       }
@@ -2510,6 +2554,9 @@ class Unit extends MapObject {
         continue;
       }
       Unit u = entry.getValue();
+      if (u.uncollidable()) {
+        continue;
+      }
       if (u.alliance == this.alliance && this.alliance != Alliance.NONE) {
         continue;
       }

@@ -2,7 +2,8 @@ enum StatusEffectCode {
   ERROR("Error"), HUNGRY("Hungry"), WEAK("Weak"), THIRSTY("Thirsty"), WOOZY("Woozy"),
   CONFUSED("Confused"), INVULNERABLE("Invulnerable"), UNKILLABLE("Unkillable"),
   BLEEDING("Bleeding"), HEMORRHAGING("Hemorrhaging"), WILTED("Wilted"), WITHERED("Withered"),
-  VISIBLE("Visible"), SUPPRESSED("Suppressed"), UNTARGETABLE("Untargetable"), STUNNED("Stunned"),
+  VISIBLE("Visible"), SUPPRESSED("Suppressed"), UNTARGETABLE("Untargetable"),
+  STUNNED("Stunned"), INVISIBLE("Invisible"), UNCOLLIDABLE("Uncollidable"),
 
   DRENCHED("Drenched"), DROWNING("Drowning"), BURNT("Burning"), CHARRED("Charred"),
   CHILLED("Chilled"), FROZEN("Frozen"), SICK("Sick"), DISEASED("Diseased"), ROTTING("Rotting"),
@@ -51,6 +52,8 @@ enum StatusEffectCode {
       case INVULNERABLE:
       case UNKILLABLE:
       case UNTARGETABLE:
+      case INVISIBLE:
+      case UNCOLLIDABLE:
       case SENSELESS_GRIT:
       case SENSELESS_GRITII:
       case RAGE_OF_THE_BEN:
@@ -152,6 +155,12 @@ enum StatusEffectCode {
       case STUNNED:
         image_path += "stunned.png";
         break;
+      case INVISIBLE:
+        image_path += "invisible.png";
+        break;
+      case UNCOLLIDABLE:
+        image_path += "uncollidable.png";
+        break;
       case DRENCHED:
         image_path += "drenched.png";
         break;
@@ -221,7 +230,7 @@ enum StatusEffectCode {
         break;
       case ALKALOID_SECRETION:
       case ALKALOID_SECRETIONII:
-        image_path += "slowed.png";
+        image_path += "alkaloid_secretion.png";
         break;
       default:
         image_path += "default.png";
@@ -267,6 +276,10 @@ enum StatusEffectCode {
         return "This unit is untargetable and cannot be targeted by attacks, abilities, or spells.";
       case STUNNED:
         return "This unit is stunned and cannot move, attack, use abilities, or cast spells.";
+      case INVISIBLE:
+        return "This unit is invisible and cannot be seen.";
+      case UNCOLLIDABLE:
+        return "This unit is uncollidable and cannot be collided with.";
       case DRENCHED:
         return "This unit is drenched so will take more damage from blue damage." +
           "\nIf this unit is red it will also slowly take damage to 20% max health.";

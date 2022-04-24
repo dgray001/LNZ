@@ -1424,6 +1424,9 @@ class GameMap {
     this.displayUnit(u, false);
   }
   void displayUnit(Unit u, boolean player_unit) {
+    if (u.invisible()) {
+      return;
+    }
     float translateX = this.xi_map + (u.x - this.startSquareX) * this.zoom;
     float translateY = this.yi_map + (u.y - this.startSquareY) * this.zoom;
     boolean removeCache = false;
