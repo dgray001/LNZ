@@ -58,7 +58,8 @@ enum GameMapCode {
 enum ReadFileObject {
   NONE("None"), MAP("Map"), FEATURE("Feature"), UNIT("Unit"), ITEM("Item"),
   PROJECTILE("Projectile"), LEVEL("Level"), LINKER("Linker"), TRIGGER("Trigger"),
-  CONDITION("Condition"), EFFECT("Effect"), STATUS_EFFECT("StatusEffect");
+  CONDITION("Condition"), EFFECT("Effect"), STATUS_EFFECT("StatusEffect"),
+  ABILITY("Ability");
 
   private static final List<ReadFileObject> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 
@@ -856,7 +857,7 @@ class GameMap {
   protected float mX = 0;
   protected float mY = 0;
   protected MapObject hovered_object = null;
-  protected int hovered_key = -10;
+  protected int hovered_object_key = -1;
   protected MapObject selected_object = null;
   protected int selected_key = -10;
   protected SelectedObjectTextbox selected_object_textbox = new SelectedObjectTextbox();
@@ -1298,7 +1299,7 @@ class GameMap {
     // hovered info
     if (this.hovered_object != null && this.hovered_object.remove) {
       this.hovered_object = null;
-      this.hovered_key = -10;
+      this.hovered_object_key = -1;
     }
     String nameDisplayed = null;
     color ellipseColor = color(255);
@@ -1546,20 +1547,25 @@ class GameMap {
     // if (player unlocked it in AchievementTree) {
       float healthbarWidth = Constants.unit_healthbarWidth * this.zoom;
       float healthbarHeight = Constants.unit_healthbarHeight * this.zoom;
+      float manaBarHeight = 0;
+      if (Hero.class.isInstance(u)) {
+        manaBarHeight += Constants.hero_manabarHeight * this.zoom;
+      }
+      float totalHeight = healthbarHeight + manaBarHeight;
       float translateHealthBarX = -0.5 * healthbarWidth;
-      float translateHealthBarY = -1.2 * u.size * this.zoom - healthbarHeight;
-      textSize(healthbarHeight - 0.5);
+      float translateHealthBarY = -1.2 * u.size * this.zoom - totalHeight;
+      textSize(totalHeight - 0.5);
       translate(translateHealthBarX, translateHealthBarY);
       stroke(200);
       strokeWeight(0.8);
       fill(0);
       rectMode(CORNER);
-      rect(0, 0, healthbarWidth, healthbarHeight);
-      rect(0, 0, healthbarHeight, healthbarHeight);
+      rect(0, 0, healthbarWidth, totalHeight);
+      rect(0, 0, totalHeight, totalHeight);
       fill(255);
       textSize(healthbarHeight - 1);
       textAlign(CENTER, TOP);
-      text(u.level, 0.5 * healthbarHeight, 1 - textDescent());
+      text(u.level, 0.5 * totalHeight, 1 - textDescent());
       if (player_unit) {
         fill(50, 255, 50);
       }
@@ -1572,19 +1578,35 @@ class GameMap {
       noStroke();
       float health_ratio = u.curr_health / u.health();
       if (health_ratio >= 1) {
-        rect(healthbarHeight, 0, healthbarWidth - healthbarHeight, healthbarHeight);
+        rect(totalHeight, 0, healthbarWidth - totalHeight, healthbarHeight);
         fill(255);
         health_ratio = min(1, health_ratio - 1);
         rectMode(CORNERS);
-        rect(healthbarWidth - health_ratio * (healthbarWidth - healthbarHeight), 0, healthbarWidth, healthbarHeight);
+        rect(healthbarWidth - health_ratio * (healthbarWidth - totalHeight), 0, healthbarWidth, healthbarHeight);
       }
       else {
-        rect(healthbarHeight, 0, health_ratio * (healthbarWidth - healthbarHeight), healthbarHeight);
+        rect(totalHeight, 0, health_ratio * (healthbarWidth - totalHeight), healthbarHeight);
         if (u.timer_last_damage > 0) {
           fill(255, 220, 50, int(255 * u.timer_last_damage / Constants.unit_healthbarDamageAnimationTime));
           float damage_ratio = u.last_damage_amount / u.health();
-          rect(healthbarHeight + health_ratio * (healthbarWidth - healthbarHeight),
-            0, damage_ratio * (healthbarWidth - healthbarHeight), healthbarHeight);
+          rect(totalHeight + health_ratio * (healthbarWidth - totalHeight),
+            0, damage_ratio * (healthbarWidth - totalHeight), healthbarHeight);
+        }
+      }
+      if (Hero.class.isInstance(u)) {
+        rectMode(CORNER);
+        fill(255, 255, 0);
+        float mana_ratio = u.currMana() / u.mana();
+        if (mana_ratio >= 1) {
+          rect(totalHeight, healthbarHeight, healthbarWidth - totalHeight, manaBarHeight);
+          fill(255);
+          mana_ratio = min(1, mana_ratio - 1);
+          rectMode(CORNERS);
+          rect(healthbarWidth - mana_ratio * (healthbarWidth - totalHeight),
+            healthbarHeight, healthbarWidth, totalHeight);
+        }
+        else {
+          rect(totalHeight, healthbarHeight, mana_ratio * (healthbarWidth - totalHeight), manaBarHeight);
         }
       }
       textSize(healthbarHeight + 1);
@@ -1864,7 +1886,7 @@ class GameMap {
       this.mY = this.startSquareY + (mY - this.yi_map) / this.zoom;
       // update hovered for map objects
       this.hovered_object = null;
-      this.hovered_key = -10;
+      this.hovered_object_key = -1;
       try {
         if (!this.draw_fog || this.squares[int(floor(this.mX))][int(floor(this.mY))].visible) {
           hovered_explored = true;
@@ -1883,7 +1905,7 @@ class GameMap {
             continue;
           }
           this.hovered_object = f;
-          this.hovered_key = i;
+          this.hovered_object_key = i;
           global.setCursor("icons/cursor_interact.png");
           default_cursor = false;
         }
@@ -1897,7 +1919,7 @@ class GameMap {
             continue;
           }
           this.hovered_object = u;
-          this.hovered_key = entry.getKey();
+          this.hovered_object_key = entry.getKey();
           if (this.units.containsKey(0) && u.alliance != this.units.get(0).alliance) {
             global.setCursor("icons/cursor_attack.png");
             default_cursor = false;
@@ -1913,7 +1935,7 @@ class GameMap {
             continue;
           }
           this.hovered_object = i;
-          this.hovered_key = entry.getKey();
+          this.hovered_object_key = entry.getKey();
           if (this.units.containsKey(0) && this.units.get(0).tier() >= i.tier) {
             global.setCursor("icons/cursor_pickup.png");
             default_cursor = false;
@@ -1979,7 +2001,7 @@ class GameMap {
   void selectHoveredObject() {
     if (this.hovered_area && !this.hovered_border) {
       this.selected_object = this.hovered_object;
-      this.selected_key = this.hovered_key;
+      this.selected_key = this.hovered_object_key;
     }
   }
 
@@ -2011,7 +2033,7 @@ class GameMap {
             this.addVisualEffect(4001, this.mX, this.mY);
           }
           else {
-            player.target(this.hovered_object, global.holding_ctrl);
+            player.target(this.hovered_object, this.hovered_object_key, global.holding_ctrl);
           }
         }
         break;
@@ -2198,6 +2220,7 @@ class GameMap {
     Projectile curr_projectile = null;
     StatusEffectCode curr_status_code = StatusEffectCode.ERROR;
     StatusEffect curr_status = null;
+    Ability curr_ability = null;
 
     for (String line : lines) {
       String[] parameters = split(line, ':');
@@ -2251,6 +2274,14 @@ class GameMap {
           case STATUS_EFFECT:
             object_queue.push(type);
             curr_status = new StatusEffect();
+            break;
+          case ABILITY:
+            if (parameters.length < 3) {
+              global.errorMessage("ERROR: Ability ID missing in Projectile constructor.");
+              break;
+            }
+            object_queue.push(type);
+            curr_ability = new Ability(toInt(trim(parameters[2])));
             break;
           default:
             global.errorMessage("ERROR: Can't add a " + type + " type to GameMap data.");
@@ -2380,6 +2411,25 @@ class GameMap {
               }
               curr_unit.statuses.put(curr_status_code, curr_status);
               break;
+            case ABILITY:
+              if (curr_ability == null) {
+                global.errorMessage("ERROR: Trying to end a null ability.");
+              }
+              if (object_queue.empty()) {
+                global.errorMessage("ERROR: Trying to end an ability not inside any other object.");
+                break;
+              }
+              if (object_queue.peek() != ReadFileObject.UNIT) {
+                global.errorMessage("ERROR: Trying to end an ability not inside a unit.");
+                break;
+              }
+              if (curr_unit == null) {
+                global.errorMessage("ERROR: Trying to end an ability inside a null unit.");
+                break;
+              }
+              curr_unit.abilities.add(curr_ability);
+              curr_ability = null;
+              break;
             default:
               break;
           }
@@ -2395,13 +2445,13 @@ class GameMap {
             break;
           case FEATURE:
             if (curr_feature == null) {
-              global.errorMessage("ERROR: Trying to add feature data to null feature.");
+              global.errorMessage("ERROR: Trying to add feature data to a null feature.");
             }
             curr_feature.addData(dataname, data);
             break;
           case UNIT:
             if (curr_unit == null) {
-              global.errorMessage("ERROR: Trying to add unit data to null unit.");
+              global.errorMessage("ERROR: Trying to add unit data to a null unit.");
             }
             if (dataname.equals("next_status_code")) {
               curr_status_code = StatusEffectCode.code(data);
@@ -2412,19 +2462,25 @@ class GameMap {
             break;
           case ITEM:
             if (curr_item == null) {
-              global.errorMessage("ERROR: Trying to add item data to null item.");
+              global.errorMessage("ERROR: Trying to add item data to a null item.");
             }
             curr_item.addData(dataname, data);
             break;
           case PROJECTILE:
             if (curr_projectile == null) {
-              global.errorMessage("ERROR: Trying to add projectile data to null projectile.");
+              global.errorMessage("ERROR: Trying to add projectile data to a null projectile.");
             }
             curr_projectile.addData(dataname, data);
             break;
           case STATUS_EFFECT:
             if (curr_status == null) {
-              global.errorMessage("ERROR: Trying to add status effect data to null status effect.");
+              global.errorMessage("ERROR: Trying to add status effect data to a null status effect.");
+            }
+            curr_status.addData(dataname, data);
+            break;
+          case ABILITY:
+            if (curr_ability == null) {
+              global.errorMessage("ERROR: Trying to add ability data to a null abilityt.");
             }
             curr_status.addData(dataname, data);
             break;
@@ -2434,6 +2490,19 @@ class GameMap {
       }
     }
 
+    // Refresh ability target units
+    for (Map.Entry<Integer, Unit> entry : this.units.entrySet()) {
+      for (Ability a : entry.getValue().abilities) {
+        if (a == null) {
+          continue;
+        }
+        if (this.units.containsKey(a.target_key)) {
+          a.target_unit = this.units.get(a.target_key);
+        }
+      }
+    }
+
+    // Refresh hashmap keys
     this.nextUnitKey = max_unit_key + 1;
     this.nextItemKey = max_item_key + 1;
   }

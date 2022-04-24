@@ -1274,9 +1274,11 @@ class Hero extends Unit {
         noStroke();
         rect(this.bar_xi, this.bar_yi, this.xf, this.bar_yf);
         rectMode(CORNER);
-        float health_ratio = PlayerLeftPanelMenu.this.hero().curr_health / PlayerLeftPanelMenu.this.hero().health();
+        float health_ratio = max(1, PlayerLeftPanelMenu.this.hero().curr_health
+          / PlayerLeftPanelMenu.this.hero().health());
         fill(0, 255, 0);
-        rect(this.bar_xi, this.bar_yi, health_ratio * (this.xf - this.bar_xi), Constants.hero_leftPanelBarHeight);
+        rect(this.bar_xi, this.bar_yi, health_ratio * (this.xf - this.bar_xi),
+          Constants.hero_leftPanelBarHeight);
       }
 
       void updateHoverMessage() {
@@ -1313,9 +1315,11 @@ class Hero extends Unit {
         noStroke();
         rect(this.bar_xi, this.bar_yi, this.xf, this.bar_yf);
         rectMode(CORNER);
-        float mana_ratio = PlayerLeftPanelMenu.this.hero().currMana() / PlayerLeftPanelMenu.this.hero().mana();
+        float mana_ratio = max(1, PlayerLeftPanelMenu.this.hero().currMana() /
+          PlayerLeftPanelMenu.this.hero().mana());
         fill(255, 255, 0);
-        rect(this.bar_xi, this.bar_yi, mana_ratio * (this.xf - this.bar_xi), Constants.hero_leftPanelBarHeight);
+        rect(this.bar_xi, this.bar_yi, mana_ratio * (this.xf - this.bar_xi),
+          Constants.hero_leftPanelBarHeight);
       }
 
       void updateHoverMessage() {
@@ -3047,7 +3051,6 @@ class Hero extends Unit {
   protected float experience = 0;
   protected int experience_next_level = 1;
   protected float money = 0;
-  protected float base_mana = 0;
   protected float curr_mana = 0;
   protected int hunger = 100;
   protected int thirst = 100;
