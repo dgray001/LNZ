@@ -182,6 +182,29 @@ class MainMenuInterface extends InterfaceLNZ {
     }
   }
 
+  class MainMenuGrowButton5 extends MainMenuGrowButton {
+    MainMenuGrowButton5() {
+      super(0, height - 460, 200, height - 400, 0.3);
+      this.message = "Tutorial";
+    }
+    PImage getIcon() {
+      return global.images.getImage("icons/tutorial.png");
+    }
+
+    @Override
+    void update(int millis) {
+      super.update(millis);
+    }
+
+    @Override
+    void release() {
+      if (this.hovered) {
+        global.state = ProgramState.ENTERING_TUTORIAL;
+      }
+      super.release();
+    }
+  }
+
 
   class BannerButton extends ImageButton {
     BannerButton() {
@@ -608,7 +631,7 @@ class MainMenuInterface extends InterfaceLNZ {
   }
 
 
-  private MainMenuGrowButton[] growButtons = new MainMenuGrowButton[4];
+  private MainMenuGrowButton[] growButtons = new MainMenuGrowButton[5];
   private BannerButton banner = new BannerButton();
   private PlayButton play = new PlayButton();
   private ProfileButton profile = new ProfileButton();
@@ -624,6 +647,7 @@ class MainMenuInterface extends InterfaceLNZ {
     this.growButtons[1] = new MainMenuGrowButton2();
     this.growButtons[2] = new MainMenuGrowButton3();
     this.growButtons[3] = new MainMenuGrowButton4();
+    this.growButtons[4] = new MainMenuGrowButton5();
     this.loadProfile();
     this.thread.start();
   }

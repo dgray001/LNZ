@@ -4,8 +4,8 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220424: v0.6.7v" +
-  "\nLines: 29655 (v0.6.7v)" +
+  "\n20220424: v0.6.7w" +
+  "\nLines: 29810 (v0.6.7w)" +
   "";
   static final String version_history =
   "Liberal Nazi Zombies" +
@@ -28,6 +28,10 @@ static class Constants {
   static final color color_black = -16777216;
   static final color color_fog = 1688906410;
   static final color color_transparent = 65793;
+  static final int notification_slide_time = 200;
+  static final int notification_display_time = 3000;
+  static final float notification_achievement_width = 220;
+  static final float notification_achievement_height = 120;
 
   // Initial Interface
   static final int initialInterface_size = 400;

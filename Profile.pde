@@ -370,11 +370,20 @@ class Profile {
     this.save();
   }
 
+  void achievement(AchievementCode code) {
+    if (this.achievements.get(code).equals(Boolean.FALSE)) {
+      //this.achievements.put(code, Boolean.TRUE);
+      this.achievement_tokens += code.tokens();
+      this.save();
+      global.notification = new AchievementNotification(code);
+    }
+  }
+
   void save() {
     PrintWriter file = createWriter(sketchPath("data/profiles/" + this.display_name.toLowerCase() + "/profile.lnz"));
     file.println("display_name: " + this.display_name);
     for (AchievementCode code : AchievementCode.VALUES) {
-      if (this.achievements.get(code)) {
+      if (this.achievements.get(code).equals(Boolean.TRUE)) {
         file.println("achievement: " + code.file_name());
       }
     }
@@ -409,7 +418,7 @@ Profile readProfile(String path) {
       case "achievement":
         AchievementCode code = AchievementCode.achievementCode(trim(data[1]));
         if (code != null) {
-          p.achievements.put(code, true);
+          p.achievements.put(code, Boolean.TRUE);
         }
         break;
       case "achievement_tokens":
