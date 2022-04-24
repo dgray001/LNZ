@@ -302,7 +302,25 @@ abstract class InterfaceLNZ {
         this.canceled = true;
         return;
       }
-      // add fields for profile achievements
+      this.addField(new SpacerFormField(20));
+      ArrayList<MessageFormField> achievements_complete = new ArrayList<MessageFormField>();
+      ArrayList<MessageFormField> achievements_incomplete = new ArrayList<MessageFormField>();
+      for (AchievementCode code : AchievementCode.VALUES) {
+        if (global.profile.achievements.get(code)) {
+          achievements_complete.add(new MessageFormField(code.display_name()));
+        }
+        else {
+          achievements_incomplete.add(new MessageFormField(code.display_name()));
+        }
+      }
+      for (MessageFormField field : achievements_complete) {
+        field.text_color = color(0);
+        this.addField(field);
+      }
+      for (MessageFormField field : achievements_incomplete) {
+        field.text_color = color(170, 150);
+        this.addField(field);
+      }
     }
 
     void submit() {
