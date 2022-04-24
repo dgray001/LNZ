@@ -301,6 +301,7 @@ class Unit extends MapObject {
   protected boolean curr_action_unhaltable = false;
   protected boolean curr_action_unstoppable = false;
   protected MapObject object_targeting = null;
+  protected int object_targeting_key = -1;
   protected MapObject last_damage_from = null;
   protected float last_damage_amount = 0;
   protected float curr_action_x = 0;
@@ -1930,14 +1931,15 @@ class Unit extends MapObject {
   }
 
 
-  void target(MapObject object) {
-    this.target(object, false);
+  void target(MapObject object, int object_key) {
+    this.target(object, object_key, false);
   }
-  void target(MapObject object, boolean use_item) {
+  void target(MapObject object, int object_key, boolean use_item) {
     if (this.object_targeting == object) {
       return;
     }
     this.object_targeting = object;
+    this.object_targeting_key = object_key;
     if (Feature.class.isInstance(this.object_targeting)) {
       if (this.weapon() != null && use_item) {
         this.curr_action = UnitAction.TARGETING_FEATURE_WITH_ITEM;
@@ -1962,6 +1964,7 @@ class Unit extends MapObject {
   void aim(float targetX, float targetY) {
     this.curr_action = UnitAction.AIMING;
     this.object_targeting = null;
+    this.object_targeting_key = -1;
     this.curr_action_x = targetX;
     this.curr_action_y = targetY;
   }
@@ -2011,7 +2014,7 @@ class Unit extends MapObject {
         this.face(this.object_targeting);
       }
       if (Unit.class.isInstance(this.object_targeting)) {
-        a.activate(this, myKey, map, (Unit)this.object_targeting);
+        a.activate(this, myKey, map, (Unit)this.object_targeting, this.object_targeting_key);
       }
     }
     else {
@@ -2628,6 +2631,18 @@ class Unit extends MapObject {
         fileString += slot.getValue().fileString(slot.getKey());
       }
     }
+    for (Ability a : this.abilities) {
+      if (a == null) {
+        fileString += "\naddNullAbility:";
+      }
+      else {
+        fileString += a.fileString();
+      }
+    }
+    for (Map.Entry<StatusEffectCode, StatusEffect> entry : this.statuses.entrySet()) {
+      fileString += "\nnext_status_code: " + entry.getKey().code_name();
+      fileString += entry.getValue().fileString();
+    }
     fileString += "\nfacingX: " + this.facingX;
     fileString += "\nfacingY: " + this.facingY;
     fileString += "\nbase_health: " + this.base_health;
@@ -2648,10 +2663,6 @@ class Unit extends MapObject {
     fileString += "\ncurr_health: " + this.curr_health;
     fileString += "\ntimer_attackCooldown: " + this.timer_attackCooldown;
     fileString += "\ntimer_actionTime: " + this.timer_actionTime;
-    for (Map.Entry<StatusEffectCode, StatusEffect> entry : this.statuses.entrySet()) {
-      fileString += "\nnext_status_code: " + entry.getKey().code_name();
-      fileString += entry.getValue().fileString();
-    }
     fileString += "\nend: Unit\n";
     return fileString;
   }
@@ -2681,6 +2692,9 @@ class Unit extends MapObject {
         break;
       case "facingY":
         this.facingY = toFloat(data);
+        break;
+      case "addNullAbility":
+        this.abilities.add(null);
         break;
       case "base_health":
         this.base_health = toFloat(data);

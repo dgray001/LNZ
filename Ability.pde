@@ -3,6 +3,7 @@ class Ability {
   private float timer_cooldown = 0;
   private float timer_other = 0;
   private Unit target_unit = null;
+  private int target_key = -1;
   private int stacks = 0;
   private boolean toggle = false;
 
@@ -481,9 +482,9 @@ class Ability {
 
 
   void activate(Unit u, int source_key, GameMap map) {
-    this.activate(u, source_key, map, null);
+    this.activate(u, source_key, map, null, -1);
   }
-  void activate(Unit u, int source_key, GameMap map, Unit target_unit) {
+  void activate(Unit u, int source_key, GameMap map, Unit target_unit, int target_key) {
     switch(this.ID) {
       case 102: // Mighty Pen
       case 107: // Mighty Pen II
@@ -496,6 +497,7 @@ class Ability {
     }
     if (this.castsOnTarget()) {
       this.target_unit = target_unit;
+      this.target_key = target_key;
       if (this.target_unit == null || this.target_unit.remove) {
         return;
       }
@@ -1096,6 +1098,7 @@ class Ability {
     String fileString = "\nnew: Ability: " + this.ID;
     fileString += "\ntimer_cooldown: " + this.timer_cooldown;
     fileString += "\ntimer_other: " + this.timer_other;
+    fileString += "\ntarget_key: " + this.target_key;
     fileString += "\nstacks: " + this.stacks;
     fileString += "\ntoggle: " + this.toggle;
     return fileString;
@@ -1108,6 +1111,9 @@ class Ability {
         break;
       case "timer_other":
         this.timer_other = toFloat(data);
+        break;
+      case "target_key":
+        this.target_key = toInt(data);
         break;
       case "stacks":
         this.stacks = toInt(data);

@@ -4,16 +4,16 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220423: v0.6.7p" +
+  "\n20220424: v0.6.7q" +
   "\nLines: 29106 (v0.6.7p)" +
   "";
   static final String version_history =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n???: v0.7: Recovery Version" +
-  "\n20220228: v0.6: Advanced Mechanics" +
-  "\n202202: v0.5: Recreate Logic" +
-  "\n202201: v0.4: Recreate Program" +
+  "\n202204: v0.7: Alpha Version" +
+  "\n202203: v0.6: Advanced Mechanics" +
+  "\n202202: v0.5: Recreated Logic" +
+  "\n202201: v0.4: Recreated Program" +
   "\n2019: v0.3: Legacy Version" +
   "";
   static final int frameUpdateTime = 401; // prime number
@@ -136,7 +136,7 @@ static class Constants {
   static final float map_defaultZoom = 60;
   static final float map_minZoom = 40;
   static final float map_maxZoom = 120;
-  static final float map_scrollZoomFactor = -1;
+  static final float map_scrollZoomFactor = -1.5;
   static final float map_minCameraSpeed = 0.001;
   static final float map_maxCameraSpeed = 0.1;
   static final float map_defaultCameraSpeed = 0.01;
@@ -212,7 +212,7 @@ static class Constants {
     }
   }
   static final float unit_healthbarWidth = 0.9;
-  static final float unit_healthbarHeight = 0.13;
+  static final float unit_healthbarHeight = 0.15;
   static final float unit_healthbarDamageAnimationTime = 150;
 
   // Resistances
@@ -360,6 +360,7 @@ static class Constants {
   static final float hero_treeButtonCenterRadius = 90;
   static final float hero_treeForm_width = 300;
   static final float hero_treeForm_height = 340;
+  static final float hero_manabarHeight = 0.05;
 
   // Upgrade
   static final int upgrade_inventoryI = 2;
