@@ -535,6 +535,36 @@ class Hero extends Unit {
     }
 
 
+    Item getItem(InventoryKey inventory_key) {
+      if (inventory_key == null) {
+        return null;
+      }
+      switch(inventory_key.location) {
+        case INVENTORY:
+          try {
+            return this.slots.get(inventory_key.index).item;
+          } catch(Exception e) {}
+          break;
+        case GEAR:
+          try {
+            return this.gear_inventory.slots.get(inventory_key.index).item;
+          } catch(Exception e) {}
+          break;
+        case FEATURE:
+          try {
+            return this.feature_inventory.slots.get(inventory_key.index).item;
+          } catch(Exception e) {}
+          break;
+        case CRAFTING:
+          try {
+            //return this.cafting_inventory.slots.get(inventory_key.index).item;
+          } catch(Exception e) {}
+          break;
+      }
+      return null;
+    }
+
+
     void featureInventory(Inventory feature_inventory) {
       this.feature_inventory = feature_inventory;
       this.setButtonSize(this.button_size);
@@ -3552,28 +3582,29 @@ class Hero extends Unit {
     this.useItem(map, new InventoryKey(InventoryLocation.GEAR, 3));
   }
   void useItem(GameMap map, InventoryKey location) {
-    if (this.weapon() == null || !this.weapon().usable()) {
+    Item i = this.inventory.getItem(location);
+    if (i == null || !i.usable()) {
       return;
     }
-    if (this.weapon().consumable()) {
-      this.heal(this.weapon().curr_health);
-      this.increaseHunger(this.weapon().hunger);
-      this.increaseThirst(this.weapon().thirst);
-      this.money += this.weapon().money;
-      this.weapon().consumed();
+    if (i.consumable()) {
+      this.heal(i.curr_health);
+      this.increaseHunger(i.hunger);
+      this.increaseThirst(i.thirst);
+      this.money += i.money;
+      i.consumed();
       return;
     }
-    if (this.weapon().reloadable()) {
-      while(this.weapon().maximumAmmo() - this.weapon().availableAmmo() > 0) {
-        ArrayList<Integer> possible_ammo = this.weapon().possibleAmmo();
+    if (i.reloadable()) {
+      while(i.maximumAmmo() - i.availableAmmo() > 0) {
+        ArrayList<Integer> possible_ammo = i.possibleAmmo();
         boolean noAmmo = true;
         for (int id : possible_ammo) {
           InventoryKey ammoLocation = this.inventory.itemLocation(id, InventoryLocation.INVENTORY);
           if (ammoLocation != null) {
             Item ammo = this.inventory.slots.get(ammoLocation.index).item;
-            int ammoLoaded = min(this.weapon().maximumAmmo() - this.weapon().availableAmmo(), ammo.stack);
+            int ammoLoaded = min(i.maximumAmmo() - i.availableAmmo(), ammo.stack);
             ammo.removeStack(ammoLoaded);
-            this.weapon().ammo += ammoLoaded;
+            i.ammo += ammoLoaded;
             noAmmo = false;
             break;
           }
@@ -3584,24 +3615,33 @@ class Hero extends Unit {
       }
       return;
     }
-    if (this.weapon().money()) {
+    if (i.money()) {
       // deposit if can
       return;
     }
-    if (this.weapon().utility()) {
-      switch(this.weapon().ID) {
+    if (i.utility()) {
+      switch(i.ID) {
+        case 2921: // backpack
+          this.inventory.addSlots(2);
+          break;
+        case 2922: // Ben's backpack
+          this.inventory.addSlots(4);
+          break;
+        case 2923: // purse
+          this.inventory.addSlots(1);
+          break;
         case 2924: // water bottles
         case 2925:
         case 2926:
         case 2927:
-          int thirst_quenched = min(100 - this.thirst, this.weapon().ammo);
-          this.weapon().ammo -= thirst_quenched;
+          int thirst_quenched = min(100 - this.thirst, i.ammo);
+          i.ammo -= thirst_quenched;
           this.increaseThirst(thirst_quenched);
           break;
       }
       return;
     }
-    global.log("WARNING: Trying to use item " + this.weapon().display_name() + " but no logic exists to use it.");
+    global.log("WARNING: Trying to use item " + i.display_name() + " but no logic exists to use it.");
   }
 
 
