@@ -1206,6 +1206,31 @@ class Hero extends Unit {
       else {
         this.portrait_hovered = false;
       }
+      if (!Hero.this.inventory.viewing) {
+        mX -= this.xi_bar + 3;
+        mY -= this.yi_slot;
+        float translate_x = this.equipped_index * (this.slot_width + 2);
+        Hero.this.inventory.gear_inventory.slots.get(3).setWidth(this.slot_width);
+        Hero.this.inventory.gear_inventory.slots.get(3).mouseMove(mX - translate_x, mY);
+        Hero.this.inventory.gear_inventory.slots.get(3).setWidth(Hero.this.inventory.gear_inventory.button_size);
+        int inventory_slots_to_show = 0;
+        if (this.unlocked_inventory_bar2) {
+          inventory_slots_to_show = 9;
+        }
+        else if (this.unlocked_inventory_bar1) {
+          inventory_slots_to_show = 4;
+        }
+        for (int i = 0; i < inventory_slots_to_show; i++) {
+          int translate_index = i + 1;
+          if (translate_index == this.equipped_index) {
+            translate_index = 0;
+          }
+          translate_x = translate_index * (this.slot_width + 2);
+          Hero.this.inventory.slots.get(i).setWidth(this.slot_width);
+          Hero.this.inventory.slots.get(i).mouseMove(mX - translate_x, mY);
+          Hero.this.inventory.slots.get(i).setWidth(Hero.this.inventory.button_size);
+        }
+      }
     }
 
     void mousePress() {
@@ -1228,7 +1253,40 @@ class Hero extends Unit {
       if (this.portrait_hovered) {
         this.portrait_clicked = true;
       }
-      // click item to select (in left panel)
+      if (!Hero.this.inventory.viewing) {
+        boolean use_item = false;
+        if (this.unlocked_inventory_bar2 && global.holding_ctrl) {
+          use_item = true;
+        }
+        if (Hero.this.inventory.gear_inventory.slots.get(3).button.hovered) {
+          Hero.this.inventory.gear_inventory.slots.get(3).button.hovered = false;
+          if (use_item) {
+            Hero.this.useItem(null);
+          }
+        }
+        int inventory_slots_to_show = 0;
+        if (this.unlocked_inventory_bar2) {
+          inventory_slots_to_show = 9;
+        }
+        else if (this.unlocked_inventory_bar1) {
+          inventory_slots_to_show = 4;
+        }
+        for (int i = 0; i < inventory_slots_to_show; i++) {
+          int translate_index = i + 1;
+          if (translate_index == this.equipped_index) {
+            translate_index = 0;
+          }
+          if (Hero.this.inventory.slots.get(i).button.hovered) {
+            Hero.this.inventory.slots.get(i).button.hovered = false;
+            if (use_item) {
+              Hero.this.useItem(null, new InventoryKey(InventoryLocation.INVENTORY, i));
+            }
+            else {
+              this.setEquippedIndex(translate_index);
+            }
+          }
+        }
+      }
     }
 
     void mouseRelease(float mX, float mY) {
@@ -1248,24 +1306,26 @@ class Hero extends Unit {
       if (this.code_description.display) {
         this.code_description.scroll(amount);
       }
-      int max_equipped_index = 0;
-      if (this.unlocked_inventory_bar2) {
-        max_equipped_index = 9;
+      if (!Hero.this.inventory.viewing) {
+        int max_equipped_index = 0;
+        if (this.unlocked_inventory_bar2) {
+          max_equipped_index = 9;
+        }
+        else if (this.unlocked_inventory_bar1) {
+          max_equipped_index = 4;
+        }
+        else {
+          return;
+        }
+        int new_equipped_index = this.equipped_index + amount;
+        while (new_equipped_index > max_equipped_index) {
+          new_equipped_index -= max_equipped_index + 1;
+        }
+        while (new_equipped_index < 0) {
+          new_equipped_index += max_equipped_index + 1;
+        }
+        this.setEquippedIndex(new_equipped_index);
       }
-      else if (this.unlocked_inventory_bar1) {
-        max_equipped_index = 4;
-      }
-      else {
-        return;
-      }
-      int new_equipped_index = this.equipped_index + amount;
-      while (new_equipped_index > max_equipped_index) {
-        new_equipped_index -= max_equipped_index + 1;
-      }
-      while (new_equipped_index < 0) {
-        new_equipped_index += max_equipped_index + 1;
-      }
-      this.setEquippedIndex(new_equipped_index);
     }
   }
 
@@ -3489,6 +3549,9 @@ class Hero extends Unit {
 
   @Override
   void useItem(GameMap map) {
+    this.useItem(map, new InventoryKey(InventoryLocation.GEAR, 3));
+  }
+  void useItem(GameMap map, InventoryKey location) {
     if (this.weapon() == null || !this.weapon().usable()) {
       return;
     }
