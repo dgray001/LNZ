@@ -320,6 +320,9 @@ class Hero extends Unit {
       }
       else {
         this.slots.get(index).setWidth(temp_slot_width);
+        if (index == 3) { // hand white border
+          this.slots.get(index).button.setStroke(color(255), 4);
+        }
       }
       this.slots.get(index).update(timeElapsed);
       if (this.slots.get(index).item == null) {
@@ -372,6 +375,9 @@ class Hero extends Unit {
       }
       else {
         this.slots.get(index).setWidth(this.button_size);
+        if (index == 3) { // hand white border
+          this.slots.get(index).button.setStroke(color(142, 75, 50), 3);
+        }
       }
     }
 
@@ -1040,6 +1046,51 @@ class Hero extends Unit {
     }
 
 
+    void setEquippedIndex(int new_index) {
+      int max_equipped_index = 0;
+      if (this.unlocked_inventory_bar2) {
+        max_equipped_index = 9;
+      }
+      else if (this.unlocked_inventory_bar1) {
+        max_equipped_index = 4;
+      }
+      else {
+        return;
+      }
+      if (new_index < 0 || new_index > max_equipped_index) {
+        return;
+      }
+      int last_index = this.equipped_index;
+      this.equipped_index = new_index;
+      if (new_index == last_index) {
+        return;
+      }
+      Item prev_weapon = new Item(Hero.this.weapon());
+      if (prev_weapon.remove) {
+        prev_weapon = null;
+      }
+      if (last_index == 0) {
+        Hero.this.pickup(Hero.this.inventory.placeAt(prev_weapon, new_index-1, true));
+      }
+      else if (new_index == 0) {
+        Hero.this.pickup(Hero.this.inventory.placeAt(prev_weapon, last_index-1, true));
+      }
+      else {
+        Item new_weapon = new Item(Hero.this.inventory.slots.get(new_index-1).item);
+        Item intermediary = new Item(Hero.this.inventory.slots.get(last_index-1).item);
+        if (new_weapon.remove) {
+          new_weapon = null;
+        }
+        if (intermediary.remove) {
+          intermediary = null;
+        }
+        Hero.this.pickup(new_weapon);
+        Hero.this.inventory.slots.get(new_index-1).item = intermediary;
+        Hero.this.inventory.slots.get(last_index-1).item = prev_weapon;
+      }
+    }
+
+
     void update(int timeElapsed) {
       rectMode(CORNERS);
       noStroke();
@@ -1102,10 +1153,29 @@ class Hero extends Unit {
         text(Hero.this.weapon().display_name(), this.xi_bar + 1, this.yi + 1);
       }
       translate(this.xi_bar + 3, this.yi_slot);
-      float translate_x = (this.equipped_index) * (this.slot_width + 2);
+      float translate_x = this.equipped_index * (this.slot_width + 2);
       translate(translate_x, 0);
       Hero.this.inventory.gear_inventory.updateSlot(timeElapsed, 3, Hero.this.weapon(), false, this.slot_width);
       translate(-translate_x, 0);
+      int inventory_slots_to_show = 0;
+      if (this.unlocked_inventory_bar2) {
+        inventory_slots_to_show = 9;
+      }
+      else if (this.unlocked_inventory_bar1) {
+        inventory_slots_to_show = 4;
+      }
+      for (int i = 0; i < inventory_slots_to_show; i++) {
+        int translate_index = i + 1;
+        if (translate_index == this.equipped_index) {
+          translate_index = 0;
+        }
+        translate_x = translate_index * (this.slot_width + 2);
+        translate(translate_x, 0);
+        Hero.this.inventory.slots.get(i).setWidth(this.slot_width);
+        Hero.this.inventory.slots.get(i).update(timeElapsed);
+        Hero.this.inventory.slots.get(i).setWidth(Hero.this.inventory.button_size);
+        translate(-translate_x, 0);
+      }
       translate(-this.xi_bar - 3, -this.yi_slot);
       for (AbilityButton ability : this.ability_buttons) {
         ability.update(timeElapsed);
@@ -1178,6 +1248,24 @@ class Hero extends Unit {
       if (this.code_description.display) {
         this.code_description.scroll(amount);
       }
+      int max_equipped_index = 0;
+      if (this.unlocked_inventory_bar2) {
+        max_equipped_index = 9;
+      }
+      else if (this.unlocked_inventory_bar1) {
+        max_equipped_index = 4;
+      }
+      else {
+        return;
+      }
+      int new_equipped_index = this.equipped_index + amount;
+      while (new_equipped_index > max_equipped_index) {
+        new_equipped_index -= max_equipped_index + 1;
+      }
+      while (new_equipped_index < 0) {
+        new_equipped_index += max_equipped_index + 1;
+      }
+      this.setEquippedIndex(new_equipped_index);
     }
   }
 
@@ -3610,6 +3698,36 @@ class Hero extends Unit {
     }
     else {
       switch(key) {
+        case '1':
+          this.inventory_bar.setEquippedIndex(0);
+          break;
+        case '2':
+          this.inventory_bar.setEquippedIndex(1);
+          break;
+        case '3':
+          this.inventory_bar.setEquippedIndex(2);
+          break;
+        case '4':
+          this.inventory_bar.setEquippedIndex(3);
+          break;
+        case '5':
+          this.inventory_bar.setEquippedIndex(4);
+          break;
+        case '6':
+          this.inventory_bar.setEquippedIndex(5);
+          break;
+        case '7':
+          this.inventory_bar.setEquippedIndex(6);
+          break;
+        case '8':
+          this.inventory_bar.setEquippedIndex(7);
+          break;
+        case '9':
+          this.inventory_bar.setEquippedIndex(8);
+          break;
+        case '0':
+          this.inventory_bar.setEquippedIndex(9);
+          break;
         case 'w':
         case 'W':
           if (this.weapon() != null) {

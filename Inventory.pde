@@ -178,13 +178,25 @@ class Inventory {
     if (index < 0 || index >= this.slots.size()) {
       return i;
     }
+    if (i != null && i.remove) {
+      i = null;
+    }
     if (this.slots.get(index).item == null) {
       this.slots.get(index).item = new Item(i);
+      if (this.slots.get(index).item.remove) {
+        this.slots.get(index).item = null;
+      }
       return null;
     }
     else if (replace) {
       Item replaced = new Item(this.slots.get(index).item);
+      if (replaced.remove) {
+        replaced = null;
+      }
       this.slots.get(index).item = new Item(i);
+      if (this.slots.get(index).item.remove) {
+        this.slots.get(index).item = null;
+      }
       return replaced;
     }
     return i;
