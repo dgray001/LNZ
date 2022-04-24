@@ -109,6 +109,11 @@ class Projectile extends MapObject {
         this.speed = 9;
         this.decay = 0;
         break;
+      // Items
+      case 3118: // Chicken Egg (thrown)
+        this.speed = 5;
+        this.decay = 0.25;
+        break;
       case 3301: // Slingshot
         this.speed = 8;
         this.decay = 0.4267;
@@ -237,23 +242,23 @@ class Projectile extends MapObject {
         this.speed = 90;
         this.decay = 0;
         break;
-      case 3924: // glass bottle (thrown)
+      case 3924: // Glass Bottle (thrown)
         this.speed = 4;
         this.decay = 0.3;
         break;
-      case 3931: // rock (thrown)
+      case 3931: // Rock (thrown)
         this.speed = 5;
         this.decay = 0.3;
         break;
-      case 3932: // arrow (thrown)
+      case 3932: // Arrow (thrown)
         this.speed = 4;
         this.decay = 0.3;
         break;
-      case 3933: // pebble (thrown)
+      case 3933: // Pebble (thrown)
         this.speed = 5;
         this.decay = 0.3;
         break;
-      case 3944: // grenade (thrown)
+      case 3944: // Grenade (thrown)
         this.speed = 6;
         this.decay = 0.3;
         break;
@@ -360,6 +365,9 @@ class Projectile extends MapObject {
       case 3001:
       case 3002:
         path += "pen.png";
+        break;
+      case 3118:
+        path += "chicken_egg.png";
         break;
       case 3301:
         path += "rock.png";
@@ -683,10 +691,23 @@ class Projectile extends MapObject {
     return droppedItems;
   }
 
-  void dropOnGround(GameMap map) {
+  void dropItems(GameMap map) {
     for (Item i : this.droppedItems(false)) {
       map.addItem(i, this.x, this.y);
     }
+    switch(this.ID) {
+      case 3118: // Chicken Egg (thrown)
+        if (randomChance(0.2)) {
+          map.addUnit(new Unit(1003, this.x, this.y));
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  void dropOnGround(GameMap map) {
+    this.dropItems(map);
     if (this.waitsToExplode()) {
       this.startExplodeTimer();
     }
@@ -699,9 +720,7 @@ class Projectile extends MapObject {
   }
 
   void collideWithUnit(GameMap map, Unit u) {
-    for (Item i : this.droppedItems(true)) {
-      map.addItem(i, this.x, this.y);
-    }
+    this.dropItems(map);
     float damage = u.calculateDamageFrom(this.collidePower(), this.damageType,
       this.element, this.piercing, this.penetration);
     u.damage(map.units.get(this.source_key), damage);

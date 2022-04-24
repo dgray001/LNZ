@@ -314,10 +314,20 @@ class Unit extends MapObject {
   protected ArrayList<IntegerCoordinate> curr_squares_on = new ArrayList<IntegerCoordinate>(); // squares unit is on
   protected int curr_height = 0; // highest height from the squares_on
 
-  protected int timer_ai_action = 0;
+  protected int timer_ai_action1 = 0;
+  protected int timer_ai_action2 = 0;
 
   Unit(int ID) {
+    this(ID, 0, 0);
+  }
+  Unit(int ID, float x, float y) {
     super(ID);
+    this.setLocation(x, y);
+    this.setUnitID(ID);
+  }
+
+  void setUnitID(int ID) {
+    this.ID = ID;
     switch(ID) {
       // Other
       case 1001:
@@ -326,9 +336,20 @@ class Unit extends MapObject {
         break;
       case 1002:
         this.setStrings("Chicken", "Gaia", "");
-        this.baseStats(2, 0, 0, 0, 1.4);
+        this.baseStats(2.5, 0, 0, 0, 1.4);
+        this.timer_ai_action1 = int(Constants.ai_chickenTimer1 + random(Constants.ai_chickenTimer1));
+        this.timer_ai_action2 = int(Constants.ai_chickenTimer2 + random(Constants.ai_chickenTimer2));
         this.level = 1;
         this.sizeZ = 2;
+        break;
+      case 1003:
+        this.setStrings("Chick", "Gaia", "");
+        this.baseStats(1.5, 0, 0, 0, 1.1);
+        this.timer_ai_action1 = int(Constants.ai_chickenTimer1 + random(Constants.ai_chickenTimer1));
+        this.timer_ai_action2 = int(2 * Constants.ai_chickenTimer2 + 2 * random(Constants.ai_chickenTimer2));
+        this.level = 0;
+        this.size = 0.8 * Constants.unit_defaultSize;
+        this.sizeZ = 1;
         break;
 
       // Heroes
@@ -543,6 +564,9 @@ class Unit extends MapObject {
         break;
       case 1002:
         path += "chicken.png";
+        break;
+      case 1003:
+        path += "chick.png";
         break;
       case 1101:
         path += "ben.png";
@@ -2261,9 +2285,24 @@ class Unit extends MapObject {
   }
 
 
+  void destroy(GameMap map) {
+    for (Item i : this.drops()) {
+      map.addItem(i, this.x + this.size - random(this.size), this.y + this.size - random(this.size));
+    }
+  }
+
+
   ArrayList<Item> drops() {
     ArrayList<Item> drops = new ArrayList<Item>();
     switch(this.ID) {
+      case 1002: // Chicken
+        if (randomChance(0.5)) {
+          drops.add(new Item(2116));
+        }
+        if (randomChance(0.5)) {
+          drops.add(new Item(2807));
+        }
+        break;
       default:
         break;
     }
@@ -2601,14 +2640,33 @@ class Unit extends MapObject {
 
   void aiLogic(int timeElapsed, int myKey, GameMap map) {
     switch(this.ID) {
-      // chicken
-      case 1002:
+      case 1002: // Chicken
         if (this.curr_action == UnitAction.NONE || this.last_move_collision) {
-          this.timer_ai_action -= timeElapsed;
-          if (this.timer_ai_action < 0) {
-            this.timer_ai_action = int(Constants.ai_chickenTimer + random(Constants.ai_chickenTimer));
+          this.timer_ai_action1 -= timeElapsed;
+          this.timer_ai_action2 -= timeElapsed;
+          if (this.timer_ai_action1 < 0) {
+            this.timer_ai_action1 = int(Constants.ai_chickenTimer1 + random(Constants.ai_chickenTimer1));
             this.moveTo(this.x + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance),
               this.curr_action_y = this.y + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance));
+          }
+          if (this.timer_ai_action2 < 0) {
+            this.timer_ai_action2 = int(Constants.ai_chickenTimer2 + random(Constants.ai_chickenTimer2));
+            map.addItem(new Item(2118, this.x, this.y));
+          }
+        }
+        break;
+      case 1003: // Chick
+        if (this.curr_action == UnitAction.NONE || this.last_move_collision) {
+          this.timer_ai_action1 -= timeElapsed;
+          this.timer_ai_action2 -= timeElapsed;
+          if (this.timer_ai_action1 < 0) {
+            this.timer_ai_action1 = int(Constants.ai_chickenTimer1 + random(Constants.ai_chickenTimer1));
+            this.moveTo(this.x + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance),
+              this.curr_action_y = this.y + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance));
+          }
+          if (this.timer_ai_action2 < 0) {
+            this.timer_ai_action2 = int(Constants.ai_chickenTimer2 + random(Constants.ai_chickenTimer2));
+            this.setUnitID(1002);
           }
         }
         break;
