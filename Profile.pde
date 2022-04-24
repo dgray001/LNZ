@@ -1,3 +1,10 @@
+enum PlayerTreeCode {
+  CAN_PLAY;
+  private static final List<PlayerTreeCode> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+}
+
+
+
 class Profile {
   class Options {
     private float volume_master;
@@ -171,9 +178,168 @@ class Profile {
   }
 
 
+
+  class PlayerTree {
+    class PlayerTreeNode {
+      protected PlayerTreeCode code;
+      protected ArrayList<PlayerTreeCode> dependencies = new ArrayList<PlayerTreeCode>();
+      protected boolean in_view = false;
+      protected boolean visible = false;
+      protected boolean unlocked = false;
+
+      PlayerTreeNode(PlayerTreeCode code) {
+      }
+
+      void setDependencies() {
+        switch(this.code) {
+          case CAN_PLAY:
+            break;
+          default:
+            global.errorMessage("ERROR: PlayerTreeCode " + this.code + " not recognized.");
+            break;
+        }
+      }
+    }
+
+
+    class NodeDetailsForm extends Form {
+      protected boolean canceled = false;
+      protected PlayerTreeNode node;
+      protected float shadow_distance = 10;
+      protected PImage img;
+
+      NodeDetailsForm(PlayerTreeNode node) {
+        super(0.5 * (width - Constants.profile_treeForm_width), 0.5 * (height - Constants.profile_treeForm_height),
+          0.5 * (width + Constants.profile_treeForm_width), 0.5 * (height + Constants.profile_treeForm_height));
+        this.img = getCurrImage();
+        this.cancelButton();
+        this.draggable = false;
+        this.node = node;
+      }
+
+      void cancel() {
+        this.canceled = true;
+      }
+
+      void submit() {
+        // try unlock node
+        this.canceled = true;
+      }
+
+      void buttonPress(int index) {}
+    }
+
+
+    protected float xi = 0;
+    protected float yi = 0;
+    protected float xf = 0;
+    protected float yf = 0;
+    protected float xCenter = 0.5 * width;
+    protected float yCenter = 0.5 * height;
+
+    protected float tree_xi = 0;
+    protected float tree_yi = 0;
+    protected float tree_xf = 0;
+    protected float tree_yf = 0;
+    protected float translateX = 0;
+    protected float translateY = 0;
+
+    protected float viewX = 0;
+    protected float viewY = 0;
+    protected float zoom = 1.0;
+    protected float inverse_zoom = 1.0;
+    protected boolean curr_viewing = false;
+
+    protected boolean dragging = false;
+    protected float last_mX = mouseX;
+    protected float last_mY = mouseY;
+    protected boolean hovered = false;
+
+    protected float lowestX = 0;
+    protected float lowestY = 0;
+    protected float highestX = 0;
+    protected float highestY = 0;
+
+    protected HashMap<PlayerTreeCode, PlayerTreeNode> nodes = new HashMap<PlayerTreeCode, PlayerTreeNode>();
+    protected NodeDetailsForm node_details = null;
+
+
+    PlayerTree() {
+      this.initializeNodes();
+      //this.updateDependencies();
+      //this.setView(0, 0);
+    }
+
+
+    void initializeNodes() {
+      for (PlayerTreeCode code : PlayerTreeCode.VALUES) {
+        switch(code) {
+          case CAN_PLAY:
+            break;
+          default:
+            global.errorMessage("ERROR: PlayerTreeCode " + code + " not recognized.");
+            break;
+        }
+      }
+    }
+
+
+    String shortMessage(PlayerTreeCode code) {
+      switch(code) {
+        case CAN_PLAY:
+          return "";
+        default:
+          global.errorMessage("ERROR: PlayerTreeCode " + code + " not recognized.");
+          return "";
+      }
+    }
+
+    String longMessage(PlayerTreeCode code) {
+      switch(code) {
+        case CAN_PLAY:
+          return "";
+        default:
+          global.errorMessage("ERROR: PlayerTreeCode " + code + " not recognized.");
+          return "";
+      }
+    }
+
+    String name(PlayerTreeCode code) {
+      switch(code) {
+        case CAN_PLAY:
+          return "";
+        default:
+          global.errorMessage("ERROR: PlayerTreeCode " + code + " not recognized.");
+          return "";
+      }
+    }
+
+    String description(PlayerTreeCode code) {
+      switch(code) {
+        case CAN_PLAY:
+          return "";
+        default:
+          global.errorMessage("ERROR: PlayerTreeCode " + code + " not recognized.");
+          return "";
+      }
+    }
+
+    int cost(PlayerTreeCode code) {
+      switch(code) {
+        case CAN_PLAY:
+          return 1;
+        default:
+          global.errorMessage("ERROR: PlayerTreeCode " + code + " not recognized.");
+          return 0;
+      }
+    }
+  }
+
+
+
   private String display_name = "";
 
-  private HashMap<Achievement, Boolean> achievements = new HashMap<Achievement, Boolean>();
+  private HashMap<AchievementCode, Boolean> achievements = new HashMap<AchievementCode, Boolean>();
   private int achievement_tokens = 0;
   private Options options;
 
@@ -181,15 +347,15 @@ class Profile {
   private HeroCode curr_hero = HeroCode.ERROR; // hero the player is playing as
   private Level curr_level; // level the player is playing
 
-  private int money = 0;
+  private float money = 0;
 
   Profile() {
     this("");
   }
   Profile(String s) {
     this.display_name = s;
-    for (Achievement a : Achievement.VALUES) {
-      this.achievements.put(a, false);
+    for (AchievementCode code : AchievementCode.VALUES) {
+      this.achievements.put(code, false);
     }
     this.options = new Options();
   }
@@ -207,9 +373,9 @@ class Profile {
   void save() {
     PrintWriter file = createWriter(sketchPath("data/profiles/" + this.display_name.toLowerCase() + "/profile.lnz"));
     file.println("display_name: " + this.display_name);
-    for (Achievement a : Achievement.VALUES) {
-      if (this.achievements.get(a)) {
-        file.println("achievement: " + a.display_name());
+    for (AchievementCode code : AchievementCode.VALUES) {
+      if (this.achievements.get(code)) {
+        file.println("achievement: " + code.file_name());
       }
     }
     file.println("achievement_tokens: " + this.achievement_tokens);
@@ -241,16 +407,22 @@ Profile readProfile(String path) {
         p.display_name = trim(data[1]);
         break;
       case "achievement":
-        for (Achievement a : Achievement.VALUES) {
-          if (a.display_name().equals(trim(data[1]))) {
-            p.achievements.put(a, true);
-            break;
-          }
+        AchievementCode code = AchievementCode.achievementCode(trim(data[1]));
+        if (code != null) {
+          p.achievements.put(code, true);
         }
         break;
       case "achievement_tokens":
         if (isInt(trim(data[1]))) {
           p.achievement_tokens = toInt(trim(data[1]));
+        }
+        break;
+      case "curr_hero":
+        p.curr_hero = HeroCode.heroCode(trim(data[1]));
+        break;
+      case "money":
+        if (isFloat(trim(data[1]))) {
+          p.money = toFloat(trim(data[1]));
         }
         break;
       default:

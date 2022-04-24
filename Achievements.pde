@@ -1,26 +1,48 @@
-enum Achievement {
-  TEST;
+enum AchievementCode {
+  COMPLETED_TUTORIAL;
 
-  private static final List<Achievement> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+  private static final List<AchievementCode> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 
   public String display_name() {
-    return Achievement.display_name(this);
+    return AchievementCode.display_name(this);
   }
-  static public String display_name(Achievement a) {
-    switch(a) {
-      case TEST:
-        return "Test";
+  public static String display_name(AchievementCode code) {
+    switch(code) {
+      case COMPLETED_TUTORIAL:
+        return "Completed Tutorial";
       default:
         return "-- Error --";
     }
   }
 
-  public int tokens() {
-    return Achievement.tokens(this);
+  public String file_name() {
+    return AchievementCode.file_name(this);
   }
-  static public int tokens(Achievement a) {
-    switch(a) {
-      case TEST:
+  static public String file_name(AchievementCode code) {
+    switch(code) {
+      case COMPLETED_TUTORIAL:
+        return "Completed_Tutorial";
+      default:
+        return "ERROR";
+    }
+  }
+
+  public static AchievementCode achievementCode(String display_name) {
+    for (AchievementCode code : AchievementCode.VALUES) {
+      if (AchievementCode.display_name(code).equals(display_name) ||
+        AchievementCode.file_name(code).equals(display_name)) {
+        return code;
+      }
+    }
+    return null;
+  }
+
+  public int tokens() {
+    return AchievementCode.tokens(this);
+  }
+  public static int tokens(AchievementCode code) {
+    switch(code) {
+      case COMPLETED_TUTORIAL:
         return 1;
       default:
         return 0;
