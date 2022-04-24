@@ -303,6 +303,9 @@ class Hero extends Unit {
     }
 
     void updateSlot(int timeElapsed, int index, Item i) {
+      this.updateSlot(timeElapsed, index, i, true, 0);
+    }
+    void updateSlot(int timeElapsed, int index, Item i, boolean translate_first, float temp_slot_width) {
       int x = index % this.max_cols;
       if (x < 0 || x >= this.max_cols) {
         return;
@@ -312,7 +315,12 @@ class Hero extends Unit {
         return;
       }
       this.slots.get(index).item = i;
-      translate(2 + x * this.button_size, 2 + y * this.button_size);
+      if (translate_first) {
+        translate(2 + x * this.button_size, 2 + y * this.button_size);
+      }
+      else {
+        this.slots.get(index).setWidth(temp_slot_width);
+      }
       this.slots.get(index).update(timeElapsed);
       if (this.slots.get(index).item == null) {
         String iconName = "icons/";
@@ -357,9 +365,14 @@ class Hero extends Unit {
             global.errorMessage("ERROR: Gear inventory index " + index + " out of range.");
             break;
         }
-        image(global.images.getImage(iconName), 0, 0, this.button_size, this.button_size);
+        image(global.images.getImage(iconName), 0, 0, this.slots.get(index).width(), this.slots.get(index).width());
       }
-      translate(-2 - x * this.button_size, -2 - y * this.button_size);
+      if (translate_first) {
+        translate(-2 - x * this.button_size, -2 - y * this.button_size);
+      }
+      else {
+        this.slots.get(index).setWidth(this.button_size);
+      }
     }
 
     @Override
@@ -886,6 +899,7 @@ class Hero extends Unit {
       void release() {}
     }
 
+
     private float xi_border = 0;
     private float yi = 0;
     private float xf_border = 0;
@@ -901,6 +915,7 @@ class Hero extends Unit {
     private float slot_width = 0;
     private float status_width = 0;
     private float yi_status = 0;
+    private float yi_slot = 0;
 
     private float last_mX = 0;
     private float last_mY = 0;
@@ -913,15 +928,25 @@ class Hero extends Unit {
     protected color color_background = color(210, 153, 108);
     protected color color_ability_border = color(120, 70, 40);
 
+    protected int equipped_index = 0;
+    protected float equipped_text_size = 15;
+    protected boolean unlocked_inventory_bar1 = false;
+    protected boolean unlocked_inventory_bar2 = false;
+
+
     InventoryBar() {
       this.setHeight(Constants.hero_defaultInventoryBarHeight);
     }
 
+
     void setHeight(float new_height) {
       this.yf = height - Constants.hero_inventoryBarGap;
       this.yi = this.yf - new_height;
-      this.xf_bar = 0.5 * (width + 3.333 * new_height);
-      this.xi_bar = 0.5 * (width - 3.333 * new_height);
+      textSize(this.equipped_text_size);
+      float new_height_buttons = new_height - textAscent() - textDescent() - 2;
+      this.yi_slot = this.yi + textAscent() + textDescent() + 2;
+      this.xf_bar = 0.5 * (width + 3.333 * new_height_buttons) + 2;
+      this.xi_bar = 0.5 * (width - 3.333 * new_height_buttons) - 2;
       this.xf_border = this.xi_bar - Constants.hero_inventoryBarGap;
       this.xi_border = this.xf_border - new_height;
       float border_thickness = 0.04166667 * new_height;
@@ -930,10 +955,11 @@ class Hero extends Unit {
       this.xf_picture = this.xf_border - border_thickness;
       this.yf_picture = this.yf - border_thickness;
       this.radius_picture = 0.5 * (this.xf_picture - this.xi_picture);
-      this.ability_width = 0.2 * (this.xf_bar - this.xi_bar) - 4;
+      this.ability_width = 0.2 * (this.xf_bar - this.xi_bar - 4) - 4;
+      this.slot_width = 0.1 * (this.xf_bar - this.xi_bar - 4) - 2;
       this.status_width = 0.08 * (this.xf_bar - this.xi_bar);
       this.yi_status = this.yi - 2 - this.status_width;
-      float xi = this.xi_bar + 2;
+      float xi = this.xi_bar + 4;
       float yi = this.yf - this.ability_width - 4;
       this.ability_buttons.clear();
       for (int i = 0; i < Constants.hero_abilityNumber; i++, xi += this.ability_width + 4) {
@@ -1013,6 +1039,7 @@ class Hero extends Unit {
       return global.images.getImage(imageName);
     }
 
+
     void update(int timeElapsed) {
       rectMode(CORNERS);
       noStroke();
@@ -1065,6 +1092,21 @@ class Hero extends Unit {
         }
         xi += this.status_width + 2;
       }
+      textAlign(LEFT, TOP);
+      textSize(this.equipped_text_size);
+      fill(0);
+      if (Hero.this.weapon() == null) {
+        text("-- no weapon --", this.xi_bar + 1, this.yi + 1);
+      }
+      else {
+        text(Hero.this.weapon().display_name(), this.xi_bar + 1, this.yi + 1);
+      }
+      translate(this.xi_bar + 3, this.yi_slot);
+      float translate_x = (this.equipped_index) * (this.slot_width + 2);
+      translate(translate_x, 0);
+      Hero.this.inventory.gear_inventory.updateSlot(timeElapsed, 3, Hero.this.weapon(), false, this.slot_width);
+      translate(-translate_x, 0);
+      translate(-this.xi_bar - 3, -this.yi_slot);
       for (AbilityButton ability : this.ability_buttons) {
         ability.update(timeElapsed);
       }
@@ -3047,7 +3089,7 @@ class Hero extends Unit {
 
   protected Location location = Location.ERROR;
 
-  protected int level_tokens = 0;
+  protected int level_tokens = 200;
   protected float experience = 0;
   protected int experience_next_level = 1;
   protected float money = 0;
@@ -3195,10 +3237,12 @@ class Hero extends Unit {
         this.inventory.addSlots(Constants.upgrade_inventoryII);
         break;
       case INVENTORY_BARI:
-        // inventory bar I
+        this.inventory.addSlots(Constants.upgrade_inventory_bar_slots);
+        this.inventory_bar.unlocked_inventory_bar1 = true;
         break;
       case INVENTORY_BARII:
-        // inventory bar II
+        this.inventory.addSlots(Constants.upgrade_inventory_bar_slots);
+        this.inventory_bar.unlocked_inventory_bar2 = true;
         break;
       case FOLLOWERI:
         // follower

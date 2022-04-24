@@ -41,6 +41,14 @@ class Inventory {
       this.button = new InventoryButton(button_size);
     }
 
+    float width() {
+      return this.button.button_width();
+    }
+    void setWidth(float new_width) {
+      this.button.xf = new_width;
+      this.button.yf = new_width;
+    }
+
     void update(int timeElapsed) {
       if (this.deactivated) {
         return;

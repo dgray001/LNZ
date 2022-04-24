@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220424: v0.6.7q" +
+  "\n20220424: v0.6.7r" +
   "\nLines: 29106 (v0.6.7p)" +
   "";
   static final String version_history =
@@ -335,14 +335,14 @@ static class Constants {
   // Hero
   static final float hero_defaultInventoryButtonSize = 45;
   static final int hero_inventoryMaxRows = 6;
-  static final int hero_inventoryMaxCols = 10;
-  static final int hero_inventoryDefaultStartSlots = 13;
+  static final int hero_inventoryMaxCols = 9;
+  static final int hero_inventoryDefaultStartSlots = 0;
   static final float hero_experienceNextLevel_level = 1.4;
   static final float hero_experienceNextLevel_power = 2.0;
   static final float hero_experienceNextLevel_tier = 3.0;
   static final float hero_killExponent = 3.0;
   static final int hero_maxLevel = 100;
-  static final float hero_defaultInventoryBarHeight = 110;
+  static final float hero_defaultInventoryBarHeight = 120;
   static final float hero_inventoryBarGap = 10;
   static final float hero_abilityDescriptionMinWidth = 250;
   static final int hero_maxHunger = 100;
@@ -365,6 +365,7 @@ static class Constants {
   // Upgrade
   static final int upgrade_inventoryI = 2;
   static final int upgrade_inventoryII = 4;
+  static final int upgrade_inventory_bar_slots = 3;
   static final float upgrade_healthI = 4;
   static final float upgrade_attackI = 3;
   static final float upgrade_defenseI = 2;
