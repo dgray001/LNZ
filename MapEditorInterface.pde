@@ -2145,6 +2145,7 @@ class MapEditorInterface extends InterfaceLNZ {
           }
           else {
             this.curr_level = this.open_testMap_thread.level_opening;
+            this.curr_level.addTestPlayer();
             this.curr_level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
             this.navigate(MapEditorPage.TESTMAP);
           }
@@ -2174,6 +2175,7 @@ class MapEditorInterface extends InterfaceLNZ {
           }
           else {
             this.curr_level = this.open_testLevel_thread.level_opening;
+            this.curr_level.addTestPlayer();
             this.curr_level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
             this.navigate(MapEditorPage.TESTLEVEL);
           }

@@ -224,6 +224,21 @@ class Item extends MapObject {
         this.hunger = 15;
         this.thirst = -5;
         break;
+      case 2116:
+        this.setStrings("Raw Chicken", "Food", "");
+        this.hunger = 20;
+        this.thirst = 10;
+        break;
+      case 2117:
+        this.setStrings("Cooked Chicken", "Food", "");
+        this.hunger = 40;
+        this.thirst = 10;
+        break;
+      case 2118:
+        this.setStrings("Chicken Egg", "Food", "");
+        this.hunger = 25;
+        this.thirst = 10;
+        break;
       case 2131:
         this.setStrings("Water Cup", "Drink", "");
         this.thirst = 12;
@@ -846,6 +861,9 @@ class Item extends MapObject {
       case 2806:
         this.setStrings("Wire", "Material", "");
         break;
+      case 2807:
+        this.setStrings("Feather", "Material", "");
+        break;
       case 2811:
         this.setStrings("Gypsum Ore", "Material", "");
         this.tier = 2;
@@ -1364,6 +1382,15 @@ class Item extends MapObject {
       case 2115:
         path += "peanuts.png";
         break;
+      case 2116:
+        path += "raw_chicken.png";
+        break;
+      case 2117:
+        path += "cooked_chicken.png";
+        break;
+      case 2118:
+        path += "chicken_egg.png";
+        break;
       case 2131:
         path += "water_cup.png";
         break;
@@ -1739,6 +1766,9 @@ class Item extends MapObject {
         break;
       case 2806:
         path += "wire.png";
+        break;
+      case 2807:
+        path += "feather.png";
         break;
       case 2811:
         path += "gypsum_ore.png";
@@ -2139,6 +2169,7 @@ class Item extends MapObject {
       return false;
     }
     switch(this.ID) {
+      case 2118:
       case 2924:
       case 2931:
       case 2932:
@@ -2184,6 +2215,8 @@ class Item extends MapObject {
 
   float shootAttack() {
     switch(this.ID) {
+      case 2118: // Chicken Egg (thrown)
+        return 2;
       case 2301: // Slingshot
         return 5;
       case 2311: // Recurve Bow
@@ -2360,8 +2393,10 @@ class Item extends MapObject {
 
   float shootRange() {
     switch(this.ID) {
+      case 2118: // Chicken Egg (thrown)
+        return 2.5;
       case 2301: // Slingshot
-        return 3;
+        return 3.5;
       case 2311: // Recurve Bow
         return 5;
       case 2312: // M1911
@@ -2505,18 +2540,8 @@ class Item extends MapObject {
         return 96;
       case 2392: // Porter's X2 Ray Gun
         return 331;
-      case 2924: // Glass Bottle (thrown)
-        return 300;
-      case 2931: // Rock (thrown)
-        return 300;
-      case 2932: // Arrow (thrown)
-        return 300;
-      case 2933: // Pebble (thrown)
-        return 300;
-      case 2944: // Grenade (thrown)
-        return 300;
       default:
-        return 0;
+        return 300;
     }
   }
 
@@ -2586,18 +2611,8 @@ class Item extends MapObject {
         return 10;
       case 2392: // Porter's X2 Ray Gun
         return 33;
-      case 2924: // Glass Bottle (thrown)
-        return 60;
-      case 2931: // Rock (thrown)
-        return 60;
-      case 2932: // Arrow (thrown)
-        return 60;
-      case 2933: // Pebble (thrown)
-        return 60;
-      case 2944: // Grenade (thrown)
-        return 60;
       default:
-        return 0;
+        return 60;
     }
   }
 
@@ -2670,6 +2685,8 @@ class Item extends MapObject {
 
   float shootInaccuracy() {
     switch(this.ID) {
+      case 2118: // Chicken Egg (thrown)
+        return 0.1;
       case 2301: // Slingshot
         return 0.12;
       case 2311: // Recurve Bow

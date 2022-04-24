@@ -13,6 +13,9 @@ Chocolate: 2112
 Chips: 2113
 Cheese: 2114
 Peanuts: 2115
+Raw Chicken: 2116
+Cooked Chicken: 2117
+Chicken Egg: 2118
 Water Cup: 2131
 Coke: 2132
 Wine: 2133
@@ -138,6 +141,7 @@ Talc Powder: 2803
 Soapstone: 2804
 Broken Glass: 2805
 Wire: 2806
+Feather: 2807
 Gypsum Ore: 2811
 Gypsum Crystal: 2812
 Gypsum Powder: 2813

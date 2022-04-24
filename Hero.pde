@@ -1428,6 +1428,7 @@ class Hero extends Unit {
       abstract void updateHoverMessage();
     }
 
+
     class LevelButton extends LeftPanelButton {
       LevelButton(float yi, float yf) {
         super(0, yi, 0, yf);
@@ -1864,7 +1865,7 @@ class Hero extends Unit {
       currY += image_size + Constants.map_selectedObjectPanelGap;
       textSize(18);
       this.level = new LevelButton(currY, currY + textAscent() + textDescent() + Constants.map_selectedObjectPanelGap);
-      currY += textAscent() + textDescent() + Constants.map_selectedObjectPanelGap;
+      currY += textAscent() + textDescent() + Constants.map_selectedObjectPanelGap + 2;
       this.experience = new ExperienceButton(currY, currY + Constants.hero_leftPanelBarHeight);
       currY += 2 * Constants.hero_leftPanelBarHeight + Constants.map_selectedObjectPanelGap;
       this.health = new HealthButton(currY, currY + 2 * Constants.hero_leftPanelBarHeight);
@@ -3591,6 +3592,18 @@ class Hero extends Unit {
       this.increaseHunger(i.hunger);
       this.increaseThirst(i.thirst);
       this.money += i.money;
+      switch(i.ID) {
+        case 2116: // raw chicken
+          if (randomChance(0.5)) {
+            this.addStatusEffect(StatusEffectCode.SICK, 6000);
+          }
+          break;
+        case 2118: // chicken egg
+          if (randomChance(0.25)) {
+            this.addStatusEffect(StatusEffectCode.SICK, 5000);
+          }
+          break;
+      }
       i.consumed();
       return;
     }

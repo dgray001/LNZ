@@ -141,9 +141,6 @@ class Level {
     this.levelName = testMap.mapName;
     this.currMap = testMap;
     this.currMapName = testMap.mapName;
-    this.player = global_hero;
-    this.player.setLocation(0.5, 0.5);
-    this.currMap.addPlayer(this.player);
   }
 
 
@@ -166,6 +163,12 @@ class Level {
     }
   }
 
+
+  void addTestPlayer() {
+    this.player = new Hero(HeroCode.BEN);
+    this.player.setLocation(0.5, 0.5);
+    this.currMap.addPlayer(this.player);
+  }
 
   void setPlayer(Hero player) {
     if (this.player == null) {

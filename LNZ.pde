@@ -9,8 +9,6 @@ import ddf.minim.ugens.*;
 
 Global global;
 
-Hero global_hero;
-
 void setup() {
   fullScreen(FX2D);
   pixelDensity(displayDensity());
@@ -24,7 +22,6 @@ void setup() {
   noCursor();
   mouseX = -50;
   mouseY = -50;
-  global_hero = new Hero(HeroCode.DAN);
 }
 
 void draw() {

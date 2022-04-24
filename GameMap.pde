@@ -1713,14 +1713,13 @@ class GameMap {
       Map.Entry<Integer, Unit> entry = (Map.Entry<Integer, Unit>)unit_iterator.next();
       Unit u = entry.getValue();
       if (u.remove) {
+        u.destroy(this);
         unit_iterator.remove();
         continue;
       }
       u.update(timeElapsed, entry.getKey(), this);
       if (u.remove) {
-        for (Item i : u.drops()) {
-          this.addItem(i, u.x + u.size - random(u.size), u.y + u.size - random(u.size));
-        }
+        u.destroy(this);
         unit_iterator.remove();
       }
     }
@@ -1828,6 +1827,7 @@ class GameMap {
     while(unit_iterator.hasNext()) {
       Map.Entry<Integer, Unit> entry = (Map.Entry<Integer, Unit>)unit_iterator.next();
       if (entry.getValue().remove) {
+        entry.getValue().destroy(this);
         unit_iterator.remove();
       }
     }
