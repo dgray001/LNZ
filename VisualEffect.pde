@@ -18,7 +18,7 @@ class VisualEffect extends MapObject {
         this.scale_size = false;
         break;
       case 4002: // chuck quizmo poof
-        this.setValues(1, 1, 1000 + Constants.gif_poof_time);
+        this.setValues(1, 1, 1200 + Constants.gif_poof_time);
         break;
       case 4003: // amphibious leap land
         this.setValues(2 * Constants.ability_113_splashRadius, 2 * Constants.
@@ -41,6 +41,9 @@ class VisualEffect extends MapObject {
         break;
       case 4008: // alkaloid secretion II
         this.setValues(2 * Constants.ability_119_range, 2 * Constants.ability_119_range, 100);
+        break;
+      case 4009: // Chat bubble
+        this.setValues(0.8, 0.8, 1200);
         break;
       default:
         global.errorMessage("ERROR: VisualEffect ID " + ID + " not found.");
@@ -150,6 +153,9 @@ class VisualEffect extends MapObject {
         frame = int(floor(Constants.gif_amphibiousLeap_frames *
           (1.0 - this.timer / (1 + Constants.gif_amphibiousLeap_time))));
         path += frame + ".png";
+        break;
+      case 4009:
+        path = "icons/chat.png";
         break;
       default:
         global.errorMessage("ERROR: Visual Effect ID " + ID + " not found.");

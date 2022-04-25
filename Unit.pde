@@ -1204,6 +1204,14 @@ class Unit extends MapObject {
     return lifesteal;
   }
 
+  int swimNumber() {
+    int swimNumber = 0;
+    if (this.element == Element.BLUE) {
+      swimNumber += 2;
+    }
+    return swimNumber;
+  }
+
 
   void removeStatusEffect(StatusEffectCode code) {
     this.statuses.remove(code);
@@ -1944,7 +1952,32 @@ class Unit extends MapObject {
       this.fall_amount = 0;
     }
     else {
-      // squares on logic
+      for (IntegerCoordinate coordinate : this.curr_squares_on) {
+        try {
+          switch(map.squares[coordinate.x][coordinate.y].terrain_id) {
+            case 181: // Very Shallow Water
+            case 182:
+              break;
+            case 183: // Shallow Water
+              this.refreshStatusEffect(StatusEffectCode.DRENCHED, 1000);
+              break;
+            case 184: // Medium Water
+              this.refreshStatusEffect(StatusEffectCode.DRENCHED, 2000);
+              if (this.swimNumber() < 1) {
+                this.refreshStatusEffect(StatusEffectCode.DROWNING, 100);
+              }
+              break;
+            case 185: // Deep Water
+              this.refreshStatusEffect(StatusEffectCode.DRENCHED, 3000);
+              if (this.swimNumber() < 2) {
+                this.refreshStatusEffect(StatusEffectCode.DROWNING, 100);
+              }
+              break;
+            default:
+              break;
+          }
+        } catch(ArrayIndexOutOfBoundsException e) {}
+      }
     }
   }
 

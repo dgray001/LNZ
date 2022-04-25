@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220424: v0.6.7x" +
+  "\n20220425: v0.6.7z" +
   "\nLines: 29810 (v0.6.7w)" +
   "";
   static final String version_history =
@@ -523,6 +523,7 @@ static class Constants {
   static final float ability_120_magicalRatio = 1.4;
 
   // Level
+  static final float level_questBoxHeightRatio = 0.25;
   static final float level_vendingFormWidth = 300;
   static final float level_vendingFormHeight = 600;
   static final float level_quizmoFormWidth = 400;
