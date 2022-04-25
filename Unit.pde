@@ -300,19 +300,23 @@ class Unit extends MapObject {
   protected int curr_action_id = 0;
   protected boolean curr_action_unhaltable = false;
   protected boolean curr_action_unstoppable = false;
+  protected float curr_action_x = 0;
+  protected float curr_action_y = 0;
+
   protected MapObject object_targeting = null;
   protected int object_targeting_key = -1;
   protected MapObject last_damage_from = null;
   protected float last_damage_amount = 0;
-  protected float curr_action_x = 0;
-  protected float curr_action_y = 0;
   protected float last_move_distance = 0;
   protected int buffer_cast = -1;
   protected boolean last_move_collision = false;
   protected boolean last_move_any_collision = false;
 
   protected ArrayList<IntegerCoordinate> curr_squares_on = new ArrayList<IntegerCoordinate>(); // squares unit is on
-  protected int curr_height = 0; // highest height from the squares_on
+  protected int floor_height = 0; // height of ground
+  protected boolean falling = false;
+  protected int fall_amount = 0;
+  protected float timer_falling = 0;
 
   protected int timer_ai_action1 = 0;
   protected int timer_ai_action2 = 0;
@@ -1165,6 +1169,12 @@ class Unit extends MapObject {
           break;
       }
     }
+    if (agility < 0) {
+      agility = 0;
+    }
+    if (agility > Constants.unit_maxAgility) {
+      agility = Constants.unit_maxAgility;
+    }
     return agility;
   }
 
@@ -1907,6 +1917,35 @@ class Unit extends MapObject {
       this.cast(myKey, this.buffer_cast, map);
       this.buffer_cast = -1;
     }
+    // Resolve location logic
+    if (this.floor_height < this.curr_height) {
+      if (this.falling) {
+        this.timer_falling -= timeElapsed;
+        if (this.timer_falling < 0) {
+          this.timer_falling += Constants.unit_fallTimer;
+          this.fall_amount++;
+          this.curr_height--;
+        }
+      }
+      else {
+        this.falling = true;
+        this.fall_amount = 0;
+        this.timer_falling = Constants.unit_fallTimer;
+      }
+    }
+    else if (this.falling) {
+      this.falling = false;
+      println("you fell " + this.fall_amount);
+      int no_damage_fall_amount = Constants.unit_noDamageFallHeight + 2 * this.agility();
+      if (this.fall_amount > no_damage_fall_amount) {
+        this.calculateDotDamage(Constants.unit_fallDamageMultiplier * (this.fall_amount - no_damage_fall_amount), true);
+        // sound effect
+      }
+      this.fall_amount = 0;
+    }
+    else {
+      // squares on logic
+    }
   }
 
   // timers independent of curr action
@@ -2303,6 +2342,30 @@ class Unit extends MapObject {
           drops.add(new Item(2807));
         }
         break;
+      case 1201: // Tier I zombies
+      case 1202:
+      case 1203:
+      case 1204:
+      case 1205:
+      case 1206:
+      case 1207:
+      case 1208:
+      case 1209:
+        if (randomChance(0.2)) {
+          drops.add(new Item(2119));
+        }
+        break;
+      case 1210:
+        if (randomChance(0.2)) {
+          drops.add(new Item(2119));
+        }
+        if (randomChance(0.15)) {
+          drops.add(new Item(2912));
+        }
+        if (randomChance(0.15)) {
+          drops.add(new Item(2913));
+        }
+        break;
       default:
         break;
     }
@@ -2417,6 +2480,13 @@ class Unit extends MapObject {
   }
 
 
+  void jump() {
+    if (!this.falling && this.curr_height == this.floor_height) {
+      this.curr_height += this.agility() * 2;
+    }
+  }
+
+
   void moveTo(float targetX, float targetY) {
     this.curr_action = UnitAction.MOVING;
     this.object_targeting = null;
@@ -2466,11 +2536,10 @@ class Unit extends MapObject {
     this.moveY(tryMoveY, myKey, map);
     // calculates squares_on and height
     this.curr_squares_on = this.getSquaresOn();
-    int new_height = map.maxHeightOfSquares(this.curr_squares_on, false);
-    if (new_height < this.curr_height) {
-      // calculate fall damage
+    this.floor_height = map.maxHeightOfSquares(this.curr_squares_on, false);
+    if (this.floor_height > this.curr_height) {
+      this.curr_height = this.floor_height;
     }
-    this.curr_height = new_height;
     // move stat
     float moveX = this.x - startX;
     float moveY = this.y - startY;

@@ -2052,7 +2052,7 @@ class GameMap {
     if (this.selected_object != null && this.selected_object_textbox != null) {
       this.selected_object_textbox.scroll(amount);
     }
-    if (this.hovered_area) {
+    if (this.hovered_area && global.holding_ctrl) {
       this.changeZoom(Constants.map_scrollZoomFactor * amount);
     }
   }
@@ -2110,6 +2110,12 @@ class GameMap {
         case 'F':
           if (this.units.containsKey(0)) {
             this.units.get(0).cast(0, 4, this);
+          }
+          break;
+        case 'v':
+        case 'V':
+          if (this.units.containsKey(0)) {
+            this.units.get(0).jump();
           }
           break;
       }

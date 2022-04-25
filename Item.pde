@@ -239,6 +239,11 @@ class Item extends MapObject {
         this.hunger = 25;
         this.thirst = 10;
         break;
+      case 2119:
+        this.setStrings("Rotten Flesh", "Food", "");
+        this.hunger = 10;
+        this.thirst = 10;
+        break;
       case 2131:
         this.setStrings("Water Cup", "Drink", "");
         this.thirst = 12;
@@ -1390,6 +1395,9 @@ class Item extends MapObject {
         break;
       case 2118:
         path += "chicken_egg.png";
+        break;
+      case 2119:
+        path += "rotten_flesh.png";
         break;
       case 2131:
         path += "water_cup.png";
