@@ -748,7 +748,22 @@ class Projectile extends MapObject {
 
   float collidePower() {
     switch(this.ID) {
-      // explosion ones won't do 1000 damage on collision
+      case 3321: // War Machine
+        return 8;
+      case 3331: // Mustang and Sally
+        return 12;
+      case 3341: // RPG
+        return 12;
+      case 3342: // Dystopic Demolisher
+        return 10;
+      case 3362: // Rocket-Propelled Grievance
+        return 14;
+      case 3372: // Ray Gun
+        return 50;
+      case 3392: // Porter's X2 Ray Gun
+        return 100;
+      case 3944: // Grenade
+        return 4;
       default:
         return this.power;
     }
@@ -803,18 +818,39 @@ class Projectile extends MapObject {
     float explode_minPower = 0;
     switch(this.ID) { // set values and add visual effects
       case 3321: // War Machine
+        explode_range = 3;
+        explode_minPower = 200;
+        explode_maxPower = 200;
         break;
       case 3331: // Mustang and Sally
+        explode_range = 4.5;
+        explode_minPower = 1000;
+        explode_maxPower = 1000;
         break;
       case 3341: // RPG
+        explode_range = 2;
+        explode_minPower = 600;
+        explode_maxPower = 600;
         break;
       case 3342: // Dystopic Demolisher
+        explode_range = 3;
+        explode_minPower = 600;
+        explode_maxPower = 600;
         break;
       case 3362: // Rocket-Propelled Grievance
+        explode_range = 2.5;
+        explode_minPower = 600;
+        explode_maxPower = 600;
         break;
       case 3372: // Ray Gun
+        explode_range = 2.5;
+        explode_minPower = 600;
+        explode_maxPower = 600;
         break;
       case 3392: // Porter's X2 Ray Gun
+        explode_range = 2.5;
+        explode_minPower = 600;
+        explode_maxPower = 600;
         break;
       case 3944: // Grenade
         explode_range = 3;
@@ -827,7 +863,7 @@ class Projectile extends MapObject {
     }
     map.splashDamage(explode_x, explode_y, explode_range, explode_maxPower,
       explode_minPower, this.source_key, this.damageType, this.element,
-      this.piercing, this.penetration);
+      this.piercing, this.penetration, true);
     this.remove = true;
   }
 

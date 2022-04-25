@@ -2092,6 +2092,10 @@ class Level {
   class QuizmoForm extends LevelForm {
     protected Feature chuck_quizmo;
     protected Hero hero;
+    protected float last_update_time = 0;
+    protected float time_before_cancel = Constants.level_quizmoTimeDelay;
+    protected boolean canceling = false;
+    protected boolean correct_guess = false;
 
     QuizmoForm(Feature f, Hero h) {
       super(0.5 * (width - Constants.level_quizmoFormWidth), 0.5 * (height - Constants.level_quizmoFormHeight),
@@ -2122,8 +2126,38 @@ class Level {
     }
 
     @Override
+    void update(int millis) {
+      super.update(millis);
+      imageMode(CORNER);
+      image(global.images.getImage("features/chuck_quizmo.png"), this.xi + 210, this.yi + 100, 80, 80);
+      image(global.images.getImage("features/vanna_t.png"), this.xi + 300, this.yi + 120, 60, 60);
+      int frame = constrain(int(floor(Constants.gif_quizmoQuestion_frames * (millis() %
+        Constants.gif_quizmoQuestion_time) / Constants.gif_quizmoQuestion_time)),
+        0, Constants.gif_quizmoQuestion_frames);
+      if (this.canceling) {
+        this.time_before_cancel -= millis - this.last_update_time;
+        if (this.time_before_cancel < 0) {
+          this.canceled = true;
+        }
+        if (this.correct_guess) {
+          image(global.images.getImage("gifs/quizmo_correct/" + frame + ".png"),
+            this.xi + 230, this.yi + 50, 40, 40);
+        }
+        else {
+          image(global.images.getImage("gifs/quizmo_wrong/" + frame + ".png"),
+            this.xi + 230, this.yi + 50, 40, 40);
+        }
+      }
+      else {
+        image(global.images.getImage("gifs/quizmo_question/" + frame + ".png"),
+          this.xi + 230, this.yi + 50, 40, 40);
+      }
+      this.last_update_time = millis;
+    }
+
+    @Override
     void cancel() {
-      this.canceled = true;
+      this.canceling = true;
       Level.this.chat("Chuck Quizmo: Well, well... so long, farewell. 'Til we meet again!");
       Level.this.currMap.addVisualEffect(4009, this.chuck_quizmo.x + 0.7, this.chuck_quizmo.y - 0.4);
     }
@@ -2154,13 +2188,15 @@ class Level {
         }
         Level.this.chat("Chuck Quizmo: Congratulations! Here's your Star Piece!");
         Level.this.currMap.addVisualEffect(4009, this.chuck_quizmo.x + 0.7, this.chuck_quizmo.y - 0.4);
+        this.correct_guess = true;
       }
       else {
         Level.this.chat("Chuck Quizmo: Too bad!");
         Level.this.currMap.addVisualEffect(4009, this.chuck_quizmo.x + 0.7, this.chuck_quizmo.y - 0.4);
+        this.correct_guess = false;
       }
       this.chuck_quizmo.destroy(Level.this.currMap);
-      this.canceled = true;
+      this.canceling = true;
     }
   }
 

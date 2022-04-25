@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220425: v0.6.8" +
+  "\n20220425: v0.6.8a" +
   "\nLines: 30098 (v0.6.8)" +
   "\nImages: 748 (v0.6.8)" +
   "\nSounds: 47 (v0.6.8)" +
@@ -346,6 +346,18 @@ static class Constants {
   static final int gif_poof_time = 900;
   static final int gif_amphibiousLeap_frames = 10;
   static final int gif_amphibiousLeap_time = 400;
+  static final int gif_quizmoQuestion_frames = 3;
+  static final int gif_quizmoQuestion_time = 400;
+  static final int gif_explosionBig_frames = 23;
+  static final int gif_explosionBig_time = 850;
+  static final int gif_explosionCrackel_frames = 17;
+  static final int gif_explosionCrackel_time = 600;
+  static final int gif_explosionFire_frames = 23;
+  static final int gif_explosionFire_time = 600;
+  static final int gif_explosionNormal_frames = 14;
+  static final int gif_explosionNormal_time = 550;
+  static final int gif_fire_frames = 31;
+  static final int gif_fire_time = 2500;
 
   // Hero
   static final float hero_defaultInventoryButtonSize = 45;
@@ -530,6 +542,7 @@ static class Constants {
   static final float level_vendingFormHeight = 600;
   static final float level_quizmoFormWidth = 400;
   static final float level_quizmoFormHeight = 500;
+  static final float level_quizmoTimeDelay = 900;
   static final float level_khalilFormWidth = 400;
   static final float level_khalilFormHeight = 500;
 }
