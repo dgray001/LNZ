@@ -103,6 +103,8 @@ class Level {
   protected boolean nullify = false;
 
   protected LevelForm level_form = null;
+  protected LevelQuestBox level_questbox = null;
+  protected LevelChatBox level_chatbox = null;
   protected GameMap currMap;
   protected String currMapName = null;
   protected ArrayList<String> mapNames = new ArrayList<String>();
@@ -330,7 +332,16 @@ class Level {
   }
 
   void drawRightPanel(int millis) {
-    // quest and chat box
+    if (this.level_questbox == null) {
+      this.level_questbox = new LevelQuestBox();
+    }
+    this.level_questbox.setXLocation(this.xf + Constants.mapEditor_listBoxGap, width - Constants.mapEditor_listBoxGap);
+    this.level_questbox.update(millis);
+    if (this.level_chatbox == null) {
+      this.level_chatbox = new LevelChatBox();
+    }
+    this.level_chatbox.setXLocation(this.xf + Constants.mapEditor_listBoxGap, width - Constants.mapEditor_listBoxGap);
+    this.level_chatbox.update(millis);
   }
 
 
@@ -358,9 +369,17 @@ class Level {
           f.toggle = false;
         }
         else {
-          // khalil chats the following quote
-          // "????"
           f.toggle = true;
+          if (randomChance(0.5)) {
+            this.chat("Traveling Buddy: I am a caterpillar. Well, that's not " +
+              "entirely true. My mother was a caterpillar, my father was a worm, " +
+              "but I'm okay with that now.");
+          }
+          else {
+            this.chat("Traveling Buddy: I am a small business operator; a " +
+              "traveling salesman. I sell Persian rugs door-to-door!");
+          }
+          this.currMap.addVisualEffect(4009, f.x + 0.6, f.y - 0.4);
         }
         break;
       case 12: // chuck quizmo
@@ -369,9 +388,12 @@ class Level {
           f.toggle = false;
         }
         else {
-          // quizmo chats the following quote
-          // "Chuck Quizmo's the name, and quizzes are my game! You want quizzes, I got 'em! If you can manage to answer my brain-busting questions correctly, then... Y... Yaa... Yaaaaaahooo! I'll give you a Star Piece!"
           f.toggle = true;
+          this.chat("Chuck Quizmo: Chuck Quizmo's the name, and quizzes are my " +
+            "game! You want quizzes, I got 'em! If you can manage to answer my " +
+            "brain-busting questions correctly, then... Y... Yaa... Yaaaaaahooo! " +
+            "I'll give you a Star Piece!");
+          this.currMap.addVisualEffect(4009, f.x + 0.7, f.y - 0.4);
         }
         break;
       case 101: // wooden table
@@ -1870,6 +1892,46 @@ class Level {
 
 
 
+  class LevelQuestBox extends ListTextBox {
+    LevelQuestBox() {
+      super(width, Constants.mapEditor_listBoxGap, width, Constants.
+        level_questBoxHeightRatio * height - Constants.mapEditor_listBoxGap);
+    }
+
+    void click() {
+    }
+
+    void doubleclick() {
+    }
+  }
+
+
+  void chat(String message) {
+    this.level_chatbox.chat(message);
+  }
+
+  class LevelChatBox extends TextBox {
+    boolean first_message = true;
+
+    LevelChatBox() {
+      super(width, Constants.level_questBoxHeightRatio * height, width,
+        0.9 * height - Constants.mapEditor_listBoxGap);
+    }
+
+    void chat(String message) {
+      global.sounds.trigger_player("player/chat");
+      if (this.first_message) {
+        this.addText(message);
+        this.first_message = false;
+      }
+      else {
+        this.addText("\n\n" + message);
+      }
+    }
+  }
+
+
+
   abstract class LevelForm extends FormLNZ {
     LevelForm(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
@@ -2062,13 +2124,15 @@ class Level {
     @Override
     void cancel() {
       this.canceled = true;
-      // Chuck says goodbye
+      Level.this.chat("Chuck Quizmo: Well, well... so long, farewell. 'Til we meet again!");
+      Level.this.currMap.addVisualEffect(4009, this.chuck_quizmo.x + 0.7, this.chuck_quizmo.y - 0.4);
     }
 
     void submit() {
       int guess = toInt(this.fields.get(1).getValue());
       if (guess < 0) {
-        // make a guess please
+        Level.this.chat("Chuck Quizmo: You haven't made a guess!");
+        Level.this.currMap.addVisualEffect(4009, this.chuck_quizmo.x + 0.7, this.chuck_quizmo.y - 0.4);
         return;
       }
       int correct_answer = -1;
@@ -2088,10 +2152,12 @@ class Level {
         else {
           Level.this.currMap.addItem(new Item(2825, this.hero.frontX(), this.hero.frontY()));
         }
-        // congrats!
+        Level.this.chat("Chuck Quizmo: Congratulations! Here's your Star Piece!");
+        Level.this.currMap.addVisualEffect(4009, this.chuck_quizmo.x + 0.7, this.chuck_quizmo.y - 0.4);
       }
       else {
-        // too bad!
+        Level.this.chat("Chuck Quizmo: Too bad!");
+        Level.this.currMap.addVisualEffect(4009, this.chuck_quizmo.x + 0.7, this.chuck_quizmo.y - 0.4);
       }
       this.chuck_quizmo.destroy(Level.this.currMap);
       this.canceled = true;
