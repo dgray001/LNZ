@@ -165,7 +165,7 @@ class Level {
 
 
   void addTestPlayer() {
-    this.player = new Hero(HeroCode.BEN);
+    this.player = new Hero(HeroCode.DAN);
     this.player.setLocation(0.5, 0.5);
     this.currMap.addPlayer(this.player);
   }

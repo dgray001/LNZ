@@ -1336,7 +1336,7 @@ class Hero extends Unit {
       if (this.code_description.display) {
         this.code_description.scroll(amount);
       }
-      if (!Hero.this.inventory.viewing) {
+      if (!Hero.this.inventory.viewing && !global.holding_ctrl) {
         int max_equipped_index = 0;
         if (this.unlocked_inventory_bar2) {
           max_equipped_index = 9;
@@ -1495,7 +1495,7 @@ class Hero extends Unit {
         noStroke();
         rect(this.bar_xi, this.bar_yi, this.xf, this.bar_yf);
         rectMode(CORNER);
-        float health_ratio = max(1, PlayerLeftPanelMenu.this.hero().curr_health
+        float health_ratio = min(1.0, PlayerLeftPanelMenu.this.hero().curr_health
           / PlayerLeftPanelMenu.this.hero().health());
         fill(0, 255, 0);
         rect(this.bar_xi, this.bar_yi, health_ratio * (this.xf - this.bar_xi),
@@ -3601,6 +3601,11 @@ class Hero extends Unit {
         case 2118: // chicken egg
           if (randomChance(0.25)) {
             this.addStatusEffect(StatusEffectCode.SICK, 5000);
+          }
+          break;
+        case 2119: // rotten flesh
+          if (randomChance(0.8)) {
+            this.addStatusEffect(StatusEffectCode.SICK, 8000);
           }
           break;
       }

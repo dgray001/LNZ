@@ -222,6 +222,10 @@ static class Constants {
   static final float unit_healthbarWidth = 0.9;
   static final float unit_healthbarHeight = 0.15;
   static final float unit_healthbarDamageAnimationTime = 150;
+  static final float unit_fallTimer = 100;
+  static final int unit_maxAgility = 5;
+  static final int unit_noDamageFallHeight = 3;
+  static final float unit_fallDamageMultiplier = 0.015;
 
   // Resistances
   static final float resistance_default = 1;

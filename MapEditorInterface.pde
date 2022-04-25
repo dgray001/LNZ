@@ -1287,7 +1287,6 @@ class MapEditorInterface extends InterfaceLNZ {
       }
       this.curr_status += "\nGenerating Images";
       global.images.loadMapGifs();
-      this.level_opening.setPlayer(new Hero(HeroCode.BEN));
       if (this.level_opening.nullify) {
         this.curr_status += " -> " + global.lastErrorMessage();
         delay(2500);
