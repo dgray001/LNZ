@@ -1536,7 +1536,7 @@ class Hero extends Unit {
         noStroke();
         rect(this.bar_xi, this.bar_yi, this.xf, this.bar_yf);
         rectMode(CORNER);
-        float mana_ratio = max(1, PlayerLeftPanelMenu.this.hero().currMana() /
+        float mana_ratio = min(1, PlayerLeftPanelMenu.this.hero().currMana() /
           PlayerLeftPanelMenu.this.hero().mana());
         fill(255, 255, 0);
         rect(this.bar_xi, this.bar_yi, mana_ratio * (this.xf - this.bar_xi),

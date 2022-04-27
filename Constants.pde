@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220427: v0.6.8d" +
+  "\n20220427: v0.6.8e" +
   "\nLines: 30431 (v0.6.8d)" +
   "\nImages: 989 (v0.6.8d)" +
   "\nSounds: 47 (v0.6.8d)" +
@@ -142,7 +142,7 @@ static class Constants {
   // GameMap
   static final float map_borderSize = 30;
   static final int map_terrainResolution = 60;
-  static final int map_fogResolution = 6; // in case in future I decide to use fog images
+  static final int map_fogResolution = 20;
   static final float map_defaultZoom = 60;
   static final float map_minZoom = 40;
   static final float map_maxZoom = 120;
@@ -158,6 +158,7 @@ static class Constants {
   static final float map_selectedObjectImageGap = 8;
   static final float map_moveLogicCap = 0.12; // longest movable distance at one logical go
   static final float map_tierImageHeight = 50;
+  static final float map_statusImageHeight = 30;
 
   // Features
   static final float feature_defaultInteractionDistance = 0.3;
