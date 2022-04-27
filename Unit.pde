@@ -1587,8 +1587,8 @@ class Unit extends MapObject {
           this.move(timeElapsed, myKey, map, MoveModifier.NONE);
         }
         else if (this.timer_attackCooldown <= 0) {
-          if (this.gear.get(GearSlot.WEAPON) != null && this.gear.get(GearSlot.WEAPON).shootable()) {
-            if (this.gear.get(GearSlot.WEAPON).throwable() && distance < this.attackRange(true)) {
+          if (this.weapon() != null && this.weapon().shootable()) {
+            if (this.weapon().meleeAttackable() && distance < this.attackRange(true)) {
               this.curr_action = UnitAction.ATTACKING;
               this.timer_actionTime = this.attackTime(true);
             }
@@ -2128,6 +2128,20 @@ class Unit extends MapObject {
       return;
     }
     map.addProjectile(new Projectile(this.weapon().ID + 1000, myKey, this, this.weapon().shootInaccuracy()));
+    switch(this.weapon().ID) {
+      case 2352: // WN
+        Projectile burst1 = new Projectile(this.weapon().ID + 1000, myKey, this, this.weapon().shootInaccuracy());
+        Projectile burst2 = new Projectile(this.weapon().ID + 1000, myKey, this, this.weapon().shootInaccuracy());
+        burst1.x -= 0.05 * this.facingX;
+        burst1.y -= 0.05 * this.facingY;
+        burst2.x -= 0.1 * this.facingX;
+        burst2.y -= 0.1 * this.facingY;
+        map.addProjectile(burst1);
+        map.addProjectile(burst2);
+        break;
+      default:
+        break;
+    }
     this.weapon().shot();
     this.move(this.weapon().shootRecoil(), myKey, map, MoveModifier.RECOIL);
     this.timer_attackCooldown = this.attackCooldown();
