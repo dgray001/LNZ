@@ -2087,6 +2087,13 @@ class Item extends MapObject {
     }
   }
 
+  int maxStack() {
+    switch(this.ID) {
+      default:
+        return 1;
+    }
+  }
+
   void addStack() {
     this.addStack(1);
   }
@@ -2094,6 +2101,9 @@ class Item extends MapObject {
     this.stack += amount;
     if (this.stack <= 0) {
       this.remove = true;
+    }
+    if (this.stack > this.maxStack()) {
+      global.errorMessage("ERROR: Stack of " + this.display_name() + " too big.");
     }
   }
 
