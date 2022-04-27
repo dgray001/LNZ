@@ -4,10 +4,10 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220427: v0.6.8c" +
-  "\nLines: 30098 (v0.6.8)" +
-  "\nImages: 748 (v0.6.8)" +
-  "\nSounds: 47 (v0.6.8)" +
+  "\n20220427: v0.6.8d" +
+  "\nLines: 30431 (v0.6.8d)" +
+  "\nImages: 989 (v0.6.8d)" +
+  "\nSounds: 47 (v0.6.8d)" +
   "";
   static final String version_history =
   "Liberal Nazi Zombies" +
@@ -156,7 +156,8 @@ static class Constants {
   static final float map_selectedObjectTitleTextSize = 22;
   static final float map_selectedObjectPanelGap = 4;
   static final float map_selectedObjectImageGap = 8;
-  static final float map_moveLogicCap = 0.15; // longest movable distance at one logical go
+  static final float map_moveLogicCap = 0.12; // longest movable distance at one logical go
+  static final float map_tierImageHeight = 50;
 
   // Features
   static final float feature_defaultInteractionDistance = 0.3;

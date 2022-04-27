@@ -59,6 +59,10 @@ class Images {
     for (int i = 0; i <= Constants.gif_explosionNormal_frames; i++) {
       this.loadImageFile("gifs/explosion_normal/" + i + ".png");
     }
+    // tier images
+    for (int i = 1; i <= 11; i++) {
+      this.loadImageFile("icons/tier_" + i + ".png");
+    }
   }
 
   PImage getBlackPixel() {

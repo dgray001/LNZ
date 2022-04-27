@@ -461,7 +461,7 @@ class Unit extends MapObject {
     return this.description;
   }
   String selectedObjectTextboxText() {
-    String text = "-- " + this.type() + " --";
+    String text = "-- " + this.type() + " (level " + this.level + ") --";
     if (this.statuses.size() > 0) {
       text += "\n";
     }

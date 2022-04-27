@@ -501,7 +501,7 @@ class Item extends MapObject {
         this.attack = 3;
         break;
       case 2371:
-        this.setStrings("HAMR", "Ranged Weapon", "Fully automatic LMG. Reduces recoil during sustained fire.");
+        this.setStrings("HAMR", "Ranged Weapon", "Fully automatic LMG. Reduces fire rate with less ammo, becoming more accurate.");
         this.tier = 8;
         this.attack = 3;
         this.attackRange = 0.04;
@@ -2632,7 +2632,8 @@ class Item extends MapObject {
       case 2364: // Voice of Justice
         return 128;
       case 2371: // HAMR
-        return 96;
+        float ammo_ratio = this.ammo / this.maximumAmmo();
+        return 200 - 120 * ammo_ratio;
       case 2372: // Ray Gun
         return 331;
       case 2373: // Lamentation
@@ -2646,7 +2647,8 @@ class Item extends MapObject {
       case 2382: // Dead Specimen Reactor 5000
         return 1200;
       case 2391: // SLDG HAMR
-        return 96;
+        float ammo_ratio = this.ammo / this.maximumAmmo();
+        return 200 - 120 * ammo_ratio;
       case 2392: // Porter's X2 Ray Gun
         return 331;
       default:
@@ -2703,7 +2705,8 @@ class Item extends MapObject {
       case 2364: // Voice of Justice
         return 13;
       case 2371: // HAMR
-        return 10;
+        float ammo_ratio = this.ammo / this.maximumAmmo();
+        return 20 - 12 * ammo_ratio;
       case 2372: // Ray Gun
         return 33;
       case 2373: // Lamentation
@@ -2717,7 +2720,8 @@ class Item extends MapObject {
       case 2382: // Dead Specimen Reactor 5000
         return 120;
       case 2391: // SLDG HAMR
-        return 10;
+        float ammo_ratio = this.ammo / this.maximumAmmo();
+        return 20 - 12 * ammo_ratio;
       case 2392: // Porter's X2 Ray Gun
         return 33;
       default:
@@ -2843,7 +2847,8 @@ class Item extends MapObject {
       case 2364: // Voice of Justice
         return 0.05;
       case 2371: // HAMR
-        return 0.1;
+        float ammo_ratio = this.ammo / this.maximumAmmo();
+        return 0.15 - 0.1 * ammo_ratio;
       case 2372: // Ray Gun
         return 0.05;
       case 2373: // Lamentation
@@ -2857,7 +2862,8 @@ class Item extends MapObject {
       case 2382: // Dead Specimen Reactor 5000
         return 0.02;
       case 2391: // SLDG HAMR
-        return 0.08;
+        float ammo_ratio = this.ammo / this.maximumAmmo();
+        return 0.15 - 0.1 * ammo_ratio;
       case 2392: // Porter's X2 Ray Gun
         return 0.05;
       case 2924: // Glass Bottle

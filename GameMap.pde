@@ -1636,6 +1636,30 @@ class GameMap {
         Constants.map_selectedObjectImageGap, image_width, image_height);
       this.selected_object_textbox.setText(this.selected_object.selectedObjectTextboxText());
       this.selected_object_textbox.update(millis);
+      if (Item.class.isInstance(this.selected_object)) {
+        PImage tier_image = global.images.getImage("icons/tier_" + ((Item)this.
+          selected_object).tier + ".png");
+        float tier_image_width = (Constants.map_tierImageHeight * tier_image.width) / tier_image.height;
+        imageMode(CORNER);
+        image(tier_image, this.selected_object_textbox.xf - tier_image_width - 4,
+          this.selected_object_textbox.yi + 4, tier_image_width, Constants.map_tierImageHeight);
+      }
+      else if (Unit.class.isInstance(this.selected_object)) {
+        PImage tier_image = global.images.getImage("icons/tier_" + ((Unit)this.
+          selected_object).tier() + ".png");
+        float tier_image_width = (Constants.map_tierImageHeight * tier_image.width) / tier_image.height;
+        imageMode(CORNER);
+        image(tier_image, this.selected_object_textbox.xf - tier_image_width - 4,
+          this.selected_object_textbox.yi + 4, tier_image_width, Constants.map_tierImageHeight);
+      }
+      else if (Hero.class.isInstance(this.selected_object)) {
+        PImage tier_image = global.images.getImage("icons/tier_" + ((Hero)this.
+          selected_object).tier() + ".png");
+        float tier_image_width = (Constants.map_tierImageHeight * tier_image.width) / tier_image.height;
+        imageMode(CORNER);
+        image(tier_image, this.selected_object_textbox.xf - tier_image_width - 4,
+          this.selected_object_textbox.yi + 4, tier_image_width, Constants.map_tierImageHeight);
+      }
     }
     stroke(0);
     strokeWeight(1.5);
