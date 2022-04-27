@@ -465,9 +465,6 @@ class Unit extends MapObject {
     if (this.statuses.size() > 0) {
       text += "\n";
     }
-    for (Map.Entry<StatusEffectCode, StatusEffect> entry : this.statuses.entrySet()) {
-      text += "\n-- " + entry.getKey().code_name() + " --";
-    }
     text += "\n\nHealth: " + int(ceil(this.curr_health)) + "/" + int(ceil(this.health()));
     float attack = this.attack();
     if (attack > 0) {
@@ -1943,7 +1940,6 @@ class Unit extends MapObject {
     }
     else if (this.falling) {
       this.falling = false;
-      println("you fell " + this.fall_amount);
       int no_damage_fall_amount = Constants.unit_noDamageFallHeight + 2 * this.agility();
       if (this.fall_amount > no_damage_fall_amount) {
         this.calculateDotDamage(Constants.unit_fallDamageMultiplier * (this.fall_amount - no_damage_fall_amount), true);

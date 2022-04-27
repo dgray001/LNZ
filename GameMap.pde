@@ -1634,9 +1634,10 @@ class GameMap {
       imageMode(CENTER);
       image(this.selected_object.getImage(), 0.5 * this.xi, currY + 0.5 * image_height +
         Constants.map_selectedObjectImageGap, image_width, image_height);
-      this.selected_object_textbox.setText(this.selected_object.selectedObjectTextboxText());
-      this.selected_object_textbox.update(millis);
       if (Item.class.isInstance(this.selected_object)) {
+        this.selected_object_textbox.setText(this.selected_object.selectedObjectTextboxText());
+        this.selected_object_textbox.update(millis);
+        // item tier image
         PImage tier_image = global.images.getImage("icons/tier_" + ((Item)this.
           selected_object).tier + ".png");
         float tier_image_width = (Constants.map_tierImageHeight * tier_image.width) / tier_image.height;
@@ -1644,21 +1645,67 @@ class GameMap {
         image(tier_image, this.selected_object_textbox.xf - tier_image_width - 4,
           this.selected_object_textbox.yi + 4, tier_image_width, Constants.map_tierImageHeight);
       }
-      else if (Unit.class.isInstance(this.selected_object)) {
-        PImage tier_image = global.images.getImage("icons/tier_" + ((Unit)this.
-          selected_object).tier() + ".png");
+      else if (Unit.class.isInstance(this.selected_object) || Hero.class.isInstance(this.selected_object)) {
+        Unit u = (Unit)this.selected_object;
+        boolean lower_textbox = (u.statuses.size() > 0);
+        if (lower_textbox) {
+          this.selected_object_textbox.setYLocation(this.selected_object_textbox.yi +
+            Constants.map_statusImageHeight + 4, this.selected_object_textbox.yf);
+        }
+        this.selected_object_textbox.setText(this.selected_object.selectedObjectTextboxText());
+        this.selected_object_textbox.update(millis);
+        // status effects
+        float x_status = 3;
+        float y_status = this.selected_object_textbox.yi - Constants.map_statusImageHeight - 2;
+        for (Map.Entry<StatusEffectCode, StatusEffect> entry : u.statuses.entrySet()) {
+          imageMode(CORNER);
+          rectMode(CORNER);
+          ellipseMode(CENTER);
+          fill(255, 150);
+          stroke(0);
+          strokeWeight(1);
+          rect(x_status, y_status, Constants.map_statusImageHeight, Constants.map_statusImageHeight);
+          image(global.images.getImage(entry.getKey().getImageString()), x_status,
+            y_status, Constants.map_statusImageHeight, Constants.map_statusImageHeight);
+          if (!entry.getValue().permanent) {
+            fill(100, 100, 255, 140);
+            noStroke();
+            try {
+              float angle = -HALF_PI + 2 * PI * entry.getValue().timer_gone / entry.getValue().timer_gone_start;
+              arc(x_status + 0.5 * Constants.map_statusImageHeight, y_status +
+                0.5 * Constants.map_statusImageHeight, Constants.map_statusImageHeight,
+                Constants.map_statusImageHeight, -HALF_PI, angle, PIE);
+            } catch(Exception e) {}
+          }
+          if (mouseX > x_status && mouseX < x_status + Constants.map_statusImageHeight &&
+            mouseY > y_status && mouseY < y_status + Constants.map_statusImageHeight) {
+            noStroke();
+            fill(global.color_nameDisplayed_background);
+            textSize(14);
+            float rect_height = textAscent() + textDescent() + 2;
+            float rect_width = textWidth(entry.getKey().code_name()) + 2;
+            rect(mouseX + 1, mouseY - rect_height - 1, rect_width, rect_height);
+            fill(255);
+            textAlign(LEFT, TOP);
+            text(entry.getKey().code_name(), mouseX + 2, mouseY - rect_height - 1);
+          }
+          x_status += Constants.map_statusImageHeight + 2;
+        }
+        // unit tier image
+        PImage tier_image = global.images.getImage("icons/tier_" + u.tier() + ".png");
         float tier_image_width = (Constants.map_tierImageHeight * tier_image.width) / tier_image.height;
         imageMode(CORNER);
         image(tier_image, this.selected_object_textbox.xf - tier_image_width - 4,
           this.selected_object_textbox.yi + 4, tier_image_width, Constants.map_tierImageHeight);
+        // raise textbox
+        if (lower_textbox) {
+          this.selected_object_textbox.setYLocation(this.selected_object_textbox.yi -
+            Constants.map_statusImageHeight - 4, this.selected_object_textbox.yf);
+        }
       }
-      else if (Hero.class.isInstance(this.selected_object)) {
-        PImage tier_image = global.images.getImage("icons/tier_" + ((Hero)this.
-          selected_object).tier() + ".png");
-        float tier_image_width = (Constants.map_tierImageHeight * tier_image.width) / tier_image.height;
-        imageMode(CORNER);
-        image(tier_image, this.selected_object_textbox.xf - tier_image_width - 4,
-          this.selected_object_textbox.yi + 4, tier_image_width, Constants.map_tierImageHeight);
+      else {
+        this.selected_object_textbox.setText(this.selected_object.selectedObjectTextboxText());
+        this.selected_object_textbox.update(millis);
       }
     }
     stroke(0);
