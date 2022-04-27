@@ -2143,15 +2143,100 @@ class Item extends MapObject {
   ArrayList<Integer> possibleAmmo() {
     ArrayList<Integer> possible_ammo = new ArrayList<Integer>();
     switch(this.ID) {
-      case 2301:
+      case 2301: // Slingshot
         possible_ammo.add(2931);
         possible_ammo.add(2933);
         break;
-      case 2311:
+      case 2311: // Recurve Bow
         possible_ammo.add(2932);
         break;
-      case 2312:
+      case 2312: // M1911
         possible_ammo.add(2941);
+        break;
+      case 2321: // War Machine
+        possible_ammo.add(2944);
+        break;
+      case 2322: // Five-Seven
+        possible_ammo.add(2947);
+        break;
+      case 2323: // Type25
+        possible_ammo.add(2943);
+        break;
+      case 2331: // Mustang and Sally
+        possible_ammo.add(2944);
+        break;
+      case 2332: // FAL
+        possible_ammo.add(2942);
+        break;
+      case 2333: // Python
+        possible_ammo.add(2945);
+        break;
+      case 2341: // RPG
+        possible_ammo.add(2944);
+        break;
+      case 2342: // Dystopic Demolisher
+        possible_ammo.add(2944);
+        break;
+      case 2343: // Ultra
+        possible_ammo.add(2947);
+        break;
+      case 2344: // Strain25
+        possible_ammo.add(2943);
+        break;
+      case 2345: // Executioner
+        possible_ammo.add(2948);
+        break;
+      case 2351: // Galil
+        possible_ammo.add(2943);
+        break;
+      case 2352: // WN
+        possible_ammo.add(2942);
+        break;
+      case 2353: // Ballistic Knife
+        possible_ammo.add(2203);
+        break;
+      case 2354: // Cobra
+        possible_ammo.add(2945);
+        break;
+      case 2355: // MTAR
+        possible_ammo.add(2943);
+        break;
+      case 2361: // RPD
+        possible_ammo.add(2942);
+        break;
+      case 2362: // Rocket-Propelled Grievance
+        possible_ammo.add(2944);
+        break;
+      case 2363: // DSR-50
+        possible_ammo.add(2946);
+        break;
+      case 2364: // Voice of Justice
+        possible_ammo.add(2948);
+        break;
+      case 2371: // HAMR
+        possible_ammo.add(2942);
+        break;
+      case 2372: // Ray Gun
+        break;
+      case 2373: // Lamentation
+        possible_ammo.add(2942);
+        break;
+      case 2374: // The Krauss Refibrillator
+        possible_ammo.add(2203);
+        break;
+      case 2375: // Malevolent Taxonomic Anodized Redeemer
+        possible_ammo.add(2943);
+        break;
+      case 2381: // Relativistic Punishment Device
+        possible_ammo.add(2942);
+        break;
+      case 2382: // Dead Specimen Reactor 5000
+        possible_ammo.add(2946);
+        break;
+      case 2391: // SLDG HAMR
+        possible_ammo.add(2942);
+        break;
+      case 2392: // Porter's X2 Ray Gun
         break;
       default:
         break;
@@ -2183,6 +2268,22 @@ class Item extends MapObject {
       case 2932:
       case 2933:
       case 2944:
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  boolean meleeAttackable() {
+    if (!this.shootable()) {
+      return true;
+    }
+    if (this.throwable()) {
+      return true;
+    }
+    switch(this.ID) {
+      case 2353: // Ballistic Knife
+      case 2374: // The Krauss Refibrillator
         return true;
       default:
         return false;

@@ -132,11 +132,11 @@ class Projectile extends MapObject {
         break;
       case 3322: // Five-Seven
         this.speed = 90;
-        this.decay = 2.1973;
+        this.decay = 1.709;
         break;
       case 3323: // Type25
         this.speed = 90;
-        this.decay = 1.4876;
+        this.decay = 1.157;
         break;
       case 3331: // Mustang and Sally
         this.speed = 60;
@@ -144,11 +144,11 @@ class Projectile extends MapObject {
         break;
       case 3332: // FAL
         this.speed = 100;
-        this.decay = 0.8496;
+        this.decay = 0.6797;
         break;
       case 3333: // Python
         this.speed = 100;
-        this.decay = 3.25;
+        this.decay = 2.6;
         break;
       case 3341: // RPG
         this.speed = 30;
@@ -160,23 +160,23 @@ class Projectile extends MapObject {
         break;
       case 3343: // Ultra
         this.speed = 90;
-        this.decay = 1.8;
+        this.decay = 1.5;
         break;
       case 3344: // Strain25
         this.speed = 90;
-        this.decay = 1.1865;
+        this.decay = 0.9888;
         break;
       case 3345: // Executioner
         this.speed = 90;
-        this.decay = 5.5501;
+        this.decay = 4.6251;
         break;
       case 3351: // Galil
         this.speed = 90;
-        this.decay = 1.25;
+        this.decay = 1.0417;
         break;
       case 3352: // WN
         this.speed = 100;
-        this.decay = 0.9943;
+        this.decay = 0.7954;
         break;
       case 3353: // Ballistic Knife
         this.speed = 40;
@@ -184,15 +184,15 @@ class Projectile extends MapObject {
         break;
       case 3354: // Cobra
         this.speed = 100;
-        this.decay = 2.2857;
+        this.decay = 1.8286;
         break;
       case 3355: // MTAR
         this.speed = 90;
-        this.decay = 1.0019;
+        this.decay = 0.8345;
         break;
       case 3361: // RPD
         this.speed = 90;
-        this.decay = 1.1132;
+        this.decay = 0.8905;
         break;
       case 3362: // Rocket-Propelled Grievance
         this.speed = 90;
@@ -200,15 +200,15 @@ class Projectile extends MapObject {
         break;
       case 3363: // DSR-50
         this.speed = 90;
-        this.decay = 0.8240;
+        this.decay = 0.6592;
         break;
       case 3364: // Voice of Justice
         this.speed = 90;
-        this.decay = 4.9173;
+        this.decay = 3.9339;
         break;
       case 3371: // HAMR
         this.speed = 90;
-        this.decay = 1.5028;
+        this.decay = 1.2022;
         break;
       case 3372: // Ray Gun
         this.speed = 90;
@@ -216,7 +216,7 @@ class Projectile extends MapObject {
         break;
       case 3373: // Lamentation
         this.speed = 90;
-        this.decay = 1.2162;
+        this.decay = 0.973;
         break;
       case 3374: // The Krauss Refibrillator
         this.speed = 90;
@@ -224,11 +224,11 @@ class Projectile extends MapObject {
         break;
       case 3375: // Malevolent Taxonomic Anodized Redeemer
         this.speed = 90;
-        this.decay = 1.0204;
+        this.decay = 0.8163;
         break;
       case 3381: // Relativistic Punishment Device
         this.speed = 90;
-        this.decay = 0.8230;
+        this.decay = 0.6584;
         break;
       case 3382: // Dead Specimen Reactor 5000
         this.speed = 90;
@@ -236,7 +236,7 @@ class Projectile extends MapObject {
         break;
       case 3391: // SLDG HAMR
         this.speed = 90;
-        this.decay = 0.9600;
+        this.decay = 0.768;
         break;
       case 3392: // Porter's X2 Ray Gun
         this.speed = 90;
@@ -673,6 +673,10 @@ class Projectile extends MapObject {
       case 3002: // Mighty Pen II
         droppedItems.add(new Item(2911));
         break;
+      case 3353: // Ballistic Knife
+      case 3374: // The Krauss Refibrillator
+        droppedItems.add(new Item(2203));
+        break;
       case 3924: // glass bottle
         droppedItems.add(new Item(2805));
         break;
@@ -749,19 +753,19 @@ class Projectile extends MapObject {
   float collidePower() {
     switch(this.ID) {
       case 3321: // War Machine
-        return 8;
-      case 3331: // Mustang and Sally
-        return 12;
-      case 3341: // RPG
-        return 12;
-      case 3342: // Dystopic Demolisher
         return 10;
+      case 3331: // Mustang and Sally
+        return 18;
+      case 3341: // RPG
+        return 20;
+      case 3342: // Dystopic Demolisher
+        return 12;
       case 3362: // Rocket-Propelled Grievance
-        return 14;
+        return 24;
       case 3372: // Ray Gun
-        return 50;
+        return 1000;
       case 3392: // Porter's X2 Ray Gun
-        return 100;
+        return 1000;
       case 3944: // Grenade
         return 4;
       default:
@@ -819,45 +823,45 @@ class Projectile extends MapObject {
     switch(this.ID) { // set values and add visual effects
       case 3321: // War Machine
         explode_range = Constants.projectile_grenadeExplosionRadius;
-        explode_minPower = 200;
-        explode_maxPower = 200;
+        explode_minPower = 125;
+        explode_maxPower = 450;
         map.addVisualEffect(4010, this.x, this.y);
         break;
       case 3331: // Mustang and Sally
         explode_range = Constants.projectile_grenadeExplosionRadius;
-        explode_minPower = 1000;
-        explode_maxPower = 1000;
+        explode_minPower = 75;
+        explode_maxPower = 1200;
         map.addVisualEffect(4011, this.x, this.y);
         break;
       case 3341: // RPG
         explode_range = Constants.projectile_rpgExplosionRadius;
-        explode_minPower = 600;
-        explode_maxPower = 600;
+        explode_minPower = 100;
+        explode_maxPower = 500;
         map.addVisualEffect(4012, this.x, this.y);
         break;
       case 3342: // Dystopic Demolisher
         explode_range = Constants.projectile_grenadeExplosionRadius;
-        explode_minPower = 600;
-        explode_maxPower = 600;
+        explode_minPower = 125;
+        explode_maxPower = 900;
         map.addVisualEffect(4013, this.x, this.y);
         break;
       case 3362: // Rocket-Propelled Grievance
         explode_range = Constants.projectile_rpgIIExplosionRadius;
-        explode_minPower = 600;
+        explode_minPower = 100;
         explode_maxPower = 600;
         map.addVisualEffect(4014, this.x, this.y);
         break;
       case 3372: // Ray Gun
         explode_range = Constants.projectile_rayGunExplosionRadius;
-        explode_minPower = 600;
-        explode_maxPower = 600;
-        map.addVisualEffect(4015, this.x, this.y);
+        explode_minPower = 300;
+        explode_maxPower = 1500;
+        map.addVisualEffect(4015, this.x, this.y - 0.5 * Constants.projectile_rayGunExplosionRadius);
         break;
       case 3392: // Porter's X2 Ray Gun
         explode_range = Constants.projectile_rayGunIIExplosionRadius;
-        explode_minPower = 600;
-        explode_maxPower = 600;
-        map.addVisualEffect(4016, this.x, this.y);
+        explode_minPower = 300;
+        explode_maxPower = 2000;
+        map.addVisualEffect(4016, this.x, this.y - 0.5 * Constants.projectile_rayGunIIExplosionRadius);
         break;
       case 3944: // Grenade
         explode_range = Constants.projectile_grenadeExplosionRadius;
