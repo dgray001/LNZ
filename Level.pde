@@ -1470,6 +1470,12 @@ class Level {
   }
 
   void mouseMove(float mX, float mY) {
+    if (this.level_questbox != null) {
+      this.level_questbox.mouseMove(mX, mY);
+    }
+    if (this.level_chatbox != null) {
+      this.level_chatbox.mouseMove(mX, mY);
+    }
     if (this.player != null) {
       if (this.player.heroTree.curr_viewing) {
         this.player.heroTree.mouseMove(mX, mY);
@@ -1492,6 +1498,12 @@ class Level {
   }
 
   void mousePress() {
+    if (this.level_questbox != null) {
+      this.level_questbox.mousePress();
+    }
+    if (this.level_chatbox != null) {
+      this.level_chatbox.mousePress();
+    }
     if (this.player != null) {
       if (this.player.heroTree.curr_viewing) {
         this.player.heroTree.mousePress();
@@ -1514,6 +1526,12 @@ class Level {
   }
 
   void mouseRelease(float mX, float mY) {
+    if (this.level_questbox != null) {
+      this.level_questbox.mouseRelease(mX, mY);
+    }
+    if (this.level_chatbox != null) {
+      this.level_chatbox.mouseRelease(mX, mY);
+    }
     if (this.player != null) {
       if (this.player.heroTree.curr_viewing) {
         this.player.heroTree.mouseRelease(mX, mY);
@@ -1536,6 +1554,12 @@ class Level {
   }
 
   void scroll(int amount) {
+    if (this.level_questbox != null) {
+      this.level_questbox.scroll(amount);
+    }
+    if (this.level_chatbox != null) {
+      this.level_chatbox.scroll(amount);
+    }
     if (this.player != null) {
       if (this.player.heroTree.curr_viewing) {
         this.player.heroTree.scroll(amount);
@@ -1896,6 +1920,9 @@ class Level {
     LevelQuestBox() {
       super(width, Constants.mapEditor_listBoxGap, width, Constants.
         level_questBoxHeightRatio * height - Constants.mapEditor_listBoxGap);
+      this.color_background = color(250, 190, 140);
+      this.color_header = color(220, 180, 130);
+      this.setTitleText("Quests");
     }
 
     void click() {
@@ -1916,6 +1943,9 @@ class Level {
     LevelChatBox() {
       super(width, Constants.level_questBoxHeightRatio * height, width,
         0.9 * height - Constants.mapEditor_listBoxGap);
+      this.color_background = color(250, 190, 140);
+      this.color_header = color(220, 180, 130);
+      this.setTitleText("Chat Log");
     }
 
     void chat(String message) {
@@ -1927,6 +1957,7 @@ class Level {
       else {
         this.addText("\n\n" + message);
       }
+      this.scrollbar.scrollMax();
     }
   }
 
@@ -2205,18 +2236,33 @@ class Level {
 
 
   class KhalilForm extends LevelForm {
+    protected Inventory original_stock;
     protected Feature khalil;
     protected Hero hero;
+    protected ArrayList<Integer> costs;
 
     KhalilForm(Feature f, Hero h) {
       super(0.5 * (width - Constants.level_khalilFormWidth), 0.5 * (height - Constants.level_khalilFormHeight),
         0.5 * (width + Constants.level_khalilFormWidth), 0.5 * (height + Constants.level_khalilFormHeight));
+      this.original_stock = getKhalilInventory(f.number);
+      this.costs = getKhalilInventoryCosts(f.number);
       this.khalil = f;
       this.hero = h;
       this.setTitleText(this.khalil.display_name());
+      if (this.khalil.inventory == null) {
+        this.khalil.createKhalilInventory();
+      }
+    }
+
+    @Override
+    void cancel() {
+      this.canceled = true;
+      Level.this.chat("Traveling Buddy: Sooo loooong traveling buddyyyy");
+      Level.this.currMap.addVisualEffect(4009, this.khalil.x + 0.6, this.khalil.y - 0.4);
     }
 
     void submit() {
+      // process request
     }
   }
 }

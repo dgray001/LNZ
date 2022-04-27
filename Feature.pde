@@ -1725,6 +1725,15 @@ class Feature extends MapObject {
     }
   }
 
+
+  void createKhalilInventory() {
+    if (this.ID != 11 || this.inventory != null) {
+      return;
+    }
+    this.inventory = getKhalilInventory(this.number);
+  }
+
+
   String fileString() {
     String fileString = "\nnew: Feature: " + this.ID;
     fileString += this.objectFileString();

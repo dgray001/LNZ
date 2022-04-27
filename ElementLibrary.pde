@@ -1418,6 +1418,14 @@ class ScrollBar {
     }
     this.refreshBarButtons();
   }
+  void scrollMax() {
+    this.value = this.maxValue;
+    this.refreshBarButtons();
+  }
+  void scrollMin() {
+    this.value = this.minValue;
+    this.refreshBarButtons();
+  }
 
   void increaseValue(float amount) {
     this.updateValue(this.value + amount);

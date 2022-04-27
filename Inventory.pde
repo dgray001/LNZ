@@ -319,3 +319,33 @@ class StoveInventory extends Inventory {
 
   // add on/off switch for inside oven and knobs for burners
 }
+
+
+Inventory getKhalilInventory(int khalil_code) {
+  Inventory inv = null;
+  switch(khalil_code) {
+    case 0:
+      inv = new Inventory(1, 2, true);
+      inv.stash(new Item(2106));
+      inv.stash(new Item(2461));
+      break;
+    default:
+      global.errorMessage("ERROR: Khalil code " + khalil_code + " not found.");
+      break;
+  }
+  return inv;
+}
+
+ArrayList<Integer> getKhalilInventoryCosts(int khalil_code) {
+  ArrayList<Integer> costs = new ArrayList<Integer>();
+  switch(khalil_code) {
+    case 0:
+      costs.add(1);
+      costs.add(2);
+      break;
+    default:
+      global.errorMessage("ERROR: Khalil code " + khalil_code + " not found.");
+      break;
+  }
+  return costs;
+}
