@@ -39,6 +39,26 @@ class Images {
     for (int i = 0; i <= Constants.gif_poof_frames; i++) {
       this.loadImageFile("gifs/poof/" + i + ".png");
     }
+    // ability gifs
+    for (int i = 0; i <= Constants.gif_amphibiousLeap_frames; i++) {
+      this.loadImageFile("gifs/amphibious_leap/" + i + ".png");
+    }
+    // explosion gifs
+    for (int i = 0; i <= Constants.gif_explosionBig_frames; i++) {
+      this.loadImageFile("gifs/explosion_big/" + i + ".png");
+    }
+    for (int i = 0; i <= Constants.gif_explosionCrackel_frames; i++) {
+      this.loadImageFile("gifs/explosion_crackel/" + i + ".png");
+    }
+    for (int i = 0; i <= Constants.gif_explosionFire_frames; i++) {
+      this.loadImageFile("gifs/explosion_fire/" + i + ".png");
+    }
+    for (int i = 0; i <= Constants.gif_explosionGreen_frames; i++) {
+      this.loadImageFile("gifs/explosion_green/" + i + ".png");
+    }
+    for (int i = 0; i <= Constants.gif_explosionNormal_frames; i++) {
+      this.loadImageFile("gifs/explosion_normal/" + i + ".png");
+    }
   }
 
   PImage getBlackPixel() {

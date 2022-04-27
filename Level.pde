@@ -2130,7 +2130,6 @@ class Level {
       super.update(millis);
       imageMode(CORNER);
       image(global.images.getImage("features/chuck_quizmo.png"), this.xi + 210, this.yi + 100, 80, 80);
-      image(global.images.getImage("features/vanna_t.png"), this.xi + 300, this.yi + 120, 60, 60);
       int frame = constrain(int(floor(Constants.gif_quizmoQuestion_frames * (millis() %
         Constants.gif_quizmoQuestion_time) / Constants.gif_quizmoQuestion_time)),
         0, Constants.gif_quizmoQuestion_frames);
@@ -2140,15 +2139,18 @@ class Level {
           this.canceled = true;
         }
         if (this.correct_guess) {
+          image(global.images.getImage("features/vanna_t_smiling.png"), this.xi + 300, this.yi + 120, 60, 60);
           image(global.images.getImage("gifs/quizmo_correct/" + frame + ".png"),
             this.xi + 230, this.yi + 50, 40, 40);
         }
         else {
+          image(global.images.getImage("features/vanna_t.png"), this.xi + 300, this.yi + 120, 60, 60);
           image(global.images.getImage("gifs/quizmo_wrong/" + frame + ".png"),
             this.xi + 230, this.yi + 50, 40, 40);
         }
       }
       else {
+        image(global.images.getImage("features/vanna_t.png"), this.xi + 300, this.yi + 120, 60, 60);
         image(global.images.getImage("gifs/quizmo_question/" + frame + ".png"),
           this.xi + 230, this.yi + 50, 40, 40);
       }

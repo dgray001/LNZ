@@ -42,8 +42,40 @@ class VisualEffect extends MapObject {
       case 4008: // alkaloid secretion II
         this.setValues(2 * Constants.ability_119_range, 2 * Constants.ability_119_range, 100);
         break;
-      case 4009: // Chat bubble
-        this.setValues(0.8, 0.8, 1200);
+      case 4009: // chat bubble
+        this.setValues(0.8, 0.8, Constants.gif_explosionNormal_time);
+        break;
+      case 4010: // war machine explosion
+        this.setValues(2 * Constants.projectile_grenadeExplosionRadius, 2 *
+          Constants.projectile_grenadeExplosionRadius, Constants.gif_explosionNormal_time);
+        break;
+      case 4011: // mustang and sally explosion
+        this.setValues(2 * Constants.projectile_mustangAndSallyExplosionRadius, 2 *
+          Constants.projectile_mustangAndSallyExplosionRadius, Constants.gif_explosionNormal_time);
+        break;
+      case 4012: // RPG explosion
+        this.setValues(2 * Constants.projectile_rpgExplosionRadius, 2 *
+          Constants.projectile_rpgExplosionRadius, Constants.gif_explosionNormal_time);
+        break;
+      case 4013: // dystopic demolisher explosion
+        this.setValues(2 * Constants.projectile_grenadeExplosionRadius, 2 *
+          Constants.projectile_grenadeExplosionRadius, Constants.gif_explosionNormal_time);
+        break;
+      case 4014: // rocket-propelled grievance
+        this.setValues(2 * Constants.projectile_rpgIIExplosionRadius, 2 *
+          Constants.projectile_rpgIIExplosionRadius, Constants.gif_explosionNormal_time);
+        break;
+      case 4015: // ray gun explosion
+        this.setValues(2 * Constants.projectile_rayGunExplosionRadius, 2 *
+          Constants.projectile_rayGunExplosionRadius, Constants.gif_explosionGreen_time);
+        break;
+      case 4016: // porter's x2 ray gun explosion
+        this.setValues(2 * Constants.projectile_rayGunIIExplosionRadius, 2 *
+          Constants.projectile_rayGunIIExplosionRadius, Constants.gif_explosionGreen_time);
+        break;
+      case 4017: // grenade (thrown) explosion
+        this.setValues(2 * Constants.projectile_grenadeExplosionRadius, 2 *
+          Constants.projectile_grenadeExplosionRadius, Constants.gif_explosionNormal_time);
         break;
       default:
         global.errorMessage("ERROR: VisualEffect ID " + ID + " not found.");
@@ -156,6 +188,24 @@ class VisualEffect extends MapObject {
         break;
       case 4009:
         path = "icons/chat.png";
+        break;
+      case 4010:
+      case 4011:
+      case 4012:
+      case 4013:
+      case 4014:
+      case 4017:
+        path += "explosion_normal/";
+        frame = int(floor(Constants.gif_explosionNormal_frames *
+          (1.0 - this.timer / (1 + Constants.gif_explosionNormal_time))));
+        path += frame + ".png";
+        break;
+      case 4015:
+      case 4016:
+        path += "explosion_green/";
+        frame = int(floor(Constants.gif_explosionGreen_frames *
+          (1.0 - this.timer / (1 + Constants.gif_explosionGreen_time))));
+        path += frame + ".png";
         break;
       default:
         global.errorMessage("ERROR: Visual Effect ID " + ID + " not found.");

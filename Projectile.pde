@@ -818,44 +818,52 @@ class Projectile extends MapObject {
     float explode_minPower = 0;
     switch(this.ID) { // set values and add visual effects
       case 3321: // War Machine
-        explode_range = 3;
+        explode_range = Constants.projectile_grenadeExplosionRadius;
         explode_minPower = 200;
         explode_maxPower = 200;
+        map.addVisualEffect(4010, this.x, this.y);
         break;
       case 3331: // Mustang and Sally
-        explode_range = 4.5;
+        explode_range = Constants.projectile_grenadeExplosionRadius;
         explode_minPower = 1000;
         explode_maxPower = 1000;
+        map.addVisualEffect(4011, this.x, this.y);
         break;
       case 3341: // RPG
-        explode_range = 2;
+        explode_range = Constants.projectile_rpgExplosionRadius;
         explode_minPower = 600;
         explode_maxPower = 600;
+        map.addVisualEffect(4012, this.x, this.y);
         break;
       case 3342: // Dystopic Demolisher
-        explode_range = 3;
+        explode_range = Constants.projectile_grenadeExplosionRadius;
         explode_minPower = 600;
         explode_maxPower = 600;
+        map.addVisualEffect(4013, this.x, this.y);
         break;
       case 3362: // Rocket-Propelled Grievance
-        explode_range = 2.5;
+        explode_range = Constants.projectile_rpgIIExplosionRadius;
         explode_minPower = 600;
         explode_maxPower = 600;
+        map.addVisualEffect(4014, this.x, this.y);
         break;
       case 3372: // Ray Gun
-        explode_range = 2.5;
+        explode_range = Constants.projectile_rayGunExplosionRadius;
         explode_minPower = 600;
         explode_maxPower = 600;
+        map.addVisualEffect(4015, this.x, this.y);
         break;
       case 3392: // Porter's X2 Ray Gun
-        explode_range = 2.5;
+        explode_range = Constants.projectile_rayGunIIExplosionRadius;
         explode_minPower = 600;
         explode_maxPower = 600;
+        map.addVisualEffect(4016, this.x, this.y);
         break;
       case 3944: // Grenade
-        explode_range = 3;
+        explode_range = Constants.projectile_grenadeExplosionRadius;
         explode_minPower = 100;
         explode_maxPower = 400;
+        map.addVisualEffect(4017, this.x, this.y);
         break;
       default:
         global.errorMessage("ERROR: Projectile ID " + this.ID + " doesn't explode.");
