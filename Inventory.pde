@@ -326,7 +326,9 @@ Inventory getKhalilInventory(int khalil_code) {
   switch(khalil_code) {
     case 0:
       inv = new Inventory(1, 2, true);
-      inv.stash(new Item(2106));
+      Item i = new Item(2106);
+      i.stack = 4;
+      inv.stash(i);
       inv.stash(new Item(2461));
       break;
     default:
@@ -336,12 +338,12 @@ Inventory getKhalilInventory(int khalil_code) {
   return inv;
 }
 
-ArrayList<Integer> getKhalilInventoryCosts(int khalil_code) {
-  ArrayList<Integer> costs = new ArrayList<Integer>();
+ArrayList<Float> getKhalilInventoryCosts(int khalil_code) {
+  ArrayList<Float> costs = new ArrayList<Float>();
   switch(khalil_code) {
     case 0:
-      costs.add(1);
-      costs.add(2);
+      costs.add(1.0);
+      costs.add(2.12);
       break;
     default:
       global.errorMessage("ERROR: Khalil code " + khalil_code + " not found.");
