@@ -2239,11 +2239,13 @@ class Level {
     protected Inventory original_stock;
     protected Feature khalil;
     protected Hero hero;
-    protected ArrayList<Integer> costs;
+    protected ArrayList<Float> costs;
 
     KhalilForm(Feature f, Hero h) {
       super(0.5 * (width - Constants.level_khalilFormWidth), 0.5 * (height - Constants.level_khalilFormHeight),
         0.5 * (width + Constants.level_khalilFormWidth), 0.5 * (height + Constants.level_khalilFormHeight));
+      this.color_background = color(102, 153, 204);
+      this.color_header = color(72, 120, 170);
       this.original_stock = getKhalilInventory(f.number);
       this.costs = getKhalilInventoryCosts(f.number);
       this.khalil = f;
@@ -2252,7 +2254,46 @@ class Level {
       if (this.khalil.inventory == null) {
         this.khalil.createKhalilInventory();
       }
+
+      MessageFormField khalilMessageField = new MessageFormField("Please take a look at my inventory of goods.");
+      khalilMessageField.setTextSize(20, true);
+      RadiosFormField radiosField = new RadiosFormField("Inventory");
+      for (int i = 0; i < this.original_stock.slots.size(); i++) {
+        String item_name = this.original_stock.slots.get(i).item.display_name();
+        Item stock_item = this.khalil.inventory.slots.get(i).item;
+        int stock_amount = 0;
+        if (stock_item != null && !stock_item.remove) {
+          stock_amount = stock_item.stack;
+        }
+        if (stock_amount > 0) {
+          radiosField.addRadio(item_name + " (" + stock_amount + " left): $" + this.costs.get(i));
+        }
+        else {
+          radiosField.addDisabledRadio(item_name + " (out of stock): $" + this.costs.get(i));
+        }
+      }
+      SubmitCancelFormField buttons = new SubmitCancelFormField("Purchase", "Leave");
+      buttons.button1.setColors(color(170), color(127, 178, 229), color(102,
+        153, 204), color(80, 128, 179), color(0));
+      buttons.button2.setColors(color(170), color(127, 178, 229), color(102,
+        153, 204), color(80, 128, 179), color(0));
+
+      this.addField(new SpacerFormField(110));
+      this.addField(khalilMessageField);
+      this.addField(new SpacerFormField(5));
+      this.addField(radiosField);
+      this.addField(new SpacerFormField(20));
+      this.addField(buttons);
     }
+
+
+    @Override
+    void update(int millis) {
+      super.update(millis);
+      imageMode(CENTER);
+      image(this.khalil.getImage(), this.xCenter(), this.yStart + 65, 240, 120);
+    }
+
 
     @Override
     void cancel() {
@@ -2262,7 +2303,44 @@ class Level {
     }
 
     void submit() {
-      // process request
+      int selection = toInt(this.fields.get(3).getValue());
+      if (selection < 0) {
+        this.fields.get(1).setValue("Please make a selection.");
+        return;
+      }
+      float cost = this.costs.get(selection);
+      if (this.hero.money < cost) {
+        this.fields.get(1).setValue("It seems you don't have enough money to afford that.");
+        return;
+      }
+      Item i = this.khalil.inventory.slots.get(selection).item;
+      if (i == null || i.remove) {
+        this.fields.get(1).setValue("That item is out of stock.");
+        return;
+      }
+      this.fields.get(1).setValue("Thank you for your purchase.");
+      Item bought_item = new Item(i);
+      i.removeStack();
+      bought_item.stack = 1;
+      this.hero.money -= cost;
+      if (this.hero.canPickup()) {
+        this.hero.pickup(bought_item);
+      }
+      else {
+        Item leftover = this.hero.inventory.stash(bought_item);
+        if (leftover != null && !leftover.remove) {
+          Level.this.currMap.addItem(leftover, this.khalil.x + 1, this.khalil.y + 1);
+        }
+      }
+      RadioButton button = ((RadiosFormField)this.fields.get(3)).radios.get(selection);
+      if (i.remove) {
+        button.message = i.display_name() + " (out of stock): $" + this.costs.get(selection);
+        button.disabled = true;
+        button.color_text = color(80);
+      }
+      else {
+        button.message = i.display_name() + " (" + i.stack + " left): $" + this.costs.get(selection);
+      }
     }
   }
 }

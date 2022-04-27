@@ -3271,7 +3271,7 @@ class Hero extends Unit {
   protected int level_tokens = 200;
   protected float experience = 0;
   protected int experience_next_level = 1;
-  protected float money = 0;
+  protected float money = 10;
   protected float curr_mana = 0;
   protected int hunger = 100;
   protected int thirst = 100;

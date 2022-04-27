@@ -2819,7 +2819,13 @@ class MessageFormField extends FormField {
   }
 
   void setTextSize(float new_text_size) {
+    this.setTextSize(new_text_size, false);
+  }
+  void setTextSize(float new_text_size, boolean force) {
     this.default_text_size = new_text_size;
+    if (force) {
+      this.minimum_text_size = new_text_size;
+    }
     this.updateWidthDependencies();
   }
 
@@ -3173,6 +3179,12 @@ class RadiosFormField extends MessageFormField {
   }
   void addRadio(String message) {
     this.addRadio(new DefaultRadioButton(message));
+  }
+  void addDisabledRadio(String message) {
+    DefaultRadioButton radio = new DefaultRadioButton(message);
+    radio.disabled = true;
+    radio.color_text = color(80);
+    this.addRadio(radio);
   }
   void addRadio(RadioButton radio) {
     this.radios.add(radio);
@@ -3951,10 +3963,10 @@ abstract class Form {
   }
 
   float xCenter() {
-    return 0.5 * (this.xf - this.xi);
+    return this.xi + 0.5 * (this.xf - this.xi);
   }
   float yCenter() {
-    return 0.5 * (this.yf - this.yi);
+    return this.yi + 0.5 * (this.yf - this.yi);
   }
 
   void setLocation(float xi, float yi, float xf, float yf) {
