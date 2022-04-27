@@ -162,7 +162,8 @@ abstract class MapObject {
 
   abstract String fileString();
   String objectFileString() {
-    return "\nlocation: " + this.x + ", " + this.y + ", " + this.curr_height + "\nremove: " + this.remove;
+    return "\nlocation: " + this.x + ", " + this.y + ", " + this.curr_height +
+      "\ncurr_height: " + this.curr_height + "\nremove: " + this.remove;
   }
 
   abstract void addData(String datakey, String data);
@@ -177,6 +178,9 @@ abstract class MapObject {
         this.x = toFloat(trim(locationdata[0]));
         this.y = toFloat(trim(locationdata[1]));
         this.curr_height = toInt(trim(locationdata[2]));
+        return true;
+      case "curr_height":
+        this.curr_height = toInt(data);
         return true;
       case "remove":
         this.remove = toBoolean(data);

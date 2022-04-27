@@ -861,6 +861,7 @@ class GameMap {
   protected MapObject selected_object = null;
   protected int selected_key = -10;
   protected SelectedObjectTextbox selected_object_textbox = new SelectedObjectTextbox();
+  protected boolean showing_nerd_stats = false;
 
   protected ArrayList<Feature> features = new ArrayList<Feature>();
   protected HashMap<Integer, Unit> units = new HashMap<Integer, Unit>();
@@ -1200,6 +1201,8 @@ class GameMap {
   }
   void addUnit(Unit u, int code) {
     this.units.put(code, u);
+    u.curr_squares_on = u.getSquaresOn();
+    u.resolveFloorHeight(this, code);
   }
   // remove unit
   void removeUnit(int code) {
@@ -1209,7 +1212,7 @@ class GameMap {
   }
   // add player unit
   void addPlayer(Hero player) {
-    this.units.put(0, player);
+    this.addUnit(player, 0);
   }
 
   // add item
@@ -1417,6 +1420,26 @@ class GameMap {
     // header messages
     if (this.headerMessages.peek() != null) {
       this.headerMessages.peek().drawMessage();
+    }
+    // nerd stats
+    if (this.showing_nerd_stats) {
+      fill(255);
+      textSize(14);
+      textAlign(LEFT, TOP);
+      float y_stats = this.yi + 31;
+      float line_height = textAscent() + textDescent() + 2;
+      text("FPS: " + int(global.lastFPS), this.xi + 1, y_stats);
+      if (this.units.containsKey(0)) {
+        y_stats += line_height;
+        text("Location: (" + this.units.get(0).x + ", " + this.units.get(0).y +
+          ", " + this.units.get(0).curr_height + ")", this.xi + 1, y_stats);
+        y_stats += line_height;
+        text("Facing: (" + this.units.get(0).facingX + ", " + this.units.get(0).facingY +
+          ", " + this.units.get(0).facingA + ")", this.xi + 1, y_stats);
+        y_stats += line_height;
+        text("Height: (" + this.units.get(0).curr_height + ", " + this.units.get(0).floor_height +
+          ", " + this.units.get(0).unit_height + ")", this.xi + 1, y_stats);
+      }
     }
   }
 
@@ -2164,6 +2187,12 @@ class GameMap {
             this.units.get(0).dropWeapon(this);
           }
           break;
+        case 'r':
+        case 'R':
+          if (global.holding_ctrl) {
+            this.showing_nerd_stats = !this.showing_nerd_stats;
+          }
+          break;
         case 'a':
         case 'A':
           if (this.units.containsKey(0)) {
@@ -2191,7 +2220,7 @@ class GameMap {
         case 'v':
         case 'V':
           if (this.units.containsKey(0)) {
-            this.units.get(0).jump();
+            this.units.get(0).jump(this, 0);
           }
           break;
       }
