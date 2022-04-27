@@ -356,6 +356,13 @@ class Unit extends MapObject {
         this.size = 0.8 * Constants.unit_defaultSize;
         this.sizeZ = 1;
         break;
+      case 1004:
+        this.setStrings("Rankin", "Human", "");
+        this.baseStats(8, 3, 0, 0, 4);
+        this.level = 5;
+        this.size = 0.45;
+        this.sizeZ = 6;
+        break;
 
       // Heroes
       case 1101:
@@ -569,6 +576,9 @@ class Unit extends MapObject {
         break;
       case 1003:
         path += "chick.png";
+        break;
+      case 1004:
+        path += "john_rankin.png";
         break;
       case 1101:
         path += "ben.png";
@@ -2386,6 +2396,9 @@ class Unit extends MapObject {
         if (randomChance(0.5)) {
           drops.add(new Item(2807));
         }
+        break;
+      case 1004: // John Rankin
+        drops.add(new Item(2991));
         break;
       case 1201: // Tier I zombies
       case 1202:
