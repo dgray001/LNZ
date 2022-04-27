@@ -1189,6 +1189,10 @@ class Item extends MapObject {
         this.attackRange = 0.07;
         this.piercing = 0.2;
         break;
+      case 2991:
+        this.setStrings("Rankin's Third Ball", "Rare Object", "");
+        this.tier = 1;
+        break;
 
       default:
         global.errorMessage("ERROR: Item ID " + ID + " not found.");
@@ -2036,6 +2040,9 @@ class Item extends MapObject {
         break;
       case 2983:
         path += "chainsaw.png";
+        break;
+      case 2991:
+        path += "rankins_third_ball.png";
         break;
       default:
         global.errorMessage("ERROR: Item ID " + ID + " not found.");
