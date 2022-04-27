@@ -33,7 +33,6 @@ void draw() {
     global.lastFPS = (Constants.frameAverageCache * global.lastFPS + float(frameCount - global.frameCounter) *
       (1000.0 / Constants.frameUpdateTime)) / (Constants.frameAverageCache + 1);
     global.frameCounter = frameCount + 1;
-    //println(int(global.lastFPS) + " FPS");
   }
   // Program
   if (global.menu != null) {

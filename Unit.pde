@@ -313,6 +313,7 @@ class Unit extends MapObject {
   protected boolean last_move_any_collision = false;
 
   protected ArrayList<IntegerCoordinate> curr_squares_on = new ArrayList<IntegerCoordinate>(); // squares unit is on
+  protected int unit_height = 0; // height of unit you are standing on
   protected int floor_height = 0; // height of ground
   protected boolean falling = false;
   protected int fall_amount = 0;
@@ -1930,6 +1931,7 @@ class Unit extends MapObject {
           this.timer_falling += Constants.unit_fallTimer;
           this.fall_amount++;
           this.curr_height--;
+          this.resolveFloorHeight(map, myKey);
         }
       }
       else {
@@ -2523,10 +2525,12 @@ class Unit extends MapObject {
   }
 
 
-  void jump() {
+  void jump(GameMap map, int myKey) {
+    this.resolveFloorHeight(map, myKey);
     if (!this.falling && this.curr_height == this.floor_height) {
       this.curr_height += this.agility() * 2;
     }
+    this.resolveFloorHeight(map, myKey);
   }
 
 
@@ -2579,10 +2583,7 @@ class Unit extends MapObject {
     this.moveY(tryMoveY, myKey, map);
     // calculates squares_on and height
     this.curr_squares_on = this.getSquaresOn();
-    this.floor_height = map.maxHeightOfSquares(this.curr_squares_on, false);
-    if (this.floor_height > this.curr_height) {
-      this.curr_height = this.floor_height;
-    }
+    this.resolveFloorHeight(map, myKey);
     // move stat
     float moveX = this.x - startX;
     float moveY = this.y - startY;
@@ -2669,9 +2670,6 @@ class Unit extends MapObject {
       if (u.uncollidable()) {
         continue;
       }
-      if (u.alliance == this.alliance && this.alliance != Alliance.NONE) {
-        continue;
-      }
       if (this.zf() <= u.zi() || u.zf() <= this.zi()) {
         continue;
       }
@@ -2711,9 +2709,6 @@ class Unit extends MapObject {
       if (u.uncollidable()) {
         continue;
       }
-      if (u.alliance == this.alliance && this.alliance != Alliance.NONE) {
-        continue;
-      }
       if (this.zf() <= u.zi() || u.zf() <= this.zi()) {
         continue;
       }
@@ -2728,6 +2723,34 @@ class Unit extends MapObject {
       return true;
     }
     return false;
+  }
+
+
+  void resolveFloorHeight(GameMap map, int myKey) {
+    this.floor_height = map.maxHeightOfSquares(this.curr_squares_on, false);
+    this.unit_height = -100;
+    for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
+      if (entry.getKey() == myKey) {
+        continue;
+      }
+      Unit u = entry.getValue();
+      float distance_to = this.distance(u);
+      if (distance_to > 0) {
+        continue;
+      }
+      if (u.zf() > this.zi()) {
+        continue;
+      }
+      if (u.zf() > this.unit_height) {
+        this.unit_height = u.zf();
+      }
+    }
+    if (this.unit_height > this.floor_height) {
+      this.floor_height = this.unit_height;
+    }
+    if (this.floor_height > this.curr_height) {
+      this.curr_height = this.floor_height;
+    }
   }
 
 

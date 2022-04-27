@@ -3821,43 +3821,79 @@ class Hero extends Unit {
     else {
       switch(key) {
         case '1':
+          if (global.holding_ctrl) {
+            break;
+          }
           this.inventory_bar.setEquippedIndex(0);
           break;
         case '2':
+          if (global.holding_ctrl) {
+            break;
+          }
           this.inventory_bar.setEquippedIndex(1);
           break;
         case '3':
+          if (global.holding_ctrl) {
+            break;
+          }
           this.inventory_bar.setEquippedIndex(2);
           break;
         case '4':
+          if (global.holding_ctrl) {
+            break;
+          }
           this.inventory_bar.setEquippedIndex(3);
           break;
         case '5':
+          if (global.holding_ctrl) {
+            break;
+          }
           this.inventory_bar.setEquippedIndex(4);
           break;
         case '6':
+          if (global.holding_ctrl) {
+            break;
+          }
           this.inventory_bar.setEquippedIndex(5);
           break;
         case '7':
+          if (global.holding_ctrl) {
+            break;
+          }
           this.inventory_bar.setEquippedIndex(6);
           break;
         case '8':
+          if (global.holding_ctrl) {
+            break;
+          }
           this.inventory_bar.setEquippedIndex(7);
           break;
         case '9':
+          if (global.holding_ctrl) {
+            break;
+          }
           this.inventory_bar.setEquippedIndex(8);
           break;
         case '0':
+          if (global.holding_ctrl) {
+            break;
+          }
           this.inventory_bar.setEquippedIndex(9);
           break;
         case 'w':
         case 'W':
+          if (global.holding_ctrl) {
+            break;
+          }
           if (this.weapon() != null) {
             this.gear.put(GearSlot.WEAPON, this.inventory.stash(this.weapon()));
           }
           break;
         case 'e':
         case 'E':
+          if (global.holding_ctrl) {
+            break;
+          }
           this.inventory.viewing = !this.inventory.viewing;
           if (!this.inventory.viewing) {
             this.inventory.feature_inventory = null;
@@ -3866,6 +3902,9 @@ class Hero extends Unit {
           break;
         case 'r':
         case 'R':
+          if (global.holding_ctrl) {
+            break;
+          }
           if (this.weapon() != null && this.weapon().usable()) {
             if (this.weapon().reloadable()) {
               ArrayList<Integer> possible_ammo = this.weapon().possibleAmmo();
