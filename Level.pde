@@ -400,6 +400,9 @@ class Level {
         break;
       case 22: // ender chest
         global.viewingEnderChest();
+        if (global.state == ProgramState.MAPEDITOR_INTERFACE) {
+          f.inventory = new EnderChestInventory();
+        }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
         break;

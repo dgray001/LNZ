@@ -177,10 +177,6 @@ class Inventory {
     return i;
   }
 
-  void stashBack(Item i) {
-    this.slots.get(this.slots.size() - 1).item = i;
-  }
-
   Item placeAt(Item i, int index) {
     return this.placeAt(i, index, false);
   }
