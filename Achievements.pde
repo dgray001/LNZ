@@ -42,10 +42,8 @@ enum AchievementCode {
   }
   public static int tokens(AchievementCode code) {
     switch(code) {
-      case COMPLETED_TUTORIAL:
-        return 1;
       default:
-        return 0;
+        return 1;
     }
   }
 }

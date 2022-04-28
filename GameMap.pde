@@ -2293,6 +2293,7 @@ class GameMap {
     file.println("end: Map");
     file.flush();
     file.close();
+    global.profile.save(); // for ender chest
   }
 
 

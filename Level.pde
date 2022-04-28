@@ -366,6 +366,7 @@ class Level {
       case 11: // khalil
         if (f.toggle) {
           this.level_form = new KhalilForm(f, h);
+          global.defaultCursor();
           f.toggle = false;
         }
         else {
@@ -385,6 +386,7 @@ class Level {
       case 12: // chuck quizmo
         if (f.toggle) {
           this.level_form = new QuizmoForm(f, h);
+          global.defaultCursor();
           f.toggle = false;
         }
         else {
@@ -395,6 +397,11 @@ class Level {
             "I'll give you a Star Piece!");
           this.currMap.addVisualEffect(4009, f.x + 0.7, f.y - 0.4);
         }
+        break;
+      case 22: // ender chest
+        global.viewingEnderChest();
+        h.inventory.featureInventory(f.inventory);
+        h.inventory.viewing = true;
         break;
       case 101: // wooden table
       case 111: // wooden chair
@@ -930,6 +937,7 @@ class Level {
       case 172: // vending machine
       case 173:
         this.level_form = new VendingForm(f, h);
+        global.defaultCursor();
         break;
       case 174: // minifridge
         if (h.inventory.viewing) {
@@ -1597,6 +1605,7 @@ class Level {
               if (global.holding_ctrl) {
                 this.player.heroTree.curr_viewing = false;
                 this.restartTimers();
+                global.defaultCursor();
               }
               break;
           }
@@ -1714,6 +1723,7 @@ class Level {
     if (saveMap && this.currMap != null) {
       this.currMap.save(finalFolderPath);
     }
+    global.profile.save(); // needed for ender chest to work properly
   }
 
 

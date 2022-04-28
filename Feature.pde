@@ -94,6 +94,7 @@ class Feature extends MapObject {
       case 22:
         this.setStrings("Ender Chest", "Tool", "");
         this.setSize(1, 1, 3);
+        this.inventory = global.profile.ender_chest;
         break;
 
       // Furniture
@@ -235,42 +236,42 @@ class Feature extends MapObject {
       case 174:
         this.setStrings("Minifridge", "Appliance", "");
         this.setSize(1, 1, 3);
-        this.inventory = new MinifridgeInventory(2, 2, true);
+        this.inventory = new MinifridgeInventory();
         break;
       case 175:
         this.setStrings("Refridgerator", "Appliance", "");
         this.setSize(1, 1, 7);
-        this.inventory = new RefridgeratorInventory(4, 2, true);
+        this.inventory = new RefridgeratorInventory();
         break;
       case 176:
         this.setStrings("Washer", "Appliance", "");
         this.setSize(1, 1, 4);
-        this.inventory = new WasherInventory(3, 3, true);
+        this.inventory = new WasherInventory();
         break;
       case 177:
         this.setStrings("Dryer", "Appliance", "");
         this.setSize(1, 1, 4);
-        this.inventory = new DryerInventory(3, 3, true);
+        this.inventory = new DryerInventory();
         break;
       case 181:
         this.setStrings("Garbage Can", "Furniture", "");
         this.setSize(1, 1, 4);
-        this.inventory = new GarbageInventory(3, 1, true);
+        this.inventory = new GarbageInventory();
         break;
       case 182:
         this.setStrings("Recycle Can", "Furniture", "");
         this.setSize(1, 1, 4);
-        this.inventory = new RecycleInventory(3, 1, true);
+        this.inventory = new RecycleInventory();
         break;
       case 183:
         this.setStrings("Crate", "Furniture", "");
         this.setSize(1, 1, 2);
-        this.inventory = new CrateInventory(2, 2, true);
+        this.inventory = new CrateInventory();
         break;
       case 184:
         this.setStrings("Cardboard Box", "Furniture", "");
         this.setSize(1, 1, 2);
-        this.inventory = new CardboardBoxInventory(2, 2, true);
+        this.inventory = new CardboardBoxInventory();
         break;
       case 185:
         this.setStrings("Pickle Jar", "Furniture", "");
@@ -1108,6 +1109,7 @@ class Feature extends MapObject {
     switch(this.ID) {
       case 11: // khalil
       case 12: // chuck quizmo
+      case 22: // ender chest
       case 151: // sign
       case 152:
       case 153:
@@ -1739,7 +1741,7 @@ class Feature extends MapObject {
     fileString += this.objectFileString();
     fileString += "\nnumber: " + this.number;
     fileString += "\ntoggle: " + this.toggle;
-    if (this.inventory != null) {
+    if (this.inventory != null && this.ID != 22) {
       fileString += this.inventory.internalFileString();
     }
     fileString += "\nend: Feature\n";

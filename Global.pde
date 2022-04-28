@@ -23,6 +23,7 @@ class Global {
   private Deque<String> error_messages = new ArrayDeque<String>();
   private PrintWriter log;
   private boolean focused_last_frame = true;
+  private boolean viewing_ender_chest = false;
   // FPS
   private int lastFrameTime = millis();
   private float lastFPS = Constants.maxFPS;
@@ -88,6 +89,20 @@ class Global {
   }
   void defaultCursor() {
     this.setCursor("icons/cursor_default.png");
+  }
+
+  void viewingEnderChest() {
+    if (this.viewing_ender_chest) {
+      global.errorMessage("ERROR: Already an ender chest open. Will cause concurrent modification errors.");
+    }
+    this.viewing_ender_chest = true;
+  }
+
+  void notViewingEnderChest() {
+    if (!this.viewing_ender_chest) {
+      global.errorMessage("ERROR: Ender chest not open.");
+    }
+    this.viewing_ender_chest = false;
   }
 
   void log(String message) {
