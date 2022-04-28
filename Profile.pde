@@ -345,8 +345,8 @@ class Profile {
 
   private HashMap<HeroCode, Hero> heroes = new HashMap<HeroCode, Hero>(); // maybe remove ??
   private HeroCode curr_hero = HeroCode.ERROR; // hero the player is playing as
-  private Level curr_level; // level the player is playing
 
+  private EnderChestInventory ender_chest = new EnderChestInventory();
   private float money = 0;
 
   Profile() {
@@ -391,9 +391,9 @@ class Profile {
     // println heroes
     file.println("curr_hero: " + this.curr_hero.file_name());
     file.println("money: " + this.money);
+    file.println(this.ender_chest.fileString());
     file.flush();
     file.close();
-    // this.curr_level.save()
     this.options.save();
   }
 }
@@ -402,6 +402,10 @@ class Profile {
 Profile readProfile(String path) {
   String[] lines = loadStrings(path);
   Profile p = new Profile();
+  EnderChestInventory ender_chest = new EnderChestInventory();
+  boolean in_ender_chest = false;
+  Item curr_item = null;
+  boolean in_item = false;
   if (lines == null) {
     global.errorMessage("ERROR: Reading profile file but path " + path + " doesn't exist.");
     return p;
@@ -409,6 +413,10 @@ Profile readProfile(String path) {
   for (String line : lines) {
     String[] data = split(line, ':');
     if (data.length < 2) {
+      continue;
+    }
+    if (in_item) {
+      curr_item.addData(trim(data[0]), trim(data[1]));
       continue;
     }
     switch(data[0]) {
@@ -434,10 +442,81 @@ Profile readProfile(String path) {
           p.money = toFloat(trim(data[1]));
         }
         break;
+      case "new":
+        switch(trim(data[1])) {
+          case "Inventory":
+            if (in_ender_chest) {
+              global.errorMessage("ERROR: Trying to create ender chest but currently in ender chest.");
+            }
+            else {
+              in_ender_chest = true;
+              p.ender_chest.slots.clear();
+            }
+            break;
+          case "Item":
+            if (data.length < 3) {
+              global.errorMessage("ERROR: Item ID missing in Item constructor.");
+              break;
+            }
+            if (curr_item != null) {
+              global.errorMessage("ERROR: Can't create a new Item inside an Item.");
+              break;
+            }
+            if (!in_ender_chest) {
+              global.errorMessage("ERROR: Can't create a new Item not inside the ender chest.");
+              break;
+            }
+            curr_item = new Item(toInt(trim(data[2])));
+            in_item = true;
+            break;
+          default:
+            global.errorMessage("ERROR: Trying to create a new " + trim(data[1]) +
+              " which is invalid for profile data.");
+            break;
+        }
+        break;
+      case "end":
+        switch(trim(data[1])) {
+          case "Inventory":
+            if (in_ender_chest) {
+              in_ender_chest = false;
+            }
+            else {
+              global.errorMessage("ERROR: Trying to end ender chest but not in ender chest.");
+            }
+            break;
+          case "Item":
+            if (!in_ender_chest) {
+              global.errorMessage("ERROR: Can't end an Item not inside the ender chest.");
+              break;
+            }
+            if (curr_item == null) {
+              global.errorMessage("ERROR: Can't end a null Item.");
+              break;
+            }
+            p.ender_chest.stashBack(curr_item);
+            curr_item = null;
+            in_item = false;
+            break;
+          default:
+            global.errorMessage("ERROR: Trying to create a new " + trim(data[1]) +
+              " which is invalid for profile data.");
+            break;
+        }
+        break;
+      case "addSlot":
+        if (in_ender_chest) {
+          p.ender_chest.addSlot();
+        }
+        else {
+          global.errorMessage("ERROR: Trying to add an ender chest slot but not in ender chest.");
+        }
+        break;
       default:
         break;
     }
   }
+  p.ender_chest = ender_chest;
   p.profileUpdated();
   return p;
 }

@@ -3896,6 +3896,9 @@ class Hero extends Unit {
           }
           this.inventory.viewing = !this.inventory.viewing;
           if (!this.inventory.viewing) {
+            if (EnderChestInventory.class.isInstance(this.inventory.feature_inventory)) {
+              global.notViewingEnderChest();
+            }
             this.inventory.feature_inventory = null;
             this.inventory.dropItemHolding();
           }

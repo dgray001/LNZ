@@ -1739,6 +1739,7 @@ class MapEditorInterface extends InterfaceLNZ {
 
   void closeMapTester() {
     this.curr_level = null;
+    global.viewing_ender_chest = false;
     this.navigate(MapEditorPage.MAPS);
   }
 
@@ -1878,6 +1879,7 @@ class MapEditorInterface extends InterfaceLNZ {
 
   void closeLevelTester() {
     this.curr_level = null;
+    global.viewing_ender_chest = false;
     deleteFolder("data/profiles/" + global.profile.display_name.toLowerCase() + "/leveltester");
     this.navigate(MapEditorPage.LEVELS);
   }
