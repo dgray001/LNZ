@@ -391,7 +391,7 @@ class Profile {
     // println heroes
     file.println("curr_hero: " + this.curr_hero.file_name());
     file.println("money: " + this.money);
-    file.println(this.ender_chest.fileString());
+    file.println(this.ender_chest.internalFileString());
     file.flush();
     file.close();
     this.options.save();
@@ -402,8 +402,6 @@ class Profile {
 Profile readProfile(String path) {
   String[] lines = loadStrings(path);
   Profile p = new Profile();
-  EnderChestInventory ender_chest = new EnderChestInventory();
-  boolean in_ender_chest = false;
   Item curr_item = null;
   boolean in_item = false;
   if (lines == null) {
@@ -413,10 +411,6 @@ Profile readProfile(String path) {
   for (String line : lines) {
     String[] data = split(line, ':');
     if (data.length < 2) {
-      continue;
-    }
-    if (in_item) {
-      curr_item.addData(trim(data[0]), trim(data[1]));
       continue;
     }
     switch(data[0]) {
@@ -444,15 +438,6 @@ Profile readProfile(String path) {
         break;
       case "new":
         switch(trim(data[1])) {
-          case "Inventory":
-            if (in_ender_chest) {
-              global.errorMessage("ERROR: Trying to create ender chest but currently in ender chest.");
-            }
-            else {
-              in_ender_chest = true;
-              p.ender_chest.slots.clear();
-            }
-            break;
           case "Item":
             if (data.length < 3) {
               global.errorMessage("ERROR: Item ID missing in Item constructor.");
@@ -460,10 +445,6 @@ Profile readProfile(String path) {
             }
             if (curr_item != null) {
               global.errorMessage("ERROR: Can't create a new Item inside an Item.");
-              break;
-            }
-            if (!in_ender_chest) {
-              global.errorMessage("ERROR: Can't create a new Item not inside the ender chest.");
               break;
             }
             curr_item = new Item(toInt(trim(data[2])));
@@ -477,24 +458,21 @@ Profile readProfile(String path) {
         break;
       case "end":
         switch(trim(data[1])) {
-          case "Inventory":
-            if (in_ender_chest) {
-              in_ender_chest = false;
-            }
-            else {
-              global.errorMessage("ERROR: Trying to end ender chest but not in ender chest.");
-            }
-            break;
           case "Item":
-            if (!in_ender_chest) {
-              global.errorMessage("ERROR: Can't end an Item not inside the ender chest.");
-              break;
-            }
             if (curr_item == null) {
               global.errorMessage("ERROR: Can't end a null Item.");
               break;
             }
-            p.ender_chest.stashBack(curr_item);
+            if (data.length < 3) {
+              global.errorMessage("ERROR: No positional information for ender chest item.");
+              break;
+            }
+            int index = toInt(trim(data[2]));
+            Item i = p.ender_chest.placeAt(curr_item, index, true);
+            if (i != null) {
+              global.errorMessage("ERROR: Item already exists at position " + index + ".");
+              break;
+            }
             curr_item = null;
             in_item = false;
             break;
@@ -504,19 +482,14 @@ Profile readProfile(String path) {
             break;
         }
         break;
-      case "addSlot":
-        if (in_ender_chest) {
-          p.ender_chest.addSlot();
-        }
-        else {
-          global.errorMessage("ERROR: Trying to add an ender chest slot but not in ender chest.");
-        }
-        break;
       default:
+        if (in_item) {
+          curr_item.addData(trim(data[0]), trim(data[1]));
+          continue;
+        }
         break;
     }
   }
-  p.ender_chest = ender_chest;
   p.profileUpdated();
   return p;
 }

@@ -1157,8 +1157,11 @@ class MapEditorInterface extends InterfaceLNZ {
         delay(2500);
         return;
       }
-      this.curr_status += "\nGenerating Images";
-      global.images.loadMapGifs();
+      if (!global.images.loaded_map_gifs) {
+        this.curr_status += "\nLoading Animations";
+        global.images.loadMapGifs();
+      }
+      this.curr_status += "\nGenerating Map Image";
       this.map_creating.initializeTerrain();
       if (this.map_creating.nullify) {
         this.curr_status += " -> " + global.lastErrorMessage();
@@ -1199,8 +1202,11 @@ class MapEditorInterface extends InterfaceLNZ {
         delay(2500);
         return;
       }
+      if (!global.images.loaded_map_gifs) {
+        this.curr_status += "\nLoading Animations";
+        global.images.loadMapGifs();
+      }
       this.curr_status += "\nGenerating Images";
-      global.images.loadMapGifs();
       this.map_opening.initializeTerrain();
       if (this.map_opening.nullify) {
         this.curr_status += " -> " + global.lastErrorMessage();
@@ -1239,8 +1245,11 @@ class MapEditorInterface extends InterfaceLNZ {
         delay(2500);
         return;
       }
+      if (!global.images.loaded_map_gifs) {
+        this.curr_status += "\nLoading Animations";
+        global.images.loadMapGifs();
+      }
       this.curr_status += "\nGenerating Images";
-      global.images.loadMapGifs();
       map_testing.initializeTerrain();
       if (map_testing.nullify) {
         this.curr_status += " -> " + global.lastErrorMessage();
@@ -1285,8 +1294,11 @@ class MapEditorInterface extends InterfaceLNZ {
         delay(2500);
         return;
       }
+      if (!global.images.loaded_map_gifs) {
+        this.curr_status += "\nLoading Animations";
+        global.images.loadMapGifs();
+      }
       this.curr_status += "\nGenerating Images";
-      global.images.loadMapGifs();
       if (this.level_opening.nullify) {
         this.curr_status += " -> " + global.lastErrorMessage();
         delay(2500);
