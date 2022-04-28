@@ -642,6 +642,7 @@ class GameMap {
     private float yf = 0;
     private float centerX = 0;
     private float centerY = 0;
+    private int index = 0;
 
     private int alpha = 255;
     private boolean hovered = false;
@@ -689,10 +690,11 @@ class GameMap {
       this.centerY = this.yi + 0.5 * (this.yf - this.yi);
     }
 
-    void updateView(int timeElapsed) {
+    void updateView(int timeElapsed, int index) {
       if (this.remove) {
         return;
       }
+      this.index = index;
       if (this.fading) {
         this.fade_time -= timeElapsed;
         if (this.fade_time <= 0) {
@@ -726,6 +728,8 @@ class GameMap {
       if (this.remove) {
         return;
       }
+      float translate_amount = this.index * (this.yf - this.yi + 4);
+      translate(0, translate_amount);
       rectMode(CORNERS);
       fill(this.color_background, alpha);
       rect(this.xi, this.yi, this.xf, this.yf);
@@ -733,6 +737,7 @@ class GameMap {
       textSize(this.text_size);
       fill(this.color_text, alpha);
       text(this.message, this.centerX, this.yf - 2);
+      translate(0, -translate_amount);
     }
 
     void mouseMove(float mX, float mY) {
@@ -858,10 +863,12 @@ class GameMap {
   protected float mY = 0;
   protected MapObject hovered_object = null;
   protected int hovered_object_key = -1;
+
   protected MapObject selected_object = null;
   protected int selected_key = -10;
   protected SelectedObjectTextbox selected_object_textbox = new SelectedObjectTextbox();
   protected boolean showing_nerd_stats = false;
+  protected ArrayList<HeaderMessage> headerMessages = new ArrayList<HeaderMessage>();
 
   protected ArrayList<Feature> features = new ArrayList<Feature>();
   protected HashMap<Integer, Unit> units = new HashMap<Integer, Unit>();
@@ -870,8 +877,6 @@ class GameMap {
   protected int nextItemKey = 1;
   protected ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
   protected ArrayList<VisualEffect> visualEffects = new ArrayList<VisualEffect>();
-
-  protected Queue<HeaderMessage> headerMessages = new LinkedList<HeaderMessage>();
 
   GameMap() {}
   GameMap(GameMapCode code, String folderPath) {
@@ -1288,6 +1293,9 @@ class GameMap {
 
   void addHeaderMessage(String message) {
     this.headerMessages.add(new HeaderMessage(message));
+    if (this.headerMessages.size() > Constants.map_maxHeaderMessages) {
+      this.headerMessages.remove(0);
+    }
   }
 
 
@@ -1418,8 +1426,8 @@ class GameMap {
       image(this.fog_display, this.xi_map, this.yi_map, this.xf_map, this.yf_map);
     }
     // header messages
-    if (this.headerMessages.peek() != null) {
-      this.headerMessages.peek().drawMessage();
+    for (HeaderMessage message : this.headerMessages) {
+      message.drawMessage();
     }
     // nerd stats
     if (this.showing_nerd_stats) {
@@ -1778,10 +1786,11 @@ class GameMap {
       this.refreshFogImage();
     }
     // header messages
-    if (this.headerMessages.peek() != null) {
-      this.headerMessages.peek().updateView(timeElapsed);
-      if (this.headerMessages.peek().remove) {
-        this.headerMessages.remove();
+    int j = 0;
+    for (int i = this.headerMessages.size() - 1; i >= 0; i--, j++) {
+      this.headerMessages.get(i).updateView(timeElapsed, j);
+      if (this.headerMessages.get(i).remove) {
+        this.headerMessages.remove(i);
       }
     }
   }
@@ -2042,8 +2051,8 @@ class GameMap {
         }
       }
       // hovered for header message
-      if (this.headerMessages.peek() != null) {
-        this.headerMessages.peek().mouseMove(mX, mY);
+      for (HeaderMessage message : this.headerMessages) {
+        message.mouseMove(mX, mY);
       }
     }
     else {
@@ -2105,8 +2114,8 @@ class GameMap {
   }
 
   void mousePress() {
-    if (this.headerMessages.peek() != null) {
-      this.headerMessages.peek().mousePress();
+    for (HeaderMessage message : this.headerMessages) {
+      message.mousePress();
     }
     if (this.selected_object != null && this.selected_object_textbox != null) {
       this.selected_object_textbox.mousePress();
@@ -2881,6 +2890,9 @@ class GameMapEditor extends GameMap {
 
   @Override
   void mousePress() {
+    for (HeaderMessage message : this.headerMessages) {
+      message.mousePress();
+    }
     if (this.confirm_form != null) {
       this.confirm_form.mousePress();
       return;
@@ -2888,9 +2900,6 @@ class GameMapEditor extends GameMap {
     else if (this.map_object_form != null) {
       this.map_object_form.mousePress();
       return;
-    }
-    if (this.headerMessages.peek() != null) {
-      this.headerMessages.peek().mousePress();
     }
     if (this.selected_object != null && this.selected_object_textbox != null) {
       this.selected_object_textbox.mousePress();
@@ -3068,38 +3077,38 @@ class GameMapEditor extends GameMap {
         case 'z':
           this.draw_grid = !this.draw_grid;
           if (this.draw_grid) {
-            this.headerMessages.add(new HeaderMessage("Showing Grid"));
+            this.addHeaderMessage("Showing Grid");
           }
           else {
-            this.headerMessages.add(new HeaderMessage("Hiding Grid"));
+            this.addHeaderMessage("Hiding Grid");
           }
           break;
         case 'x':
           this.draw_fog = !this.draw_fog;
           if (this.draw_fog) {
-            this.headerMessages.add(new HeaderMessage("Showing Fog"));
+            this.addHeaderMessage("Showing Fog");
           }
           else {
-            this.headerMessages.add(new HeaderMessage("Hiding Fog"));
+            this.addHeaderMessage("Hiding Fog");
           }
           break;
         case 'c':
           this.rectangle_mode = !this.rectangle_mode;
           this.drawing_rectangle = false;
           if (this.rectangle_mode) {
-            this.headerMessages.add(new HeaderMessage("Rectangle Mode on"));
+            this.addHeaderMessage("Rectangle Mode on");
           }
           else {
-            this.headerMessages.add(new HeaderMessage("Rectangle Mode off"));
+            this.addHeaderMessage("Rectangle Mode off");
           }
           break;
         case 'v':
           this.square_mode = !this.square_mode;
           if (this.square_mode) {
-            this.headerMessages.add(new HeaderMessage("Square Mode on"));
+            this.addHeaderMessage("Square Mode on");
           }
           else {
-            this.headerMessages.add(new HeaderMessage("Square Mode off"));
+            this.addHeaderMessage("Square Mode off");
           }
           break;
         case 'b':
@@ -3237,12 +3246,12 @@ class GameMapLevelEditor extends GameMapEditor {
 
   @Override
   void mousePress() {
+    for (HeaderMessage message : this.headerMessages) {
+      message.mousePress();
+    }
     if (this.confirm_form != null) {
       this.confirm_form.mousePress();
       return;
-    }
-    if (this.headerMessages.peek() != null) {
-      this.headerMessages.peek().mousePress();
     }
     if (this.selected_object != null && this.selected_object_textbox != null) {
       this.selected_object_textbox.mousePress();
@@ -3323,46 +3332,38 @@ class GameMapLevelEditor extends GameMapEditor {
         case 'z':
           this.draw_grid = !this.draw_grid;
           if (this.draw_grid) {
-            this.headerMessages.clear();
-            this.headerMessages.add(new HeaderMessage("Showing Grid"));
+            this.addHeaderMessage("Showing Grid");
           }
           else {
-            this.headerMessages.clear();
-            this.headerMessages.add(new HeaderMessage("Hiding Grid"));
+            this.addHeaderMessage("Hiding Grid");
           }
           break;
         case 'x':
           this.draw_fog = !this.draw_fog;
           if (this.draw_fog) {
-            this.headerMessages.clear();
-            this.headerMessages.add(new HeaderMessage("Showing Fog"));
+            this.addHeaderMessage("Showing Fog");
           }
           else {
-            this.headerMessages.clear();
-            this.headerMessages.add(new HeaderMessage("Hiding Fog"));
+            this.addHeaderMessage("Hiding Fog");
           }
           break;
         case 'c':
           this.rectangle_mode = !this.rectangle_mode;
           this.drawing_rectangle = false;
           if (this.rectangle_mode) {
-            this.headerMessages.clear();
-            this.headerMessages.add(new HeaderMessage("Rectangle Mode on"));
+            this.addHeaderMessage("Rectangle Mode on");
           }
           else {
-            this.headerMessages.clear();
-            this.headerMessages.add(new HeaderMessage("Rectangle Mode off"));
+            this.addHeaderMessage("Rectangle Mode off");
           }
           break;
         case 'v':
           this.square_mode = !this.square_mode;
           if (this.square_mode) {
-            this.headerMessages.clear();
-            this.headerMessages.add(new HeaderMessage("Square Mode on"));
+            this.addHeaderMessage("Square Mode on");
           }
           else {
-            this.headerMessages.clear();
-            this.headerMessages.add(new HeaderMessage("Square Mode off"));
+            this.addHeaderMessage("Square Mode off");
           }
           break;
       }
