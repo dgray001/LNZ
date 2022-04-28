@@ -139,6 +139,12 @@ class Inventory {
     }
   }
 
+  void deactivateSlots() {
+    for (InventorySlot slot : this.slots) {
+      slot.deactivated = true;
+    }
+  }
+
   void fillMaxCapacity() {
     int currSize = this.slots.size();
     int maxSize = this.maxCapacity();
@@ -299,25 +305,405 @@ class Inventory {
 
 
 class DeskInventory extends Inventory {
+  class DrawerButton1 extends ImageButton {
+    protected boolean opened = false;
+    DrawerButton1() {
+      super(global.images.getImage("features/default.png"), 0, 0, 0, 0);
+    }
+
+    void hover() {}
+    void click() {
+      if (this.opened) {
+        return;
+      }
+      this.opened = true;
+      DeskInventory.this.slots.get(0).deactivated = false;
+      DeskInventory.this.slots.get(1).deactivated = false;
+      this.img = global.images.getTransparentPixel();
+    }
+    void dehover() {}
+    void release() {}
+  }
+
+  class DrawerButton2 extends ImageButton {
+    protected boolean opened = false;
+    DrawerButton2() {
+      super(global.images.getImage("features/default.png"), 0, 0, 0, 0);
+    }
+
+    void hover() {}
+    void click() {
+      if (this.opened) {
+        return;
+      }
+      this.opened = true;
+      DeskInventory.this.slots.get(5).deactivated = false;
+      this.img = global.images.getTransparentPixel();
+    }
+    void dehover() {}
+    void release() {}
+  }
+
+  class DrawerButton3 extends ImageButton {
+    protected boolean opened = false;
+    DrawerButton3() {
+      super(global.images.getImage("features/default.png"), 0, 0, 0, 0);
+    }
+
+    void hover() {}
+    void click() {
+      if (this.opened) {
+        return;
+      }
+      this.opened = true;
+      DeskInventory.this.slots.get(8).deactivated = false;
+      this.img = global.images.getTransparentPixel();
+    }
+    void dehover() {}
+    void release() {}
+  }
+
+  protected DrawerButton1 top_drawer = new DrawerButton1();
+  protected DrawerButton2 mid_drawer = new DrawerButton2();
+  protected DrawerButton3 bottom_drawer = new DrawerButton3();
+
   DeskInventory() {
     super(3, 3, true);
-    this.slots.get(2).deactivated = true;
-    this.slots.get(3).deactivated = true;
-    this.slots.get(4).deactivated = true;
-    this.slots.get(6).deactivated = true;
-    this.slots.get(7).deactivated = true;
+    this.deactivateSlots();
+    this.setButtonSize(this.button_size);
+  }
+
+  void closeDrawers() {
+    this.top_drawer.opened = false;
+    this.mid_drawer.opened = false;
+    this.bottom_drawer.opened = false;
+    this.top_drawer.img = global.images.getImage("features/default.png");
+    this.mid_drawer.img = global.images.getImage("features/default.png");
+    this.bottom_drawer.img = global.images.getImage("features/default.png");
+    this.deactivateSlots();
+  }
+
+  @Override
+  void setButtonSize(float button_size) {
+    super.setButtonSize(button_size);
+    this.top_drawer.setLocation(2, 2, 2 + 2 * button_size, 2 + this.button_size);
+    this.mid_drawer.setLocation(2 + 2 * button_size, 2 + button_size, 2 + 3 * button_size, 2 + 2 * this.button_size);
+    this.bottom_drawer.setLocation(2 + 2 * button_size, 2 + 2 * button_size, 2 + 3 * button_size, 2 + 3 * this.button_size);
+  }
+
+  @Override
+  void update(int millis) {
+    super.update(millis);
+    this.top_drawer.update(millis);
+    this.mid_drawer.update(millis);
+    this.bottom_drawer.update(millis);
+  }
+
+  @Override
+  void mouseMove(float mX, float mY) {
+    super.mouseMove(mX, mY);
+    this.top_drawer.mouseMove(mX, mY);
+    this.mid_drawer.mouseMove(mX, mY);
+    this.bottom_drawer.mouseMove(mX, mY);
+  }
+
+  @Override
+  void mousePress() {
+    super.mousePress();
+    this.top_drawer.mousePress();
+    this.mid_drawer.mousePress();
+    this.bottom_drawer.mousePress();
+  }
+
+  @Override
+  void mouseRelease(float mX, float mY) {
+    super.mouseRelease(mX, mY);
+    this.top_drawer.mouseRelease(mX, mY);
+    this.mid_drawer.mouseRelease(mX, mY);
+    this.bottom_drawer.mouseRelease(mX, mY);
   }
 }
 
 
 class StoveInventory extends Inventory {
-  StoveInventory() {
-    super(5, 2, true);
-    this.slots.get(4).deactivated = true;
-    this.slots.get(5).deactivated = true;
+  class StoveDoor extends ImageButton {
+    protected boolean opened = false;
+    StoveDoor() {
+      super(global.images.getImage("features/default.png"), 0, 0, 0, 0);
+    }
+
+    void hover() {}
+    void click() {
+      if (this.opened) {
+        return;
+      }
+      this.opened = true;
+      StoveInventory.this.slots.get(26).deactivated = false;
+      StoveInventory.this.slots.get(27).deactivated = false;
+      StoveInventory.this.slots.get(28).deactivated = false;
+      StoveInventory.this.slots.get(31).deactivated = false;
+      StoveInventory.this.slots.get(32).deactivated = false;
+      StoveInventory.this.slots.get(33).deactivated = false;
+      this.img = global.images.getTransparentPixel();
+    }
+    void dehover() {}
+    void release() {}
   }
 
-  // add on/off switch for inside oven and knobs for burners
+  abstract class KnobButton extends ImageButton {
+    protected int value = 0;
+    protected int max_value = 0;
+    KnobButton(PImage img, int max_value) {
+      super(img, 0, 0, 0, 0);
+      this.max_value = max_value;
+    }
+
+    @Override
+    void drawButton() {
+      super.drawButton();
+      imageMode(CENTER);
+      translate(this.xCenter(), this.yCenter());
+      float curr_rotation = this.knobRotation();
+      rotate(curr_rotation);
+      image(global.images.getImage("features/stove_knob.png"), 0, 0,
+        0.7 * this.button_width(), 0.7 * this.button_height());
+      rotate(-curr_rotation);
+      translate(-this.xCenter(), -this.yCenter());
+    }
+
+    @Override
+    void mouseMove(float mX, float mY) {
+      super.mouseMove(mX, mY);
+      if (this.clicked) {
+        // rotate (??)
+      }
+    }
+
+    abstract float knobRotation();
+
+    void hover() {}
+    void click() {}
+    void dehover() {}
+    void release() {}
+  }
+
+  abstract class KnobButtonBurner extends KnobButton {
+    KnobButtonBurner() {
+      super(global.images.getImage("features/stove_knob_burner.png"), 6);
+    }
+
+    float knobRotation() {
+      switch(this.value) {
+        case 0:
+          return 0;
+        case 1:
+          return 0;
+        case 2:
+          return 0;
+        case 3:
+          return 0;
+        case 4:
+          return 0;
+        case 5:
+          return 0;
+        case 6:
+          return 0;
+        default:
+          global.errorMessage("ERROR: Knob value " + this.value +" invalid for BurnerKnob.");
+          return 0;
+      }
+    }
+  }
+
+  class Burner1 extends KnobButtonBurner {
+    Burner1() {
+      super();
+    }
+  }
+
+  class Burner2 extends KnobButtonBurner {
+    Burner2() {
+      super();
+    }
+  }
+
+  class Burner3 extends KnobButtonBurner {
+    Burner3() {
+      super();
+    }
+  }
+
+  class Burner4 extends KnobButtonBurner {
+    Burner4() {
+      super();
+    }
+  }
+
+  class OvenKnob extends KnobButton {
+    OvenKnob() {
+      super(global.images.getImage("features/stove_knob_oven.png"), 9);
+    }
+
+    float knobRotation() {
+      switch(this.value) {
+        case 0:
+          return 0;
+        case 1:
+          return 0;
+        case 2:
+          return 0;
+        case 3:
+          return 0;
+        case 4:
+          return 0;
+        case 5:
+          return 0;
+        case 6:
+          return 0;
+        case 7:
+          return 0;
+        case 8:
+          return 0;
+        case 9:
+          return 0;
+        default:
+          global.errorMessage("ERROR: Knob value " + this.value + " invalid for OvenKnob.");
+          return 0;
+      }
+    }
+  }
+
+  protected StoveDoor door = new StoveDoor();
+  protected KnobButton[] knobs = new KnobButton[5];
+
+  StoveInventory() {
+    super(8, 5, true);
+    this.deactivateSlots();
+    this.slots.get(1).deactivated = false;
+    this.slots.get(3).deactivated = false;
+    this.slots.get(11).deactivated = false;
+    this.slots.get(13).deactivated = false;
+    this.knobs[0] = new Burner1();
+    this.knobs[1] = new Burner2();
+    this.knobs[2] = new OvenKnob();
+    this.knobs[3] = new Burner3();
+    this.knobs[4] = new Burner4();
+    this.setButtonSize(this.button_size);
+  }
+
+  void closeDrawers() {
+    this.door.opened = false;
+    this.slots.get(26).deactivated = true;
+    this.slots.get(27).deactivated = true;
+    this.slots.get(28).deactivated = true;
+    this.slots.get(31).deactivated = true;
+    this.slots.get(32).deactivated = true;
+    this.slots.get(33).deactivated = true;
+    this.door.img = global.images.getImage("features/default.png");
+  }
+
+  @Override
+  void setButtonSize(float button_size) {
+    super.setButtonSize(button_size);
+    this.door.setLocation(2 + button_size, 2 + 5 * button_size,
+      2 + 4 * button_size, 2 + 7 * this.button_size);
+    for (int i = 0; i < this.knobs.length; i++) {
+      this.knobs[i].setLocation(2 + i * button_size, 2 + 3.5 * button_size,
+        2 + (i + 1) * button_size, 2 + 4.5 * button_size);
+    }
+  }
+
+  @Override
+  void update(int millis) {
+    super.update(millis);
+    this.door.update(millis);
+    for (KnobButton knob : this.knobs) {
+      knob.update(millis);
+    }
+  }
+
+  @Override
+  void mouseMove(float mX, float mY) {
+    super.mouseMove(mX, mY);
+    this.door.mouseMove(mX, mY);
+    for (KnobButton knob : this.knobs) {
+      knob.mouseMove(mX, mY);
+    }
+  }
+
+  @Override
+  void mousePress() {
+    super.mousePress();
+    this.door.mousePress();
+    for (KnobButton knob : this.knobs) {
+      knob.mousePress();
+    }
+  }
+
+  @Override
+  void mouseRelease(float mX, float mY) {
+    super.mouseRelease(mX, mY);
+    this.door.mouseRelease(mX, mY);
+    for (KnobButton knob : this.knobs) {
+      knob.mouseRelease(mX, mY);
+    }
+  }
+}
+
+
+class MinifridgeInventory extends Inventory {
+  MinifridgeInventory() {
+    super(2, 2, true);
+  }
+}
+
+
+class RefridgeratorInventory extends Inventory {
+  RefridgeratorInventory() {
+    super(4, 2, true);
+  }
+}
+
+
+class WasherInventory extends Inventory {
+  WasherInventory() {
+    super(3, 3, true);
+  }
+}
+
+
+class DryerInventory extends Inventory {
+  DryerInventory() {
+    super(3, 3, true);
+  }
+}
+
+
+class GarbageInventory extends Inventory {
+  GarbageInventory() {
+    super(3, 1, true);
+  }
+}
+
+
+class RecycleInventory extends Inventory {
+  RecycleInventory() {
+    super(3, 1, true);
+  }
+}
+
+
+class CrateInventory extends Inventory {
+  CrateInventory() {
+    super(2, 2, true);
+  }
+}
+
+
+class CardboardBoxInventory extends Inventory {
+  CardboardBoxInventory() {
+    super(2, 2, true);
+  }
 }
 
 

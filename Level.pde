@@ -426,7 +426,7 @@ class Level {
           f.destroy(this.currMap);
         }
         break;
-      case 102: // desk
+      case 102: // wooden desk
       case 103:
         if (use_item && h.holding(2977, 2979, 2980, 2983)) {
           switch(h.weapon().ID) {
@@ -453,7 +453,7 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
-        // sound effect
+        ((DeskInventory)f.inventory).closeDrawers();
         break;
       case 115: // coordinator chair
       case 121: // couch
