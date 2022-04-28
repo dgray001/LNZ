@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220428: v0.6.8l" +
+  "\n20220428: v0.6.8m" +
   "\nLines: 31220 (v0.6.8k)" +
   "\nImages: 989 (v0.6.8d)" +
   "\nSounds: 47 (v0.6.8d)" +
@@ -159,6 +159,7 @@ static class Constants {
   static final float map_moveLogicCap = 0.12; // longest movable distance at one logical go
   static final float map_tierImageHeight = 50;
   static final float map_statusImageHeight = 30;
+  static final int map_maxHeaderMessages = 5;
 
   // Features
   static final float feature_defaultInteractionDistance = 0.3;
