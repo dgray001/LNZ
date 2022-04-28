@@ -235,42 +235,42 @@ class Feature extends MapObject {
       case 174:
         this.setStrings("Minifridge", "Appliance", "");
         this.setSize(1, 1, 3);
-        this.inventory = new Inventory(2, 2, true);
+        this.inventory = new MinifridgeInventory(2, 2, true);
         break;
       case 175:
         this.setStrings("Refridgerator", "Appliance", "");
         this.setSize(1, 1, 7);
-        this.inventory = new Inventory(4, 2, true);
+        this.inventory = new RefridgeratorInventory(4, 2, true);
         break;
       case 176:
         this.setStrings("Washer", "Appliance", "");
         this.setSize(1, 1, 4);
-        this.inventory = new Inventory(3, 3, true);
+        this.inventory = new WasherInventory(3, 3, true);
         break;
       case 177:
         this.setStrings("Dryer", "Appliance", "");
         this.setSize(1, 1, 4);
-        this.inventory = new Inventory(3, 3, true);
+        this.inventory = new DryerInventory(3, 3, true);
         break;
       case 181:
         this.setStrings("Garbage Can", "Furniture", "");
         this.setSize(1, 1, 4);
-        this.inventory = new Inventory(3, 1, true);
+        this.inventory = new GarbageInventory(3, 1, true);
         break;
       case 182:
         this.setStrings("Recycle Can", "Furniture", "");
         this.setSize(1, 1, 4);
-        this.inventory = new Inventory(3, 1, true);
+        this.inventory = new RecycleInventory(3, 1, true);
         break;
       case 183:
         this.setStrings("Crate", "Furniture", "");
         this.setSize(1, 1, 2);
-        this.inventory = new Inventory(2, 2, true);
+        this.inventory = new CrateInventory(2, 2, true);
         break;
       case 184:
         this.setStrings("Cardboard Box", "Furniture", "");
         this.setSize(1, 1, 2);
-        this.inventory = new Inventory(2, 2, true);
+        this.inventory = new CardboardBoxInventory(2, 2, true);
         break;
       case 185:
         this.setStrings("Pickle Jar", "Furniture", "");
