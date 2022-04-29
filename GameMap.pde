@@ -3119,12 +3119,15 @@ class GameMapEditor extends GameMap {
           if (this.selected_object != null) {
             if (Feature.class.isInstance(this.selected_object)) {
               this.map_object_form = new EditFeatureForm((Feature)this.selected_object);
+              global.defaultCursor();
             }
             else if (Unit.class.isInstance(this.selected_object)) {
               this.map_object_form = new EditUnitForm((Unit)this.selected_object);
+              global.defaultCursor();
             }
             else if (Item.class.isInstance(this.selected_object)) {
               this.map_object_form = new EditItemForm((Item)this.selected_object);
+              global.defaultCursor();
             }
           }
           break;

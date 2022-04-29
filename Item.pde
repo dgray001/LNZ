@@ -23,6 +23,7 @@ class EditItemForm extends EditMapObjectForm {
     this.addField(new FloatFormField("Tenacity: ", "tenacity", -1, 1));
     this.addField(new IntegerFormField("Agility: ", "agility", -10, 10));
     this.addField(new IntegerFormField("Ammo: ", "ammo", 0, Integer.MAX_VALUE - 1));
+    this.addField(new IntegerFormField("Stack: ", "stack", 0, Integer.MAX_VALUE - 1));
     this.updateForm();
   }
 
@@ -46,6 +47,7 @@ class EditItemForm extends EditMapObjectForm {
     this.item.tenacity = toFloat(this.fields.get(17).getValue());
     this.item.agility = toInt(this.fields.get(18).getValue());
     this.item.ammo = toInt(this.fields.get(19).getValue());
+    this.item.stack = toInt(this.fields.get(20).getValue());
   }
 
   void updateForm() {
@@ -68,6 +70,7 @@ class EditItemForm extends EditMapObjectForm {
     this.fields.get(17).setValueIfNotFocused(Float.toString(this.item.tenacity));
     this.fields.get(18).setValueIfNotFocused(Integer.toString(this.item.agility));
     this.fields.get(19).setValueIfNotFocused(Integer.toString(this.item.ammo));
+    this.fields.get(20).setValueIfNotFocused(Integer.toString(this.item.stack));
   }
 }
 
@@ -2049,7 +2052,19 @@ class Item extends MapObject {
         path += "default.png";
         break;
     }
-    return global.images.getImage(path);
+    if (this.stack > 1) {
+      PGraphics item_image = global.images.getImageAsGraphic(path);
+      item_image.beginDraw();
+      item_image.textSize(Constants.item_stackTextSizeRatio * item_image.width);
+      item_image.fill(255);
+      item_image.textAlign(RIGHT, BOTTOM);
+      item_image.text("x" + this.stack, item_image.width - 1, item_image.height - 1);
+      item_image.endDraw();
+      return item_image;
+    }
+    else {
+      return global.images.getImage(path);
+    }
   }
 
 
@@ -2124,15 +2139,112 @@ class Item extends MapObject {
     }
   }
 
-  boolean stackable() {
-    switch(this.ID) {
-      default:
-        return false;
-    }
-  }
-
   int maxStack() {
     switch(this.ID) {
+      case 2101: // crumb
+      case 2102: // unknown food
+      case 2103: // unknown food
+      case 2104: // unknown food
+      case 2105: // unknown food
+      case 2106: // pickle
+      case 2107: // ketchup
+      case 2108: // chicken wing
+      case 2109: // steak
+      case 2110: // poptart
+      case 2111: // donut
+      case 2112: // chocolate
+      case 2113: // chips
+      case 2114: // cheese
+      case 2115: // peanuts
+      case 2116: // raw chicken
+      case 2117: // cooked chicken
+      case 2118: // chicken egg
+      case 2119: // rotten flesh
+        return 8;
+      case 2131: // water cup
+      case 2132: // coke
+      case 2133: // wine
+      case 2134: // beer
+      case 2141: // holy water
+      case 2142: // golden apple
+        return 4;
+      case 2151: // one dollar
+      case 2152: // five dollars
+      case 2153: // ten dollars
+      case 2154: // fifty dollars
+      case 2155: // zucc bucc
+      case 2156: // wad of 5s
+      case 2157: // wad of 10s
+      case 2158: // wad of 50s
+      case 2159: // wad of zuccs
+        return 100;
+      case 2801: // talc ore
+      case 2802: // talc crystal
+      case 2803: // talc powder
+      case 2804: // soapstone
+      case 2805: // broken glass
+      case 2806: // wire
+      case 2807: // feather
+      case 2811: // gypsum ore
+      case 2812: // gypsum crystal
+      case 2813: // gypsum powder
+      case 2814: // selenite crystal
+      case 2815: // barbed wire
+      case 2821: // calcite ore
+      case 2822: // calcite crystal
+      case 2823: // chalk
+      case 2824: // iceland spar
+      case 2825: // star piece
+      case 2831: // fluorite ore
+      case 2832: // fluorite crystal
+      case 2841: // apatite ore
+      case 2842: // apatite crystal
+      case 2851: // orthoclase ore
+      case 2852: // orthoclase chunk
+      case 2853: // moonstone
+      case 2861: // quartz ore
+      case 2862: // quartz crystal
+      case 2863: // amethyst
+      case 2864: // glass
+      case 2871: // topaz ore
+      case 2872: // topaz chunk
+      case 2873: // topaz gem
+      case 2881: // corundum ore
+      case 2882: // corundum chunk
+      case 2883: // sapphire
+      case 2891: // diamond ore
+      case 2892: // diamond
+        return 60;
+      case 2911: // pen
+      case 2912: // pencil
+      case 2913: // paper
+      case 2914: // document
+      case 2916: // crumpled paper
+      case 2917: // eraser
+        return 12;
+      case 2931: // rock
+      case 2932: // arrow
+      case 2933: // pebble
+        return 20;
+      case 2941: // .45 ACP
+      case 2942: // 7.62
+      case 2943: // 5.56
+      case 2945: // .357 magnum
+      case 2946: // .50 BMG
+      case 2947: // FN 4.7
+      case 2948: // 28 gauge
+        return 100;
+      case 2944: // grenade
+        return 4;
+      case 2961: // dandelion
+      case 2962: // rose
+      case 2963: // stick
+      case 2964: // kindling
+      case 2965: // branch (maple)
+      case 2966: // branch (unknown)
+      case 2967: // branch (cedar)
+      case 2968: // branch (pine)
+        return 12;
       default:
         return 1;
     }
@@ -3120,7 +3232,7 @@ class Item extends MapObject {
         this.disappear_timer = toInt(data);
         break;
       case "stack":
-        this.size = toInt(data);
+        this.stack = toInt(data);
         break;
       case "size":
         this.size = toFloat(data);
