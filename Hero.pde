@@ -181,84 +181,51 @@ class Hero extends Unit {
       super(4, 3, true);
     }
 
-    Item getItem(int index) {
+    GearSlot indexToGearSlot(int index) {
       switch(index) {
         case 0:
-          return Hero.this.gear.get(GearSlot.HAND_THIRD);
+          return GearSlot.HAND_THIRD;
         case 1:
-          return Hero.this.gear.get(GearSlot.HEAD);
+          return GearSlot.HEAD;
         case 2:
-          return Hero.this.gear.get(GearSlot.HAND_FOURTH);
+          return GearSlot.HAND_FOURTH;
         case 3:
-          return Hero.this.gear.get(GearSlot.WEAPON);
+          return GearSlot.WEAPON;
         case 4:
-          return Hero.this.gear.get(GearSlot.CHEST);
+          return GearSlot.CHEST;
         case 5:
-          return Hero.this.gear.get(GearSlot.OFFHAND);
+          return GearSlot.OFFHAND;
         case 6:
-          return Hero.this.gear.get(GearSlot.BELT_RIGHT);
+          return GearSlot.BELT_RIGHT;
         case 7:
-          return Hero.this.gear.get(GearSlot.LEGS);
+          return GearSlot.LEGS;
         case 8:
-          return Hero.this.gear.get(GearSlot.BELT_LEFT);
+          return GearSlot.BELT_LEFT;
         case 9:
-          return Hero.this.gear.get(GearSlot.FEET_SECOND);
+          return GearSlot.FEET_SECOND;
         case 10:
-          return Hero.this.gear.get(GearSlot.FEET);
+          return GearSlot.FEET;
         case 11:
-          return Hero.this.gear.get(GearSlot.FEET_THIRD);
+          return GearSlot.FEET_THIRD;
         default:
           global.errorMessage("ERROR: Gear inventory index " + index + " out of range.");
-          return null;
+          return GearSlot.ERROR;
       }
     }
 
+    Item getItem(int index) {
+      return Hero.this.gear.get(this.indexToGearSlot(index));
+    }
+
     void setItem(int index, Item i) {
-      switch(index) {
-        case 0:
-          Hero.this.gear.put(GearSlot.HAND_THIRD, i);
-          break;
-        case 1:
-          Hero.this.gear.put(GearSlot.HEAD, i);
-          break;
-        case 2:
-          Hero.this.gear.put(GearSlot.HAND_FOURTH, i);
-          break;
-        case 3:
-          Hero.this.gear.put(GearSlot.WEAPON, i);
-          break;
-        case 4:
-          Hero.this.gear.put(GearSlot.CHEST, i);
-          break;
-        case 5:
-          Hero.this.gear.put(GearSlot.OFFHAND, i);
-          break;
-        case 6:
-          Hero.this.gear.put(GearSlot.BELT_RIGHT, i);
-          break;
-        case 7:
-          Hero.this.gear.put(GearSlot.LEGS, i);
-          break;
-        case 8:
-          Hero.this.gear.put(GearSlot.BELT_LEFT, i);
-          break;
-        case 9:
-          Hero.this.gear.put(GearSlot.FEET_SECOND, i);
-          break;
-        case 10:
-          Hero.this.gear.put(GearSlot.FEET, i);
-          break;
-        case 11:
-          Hero.this.gear.put(GearSlot.FEET_THIRD, i);
-          break;
-        default:
-          global.errorMessage("ERROR: Gear inventory index " + index + " out of range.");
-          break;
-      }
+      Hero.this.gear.put(this.indexToGearSlot(index), i);
     }
 
     @Override
     Item placeAt(Item i, int index, boolean replace) {
+      if (!i.equippable(this.indexToGearSlot(index))) {
+        return i;
+      }
       if (index < 0 || index >= this.slots.size()) {
         return i;
       }
@@ -297,6 +264,15 @@ class Hero extends Unit {
             break;
           case FEET:
             this.updateSlot(timeElapsed, 10, entry.getValue());
+            break;
+          case OFFHAND:
+            this.updateSlot(timeElapsed, 5, entry.getValue());
+            break;
+          case BELT_LEFT:
+            this.updateSlot(timeElapsed, 6, entry.getValue());
+            break;
+          case BELT_RIGHT:
+            this.updateSlot(timeElapsed, 8, entry.getValue());
             break;
         }
       }
@@ -347,13 +323,13 @@ class Hero extends Unit {
             iconName += "hand.png";
             break;
           case 6:
-            iconName += "";
+            iconName += "belt_right.png";
             break;
           case 7:
             iconName += "legs.png";
             break;
           case 8:
-            iconName += "";
+            iconName += "belt_left.png";
             break;
           case 9:
             iconName += "";
@@ -3268,7 +3244,7 @@ class Hero extends Unit {
 
   protected Location location = Location.ERROR;
 
-  protected int level_tokens = 200;
+  protected int level_tokens = 20000;
   protected float experience = 0;
   protected int experience_next_level = 1;
   protected float money = 10;

@@ -1983,6 +1983,10 @@ class Level {
       this.color_background = color(211, 188, 141);
       this.color_header = color(220, 200, 150);
       global.defaultCursor();
+      this.min_x = Level.this.xi;
+      this.min_y = Level.this.yi;
+      this.max_x = Level.this.xf;
+      this.max_y = Level.this.yf;
     }
   }
 

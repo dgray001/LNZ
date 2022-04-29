@@ -2061,6 +2061,50 @@ class Item extends MapObject {
   }
 
 
+  boolean equippable(GearSlot slot) {
+    switch(slot) {
+      case WEAPON:
+        return true;
+      case HEAD:
+        if (this.type.equals("Headgear")) {
+          return true;
+        }
+        return false;
+      case CHEST:
+        if (this.type.equals("Chestgear")) {
+          return true;
+        }
+        return false;
+      case LEGS:
+        if (this.type.equals("Leggear")) {
+          return true;
+        }
+        return false;
+      case FEET:
+        if (this.type.equals("Footgear")) {
+          return true;
+        }
+        return false;
+      case OFFHAND:
+        if (this.type.equals("Offhand")) {
+          return true;
+        }
+        return false;
+      case BELT_LEFT:
+        if (this.type.equals("Belt")) {
+          return true;
+        }
+        return false;
+      case BELT_RIGHT:
+        if (this.type.equals("Belt")) {
+          return true;
+        }
+        return false;
+      default:
+        return true;
+    }
+  }
+
   boolean weapon() {
     if (this.type.contains("Weapon") || this.throwable()) {
       return true;
