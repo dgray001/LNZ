@@ -23,6 +23,7 @@ abstract class Button {
   protected boolean adjust_for_text_descent = false;
   protected boolean hover_check_after_release = true;
   protected boolean use_time_elapsed = false;
+  protected boolean force_left_button = true;
   // timer
   protected int hold_timer = 0;
   protected int lastUpdateTime = millis();
@@ -147,7 +148,7 @@ abstract class Button {
     if (this.disabled) {
       return;
     }
-    if (mouseButton != LEFT) {
+    if (this.force_left_button && mouseButton != LEFT) {
       return;
     }
     if (this.hovered) {
@@ -163,7 +164,7 @@ abstract class Button {
     if (this.disabled) {
       return;
     }
-    if (mouseButton != LEFT) {
+    if (this.force_left_button && mouseButton != LEFT) {
       return;
     }
     if (this.clicked) {
