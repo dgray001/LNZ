@@ -15,6 +15,15 @@ class Images {
     }
   }
 
+  PGraphics getImageAsGraphic(String filePath) {
+    PImage img = this.getImage(filePath);
+    PGraphics graphic = createGraphics(img.width, img.height);
+    graphic.beginDraw();
+    graphic.image(img, 0, 0);
+    graphic.endDraw();
+    return graphic;
+  }
+
   void loadImageFile(String filePath) {
     PImage img = loadImage(this.basePath + filePath);
     if (img == null) {
