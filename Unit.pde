@@ -634,17 +634,22 @@ class Unit extends MapObject {
     return null;
   }
 
-  boolean canPickup() {
-    if (this.gear.containsKey(GearSlot.WEAPON) && this.weapon() == null) {
+  boolean canEquip(GearSlot slot) {
+    if (this.gear.containsKey(slot) && this.gear.get(slot) == null) {
       return true;
     }
     return false;
+  }
+
+  boolean canPickup() {
+    return this.canEquip(GearSlot.WEAPON);
   }
 
   void pickup(Item i) {
     this.gear.put(GearSlot.WEAPON, i);
   }
 
+  // True if holding one of these items
   boolean holding(int ... item_ids) {
     if (this.weapon() == null) {
       return false;
@@ -688,6 +693,15 @@ class Unit extends MapObject {
 
   float health() {
     float health = this.base_health;
+    for (Map.Entry<GearSlot, Item> gear_entry : this.gear.entrySet()) {
+      if (gear_entry.getKey() == GearSlot.WEAPON) {
+        continue;
+      }
+      if (gear_entry.getValue() == null) {
+        continue;
+      }
+      health += gear_entry.getValue().health;
+    }
     if (this.weapon() != null && this.weapon().weapon()) {
       health += this.weapon().health;
     }
@@ -715,6 +729,15 @@ class Unit extends MapObject {
 
   float attack() {
     float attack = this.base_attack;
+    for (Map.Entry<GearSlot, Item> gear_entry : this.gear.entrySet()) {
+      if (gear_entry.getKey() == GearSlot.WEAPON) {
+        continue;
+      }
+      if (gear_entry.getValue() == null) {
+        continue;
+      }
+      attack += gear_entry.getValue().attack;
+    }
     if (this.weapon() != null) {
       if (this.weapon().shootable()) {
         attack += this.weapon().shootAttack();
@@ -758,6 +781,15 @@ class Unit extends MapObject {
 
   float magic() {
     float magic = this.base_magic;
+    for (Map.Entry<GearSlot, Item> gear_entry : this.gear.entrySet()) {
+      if (gear_entry.getKey() == GearSlot.WEAPON) {
+        continue;
+      }
+      if (gear_entry.getValue() == null) {
+        continue;
+      }
+      magic += gear_entry.getValue().magic;
+    }
     if (this.weapon() != null) {
       if (this.weapon().shootable()) {
         magic += this.weapon().shootMagic();
@@ -793,6 +825,15 @@ class Unit extends MapObject {
 
   float defense() {
     float defense = this.base_defense;
+    for (Map.Entry<GearSlot, Item> gear_entry : this.gear.entrySet()) {
+      if (gear_entry.getKey() == GearSlot.WEAPON) {
+        continue;
+      }
+      if (gear_entry.getValue() == null) {
+        continue;
+      }
+      defense += gear_entry.getValue().defense;
+    }
     if (this.weapon() != null && this.weapon().weapon()) {
       defense += this.weapon().defense;
     }
@@ -825,6 +866,15 @@ class Unit extends MapObject {
 
   float resistance() {
     float resistance = this.base_resistance;
+    for (Map.Entry<GearSlot, Item> gear_entry : this.gear.entrySet()) {
+      if (gear_entry.getKey() == GearSlot.WEAPON) {
+        continue;
+      }
+      if (gear_entry.getValue() == null) {
+        continue;
+      }
+      resistance += gear_entry.getValue().resistance;
+    }
     if (this.weapon() != null && this.weapon().weapon()) {
       resistance += this.weapon().resistance;
     }
@@ -857,6 +907,15 @@ class Unit extends MapObject {
 
   float piercing() {
     float piercing = this.base_piercing;
+    for (Map.Entry<GearSlot, Item> gear_entry : this.gear.entrySet()) {
+      if (gear_entry.getKey() == GearSlot.WEAPON) {
+        continue;
+      }
+      if (gear_entry.getValue() == null) {
+        continue;
+      }
+      piercing += gear_entry.getValue().piercing;
+    }
     if (this.weapon() != null) {
       if (this.weapon().shootable()) {
         piercing += this.weapon().shootPiercing();
@@ -891,6 +950,15 @@ class Unit extends MapObject {
 
   float penetration() {
     float penetration = this.base_penetration;
+    for (Map.Entry<GearSlot, Item> gear_entry : this.gear.entrySet()) {
+      if (gear_entry.getKey() == GearSlot.WEAPON) {
+        continue;
+      }
+      if (gear_entry.getValue() == null) {
+        continue;
+      }
+      penetration += gear_entry.getValue().penetration;
+    }
     if (this.weapon() != null) {
       if (this.weapon().shootable()) {
         penetration += this.weapon().shootPenetration();
@@ -928,6 +996,15 @@ class Unit extends MapObject {
   }
   float attackRange(boolean forceMelee) {
     float attackRange = this.base_attackRange;
+    for (Map.Entry<GearSlot, Item> gear_entry : this.gear.entrySet()) {
+      if (gear_entry.getKey() == GearSlot.WEAPON) {
+        continue;
+      }
+      if (gear_entry.getValue() == null) {
+        continue;
+      }
+      attackRange += gear_entry.getValue().attackRange;
+    }
     if (this.weapon() != null && this.weapon().weapon()) {
       if (!forceMelee && this.weapon().shootable()) {
         attackRange = this.weapon().shootRange();
@@ -953,6 +1030,15 @@ class Unit extends MapObject {
   }
   float attackCooldown(boolean forceMelee) {
     float attackCooldown = this.base_attackCooldown;
+    for (Map.Entry<GearSlot, Item> gear_entry : this.gear.entrySet()) {
+      if (gear_entry.getKey() == GearSlot.WEAPON) {
+        continue;
+      }
+      if (gear_entry.getValue() == null) {
+        continue;
+      }
+      attackCooldown += gear_entry.getValue().attackCooldown;
+    }
     if (this.weapon() != null && this.weapon().weapon()) {
       if (!forceMelee && this.weapon().shootable()) {
         attackCooldown = this.weapon().shootCooldown();
@@ -1000,6 +1086,15 @@ class Unit extends MapObject {
   }
   float attackTime(boolean forceMelee) {
     float attackTime = this.base_attackTime;
+    for (Map.Entry<GearSlot, Item> gear_entry : this.gear.entrySet()) {
+      if (gear_entry.getKey() == GearSlot.WEAPON) {
+        continue;
+      }
+      if (gear_entry.getValue() == null) {
+        continue;
+      }
+      attackTime += gear_entry.getValue().attackTime;
+    }
     if (this.weapon() != null && this.weapon().weapon()) {
       if (!forceMelee && this.weapon().shootable()) {
         attackTime = this.weapon().shootTime();
@@ -1044,6 +1139,15 @@ class Unit extends MapObject {
 
   float sight() {
     float sight = this.base_sight;
+    for (Map.Entry<GearSlot, Item> gear_entry : this.gear.entrySet()) {
+      if (gear_entry.getKey() == GearSlot.WEAPON) {
+        continue;
+      }
+      if (gear_entry.getValue() == null) {
+        continue;
+      }
+      sight += gear_entry.getValue().sight;
+    }
     if (this.weapon() != null) {
       sight += this.weapon().sight;
     }
@@ -1061,6 +1165,15 @@ class Unit extends MapObject {
 
   float speed() {
     float speed = this.base_speed;
+    for (Map.Entry<GearSlot, Item> gear_entry : this.gear.entrySet()) {
+      if (gear_entry.getKey() == GearSlot.WEAPON) {
+        continue;
+      }
+      if (gear_entry.getValue() == null) {
+        continue;
+      }
+      speed += gear_entry.getValue().speed;
+    }
     if (this.weapon() != null && this.weapon().weapon()) {
       speed += this.weapon().speed;
     }
@@ -1108,6 +1221,15 @@ class Unit extends MapObject {
 
   float tenacity() {
     float tenacity = this.base_tenacity;
+    for (Map.Entry<GearSlot, Item> gear_entry : this.gear.entrySet()) {
+      if (gear_entry.getKey() == GearSlot.WEAPON) {
+        continue;
+      }
+      if (gear_entry.getValue() == null) {
+        continue;
+      }
+      tenacity += gear_entry.getValue().tenacity;
+    }
     if (this.weapon() != null && this.weapon().weapon()) {
       tenacity += this.weapon().tenacity;
     }
@@ -1165,6 +1287,15 @@ class Unit extends MapObject {
 
   int agility() {
     int agility = this.base_agility;
+    for (Map.Entry<GearSlot, Item> gear_entry : this.gear.entrySet()) {
+      if (gear_entry.getKey() == GearSlot.WEAPON) {
+        continue;
+      }
+      if (gear_entry.getValue() == null) {
+        continue;
+      }
+      agility += gear_entry.getValue().agility;
+    }
     if (this.weapon() != null && this.weapon().weapon()) {
       agility += this.weapon().agility;
     }
@@ -1188,6 +1319,15 @@ class Unit extends MapObject {
 
   float lifesteal() {
     float lifesteal = this.base_lifesteal;
+    for (Map.Entry<GearSlot, Item> gear_entry : this.gear.entrySet()) {
+      if (gear_entry.getKey() == GearSlot.WEAPON) {
+        continue;
+      }
+      if (gear_entry.getValue() == null) {
+        continue;
+      }
+      lifesteal += gear_entry.getValue().lifesteal;
+    }
     if (this.weapon() != null && this.weapon().weapon()) {
       lifesteal += this.weapon().lifesteal;
     }

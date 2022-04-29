@@ -801,6 +801,10 @@ class GameMap {
       this.addField(new SpacerFormField(0));
       this.addField(new TextBoxFormField(message, 120));
       this.addField(submit);
+      this.min_x = GameMap.this.xi;
+      this.min_y = GameMap.this.yi;
+      this.max_x = GameMap.this.xf;
+      this.max_y = GameMap.this.yf;
     }
 
     @Override

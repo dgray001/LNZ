@@ -3938,6 +3938,10 @@ abstract class Form {
   protected boolean dragging = false;
   protected float dragX = 0;
   protected float dragY = 0;
+  protected float max_x = width;
+  protected float min_x = 0;
+  protected float max_y = height;
+  protected float min_y = 0;
 
   Form() {
     this(0, 0, 0, 0);
@@ -4003,8 +4007,8 @@ abstract class Form {
       this.cancel.moveButton(xMove, yMove);
     }
     this.yStart += yMove;
-    if (this.xi >= width || this.xf <= 0 || (this.cancel != null && this.xf <= this.cancel.button_width())
-      || this.yi >= height || this.yStart <= 0) {
+    if (this.xi >= this.max_x || this.xf <= this.min_x || (this.cancel != null && this.xf <= this.cancel.button_width())
+      || this.yi >= this.max_y || this.yStart <= this.min_y) {
       this.toCenter();
       this.dragging = false;
     }
