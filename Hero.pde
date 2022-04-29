@@ -374,34 +374,7 @@ class Hero extends Unit {
     }
 
     boolean slotActive(int index) {
-      switch(index) {
-        case 0:
-          return Hero.this.gear.containsKey(GearSlot.HAND_THIRD);
-        case 1:
-          return Hero.this.gear.containsKey(GearSlot.HEAD);
-        case 2:
-          return Hero.this.gear.containsKey(GearSlot.HAND_FOURTH);
-        case 3:
-          return Hero.this.gear.containsKey(GearSlot.WEAPON);
-        case 4:
-          return Hero.this.gear.containsKey(GearSlot.CHEST);
-        case 5:
-          return Hero.this.gear.containsKey(GearSlot.OFFHAND);
-        case 6:
-          return Hero.this.gear.containsKey(GearSlot.BELT_RIGHT);
-        case 7:
-          return Hero.this.gear.containsKey(GearSlot.LEGS);
-        case 8:
-          return Hero.this.gear.containsKey(GearSlot.BELT_LEFT);
-        case 9:
-          return Hero.this.gear.containsKey(GearSlot.FEET_SECOND);
-        case 10:
-          return Hero.this.gear.containsKey(GearSlot.FEET);
-        case 11:
-          return Hero.this.gear.containsKey(GearSlot.FEET_THIRD);
-        default:
-          return false;
-      }
+      return Hero.this.gear.containsKey(this.indexToGearSlot(index));
     }
   }
 
@@ -582,6 +555,13 @@ class Hero extends Unit {
         imageMode(CENTER);
         image(this.item_holding.getImage(), this.item_holding.x, this.item_holding.y,
           this.button_size, this.button_size);
+        if (this.item_holding.stack > 1) {
+          fill(255);
+          textSize(14);
+          textAlign(RIGHT, BOTTOM);
+          text(this.item_holding.stack, this.item_holding.x + 0.5 * this.button_size -
+            2, this.item_holding.y + 0.5 * this.button_size - 2);
+        }
       }
     }
 

@@ -55,6 +55,12 @@ class Inventory {
       }
       if (this.item != null) {
         image(this.item.getImage(), this.button.xi, this.button.yi, this.button.xf, this.button.yf);
+        if (this.item.stack > 1) {
+          fill(255);
+          textSize(14);
+          textAlign(RIGHT, BOTTOM);
+          text(this.item.stack, this.button.xf - 2, this.button.yf - 2);
+        }
       }
       this.button.update(timeElapsed);
       if (this.item != null && this.item.remove) {
@@ -168,9 +174,31 @@ class Inventory {
 
 
   Item stash(Item i) {
+    if (i == null || i.remove) {
+      return null;
+    }
+    for (InventorySlot slot : this.slots) {
+      if (slot.item != null && slot.item.ID == i.ID) {
+        int stack_left = slot.item.maxStack() - slot.item.stack;
+        if (stack_left < 1) {
+          continue;
+        }
+        if (i.stack > stack_left) {
+          slot.item.addStack(stack_left);
+          i.removeStack(stack_left);
+        }
+        else {
+          slot.item.addStack(i.stack);
+          return null;
+        }
+      }
+    }
     for (InventorySlot slot : this.slots) {
       if (slot.item == null) {
         slot.item = new Item(i);
+        if (slot.item.remove) {
+          slot.item = null;
+        }
         return null;
       }
     }
@@ -193,6 +221,17 @@ class Inventory {
         this.slots.get(index).item = null;
       }
       return null;
+    }
+    else if (this.slots.get(index).item.ID == i.ID) {
+      int stack_left = this.slots.get(index).item.maxStack() - this.slots.get(index).item.stack;
+      if (i.stack > stack_left) {
+        this.slots.get(index).item.addStack(stack_left);
+        i.removeStack(stack_left);
+      }
+      else {
+        this.slots.get(index).item.addStack(i.stack);
+        return null;
+      }
     }
     else if (replace) {
       Item replaced = new Item(this.slots.get(index).item);

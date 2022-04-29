@@ -2052,19 +2052,7 @@ class Item extends MapObject {
         path += "default.png";
         break;
     }
-    if (this.stack > 1) {
-      PGraphics item_image = global.images.getImageAsGraphic(path);
-      item_image.beginDraw();
-      item_image.textSize(Constants.item_stackTextSizeRatio * item_image.width);
-      item_image.fill(255);
-      item_image.textAlign(RIGHT, BOTTOM);
-      item_image.text("x" + this.stack, item_image.width - 1, item_image.height - 1);
-      item_image.endDraw();
-      return item_image;
-    }
-    else {
-      return global.images.getImage(path);
-    }
+    return global.images.getImage(path);
   }
 
 

@@ -1366,6 +1366,12 @@ class GameMap {
         i.bounce.value / float(Constants.item_bounceConstant)) * this.zoom;
       translate(translateX, translateY);
       image(i.getImage(), 0, 0, i.width() * this.zoom, i.height() * this.zoom);
+      if (i.stack > 1) {
+        fill(255);
+        textSize(14);
+        textAlign(RIGHT, BOTTOM);
+        text(i.stack, i.width() * this.zoom - 2, i.height() * this.zoom - 2);
+      }
       translate(-translateX, -translateY);
     }
     // display projectiles
@@ -1516,9 +1522,15 @@ class GameMap {
       float translateItemX = 0.9 * (u.xRadius() + Constants.unit_weaponDisplayScaleFactor * Constants.item_defaultSize) * this.zoom;
       float translateItemY = 0.4 * (u.yRadius() + Constants.unit_weaponDisplayScaleFactor * Constants.item_defaultSize) * this.zoom;
       translate(translateItemX, translateItemY);
-      image(u.weapon().getImage(), 0, 0, Constants.unit_weaponDisplayScaleFactor *
-        u.weapon().width() * this.zoom, Constants.unit_weaponDisplayScaleFactor *
-        u.weapon().height() * this.zoom);
+      float weapon_adjust_x = Constants.unit_weaponDisplayScaleFactor * u.weapon().width() * this.zoom;
+      float weapon_adjust_y = Constants.unit_weaponDisplayScaleFactor * u.weapon().height() * this.zoom;
+      image(u.weapon().getImage(), 0, 0, weapon_adjust_x, weapon_adjust_y);
+      if (u.weapon().stack > 1) {
+        fill(255);
+        textSize(12);
+        textAlign(RIGHT, BOTTOM);
+        text(u.weapon().stack, 0.5 * weapon_adjust_x - 1, 0.5 * weapon_adjust_y - 1);
+      }
       translate(-translateItemX, -translateItemY);
     }
     else if (player_unit) {
@@ -1667,14 +1679,20 @@ class GameMap {
       float image_width = min(this.xi - 2 * Constants.map_selectedObjectPanelGap,
         image_height * this.selected_object.width() / this.selected_object.height());
       imageMode(CENTER);
-      image(this.selected_object.getImage(), 0.5 * this.xi, currY + 0.5 * image_height +
-        Constants.map_selectedObjectImageGap, image_width, image_height);
+      currY += 0.5 * image_height + Constants.map_selectedObjectImageGap;
+      image(this.selected_object.getImage(), 0.5 * this.xi, currY, image_width, image_height);
       if (Item.class.isInstance(this.selected_object)) {
+        Item i = (Item)this.selected_object;
+        if (i.stack > 1) {
+          fill(255);
+          textAlign(RIGHT, BOTTOM);
+          textSize(24);
+          text(i.stack, 0.5 * (this.xi + image_width) - 2, currY + 0.5 * image_height - 2);
+        }
         this.selected_object_textbox.setText(this.selected_object.selectedObjectTextboxText());
         this.selected_object_textbox.update(millis);
         // item tier image
-        PImage tier_image = global.images.getImage("icons/tier_" + ((Item)this.
-          selected_object).tier + ".png");
+        PImage tier_image = global.images.getImage("icons/tier_" + i.tier + ".png");
         float tier_image_width = (Constants.map_tierImageHeight * tier_image.width) / tier_image.height;
         imageMode(CORNER);
         image(tier_image, this.selected_object_textbox.xf - tier_image_width - 4,
