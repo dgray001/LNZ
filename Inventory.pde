@@ -13,6 +13,7 @@ class Inventory {
         this.setSize(button_size);
         this.roundness = 0;
         this.use_time_elapsed = true;
+        this.force_left_button = false;
       }
 
       void setSize(float size) {
