@@ -44,11 +44,10 @@ class Images {
     for (int i = 0; i <= Constants.gif_move_frames; i++) {
       this.loadImageFile("gifs/move/" + i + ".png");
     }
-    // poof gif
+    // ability gifs
     for (int i = 0; i <= Constants.gif_poof_frames; i++) {
       this.loadImageFile("gifs/poof/" + i + ".png");
     }
-    // ability gifs
     for (int i = 0; i <= Constants.gif_amphibiousLeap_frames; i++) {
       this.loadImageFile("gifs/amphibious_leap/" + i + ".png");
     }
@@ -68,7 +67,17 @@ class Images {
     for (int i = 0; i <= Constants.gif_explosionNormal_frames; i++) {
       this.loadImageFile("gifs/explosion_normal/" + i + ".png");
     }
-    // tier images
+    // map gifs
+    for (int i = 0; i <= Constants.gif_fire_frames; i++) {
+      this.loadImageFile("gifs/fire/" + i + ".png");
+    }
+    for (int i = 0; i <= Constants.gif_lava_frames; i++) {
+      this.loadImageFile("gifs/lava/" + i + ".png");
+    }
+    for (int i = 0; i <= Constants.gif_drenched_frames; i++) {
+      this.loadImageFile("gifs/drenched/" + i + ".png");
+    }
+    // other images
     for (int i = 1; i <= 11; i++) {
       this.loadImageFile("icons/tier_" + i + ".png");
     }

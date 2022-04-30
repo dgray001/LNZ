@@ -322,6 +322,9 @@ class Unit extends MapObject {
   protected int timer_ai_action1 = 0;
   protected int timer_ai_action2 = 0;
 
+  // graphics
+  protected float random_number = random(100);
+
   Unit(int ID) {
     this(ID, 0, 0);
   }

@@ -1502,6 +1502,22 @@ class GameMap {
     rotate(net_rotation);
     float extra_translate_x = 0;
     float extra_translate_y = 0;
+    if (u.diseased()) {
+      tint(90, 250, 90);
+      removeCache = true;
+    }
+    else if (u.sick()) {
+      tint(150, 255, 150);
+      removeCache = true;
+    }
+    if (u.frozen()) {
+      tint(50, 180, 250);
+      removeCache = true;
+    }
+    else if (u.chilled()) {
+      tint(120, 220, 255);
+      removeCache = true;
+    }
     if (u.rageOfTheBenII()) {
       tint(255, 160, 160);
       removeCache = true;
@@ -1555,6 +1571,31 @@ class GameMap {
         2 * Constants.item_defaultSize * this.zoom, Constants.unit_weaponDisplayScaleFactor *
         2 * Constants.item_defaultSize * this.zoom);
       translate(-translateItemX, -translateItemY);
+    }
+    if (u.charred()) {
+      int flame_frame = int(floor(Constants.gif_fire_frames * (u.random_number +
+        millis() % Constants.gif_fire_time) / Constants.gif_fire_time));
+      PImage fire_img = global.images.getImage("gifs/fire/" + flame_frame + ".png");
+      tint(255, 220);
+      image(fire_img, 0, 0, u.width() * this.zoom, u.height() * this.zoom);
+      g.removeCache(fire_img);
+      noTint();
+      g.removeCache(fire_img);
+    }
+    else if (u.burnt()) {
+      int flame_frame = int(floor(Constants.gif_fire_frames * (u.random_number +
+        millis() % Constants.gif_fire_time) / Constants.gif_fire_time));
+      PImage fire_img = global.images.getImage("gifs/fire/" + flame_frame + ".png");
+      tint(255, 160);
+      image(fire_img, 0, 0, u.width() * this.zoom, u.height() * this.zoom);
+      g.removeCache(fire_img);
+      noTint();
+      g.removeCache(fire_img);
+    }
+    if (u.drenched()) {
+      int drenched_frame = int(floor(Constants.gif_drenched_frames * (u.random_number +
+        millis() % Constants.gif_drenched_time) / Constants.gif_drenched_time));
+      image(global.images.getImage("gifs/drenched/" + drenched_frame + ".png"), 0, 0, u.width() * this.zoom, u.height() * this.zoom);
     }
     if (u.curr_action == UnitAction.CASTING) {
       try {
