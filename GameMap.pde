@@ -419,6 +419,11 @@ class GameMapSquare {
       case 185:
         imageName += "water5.png";
         break;
+      case 191:
+        int lava_frame = int(floor(Constants.gif_lava_frames * (millis() %
+          Constants.gif_lava_time) / Constants.gif_lava_time));
+        imageName = "gifs/lava/" + lava_frame + ".png";
+        break;
       case 201:
         imageName += "brickWall_blue.jpg";
         break;
@@ -1326,6 +1331,15 @@ class GameMap {
       try {
         nameDisplayed = this.squares[int(floor(this.mX))][int(floor(this.mY))].terrainName();
       } catch(ArrayIndexOutOfBoundsException e) {}
+    }
+    imageMode(CORNER);
+    for (int i = int(ceil(this.startSquareX)); i < int(floor(this.startSquareX + this.visSquareX)); i++) {
+      for (int j = int(ceil(this.startSquareY)); j < int(floor(this.startSquareY + this.visSquareY)); j++) {
+        if (this.squares[i][j].terrain_id == 191) {
+          image(this.squares[i][j].terrainImage(), this.xi_map + (i - this.startSquareX) *
+            this.zoom, this.yi_map + (j - this.startSquareY) * this.zoom, this.zoom, this.zoom);
+        }
+      }
     }
     // display units
     boolean display_player = false;
