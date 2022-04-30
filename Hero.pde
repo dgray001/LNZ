@@ -3609,68 +3609,106 @@ class Hero extends Unit {
     this.curr_action = UnitAction.USING_ITEM;
     this.timer_actionTime = this.weapon().useTime();
     switch(this.weapon().ID) {
+      case 2101: // crumb
+      case 2102: // unknown food
+      case 2103: // unknown food
+      case 2104: // unknown food
+      case 2105: // unknown food
+      case 2106: // pickle
+      case 2107: // ketchup
+      case 2108: // chicken wing
+      case 2109: // steak
+      case 2110: // poptart
+      case 2111: // donut
+      case 2112: // chocolate
+      case 2113: // chips
+      case 2114: // cheese
+      case 2115: // peanuts
+      case 2116: // raw chicken
+      case 2117: // cooked chicken
+      case 2118: // chicken egg
+      case 2119: // rotten flesh
+        global.sounds.trigger_player("player/eat");
+        break;
+      case 2131: // water cup
+      case 2132: // coke
+      case 2133: // wine
+      case 2134: // beer
+      case 2141: // holy water
+      case 2924: // Glass Bottle
+      case 2925: // Water Bottle
+      case 2926: // Canteen
+      case 2927: // Water Jug
+        global.sounds.trigger_player("player/drink");
+        break;
+      case 2301: // Slingshot
+        global.sounds.trigger_player("items/slingshot_reload");
+        break;
+      case 2311: // Recurve Bow
+        global.sounds.trigger_player("items/recurve_bow_reload");
+        break;
       case 2312: // M1911
-        global.sounds.trigger_units("items/m1911_reload");
+        global.sounds.trigger_player("items/m1911_reload");
         break;
       case 2321: // War Machine
-        global.sounds.trigger_units("items/war_machine_reload");
+        global.sounds.trigger_player("items/war_machine_reload");
         break;
       case 2322: // Five-Seven
       case 2343:
-        global.sounds.trigger_units("items/five_seven_reload");
+        global.sounds.trigger_player("items/five_seven_reload");
         break;
       case 2323: // Type25
       case 2344:
-        global.sounds.trigger_units("items/type25_reload");
+        global.sounds.trigger_player("items/type25_reload");
         break;
       case 2331: // Mustang and Sally
-        global.sounds.trigger_units("items/mustang_and_sally_reload");
+        global.sounds.trigger_player("items/mustang_and_sally_reload");
         break;
       case 2332: // FAL
       case 2352:
-        global.sounds.trigger_units("items/FAL_reload");
+        global.sounds.trigger_player("items/FAL_reload");
         break;
       case 2333: // Python
       case 2354:
-        global.sounds.trigger_units("items/python_reload");
+        global.sounds.trigger_player("items/python_reload");
       case 2341: // RPG
       case 2362:
-        global.sounds.trigger_units("items/RPG_reload");
+        global.sounds.trigger_player("items/RPG_reload");
         break;
       case 2342: // Dystopic Demolisher
-        global.sounds.trigger_units("items/dystopic_demolisher_reload");
+        global.sounds.trigger_player("items/dystopic_demolisher_reload");
         break;
       case 2345: // Executioner
       case 2364:
-        global.sounds.trigger_units("items/executioner_reload");
+        global.sounds.trigger_player("items/executioner_reload");
         break;
       case 2351: // Galil
       case 2373:
-        global.sounds.trigger_units("items/galil_reload");
+        global.sounds.trigger_player("items/galil_reload");
         break;
       case 2353: // Ballistic Knife
       case 2374:
-        global.sounds.trigger_units("items/ballistic_knife_reload");
+        global.sounds.trigger_player("items/ballistic_knife_reload");
         break;
       case 2355: // MTAR
       case 2375:
-        global.sounds.trigger_units("items/MTAR_reload");
+        global.sounds.trigger_player("items/MTAR_reload");
         break;
       case 2361: // RPD
       case 2381: // Relativistic Punishment Device
-        global.sounds.trigger_units("items/RPD_reload");
+        global.sounds.trigger_player("items/RPD_reload");
         break;
       case 2363: // DSR-50
       case 2382:
-        global.sounds.trigger_units("items/DSR50_reload");
+        global.sounds.trigger_player("items/DSR50_reload");
         break;
       case 2371: // HAMR
       case 2391:
-        global.sounds.trigger_units("items/HAMR_reload");
+        global.sounds.trigger_player("items/HAMR_reload");
         break;
       case 2372: // Ray Gun
       case 2392: // Porter's X2 Ray Gun
-        global.sounds.trigger_units("items/ray_gun_reload");
+        global.sounds.trigger_player("items/ray_gun_reload");
         break;
       default:
         break;

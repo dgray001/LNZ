@@ -3158,18 +3158,22 @@ class Item extends MapObject {
       case 2117: // cooked chicken
       case 2118: // chicken egg
       case 2119: // rotten flesh
-        return 900;
+      case 2142: // golden apple
+        return 1450;
       case 2131: // water cup
       case 2132: // coke
       case 2133: // wine
       case 2134: // beer
       case 2141: // holy water
-      case 2142: // golden apple
-        return 900;
+      case 2924: // Glass Bottle
+      case 2925: // Water Bottle
+      case 2926: // Canteen
+      case 2927: // Water Jug
+        return 1800;
       case 2301: // Slingshot
-        return 0;
+        return 800;
       case 2311: // Recurve Bow
-        return 0;
+        return 1100;
       case 2312: // M1911
         return 1000;
       case 2321: // War Machine

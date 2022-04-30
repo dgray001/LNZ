@@ -2277,6 +2277,15 @@ class Unit extends MapObject {
     }
     map.addProjectile(new Projectile(this.weapon().ID + 1000, myKey, this, this.weapon().shootInaccuracy()));
     switch(this.weapon().ID) {
+      case 2118: // Chicken Egg
+        global.sounds.trigger_units("items/throw");
+        break;
+      case 2301: // Slingshot
+        global.sounds.trigger_units("items/slingshot");
+        break;
+      case 2311: // Recurve Bow
+        global.sounds.trigger_units("items/recurve_bow");
+        break;
       case 2312: // M1911
         global.sounds.trigger_units("items/m1911");
         break;
@@ -2347,6 +2356,15 @@ class Unit extends MapObject {
         break;
       case 2392: // Porter's X2 Ray Gun
         global.sounds.trigger_units("items/porters_x2_ray_gun");
+        break;
+      case 2924: // Glass Bottle
+      case 2931: // Rock
+      case 2932: // Arrow
+      case 2933: // Pebble
+        global.sounds.trigger_units("items/throw");
+        break;
+      case 2944: // Grenade
+        global.sounds.trigger_units("items/grenade_throw");
         break;
       default:
         break;
