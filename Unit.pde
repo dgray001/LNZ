@@ -2144,6 +2144,10 @@ class Unit extends MapObject {
                 this.refreshStatusEffect(StatusEffectCode.DROWNING, 100);
               }
               break;
+            case 191: // Lava
+              this.refreshStatusEffect(StatusEffectCode.BURNT, 4000);
+              this.refreshStatusEffect(StatusEffectCode.CHARRED, 1000);
+              break;
             default:
               break;
           }
