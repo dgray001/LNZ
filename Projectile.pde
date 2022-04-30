@@ -510,9 +510,10 @@ class Projectile extends MapObject {
     float tryMoveX = distance_moved * this.facingX;
     float tryMoveY = distance_moved * this.facingY;
     // move in x direction
-    this.moveX(tryMoveX, map);
-    // move in y direction
-    this.moveY(tryMoveY, map);
+    if (!this.moveX(tryMoveX, map)) {
+      // move in y direction
+      this.moveY(tryMoveY, map);
+    }
     // decay
     float decay_percentage = 1 - this.decay * timeElapsed / 1000.0;
     if (decay_percentage < 0) {
@@ -540,43 +541,45 @@ class Projectile extends MapObject {
   void update(int timeElapsed) {}
 
 
-  void moveX(float tryMoveX, GameMap map) {
+  // returns true if collision occurs
+  boolean moveX(float tryMoveX, GameMap map) {
     while(abs(tryMoveX) > Constants.map_moveLogicCap) {
       if (tryMoveX > 0) {
         if (this.collisionLogicX(Constants.map_moveLogicCap, map)) {
-          return;
+          return true;
         }
         tryMoveX -= Constants.map_moveLogicCap;
       }
       else {
         if (this.collisionLogicX(-Constants.map_moveLogicCap, map)) {
-          return;
+          return true;
         }
         tryMoveX += Constants.map_moveLogicCap;
       }
     }
     if (this.collisionLogicX(tryMoveX, map)) {
-      return;
+      return true;
     }
   }
 
-  void moveY(float tryMoveY, GameMap map) {
+  // returns true if collision occurs
+  boolean moveY(float tryMoveY, GameMap map) {
     while(abs(tryMoveY) > Constants.map_moveLogicCap) {
       if (tryMoveY > 0) {
         if (this.collisionLogicY(Constants.map_moveLogicCap, map)) {
-          return;
+          return true;
         }
         tryMoveY -= Constants.map_moveLogicCap;
       }
       else {
         if (this.collisionLogicY(-Constants.map_moveLogicCap, map)) {
-          return;
+          return true;
         }
         tryMoveY += Constants.map_moveLogicCap;
       }
     }
     if (this.collisionLogicY(tryMoveY, map)) {
-      return;
+      return true;
     }
   }
 
@@ -594,6 +597,7 @@ class Projectile extends MapObject {
       if (map.squares[int(floor(this.x))][int(floor(this.y))].elevation(true) > this.curr_height) {
         this.x = startX;
         this.dropOnGround(map);
+        this.collideSound();
         return true;
       }
     } catch(Exception e) {}
@@ -618,6 +622,7 @@ class Projectile extends MapObject {
       }
       this.x = startX;
       this.collideWithUnit(map, u);
+      this.collideSound();
       return true;
     }
     return false;
@@ -637,6 +642,7 @@ class Projectile extends MapObject {
       if (map.squares[int(floor(this.x))][int(floor(this.y))].elevation(true) > this.curr_height) {
         this.y = startY;
         this.dropOnGround(map);
+        this.collideSound();
         return true;
       }
     } catch(Exception e) {}
@@ -661,6 +667,7 @@ class Projectile extends MapObject {
       }
       this.y = startY;
       this.collideWithUnit(map, u);
+      this.collideSound();
       return true;
     }
     return false;
@@ -746,6 +753,52 @@ class Projectile extends MapObject {
     }
     else {
       this.remove = true;
+    }
+  }
+
+
+  void collideSound() {
+    switch(this.ID) {
+      case 3311: // Recurve Bow
+      case 3932: // Arrow
+        global.sounds.trigger_units("items/recurve_bow_hit");
+        break;
+      case 3312: // M1911
+      case 3322: // Five-Seven
+      case 3323: // Type25
+      case 3332: // FAL
+      case 3333: // Python
+      case 3343: // Ultra
+      case 3344: // Strain25
+      case 3345: // Executioner
+      case 3351: // Galil
+      case 3352: // WN
+      case 3354: // Cobra
+      case 3355: // MTAR
+      case 3361: // RPD
+      case 3363: // DSR-50
+      case 3364: // Voice of Justice
+      case 3371: // HAMR
+      case 3373: // Lamentation
+      case 3375: // Malevolent Taxonomic Anodized Redeemer
+      case 3381: // Relativistic Punishment Device
+      case 3382: // Dead Specimen Reactor 5000
+      case 3391: // SLDG HAMR
+        global.sounds.trigger_units("items/bullet_hit");
+        break;
+      case 3353: // Ballistic Knife
+      case 3374: // The Krauss Refibrillator
+        global.sounds.trigger_units("items/ballistic_knife_hit");
+        break;
+      case 3301: // Slingshot
+      case 3321: // War Machine
+      case 3931: // Rock
+      case 3933: // Pebble
+      case 3944: // Grenade
+        global.sounds.trigger_units("items/rock_hit");
+        break;
+      default:
+        break;
     }
   }
 
