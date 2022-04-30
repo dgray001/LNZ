@@ -2794,7 +2794,7 @@ class Item extends MapObject {
       case 2364: // Voice of Justice
         return 128;
       case 2371: // HAMR
-        ammo_ratio = this.ammo / this.maximumAmmo();
+        ammo_ratio = float(this.ammo) / this.maximumAmmo();
         return 200 - 120 * ammo_ratio;
       case 2372: // Ray Gun
         return 331;
@@ -2809,7 +2809,7 @@ class Item extends MapObject {
       case 2382: // Dead Specimen Reactor 5000
         return 1200;
       case 2391: // SLDG HAMR
-        ammo_ratio = this.ammo / this.maximumAmmo();
+        ammo_ratio = float(this.ammo) / this.maximumAmmo();
         return 200 - 120 * ammo_ratio;
       case 2392: // Porter's X2 Ray Gun
         return 331;
@@ -2868,7 +2868,7 @@ class Item extends MapObject {
       case 2364: // Voice of Justice
         return 13;
       case 2371: // HAMR
-        ammo_ratio = this.ammo / this.maximumAmmo();
+        ammo_ratio = float(this.ammo) / this.maximumAmmo();
         return 20 - 12 * ammo_ratio;
       case 2372: // Ray Gun
         return 33;
@@ -2883,7 +2883,7 @@ class Item extends MapObject {
       case 2382: // Dead Specimen Reactor 5000
         return 120;
       case 2391: // SLDG HAMR
-        ammo_ratio = this.ammo / this.maximumAmmo();
+        ammo_ratio = float(this.ammo) / this.maximumAmmo();
         return 20 - 12 * ammo_ratio;
       case 2392: // Porter's X2 Ray Gun
         return 33;
@@ -3011,7 +3011,7 @@ class Item extends MapObject {
       case 2364: // Voice of Justice
         return 0.05;
       case 2371: // HAMR
-        ammo_ratio = this.ammo / this.maximumAmmo();
+        ammo_ratio = float(this.ammo) / this.maximumAmmo();
         return 0.05 + 0.1 * ammo_ratio;
       case 2372: // Ray Gun
         return 0.05;
@@ -3026,7 +3026,7 @@ class Item extends MapObject {
       case 2382: // Dead Specimen Reactor 5000
         return 0.02;
       case 2391: // SLDG HAMR
-        ammo_ratio = this.ammo / this.maximumAmmo();
+        ammo_ratio = float(this.ammo) / this.maximumAmmo();
         return 0.05 + 0.1 * ammo_ratio;
       case 2392: // Porter's X2 Ray Gun
         return 0.05;
@@ -3139,14 +3139,84 @@ class Item extends MapObject {
 
   float useTime() {
     switch(this.ID) {
-      case 2101:
+      case 2101: // crumb
+      case 2102: // unknown food
+      case 2103: // unknown food
+      case 2104: // unknown food
+      case 2105: // unknown food
+      case 2106: // pickle
+      case 2107: // ketchup
+      case 2108: // chicken wing
+      case 2109: // steak
+      case 2110: // poptart
+      case 2111: // donut
+      case 2112: // chocolate
+      case 2113: // chips
+      case 2114: // cheese
+      case 2115: // peanuts
+      case 2116: // raw chicken
+      case 2117: // cooked chicken
+      case 2118: // chicken egg
+      case 2119: // rotten flesh
         return 900;
-      case 2301:
+      case 2131: // water cup
+      case 2132: // coke
+      case 2133: // wine
+      case 2134: // beer
+      case 2141: // holy water
+      case 2142: // golden apple
+        return 900;
+      case 2301: // Slingshot
+        return 0;
+      case 2311: // Recurve Bow
+        return 0;
+      case 2312: // M1911
         return 1000;
-      case 2311:
-        return 1500;
-      case 2312:
-        return 1700;
+      case 2321: // War Machine
+        return 6400;
+      case 2322: // Five-Seven
+      case 2343: // Ultra
+        return 1100;
+      case 2323: // Type25
+      case 2344: // Strain25
+        return 860;
+      case 2331: // Mustang and Sally
+        return 1850;
+      case 2332: // FAL
+      case 2352: // WN
+        return 1300;
+      case 2333: // Python
+      case 2354: // Cobra
+        return 2650;
+      case 2341: // RPG
+      case 2362: // Rocket-Propelled Grievance
+        return 550;
+      case 2342: // Dystopic Demolisher
+        return 1950;
+      case 2345: // Executioner
+      case 2364: // Voice of Justice
+        return 3770;
+      case 2351: // Galil
+      case 2373: // Lamentation
+        return 1600;
+      case 2353: // Ballistic Knife
+      case 2374: // The Krauss Refibrillator
+        return 180;
+      case 2355: // MTAR
+      case 2375: // Malevolent Taxonomic Anodized Redeemer
+        return 1000;
+      case 2361: // RPD
+      case 2381: // Relativistic Punishment Device
+        return 6300;
+      case 2363: // DSR-50
+      case 2382: // Dead Specimen Reactor 5000
+        return 1950;
+      case 2371: // HAMR
+      case 2391: // SLDG HAMR
+        return 2200;
+      case 2372: // Ray Gun
+      case 2392: // Porter's X2 Ray Gun
+        return 2600;
       default:
         return 0;
     }

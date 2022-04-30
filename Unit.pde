@@ -2277,6 +2277,44 @@ class Unit extends MapObject {
     }
     map.addProjectile(new Projectile(this.weapon().ID + 1000, myKey, this, this.weapon().shootInaccuracy()));
     switch(this.weapon().ID) {
+      case 2312: // M1911
+        global.sounds.trigger_units("items/m1911");
+        break;
+      case 2321: // War Machine
+      case 2342:
+      case 2331:
+        global.sounds.trigger_units("items/war_machine");
+        break;
+      case 2322: // Five-Seven
+      case 2343:
+        global.sounds.trigger_units("items/five_seven");
+        break;
+      case 2323: // Type25
+      case 2344:
+        global.sounds.trigger_units("items/type25");
+        break;
+      case 2332: // FAL
+        global.sounds.trigger_units("items/FAL");
+        break;
+      case 2333: // Python
+      case 2354:
+        global.sounds.trigger_units("items/python");
+      case 2341: // RPG
+      case 2362:
+        global.sounds.trigger_units("items/RPG");
+        break;
+      case 2345: // Executioner
+      case 2364:
+        global.sounds.trigger_units("items/executioner");
+        break;
+      case 2351: // Galil
+      case 2373:
+        global.sounds.trigger_units("items/galil");
+        break;
+      case 2353: // Ballistic Knife
+      case 2374:
+        global.sounds.trigger_units("items/ballistic_knife");
+        break;
       case 2352: // WN
         Projectile burst1 = new Projectile(this.weapon().ID + 1000, myKey, this, this.weapon().shootInaccuracy());
         Projectile burst2 = new Projectile(this.weapon().ID + 1000, myKey, this, this.weapon().shootInaccuracy());
@@ -2286,6 +2324,29 @@ class Unit extends MapObject {
         burst2.y -= 0.1 * this.facingY;
         map.addProjectile(burst1);
         map.addProjectile(burst2);
+        global.sounds.trigger_units("items/FAL");
+        break;
+      case 2355: // MTAR
+      case 2375:
+        global.sounds.trigger_units("items/MTAR");
+        break;
+      case 2361: // RPD
+      case 2381: // Relativistic Punishment Device
+        global.sounds.trigger_units("items/RPD");
+        break;
+      case 2363: // DSR-50
+      case 2382:
+        global.sounds.trigger_units("items/DSR50");
+        break;
+      case 2371: // HAMR
+      case 2391:
+        global.sounds.trigger_units("items/HAMR");
+        break;
+      case 2372: // Ray Gun
+        global.sounds.trigger_units("items/ray_gun");
+        break;
+      case 2392: // Porter's X2 Ray Gun
+        global.sounds.trigger_units("items/porters_x2_ray_gun");
         break;
       default:
         break;
