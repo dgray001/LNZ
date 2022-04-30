@@ -1781,6 +1781,9 @@ class Unit extends MapObject {
             if (this.weapon() == null) {
               this.gear.put(GearSlot.WEAPON, new Item(i));
               i.remove = true;
+              if (myKey == 0) {
+                map.selected_object = this.weapon();
+              }
             }
           }
           this.stopAction();

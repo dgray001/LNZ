@@ -560,6 +560,7 @@ class Projectile extends MapObject {
     if (this.collisionLogicX(tryMoveX, map)) {
       return true;
     }
+    return false;
   }
 
   // returns true if collision occurs
@@ -581,6 +582,7 @@ class Projectile extends MapObject {
     if (this.collisionLogicY(tryMoveY, map)) {
       return true;
     }
+    return false;
   }
 
   // returns true if collision occurs
@@ -680,20 +682,22 @@ class Projectile extends MapObject {
       case 3002: // Mighty Pen II
         droppedItems.add(new Item(2911));
         break;
+      case 3301: // Slingshot
+      case 3931: // Rock
+        droppedItems.add(new Item(2931));
+        break;
+      case 3311: // Recurve Bow
+      case 3932: // Arrow
+        droppedItems.add(new Item(2932));
+        break;
       case 3353: // Ballistic Knife
       case 3374: // The Krauss Refibrillator
         droppedItems.add(new Item(2203));
         break;
-      case 3924: // glass bottle
+      case 3924: // Glass Bottle
         droppedItems.add(new Item(2805));
         break;
-      case 3931: // rock
-        droppedItems.add(new Item(2931));
-        break;
-      case 3932: // arrow
-        droppedItems.add(new Item(2932));
-        break;
-      case 3933: // pebble
+      case 3933: // Pebble
         droppedItems.add(new Item(2933));
         break;
       default:
