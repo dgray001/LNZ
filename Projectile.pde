@@ -788,10 +788,12 @@ class Projectile extends MapObject {
     this.waiting_to_explode = true;
     switch(this.ID) {
       case 3321: // War Machine
-        this.range_left = 2000;
+        this.range_left = 1980;
+        global.sounds.trigger_units("items/grenade_ticking");
         break;
       case 3944: // Grenade
-        this.range_left = 2000;
+        this.range_left = 1980;
+        global.sounds.trigger_units("items/grenade_ticking");
         break;
       default:
         global.errorMessage("ERROR: Projectile ID " + this.ID + " doesn't wait to explode.");
@@ -826,30 +828,35 @@ class Projectile extends MapObject {
         explode_minPower = 125;
         explode_maxPower = 450;
         map.addVisualEffect(4010, this.x, this.y);
+        global.sounds.trigger_units("items/grenade");
         break;
       case 3331: // Mustang and Sally
         explode_range = Constants.projectile_grenadeExplosionRadius;
         explode_minPower = 75;
         explode_maxPower = 1200;
         map.addVisualEffect(4011, this.x, this.y);
+        global.sounds.trigger_units("items/grenade");
         break;
       case 3341: // RPG
         explode_range = Constants.projectile_rpgExplosionRadius;
         explode_minPower = 100;
         explode_maxPower = 500;
         map.addVisualEffect(4012, this.x, this.y);
+        global.sounds.trigger_units("items/grenade_RPG");
         break;
       case 3342: // Dystopic Demolisher
         explode_range = Constants.projectile_grenadeExplosionRadius;
         explode_minPower = 125;
         explode_maxPower = 900;
         map.addVisualEffect(4013, this.x, this.y);
+        global.sounds.trigger_units("items/grenade");
         break;
       case 3362: // Rocket-Propelled Grievance
         explode_range = Constants.projectile_rpgIIExplosionRadius;
         explode_minPower = 100;
         explode_maxPower = 600;
         map.addVisualEffect(4014, this.x, this.y);
+        global.sounds.trigger_units("items/grenade_RPG");
         break;
       case 3372: // Ray Gun
         explode_range = Constants.projectile_rayGunExplosionRadius;
@@ -868,6 +875,7 @@ class Projectile extends MapObject {
         explode_minPower = 100;
         explode_maxPower = 400;
         map.addVisualEffect(4017, this.x, this.y);
+        global.sounds.trigger_units("items/grenade");
         break;
       default:
         global.errorMessage("ERROR: Projectile ID " + this.ID + " doesn't explode.");

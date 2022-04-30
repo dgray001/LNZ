@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220428: v0.6.8q" +
+  "\n20220430: v0.6.8r" +
   "\nLines: 31596 (v0.6.8q)" +
   "\nImages: 989 (v0.6.8d)" +
   "\nSounds: 47 (v0.6.8d)" +
@@ -342,12 +342,12 @@ static class Constants {
   // Projectiles
   static final float projectile_defaultSize = 0.25;
   static final float projectile_threshholdSpeed = 3;
-  static final float projectile_grenadeExplosionRadius = 1.8;
+  static final float projectile_grenadeExplosionRadius = 2;
   static final float projectile_mustangAndSallyExplosionRadius = 2.6;
-  static final float projectile_rpgExplosionRadius = 1.4;
-  static final float projectile_rpgIIExplosionRadius = 1.6;
-  static final float projectile_rayGunExplosionRadius = 0.8;
-  static final float projectile_rayGunIIExplosionRadius = 1;
+  static final float projectile_rpgExplosionRadius = 1.6;
+  static final float projectile_rpgIIExplosionRadius = 1.8;
+  static final float projectile_rayGunExplosionRadius = 1;
+  static final float projectile_rayGunIIExplosionRadius = 1.2;
 
   // Gifs
   static final int gif_move_frames = 35;

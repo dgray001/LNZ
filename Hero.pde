@@ -3602,6 +3602,81 @@ class Hero extends Unit {
   }
 
 
+  void startUseItemTimer() {
+    if (this.weapon() == null) {
+      return;
+    }
+    this.curr_action = UnitAction.USING_ITEM;
+    this.timer_actionTime = this.weapon().useTime();
+    switch(this.weapon().ID) {
+      case 2312: // M1911
+        global.sounds.trigger_units("items/m1911_reload");
+        break;
+      case 2321: // War Machine
+        global.sounds.trigger_units("items/war_machine_reload");
+        break;
+      case 2322: // Five-Seven
+      case 2343:
+        global.sounds.trigger_units("items/five_seven_reload");
+        break;
+      case 2323: // Type25
+      case 2344:
+        global.sounds.trigger_units("items/type25_reload");
+        break;
+      case 2331: // Mustang and Sally
+        global.sounds.trigger_units("items/mustang_and_sally_reload");
+        break;
+      case 2332: // FAL
+      case 2352:
+        global.sounds.trigger_units("items/FAL_reload");
+        break;
+      case 2333: // Python
+      case 2354:
+        global.sounds.trigger_units("items/python_reload");
+      case 2341: // RPG
+      case 2362:
+        global.sounds.trigger_units("items/RPG_reload");
+        break;
+      case 2342: // Dystopic Demolisher
+        global.sounds.trigger_units("items/dystopic_demolisher_reload");
+        break;
+      case 2345: // Executioner
+      case 2364:
+        global.sounds.trigger_units("items/executioner_reload");
+        break;
+      case 2351: // Galil
+      case 2373:
+        global.sounds.trigger_units("items/galil_reload");
+        break;
+      case 2353: // Ballistic Knife
+      case 2374:
+        global.sounds.trigger_units("items/ballistic_knife_reload");
+        break;
+      case 2355: // MTAR
+      case 2375:
+        global.sounds.trigger_units("items/MTAR_reload");
+        break;
+      case 2361: // RPD
+      case 2381: // Relativistic Punishment Device
+        global.sounds.trigger_units("items/RPD_reload");
+        break;
+      case 2363: // DSR-50
+      case 2382:
+        global.sounds.trigger_units("items/DSR50_reload");
+        break;
+      case 2371: // HAMR
+      case 2391:
+        global.sounds.trigger_units("items/HAMR_reload");
+        break;
+      case 2372: // Ray Gun
+      case 2392: // Porter's X2 Ray Gun
+        global.sounds.trigger_units("items/ray_gun_reload");
+        break;
+      default:
+        break;
+    }
+  }
+
   @Override
   void useItem(GameMap map) {
     this.useItem(map, new InventoryKey(InventoryLocation.GEAR, 3));
@@ -3946,8 +4021,7 @@ class Hero extends Unit {
                 break;
               }
             }
-            this.curr_action = UnitAction.USING_ITEM;
-            this.timer_actionTime = this.weapon().useTime();
+            this.startUseItemTimer();
           }
           break;
         default:
