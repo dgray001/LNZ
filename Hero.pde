@@ -3606,7 +3606,12 @@ class Hero extends Unit {
     if (this.weapon() == null) {
       return;
     }
-    this.curr_action = UnitAction.USING_ITEM;
+    if (this.curr_action == UnitAction.MOVING) {
+      this.curr_action = UnitAction.MOVING_AND_USING_ITEM;
+    }
+    else {
+      this.curr_action = UnitAction.USING_ITEM;
+    }
     this.timer_actionTime = this.weapon().useTime();
     switch(this.weapon().ID) {
       case 2101: // crumb

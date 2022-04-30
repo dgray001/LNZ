@@ -1853,6 +1853,26 @@ class Unit extends MapObject {
           this.stopAction();
         }
         break;
+      case MOVING_AND_USING_ITEM:
+        if (this.weapon() == null || !this.weapon().usable()) {
+          this.curr_action = UnitAction.MOVING;
+          break;
+        }
+        this.timer_actionTime -= timeElapsed;
+        if (this.timer_actionTime < 0) {
+          this.useItem(map);
+          this.curr_action = UnitAction.MOVING;
+        }
+        this.face(this.curr_action_x, this.curr_action_y); // pathfinding
+        this.move(timeElapsed, myKey, map, MoveModifier.NONE);
+        if (this.last_move_collision) {
+          this.curr_action = UnitAction.USING_ITEM;
+        }
+        else if (this.distanceFromPoint(this.curr_action_x, this.curr_action_y)
+          < this.last_move_distance) {
+          this.curr_action = UnitAction.USING_ITEM;
+        }
+        break;
       case NONE:
         break;
     }
@@ -2688,6 +2708,8 @@ class Unit extends MapObject {
       return;
     }
     this.curr_action = UnitAction.NONE;
+    this.curr_action_x = this.x;
+    this.curr_action_y = this.y;
     this.object_targeting = null;
     this.curr_action_unhaltable = false;
     this.curr_action_unhaltable = false;
@@ -2770,12 +2792,16 @@ class Unit extends MapObject {
 
 
   void moveTo(float targetX, float targetY) {
-    this.curr_action = UnitAction.MOVING;
+    if (this.curr_action == UnitAction.USING_ITEM) {
+      this.curr_action = UnitAction.MOVING_AND_USING_ITEM;
+    }
+    else {
+      this.curr_action = UnitAction.MOVING;
+    }
     this.object_targeting = null;
     this.curr_action_x = targetX;
     this.curr_action_y = targetY;
   }
-
 
   void move(float timeElapsed, int myKey, GameMap map, MoveModifier modifier) {
     // remove camouflage
