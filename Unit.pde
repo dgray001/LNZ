@@ -324,6 +324,8 @@ class Unit extends MapObject {
 
   // graphics
   protected float random_number = random(100);
+  protected int timer_talk = Constants.unit_timer_talk + int(random(Constants.unit_timer_talk));
+  protected int timer_walk = Constants.unit_timer_walk;
 
   Unit(int ID) {
     this(ID, 0, 0);
@@ -1651,6 +1653,11 @@ class Unit extends MapObject {
           < this.last_move_distance) {
           this.stopAction(true);
         }
+        this.timer_walk -= timeElapsed;
+        if (this.timer_walk < 0) {
+          this.timer_walk += Constants.unit_timer_walk;
+          this.walkSound(map.squares[int(floor(this.x))][int(floor(this.y))].terrain_id);
+        }
         break;
       case CASTING:
         if (this.curr_action_id < 0 || this.curr_action_id >= this.abilities.size()) {
@@ -1683,6 +1690,11 @@ class Unit extends MapObject {
         this.face(f);
         if (this.distance(f) > f.interactionDistance()) {
           this.move(timeElapsed, myKey, map, MoveModifier.NONE);
+          this.timer_walk -= timeElapsed;
+          if (this.timer_walk < 0) {
+            this.timer_walk += Constants.unit_timer_walk;
+            this.walkSound(map.squares[int(floor(this.x))][int(floor(this.y))].terrain_id);
+          }
           break;
         }
         if (f.onInteractionCooldown()) {
@@ -1736,6 +1748,11 @@ class Unit extends MapObject {
         float distance = this.distance(u);
         if (distance > this.attackRange()) {
           this.move(timeElapsed, myKey, map, MoveModifier.NONE);
+          this.timer_walk -= timeElapsed;
+          if (this.timer_walk < 0) {
+            this.timer_walk += Constants.unit_timer_walk;
+            this.walkSound(map.squares[int(floor(this.x))][int(floor(this.y))].terrain_id);
+          }
         }
         else if (this.timer_attackCooldown <= 0) {
           if (this.weapon() != null && this.weapon().shootable()) {
@@ -1778,6 +1795,11 @@ class Unit extends MapObject {
         this.face(i);
         if (this.distance(i) > i.interactionDistance()) {
           this.move(timeElapsed, myKey, map, MoveModifier.NONE);
+          this.timer_walk -= timeElapsed;
+          if (this.timer_walk < 0) {
+            this.timer_walk += Constants.unit_timer_walk;
+            this.walkSound(map.squares[int(floor(this.x))][int(floor(this.y))].terrain_id);
+          }
         }
         else {
           if (this.gear.containsKey(GearSlot.WEAPON)) {
@@ -1874,6 +1896,11 @@ class Unit extends MapObject {
         else if (this.distanceFromPoint(this.curr_action_x, this.curr_action_y)
           < this.last_move_distance) {
           this.curr_action = UnitAction.USING_ITEM;
+        }
+        this.timer_walk -= timeElapsed;
+        if (this.timer_walk < 0) {
+          this.timer_walk += Constants.unit_timer_walk;
+          this.walkSound(map.squares[int(floor(this.x))][int(floor(this.y))].terrain_id);
         }
         break;
       case NONE:
@@ -2795,6 +2822,73 @@ class Unit extends MapObject {
       this.curr_height += this.agility() * 2;
     }
     this.resolveFloorHeight(map, myKey);
+  }
+
+
+  void walkSound(int terrain_id) {
+    switch(terrain_id) {
+      case 111:
+      case 112:
+      case 113:
+        global.sounds.trigger_units("player/walk_wood");
+        break;
+      case 121:
+      case 122:
+      case 123:
+      case 131:
+      case 132:
+      case 133:
+      case 171:
+      case 172:
+      case 173:
+      case 174:
+      case 175:
+      case 176:
+      case 177:
+      case 178:
+      case 179:
+        global.sounds.trigger_units("player/walk_hard");
+        break;
+      case 134:
+        global.sounds.trigger_units("player/walk_gravel");
+        break;
+      case 141:
+      case 142:
+      case 143:
+      case 144:
+      case 145:
+        global.sounds.trigger_units("player/walk_sand");
+        break;
+      case 151:
+      case 152:
+      case 153:
+      case 154:
+      case 155:
+      case 156:
+        global.sounds.trigger_units("player/walk_grass");
+        break;
+      case 161:
+      case 162:
+      case 163:
+        global.sounds.trigger_units("player/walk_dirt");
+        break;
+      case 181:
+      case 182:
+        global.sounds.trigger_units("player/walk_water_very_shallow");
+        break;
+      case 183:
+        global.sounds.trigger_units("player/walk_water_shallow");
+        break;
+      case 184:
+        global.sounds.trigger_units("player/walk_water_medium");
+        break;
+      case 185:
+        global.sounds.trigger_units("player/walk_water_deep");
+        break;
+      default:
+        global.sounds.trigger_units("player/walk_stone");
+        break;
+    }
   }
 
 
