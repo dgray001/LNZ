@@ -3227,6 +3227,18 @@ class Item extends MapObject {
   }
 
 
+  // melee attack
+  void attackSound() {
+    String sound_name = "items/melee/";
+    switch(this.ID) {
+      default:
+        sound_name += "default";
+        break;
+    }
+    global.sounds.trigger_units(sound_name);
+  }
+
+
   float interactionDistance() {
     switch(this.ID) {
       default:

@@ -2207,6 +2207,11 @@ class Unit extends MapObject {
         this.timer_attackCooldown -= timeElapsed;
       }
     }
+    this.timer_talk -= timeElapsed;
+    if (this.timer_talk < 0) {
+      this.timer_talk += Constants.unit_timer_talk + int(random(Constants.unit_timer_talk));
+      this.talkSound();
+    }
   }
 
 
@@ -2251,6 +2256,7 @@ class Unit extends MapObject {
     }
     else if (Unit.class.isInstance(this.object_targeting)) {
       this.curr_action = UnitAction.TARGETING_UNIT;
+      this.targetSound();
     }
     else if (Item.class.isInstance(this.object_targeting)) {
       this.curr_action = UnitAction.TARGETING_ITEM;
@@ -2445,6 +2451,7 @@ class Unit extends MapObject {
     }
     u.damage(this, u.calculateDamageFrom(this, power, DamageType.PHYSICAL, this.element));
     this.timer_attackCooldown = this.attackCooldown(true);
+    this.attackSound();
   }
 
 
@@ -2520,6 +2527,10 @@ class Unit extends MapObject {
     if (this.curr_health <= 0) {
       this.curr_health = 0;
       this.remove = true;
+      this.deathSound();
+    }
+    else {
+      this.damagedSound();
     }
     this.last_damage_from = source;
     if (source != null) {
@@ -2826,6 +2837,21 @@ class Unit extends MapObject {
 
 
   void walkSound(int terrain_id) {
+    if (!this.in_view) {
+      return;
+    }
+    // custom walk sounds
+    switch(this.ID) {
+      case 1001: // Target Dummy
+        return;
+      case 1002: // Chicken
+      case 1003: // Chick
+        global.sounds.trigger_units("units/walk/chicken");
+        return;
+      default:
+        break;
+    }
+    // default walk sounds
     switch(terrain_id) {
       case 111:
       case 112:
@@ -2889,6 +2915,95 @@ class Unit extends MapObject {
         global.sounds.trigger_units("player/walk_stone");
         break;
     }
+  }
+
+  void talkSound() {
+    if (!this.in_view) {
+      return;
+    }
+    String sound_name = "units/talk/";
+    switch(this.ID) {
+      case 1002: // Chicken
+      case 1003: // Chick
+        sound_name += "chicken" + randomInt(1, 3);
+        break;
+      default:
+        return;
+    }
+    global.sounds.trigger_units(sound_name);
+  }
+
+  void targetSound() {
+    if (!this.in_view) {
+      return;
+    }
+    String sound_name = "units/target/";
+    switch(this.ID) {
+      case 1201: // Zombies
+      case 1202:
+      case 1203:
+      case 1204:
+      case 1205:
+      case 1206:
+      case 1207:
+      case 1208:
+      case 1209:
+      case 1210:
+        //
+        break;
+      default:
+        return;
+    }
+    global.sounds.trigger_units(sound_name);
+  }
+
+  void attackSound() {
+    if (!this.in_view) {
+      return;
+    }
+    if (this.weapon() != null) {
+      this.weapon().attackSound();
+      return;
+    }
+    String sound_name = "units/attack/";
+    switch(this.ID) {
+      default:
+        sound_name += "default";
+        break;
+    }
+    global.sounds.trigger_units(sound_name);
+  }
+
+  void damagedSound() {
+    if (!this.in_view) {
+      return;
+    }
+    String sound_name = "units/damaged/";
+    switch(this.ID) {
+      case 1002: // Chicken
+      case 1003: // Chick
+        sound_name += "chicken" + randomInt(1, 2);
+        break;
+      default:
+        return;
+    }
+    global.sounds.trigger_units(sound_name);
+  }
+
+  void deathSound() {
+    if (!this.in_view) {
+      return;
+    }
+    String sound_name = "units/death/";
+    switch(this.ID) {
+      case 1002: // Chicken
+      case 1003: // Chick
+        sound_name += "chicken" + randomInt(1, 2);
+        break;
+      default:
+        return;
+    }
+    global.sounds.trigger_units(sound_name);
   }
 
 
@@ -3149,6 +3264,9 @@ class Unit extends MapObject {
           if (this.timer_ai_action2 < 0) {
             this.timer_ai_action2 = int(Constants.ai_chickenTimer2 + random(Constants.ai_chickenTimer2));
             map.addItem(new Item(2118, this.x, this.y));
+            if (this.in_view) {
+              global.sounds.trigger_units("units/other/chicken_lay_egg");
+            }
           }
         }
         break;

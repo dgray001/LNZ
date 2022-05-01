@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220430: v0.6.8x" +
+  "\n20220501: v0.6.8y" +
   "\nLines: 31919 (v0.6.8s)" +
   "\nImages: 996 (v0.6.8s)" +
   "\nSounds: 95 (v0.6.8s)" +
@@ -231,7 +231,7 @@ static class Constants {
   static final int unit_maxAgility = 5;
   static final int unit_noDamageFallHeight = 3;
   static final float unit_fallDamageMultiplier = 0.015;
-  static final int unit_timer_talk = 3000;
+  static final int unit_timer_talk = 12000;
   static final int unit_timer_walk = 380;
 
   // Resistances

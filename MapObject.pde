@@ -49,6 +49,7 @@ abstract class MapObject {
   protected int curr_height = 0; // bottom of object
 
   protected boolean hovered = false;
+  protected boolean in_view = false;
   protected boolean remove = false; // GameMap will remove object
 
   MapObject() {}
@@ -100,8 +101,10 @@ abstract class MapObject {
 
   boolean inView(float xStart, float yStart, float xEnd, float yEnd) {
     if (this.xi() >= xStart && this.yi() >= yStart && this.xf() <= xEnd && this.yf() <= yEnd) {
+      this.in_view = true;
       return true;
     }
+    this.in_view = false;
     return false;
   }
 

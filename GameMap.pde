@@ -1347,12 +1347,12 @@ class GameMap {
     Iterator unit_iterator = this.units.entrySet().iterator();
     while(unit_iterator.hasNext()) {
       Map.Entry<Integer, Unit> entry = (Map.Entry<Integer, Unit>)unit_iterator.next();
-      if (entry.getKey() == 0) {
-        display_player = true;
-        continue;
-      }
       Unit u = entry.getValue();
       if (!u.inView(this.startSquareX, this.startSquareY, this.startSquareX + this.visSquareX, this.startSquareY + this.visSquareY)) {
+        continue;
+      }
+      if (entry.getKey() == 0) {
+        display_player = true;
         continue;
       }
       if (this.draw_fog && !this.squares[int(floor(u.x))][int(floor(u.y))].visible) {
