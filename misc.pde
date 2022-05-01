@@ -118,11 +118,18 @@ color elementalColorLocked(Element e) {
   }
 }
 
+// Random events
 boolean randomChance(float percent) {
   if (random(1) < percent) {
     return true;
   }
   return false;
+}
+int randomInt(int min, int max) {
+  if (max < min) {
+    return randomInt(max, min);
+  }
+  return min + int(floor(random(1 + max - min)));
 }
 
 // String to primitive casts
