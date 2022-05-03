@@ -3556,6 +3556,7 @@ class SubmitFormField extends FormField {
   protected SubmitButton button = new SubmitButton(0, 0, 0, 30);
   protected boolean submitted = false;
   protected boolean submit_button = true;
+  protected boolean extend_width = false;
 
   SubmitFormField(String message) {
     this(message, true);
@@ -3593,12 +3594,13 @@ class SubmitFormField extends FormField {
   void updateWidthDependencies() {
     textSize(this.button.text_size);
     float desiredWidth = textWidth(this.button.message + "  ");
-    if (desiredWidth > this.field_width) {
-      this.button.setLocation(0, 0, this.field_width, 30);
+    float button_height = textDescent() + textAscent() + 4;
+    if (desiredWidth > this.field_width || this.extend_width) {
+      this.button.setLocation(0, 0, this.field_width, button_height);
     }
     else {
       this.button.setLocation(0.5 * (this.field_width - desiredWidth), 0,
-        0.5 * (this.field_width + desiredWidth), 30);
+        0.5 * (this.field_width + desiredWidth), button_height);
     }
   }
 
@@ -3920,6 +3922,7 @@ abstract class Form {
   protected ScrollBar scrollbar = new ScrollBar(0, 0, 0, 0, true);
   protected float scrollbar_max_width = 60;
   protected float scrollbar_min_width = 30;
+  protected float scrollbar_width_multiplier = 0.08;
 
   protected ArrayList<FormField> fields = new ArrayList<FormField>();
   protected float fieldCushion = 20;
@@ -4036,7 +4039,7 @@ abstract class Form {
   }
   void setTitleText(String title) {
     this.text_title_ref = title;
-    float scrollbar_width = min(this.scrollbar_max_width, 0.08 * (this.xf - this.xi));
+    float scrollbar_width = min(this.scrollbar_max_width, this.scrollbar_width_multiplier * (this.xf - this.xi));
     scrollbar_width = max(this.scrollbar_min_width, scrollbar_width);
     scrollbar_width = min(0.08 * (this.xf - this.xi), scrollbar_width);
     if (title == null) {

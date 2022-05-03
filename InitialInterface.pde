@@ -158,6 +158,8 @@ class InitialInterface extends InterfaceLNZ {
     this.buttons[4] = new InitialInterfaceButton5(buttonHeight);
   }
 
+  void saveAndExitToMainMenu() {}
+
   void update(int millis) {
     this.logo.update(millis);
     for (InitialInterfaceButton button : this.buttons) {
@@ -188,10 +190,8 @@ class InitialInterface extends InterfaceLNZ {
 
   void scroll(int amount) {}
   void keyPress() {}
+  void openEscForm() {}
   void keyRelease() {}
-
-
   void loseFocus() {}
-
   void gainFocus() {}
 }
