@@ -47,7 +47,7 @@ abstract class InterfaceLNZ {
     class EscButtonFormField extends ButtonFormField {
       EscButtonFormField(String message) {
         super(message);
-        this.button.setColors(color(170, 200), color(1, 0), color(50, 60), color(30, 90), color(255));
+        this.button.setColors(color(170, 200), color(1, 0), color(40, 120), color(20, 150), color(255));
         this.button.raised_border = false;
         this.button.raised_body = false;
         this.button.noStroke();
@@ -56,7 +56,7 @@ abstract class InterfaceLNZ {
       }
     }
 
-    EscForm(String name) {
+    EscForm() {
       super(0.5 * (width - Constants.escFormWidth), 0.5 * (height - Constants.escFormHeight),
         0.5 * (width + Constants.escFormWidth), 0.5 * (height + Constants.escFormHeight));
       this.cancel = null;
@@ -64,10 +64,10 @@ abstract class InterfaceLNZ {
       this.draggable = false;
       this.color_shadow = color(1, 0);
       this.setFieldCushion(20);
-      this.setTitleText(name);
+      this.setTitleText("Paused");
       this.setTitleSize(22);
-      this.color_background = color(60, 60);
-      this.color_header = color(60, 60);
+      this.color_background = color(60, 90);
+      this.color_header = color(1, 0);
       this.color_stroke = color(1, 0);
       this.color_title = color(255);
 
@@ -89,12 +89,22 @@ abstract class InterfaceLNZ {
           this.cancel();
           break;
         case 2:
+          InterfaceLNZ.this.return_to_esc_menu = true;
+          InterfaceLNZ.this.esc_menu_img = this.img;
+          InterfaceLNZ.this.optionsForm();
           break;
         case 3:
+          //InterfaceLNZ.this.return_to_esc_menu = true;
+          //InterfaceLNZ.this.esc_menu_img = this.img;
+          //InterfaceLNZ.this.heroesForm();
           break;
         case 4:
+          InterfaceLNZ.this.return_to_esc_menu = true;
+          InterfaceLNZ.this.esc_menu_img = this.img;
+          InterfaceLNZ.this.achievementsForm();
           break;
         case 5:
+          // display perk tree
           break;
         case 6:
           InterfaceLNZ.this.saveAndExitToMainMenu();
@@ -402,6 +412,8 @@ abstract class InterfaceLNZ {
 
 
   protected FormLNZ form = null;
+  protected boolean return_to_esc_menu = false;
+  protected PImage esc_menu_img = null;
 
   InterfaceLNZ() {
   }
@@ -415,6 +427,14 @@ abstract class InterfaceLNZ {
     }
   }
 
+  void achievementsForm() {
+    this.form = new AchievementsForm();
+  }
+
+  void optionsForm() {
+    this.form = new OptionsForm();
+  }
+
   void LNZ_update(int millis) {
     if (this.form == null) {
       this.update(millis);
@@ -423,6 +443,12 @@ abstract class InterfaceLNZ {
       this.form.update(millis);
       if (this.form.canceled) {
         this.form = null;
+        if (this.return_to_esc_menu) {
+          this.return_to_esc_menu = false;
+          this.form = new EscForm();
+          this.form.img = this.esc_menu_img;
+          this.esc_menu_img = null;
+        }
       }
     }
   }

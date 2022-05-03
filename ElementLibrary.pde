@@ -4041,7 +4041,7 @@ abstract class Form {
     this.text_title_ref = title;
     float scrollbar_width = min(this.scrollbar_max_width, this.scrollbar_width_multiplier * (this.xf - this.xi));
     scrollbar_width = max(this.scrollbar_min_width, scrollbar_width);
-    scrollbar_width = min(0.08 * (this.xf - this.xi), scrollbar_width);
+    scrollbar_width = min(this.scrollbar_width_multiplier * (this.xf - this.xi), scrollbar_width);
     if (title == null) {
       this.text_title = null;
       this.scrollbar.setLocation(this.xf - scrollbar_width, this.yi, this.xf, this.yf);
