@@ -394,7 +394,7 @@ class MainMenuInterface extends InterfaceLNZ {
       this.color_text = color(255);
       super.release();
       if (this.hovered) {
-        MainMenuInterface.this.ViewProfile();
+        MainMenuInterface.this.viewProfile();
       }
       this.reset();
     }
@@ -692,7 +692,7 @@ class MainMenuInterface extends InterfaceLNZ {
     this.form = new LoadProfileForm();
   }
   // Open profile
-  void ViewProfile() {
+  void viewProfile() {
     this.form = new ProfileForm();
   }
 
@@ -745,10 +745,11 @@ class MainMenuInterface extends InterfaceLNZ {
 
   void scroll(int amount) {}
   void keyPress() {}
+  void openEscForm() {}
   void keyRelease() {}
 
 
   void loseFocus() {}
-
   void gainFocus() {}
+  void saveAndExitToMainMenu() {}
 }

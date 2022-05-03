@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220501: v0.6.9" +
+  "\n20220503: v0.6.9a" +
   "\nLines: 32259 (v0.6.9)" +
   "\nImages: 1044 (v0.6.9)" +
   "\nSounds: 118 (v0.6.9)" +
@@ -34,6 +34,9 @@ static class Constants {
   static final int notification_display_time = 3000;
   static final float notification_achievement_width = 220;
   static final float notification_achievement_height = 120;
+  static final float esc_button_height = 30;
+  static final float escFormWidth = 350;
+  static final float escFormHeight = 450;
 
   // Initial Interface
   static final int initialInterface_size = 400;

@@ -2,6 +2,7 @@ abstract class FormLNZ extends Form {
   protected boolean canceled = false;
   protected float shadow_distance = 10;
   protected PImage img;
+  protected color color_shadow = color(0, 150);
 
   FormLNZ(float xi, float yi, float xf, float yf) {
     super(xi, yi, xf, yf);
@@ -16,7 +17,7 @@ abstract class FormLNZ extends Form {
     fill(0);
     imageMode(CORNER);
     image(this.img, 0, 0);
-    fill(0, 150);
+    fill(color_shadow);
     stroke(0, 1);
     translate(shadow_distance, shadow_distance);
     rect(this.xi, this.yi, this.xf, this.yf);
@@ -29,11 +30,80 @@ abstract class FormLNZ extends Form {
   }
 
   void buttonPress(int i) {}
+
+  void keyPress() {
+    super.keyPress();
+    if (key == ESC) {
+      this.cancel();
+    }
+  }
 }
 
 
 
 abstract class InterfaceLNZ {
+
+  class EscForm extends FormLNZ {
+    class EscButtonFormField extends ButtonFormField {
+      EscButtonFormField(String message) {
+        super(message);
+        this.button.setColors(color(170, 200), color(1, 0), color(50, 60), color(30, 90), color(255));
+        this.button.raised_border = false;
+        this.button.raised_body = false;
+        this.button.noStroke();
+        this.button.text_size = 20;
+        this.extend_width = true;
+      }
+    }
+
+    EscForm(String name) {
+      super(0.5 * (width - Constants.escFormWidth), 0.5 * (height - Constants.escFormHeight),
+        0.5 * (width + Constants.escFormWidth), 0.5 * (height + Constants.escFormHeight));
+      this.cancel = null;
+      this.scrollbar_width_multiplier = 0;
+      this.draggable = false;
+      this.color_shadow = color(1, 0);
+      this.setFieldCushion(20);
+      this.setTitleText(name);
+      this.setTitleSize(22);
+      this.color_background = color(60, 60);
+      this.color_header = color(60, 60);
+      this.color_stroke = color(1, 0);
+      this.color_title = color(255);
+
+      this.addField(new SpacerFormField(Constants.esc_button_height));
+      this.addField(new EscButtonFormField("Continue"));
+      this.addField(new EscButtonFormField("Options"));
+      this.addField(new EscButtonFormField("Heroes"));
+      this.addField(new EscButtonFormField("Achievements"));
+      this.addField(new EscButtonFormField("Perk Tree"));
+      this.addField(new EscButtonFormField("Save and Exit to Main Menu"));
+    }
+
+    void submit() {}
+
+    @Override
+    void buttonPress(int i) {
+      switch(i) {
+        case 1:
+          this.cancel();
+          break;
+        case 2:
+          break;
+        case 3:
+          break;
+        case 4:
+          break;
+        case 5:
+          break;
+        case 6:
+          InterfaceLNZ.this.saveAndExitToMainMenu();
+          break;
+        default:
+          break;
+      }
+    }
+  }
 
   class ErrorForm extends FormLNZ {
     ErrorForm(String errorMessage) {
@@ -396,6 +466,9 @@ abstract class InterfaceLNZ {
   void LNZ_keyPress() {
     if (this.form == null) {
       this.keyPress();
+      if (key == ESC) {
+        this.openEscForm();
+      }
     }
     else {
       this.form.keyPress();
@@ -411,6 +484,8 @@ abstract class InterfaceLNZ {
     }
   }
 
+
+  abstract void saveAndExitToMainMenu();
   abstract void loseFocus();
   abstract void gainFocus();
   abstract void update(int millis);
@@ -418,6 +493,7 @@ abstract class InterfaceLNZ {
   abstract void mousePress();
   abstract void mouseRelease(float mX, float mY);
   abstract void keyPress();
+  abstract void openEscForm();
   abstract void keyRelease();
   abstract void scroll(int amount);
 }

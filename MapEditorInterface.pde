@@ -942,9 +942,7 @@ class MapEditorInterface extends InterfaceLNZ {
     }
     void submit() {
       this.canceled = true;
-      MapEditorInterface.this.curr_map = null;
-      MapEditorInterface.this.curr_level = null;
-      global.state = ProgramState.ENTERING_MAINMENU;
+      MapEditorInterface.this.exitToMainMenu();
     }
   }
 
@@ -2075,6 +2073,42 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
 
+  void exitToMainMenu() {
+    MapEditorInterface.this.curr_map = null;
+    MapEditorInterface.this.curr_level = null;
+    global.state = ProgramState.ENTERING_MAINMENU;
+  }
+
+  void saveAndExitToMainMenu() {
+    switch(this.page) {
+      case TERRAIN:
+      case FEATURES:
+      case UNITS:
+      case ITEMS:
+        this.saveMapEditor();
+        break;
+      case TESTMAP:
+        this.saveMapTester();
+        break;
+      case TESTLEVEL:
+        this.saveLevelTester();
+        break;
+      case LEVEL_INFO:
+      case LEVEL_MAPS:
+      case LINKERS:
+      case TRIGGERS:
+      case TRIGGER_EDITOR:
+      case CONDITION_EDITOR:
+      case EFFECT_EDITOR:
+        this.saveLevelEditor();
+        break;
+      default:
+        break;
+    }
+    this.exitToMainMenu();
+  }
+
+
   void update(int millis) {
     boolean refreshMapLocation = false;
     switch(this.page) {
@@ -2424,6 +2458,10 @@ class MapEditorInterface extends InterfaceLNZ {
         this.levelForm.keyPress();
       }
     }
+  }
+
+  void openEscForm() {
+    this.form = new EscForm("Profile Menu   ");
   }
 
   void keyRelease() {
