@@ -2461,7 +2461,7 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
   void openEscForm() {
-    this.form = new EscForm("Profile Menu   ");
+    this.form = new EscForm();
   }
 
   void keyRelease() {

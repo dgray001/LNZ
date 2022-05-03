@@ -181,13 +181,42 @@ class Profile {
 
   class PlayerTree {
     class PlayerTreeNode {
+      class PlayerTreeNodeButton1 extends RectangleButton {
+        PlayerTreeNodeButton1(float xi, float yi, float button_height) {
+          super(xi, yi, xi + 4 * button_height, yi + button_height);
+          this.show_message = true;
+        }
+
+        void hover() {}
+        void dehover() {}
+        void click() {}
+        void release() {}
+      }
+
+      class PlayerTreeNodeButton2 extends CircleButton {
+        PlayerTreeNodeButton2(float xi, float yi, float button_height) {
+          super(xi + 0.5 * button_height, yi + 0.5 * button_height, 0.5 * button_height);
+          this.show_message = true;
+        }
+
+        void hover() {}
+        void dehover() {}
+        void click() {}
+        void release() {}
+      }
+
       protected PlayerTreeCode code;
       protected ArrayList<PlayerTreeCode> dependencies = new ArrayList<PlayerTreeCode>();
       protected boolean in_view = false;
       protected boolean visible = false;
       protected boolean unlocked = false;
+      protected PlayerTreeNodeButton1 button1;
+      protected PlayerTreeNodeButton2 button2;
 
-      PlayerTreeNode(PlayerTreeCode code) {
+      PlayerTreeNode(PlayerTreeCode code, float xi, float yi, float button_height) {
+        this.code = code;
+        this.button1 = new PlayerTreeNodeButton1(xi, yi, button_height);
+        this.button2 = new PlayerTreeNodeButton2(xi, yi, button_height);
       }
 
       void setDependencies() {
@@ -198,6 +227,14 @@ class Profile {
             global.errorMessage("ERROR: PlayerTreeCode " + this.code + " not recognized.");
             break;
         }
+      }
+
+      void visible() {
+        this.visible = true;
+      }
+
+      void unlock() {
+        this.unlocked = true;
       }
     }
 
@@ -266,8 +303,8 @@ class Profile {
 
     PlayerTree() {
       this.initializeNodes();
-      //this.updateDependencies();
-      //this.setView(0, 0);
+      this.updateDependencies();
+      this.setView(0, 0);
     }
 
 
@@ -279,6 +316,69 @@ class Profile {
           default:
             global.errorMessage("ERROR: PlayerTreeCode " + code + " not recognized.");
             break;
+        }
+      }
+    }
+
+
+    void updateDependencies() {
+      for (Map.Entry<PlayerTreeCode, PlayerTreeNode> entry : this.nodes.entrySet()) {
+        if (entry.getValue().visible) {
+          continue;
+        }
+        boolean visible = true;
+        for (PlayerTreeCode code : entry.getValue().dependencies) {
+          if (!this.nodes.get(code).unlocked) {
+            visible = false;
+            break;
+          }
+        }
+        if (visible) {
+          entry.getValue().visible();
+        }
+      }
+    }
+
+
+    void setLocation(float xi, float yi, float xf, float yf) {
+      this.xi = xi;
+      this.yi = yi;
+      this.xf = xf;
+      this.yf = yf;
+      this.setView(this.viewX, this.viewY);
+    }
+
+    void moveView(float moveX, float moveY) {
+      this.setView(this.viewX + moveX, this.viewY + moveY);
+    }
+    void setView(float viewX, float viewY) {
+      if (viewX < this.lowestX) {
+        viewX = this.lowestX;
+      }
+      else if (viewX > this.highestX) {
+        viewX = this.highestX;
+      }
+      if (viewY < this.lowestY) {
+        viewY = this.lowestY;
+      }
+      else if (viewY > this.highestY) {
+        viewY = this.highestY;
+      }
+      this.viewX = viewX;
+      this.viewY = viewY;
+      this.tree_xi = viewX - this.inverse_zoom * (this.xCenter - this.xi);
+      this.tree_yi = viewY - this.inverse_zoom * (this.yCenter - this.yi);
+      this.tree_xf = viewX - this.inverse_zoom * (this.xCenter - this.xf);
+      this.tree_yf = viewY - this.inverse_zoom * (this.yCenter - this.yf);
+      this.translateX = this.xCenter - this.zoom * viewX;
+      this.translateY = this.yCenter - this.zoom * viewY;
+      for (Map.Entry<PlayerTreeCode, PlayerTreeNode> entry : this.nodes.entrySet()) {
+        if (entry.getValue().button1.xi > this.tree_xi && entry.getValue().button1.yi > this.tree_yi &&
+          entry.getValue().button1.xf < this.tree_xf && entry.getValue().button1.yf < this.tree_yf) {
+          entry.getValue().in_view = true;
+        }
+        else {
+          entry.getValue().in_view = false;
         }
       }
     }
