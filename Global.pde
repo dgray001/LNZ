@@ -38,6 +38,7 @@ class Global {
   private color color_mapBorder = color(20);
   private color color_mapBackground = color(20);
   private color color_inventoryBackground = color(210, 153, 108);
+  private color color_perkTreeBaseColor = color(222, 185, 140);
   // Profile
   private Profile profile;
 

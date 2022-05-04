@@ -1,6 +1,42 @@
 enum PlayerTreeCode {
   CAN_PLAY;
   private static final List<PlayerTreeCode> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+
+  public String message() {
+    switch(this) {
+      case CAN_PLAY:
+        return "Can launch game";
+      default:
+        return "";
+    }
+  }
+
+  public String display_name() {
+    switch(this) {
+      case CAN_PLAY:
+        return "Launch Game";
+      default:
+        return "";
+    }
+  }
+
+  public String description() {
+    switch(this) {
+      case CAN_PLAY:
+        return "Unlocking this perk allows you to start the storyline.";
+      default:
+        return "";
+    }
+  }
+
+  public int cost() {
+    switch(this) {
+      case CAN_PLAY:
+        return 1;
+      default:
+        return 0;
+    }
+  }
 }
 
 
@@ -182,27 +218,98 @@ class Profile {
   class PlayerTree {
     class PlayerTreeNode {
       class PlayerTreeNodeButton1 extends RectangleButton {
+        protected int start_time = 0;
+        protected float last_mX = 0;
+        protected float last_mY = 0;
+
         PlayerTreeNodeButton1(float xi, float yi, float button_height) {
           super(xi, yi, xi + 4 * button_height, yi + button_height);
-          this.show_message = true;
+          this.show_message = false;
+          this.text_size = 18;
+          this.message = PlayerTreeNode.this.code.display_name();
         }
 
-        void hover() {}
-        void dehover() {}
+        @Override
+        void drawButton() {
+          super.drawButton();
+          if (this.hovered && millis() - this.start_time > 1000) {
+            fill(global.color_nameDisplayed_background);
+            noStroke();
+            rectMode(CORNER);
+            textSize(16);
+            String hover_message = "Press for details";
+            float message_width = textWidth(hover_message);
+            float message_height = textAscent() + textDescent() + 2;
+            textAlign(LEFT, BOTTOM);
+            if (PlayerTree.this.last_mX > 0.5 * width) {
+              rect(this.last_mX - message_width - 2, this.last_mY - message_height - 2, message_width, message_height);
+              fill(255);
+              text(hover_message, this.last_mX - message_width - 1, this.last_mY - 1);
+            }
+            else {
+              rect(this.last_mX + 2, this.last_mY - message_height - 2, message_width, message_height);
+              fill(255);
+              text(hover_message, this.last_mX + 1, this.last_mY - 1);
+            }
+          }
+        }
+
+        @Override
+        void mouseMove(float mX, float mY) {
+          super.mouseMove(mX, mY);
+          this.last_mX = mX;
+          this.last_mY = mY;
+        }
+
+        void hover() {
+          if (PlayerTreeNode.this.visible) {
+            this.start_time = millis();
+            this.message = PlayerTreeNode.this.code.message();
+          }
+        }
+        void dehover() {
+          if (PlayerTreeNode.this.visible) {
+            this.message = PlayerTreeNode.this.code.display_name();
+          }
+        }
         void click() {}
-        void release() {}
+        void release() {
+          if (this.hovered) {
+            if (PlayerTreeNode.this.unlocked || PlayerTreeNode.this.visible) {
+              PlayerTreeNode.this.showDetails();
+            }
+          }
+        }
       }
 
       class PlayerTreeNodeButton2 extends CircleButton {
         PlayerTreeNodeButton2(float xi, float yi, float button_height) {
           super(xi + 0.5 * button_height, yi + 0.5 * button_height, 0.5 * button_height);
-          this.show_message = true;
+          this.show_message = false;
+          this.text_size = 16;
+          this.message = PlayerTreeNode.this.code.cost() + " 〶";
         }
 
-        void hover() {}
-        void dehover() {}
-        void click() {}
-        void release() {}
+        void hover() {
+          if (PlayerTreeNode.this.visible && !PlayerTreeNode.this.unlocked) {
+            this.message = PlayerTreeNode.this.code.cost() + " 〶\nBuy";
+          }
+        }
+        void dehover() {
+          if (PlayerTreeNode.this.visible && !PlayerTreeNode.this.unlocked) {
+            this.message = PlayerTreeNode.this.code.cost() + " 〶";
+          }
+        }
+        void click() {
+          if (!PlayerTreeNode.this.visible || PlayerTreeNode.this.unlocked) {
+            this.clicked = false;
+          }
+        }
+        void release() {
+          if (PlayerTreeNode.this.visible && !PlayerTreeNode.this.unlocked) {
+            PlayerTreeNode.this.tryUnlock();
+          }
+        }
       }
 
       protected PlayerTreeCode code;
@@ -219,6 +326,10 @@ class Profile {
         this.button2 = new PlayerTreeNodeButton2(xi, yi, button_height);
       }
 
+      void showDetails() {
+        PlayerTree.this.showDetails(this.code);
+      }
+
       void setDependencies() {
         switch(this.code) {
           case CAN_PLAY:
@@ -231,10 +342,33 @@ class Profile {
 
       void visible() {
         this.visible = true;
+        this.button1.show_message = true;
+        this.button2.show_message = true;
+        this.button1.setColors(adjust_color_brightness(global.color_perkTreeBaseColor, 0.5),
+          darken(global.color_perkTreeBaseColor), global.color_perkTreeBaseColor,
+          brighten(global.color_perkTreeBaseColor), color(255));
+        this.button1.setStroke(brighten(global.color_perkTreeBaseColor), 9);
+        this.button2.setColors(adjust_color_brightness(global.color_perkTreeBaseColor, 0.5),
+          darken(global.color_perkTreeBaseColor), global.color_perkTreeBaseColor,
+          brighten(global.color_perkTreeBaseColor), color(255));
+        this.button2.setStroke(brighten(global.color_perkTreeBaseColor), 9);
       }
 
       void unlock() {
         this.unlocked = true;
+        this.button2.message = "Unlocked";
+        this.button1.setColors(adjust_color_brightness(global.color_perkTreeBaseColor, 0.5),
+          brighten(global.color_perkTreeBaseColor), brighten(global.color_perkTreeBaseColor),
+          brighten(global.color_perkTreeBaseColor), color(255));
+        this.button1.setStroke(brighten(global.color_perkTreeBaseColor), 12);
+        this.button2.setColors(adjust_color_brightness(global.color_perkTreeBaseColor, 0.5),
+          brighten(global.color_perkTreeBaseColor), brighten(global.color_perkTreeBaseColor),
+          brighten(global.color_perkTreeBaseColor), color(255));
+        this.button2.setStroke(brighten(global.color_perkTreeBaseColor), 12);
+      }
+
+      void tryUnlock() {
+        PlayerTree.this.unlockNode(this.code);
       }
 
 
@@ -246,6 +380,10 @@ class Profile {
       void mouseMove(float mX, float mY) {
         this.button1.mouseMove(mX, mY);
         this.button2.mouseMove(mX, mY);
+        if (this.button2.hovered) {
+          this.button1.hovered = false;
+          this.button1.dehover();
+        }
       }
 
       boolean hovered() {
@@ -260,6 +398,10 @@ class Profile {
       void mouseRelease(float mX, float mY) {
         this.button1.mouseRelease(mX, mY);
         this.button2.mouseRelease(mX, mY);
+        if (this.button2.hovered) {
+          this.button1.hovered = false;
+          this.button1.dehover();
+        }
       }
     }
 
@@ -277,6 +419,40 @@ class Profile {
         this.cancelButton();
         this.draggable = false;
         this.node = node;
+        this.setTitleText(node.code.display_name());
+        this.setTitleSize(20);
+        this.setFieldCushion(0);
+        this.color_background = adjust_color_brightness(global.color_perkTreeBaseColor, 0.5);
+        this.color_header = brighten(global.color_perkTreeBaseColor);
+        this.color_stroke = darken(global.color_perkTreeBaseColor);
+        this.color_title = color(50, 180, 180);
+
+        this.addField(new SpacerFormField(20));
+        this.addField(new TextBoxFormField(node.code.description(), 200));
+        this.addField(new SpacerFormField(20));
+        boolean has_enough = Profile.this.achievement_tokens >= node.code.cost();
+        SubmitCancelFormField buttons = new SubmitCancelFormField(Profile.this.
+          achievement_tokens + "/" + node.code.cost(), "Cancel");
+        if (has_enough && node.visible && !node.unlocked) {
+        }
+        else {
+          buttons.button1.disabled = true;
+        }
+        this.addField(buttons);
+      }
+
+      @Override
+      void update(int millis) {
+        rectMode(CORNERS);
+        fill(0);
+        imageMode(CORNER);
+        image(this.img, 0, 0);
+        fill(0, 150);
+        stroke(0, 1);
+        translate(shadow_distance, shadow_distance);
+        rect(this.xi, this.yi, this.xf, this.yf);
+        translate(-shadow_distance, -shadow_distance);
+        super.update(millis);
       }
 
       void cancel() {
@@ -284,7 +460,7 @@ class Profile {
       }
 
       void submit() {
-        // try unlock node
+        PlayerTree.this.unlockNode(this.node.code);
         this.canceled = true;
       }
 
@@ -345,6 +521,12 @@ class Profile {
     protected float highestY = 0;
 
     protected color color_background = color(30);
+    protected color color_connectorStroke_locked = darken(global.color_perkTreeBaseColor);
+    protected color color_connectorStroke_visible = global.color_perkTreeBaseColor;
+    protected color color_connectorStroke_unlocked = brighten(global.color_perkTreeBaseColor);
+    protected color color_connectorFill_locked = adjust_color_brightness(global.color_perkTreeBaseColor, 0.5);
+    protected color color_connectorFill_visible = darken(global.color_perkTreeBaseColor);
+    protected color color_connectorFill_unlocked = global.color_perkTreeBaseColor;
 
     protected HashMap<PlayerTreeCode, PlayerTreeNode> nodes = new HashMap<PlayerTreeCode, PlayerTreeNode>();
     protected NodeDetailsForm node_details = null;
@@ -358,14 +540,54 @@ class Profile {
     }
 
 
+    void showDetails(PlayerTreeCode code) {
+      if (!this.nodes.containsKey(code)) {
+        return;
+      }
+      this.node_details = new NodeDetailsForm(this.nodes.get(code));
+    }
+
+    void unlockNode(PlayerTreeCode code) {
+      if (!this.nodes.containsKey(code)) {
+        return;
+      }
+      if (this.nodes.get(code).unlocked || !this.nodes.get(code).visible) {
+        return;
+      }
+      if (Profile.this.achievement_tokens < code.cost()) {
+        return;
+      }
+      Profile.this.achievement_tokens -= code.cost();
+      this.nodes.get(code).unlock();
+      this.updateDependencies();
+      Profile.this.upgrade(code);
+    }
+
+
     void initializeNodes() {
       for (PlayerTreeCode code : PlayerTreeCode.VALUES) {
+        float xi = 0;
+        float yi = 0;
+        float h = Constants.profile_tree_nodeHeight;
         switch(code) {
           case CAN_PLAY:
             break;
           default:
             global.errorMessage("ERROR: PlayerTreeCode " + code + " not recognized.");
             break;
+        }
+        this.nodes.put(code, new PlayerTreeNode(code, xi, yi, h));
+        if (xi < this.lowestX) {
+          this.lowestX = xi;
+        }
+        else if (xi + 4 * h > this.highestX) {
+          this.highestX = xi + 4 * h;
+        }
+        if (yi < this.lowestY) {
+          this.lowestY = yi;
+        }
+        else if (yi + h > this.highestY) {
+          this.highestY = yi + h;
         }
       }
     }
@@ -435,57 +657,6 @@ class Profile {
     }
 
 
-    String shortMessage(PlayerTreeCode code) {
-      switch(code) {
-        case CAN_PLAY:
-          return "";
-        default:
-          global.errorMessage("ERROR: PlayerTreeCode " + code + " not recognized.");
-          return "";
-      }
-    }
-
-    String longMessage(PlayerTreeCode code) {
-      switch(code) {
-        case CAN_PLAY:
-          return "";
-        default:
-          global.errorMessage("ERROR: PlayerTreeCode " + code + " not recognized.");
-          return "";
-      }
-    }
-
-    String name(PlayerTreeCode code) {
-      switch(code) {
-        case CAN_PLAY:
-          return "";
-        default:
-          global.errorMessage("ERROR: PlayerTreeCode " + code + " not recognized.");
-          return "";
-      }
-    }
-
-    String description(PlayerTreeCode code) {
-      switch(code) {
-        case CAN_PLAY:
-          return "";
-        default:
-          global.errorMessage("ERROR: PlayerTreeCode " + code + " not recognized.");
-          return "";
-      }
-    }
-
-    int cost(PlayerTreeCode code) {
-      switch(code) {
-        case CAN_PLAY:
-          return 1;
-        default:
-          global.errorMessage("ERROR: PlayerTreeCode " + code + " not recognized.");
-          return 0;
-      }
-    }
-
-
     void update(int millis) {
       if (this.node_details != null) {
         this.node_details.update(millis);
@@ -508,27 +679,27 @@ class Profile {
           strokeWeight(2);
           float connector_width = 6;
           if (entry.getValue().unlocked) {
-            //fill(this.color_connectorFill_unlocked);
-            //stroke(this.color_connectorStroke_unlocked);
+            fill(this.color_connectorFill_unlocked);
+            stroke(this.color_connectorStroke_unlocked);
             strokeWeight(4);
             connector_width = 10;
           }
           else if (entry.getValue().visible || dependent.unlocked) {
-            //fill(this.color_connectorFill_visible);
-            //stroke(this.color_connectorStroke_visible);
+            fill(this.color_connectorFill_visible);
+            stroke(this.color_connectorStroke_visible);
             strokeWeight(3);
             connector_width = 8;
           }
           else {
-            //fill(this.color_connectorFill_locked);
-            //stroke(this.color_connectorStroke_locked);
+            fill(this.color_connectorFill_locked);
+            stroke(this.color_connectorStroke_locked);
           }
           float xDif = dependent.button1.xCenter() - entry.getValue().button1.xCenter();
           float yDif = dependent.button1.yCenter() - entry.getValue().button1.yCenter();
           float rotation = (float)Math.atan2(yDif, xDif);
           float distance = sqrt(xDif * xDif + yDif * yDif);
           rotate(rotation);
-          //rect(0, -connector_width, distance, connector_width);
+          rect(0, -connector_width, distance, connector_width);
           rotate(-rotation);
         }
         translate(-entry.getValue().button1.xCenter(), -entry.getValue().button1.yCenter());
@@ -541,6 +712,11 @@ class Profile {
       scale(this.inverse_zoom, this.inverse_zoom);
       translate(-this.translateX, -this.translateY);
       this.back_button.update(millis);
+      fill(255);
+      textAlign(CENTER, TOP);
+      textSize(30);
+      text("Perk Tree", this.xCenter, this.yi + 5);
+      text("Achievement Tokens: " + Profile.this.achievement_tokens + " 〶", this.xCenter, textAscent() + textDescent() + 10);
     }
 
     void mouseMove(float mX, float mY) {
@@ -578,6 +754,9 @@ class Profile {
       }
       this.back_button.mousePress();
       boolean button_hovered = false;
+      if (this.back_button.hovered) {
+        button_hovered = true;
+      }
       for (Map.Entry<PlayerTreeCode, PlayerTreeNode> entry : this.nodes.entrySet()) {
         if (entry.getValue().in_view) {
           entry.getValue().mousePress();
@@ -681,10 +860,17 @@ class Profile {
 
   void achievement(AchievementCode code) {
     if (this.achievements.get(code).equals(Boolean.FALSE)) {
-      //this.achievements.put(code, Boolean.TRUE);
+      this.achievements.put(code, Boolean.TRUE);
       this.achievement_tokens += code.tokens();
       this.save();
       global.notification = new AchievementNotification(code);
+    }
+  }
+
+  void upgrade(PlayerTreeCode code) {
+    switch(code) {
+      default:
+        break;
     }
   }
 
@@ -698,6 +884,7 @@ class Profile {
     }
     file.println("achievement_tokens: " + this.achievement_tokens);
     // println heroes
+    // println hero tree node (unlocked)
     file.println("curr_hero: " + this.curr_hero.file_name());
     file.println("money: " + this.money);
     file.println(this.ender_chest.internalFileString());
