@@ -2565,6 +2565,11 @@ class Hero extends Unit {
       scale(this.inverse_zoom, this.inverse_zoom);
       translate(-this.translateX, -this.translateY);
       this.back_button.update(timeElapsed);
+      fill(255);
+      textAlign(CENTER, TOP);
+      textSize(30);
+      text("Hero Tree", this.xCenter, this.yi + 5);
+      text("Level Tokens: " + Hero.this.level_tokens, this.xCenter, textAscent() + textDescent() + 10);
     }
 
     void mouseMove(float mX, float mY) {
@@ -2602,6 +2607,9 @@ class Hero extends Unit {
       }
       this.back_button.mousePress();
       boolean button_hovered = false;
+      if (this.back_button.hovered) {
+        button_hovered = true;
+      }
       for (Map.Entry<HeroTreeCode, HeroTreeButton> entry : this.nodes.entrySet()) {
         if (entry.getValue().in_view) {
           entry.getValue().mousePress();

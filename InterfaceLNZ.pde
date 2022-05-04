@@ -396,7 +396,7 @@ abstract class InterfaceLNZ {
         return;
       }
       this.addField(new SpacerFormField(10));
-      this.addField(new MessageFormField("Achievement Tokens: " + global.profile.achievement_tokens));
+      this.addField(new MessageFormField("Achievement Tokens: " + global.profile.achievement_tokens + " 〶"));
       this.addField(new SpacerFormField(30));
       ArrayList<MessageFormField> achievements_complete = new ArrayList<MessageFormField>();
       ArrayList<MessageFormField> achievements_incomplete = new ArrayList<MessageFormField>();
