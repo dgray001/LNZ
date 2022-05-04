@@ -848,6 +848,7 @@ class Profile {
       this.achievements.put(code, false);
     }
     this.options = new Options();
+    this.addHero(HeroCode.BEN);
   }
 
   boolean invalidProfile() {

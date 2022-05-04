@@ -478,6 +478,7 @@ abstract class RippleRectangleButton extends ImageButton {
   @Override
   void setLocation(float xi, float yi, float xf, float yf) {
     super.setLocation(xi, yi, xf, yf);
+    this.maxRippleDistance = max(this.button_width(), this.button_height());
     if (this.button_width() > 0 && this.button_height() > 0) {
       this.setImg(createImage(int(xf - xi), int(yf - yi), ARGB));
       this.refreshColor();
@@ -662,7 +663,9 @@ abstract class RippleCircleButton extends RippleRectangleButton {
     this.img.loadPixels();
     for (Pixel p : this.transparentPixels) {
       int index = p.x + p.y * this.img.width;
-      this.img.pixels[index] = color(1, 0);
+      try {
+        this.img.pixels[index] = color(1, 0);
+      } catch(ArrayIndexOutOfBoundsException e) {}
     }
     this.img.updatePixels();
   }

@@ -47,7 +47,7 @@ abstract class InterfaceLNZ {
     class EscButtonFormField extends ButtonFormField {
       EscButtonFormField(String message) {
         super(message);
-        this.button.setColors(color(170, 200), color(1, 0), color(40, 120), color(20, 150), color(255));
+        this.button.setColors(color(170, 200), color(1, 0), color(40, 150), color(20, 180), color(255));
         this.button.raised_border = false;
         this.button.raised_body = false;
         this.button.noStroke();
@@ -66,7 +66,7 @@ abstract class InterfaceLNZ {
       this.setFieldCushion(20);
       this.setTitleText("Paused");
       this.setTitleSize(22);
-      this.color_background = color(60, 90);
+      this.color_background = color(60, 120);
       this.color_header = color(1, 0);
       this.color_stroke = color(1, 0);
       this.color_title = color(255);
@@ -144,6 +144,7 @@ abstract class InterfaceLNZ {
           this.show_message = true;
           this.message = code.display_name();
           this.text_size = 16;
+          this.rippleTimer = 450;
         }
         void hover() {
           super.hover();
@@ -162,7 +163,7 @@ abstract class InterfaceLNZ {
         }
       }
 
-      protected HeroButton[] heroes = new HeroButton[3];
+      protected HeroButton[] heroes = new HeroButton[2];
       protected HeroCode last_code_clicked = HeroCode.ERROR;
       protected boolean clicked = false;
 
@@ -355,9 +356,47 @@ abstract class InterfaceLNZ {
     void submit() {}
 
     void buttonPress(int i) {
-      switch(i) {
+      HeroCode code_clicked = HeroCode.ERROR;
+      try {
+        code_clicked = ((HeroesFormField)this.fields.get(i)).last_code_clicked;
+      } catch(Exception e) {}
+      if (code_clicked != HeroCode.ERROR) {
+        InterfaceLNZ.this.openHeroForm(code_clicked);
       }
     }
+  }
+
+
+  class HeroForm extends FormLNZ {
+    protected Hero hero;
+    HeroForm(Hero hero) {
+      super(0.5 * (width - Constants.profile_heroFormWidth), 0.5 * (height - Constants.profile_heroFormHeight),
+        0.5 * (width + Constants.profile_heroFormWidth), 0.5 * (height + Constants.profile_heroFormHeight));
+      this.hero = hero;
+      this.setTitleText(hero.code.display_name());
+      this.setTitleSize(22);
+      Element e = hero.element;
+      this.color_background = elementalColorLight(e);
+      this.color_header = elementalColor(e);
+      this.color_stroke = elementalColorDark(e);
+      this.color_title = elementalColorText(e);
+      this.setFieldCushion(15);
+
+      this.addField(new SpacerFormField(80));
+      this.addField(new MessageFormField(hero.code.title()));
+      this.addField(new TextBoxFormField(hero.code.description(), 100));
+    }
+
+    @Override
+    void update(int millis) {
+      super.update(millis);
+      imageMode(CENTER);
+      image(global.images.getImage(this.hero.code.getImagePath()), this.xCenter(), this.yStart + 40, 75, 75);
+    }
+
+    void submit() {}
+
+    void buttonPress(int i) {}
   }
 
 
@@ -659,7 +698,9 @@ abstract class InterfaceLNZ {
 
   protected FormLNZ form = null;
   protected boolean return_to_esc_menu = false;
+  protected boolean return_to_heroes_menu = false;
   protected PImage esc_menu_img = null;
+  protected PImage heroes_menu_img = null;
 
   InterfaceLNZ() {
   }
@@ -679,6 +720,15 @@ abstract class InterfaceLNZ {
 
   void heroesForm() {
     this.form = new HeroesForm();
+  }
+
+  void openHeroForm(HeroCode code) {
+    if (!global.profile.heroes.containsKey(code)) {
+      return;
+    }
+    this.return_to_heroes_menu = true;
+    this.heroes_menu_img = this.form.img;
+    this.form = new HeroForm(global.profile.heroes.get(code));
   }
 
   void optionsForm() {
@@ -704,7 +754,13 @@ abstract class InterfaceLNZ {
       this.form.update(millis);
       if (this.form.canceled) {
         this.form = null;
-        if (this.return_to_esc_menu) {
+        if (this.return_to_heroes_menu) {
+          this.return_to_heroes_menu = false;
+          this.form = new HeroesForm();
+          this.form.img = this.heroes_menu_img;
+          this.heroes_menu_img = null;
+        }
+        else if (this.return_to_esc_menu) {
           this.return_to_esc_menu = false;
           this.form = new EscForm();
           this.form.img = this.esc_menu_img;

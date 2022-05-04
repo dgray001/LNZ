@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220504: v0.6.9f" +
+  "\n20220504: v0.6.9g" +
   "\nLines: 32963 (v0.6.9e)" +
   "\nImages: 1044 (v0.6.9)" +
   "\nSounds: 118 (v0.6.9)" +
@@ -49,6 +49,8 @@ static class Constants {
   static final float profile_tree_nodeHeight = 80;
   static final float profile_heroesFormWidth = 850;
   static final float profile_heroesFormHeight = 600;
+  static final float profile_heroFormWidth = 400;
+  static final float profile_heroFormHeight = 500;
 
   // MainMenu Interface
   static final float profileForm_width = 400;

@@ -53,9 +53,9 @@ enum HeroCode {
   static public String title(HeroCode code) {
     switch(code) {
       case BEN:
-        return "";
+        return "The Rage of Wisconsin";
       case DAN:
-        return "";
+        return "The Half-Frog of Hopedale";
       case JF:
         return "";
       case SPINNY:
