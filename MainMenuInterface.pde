@@ -200,6 +200,7 @@ class MainMenuInterface extends InterfaceLNZ {
     void release() {
       if (this.hovered) {
         global.state = ProgramState.ENTERING_TUTORIAL;
+        global.profile.addHero(HeroCode.BEN);
       }
       super.release();
     }
