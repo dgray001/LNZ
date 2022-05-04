@@ -71,13 +71,25 @@ abstract class InterfaceLNZ {
       this.color_stroke = color(1, 0);
       this.color_title = color(255);
 
-      this.addField(new SpacerFormField(Constants.esc_button_height));
+      this.addField(new SpacerFormField(0));
       this.addField(new EscButtonFormField("Continue"));
       this.addField(new EscButtonFormField("Options"));
       this.addField(new EscButtonFormField("Heroes"));
       this.addField(new EscButtonFormField("Achievements"));
       this.addField(new EscButtonFormField("Perk Tree"));
       this.addField(new EscButtonFormField("Save and Exit to Main Menu"));
+    }
+
+    @Override
+    void update(int millis) {
+      super.update(millis);
+      stroke(255);
+      strokeWeight(2);
+      line(this.xi, this.yi, this.xf, this.yi);
+      line(this.xi, this.yStart, this.xf, this.yStart);
+      line(this.xi, this.yf, this.xf, this.yf);
+      line(this.xi, this.yi, this.xi, this.yf);
+      line(this.xf, this.yi, this.xf, this.yf);
     }
 
     void submit() {}
@@ -104,7 +116,7 @@ abstract class InterfaceLNZ {
           InterfaceLNZ.this.achievementsForm();
           break;
         case 5:
-          // display perk tree
+          InterfaceLNZ.this.openPlayerTree();
           break;
         case 6:
           InterfaceLNZ.this.saveAndExitToMainMenu();
@@ -435,8 +447,19 @@ abstract class InterfaceLNZ {
     this.form = new OptionsForm();
   }
 
+  void openPlayerTree() {
+    if (!global.profile.player_tree.curr_viewing) {
+      global.profile.player_tree.curr_viewing = true;
+      global.profile.player_tree.setLocation(0, 0, width, height);
+      global.profile.player_tree.setView(0, 0);
+    }
+  }
+
   void LNZ_update(int millis) {
-    if (this.form == null) {
+    if (global.profile != null && global.profile.player_tree.curr_viewing) {
+      global.profile.player_tree.update(millis);
+    }
+    else if (this.form == null) {
       this.update(millis);
     }
     else {
@@ -454,7 +477,10 @@ abstract class InterfaceLNZ {
   }
 
   void LNZ_mouseMove(float mX, float mY) {
-    if (this.form == null) {
+    if (global.profile != null && global.profile.player_tree.curr_viewing) {
+      global.profile.player_tree.mouseMove(mX, mY);
+    }
+    else if (this.form == null) {
       this.mouseMove(mX, mY);
     }
     else {
@@ -463,7 +489,10 @@ abstract class InterfaceLNZ {
   }
 
   void LNZ_mousePress() {
-    if (this.form == null) {
+    if (global.profile != null && global.profile.player_tree.curr_viewing) {
+      global.profile.player_tree.mousePress();
+    }
+    else if (this.form == null) {
       this.mousePress();
     }
     else {
@@ -472,7 +501,10 @@ abstract class InterfaceLNZ {
   }
 
   void LNZ_mouseRelease(float mX, float mY) {
-    if (this.form == null) {
+    if (global.profile != null && global.profile.player_tree.curr_viewing) {
+      global.profile.player_tree.mouseRelease(mX, mY);
+    }
+    else if (this.form == null) {
       this.mouseRelease(mX, mY);
     }
     else {
@@ -481,7 +513,10 @@ abstract class InterfaceLNZ {
   }
 
   void LNZ_scroll(int amount) {
-    if (this.form == null) {
+    if (global.profile != null && global.profile.player_tree.curr_viewing) {
+      global.profile.player_tree.scroll(amount);
+    }
+    else if (this.form == null) {
       this.scroll(amount);
     }
     else {
@@ -490,10 +525,39 @@ abstract class InterfaceLNZ {
   }
 
   void LNZ_keyPress() {
-    if (this.form == null) {
+    if (global.profile != null && global.profile.player_tree.curr_viewing) {
+      global.profile.player_tree.keyPress();
+    }
+    else if (this.form == null) {
       this.keyPress();
-      if (key == ESC) {
-        this.openEscForm();
+      switch(key) {
+        case ESC:
+          this.openEscForm();
+          break;
+        case 'a':
+        case 'A':
+          if (this.form == null && global.holding_ctrl) {
+            this.form = new AchievementsForm();
+          }
+          break;
+        case 'o':
+        case 'O':
+          if (this.form == null && global.holding_ctrl) {
+            this.form = new OptionsForm();
+          }
+          break;
+        case 'h':
+        case 'H':
+          if (this.form == null && global.holding_ctrl) {
+            //this.form = new HeroesForm();
+          }
+          break;
+        case 'p':
+        case 'P':
+          if (global.holding_ctrl) {
+            this.openPlayerTree();
+          }
+          break;
       }
     }
     else {
@@ -502,7 +566,10 @@ abstract class InterfaceLNZ {
   }
 
   void LNZ_keyRelease() {
-    if (this.form == null) {
+    if (global.profile != null && global.profile.player_tree.curr_viewing) {
+      global.profile.player_tree.keyRelease();
+    }
+    else if (this.form == null) {
       this.keyRelease();
     }
     else {

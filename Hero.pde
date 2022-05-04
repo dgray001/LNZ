@@ -2350,6 +2350,29 @@ class Hero extends Unit {
     }
 
 
+    class BackButton extends RectangleButton {
+      BackButton() {
+        super(0, 0, 0, 0);
+        this.setColors(color(170), color(1, 0), color(40, 120), color(20, 150), color(255));
+        this.noStroke();
+        this.show_message = true;
+        this.message = "Back";
+        this.use_time_elapsed = true;
+        this.text_size = 18;
+        this.adjust_for_text_descent = true;
+      }
+
+      void hover() {}
+      void dehover() {}
+      void click() {}
+      void release() {
+        if (this.hovered) {
+          HeroTree.this.curr_viewing = false;
+        }
+      }
+    }
+
+
     protected float xi = 0;
     protected float yi = 0;
     protected float xf = 0;
@@ -2390,6 +2413,7 @@ class Hero extends Unit {
 
     protected HashMap<HeroTreeCode, HeroTreeButton> nodes = new HashMap<HeroTreeCode, HeroTreeButton>();
     protected NodeDetailsForm node_details = null;
+    protected BackButton back_button = new BackButton();
 
 
     HeroTree() {
@@ -2447,6 +2471,7 @@ class Hero extends Unit {
       this.xf = xf;
       this.yf = yf;
       this.setView(this.viewX, this.viewY);
+      this.back_button.setLocation(xf - 120, yf - 70, xf - 30, yf - 30);
     }
 
     void moveView(float moveX, float moveY) {
@@ -2539,6 +2564,7 @@ class Hero extends Unit {
       }
       scale(this.inverse_zoom, this.inverse_zoom);
       translate(-this.translateX, -this.translateY);
+      this.back_button.update(timeElapsed);
     }
 
     void mouseMove(float mX, float mY) {
@@ -2546,6 +2572,7 @@ class Hero extends Unit {
         this.node_details.mouseMove(mX, mY);
         return;
       }
+      this.back_button.mouseMove(mX, mY);
       if (this.dragging) {
         this.moveView(this.inverse_zoom * (this.last_mX - mX), this.inverse_zoom * (this.last_mY - mY));
       }
@@ -2573,6 +2600,7 @@ class Hero extends Unit {
         this.node_details.mousePress();
         return;
       }
+      this.back_button.mousePress();
       boolean button_hovered = false;
       for (Map.Entry<HeroTreeCode, HeroTreeButton> entry : this.nodes.entrySet()) {
         if (entry.getValue().in_view) {
@@ -2592,6 +2620,7 @@ class Hero extends Unit {
         this.node_details.mouseRelease(mX, mY);
         return;
       }
+      this.back_button.mouseRelease(mX, mY);
       if (mouseButton == LEFT) {
         this.dragging = false;
       }
@@ -2625,13 +2654,8 @@ class Hero extends Unit {
         this.node_details.keyPress();
         return;
       }
-      if (key == CODED) {
-        switch(keyCode) {
-        }
-      }
-      else {
-        switch(key) {
-        }
+      if (key == ESC) {
+        this.curr_viewing = false;
       }
     }
 
