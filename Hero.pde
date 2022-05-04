@@ -75,7 +75,7 @@ enum HeroCode {
   static public String description(HeroCode code) {
     switch(code) {
       case BEN:
-        return "";
+        return "Ben description";
       case DAN:
         return "";
       case JF:
@@ -223,6 +223,104 @@ enum HeroTreeCode {
   FOLLOWERI
   ;
   private static final List<HeroTreeCode> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+
+  public String file_name() {
+    switch(this) {
+      case INVENTORYI:
+        return "Inventory";
+      case PASSIVEI:
+        return "Passive";
+      case AI:
+        return "A";
+      case SI:
+        return "S";
+      case DI:
+        return "D";
+      case FI:
+        return "F";
+      case PASSIVEII:
+        return "PassiveII";
+      case AII:
+        return "AII";
+      case SII:
+        return "SII";
+      case DII:
+        return "DII";
+      case FII:
+        return "FII";
+      case HEALTHI:
+        return "Health";
+      case ATTACKI:
+        return "Attack";
+      case DEFENSEI:
+        return "Defense";
+      case PIERCINGI:
+        return "Piercing";
+      case SPEEDI:
+        return "Speed";
+      case SIGHTI:
+        return "Sight";
+      case TENACITYI:
+        return "Tenacity";
+      case AGILITYI:
+        return "Agility";
+      case MAGICI:
+        return "Magic";
+      case RESISTANCEI:
+        return "Resistance";
+      case PENETRATIONI:
+        return "Penetration";
+      case HEALTHII:
+        return "HealthII";
+      case ATTACKII:
+        return "AttackII";
+      case DEFENSEII:
+        return "DefenseII";
+      case PIERCINGII:
+        return "PiercingII";
+      case SPEEDII:
+        return "SpeedII";
+      case SIGHTII:
+        return "SightII";
+      case TENACITYII:
+        return "TenacityII";
+      case AGILITYII:
+        return "AgilityII";
+      case MAGICII:
+        return "MagicII";
+      case RESISTANCEII:
+        return "ResistanceII";
+      case PENETRATIONII:
+        return "PenetrationII";
+      case HEALTHIII:
+        return "HealthIII";
+      case OFFHAND:
+        return "Offhand";
+      case BELTI:
+        return "Belt";
+      case BELTII:
+        return "BeltII";
+      case INVENTORYII:
+        return "InventoryII";
+      case INVENTORY_BARI:
+        return "InventoryBar";
+      case INVENTORY_BARII:
+        return "InventoryBarII";
+      case FOLLOWERI:
+        return "Follower";
+      default:
+        return "--Error--";
+    }
+  }
+
+  public static HeroTreeCode code(String display_name) {
+    for (HeroTreeCode code : HeroTreeCode.VALUES) {
+      if (code.file_name().equals(display_name)) {
+        return code;
+      }
+    }
+    return null;
+  }
 }
 
 
@@ -2484,19 +2582,34 @@ class Hero extends Unit {
     }
 
     void unlockNode(HeroTreeCode code) {
+      this.unlockNode(code, false);
+    }
+    void unlockNode(HeroTreeCode code, boolean force_unlock) {
       if (!this.nodes.containsKey(code)) {
         return;
       }
-      if (this.nodes.get(code).unlocked || !this.nodes.get(code).visible) {
+      if (this.nodes.get(code).unlocked || (!this.nodes.get(code).visible && !force_unlock)) {
         return;
       }
-      if (Hero.this.level_tokens < this.upgradeCost(code)) {
+      if (!force_unlock && Hero.this.level_tokens < this.upgradeCost(code)) {
         return;
       }
-      Hero.this.level_tokens -= this.upgradeCost(code);
+      if (!force_unlock) {
+        Hero.this.level_tokens -= this.upgradeCost(code);
+      }
       this.nodes.get(code).unlock();
       this.updateDependencies();
       Hero.this.upgrade(code);
+    }
+
+    ArrayList<HeroTreeCode> unlockedCodes() {
+      ArrayList<HeroTreeCode> codes = new ArrayList<HeroTreeCode>();
+      for (Map.Entry<HeroTreeCode, HeroTreeButton> entry : this.nodes.entrySet()) {
+        if (entry.getValue().unlocked) {
+          codes.add(entry.getKey());
+        }
+      }
+      return codes;
     }
 
     void updateDependencies() {
@@ -4170,6 +4283,75 @@ class Hero extends Unit {
         default:
           break;
       }
+    }
+  }
+
+
+  @Override
+  String fileString() {
+    String fileString = "\nnew: Hero: " + this.ID;
+    fileString += super.fileString(false);
+    fileString += "\nlocation: " + this.location.file_name();
+    fileString += "\nlevel_tokens: " + this.level_tokens;
+    fileString += "\nexperience: " + this.experience;
+    fileString += "\nexperience_next_level: " + this.experience_next_level;
+    fileString += "\nmoney: " + this.money;
+    fileString += "\ncurr_mana: " + this.curr_mana;
+    fileString += "\nhunger: " + this.hunger;
+    fileString += "\nthirst: " + this.thirst;
+    fileString += "\nhunger_timer: " + this.hunger_timer;
+    fileString += "\nthirst_timer: " + this.thirst_timer;
+    //fileString += this.inventory.fileString();
+    for (HeroTreeCode code : this.heroTree.unlockedCodes()) {
+      fileString += "perk: " + code.file_name();
+    }
+    fileString += "\nend: Hero\n";
+    return fileString;
+  }
+
+
+  @Override
+  void addData(String datakey, String data) {
+    switch(datakey) {
+      case "location":
+        this.location = Location.location(data);
+        break;
+      case "perk":
+        HeroTreeCode tree_code = HeroTreeCode.code(data);
+        if (tree_code != null) {
+          this.heroTree.unlockNode(tree_code, true);
+        }
+        break;
+      case "level_tokens":
+        this.level_tokens = toInt(data);
+        break;
+      case "experience":
+        this.experience = toFloat(data);
+        break;
+      case "experience_next_level":
+        this.experience_next_level = toInt(data);
+        break;
+      case "money":
+        this.money = toFloat(data);
+        break;
+      case "curr_mana":
+        this.curr_mana = toFloat(data);
+        break;
+      case "hunger":
+        this.hunger = toInt(data);
+        break;
+      case "thirst":
+        this.thirst = toInt(data);
+        break;
+      case "hunger_timer":
+        this.hunger_timer = toInt(data);
+        break;
+      case "thirst_timer":
+        this.thirst_timer = toInt(data);
+        break;
+      default:
+        super.addData(datakey, data);
+        break;
     }
   }
 }

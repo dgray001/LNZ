@@ -654,7 +654,9 @@ class MainMenuInterface extends InterfaceLNZ {
     this.growButtons[2] = new MainMenuGrowButton3();
     this.growButtons[3] = new MainMenuGrowButton4();
     this.growButtons[4] = new MainMenuGrowButton5();
-    this.loadProfile();
+    if (global.profile == null) {
+      this.loadProfile();
+    }
     this.thread.start();
   }
 
@@ -686,7 +688,7 @@ class MainMenuInterface extends InterfaceLNZ {
       global.errorMessage("ERROR: Profile file missing for " + profile_name + ".");
       return false;
     }
-    global.profile = readProfile(sketchPath("data/profiles/" + profile_name.toLowerCase() + "/profile.lnz"));
+    global.profile = readProfile(sketchPath("data/profiles/" + profile_name.toLowerCase()));
     return true;
   }
   // create new profile

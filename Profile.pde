@@ -20,6 +20,15 @@ enum PlayerTreeCode {
     }
   }
 
+  public String file_name() {
+    switch(this) {
+      case CAN_PLAY:
+        return "Launch_Game";
+      default:
+        return "";
+    }
+  }
+
   public String description() {
     switch(this) {
       case CAN_PLAY:
@@ -36,6 +45,16 @@ enum PlayerTreeCode {
       default:
         return 0;
     }
+  }
+
+  public static PlayerTreeCode code(String display_name) {
+    for (PlayerTreeCode code : PlayerTreeCode.VALUES) {
+      if (code.display_name().equals(display_name) ||
+        code.file_name().equals(display_name)) {
+        return code;
+      }
+    }
+    return null;
   }
 }
 
@@ -550,19 +569,34 @@ class Profile {
     }
 
     void unlockNode(PlayerTreeCode code) {
+      this.unlockNode(code, false);
+    }
+    void unlockNode(PlayerTreeCode code, boolean force_unlock) {
       if (!this.nodes.containsKey(code)) {
         return;
       }
-      if (this.nodes.get(code).unlocked || !this.nodes.get(code).visible) {
+      if (this.nodes.get(code).unlocked || (!this.nodes.get(code).visible && !force_unlock)) {
         return;
       }
-      if (Profile.this.achievement_tokens < code.cost()) {
+      if (!force_unlock && Profile.this.achievement_tokens < code.cost()) {
         return;
       }
-      Profile.this.achievement_tokens -= code.cost();
+      if (!force_unlock) {
+        Profile.this.achievement_tokens -= code.cost();
+      }
       this.nodes.get(code).unlock();
       this.updateDependencies();
       Profile.this.upgrade(code);
+    }
+
+    ArrayList<PlayerTreeCode> unlockedCodes() {
+      ArrayList<PlayerTreeCode> codes = new ArrayList<PlayerTreeCode>();
+      for (Map.Entry<PlayerTreeCode, PlayerTreeNode> entry : this.nodes.entrySet()) {
+        if (entry.getValue().unlocked) {
+          codes.add(entry.getKey());
+        }
+      }
+      return codes;
     }
 
 
@@ -833,7 +867,7 @@ class Profile {
   private PlayerTree player_tree = new PlayerTree();
   private Options options;
 
-  private HashMap<HeroCode, Hero> heroes = new HashMap<HeroCode, Hero>(); // maybe remove ??
+  private HashMap<HeroCode, Hero> heroes = new HashMap<HeroCode, Hero>();
   private HeroCode curr_hero = HeroCode.ERROR; // hero the player is playing as
 
   private EnderChestInventory ender_chest = new EnderChestInventory();
@@ -866,6 +900,7 @@ class Profile {
       return;
     }
     this.heroes.put(code, new Hero(code));
+    this.save();
   }
 
   void achievement(AchievementCode code) {
@@ -882,6 +917,7 @@ class Profile {
       default:
         break;
     }
+    this.save();
   }
 
   boolean upgraded(PlayerTreeCode code) {
@@ -889,6 +925,9 @@ class Profile {
   }
 
   void save() {
+    if (this.display_name.equals("")) {
+      return;
+    }
     PrintWriter file = createWriter(sketchPath("data/profiles/" + this.display_name.toLowerCase() + "/profile.lnz"));
     file.println("display_name: " + this.display_name);
     for (AchievementCode code : AchievementCode.VALUES) {
@@ -897,25 +936,32 @@ class Profile {
       }
     }
     file.println("achievement_tokens: " + this.achievement_tokens);
-    // println heroes
-    // println hero tree node (unlocked)
+    for (PlayerTreeCode code : this.player_tree.unlockedCodes()) {
+      file.println("perk: " + code.file_name());
+    }
     file.println("curr_hero: " + this.curr_hero.file_name());
     file.println("money: " + this.money);
     file.println(this.ender_chest.internalFileString());
     file.flush();
     file.close();
+    PrintWriter heroes_file = createWriter(sketchPath("data/profiles/" + this.display_name.toLowerCase() + "/heroes.lnz"));
+    for (Map.Entry<HeroCode, Hero> entry : this.heroes.entrySet()) {
+      heroes_file.println(entry.getValue().fileString());
+    }
+    heroes_file.flush();
+    heroes_file.close();
     this.options.save();
   }
 }
 
 
-Profile readProfile(String path) {
-  String[] lines = loadStrings(path);
+Profile readProfile(String folder_path) {
+  String[] lines = loadStrings(folder_path + "/profile.lnz");
   Profile p = new Profile();
   Item curr_item = null;
   boolean in_item = false;
   if (lines == null) {
-    global.errorMessage("ERROR: Reading profile file but path " + path + " doesn't exist.");
+    global.errorMessage("ERROR: Reading profile file but path " + (folder_path + "/profile.lnz") + " doesn't exist.");
     return p;
   }
   for (String line : lines) {
@@ -931,6 +977,12 @@ Profile readProfile(String path) {
         AchievementCode code = AchievementCode.achievementCode(trim(data[1]));
         if (code != null) {
           p.achievements.put(code, Boolean.TRUE);
+        }
+        break;
+      case "perk":
+        PlayerTreeCode tree_code = PlayerTreeCode.code(trim(data[1]));
+        if (tree_code != null) {
+          p.player_tree.unlockNode(tree_code, true);
         }
         break;
       case "achievement_tokens":
@@ -998,6 +1050,18 @@ Profile readProfile(String path) {
           continue;
         }
         break;
+    }
+  }
+  p.profileUpdated();
+  lines = loadStrings(folder_path + "/heroes.lnz");
+  if (lines == null) {
+    global.errorMessage("ERROR: Reading heroes file but path " + (folder_path + "/heroes.lnz") + " doesn't exist.");
+    return p;
+  }
+  for (String line : lines) {
+    String[] data = split(line, ':');
+    if (data.length < 2) {
+      continue;
     }
   }
   p.profileUpdated();
