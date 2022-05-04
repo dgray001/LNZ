@@ -236,6 +236,31 @@ class Profile {
       void unlock() {
         this.unlocked = true;
       }
+
+
+      void update(int millis) {
+        this.button1.update(millis);
+        this.button2.update(millis);
+      }
+
+      void mouseMove(float mX, float mY) {
+        this.button1.mouseMove(mX, mY);
+        this.button2.mouseMove(mX, mY);
+      }
+
+      boolean hovered() {
+        return this.button1.hovered || this.button2.hovered;
+      }
+
+      void mousePress() {
+        this.button1.mousePress();
+        this.button2.mousePress();
+      }
+
+      void mouseRelease(float mX, float mY) {
+        this.button1.mouseRelease(mX, mY);
+        this.button2.mouseRelease(mX, mY);
+      }
     }
 
 
@@ -264,6 +289,28 @@ class Profile {
       }
 
       void buttonPress(int index) {}
+    }
+
+
+    class BackButton extends RectangleButton {
+      BackButton() {
+        super(0, 0, 0, 0);
+        this.setColors(color(170), color(1, 0), color(40, 120), color(20, 150), color(255));
+        this.noStroke();
+        this.show_message = true;
+        this.message = "Back";
+        this.text_size = 18;
+        this.adjust_for_text_descent = true;
+      }
+
+      void hover() {}
+      void dehover() {}
+      void click() {}
+      void release() {
+        if (this.hovered) {
+          PlayerTree.this.curr_viewing = false;
+        }
+      }
     }
 
 
@@ -297,8 +344,11 @@ class Profile {
     protected float highestX = 0;
     protected float highestY = 0;
 
+    protected color color_background = color(30);
+
     protected HashMap<PlayerTreeCode, PlayerTreeNode> nodes = new HashMap<PlayerTreeCode, PlayerTreeNode>();
     protected NodeDetailsForm node_details = null;
+    protected BackButton back_button = new BackButton();
 
 
     PlayerTree() {
@@ -346,6 +396,7 @@ class Profile {
       this.xf = xf;
       this.yf = yf;
       this.setView(this.viewX, this.viewY);
+      this.back_button.setLocation(xf - 120, yf - 70, xf - 30, yf - 30);
     }
 
     void moveView(float moveX, float moveY) {
@@ -433,6 +484,163 @@ class Profile {
           return 0;
       }
     }
+
+
+    void update(int millis) {
+      if (this.node_details != null) {
+        this.node_details.update(millis);
+        if (this.node_details.canceled) {
+          this.node_details = null;
+        }
+        return;
+      }
+      rectMode(CORNERS);
+      fill(this.color_background);
+      noStroke();
+      rect(this.xi, this.yi, this.xf, this.yf);
+      translate(this.translateX, this.translateY);
+      scale(this.zoom, this.zoom);
+      for (Map.Entry<PlayerTreeCode, PlayerTreeNode> entry : this.nodes.entrySet()) {
+        rectMode(CORNERS);
+        translate(entry.getValue().button1.xCenter(), entry.getValue().button1.yCenter());
+        for (PlayerTreeCode dependency : entry.getValue().dependencies) {
+          PlayerTreeNode dependent = this.nodes.get(dependency);
+          strokeWeight(2);
+          float connector_width = 6;
+          if (entry.getValue().unlocked) {
+            //fill(this.color_connectorFill_unlocked);
+            //stroke(this.color_connectorStroke_unlocked);
+            strokeWeight(4);
+            connector_width = 10;
+          }
+          else if (entry.getValue().visible || dependent.unlocked) {
+            //fill(this.color_connectorFill_visible);
+            //stroke(this.color_connectorStroke_visible);
+            strokeWeight(3);
+            connector_width = 8;
+          }
+          else {
+            //fill(this.color_connectorFill_locked);
+            //stroke(this.color_connectorStroke_locked);
+          }
+          float xDif = dependent.button1.xCenter() - entry.getValue().button1.xCenter();
+          float yDif = dependent.button1.yCenter() - entry.getValue().button1.yCenter();
+          float rotation = (float)Math.atan2(yDif, xDif);
+          float distance = sqrt(xDif * xDif + yDif * yDif);
+          rotate(rotation);
+          //rect(0, -connector_width, distance, connector_width);
+          rotate(-rotation);
+        }
+        translate(-entry.getValue().button1.xCenter(), -entry.getValue().button1.yCenter());
+      }
+      for (Map.Entry<PlayerTreeCode, PlayerTreeNode> entry : this.nodes.entrySet()) {
+        if (entry.getValue().in_view) {
+          entry.getValue().update(millis);
+        }
+      }
+      scale(this.inverse_zoom, this.inverse_zoom);
+      translate(-this.translateX, -this.translateY);
+      this.back_button.update(millis);
+    }
+
+    void mouseMove(float mX, float mY) {
+      if (this.node_details != null) {
+        this.node_details.mouseMove(mX, mY);
+        return;
+      }
+      this.back_button.mouseMove(mX, mY);
+      if (this.dragging) {
+        this.moveView(this.inverse_zoom * (this.last_mX - mX), this.inverse_zoom * (this.last_mY - mY));
+      }
+      this.last_mX = mX;
+      this.last_mY = mY;
+      if (mX > this.xi && mY > this.yi && mX < this.xf && mY < this.yf) {
+        this.hovered = true;
+      }
+      else {
+        this.hovered = false;
+      }
+      mX -= this.translateX;
+      mY -= this.translateY;
+      mX *= this.inverse_zoom;
+      mY *= this.inverse_zoom;
+      for (Map.Entry<PlayerTreeCode, PlayerTreeNode> entry : this.nodes.entrySet()) {
+        if (entry.getValue().in_view) {
+          entry.getValue().mouseMove(mX, mY);
+        }
+      }
+    }
+
+    void mousePress() {
+      if (this.node_details != null) {
+        this.node_details.mousePress();
+        return;
+      }
+      this.back_button.mousePress();
+      boolean button_hovered = false;
+      for (Map.Entry<PlayerTreeCode, PlayerTreeNode> entry : this.nodes.entrySet()) {
+        if (entry.getValue().in_view) {
+          entry.getValue().mousePress();
+          if (entry.getValue().hovered()) {
+            button_hovered = true;
+          }
+        }
+      }
+      if (!button_hovered && mouseButton == LEFT && this.hovered) {
+        this.dragging = true;
+      }
+    }
+
+    void mouseRelease(float mX, float mY) {
+      if (this.node_details != null) {
+        this.node_details.mouseRelease(mX, mY);
+        return;
+      }
+      this.back_button.mouseRelease(mX, mY);
+      if (mouseButton == LEFT) {
+        this.dragging = false;
+      }
+      mX -= this.translateX;
+      mY -= this.translateY;
+      for (Map.Entry<PlayerTreeCode, PlayerTreeNode> entry : this.nodes.entrySet()) {
+        if (entry.getValue().in_view) {
+          entry.getValue().mouseRelease(mX, mY);
+        }
+      }
+    }
+
+    void scroll(int amount) {
+      if (this.node_details != null) {
+        this.node_details.scroll(amount);
+        return;
+      }
+      this.zoom -= amount * 0.01;
+      if (this.zoom < 0.5) {
+        this.zoom = 0.5;
+      }
+      if (this.zoom > 1.5) {
+        this.zoom = 1.5;
+      }
+      this.inverse_zoom = 1 / this.zoom;
+      this.setView(this.viewX, this.viewY);
+    }
+
+    void keyPress() {
+      if (this.node_details != null) {
+        this.node_details.keyPress();
+        return;
+      }
+      if (key == ESC) {
+        this.curr_viewing = false;
+      }
+    }
+
+    void keyRelease() {
+      if (this.node_details != null) {
+        this.node_details.keyRelease();
+        return;
+      }
+    }
   }
 
 
@@ -441,6 +649,7 @@ class Profile {
 
   private HashMap<AchievementCode, Boolean> achievements = new HashMap<AchievementCode, Boolean>();
   private int achievement_tokens = 0;
+  private PlayerTree player_tree = new PlayerTree();
   private Options options;
 
   private HashMap<HeroCode, Hero> heroes = new HashMap<HeroCode, Hero>(); // maybe remove ??
