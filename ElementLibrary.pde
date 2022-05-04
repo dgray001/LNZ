@@ -334,14 +334,10 @@ abstract class RectangleButton extends Button {
     this.yCenter = this.yi + 0.5 * (this.yf - this.yi);
   }
   void setXLocation(float xi, float xf) {
-    this.xi = xi;
-    this.xf = xf;
-    this.xCenter = this.xi + 0.5 * (this.xf - this.xi);
+    this.setLocation(xi, this.yi, xf, this.yf);
   }
   void setYLocation(float yi, float yf) {
-    this.yi = yi;
-    this.yf = yf;
-    this.yCenter = this.yi + 0.5 * (this.yf - this.yi);
+    this.setLocation(this.xi, yi, this.xf, yf);
   }
 
   void moveButton(float xMove, float yMove) {
@@ -480,6 +476,15 @@ abstract class RippleRectangleButton extends ImageButton {
   }
 
   @Override
+  void setLocation(float xi, float yi, float xf, float yf) {
+    super.setLocation(xi, yi, xf, yf);
+    if (this.button_width() > 0 && this.button_height() > 0) {
+      this.setImg(createImage(int(xf - xi), int(yf - yi), ARGB));
+      this.refreshColor();
+    }
+  }
+
+  @Override
   void update(int millis) {
     int timeElapsed = millis - this.lastUpdateTime;
     if (this.use_time_elapsed) {
@@ -578,9 +583,14 @@ abstract class IconButton extends RippleRectangleButton {
   }
 
   @Override
+  void setLocation(float xi, float yi, float xf, float yf) {
+    super.setLocation(xi, yi, xf, yf);
+    this.icon_width = yf - yi;
+  }
+
+  @Override
   void update(int millis) {
     rectMode(CORNERS);
-    this.setFill();
     fill(this.background_color);
     rect(this.xi, this.yi, this.xf, this.yf);
     imageMode(CORNER);
@@ -595,11 +605,30 @@ abstract class IconButton extends RippleRectangleButton {
       textAlign(LEFT, CENTER);
       textSize(this.text_size);
       if (this.adjust_for_text_descent) {
-        text(this.message, this.icon_width + 1, this.yCenter() - textDescent());
+        text(this.message, this.xi + this.icon_width + 1, this.yCenter() - textDescent());
       }
       else {
-        text(this.message, this.icon_width + 1, this.yCenter());
+        text(this.message, this.xi + this.icon_width + 1, this.yCenter());
       }
+    }
+  }
+}
+
+
+abstract class IconInverseButton extends IconButton {
+  IconInverseButton(float xi, float yi, float xf, float yf, PImage icon) {
+    super(xi, yi, xf, yf, icon);
+  }
+
+  @Override
+  void update(int millis) {
+    super.update(millis);
+    imageMode(CORNER);
+    image(this.icon, this.xi, this.yi, this.icon_width, this.icon_width);
+    if (this.disabled) {
+      rectMode(CORNERS);
+      fill(this.background_color);
+      rect(this.xi, this.yi, this.xf, this.yf);
     }
   }
 }
@@ -3588,7 +3617,7 @@ class SubmitFormField extends FormField {
     this.button.button_focused = false;
   }
   boolean focused() {
-    return false;
+    return this.button.button_focused;
   }
 
   void updateWidthDependencies() {

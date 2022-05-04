@@ -25,6 +25,28 @@ enum HeroCode {
     }
   }
 
+  public Element element() {
+    return HeroCode.element(this);
+  }
+  static public Element element(HeroCode code) {
+    switch(code) {
+      case BEN:
+        return Element.GRAY;
+      case DAN:
+        return Element.BROWN;
+      case JF:
+        return Element.CYAN;
+      case SPINNY:
+        return Element.RED;
+      case MATTUS:
+        return Element.MAGENTA;
+      case PATRICK:
+        return Element.GRAY;
+      default:
+        return Element.GRAY;
+    }
+  }
+
   public String title() {
     return HeroCode.title(this);
   }
@@ -111,6 +133,37 @@ enum HeroCode {
       default:
         return 1100;
     }
+  }
+
+  public String getImagePath() {
+    return HeroCode.getImagePath(this);
+  }
+  static public String getImagePath(HeroCode code) {
+    String file_path = "units/";
+    switch(code) {
+      case BEN:
+        file_path += "ben_circle.png";
+        break;
+      case DAN:
+        file_path += "dan_circle.png";
+        break;
+      case JF:
+        file_path += "jf_circle.png";
+        break;
+      case SPINNY:
+        file_path += "spinny_circle.png";
+        break;
+      case MATTUS:
+        file_path += "mattus_circle.png";
+        break;
+      case PATRICK:
+        file_path += "patrick_circle.png";
+        break;
+      default:
+        file_path += "default.png";
+        break;
+    }
+    return file_path;
   }
 
   static public HeroCode heroCode(String display_name) {

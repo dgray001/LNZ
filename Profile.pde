@@ -860,6 +860,13 @@ class Profile {
     this.save();
   }
 
+  void addHero(HeroCode code) {
+    if (this.heroes.containsKey(code)) {
+      return;
+    }
+    this.heroes.put(code, new Hero(code));
+  }
+
   void achievement(AchievementCode code) {
     if (this.achievements.get(code).equals(Boolean.FALSE)) {
       this.achievements.put(code, Boolean.TRUE);

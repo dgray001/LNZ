@@ -106,9 +106,9 @@ abstract class InterfaceLNZ {
           InterfaceLNZ.this.optionsForm();
           break;
         case 3:
-          //InterfaceLNZ.this.return_to_esc_menu = true;
-          //InterfaceLNZ.this.esc_menu_img = this.img;
-          //InterfaceLNZ.this.heroesForm();
+          InterfaceLNZ.this.return_to_esc_menu = true;
+          InterfaceLNZ.this.esc_menu_img = this.img;
+          InterfaceLNZ.this.heroesForm();
           break;
         case 4:
           InterfaceLNZ.this.return_to_esc_menu = true;
@@ -126,6 +126,240 @@ abstract class InterfaceLNZ {
       }
     }
   }
+
+
+  class HeroesForm extends FormLNZ {
+    class HeroesFormField extends FormField {
+      class HeroButton extends IconInverseButton {
+        protected HeroCode code;
+        HeroButton(float xi, float yi, float xf, float yf, HeroCode code) {
+          super(xi, yi, xf, yf, global.images.getImage(code.getImagePath()));
+          this.roundness = 4;
+          this.adjust_for_text_descent = true;
+          this.code = code;
+          Element e = code.element();
+          this.background_color = color(170, 170);
+          this.setColors(elementalColorLocked(e), elementalColorDark(e), elementalColor(e),
+            elementalColorLight(e), elementalColorText(e));
+          this.show_message = true;
+          this.message = code.display_name();
+          this.text_size = 16;
+        }
+        void hover() {
+          super.hover();
+          this.message = code.display_name() + "\n" + code.title();
+        }
+        void dehover() {
+          super.dehover();
+          this.message = code.display_name();
+        }
+        void release() {
+          super.release();
+          if (this.hovered || this.button_focused) {
+            HeroesFormField.this.last_code_clicked = this.code;
+            HeroesFormField.this.clicked = true;
+          }
+        }
+      }
+
+      protected HeroButton[] heroes = new HeroButton[3];
+      protected HeroCode last_code_clicked = HeroCode.ERROR;
+      protected boolean clicked = false;
+
+      HeroesFormField(int index) {
+        super("");
+        switch(index) {
+          case 0:
+            this.heroes[0] = new HeroButton(0, 0, 0, 100, HeroCode.BEN);
+            this.heroes[1] = new HeroButton(0, 0, 0, 100, HeroCode.DAN);
+            break;
+        }
+        this.enable();
+      }
+
+      void disable() {
+        for (HeroButton button : this.heroes) {
+          if (button == null) {
+            continue;
+          }
+          button.disabled = true;
+        }
+      }
+      void enable() {
+        for (HeroButton button : this.heroes) {
+          if (button == null) {
+            continue;
+          }
+          button.disabled = !global.profile.heroes.containsKey(button.code);
+        }
+      }
+
+      boolean focusable() {
+        for (int i = 0; i < this.heroes.length; i++) {
+          if (this.heroes[this.heroes.length - 1 - i] == null) {
+            continue;
+          }
+          if (this.heroes[this.heroes.length - 1 - i].button_focused) {
+            return false;
+          }
+          return true;
+        }
+        return false;
+      }
+      void focus() {
+        boolean refocused = false;
+        for (int i = 0; i < this.heroes.length; i++) {
+          if (this.heroes[i] == null) {
+            continue;
+          }
+          if (this.heroes[i].button_focused) {
+            this.heroes[i].button_focused = false;
+            if (i == this.heroes.length - 1) {
+              this.heroes[0].button_focused = true;
+            }
+            else {
+              this.heroes[i + 1].button_focused = true;
+            }
+            refocused = true;
+            break;
+          }
+        }
+        if (!refocused) {
+          this.heroes[0].button_focused = true;
+        }
+      }
+      void defocus() {
+        for (HeroButton button : this.heroes) {
+          if (button == null) {
+            continue;
+          }
+          button.button_focused = false;
+        }
+      }
+      boolean focused() {
+        for (HeroButton button : this.heroes) {
+          if (button == null) {
+            continue;
+          }
+          if (button.button_focused) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      void updateWidthDependencies() {
+        float button_width = (this.field_width - 4) / this.heroes.length - (this.heroes.length - 1) * 10;
+        for (int i = 0; i < this.heroes.length; i++) {
+          if (this.heroes[i] == null) {
+            continue;
+          }
+          this.heroes[i].setXLocation(2 + i * (button_width + 10), 2 + i * (button_width + 10) + button_width);
+        }
+      }
+
+      float getHeight() {
+        for (HeroButton button : this.heroes) {
+          if (button == null) {
+            continue;
+          }
+          return button.button_height();
+        }
+        return 0;
+      }
+
+      String getValue() {
+        return this.last_code_clicked.file_name();
+      }
+      void setValue(String value) {
+        this.message = value;
+      }
+
+      FormFieldSubmit update(int millis) {
+        for (HeroButton button : this.heroes) {
+          if (button == null) {
+            continue;
+          }
+          button.update(millis);
+        }
+        if (this.clicked) {
+          this.clicked = false;
+          return FormFieldSubmit.BUTTON;
+        }
+        return FormFieldSubmit.NONE;
+      }
+
+      void mouseMove(float mX, float mY) {
+        for (HeroButton button : this.heroes) {
+          if (button == null) {
+            continue;
+          }
+          button.mouseMove(mX, mY);
+        }
+      }
+
+      void mousePress() {
+        for (HeroButton button : this.heroes) {
+          if (button == null) {
+            continue;
+          }
+          button.mousePress();
+        }
+      }
+
+      void mouseRelease(float mX, float mY) {
+        for (HeroButton button : this.heroes) {
+          if (button == null) {
+            continue;
+          }
+          button.mouseRelease(mX, mY);
+        }
+      }
+
+      void scroll(int amount) {}
+      void keyPress() {
+        for (HeroButton button : this.heroes) {
+          if (button == null) {
+            continue;
+          }
+          button.keyPress();
+        }
+      }
+      void keyRelease() {
+        for (HeroButton button : this.heroes) {
+          if (button == null) {
+            continue;
+          }
+          button.keyRelease();
+        }
+      }
+      void submit() {}
+    }
+
+    HeroesForm() {
+      super(0.5 * (width - Constants.profile_heroesFormWidth), 0.5 * (height - Constants.profile_heroesFormHeight),
+        0.5 * (width + Constants.profile_heroesFormWidth), 0.5 * (height + Constants.profile_heroesFormHeight));
+      this.setTitleText("Heroes");
+      this.setTitleSize(22);
+      this.color_shadow = color(0, 180);
+      this.color_background = color(60);
+      this.color_header = color(90);
+      this.color_stroke = color(0);
+      this.color_title = color(255);
+      this.setFieldCushion(15);
+
+      this.addField(new SpacerFormField(0));
+      this.addField(new HeroesFormField(0));
+    }
+
+    void submit() {}
+
+    void buttonPress(int i) {
+      switch(i) {
+      }
+    }
+  }
+
 
   class ErrorForm extends FormLNZ {
     ErrorForm(String errorMessage) {
@@ -443,6 +677,10 @@ abstract class InterfaceLNZ {
     this.form = new AchievementsForm();
   }
 
+  void heroesForm() {
+    this.form = new HeroesForm();
+  }
+
   void optionsForm() {
     this.form = new OptionsForm();
   }
@@ -549,7 +787,7 @@ abstract class InterfaceLNZ {
         case 'h':
         case 'H':
           if (this.form == null && global.holding_ctrl) {
-            //this.form = new HeroesForm();
+            this.form = new HeroesForm();
           }
           break;
         case 'p':
