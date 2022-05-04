@@ -3292,7 +3292,13 @@ class Unit extends MapObject {
 
 
   String fileString() {
-    String fileString = "\nnew: Unit: " + this.ID;
+    return this.fileString(true);
+  }
+  String fileString(boolean include_headers) {
+    String fileString = "";
+    if (include_headers) {
+      fileString += "\nnew: Unit: " + this.ID;
+    }
     fileString += this.objectFileString();
     fileString += "\nsize: " + this.size;
     fileString += "\nlevel: " + this.level;
@@ -3336,7 +3342,9 @@ class Unit extends MapObject {
     fileString += "\ncurr_health: " + this.curr_health;
     fileString += "\ntimer_attackCooldown: " + this.timer_attackCooldown;
     fileString += "\ntimer_actionTime: " + this.timer_actionTime;
-    fileString += "\nend: Unit\n";
+    if (include_headers) {
+      fileString += "\nend: Unit\n";
+    }
     return fileString;
   }
 
