@@ -241,7 +241,7 @@ class Profile {
             float message_width = textWidth(hover_message);
             float message_height = textAscent() + textDescent() + 2;
             textAlign(LEFT, BOTTOM);
-            if (PlayerTree.this.last_mX > 0.5 * width) {
+            if (this.last_mX < this.xi + 0.5 * this.button_height()) {
               rect(this.last_mX - message_width - 2, this.last_mY - message_height - 2, message_width, message_height);
               fill(255);
               text(hover_message, this.last_mX - message_width - 1, this.last_mY - 1);
@@ -306,8 +306,10 @@ class Profile {
           }
         }
         void release() {
-          if (PlayerTreeNode.this.visible && !PlayerTreeNode.this.unlocked) {
-            PlayerTreeNode.this.tryUnlock();
+          if (this.hovered) {
+            if (PlayerTreeNode.this.visible && !PlayerTreeNode.this.unlocked) {
+              PlayerTreeNode.this.tryUnlock();
+            }
           }
         }
       }
@@ -344,27 +346,27 @@ class Profile {
         this.visible = true;
         this.button1.show_message = true;
         this.button2.show_message = true;
-        this.button1.setColors(adjust_color_brightness(global.color_perkTreeBaseColor, 0.5),
-          darken(global.color_perkTreeBaseColor), global.color_perkTreeBaseColor,
-          brighten(global.color_perkTreeBaseColor), color(255));
-        this.button1.setStroke(brighten(global.color_perkTreeBaseColor), 9);
-        this.button2.setColors(adjust_color_brightness(global.color_perkTreeBaseColor, 0.5),
-          darken(global.color_perkTreeBaseColor), global.color_perkTreeBaseColor,
-          brighten(global.color_perkTreeBaseColor), color(255));
-        this.button2.setStroke(brighten(global.color_perkTreeBaseColor), 9);
+        this.button1.setColors(global.color_perkTreeLockedColor,
+          global.color_perkTreeDarkColor, global.color_perkTreeBaseColor,
+          global.color_perkTreeBrightColor, color(255));
+        this.button1.setStroke(global.color_perkTreeBrightColor, 2);
+        this.button2.setColors(global.color_perkTreeLockedColor,
+          global.color_perkTreeDarkColor, global.color_perkTreeBaseColor,
+          global.color_perkTreeBrightColor, color(255));
+        this.button1.setStroke(global.color_perkTreeBrightColor, 1);
       }
 
       void unlock() {
         this.unlocked = true;
         this.button2.message = "Unlocked";
-        this.button1.setColors(adjust_color_brightness(global.color_perkTreeBaseColor, 0.5),
-          brighten(global.color_perkTreeBaseColor), brighten(global.color_perkTreeBaseColor),
-          brighten(global.color_perkTreeBaseColor), color(255));
-        this.button1.setStroke(brighten(global.color_perkTreeBaseColor), 12);
-        this.button2.setColors(adjust_color_brightness(global.color_perkTreeBaseColor, 0.5),
-          brighten(global.color_perkTreeBaseColor), brighten(global.color_perkTreeBaseColor),
-          brighten(global.color_perkTreeBaseColor), color(255));
-        this.button2.setStroke(brighten(global.color_perkTreeBaseColor), 12);
+        this.button1.setColors(global.color_perkTreeLockedColor,
+          global.color_perkTreeBrightColor, global.color_perkTreeBrightColor,
+          global.color_perkTreeBrightColor, color(255));
+        this.button1.setStroke(global.color_perkTreeBrightColor, 3);
+        this.button2.setColors(global.color_perkTreeLockedColor,
+          global.color_perkTreeBrightColor, global.color_perkTreeBrightColor,
+          global.color_perkTreeBrightColor, color(255));
+        this.button1.setStroke(global.color_perkTreeBrightColor, 1);
       }
 
       void tryUnlock() {
@@ -422,10 +424,10 @@ class Profile {
         this.setTitleText(node.code.display_name());
         this.setTitleSize(20);
         this.setFieldCushion(0);
-        this.color_background = adjust_color_brightness(global.color_perkTreeBaseColor, 0.5);
-        this.color_header = brighten(global.color_perkTreeBaseColor);
-        this.color_stroke = darken(global.color_perkTreeBaseColor);
-        this.color_title = color(50, 180, 180);
+        this.color_background = global.color_perkTreeLockedColor;
+        this.color_header = global.color_perkTreeBrightColor;
+        this.color_stroke = global.color_perkTreeDarkColor;
+        this.color_title = color(255);
 
         this.addField(new SpacerFormField(20));
         this.addField(new TextBoxFormField(node.code.description(), 200));
@@ -521,11 +523,11 @@ class Profile {
     protected float highestY = 0;
 
     protected color color_background = color(30);
-    protected color color_connectorStroke_locked = darken(global.color_perkTreeBaseColor);
+    protected color color_connectorStroke_locked = global.color_perkTreeDarkColor;
     protected color color_connectorStroke_visible = global.color_perkTreeBaseColor;
-    protected color color_connectorStroke_unlocked = brighten(global.color_perkTreeBaseColor);
-    protected color color_connectorFill_locked = adjust_color_brightness(global.color_perkTreeBaseColor, 0.5);
-    protected color color_connectorFill_visible = darken(global.color_perkTreeBaseColor);
+    protected color color_connectorStroke_unlocked = global.color_perkTreeBrightColor;
+    protected color color_connectorFill_locked = global.color_perkTreeLockedColor;
+    protected color color_connectorFill_visible = global.color_perkTreeDarkColor;
     protected color color_connectorFill_unlocked = global.color_perkTreeBaseColor;
 
     protected HashMap<PlayerTreeCode, PlayerTreeNode> nodes = new HashMap<PlayerTreeCode, PlayerTreeNode>();
@@ -872,6 +874,10 @@ class Profile {
       default:
         break;
     }
+  }
+
+  boolean upgraded(PlayerTreeCode code) {
+    return this.player_tree.nodes.get(code).unlocked;
   }
 
   void save() {

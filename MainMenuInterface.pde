@@ -270,7 +270,12 @@ class MainMenuInterface extends InterfaceLNZ {
     void release() {
       this.color_text = color(50, 10, 50);
       if (this.hovered) {
-        global.errorMessage("ERROR: YOU FOOL THE GAME ISN'T READY TO PLAY");
+        if (global.profile.upgraded(PlayerTreeCode.CAN_PLAY)) {
+          println("launch game");
+        }
+        else {
+          println("complete tutorial first");
+        }
       }
     }
   }

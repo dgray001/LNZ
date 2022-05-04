@@ -448,7 +448,7 @@ abstract class InterfaceLNZ {
   }
 
   void openPlayerTree() {
-    if (!global.profile.player_tree.curr_viewing) {
+    if (global.profile != null && !global.profile.player_tree.curr_viewing) {
       global.profile.player_tree.curr_viewing = true;
       global.profile.player_tree.setLocation(0, 0, width, height);
       global.profile.player_tree.setView(0, 0);
