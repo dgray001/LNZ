@@ -303,6 +303,7 @@ class Unit extends MapObject {
   protected float curr_action_x = 0;
   protected float curr_action_y = 0;
 
+  protected int map_key = -10;
   protected MapObject object_targeting = null;
   protected int object_targeting_key = -1;
   protected MapObject last_damage_from = null;
@@ -319,6 +320,7 @@ class Unit extends MapObject {
   protected int fall_amount = 0;
   protected float timer_falling = 0;
 
+  protected boolean ai_controlled = true;
   protected int timer_ai_action1 = 0;
   protected int timer_ai_action2 = 0;
 
@@ -363,7 +365,7 @@ class Unit extends MapObject {
         break;
       case 1004:
         this.setStrings("Rankin", "Human", "");
-        this.baseStats(8, 3, 0, 0, 4);
+        this.baseStats(8, 3, 0, 0, 3);
         this.level = 5;
         this.size = 0.45;
         this.sizeZ = 6;
@@ -403,56 +405,66 @@ class Unit extends MapObject {
       // Zombies
       case 1201:
         this.setStrings("Broken Sick Zombie", "Zombie", "");
+        this.baseStats(1, 1, 0, 0, 0.5);
         this.level = 1;
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1202:
         this.setStrings("Broken Zombie", "Zombie", "");
+        this.baseStats(2, 1, 0, 0, 0.5);
         this.level = 2;
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1203:
         this.setStrings("Sick Zombie", "Zombie", "");
+        this.baseStats(2, 2, 0, 0, 0.7);
         this.level = 3;
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1204:
         this.setStrings("Lazy Hungry Zombie", "Zombie", "");
+        this.baseStats(3, 3, 0, 0, 0.7);
         this.level = 4;
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1205:
-        this.setStrings("Lazy Zombie", "Zombie", "");
+        this.setStrings("Hungry Zombie", "Zombie", "");
+        this.baseStats(3, 3, 0, 0, 1);
         this.level = 5;
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1206:
-        this.setStrings("Hungry Zombie", "Zombie", "");
+        this.setStrings("Lazy Zombie", "Zombie", "");
+        this.baseStats(4, 3, 0, 0, 0.8);
         this.level = 6;
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1207:
         this.setStrings("Confused Franny Zombie", "Zombie", "");
+        this.baseStats(5, 3, 0, 0, 1.2);
         this.level = 7;
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1208:
         this.setStrings("Confused Zombie", "Zombie", "");
+        this.baseStats(6, 3, 0, 0, 1.2);
         this.level = 8;
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1209:
         this.setStrings("Franny Zombie", "Zombie", "");
+        this.baseStats(7, 3, 0, 0, 1.2);
         this.level = 9;
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1210:
         this.setStrings("Intellectual Zombie", "Zombie", "");
+        this.baseStats(8, 3, 1, 0, 1.2);
         this.level = 10;
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
@@ -1212,6 +1224,9 @@ class Unit extends MapObject {
     if (this.tongueLash()) {
       speed *= Constants.ability_112_slowAmount;
     }
+    if (this.running()) {
+      speed *= Constants.status_running_multiplier;
+    }
     for (Ability a : this.abilities) {
       if (a == null) {
         continue;
@@ -1498,6 +1513,9 @@ class Unit extends MapObject {
   boolean uncollidable() {
     return this.hasStatusEffect(StatusEffectCode.UNCOLLIDABLE);
   }
+  boolean running() {
+    return this.hasStatusEffect(StatusEffectCode.RUNNING);
+  }
   boolean drenched() {
     return this.hasStatusEffect(StatusEffectCode.DRENCHED);
   }
@@ -1616,7 +1634,7 @@ class Unit extends MapObject {
       }
     }
     // ai logic for ai units
-    else {
+    if (this.ai_controlled) {
       this.aiLogic(timeElapsed, myKey, map);
     }
     if ((this.suppressed() || this.stunned()) && !this.curr_action_unstoppable) {
@@ -2572,12 +2590,43 @@ class Unit extends MapObject {
           break;
       }
     }
-    if (this.ID == 1001) { // Target Dummy
-      if (source == null) {
-        this.description += "\n" + amount + " damage.";
-      }
-      else {
-        this.description += "\n" + amount + " damage from " + source.display_name() + ".";
+    if (this.ai_controlled) {
+      switch(this.ID) {
+        case 1001: // Target Dummy
+          if (source == null) {
+            this.description += "\n" + amount + " damage.";
+          }
+          else {
+            this.description += "\n" + amount + " damage from " + source.display_name() + ".";
+          }
+          break;
+        case 1002: // Chicken
+        case 1003: // Chick
+          if (source == null) {
+            this.faceRandom();
+          }
+          else {
+            this.faceAway(source);
+          }
+          this.addStatusEffect(StatusEffectCode.RUNNING, 3000);
+          this.moveForward(4);
+          break;
+        case 1201: // Tier I Zombie
+        case 1202:
+        case 1203:
+        case 1204:
+        case 1205:
+        case 1206:
+        case 1207:
+        case 1208:
+        case 1209:
+        case 1210:
+          if (source != null && (this.curr_action == UnitAction.NONE || this.last_move_collision)) {
+            this.target(source, source.map_key);
+          }
+          break;
+        default:
+          break;
       }
     }
     this.timer_last_damage = Constants.unit_healthbarDamageAnimationTime;
@@ -2784,11 +2833,20 @@ class Unit extends MapObject {
     this.facingY = sin(this.facingA);
   }
 
+  void faceRandom() {
+    this.setFacing(random(1), random(1));
+  }
   void face(MapObject object) {
     this.face(object.xCenter(), object.yCenter());
   }
+  void faceAway(MapObject object) {
+    this.faceAway(object.xCenter(), object.yCenter());
+  }
   void face(float faceX, float faceY) {
     this.setFacing(faceX - this.x, faceY - this.y);
+  }
+  void faceAway(float faceX, float faceY) {
+    this.setFacing(this.x - faceX, this.y - faceY);
   }
   void face(int direction) {
     switch(direction) {
@@ -3006,6 +3064,10 @@ class Unit extends MapObject {
     global.sounds.trigger_units(sound_name);
   }
 
+
+  void moveForward(float distance) {
+    this.moveTo(this.x + this.facingX * distance, this.y + this.facingY * distance);
+  }
 
   void moveTo(float targetX, float targetY) {
     if (this.curr_action == UnitAction.USING_ITEM) {
@@ -3259,7 +3321,7 @@ class Unit extends MapObject {
           if (this.timer_ai_action1 < 0) {
             this.timer_ai_action1 = int(Constants.ai_chickenTimer1 + random(Constants.ai_chickenTimer1));
             this.moveTo(this.x + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance),
-              this.curr_action_y = this.y + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance));
+              this.y + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance));
           }
           if (this.timer_ai_action2 < 0) {
             this.timer_ai_action2 = int(Constants.ai_chickenTimer2 + random(Constants.ai_chickenTimer2));
@@ -3277,11 +3339,52 @@ class Unit extends MapObject {
           if (this.timer_ai_action1 < 0) {
             this.timer_ai_action1 = int(Constants.ai_chickenTimer1 + random(Constants.ai_chickenTimer1));
             this.moveTo(this.x + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance),
-              this.curr_action_y = this.y + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance));
+              this.y + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance));
           }
           if (this.timer_ai_action2 < 0) {
             this.timer_ai_action2 = int(Constants.ai_chickenTimer2 + random(Constants.ai_chickenTimer2));
             this.setUnitID(1002);
+          }
+        }
+        break;
+      case 1201: // Tier I Zombies
+      case 1202:
+      case 1203:
+      case 1204:
+      case 1205:
+      case 1206:
+      case 1207:
+      case 1208:
+      case 1209:
+      case 1210:
+        if (this.curr_action == UnitAction.NONE || this.last_move_collision) {
+          this.timer_ai_action1 -= timeElapsed;
+          if (this.timer_ai_action1 < 0) {
+            this.timer_ai_action1 = 400;
+            boolean no_target = true;
+            for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
+              if (entry.getKey() == myKey) {
+                continue;
+              }
+              Unit u = entry.getValue();
+              if (u.alliance == this.alliance) {
+                continue;
+              }
+              float distance = this.distance(u);
+              if (distance > this.sight()) {
+                continue;
+              }
+              if (no_target) {
+                no_target = false;
+                this.target(u, u.map_key);
+              }
+              else if (!u.ai_controlled) {
+                this.target(u, u.map_key);
+              }
+            }
+            if (no_target && randomChance(0.1)) {
+              this.moveTo(this.x + 3 - random(6), this.y + 3 - random(6));
+            }
           }
         }
         break;

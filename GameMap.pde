@@ -1214,6 +1214,7 @@ class GameMap {
   }
   void addUnit(Unit u, int code) {
     this.units.put(code, u);
+    u.map_key = code;
     u.curr_squares_on = u.getSquaresOn();
     u.resolveFloorHeight(this, code);
   }
@@ -1225,6 +1226,7 @@ class GameMap {
   }
   // add player unit
   void addPlayer(Hero player) {
+    player.ai_controlled = false;
     this.addUnit(player, 0);
   }
 
@@ -2361,6 +2363,9 @@ class GameMap {
     }
     // add unit data
     for (Map.Entry<Integer, Unit> entry : this.units.entrySet()) {
+      if (entry.getKey() == 0) {
+        continue;
+      }
       file.println("nextUnitKey: " + entry.getKey());
       file.println(entry.getValue().fileString());
     }

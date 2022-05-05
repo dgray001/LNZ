@@ -4,15 +4,15 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220504: v0.6.9j" +
-  "\nLines: 32963 (v0.6.9e)" +
+  "\n20220504: v0.6.9k" +
+  "\nLines: 33973 (v0.6.9k)" +
   "\nImages: 1044 (v0.6.9)" +
   "\nSounds: 118 (v0.6.9)" +
   "";
   static final String version_history =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n202204: v0.7: Alpha Version" +
+  "\n202205: v0.7: Alpha Version" +
   "\n202203: v0.6: Advanced Mechanics" +
   "\n202202: v0.5: Recreated Logic" +
   "\n202201: v0.4: Recreated Program" +
@@ -294,6 +294,7 @@ static class Constants {
   static final float status_hemorrhage_bleedPercentage = 0.7;
   static final float status_wilted_multiplier = 0.8;
   static final float status_withered_multiplier = 0.7;
+  static final float status_running_multiplier = 1.35;
   static final float status_drenched_multiplier = 1.3;
   static final float status_drenched_tickTimer = 1200;
   static final float status_drenched_dot = 0.025;

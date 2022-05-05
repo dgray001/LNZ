@@ -4,6 +4,7 @@ enum StatusEffectCode {
   BLEEDING("Bleeding"), HEMORRHAGING("Hemorrhaging"), WILTED("Wilted"), WITHERED("Withered"),
   VISIBLE("Visible"), SUPPRESSED("Suppressed"), UNTARGETABLE("Untargetable"),
   STUNNED("Stunned"), INVISIBLE("Invisible"), UNCOLLIDABLE("Uncollidable"),
+  RUNNING("Running"),
 
   DRENCHED("Drenched"), DROWNING("Drowning"), BURNT("Burning"), CHARRED("Charred"),
   CHILLED("Chilled"), FROZEN("Frozen"), SICK("Sick"), DISEASED("Diseased"), ROTTING("Rotting"),
@@ -54,6 +55,7 @@ enum StatusEffectCode {
       case UNTARGETABLE:
       case INVISIBLE:
       case UNCOLLIDABLE:
+      case RUNNING:
       case SENSELESS_GRIT:
       case SENSELESS_GRITII:
       case RAGE_OF_THE_BEN:
@@ -160,6 +162,9 @@ enum StatusEffectCode {
         break;
       case UNCOLLIDABLE:
         image_path += "uncollidable.png";
+        break;
+      case RUNNING:
+        image_path += "running.png";
         break;
       case DRENCHED:
         image_path += "drenched.png";
@@ -280,6 +285,8 @@ enum StatusEffectCode {
         return "This unit is invisible and cannot be seen.";
       case UNCOLLIDABLE:
         return "This unit is uncollidable and cannot be collided with.";
+      case RUNNING:
+        return "This unit is running and has moves 35% faster.";
       case DRENCHED:
         return "This unit is drenched so will take more damage from blue damage." +
           "\nIf this unit is red it will also slowly take damage to 20% max health.";
