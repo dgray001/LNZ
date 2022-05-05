@@ -701,6 +701,7 @@ abstract class InterfaceLNZ {
   protected boolean return_to_heroes_menu = false;
   protected PImage esc_menu_img = null;
   protected PImage heroes_menu_img = null;
+  protected boolean showing_nerd_stats = false;
 
   InterfaceLNZ() {
   }
@@ -768,7 +769,12 @@ abstract class InterfaceLNZ {
         }
       }
     }
+    if (this.showing_nerd_stats) {
+      this.showNerdStats();
+    }
   }
+
+  abstract void showNerdStats();
 
   void LNZ_mouseMove(float mX, float mY) {
     if (global.profile != null && global.profile.player_tree.curr_viewing) {
@@ -850,6 +856,12 @@ abstract class InterfaceLNZ {
         case 'P':
           if (global.holding_ctrl) {
             this.openPlayerTree();
+          }
+          break;
+        case 's':
+        case 'S':
+          if (global.holding_ctrl) {
+            this.showing_nerd_stats = !this.showing_nerd_stats;
           }
           break;
       }

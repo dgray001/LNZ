@@ -2288,6 +2288,23 @@ class MapEditorInterface extends InterfaceLNZ {
     }
   }
 
+  void showNerdStats() {
+    if (this.curr_level != null) {
+      this.curr_level.displayNerdStats();
+    }
+    else if (this.curr_map != null) {
+      this.curr_map.displayNerdStats();
+    }
+    else {
+      fill(255);
+      textSize(14);
+      textAlign(LEFT, TOP);
+      float y_stats = 1;
+      float line_height = textAscent() + textDescent() + 2;
+      text("FPS: " + int(global.lastFPS), 1, y_stats);
+    }
+  }
+
   void mouseMove(float mX, float mY) {
     boolean refreshMapLocation = false;
     // map / level mouse move

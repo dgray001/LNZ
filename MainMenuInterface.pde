@@ -724,6 +724,15 @@ class MainMenuInterface extends InterfaceLNZ {
     }
   }
 
+  void showNerdStats() {
+    fill(255);
+    textSize(14);
+    textAlign(LEFT, TOP);
+    float y_stats = 1;
+    float line_height = textAscent() + textDescent() + 2;
+    text("FPS: " + int(global.lastFPS), 1, y_stats);
+  }
+
   void mouseMove(float mX, float mY) {
     for (MainMenuGrowButton button : this.growButtons) {
       button.mouseMove(mX, mY);
