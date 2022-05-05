@@ -1480,6 +1480,20 @@ class Level {
     this.last_update_time = millis;
   }
 
+  void displayNerdStats() {
+    if (this.currMap != null) {
+      this.currMap.displayNerdStats();
+    }
+    else {
+      fill(255);
+      textSize(14);
+      textAlign(LEFT, TOP);
+      float y_stats = 1;
+      float line_height = textAscent() + textDescent() + 2;
+      text("FPS: " + int(global.lastFPS), 1, y_stats);
+    }
+  }
+
   void mouseMove(float mX, float mY) {
     if (this.level_questbox != null) {
       this.level_questbox.mouseMove(mX, mY);

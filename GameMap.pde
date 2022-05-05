@@ -876,7 +876,6 @@ class GameMap {
   protected MapObject selected_object = null;
   protected int selected_key = -10;
   protected SelectedObjectTextbox selected_object_textbox = new SelectedObjectTextbox();
-  protected boolean showing_nerd_stats = false;
   protected ArrayList<HeaderMessage> headerMessages = new ArrayList<HeaderMessage>();
 
   protected ArrayList<Feature> features = new ArrayList<Feature>();
@@ -1453,25 +1452,25 @@ class GameMap {
     for (HeaderMessage message : this.headerMessages) {
       message.drawMessage();
     }
-    // nerd stats
-    if (this.showing_nerd_stats) {
-      fill(255);
-      textSize(14);
-      textAlign(LEFT, TOP);
-      float y_stats = this.yi + 31;
-      float line_height = textAscent() + textDescent() + 2;
-      text("FPS: " + int(global.lastFPS), this.xi + 1, y_stats);
-      if (this.units.containsKey(0)) {
-        y_stats += line_height;
-        text("Location: (" + this.units.get(0).x + ", " + this.units.get(0).y +
-          ", " + this.units.get(0).curr_height + ")", this.xi + 1, y_stats);
-        y_stats += line_height;
-        text("Facing: (" + this.units.get(0).facingX + ", " + this.units.get(0).facingY +
-          ", " + this.units.get(0).facingA + ")", this.xi + 1, y_stats);
-        y_stats += line_height;
-        text("Height: (" + this.units.get(0).curr_height + ", " + this.units.get(0).floor_height +
-          ", " + this.units.get(0).unit_height + ")", this.xi + 1, y_stats);
-      }
+  }
+
+  void displayNerdStats() {
+    fill(255);
+    textSize(14);
+    textAlign(LEFT, TOP);
+    float y_stats = this.yi + 31;
+    float line_height = textAscent() + textDescent() + 2;
+    text("FPS: " + int(global.lastFPS), this.xi + 1, y_stats);
+    if (this.units.containsKey(0)) {
+      y_stats += line_height;
+      text("Location: (" + this.units.get(0).x + ", " + this.units.get(0).y +
+        ", " + this.units.get(0).curr_height + ")", this.xi + 1, y_stats);
+      y_stats += line_height;
+      text("Facing: (" + this.units.get(0).facingX + ", " + this.units.get(0).facingY +
+        ", " + this.units.get(0).facingA + ")", this.xi + 1, y_stats);
+      y_stats += line_height;
+      text("Height: (" + this.units.get(0).curr_height + ", " + this.units.get(0).floor_height +
+        ", " + this.units.get(0).unit_height + ")", this.xi + 1, y_stats);
     }
   }
 
@@ -2262,50 +2261,44 @@ class GameMap {
     else {
       switch(key) {
         case ' ':
-          if (this.units.containsKey(0)) {
+          if (this.units.containsKey(0) && !global.holding_ctrl) {
             this.selected_object = this.units.get(0);
             this.selected_key = 0;
           }
           break;
         case 'q':
         case 'Q':
-          if (this.units.containsKey(0)) {
+          if (this.units.containsKey(0) && !global.holding_ctrl) {
             this.units.get(0).dropWeapon(this);
-          }
-          break;
-        case 'r':
-        case 'R':
-          if (global.holding_ctrl) {
-            this.showing_nerd_stats = !this.showing_nerd_stats;
           }
           break;
         case 'a':
         case 'A':
-          if (this.units.containsKey(0)) {
+          if (this.units.containsKey(0) && !global.holding_ctrl) {
             this.units.get(0).cast(0, 1, this);
           }
           break;
         case 's':
         case 'S':
-          if (this.units.containsKey(0)) {
+          if (this.units.containsKey(0) && !global.holding_ctrl) {
             this.units.get(0).cast(0, 2, this);
           }
           break;
         case 'd':
         case 'D':
-          if (this.units.containsKey(0)) {
+          if (this.units.containsKey(0) && !global.holding_ctrl) {
             this.units.get(0).cast(0, 3, this);
           }
           break;
         case 'f':
         case 'F':
-          if (this.units.containsKey(0)) {
+          if (this.units.containsKey(0) && !global.holding_ctrl) {
             this.units.get(0).cast(0, 4, this);
           }
           break;
         case 'v':
         case 'V':
-          if (this.units.containsKey(0)) {
+          if (this.units.containsKey(0) && !global.holding_ctrl) {
             this.units.get(0).jump(this, 0);
           }
           break;
