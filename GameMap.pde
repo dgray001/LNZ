@@ -59,7 +59,7 @@ enum ReadFileObject {
   NONE("None"), MAP("Map"), FEATURE("Feature"), UNIT("Unit"), ITEM("Item"),
   PROJECTILE("Projectile"), LEVEL("Level"), LINKER("Linker"), TRIGGER("Trigger"),
   CONDITION("Condition"), EFFECT("Effect"), STATUS_EFFECT("StatusEffect"),
-  ABILITY("Ability");
+  ABILITY("Ability"), HERO("Hero"), INVENTORY("Inventory");
 
   private static final List<ReadFileObject> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 
@@ -2498,6 +2498,7 @@ class GameMap {
             case FEATURE:
               if (curr_feature == null) {
                 global.errorMessage("ERROR: Trying to end a null feature.");
+                break;
               }
               if (object_queue.empty()) {
                 global.errorMessage("ERROR: Trying to end a feature not inside any other object.");
@@ -2509,6 +2510,7 @@ class GameMap {
             case UNIT:
               if (curr_unit == null) {
                 global.errorMessage("ERROR: Trying to end a null unit.");
+                break;
               }
               if (object_queue.empty()) {
                 global.errorMessage("ERROR: Trying to end a unit not inside any other object.");
@@ -2523,6 +2525,7 @@ class GameMap {
             case ITEM:
               if (curr_item == null) {
                 global.errorMessage("ERROR: Trying to end a null item.");
+                break;
               }
               if (object_queue.empty()) {
                 global.errorMessage("ERROR: Trying to end an item not inside any other object.");
@@ -2582,6 +2585,7 @@ class GameMap {
             case PROJECTILE:
               if (curr_projectile == null) {
                 global.errorMessage("ERROR: Trying to end a null projectile.");
+                break;
               }
               if (object_queue.empty()) {
                 global.errorMessage("ERROR: Trying to end a projectile not inside any other object.");
@@ -2594,6 +2598,7 @@ class GameMap {
             case STATUS_EFFECT:
               if (curr_status == null) {
                 global.errorMessage("ERROR: Trying to end a null status effect.");
+                break;
               }
               if (object_queue.empty()) {
                 global.errorMessage("ERROR: Trying to end a status effect not inside any other object.");
@@ -2608,10 +2613,12 @@ class GameMap {
                 break;
               }
               curr_unit.statuses.put(curr_status_code, curr_status);
+              curr_status = null;
               break;
             case ABILITY:
               if (curr_ability == null) {
                 global.errorMessage("ERROR: Trying to end a null ability.");
+                break;
               }
               if (object_queue.empty()) {
                 global.errorMessage("ERROR: Trying to end an ability not inside any other object.");
@@ -2644,12 +2651,14 @@ class GameMap {
           case FEATURE:
             if (curr_feature == null) {
               global.errorMessage("ERROR: Trying to add feature data to a null feature.");
+              break;
             }
             curr_feature.addData(dataname, data);
             break;
           case UNIT:
             if (curr_unit == null) {
               global.errorMessage("ERROR: Trying to add unit data to a null unit.");
+              break;
             }
             if (dataname.equals("next_status_code")) {
               curr_status_code = StatusEffectCode.code(data);
@@ -2661,24 +2670,28 @@ class GameMap {
           case ITEM:
             if (curr_item == null) {
               global.errorMessage("ERROR: Trying to add item data to a null item.");
+              break;
             }
             curr_item.addData(dataname, data);
             break;
           case PROJECTILE:
             if (curr_projectile == null) {
               global.errorMessage("ERROR: Trying to add projectile data to a null projectile.");
+              break;
             }
             curr_projectile.addData(dataname, data);
             break;
           case STATUS_EFFECT:
             if (curr_status == null) {
               global.errorMessage("ERROR: Trying to add status effect data to a null status effect.");
+              break;
             }
             curr_status.addData(dataname, data);
             break;
           case ABILITY:
             if (curr_ability == null) {
-              global.errorMessage("ERROR: Trying to add ability data to a null abilityt.");
+              global.errorMessage("ERROR: Trying to add ability data to a null ability.");
+              break;
             }
             curr_status.addData(dataname, data);
             break;

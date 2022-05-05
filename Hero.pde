@@ -3489,10 +3489,10 @@ class Hero extends Unit {
 
   protected Location location = Location.ERROR;
 
-  protected int level_tokens = 20000;
+  protected int level_tokens = 0;
   protected float experience = 0;
   protected int experience_next_level = 1;
-  protected float money = 10;
+  protected float money = 0;
   protected float curr_mana = 0;
   protected int hunger = 100;
   protected int thirst = 100;
@@ -3516,7 +3516,6 @@ class Hero extends Unit {
     super(HeroCode.unit_id(code));
     this.code = code;
     this.addAbilities();
-    this.level = 100;
   }
 
 
@@ -4301,7 +4300,7 @@ class Hero extends Unit {
     fileString += "\nthirst: " + this.thirst;
     fileString += "\nhunger_timer: " + this.hunger_timer;
     fileString += "\nthirst_timer: " + this.thirst_timer;
-    //fileString += this.inventory.fileString();
+    fileString += this.inventory.fileString();
     for (HeroTreeCode code : this.heroTree.unlockedCodes()) {
       fileString += "perk: " + code.file_name();
     }
