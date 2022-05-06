@@ -875,7 +875,7 @@ class GameMap {
 
   protected MapObject selected_object = null;
   protected int selected_key = -10;
-  protected SelectedObjectTextbox selected_object_textbox = new SelectedObjectTextbox();
+  protected SelectedObjectTextbox selected_object_textbox = null;
   protected ArrayList<HeaderMessage> headerMessages = new ArrayList<HeaderMessage>();
 
   protected ArrayList<Feature> features = new ArrayList<Feature>();
@@ -1724,7 +1724,12 @@ class GameMap {
 
   void drawLeftPanel(int millis) {
     float currY = Constants.map_selectedObjectPanelGap;
-    if (this.selected_object != null && this.selected_object_textbox != null) {
+    if (this.selected_object != null) {
+      if (this.selected_object_textbox == null) {
+        this.selected_object_textbox = new SelectedObjectTextbox();
+        this.selected_object_textbox.setXLocation(Constants.map_selectedObjectPanelGap,
+            xi - Constants.map_selectedObjectPanelGap);
+      }
       fill(255);
       textSize(Constants.map_selectedObjectTitleTextSize);
       textAlign(CENTER, TOP);

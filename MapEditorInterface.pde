@@ -2275,7 +2275,12 @@ class MapEditorInterface extends InterfaceLNZ {
         this.levelForm.update(millis);
       }
       if (this.curr_level != null) {
-        this.curr_level.drawRightPanel(millis);
+        switch(this.page) {
+          case TESTMAP:
+          case TESTLEVEL:
+            this.curr_level.drawRightPanel(millis);
+            break;
+        }
       }
     }
     if (this.leftPanel.open && !this.leftPanel.collapsing) {
