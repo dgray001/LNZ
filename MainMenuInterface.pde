@@ -704,6 +704,10 @@ class MainMenuInterface extends InterfaceLNZ {
     this.form = new ProfileForm();
   }
 
+  Hero getCurrentHeroIfExists() {
+    return null;
+  }
+
   void update(int millis) {
     // draw background
     imageMode(CORNER);

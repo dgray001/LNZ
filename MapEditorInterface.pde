@@ -2073,6 +2073,14 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
 
+  Hero getCurrentHeroIfExists() {
+    if (this.curr_level != null) {
+      return this.curr_level.player;
+    }
+    return null;
+  }
+
+
   void exitToMainMenu() {
     MapEditorInterface.this.curr_map = null;
     MapEditorInterface.this.curr_level = null;

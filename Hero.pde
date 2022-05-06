@@ -1145,7 +1145,7 @@ class Hero extends Unit {
 
 
     InventoryBar() {
-      this.setHeight(Constants.hero_defaultInventoryBarHeight);
+      this.setHeight(global.profile.options.inventory_bar_size);
     }
 
 
@@ -1296,6 +1296,9 @@ class Hero extends Unit {
 
 
     void update(int timeElapsed) {
+      if (global.profile.options.inventory_bar_hidden) {
+        return;
+      }
       rectMode(CORNERS);
       noStroke();
       fill(this.color_background);
@@ -1390,6 +1393,9 @@ class Hero extends Unit {
     }
 
     void mouseMove(float mX, float mY) {
+      if (global.profile.options.inventory_bar_hidden) {
+        return;
+      }
       this.last_mX = mX;
       this.last_mY = mY;
       for (AbilityButton ability : this.ability_buttons) {
@@ -1438,6 +1444,9 @@ class Hero extends Unit {
     }
 
     void mousePress() {
+      if (global.profile.options.inventory_bar_hidden) {
+        return;
+      }
       for (AbilityButton ability : this.ability_buttons) {
         ability.mousePress();
       }
@@ -1494,6 +1503,9 @@ class Hero extends Unit {
     }
 
     void mouseRelease(float mX, float mY) {
+      if (global.profile.options.inventory_bar_hidden) {
+        return;
+      }
       for (AbilityButton ability : this.ability_buttons) {
         ability.mouseRelease(mX, mY);
       }
@@ -1507,6 +1519,9 @@ class Hero extends Unit {
     }
 
     void scroll(int amount) {
+      if (!global.profile.options.inventory_bar_hidden) {
+        return;
+      }
       if (this.code_description.display) {
         this.code_description.scroll(amount);
       }

@@ -77,6 +77,9 @@ class Profile {
 
     private float map_viewMoveSpeedFactor;
 
+    private float inventory_bar_size;
+    private boolean inventory_bar_hidden;
+
     Options() {
       this.profileUpdated();
     }
@@ -101,20 +104,20 @@ class Profile {
       this.volume_player = Constants.options_defaultVolume;
       this.volume_player_muted = false;
       this.map_viewMoveSpeedFactor = Constants.map_defaultCameraSpeed;
+      this.inventory_bar_size = Constants.hero_defaultInventoryBarHeight;
+      this.inventory_bar_hidden = false;
     }
 
     void change() {
       if (Profile.this.invalidProfile()) {
         return;
       }
-      float master_gain_adjustment = this.volume_master + Constants.options_volumeGainAdjustment;
+      float master_volume_multiplier = this.volume_master / (Constants.options_volumeMax - Constants.options_volumeMin);
 
-      if (this.volume_master_muted || this.volume_music_muted) {
-        global.sounds.setBackgroundGain(this.volume_music + Constants.options_volumeGainAdjustment + master_gain_adjustment, true);
-      }
-      else {
-        global.sounds.setBackgroundGain(this.volume_music + Constants.options_volumeGainAdjustment + master_gain_adjustment, false);
-      }
+      global.sounds.setBackgroundVolume(Constants.options_volumeGainMultiplier *
+        log(master_volume_multiplier * this.volume_music / (Constants.
+        options_volumeMax - Constants.options_volumeMin)), this.volume_master_muted
+        || this.volume_music_muted);
 
       if (this.volume_master_muted || this.volume_interface_muted) {
         global.sounds.out_interface.mute();
@@ -122,7 +125,9 @@ class Profile {
       else {
         global.sounds.out_interface.unmute();
       }
-      global.sounds.out_interface.setGain(this.volume_interface + Constants.options_volumeGainAdjustment + master_gain_adjustment);
+      global.sounds.out_interface.setGain(Constants.options_volumeGainMultiplier *
+        log(master_volume_multiplier * this.volume_interface / (Constants.
+        options_volumeMax - Constants.options_volumeMin)));
 
       if (this.volume_master_muted || this.volume_environment_muted) {
         global.sounds.out_environment.mute();
@@ -130,7 +135,9 @@ class Profile {
       else {
         global.sounds.out_environment.unmute();
       }
-      global.sounds.out_environment.setGain(this.volume_environment + Constants.options_volumeGainAdjustment + master_gain_adjustment);
+      global.sounds.out_environment.setGain(Constants.options_volumeGainMultiplier *
+        log(master_volume_multiplier * this.volume_environment / (Constants.
+        options_volumeMax - Constants.options_volumeMin)));
 
       if (this.volume_master_muted || this.volume_units_muted) {
         global.sounds.out_units.mute();
@@ -138,7 +145,9 @@ class Profile {
       else {
         global.sounds.out_units.unmute();
       }
-      global.sounds.out_units.setGain(this.volume_units + Constants.options_volumeGainAdjustment + master_gain_adjustment);
+      global.sounds.out_units.setGain(Constants.options_volumeGainMultiplier *
+        log(master_volume_multiplier * this.volume_units / (Constants.
+        options_volumeMax - Constants.options_volumeMin)));
 
       if (this.volume_master_muted || this.volume_player_muted) {
         global.sounds.out_player.mute();
@@ -146,7 +155,14 @@ class Profile {
       else {
         global.sounds.out_player.unmute();
       }
-      global.sounds.out_player.setGain(this.volume_player + Constants.options_volumeGainAdjustment + master_gain_adjustment);
+      global.sounds.out_player.setGain(Constants.options_volumeGainMultiplier *
+        log(master_volume_multiplier * this.volume_player / (Constants.
+        options_volumeMax - Constants.options_volumeMin)));
+
+      Hero h = global.menu.getCurrentHeroIfExists();
+      if (h != null) {
+        h.inventory_bar.setHeight(this.inventory_bar_size);
+      }
     }
 
     void read() {
@@ -203,6 +219,12 @@ class Profile {
           case "map_viewMoveSpeedFactor":
             this.map_viewMoveSpeedFactor = toFloat(trim(data[1]));
             break;
+          case "inventory_bar_size":
+            this.inventory_bar_size = toFloat(trim(data[1]));
+            break;
+          case "inventory_bar_hidden":
+            this.inventory_bar_hidden = toBoolean(trim(data[1]));
+            break;
           default:
             break;
         }
@@ -227,6 +249,8 @@ class Profile {
       file.println("volume_player: " + this.volume_player);
       file.println("volume_player_muted: " + this.volume_player_muted);
       file.println("map_viewMoveSpeedFactor: " + this.map_viewMoveSpeedFactor);
+      file.println("inventory_bar_size: " + this.inventory_bar_size);
+      file.println("inventory_bar_hidden: " + this.inventory_bar_hidden);
       file.flush();
       file.close();
     }

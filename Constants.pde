@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220504: v0.6.9k" +
+  "\n20220506: v0.6.9l" +
   "\nLines: 33973 (v0.6.9k)" +
   "\nImages: 1044 (v0.6.9)" +
   "\nSounds: 118 (v0.6.9)" +
@@ -73,9 +73,9 @@ static class Constants {
 
   // Options
   static final int options_defaultVolume = 70;
-  static final int options_volumeMin = 0;
+  static final float options_volumeMin = 0.01;
   static final int options_volumeMax = 100;
-  static final int options_volumeGainAdjustment = -50;
+  static final float options_volumeGainMultiplier = 8;
 
   // MapEditor Interface
   static final float mapEditor_panelMinWidth = 220;

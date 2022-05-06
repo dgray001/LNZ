@@ -467,26 +467,36 @@ abstract class InterfaceLNZ {
         this.canceled = true;
         return;
       }
-      SliderFormField volume_master = new SliderFormField("Master Volume: ", 0, 100);
+      SliderFormField volume_master = new SliderFormField("Master Volume: ",
+        Constants.options_volumeMin, Constants.options_volumeMax);
       volume_master.threshhold = Constants.optionsForm_threshhold_master;
       volume_master.addCheckbox("mute: ");
-      SliderFormField volume_music = new SliderFormField("Music: ", 0, 100);
+      SliderFormField volume_music = new SliderFormField("Music: ",
+        Constants.options_volumeMin, Constants.options_volumeMax);
       volume_music.threshhold = Constants.optionsForm_threshhold_other;
       volume_music.addCheckbox("mute: ");
-      SliderFormField volume_interface = new SliderFormField("Interface: ", 0, 100);
+      SliderFormField volume_interface = new SliderFormField("Interface: ",
+        Constants.options_volumeMin, Constants.options_volumeMax);
       volume_interface.threshhold = Constants.optionsForm_threshhold_other;
       volume_interface.addCheckbox("mute: ");
-      SliderFormField volume_environment = new SliderFormField("Environment: ", 0, 100);
+      SliderFormField volume_environment = new SliderFormField("Environment: ",
+        Constants.options_volumeMin, Constants.options_volumeMax);
       volume_environment.threshhold = Constants.optionsForm_threshhold_other;
       volume_environment.addCheckbox("mute: ");
-      SliderFormField volume_units = new SliderFormField("Units: ", 0, 100);
+      SliderFormField volume_units = new SliderFormField("Units: ",
+        Constants.options_volumeMin, Constants.options_volumeMax);
       volume_units.threshhold = Constants.optionsForm_threshhold_other;
       volume_units.addCheckbox("mute: ");
-      SliderFormField volume_player = new SliderFormField("Player: ", 0, 100);
+      SliderFormField volume_player = new SliderFormField("Player: ",
+        Constants.options_volumeMin, Constants.options_volumeMax);
       volume_player.threshhold = Constants.optionsForm_threshhold_other;
       volume_player.addCheckbox("mute: ");
       SliderFormField map_move_speed = new SliderFormField("Camera Speed: ",
         Constants.map_minCameraSpeed, Constants.map_maxCameraSpeed);
+      map_move_speed.threshhold = Constants.optionsForm_threshhold_other;
+      SliderFormField inventory_bar_size = new SliderFormField("Inventory Bar Size: ", 80, 180);
+      inventory_bar_size.threshhold = Constants.optionsForm_threshhold_other;
+      inventory_bar_size.addCheckbox("hide: ");
       map_move_speed.threshhold = Constants.optionsForm_threshhold_other;
       SubmitFormField apply = new ButtonFormField("Apply");
       apply.button.setColors(color(220), color(240, 240, 190),
@@ -509,6 +519,8 @@ abstract class InterfaceLNZ {
       this.addField(volume_player);
       this.addField(new SpacerFormField(10));
       this.addField(map_move_speed);
+      this.addField(new SpacerFormField(10));
+      this.addField(inventory_bar_size);
       this.addField(new SpacerFormField(10));
       this.addField(apply);
       this.addField(new SpacerFormField(10));
@@ -571,6 +583,14 @@ abstract class InterfaceLNZ {
       }
 
       this.fields.get(7).setValue(global.profile.options.map_viewMoveSpeedFactor);
+
+      this.fields.get(9).setValue(global.profile.options.inventory_bar_size);
+      if (global.profile.options.inventory_bar_hidden) {
+        this.fields.get(9).disable();
+      }
+      else {
+        this.fields.get(9).enable();
+      }
     }
 
     void submit() {
@@ -636,6 +656,15 @@ abstract class InterfaceLNZ {
 
       String camera_speed = this.fields.get(7).getValue();
       global.profile.options.map_viewMoveSpeedFactor = toFloat(split(camera_speed, ':')[0]);
+
+      String hud_size = this.fields.get(9).getValue();
+      if (hud_size.contains("disabled")) {
+        global.profile.options.inventory_bar_hidden = true;
+      }
+      else {
+        global.profile.options.inventory_bar_hidden = false;
+      }
+      global.profile.options.inventory_bar_size = toFloat(split(hud_size, ':')[0]);
 
       global.profile.options.change();
     }
@@ -884,6 +913,7 @@ abstract class InterfaceLNZ {
   }
 
 
+  abstract Hero getCurrentHeroIfExists();
   abstract void saveAndExitToMainMenu();
   abstract void loseFocus();
   abstract void gainFocus();
