@@ -160,6 +160,10 @@ class InitialInterface extends InterfaceLNZ {
 
   void saveAndExitToMainMenu() {}
 
+  Hero getCurrentHeroIfExists() {
+    return null;
+  }
+
   void update(int millis) {
     this.logo.update(millis);
     for (InitialInterfaceButton button : this.buttons) {

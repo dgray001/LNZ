@@ -2,7 +2,7 @@ class Sounds {
   private Minim minim;
 
   private AudioPlayer background_track;
-  private float gain_background = 0;
+  private float volume_background = 0;
   private boolean muted_background = false;
   private boolean playing_background = false;
   private boolean loop_background = true;
@@ -62,11 +62,11 @@ class Sounds {
     }
   }
 
-  void setBackgroundGain(float gain, boolean muted) {
-    this.gain_background = gain;
+  void setBackgroundVolume(float volume, boolean muted) {
+    this.volume_background = volume;
     this.muted_background = muted;
     if (this.background_track != null) {
-      this.background_track.setGain(gain);
+      this.background_track.setGain(volume);
       if (this.muted_background) {
         this.background_track.mute();
       }
@@ -83,14 +83,8 @@ class Sounds {
         String track_path = "data/sounds/background/" + this.album_name + this.track_number + ".wav";
         if (fileExists(track_path)) {
           this.background_track = minim.loadFile(track_path);
-          this.background_track.setGain(this.gain_background);
           this.background_track.play();
-          if (this.muted_background) {
-            this.background_track.mute();
-          }
-          else {
-            this.background_track.unmute();
-          }
+          this.setBackgroundVolume(this.volume_background, this.muted_background);
         }
         else if (this.loop_background) {
           this.track_number = 0;
