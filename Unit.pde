@@ -1824,6 +1824,9 @@ class Unit extends MapObject {
             if (this.weapon() == null) {
               this.gear.put(GearSlot.WEAPON, new Item(i));
               i.remove = true;
+              if (!this.ai_controlled) {
+                i.pickupSound();
+              }
               if (myKey == 0) {
                 map.selected_object = this.weapon();
               }
@@ -2244,6 +2247,9 @@ class Unit extends MapObject {
     }
     map.addItem(new Item(this.weapon(), this.frontX(), this.frontY()));
     this.gear.put(GearSlot.WEAPON, null);
+    if (!this.ai_controlled) {
+      global.sounds.trigger_player("player/drop", this.x - map.viewX, this.y - map.viewY);
+    }
   }
 
   float frontX() {
