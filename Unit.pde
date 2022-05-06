@@ -2712,6 +2712,7 @@ class Unit extends MapObject {
           break;
       }
     }
+    this.killSound();
   }
 
 
@@ -2985,6 +2986,18 @@ class Unit extends MapObject {
       case 1003: // Chick
         sound_name += "chicken" + randomInt(1, 3);
         break;
+      case 1201: // Zombies
+      case 1202:
+      case 1203:
+      case 1204:
+      case 1205:
+      case 1206:
+      case 1207:
+      case 1208:
+      case 1209:
+      case 1210:
+        sound_name += "zombie" + randomInt(0, 5);
+        break;
       default:
         return;
     }
@@ -3007,7 +3020,7 @@ class Unit extends MapObject {
       case 1208:
       case 1209:
       case 1210:
-        //
+        sound_name += "zombie" + randomInt(0, 8);
         break;
       default:
         return;
@@ -3025,6 +3038,18 @@ class Unit extends MapObject {
     }
     String sound_name = "units/attack/";
     switch(this.ID) {
+      case 1201: // Zombies
+      case 1202:
+      case 1203:
+      case 1204:
+      case 1205:
+      case 1206:
+      case 1207:
+      case 1208:
+      case 1209:
+      case 1210:
+        sound_name += "zombie" + randomInt(0, 15);
+        break;
       default:
         sound_name += "default";
         break;
@@ -3042,6 +3067,18 @@ class Unit extends MapObject {
       case 1003: // Chick
         sound_name += "chicken" + randomInt(1, 2);
         break;
+      case 1201: // Zombies
+      case 1202:
+      case 1203:
+      case 1204:
+      case 1205:
+      case 1206:
+      case 1207:
+      case 1208:
+      case 1209:
+      case 1210:
+        sound_name += "zombie" + randomInt(0, 11);
+        break;
       default:
         return;
     }
@@ -3058,6 +3095,54 @@ class Unit extends MapObject {
       case 1003: // Chick
         sound_name += "chicken" + randomInt(1, 2);
         break;
+      case 1201: // Zombies
+      case 1202:
+      case 1203:
+      case 1204:
+      case 1205:
+      case 1206:
+      case 1207:
+      case 1208:
+      case 1209:
+      case 1210:
+        sound_name += "zombie" + randomInt(0, 10);
+        break;
+      default:
+        return;
+    }
+    global.sounds.trigger_units(sound_name);
+  }
+
+  void killSound() {
+    if (!this.in_view) {
+      return;
+    }
+    String sound_name = "units/kill/";
+    switch(this.ID) {
+      case 1201: // Zombies
+      case 1202:
+      case 1203:
+      case 1204:
+      case 1205:
+      case 1206:
+      case 1207:
+      case 1208:
+      case 1209:
+      case 1210:
+        sound_name += "zombie" + randomInt(0, 6);
+        break;
+      default:
+        return;
+    }
+    global.sounds.trigger_units(sound_name);
+  }
+
+  void tauntSound() {
+    if (!this.in_view) {
+      return;
+    }
+    String sound_name = "units/taunt/";
+    switch(this.ID) {
       default:
         return;
     }
