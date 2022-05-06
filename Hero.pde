@@ -2700,7 +2700,7 @@ class Hero extends Unit {
         return;
       }
       rectMode(CORNERS);
-      fill(this.color_background);
+      fill(0);
       noStroke();
       rect(this.xi, this.yi, this.xf, this.yf);
       translate(this.translateX, this.translateY);
@@ -2710,6 +2710,9 @@ class Hero extends Unit {
         translate(entry.getValue().xCenter(), entry.getValue().yCenter());
         for (HeroTreeCode dependency : entry.getValue().dependencies) {
           HeroTreeButton dependent = this.nodes.get(dependency);
+          if (!entry.getValue().in_view && !dependent.in_view) {
+            continue;
+          }
           strokeWeight(2);
           float connector_width = 6;
           if (entry.getValue().unlocked) {
@@ -3531,7 +3534,6 @@ class Hero extends Unit {
     super(HeroCode.unit_id(code));
     this.code = code;
     this.addAbilities();
-    this.level = 90;
   }
 
 
