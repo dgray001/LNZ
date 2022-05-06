@@ -3143,6 +3143,10 @@ class Unit extends MapObject {
     }
     String sound_name = "units/taunt/";
     switch(this.ID) {
+      case 1101: // Ben Nelson
+        break;
+      case 1102: // Dan Gray
+        break;
       default:
         return;
     }

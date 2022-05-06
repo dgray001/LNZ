@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220506: v0.6.9m" +
+  "\n20220506: v0.6.9n" +
   "\nLines: 33973 (v0.6.9k)" +
   "\nImages: 1044 (v0.6.9)" +
   "\nSounds: 118 (v0.6.9)" +
@@ -122,7 +122,7 @@ static class Constants {
     "can see the maps that can be added to your level.\nDouble-click a map " +
     "to add it to your level.\n\nHotkeys:\n z: Toggle grid\n x: Toggle fog\n c: " +
     "Toggle rectangle mode\n v: Toggle square mode\n s: Save last rectangle\n S: " +
-    "Set player start location";
+    "Set player start location\n d: Remove selected map from level";
   static final String help_mapEditor_linkers = "Linkers\n\nIn this view you " +
     "see the linkers in your level.\n\nHotkeys:\n z: Toggle grid\n x: Toggle " +
     "fog\n c: Toggle rectangle mode\n v: Toggle square mode\n s: Save last " +

@@ -4199,20 +4199,20 @@ abstract class Form {
           }
         }
       }
-      mX -= this.xi + 1;
-      mY -= this.yStart;
-      float currY = this.yStart;
-      for (int i = int(floor(this.scrollbar.value)); i < this.fields.size(); i++) {
-        if (currY + this.fields.get(i).getHeight() > this.yf) {
-          break;
-        }
-        this.fields.get(i).mouseMove(mX, mY);
-        mY -= this.fields.get(i).getHeight() + this.fieldCushion;
-        currY += this.fields.get(i).getHeight() + this.fieldCushion;
-      }
     }
     else {
       this.hovered = false;
+    }
+    mX -= this.xi + 1;
+    mY -= this.yStart;
+    float currY = this.yStart;
+    for (int i = int(floor(this.scrollbar.value)); i < this.fields.size(); i++) {
+      if (currY + this.fields.get(i).getHeight() > this.yf) {
+        break;
+      }
+      this.fields.get(i).mouseMove(mX, mY);
+      mY -= this.fields.get(i).getHeight() + this.fieldCushion;
+      currY += this.fields.get(i).getHeight() + this.fieldCushion;
     }
   }
 
