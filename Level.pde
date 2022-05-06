@@ -421,6 +421,7 @@ class Level {
         switch(h.weapon().ID) {
           case 2977: // ax
             f.number -= 3;
+            global.sounds.trigger_units("items/melee/ax");
             break;
           case 2979: // saw
             f.number -= 1;
@@ -430,6 +431,7 @@ class Level {
             break;
           case 2983: // chainsaw
             f.number -= 2;
+            global.sounds.trigger_units("items/chainsaw_long");
             break;
         }
         if (f.number < 1) {
@@ -442,6 +444,7 @@ class Level {
           switch(h.weapon().ID) {
             case 2977: // ax
               f.number -= 3;
+              global.sounds.trigger_units("items/melee/ax");
               break;
             case 2979: // saw
               f.number -= 1;
@@ -451,6 +454,7 @@ class Level {
               break;
             case 2983: // chainsaw
               f.number -= 2;
+              global.sounds.trigger_units("items/chainsaw_long");
               break;
           }
           if (f.number < 1) {
@@ -474,6 +478,7 @@ class Level {
           switch(h.weapon().ID) {
             case 2977: // ax
               f.number -= 3;
+              global.sounds.trigger_units("items/melee/ax");
               break;
             case 2979: // saw
               f.number -= 1;
@@ -483,6 +488,7 @@ class Level {
               break;
             case 2983: // chainsaw
               f.number -= 2;
+              global.sounds.trigger_units("items/chainsaw_long");
               break;
           }
           if (f.number < 1) {
@@ -597,7 +603,6 @@ class Level {
           this.currMap.addItem(new_i);
         }
         this.currMap.addHeaderMessage("You found a " + new_i.display_name() + ".");
-        // sound effect
         break;
       case 131: // bed
       case 132:
@@ -607,6 +612,7 @@ class Level {
           switch(h.weapon().ID) {
             case 2977: // ax
               f.number -= 3;
+              global.sounds.trigger_units("items/melee/ax");
               break;
             case 2979: // saw
               f.number -= 1;
@@ -616,6 +622,7 @@ class Level {
               break;
             case 2983: // chainsaw
               f.number -= 2;
+              global.sounds.trigger_units("items/chainsaw_long");
               break;
           }
           if (f.number < 1) {
@@ -694,7 +701,6 @@ class Level {
           this.currMap.addItem(new_i);
         }
         this.currMap.addHeaderMessage("You found a " + new_i.display_name() + ".");
-        // sound effect
         break;
       case 141: // wardrobe
       case 142:
@@ -702,6 +708,7 @@ class Level {
           switch(h.weapon().ID) {
             case 2977: // ax
               f.number -= 3;
+              global.sounds.trigger_units("items/melee/ax");
               break;
             case 2979: // saw
               f.number -= 1;
@@ -711,6 +718,7 @@ class Level {
               break;
             case 2983: // chainsaw
               f.number -= 2;
+              global.sounds.trigger_units("items/chainsaw_long");
               break;
           }
           if (f.number < 1) {
@@ -1004,7 +1012,6 @@ class Level {
         h.inventory.viewing = true;
         global.sounds.trigger_environment("features/crate",
           f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
-        // sound effect
         break;
       case 184: // cardboard box
         if (h.inventory.viewing) {
@@ -1023,7 +1030,6 @@ class Level {
         if (h.canPickup()) {
           f.number = Constants.feature_pickleJarCooldown;
           h.pickup(new Item(2106));
-          // sound effect
         }
         break;
       case 211: // wire fence
@@ -1045,6 +1051,8 @@ class Level {
         // climb over (?)
         if (h.holding(2978)) {
           f.destroy(this.currMap);
+          global.sounds.trigger_environment("items/wire_clipper",
+            f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         }
         break;
       case 301: // movable brick wall
@@ -1055,11 +1063,12 @@ class Level {
       case 306:
       case 307:
         f.remove = true;
-        // sound effect (?)
         break;
       case 321: // window (open)
         if (use_item && h.holding(2976)) {
           f.destroy(this.currMap);
+          global.sounds.trigger_environment("items/window_break",
+            f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
           break;
         }
         f.remove = true;
@@ -1067,11 +1076,12 @@ class Level {
         this.currMap.addFeature(new_f);
         new_f.hovered = true;
         this.currMap.hovered_object = new_f;
-        // sound effect
         break;
       case 322: // window (closed)
         if (use_item && h.holding(2976)) {
           f.destroy(this.currMap);
+          global.sounds.trigger_environment("items/window_break",
+            f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
           break;
         }
         f.remove = true;
@@ -1079,7 +1089,6 @@ class Level {
         this.currMap.addFeature(new_f);
         new_f.hovered = true;
         this.currMap.hovered_object = new_f;
-        // sound effect
         break;
       case 323: // window (locked)
         if (!h.holding(2976)) {
@@ -1087,6 +1096,8 @@ class Level {
           break;
         }
         f.destroy(this.currMap);
+        global.sounds.trigger_environment("items/window_break",
+          f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         break;
       case 331: // wooden door (open)
       case 332:
@@ -1295,7 +1306,6 @@ class Level {
         if (h.canPickup()) {
           f.remove = true;
           h.pickup(new Item(2961));
-          // sound effect
         }
         break;
       case 411: // gravel (pebbles)
@@ -1363,12 +1373,14 @@ class Level {
           switch(h.weapon().ID) {
             case 2977: // ax
               f.number -= 2;
+              global.sounds.trigger_units("items/melee/ax");
               break;
             case 2979: // saw
               f.number -= 1;
               break;
             case 2983: // chainsaw
               f.number -= 4;
+              global.sounds.trigger_units("items/chainsaw_long");
               break;
           }
           if (randomChance(Constants.feature_treeDropChance)) {
@@ -1377,7 +1389,6 @@ class Level {
           if (f.number < 1) {
             f.destroy(this.currMap);
           }
-          // sound effect (based on item)
         }
         break;
       case 441: // bush
@@ -1391,7 +1402,6 @@ class Level {
           if (f.number < 1) {
             f.remove = true;
           }
-          // sound effect
         }
         break;
       default:

@@ -1345,7 +1345,6 @@ class Feature extends MapObject {
         map.addVisualEffect(4002, this.xCenter(), this.yCenter());
         break;
     }
-    // sound effect
   }
 
 
@@ -1393,6 +1392,7 @@ class Feature extends MapObject {
         switch(u.weapon().ID) {
           case 2977: // ax
             this.number -= 3;
+            global.sounds.trigger_units("items/melee/ax");
             break;
           case 2979: // saw
             this.number -= 1;
@@ -1402,6 +1402,7 @@ class Feature extends MapObject {
             break;
           case 2983: // chainsaw
             this.number -= 2;
+            global.sounds.trigger_units("items/chainsaw_long");
             break;
         }
         if (this.number < 1) {
@@ -1409,20 +1410,27 @@ class Feature extends MapObject {
         }
         break;
       case 161: // water fountain
+        global.sounds.trigger_environment("features/water_fountain",
+          this.xCenter() - map.viewX, this.yCenter() - map.viewY);
         break;
       case 162: // sink
+        global.sounds.trigger_environment("features/sink",
+          this.xCenter() - map.viewX, this.yCenter() - map.viewY);
         break;
       case 163: // shower stall
         this.number = Constants.feature_showerStallCooldown;
-        // sound effect
+        global.sounds.trigger_environment("features/shower_stall",
+          this.xCenter() - map.viewX, this.yCenter() - map.viewY);
         break;
       case 164: // urinal
         this.number = Constants.feature_urinalCooldown;
-        // sound effect
+        global.sounds.trigger_environment("features/urinal",
+          this.xCenter() - map.viewX, this.yCenter() - map.viewY);
         break;
       case 165: // toilet
         this.number = Constants.feature_toiletCooldown;
-        // sound effect
+        global.sounds.trigger_environment("features/toilet",
+          this.xCenter() - map.viewX, this.yCenter() - map.viewY);
         break;
       case 185: // pickle jar
         break;
@@ -1454,7 +1462,6 @@ class Feature extends MapObject {
         }
         this.remove = true;
         map.addFeature(new Feature(322, this.x, this.y));
-        // sound effect
         break;
       case 322: // window (closed)
         if (use_item && u.holding(2976)) {
@@ -1463,7 +1470,6 @@ class Feature extends MapObject {
         }
         this.remove = true;
         map.addFeature(new Feature(321, this.x, this.y));
-        // sound effect
         break;
       case 323: // window (locked)
         if (!u.holding(2976)) {
@@ -1495,42 +1501,50 @@ class Feature extends MapObject {
           case 331: // door open (up)
             this.remove = true;
             map.addFeature(new Feature(339, this.x, this.y, false));
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_close",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
           case 332:
             this.remove = true;
             map.addFeature(new Feature(339, this.x, this.y, true));
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_close",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
           case 333: // door open (left)
             this.remove = true;
             map.addFeature(new Feature(340, this.x, this.y, false));
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_close",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
           case 334:
             this.remove = true;
             map.addFeature(new Feature(340, this.x, this.y, true));
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_close",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
           case 335: // door open (diagonal left)
             this.remove = true;
             map.addFeature(new Feature(341, this.x, this.y, false));
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_close",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
           case 336:
             this.remove = true;
             map.addFeature(new Feature(341, this.x, this.y, true));
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_close",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
           case 337: // door open (diagonal right)
             this.remove = true;
             map.addFeature(new Feature(342, this.x, this.y, false));
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_close",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
           case 338:
             this.remove = true;
             map.addFeature(new Feature(342, this.x, this.y, true));
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_close",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
           case 339: // door closed (up)
             this.remove = true;
@@ -1540,7 +1554,8 @@ class Feature extends MapObject {
             else {
               map.addFeature(new Feature(331, this.x, this.y));
             }
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_open",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
           case 340: // door closed (left)
             this.remove = true;
@@ -1550,7 +1565,8 @@ class Feature extends MapObject {
             else {
               map.addFeature(new Feature(333, this.x, this.y));
             }
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_open",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
           case 341: // door closed (diagonal left)
             this.remove = true;
@@ -1560,7 +1576,8 @@ class Feature extends MapObject {
             else {
               map.addFeature(new Feature(335, this.x, this.y));
             }
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_open",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
           case 342: // door closed (diagonal right)
             this.remove = true;
@@ -1570,7 +1587,8 @@ class Feature extends MapObject {
             else {
               map.addFeature(new Feature(337, this.x, this.y));
             }
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_open",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
           case 343: // door locked (up)
             if (u.weapon() == null || !u.weapon().unlocks(this.number)) {
@@ -1578,7 +1596,8 @@ class Feature extends MapObject {
             }
             this.remove = true;
             map.addFeature(new Feature(339, this.x, this.y, this.toggle));
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_unlock",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
           case 344: // door locked (left)
             if (u.weapon() == null || !u.weapon().unlocks(this.number)) {
@@ -1586,7 +1605,8 @@ class Feature extends MapObject {
             }
             this.remove = true;
             map.addFeature(new Feature(340, this.x, this.y, this.toggle));
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_unlock",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
           case 345: // door locked (diagonal left)
             if (u.weapon() == null || !u.weapon().unlocks(this.number)) {
@@ -1594,7 +1614,8 @@ class Feature extends MapObject {
             }
             this.remove = true;
             map.addFeature(new Feature(341, this.x, this.y, this.toggle));
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_unlock",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
           case 346: // door locked (diagonal right)
             if (u.weapon() == null || !u.weapon().unlocks(this.number)) {
@@ -1602,7 +1623,8 @@ class Feature extends MapObject {
             }
             this.remove = true;
             map.addFeature(new Feature(342, this.x, this.y, this.toggle));
-            // sound effect
+            global.sounds.trigger_environment("features/wooden_door_unlock",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
         }
         break;
@@ -1610,7 +1632,6 @@ class Feature extends MapObject {
         if (u.canPickup()) {
           this.remove = true;
           u.pickup(new Item(2961));
-          // sound effect
         }
         break;
       case 411: // gravel (pebbles)
@@ -1672,12 +1693,14 @@ class Feature extends MapObject {
           switch(u.weapon().ID) {
             case 2977: // ax
               this.number -= 2;
+              global.sounds.trigger_units("items/melee/ax");
               break;
             case 2979: // saw
               this.number -= 1;
               break;
             case 2983: // chainsaw
               this.number -= 4;
+              global.sounds.trigger_units("items/chainsaw_long");
               break;
           }
           if (randomChance(Constants.feature_treeDropChance)) {
@@ -1686,7 +1709,6 @@ class Feature extends MapObject {
           if (this.number < 1) {
             this.destroy(map);
           }
-          // sound effect (based on item)
         }
         break;
       case 441: // bush
@@ -1700,7 +1722,6 @@ class Feature extends MapObject {
           if (this.number < 1) {
             this.remove = true;
           }
-          // sound effect
         }
         break;
       default:

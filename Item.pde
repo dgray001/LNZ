@@ -3227,10 +3227,30 @@ class Item extends MapObject {
   }
 
 
+  // pickup
+  void pickupSound() {
+    String sound_name = "items/pickup/";
+    switch(this.ID) {
+      case 2983: // Chainsaw
+        sound_name += "chainsaw";
+        break;
+      default:
+        sound_name += "default";
+        break;
+    }
+    global.sounds.trigger_units(sound_name);
+  }
+
   // melee attack
   void attackSound() {
     String sound_name = "items/melee/";
     switch(this.ID) {
+      case 2977: // Ax
+        sound_name += "ax";
+        break;
+      case 2983: // Chainsaw
+        sound_name += "chainsaw";
+        break;
       default:
         sound_name += "default";
         break;

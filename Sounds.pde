@@ -138,6 +138,9 @@ class Sounds {
   }
 
   void trigger_units(String soundPath) {
+    this.trigger_units(soundPath, 0, 0);
+  }
+  void trigger_units(String soundPath, float xDif, float yDif) {
     if (this.sounds_units.containsKey(soundPath)) {
       this.sounds_units.get(soundPath).trigger();
     }
@@ -157,6 +160,9 @@ class Sounds {
   }
 
   void trigger_player(String soundPath) {
+    this.trigger_player(soundPath, 0, 0);
+  }
+  void trigger_player(String soundPath, float xDif, float yDif) {
     if (this.sounds_player.containsKey(soundPath)) {
       this.sounds_player.get(soundPath).trigger();
     }
