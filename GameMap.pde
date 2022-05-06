@@ -1215,6 +1215,18 @@ class GameMap {
   void addUnit(Unit u, int code) {
     this.units.put(code, u);
     u.map_key = code;
+    if (u.x - u.size - Constants.small_number < 0) {
+      u.x = u.size + Constants.small_number;
+    }
+    else if (u.x + u.size + Constants.small_number > this.mapWidth) {
+      u.x = this.mapWidth - u.size - Constants.small_number;
+    }
+    if (u.y - u.size - Constants.small_number < 0) {
+      u.y = u.size + Constants.small_number;
+    }
+    else if (u.y + u.size + Constants.small_number > this.mapHeight) {
+      u.y = this.mapHeight - u.size - Constants.small_number;
+    }
     u.curr_squares_on = u.getSquaresOn();
     u.resolveFloorHeight(this, code);
   }

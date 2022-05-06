@@ -167,9 +167,19 @@ class Level {
 
 
   void addTestPlayer() {
-    this.player = new Hero(HeroCode.DAN);
-    this.player.setLocation(0.5, 0.5);
-    this.currMap.addPlayer(this.player);
+    Hero h = new Hero(HeroCode.BEN);
+    this.addPlayer(h);
+  }
+
+  void addPlayer(Hero h) {
+    if (this.player != null) {
+      global.errorMessage("ERROR: Trying to add player when player already exists.");
+      return;
+    }
+    this.player = h;
+    if (this.currMap != null) {
+      this.currMap.addPlayer(this.player);
+    }
   }
 
   void setPlayer(Hero player) {
@@ -1626,6 +1636,7 @@ class Level {
             case ESC:
               this.player.heroTree.curr_viewing = false;
               this.restartTimers();
+              global.defaultCursor();
               break;
             case 't':
             case 'T':
@@ -1660,6 +1671,8 @@ class Level {
         case 'T':
           if (global.holding_ctrl && this.player != null) {
             this.player.heroTree.curr_viewing = true;
+            global.defaultCursor();
+            this.player.heroTree.setLocation(this.xi, this.yi, this.xf, this.yf);
           }
           break;
       }
