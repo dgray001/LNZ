@@ -560,6 +560,7 @@ class Ability {
         this.toggle = true;
         u.curr_action = UnitAction.CASTING;
         u.curr_action_id = ability_index;
+        global.sounds.trigger_units("units/ability/112", u.x - map.viewX, u.y - map.viewY);
         break;
       case 113: // Amphibious Leap
         if (u.drenched()) {
@@ -572,13 +573,17 @@ class Ability {
         u.curr_action_unhaltable = true;
         u.curr_action = UnitAction.CASTING;
         u.curr_action_id = ability_index;
+        global.sounds.trigger_units("units/ability/113", u.x - map.viewX, u.y - map.viewY);
         break;
       case 114: // Alkaloid Secretion
         if (u.alkaloidSecretion()) {
           u.removeStatusEffect(StatusEffectCode.ALKALOID_SECRETION);
+          global.sounds.silence_units("units/ability/114");
         }
         else {
           u.addStatusEffect(StatusEffectCode.ALKALOID_SECRETION);
+          global.sounds.trigger_units("units/ability/114_start", u.x - map.viewX, u.y - map.viewY);
+          global.sounds.trigger_units("units/ability/114", u.x - map.viewX, u.y - map.viewY);
           u.increaseMana(this.manaCost());
           this.timer_cooldown = 0;
         }
@@ -604,6 +609,7 @@ class Ability {
         this.timer_other = Constants.ability_112_castTime;
         this.toggle = true;
         u.curr_action = UnitAction.CASTING;
+        global.sounds.trigger_units("units/ability/112", u.x - map.viewX, u.y - map.viewY);
         break;
       case 118: // Amphibious Leap II
         if (u.drenched()) {
@@ -615,13 +621,17 @@ class Ability {
         this.toggle = true;
         u.curr_action_unhaltable = true;
         u.curr_action = UnitAction.CASTING;
+        global.sounds.trigger_units("units/ability/113", u.x - map.viewX, u.y - map.viewY);
         break;
       case 119: // Alkaloid Secretion II
         if (u.alkaloidSecretionII()) {
           u.removeStatusEffect(StatusEffectCode.ALKALOID_SECRETIONII);
+          global.sounds.silence_units("units/ability/114");
         }
         else {
           u.addStatusEffect(StatusEffectCode.ALKALOID_SECRETIONII);
+          global.sounds.trigger_units("units/ability/114_start", u.x - map.viewX, u.y - map.viewY);
+          global.sounds.trigger_units("units/ability/114", u.x - map.viewX, u.y - map.viewY);
           u.increaseMana(this.manaCost());
           this.timer_cooldown = 0;
         }
@@ -762,6 +772,7 @@ class Ability {
         if (u.curr_action == UnitAction.NONE) {
           if (this.timer_cooldown <= 0 && !u.aposematicCamouflage() && !u.visible()) {
             u.addStatusEffect(StatusEffectCode.APOSEMATIC_CAMOUFLAGE);
+            global.sounds.trigger_units("units/ability/111", u.x - map.viewX, u.y - map.viewY);
           }
         }
         else {
@@ -803,6 +814,7 @@ class Ability {
             target.refreshStatusEffect(StatusEffectCode.TONGUE_LASH, Constants.ability_112_slowTime);
             this.toggle = false;
             u.stopAction();
+            global.sounds.trigger_units("units/ability/112_hit", u.x - map.viewX, u.y - map.viewY);
             break;
           }
         }
@@ -849,6 +861,7 @@ class Ability {
               Element.BROWN, u.piercing(), u.penetration()));
             target.refreshStatusEffect(StatusEffectCode.STUNNED, Constants.ability_113_stunTime);
           }
+          global.sounds.trigger_units("units/ability/113_land", u.x - map.viewX, u.y - map.viewY);
         }
         break;
       case 114: // Alkaloid Secretion
@@ -879,6 +892,7 @@ class Ability {
             target.refreshStatusEffect(StatusEffectCode.ROTTING, Constants.ability_114_rotTime);
           }
           map.addVisualEffect(4007, u.x, u.y);
+          global.sounds.trigger_units("units/ability/114", u.x - map.viewX, u.y - map.viewY);
         }
         break;
       case 115: // Anuran Appetite
@@ -919,6 +933,7 @@ class Ability {
         if (u.curr_action == UnitAction.NONE) {
           if (this.timer_cooldown <= 0 && !u.aposematicCamouflageII() && !u.visible()) {
             u.addStatusEffect(StatusEffectCode.APOSEMATIC_CAMOUFLAGEII);
+            global.sounds.trigger_units("units/ability/111", u.x - map.viewX, u.y - map.viewY);
           }
         }
         else {
@@ -960,6 +975,7 @@ class Ability {
             target.refreshStatusEffect(StatusEffectCode.TONGUE_LASH, Constants.ability_117_slowTime);
             this.toggle = false;
             u.stopAction();
+            global.sounds.trigger_units("units/ability/112_hit", u.x - map.viewX, u.y - map.viewY);
             break;
           }
         }
@@ -1006,6 +1022,7 @@ class Ability {
               Element.BROWN, u.piercing(), u.penetration()));
             target.refreshStatusEffect(StatusEffectCode.STUNNED, Constants.ability_118_stunTime);
           }
+          global.sounds.trigger_units("units/ability/113_land", u.x - map.viewX, u.y - map.viewY);
         }
         break;
       case 119: // Alkaloid Secretion II
@@ -1036,6 +1053,7 @@ class Ability {
             target.refreshStatusEffect(StatusEffectCode.ROTTING, Constants.ability_114_rotTime);
           }
           map.addVisualEffect(4008, u.x, u.y);
+          global.sounds.trigger_units("units/ability/114", u.x - map.viewX, u.y - map.viewY);
         }
         break;
       case 120: // Anuran Appetite II
