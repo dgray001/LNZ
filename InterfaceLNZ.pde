@@ -3,6 +3,7 @@ abstract class FormLNZ extends Form {
   protected float shadow_distance = 10;
   protected PImage img;
   protected color color_shadow = color(0, 150);
+  protected boolean need_to_reset_cursor = true;
 
   FormLNZ(float xi, float yi, float xf, float yf) {
     super(xi, yi, xf, yf);
@@ -13,6 +14,9 @@ abstract class FormLNZ extends Form {
 
   @Override
   void update(int millis) {
+    if (this.need_to_reset_cursor) {
+      global.defaultCursor();
+    }
     rectMode(CORNERS);
     fill(0);
     imageMode(CORNER);

@@ -299,26 +299,31 @@ class Item extends MapObject {
         this.setStrings("Zucc Bucc", "Money", "");
         this.tier = 2;
         this.money = 101;
+        this.size = 0.3;
         break;
       case 2156:
         this.setStrings("Wad of 5s", "Money", "");
         this.tier = 2;
         this.money = 500;
+        this.size = 0.3;
         break;
       case 2157:
         this.setStrings("Wad of 10s", "Money", "");
         this.tier = 2;
         this.money = 1000;
+        this.size = 0.3;
         break;
       case 2158:
         this.setStrings("Wad of 50s", "Money", "");
         this.tier = 2;
         this.money = 5000;
+        this.size = 0.3;
         break;
       case 2159:
         this.setStrings("Wad of Zuccs", "Money", "");
         this.tier = 3;
         this.money = 10100;
+        this.size = 0.3;
         break;
 
       // Melee Weapons
@@ -326,6 +331,7 @@ class Item extends MapObject {
         this.setStrings("Foam Sword", "Melee Weapon", "");
         this.attack = 1;
         this.attackRange = 0.15;
+        this.size = 0.3;
         break;
       case 2202:
         this.setStrings("Pan", "Melee Weapon", "");
@@ -337,12 +343,14 @@ class Item extends MapObject {
         this.attack = 2;
         this.attackRange = 0.01;
         this.piercing = 4;
+        this.size = 0.3;
         break;
       case 2204:
         this.setStrings("Decoy", "Melee Weapon", "");
         this.attack = 3;
         this.attackRange = 0.08;
         this.piercing = 6;
+        this.size = 0.3;
         break;
       case 2211:
         this.setStrings("The Thing", "Melee Weapon", "");
@@ -350,6 +358,7 @@ class Item extends MapObject {
         this.attack = 1;
         this.attackRange = 0.15;
         this.piercing = 8;
+        this.size = 0.32;
         break;
       case 2212:
         this.setStrings("Machete", "Melee Weapon", "");
@@ -357,6 +366,7 @@ class Item extends MapObject {
         this.attack = 1;
         this.attackRange = 0.05;
         this.piercing = 8;
+        this.size = 0.3;
         break;
       case 2213:
         this.setStrings("Spear", "Melee Weapon", "");
@@ -365,6 +375,7 @@ class Item extends MapObject {
         this.attackRange = 0.3;
         this.piercing = 18;
         this.speed = -0.8;
+        this.size = 0.3;
         break;
 
       // Ranged Weapons
@@ -372,6 +383,7 @@ class Item extends MapObject {
         this.setStrings("Slingshot", "Ranged Weapon", "");
         this.attack = 5;
         this.attackRange = 3;
+        this.size = 0.3;
         break;
       case 2311:
         this.setStrings("Bow", "Ranged Weapon", "");
@@ -379,44 +391,52 @@ class Item extends MapObject {
         this.attack = 8;
         this.attackRange = 5;
         this.piercing = 15;
+        this.size = 0.3;
         break;
       case 2312:
         this.setStrings("M1911", "Ranged Weapon", "Semi-automatic with medium capacity and power. Effective at close range.");
         this.tier = 2;
         this.attack = 2;
+        this.size = 0.3;
         break;
       case 2321:
         this.setStrings("War Machine", "Ranged Weapon", "6 round semi-automatic grenade launcher.");
         this.tier = 3;
         this.attack = 3;
         this.attackRange = 0.04;
+        this.size = 0.35;
         break;
       case 2322:
         this.setStrings("Five-Seven", "Ranged Weapon", "Semi-automatic pistol. Versatile and strong overall with a large magazine.");
         this.tier = 3;
         this.attack = 2;
+        this.size = 0.3;
         break;
       case 2323:
         this.setStrings("Type25", "Ranged Weapon", "Fully automatic assault rifle. High rate of fire with moderate recoil.");
         this.tier = 3;
         this.attack = 3;
         this.attackRange = 0.04;
+        this.size = 0.35;
         break;
       case 2331:
         this.setStrings("Mustang and Sally", "Ranged Weapon", "");
         this.tier = 4;
         this.attack = 3;
+        this.size = 0.35;
         break;
       case 2332:
         this.setStrings("FAL", "Ranged Weapon", "Fully automatic assault rifle with high damage. Effective at medium to long range.");
         this.tier = 4;
         this.attack = 3;
         this.attackRange = 0.04;
+        this.size = 0.35;
         break;
       case 2333:
         this.setStrings("Python", "Ranged Weapon", "The Python .357 magnum revolver. No thank you, I have reproductive organs of my own.");
         this.tier = 4;
         this.attack = 3;
+        this.size = 0.3;
         break;
       case 2341:
         this.setStrings("RPG", "Ranged Weapon", "Free-fire shoulder mounted rocket launcher.");
@@ -424,40 +444,48 @@ class Item extends MapObject {
         this.attack = 3;
         this.attackRange = 0.04;
         this.speed = -1;
+        this.size = 0.35;
         break;
       case 2342:
         this.setStrings("Dystopic Demolisher", "Ranged Weapon", "");
         this.tier = 5;
         this.attack = 3;
         this.attackRange = 0.04;
+        this.size = 0.35;
         break;
       case 2343:
         this.setStrings("Ultra", "Ranged Weapon", "");
         this.tier = 5;
         this.attack = 3;
+        this.size = 0.3;
         break;
       case 2344:
         this.setStrings("Strain25", "Ranged Weapon", "");
         this.tier = 5;
         this.attack = 3;
         this.attackRange = 0.04;
+        this.size = 0.35;
         break;
       case 2345:
         this.setStrings("Executioner", "Ranged Weapon", "Double-action revolver pistol. Fires 28 gauge shotgun shells.");
         this.tier = 5;
         this.attack = 3;
+        this.size = 0.3;
+        this.size = 0.3;
         break;
       case 2351:
         this.setStrings("Galil", "Ranged Weapon", "Fully automatic assault rifle. Effective at medium to long range.");
         this.tier = 6;
         this.attack = 3;
         this.attackRange = 0.04;
+        this.size = 0.35;
         break;
       case 2352:
         this.setStrings("WN", "Ranged Weapon", "");
         this.tier = 6;
         this.attack = 3;
         this.attackRange = 0.04;
+        this.size = 0.35;
         break;
       case 2353:
         this.setStrings("Ballistic Knife", "Ranged Weapon", "Spring-action knife launcher. Increases melee speed and can fire the blade as a projectile.");
@@ -466,30 +494,35 @@ class Item extends MapObject {
         this.attackRange = 0.04;
         this.speed = 1;
         this.lifesteal = 0.1;
+        this.size = 0.35;
         break;
       case 2354:
         this.setStrings("Cobra", "Ranged Weapon", "");
         this.tier = 6;
         this.attack = 3;
         this.attackRange = 0.04;
+        this.size = 0.35;
         break;
       case 2355:
         this.setStrings("MTAR", "Ranged Weapon", "Fully automatic assault rifle. Versatile and strong overall.");
         this.tier = 6;
         this.attack = 3;
         this.attackRange = 0.04;
+        this.size = 0.35;
         break;
       case 2361:
         this.setStrings("RPD", "Ranged Weapon", "Fully automatic with good power and quick fire rate. Effective at medium to long range.");
         this.tier = 7;
         this.attack = 3;
         this.attackRange = 0.04;
+        this.size = 0.35;
         break;
       case 2362:
         this.setStrings("Rocket-Propelled Grievance", "Ranged Weapon", "");
         this.tier = 7;
         this.attack = 3;
         this.attackRange = 0.04;
+        this.size = 0.35;
         break;
       case 2363:
         this.setStrings("DSR-50", "Ranged Weapon", "");
@@ -497,29 +530,34 @@ class Item extends MapObject {
         this.attack = 3;
         this.attackRange = 0.04;
         this.speed = -1;
+        this.size = 0.35;
         break;
       case 2364:
         this.setStrings("Voice of Justice", "Ranged Weapon", "");
         this.tier = 7;
         this.attack = 3;
+        this.size = 0.3;
         break;
       case 2371:
         this.setStrings("HAMR", "Ranged Weapon", "Fully automatic LMG. Reduces fire rate with less ammo, becoming more accurate.");
         this.tier = 8;
         this.attack = 3;
         this.attackRange = 0.04;
+        this.size = 0.35;
         break;
       case 2372:
         this.setStrings("Ray Gun", "Ranged Weapon", "It's weird, but it works.");
         this.tier = 8;
         this.attack = 3;
         this.attackRange = 0.04;
+        this.size = 0.35;
         break;
       case 2373:
         this.setStrings("Lamentation", "Ranged Weapon", "");
         this.tier = 8;
         this.attack = 3;
         this.attackRange = 0.04;
+        this.size = 0.35;
         break;
       case 2374:
         this.setStrings("The Krauss Refibrillator", "Ranged Weapon", "");
@@ -528,36 +566,42 @@ class Item extends MapObject {
         this.attackRange = 0.04;
         this.speed = 1.5;
         this.lifesteal = 0.15;
+        this.size = 0.35;
         break;
       case 2375:
         this.setStrings("Malevolent Taxonomic Anodized Redeemer", "Ranged Weapon", "");
         this.tier = 8;
         this.attack = 3;
         this.attackRange = 0.04;
+        this.size = 0.35;
         break;
       case 2381:
         this.setStrings("Relativistic Punishment Device", "Ranged Weapon", "");
         this.tier = 9;
         this.attack = 3;
         this.attackRange = 0.04;
+        this.size = 0.35;
         break;
       case 2382:
         this.setStrings("Dead Specimen Reactor 5000", "Ranged Weapon", "");
         this.tier = 9;
         this.attack = 3;
         this.attackRange = 0.04;
+        this.size = 0.35;
         break;
       case 2391:
         this.setStrings("SLDG HAMR", "Ranged Weapon", "");
         this.tier = 10;
         this.attack = 3;
         this.attackRange = 0.04;
+        this.size = 0.35;
         break;
       case 2392:
         this.setStrings("Porter's X2 Ray Gun", "Ranged Weapon", "");
         this.tier = 10;
         this.attack = 3;
         this.attackRange = 0.04;
+        this.size = 0.35;
         break;
 
       // Headgear
@@ -1065,17 +1109,21 @@ class Item extends MapObject {
         break;
       case 2933:
         this.setStrings("Pebble", "Ammo", "");
+        this.size = 0.22;
         break;
       case 2941:
         this.setStrings(".45 ACP", "Ammo", "");
+        this.size = 0.22;
         break;
       case 2942:
         this.setStrings("7.62x39mm", "Ammo", "");
         this.tier = 2;
+        this.size = 0.22;
         break;
       case 2943:
         this.setStrings("5.56x45mm", "Ammo", "");
         this.tier = 2;
+        this.size = 0.22;
         break;
       case 2944:
         this.setStrings("Grenade", "Ammo", "");
@@ -1085,18 +1133,22 @@ class Item extends MapObject {
       case 2945:
         this.setStrings(".357 Magnum", "Ammo", "");
         this.tier = 2;
+        this.size = 0.22;
         break;
       case 2946:
         this.setStrings(".50 BMG", "Ammo", "");
         this.tier = 2;
+        this.size = 0.22;
         break;
       case 2947:
         this.setStrings("FN 5.7x28mm", "Ammo", "");
         this.tier = 2;
+        this.size = 0.22;
         break;
       case 2948:
         this.setStrings("28 Gauge", "Ammo", "");
         this.tier = 2;
+        this.size = 0.22;
         break;
       case 2961:
         this.setStrings("Dandelion", "Nature", "");
@@ -1155,12 +1207,14 @@ class Item extends MapObject {
         this.attack = 3;
         this.attackRange = 0.08;
         this.piercing = 0.15;
+        this.size = 0.32;
         break;
       case 2978:
         this.setStrings("Wire Clippers", "Tool", "");
         this.tier = 3;
         this.attack = 2;
         this.attackRange = 0.1;
+        this.size = 0.32;
         break;
       case 2979:
         this.setStrings("Saw", "Tool", "");
@@ -1168,6 +1222,7 @@ class Item extends MapObject {
         this.attack = 2;
         this.attackRange = 0.05;
         this.piercing = 0.05;
+        this.size = 0.32;
         break;
       case 2980:
         this.setStrings("Drill", "Tool", "");
@@ -1179,11 +1234,13 @@ class Item extends MapObject {
         this.tier = 4;
         this.attack = 1;
         this.piercing = 0.05;
+        this.size = 0.32;
         break;
       case 2982:
         this.setStrings("Beltsander", "Tool", "");
         this.tier = 4;
         this.attack = 1;
+        this.size = 0.32;
         break;
       case 2983:
         this.setStrings("Chainsaw", "Tool", "");
@@ -1191,10 +1248,12 @@ class Item extends MapObject {
         this.attack = 5;
         this.attackRange = 0.07;
         this.piercing = 0.2;
+        this.size = 0.32;
         break;
       case 2991:
         this.setStrings("Rankin's Third Ball", "Rare Object", "");
         this.tier = 1;
+        this.size = 0.22;
         break;
 
       default:
@@ -2104,7 +2163,7 @@ class Item extends MapObject {
         }
         return false;
       default:
-        return true;
+        return false;
     }
   }
 
@@ -3239,6 +3298,33 @@ class Item extends MapObject {
         break;
     }
     global.sounds.trigger_units(sound_name);
+  }
+
+  // equip
+  void equipSound() {
+    String sound_name = "player/";
+    switch(this.ID) {
+      case 2402: // Cap
+      case 2502: // T-shirt
+      case 2503: // Bra
+      case 2504: // Coat
+      case 2512: // Ben's Coat
+      case 2513: // Suit Jacket
+      case 2602: // Boxers
+      case 2603: // Towel
+      case 2604: // Pants
+      case 2702: // Socks
+      case 2703: // Sandals
+      case 2704: // Shoes
+      case 2705: // Boots
+      case 2712: // Sneakers
+        sound_name += "armor_cloth";
+        break;
+      default:
+        sound_name += "armor_metal";
+        break;
+    }
+    global.sounds.trigger_player(sound_name);
   }
 
   // melee attack

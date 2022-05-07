@@ -1013,15 +1013,6 @@ class Unit extends MapObject {
   }
   float attackRange(boolean forceMelee) {
     float attackRange = this.base_attackRange;
-    for (Map.Entry<GearSlot, Item> gear_entry : this.gear.entrySet()) {
-      if (gear_entry.getKey() == GearSlot.WEAPON) {
-        continue;
-      }
-      if (gear_entry.getValue() == null) {
-        continue;
-      }
-      attackRange += gear_entry.getValue().attackRange;
-    }
     if (this.weapon() != null && this.weapon().weapon()) {
       if (!forceMelee && this.weapon().shootable()) {
         attackRange = this.weapon().shootRange();

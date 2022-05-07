@@ -696,12 +696,26 @@ class Hero extends Unit {
 
     @Override
     Item stash(Item i) {
+      if (i == null || i.remove) {
+        return null;
+      }
       if (this.feature_inventory != null) {
         Item leftover = this.feature_inventory.stash(i);
         if (leftover == null || leftover.remove) {
           return null;
         }
-        return super.stash(leftover);
+        i = new Item(leftover);
+      }
+      for (int j = 0; j < this.gear_inventory.slots.size(); j++) {
+        if (this.gear_inventory.indexToGearSlot(j) == GearSlot.WEAPON) {
+          continue;
+        }
+        Item leftover = this.gear_inventory.placeAt(i, j, false);
+        if (leftover == null || leftover.remove) {
+          i.equipSound();
+          return null;
+        }
+        i = new Item(leftover);
       }
       return super.stash(i);
     }
