@@ -599,7 +599,7 @@ class Projectile extends MapObject {
       if (map.squares[int(floor(this.x))][int(floor(this.y))].elevation(true) > this.curr_height) {
         this.x = startX;
         this.dropOnGround(map);
-        this.collideSound();
+        this.collideSound(map);
         return true;
       }
     } catch(Exception e) {}
@@ -624,7 +624,7 @@ class Projectile extends MapObject {
       }
       this.x = startX;
       this.collideWithUnit(map, u);
-      this.collideSound();
+      this.collideSound(map);
       return true;
     }
     return false;
@@ -644,7 +644,7 @@ class Projectile extends MapObject {
       if (map.squares[int(floor(this.x))][int(floor(this.y))].elevation(true) > this.curr_height) {
         this.y = startY;
         this.dropOnGround(map);
-        this.collideSound();
+        this.collideSound(map);
         return true;
       }
     } catch(Exception e) {}
@@ -669,7 +669,7 @@ class Projectile extends MapObject {
       }
       this.y = startY;
       this.collideWithUnit(map, u);
-      this.collideSound();
+      this.collideSound(map);
       return true;
     }
     return false;
@@ -724,7 +724,7 @@ class Projectile extends MapObject {
   void dropOnGround(GameMap map) {
     this.dropItems(map);
     if (this.waitsToExplode()) {
-      this.startExplodeTimer();
+      this.startExplodeTimer(map);
     }
     else if (this.explodesOnImpact()) {
       this.explode(map);
@@ -750,7 +750,7 @@ class Projectile extends MapObject {
         break;
     }
     if (this.waitsToExplode()) {
-      this.startExplodeTimer();
+      this.startExplodeTimer(map);
     }
     else if (this.explodesOnImpact()) {
       this.explode(map);
@@ -761,12 +761,17 @@ class Projectile extends MapObject {
   }
 
 
-  void collideSound() {
+  void collideSound(GameMap map) {
     switch(this.ID) {
+      case 3118: // Chicken Egg
+        global.sounds.trigger_units("items/egg_crack", this.x - map.viewX, this.y - map.viewY);
+        break;
       case 3311: // Recurve Bow
       case 3932: // Arrow
-        global.sounds.trigger_units("items/recurve_bow_hit");
+        global.sounds.trigger_units("items/recurve_bow_hit", this.x - map.viewX, this.y - map.viewY);
         break;
+      case 3001: // Mighty Pen
+      case 3002: // Mighty Pen II
       case 3312: // M1911
       case 3322: // Five-Seven
       case 3323: // Type25
@@ -788,18 +793,21 @@ class Projectile extends MapObject {
       case 3381: // Relativistic Punishment Device
       case 3382: // Dead Specimen Reactor 5000
       case 3391: // SLDG HAMR
-        global.sounds.trigger_units("items/bullet_hit");
+        global.sounds.trigger_units("items/bullet_hit", this.x - map.viewX, this.y - map.viewY);
         break;
       case 3353: // Ballistic Knife
       case 3374: // The Krauss Refibrillator
-        global.sounds.trigger_units("items/ballistic_knife_hit");
+        global.sounds.trigger_units("items/ballistic_knife_hit", this.x - map.viewX, this.y - map.viewY);
         break;
       case 3301: // Slingshot
       case 3321: // War Machine
       case 3931: // Rock
       case 3933: // Pebble
       case 3944: // Grenade
-        global.sounds.trigger_units("items/rock_hit");
+        global.sounds.trigger_units("items/rock_hit", this.x - map.viewX, this.y - map.viewY);
+        break;
+      case 3924: // Glass Bottle
+        global.sounds.trigger_units("items/glass_bottle_hit", this.x - map.viewX, this.y - map.viewY);
         break;
       default:
         break;
@@ -841,16 +849,16 @@ class Projectile extends MapObject {
     }
   }
 
-  void startExplodeTimer() {
+  void startExplodeTimer(GameMap map) {
     this.waiting_to_explode = true;
     switch(this.ID) {
       case 3321: // War Machine
         this.range_left = 1980;
-        global.sounds.trigger_units("items/grenade_ticking");
+        global.sounds.trigger_units("items/grenade_ticking", this.x - map.viewX, this.y - map.viewY);
         break;
       case 3944: // Grenade
         this.range_left = 1980;
-        global.sounds.trigger_units("items/grenade_ticking");
+        global.sounds.trigger_units("items/grenade_ticking", this.x - map.viewX, this.y - map.viewY);
         break;
       default:
         global.errorMessage("ERROR: Projectile ID " + this.ID + " doesn't wait to explode.");
@@ -885,35 +893,35 @@ class Projectile extends MapObject {
         explode_minPower = 125;
         explode_maxPower = 450;
         map.addVisualEffect(4010, this.x, this.y);
-        global.sounds.trigger_units("items/grenade");
+        global.sounds.trigger_units("items/grenade", this.x - map.viewX, this.y - map.viewY);
         break;
       case 3331: // Mustang and Sally
         explode_range = Constants.projectile_grenadeExplosionRadius;
         explode_minPower = 75;
         explode_maxPower = 1200;
         map.addVisualEffect(4011, this.x, this.y);
-        global.sounds.trigger_units("items/grenade");
+        global.sounds.trigger_units("items/grenade", this.x - map.viewX, this.y - map.viewY);
         break;
       case 3341: // RPG
         explode_range = Constants.projectile_rpgExplosionRadius;
         explode_minPower = 100;
         explode_maxPower = 500;
         map.addVisualEffect(4012, this.x, this.y);
-        global.sounds.trigger_units("items/grenade_RPG");
+        global.sounds.trigger_units("items/grenade_RPG", this.x - map.viewX, this.y - map.viewY);
         break;
       case 3342: // Dystopic Demolisher
         explode_range = Constants.projectile_grenadeExplosionRadius;
         explode_minPower = 125;
         explode_maxPower = 900;
         map.addVisualEffect(4013, this.x, this.y);
-        global.sounds.trigger_units("items/grenade");
+        global.sounds.trigger_units("items/grenade", this.x - map.viewX, this.y - map.viewY);
         break;
       case 3362: // Rocket-Propelled Grievance
         explode_range = Constants.projectile_rpgIIExplosionRadius;
         explode_minPower = 100;
         explode_maxPower = 600;
         map.addVisualEffect(4014, this.x, this.y);
-        global.sounds.trigger_units("items/grenade_RPG");
+        global.sounds.trigger_units("items/grenade_RPG", this.x - map.viewX, this.y - map.viewY);
         break;
       case 3372: // Ray Gun
         explode_range = Constants.projectile_rayGunExplosionRadius;
@@ -932,7 +940,7 @@ class Projectile extends MapObject {
         explode_minPower = 100;
         explode_maxPower = 400;
         map.addVisualEffect(4017, this.x, this.y);
-        global.sounds.trigger_units("items/grenade");
+        global.sounds.trigger_units("items/grenade", this.x - map.viewX, this.y - map.viewY);
         break;
       default:
         global.errorMessage("ERROR: Projectile ID " + this.ID + " doesn't explode.");

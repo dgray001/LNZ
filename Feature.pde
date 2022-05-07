@@ -1479,6 +1479,8 @@ class Feature extends MapObject {
       case 185: // pickle jar
         if (use_item && u.holding(2975)) {
           this.destroy(map);
+          global.sounds.trigger_environment("items/glass_bottle_hit",
+            this.xCenter() - map.viewX, this.yCenter() - map.viewY);
           break;
         }
         if (u.canPickup()) {

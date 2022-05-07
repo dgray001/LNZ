@@ -511,6 +511,7 @@ class Ability {
     switch(this.ID) {
       case 102: // Mighty Pen
         map.addProjectile(new Projectile(3001, source_key, u));
+        global.sounds.trigger_units("items/throw", u.x - map.viewX, u.y - map.viewY);
         break;
       case 103: // Nelson Glare
         this.timer_other = Constants.ability_103_castTime;
@@ -528,6 +529,7 @@ class Ability {
         break;
       case 107: // Mighty Pen II
         map.addProjectile(new Projectile(3002, source_key, u));
+        global.sounds.trigger_units("items/throw", u.x - map.viewX, u.y - map.viewY);
         break;
       case 108: // Nelson Glare II
         this.timer_other = Constants.ability_108_castTime;
