@@ -1396,6 +1396,7 @@ class Feature extends MapObject {
     if (u.weapon() == null) {
       use_item = false;
     }
+    Item new_i;
     // Non-hero interaction with feature
     switch(this.ID) {
       case 101: // wooden table
@@ -1424,17 +1425,21 @@ class Feature extends MapObject {
         switch(u.weapon().ID) {
           case 2977: // ax
             this.number -= 3;
-            global.sounds.trigger_units("items/melee/ax");
+            global.sounds.trigger_units("items/melee/ax",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
           case 2979: // saw
             this.number -= 1;
             break;
           case 2980: // drill
             this.number -= 1;
+            global.sounds.trigger_units("items/melee/drill" + randomInt(1, 3),
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
           case 2983: // chainsaw
             this.number -= 2;
-            global.sounds.trigger_units("items/chainsaw_long");
+            global.sounds.trigger_units("items/chainsaw_long",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
         }
         if (this.number < 1) {
@@ -1465,6 +1470,16 @@ class Feature extends MapObject {
           this.xCenter() - map.viewX, this.yCenter() - map.viewY);
         break;
       case 185: // pickle jar
+        if (use_item && u.holding(2975)) {
+          this.destroy(map);
+          break;
+        }
+        if (u.canPickup()) {
+          this.number = Constants.feature_pickleJarCooldown;
+          new_i = new Item(2106);
+          u.pickup(new_i);
+          new_i.pickupSound();
+        }
         break;
       case 211: // wire fence
       case 212:
@@ -1708,12 +1723,16 @@ class Feature extends MapObject {
       case 401: // dandelion
         if (u.canPickup()) {
           this.remove = true;
-          u.pickup(new Item(2961));
+          new_i = new Item(2961);
+          u.pickup(new_i);
+          new_i.pickupSound();
         }
         break;
       case 411: // gravel (pebbles)
         if (u.canPickup()) {
-          u.pickup(new Item(2933));
+          new_i = new Item(2933);
+          u.pickup(new_i);
+          new_i.pickupSound();
           this.number--;
           if (this.number < 1) {
             this.remove = true;
@@ -1723,7 +1742,9 @@ class Feature extends MapObject {
         break;
       case 412: // gravel (rocks)
         if (u.canPickup()) {
-          u.pickup(new Item(2931));
+          new_i = new Item(2931);
+          u.pickup(new_i);
+          new_i.pickupSound();
           this.number--;
           if (this.number < 1) {
             this.remove = true;
@@ -1770,14 +1791,16 @@ class Feature extends MapObject {
           switch(u.weapon().ID) {
             case 2977: // ax
               this.number -= 2;
-              global.sounds.trigger_units("items/melee/ax");
+              global.sounds.trigger_units("items/melee/ax",
+                this.xCenter() - map.viewX, this.yCenter() - map.viewY);
               break;
             case 2979: // saw
               this.number -= 1;
               break;
             case 2983: // chainsaw
               this.number -= 4;
-              global.sounds.trigger_units("items/chainsaw_long");
+              global.sounds.trigger_units("items/chainsaw_long",
+                this.xCenter() - map.viewX, this.yCenter() - map.viewY);
               break;
           }
           if (randomChance(Constants.feature_treeDropChance)) {
@@ -1799,6 +1822,8 @@ class Feature extends MapObject {
           if (this.number < 1) {
             this.remove = true;
           }
+          global.sounds.trigger_units("features/sword_bush",
+            this.xCenter() - map.viewX, this.yCenter() - map.viewY);
         }
         break;
       default:

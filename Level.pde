@@ -441,6 +441,8 @@ class Level {
             break;
           case 2980: // drill
             f.number -= 1;
+            global.sounds.trigger_units("items/melee/drill" + randomInt(1, 3),
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
           case 2983: // chainsaw
             f.number -= 2;
@@ -466,6 +468,8 @@ class Level {
               break;
             case 2980: // drill
               f.number -= 1;
+              global.sounds.trigger_units("items/melee/drill" + randomInt(1, 3),
+                f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
             case 2983: // chainsaw
               f.number -= 2;
@@ -501,6 +505,8 @@ class Level {
               break;
             case 2980: // drill
               f.number -= 1;
+              global.sounds.trigger_units("items/melee/drill" + randomInt(1, 3),
+                f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
             case 2983: // chainsaw
               f.number -= 2;
@@ -513,6 +519,8 @@ class Level {
           }
           break;
         }
+        global.sounds.trigger_environment("features/couch_shuffle", f.xCenter() -
+          this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         if (!f.toggle) {
           this.currMap.addHeaderMessage("This " + f.display_name() + " has nothing in it.");
           break;
@@ -615,6 +623,7 @@ class Level {
         new_i = new Item(item_id, h.frontX(), h.frontY());
         if (h.canPickup()) {
           h.pickup(new_i);
+          new_i.pickupSound();
         }
         else {
           this.currMap.addItem(new_i);
@@ -637,6 +646,8 @@ class Level {
               break;
             case 2980: // drill
               f.number -= 1;
+              global.sounds.trigger_units("items/melee/drill" + randomInt(1, 3),
+                f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
             case 2983: // chainsaw
               f.number -= 2;
@@ -649,6 +660,8 @@ class Level {
           }
           break;
         }
+        global.sounds.trigger_environment("features/bed_shuffle", f.xCenter() -
+          this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         if (!f.toggle) {
           this.currMap.addHeaderMessage("This " + f.display_name() + " has nothing in it.");
           break;
@@ -715,6 +728,7 @@ class Level {
         new_i = new Item(item_id, h.frontX(), h.frontY());
         if (h.canPickup()) {
           h.pickup(new_i);
+          new_i.pickupSound();
         }
         else {
           this.currMap.addItem(new_i);
@@ -735,6 +749,8 @@ class Level {
               break;
             case 2980: // drill
               f.number -= 1;
+              global.sounds.trigger_units("items/melee/drill" + randomInt(1, 3),
+                f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
             case 2983: // chainsaw
               f.number -= 2;
@@ -747,6 +763,8 @@ class Level {
           }
           break;
         }
+        global.sounds.trigger_environment("features/wardrobe_shuffle", f.xCenter() -
+          this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         if (!f.toggle) {
           this.currMap.addHeaderMessage("This " + f.display_name() + " has nothing in it.");
           break;
@@ -885,6 +903,7 @@ class Level {
         new_i = new Item(item_id, h.frontX(), h.frontY());
         if (h.canPickup()) {
           h.pickup(new_i);
+          new_i.pickupSound();
         }
         else {
           this.currMap.addItem(new_i);
@@ -1042,7 +1061,9 @@ class Level {
         }
         if (h.canPickup()) {
           f.number = Constants.feature_pickleJarCooldown;
-          h.pickup(new Item(2106));
+          new_i = new Item(2106);
+          h.pickup(new_i);
+          new_i.pickupSound();
         }
         break;
       case 211: // wire fence
@@ -1355,12 +1376,16 @@ class Level {
       case 401: // dandelion
         if (h.canPickup()) {
           f.remove = true;
-          h.pickup(new Item(2961));
+          new_i = new Item(2961);
+          h.pickup(new_i);
+          new_i.pickupSound();
         }
         break;
       case 411: // gravel (pebbles)
         if (h.canPickup()) {
-          h.pickup(new Item(2933));
+          new_i = new Item(2933);
+          h.pickup(new_i);
+          new_i.pickupSound();
           f.number--;
           if (f.number < 1) {
             f.remove = true;
@@ -1373,7 +1398,9 @@ class Level {
         break;
       case 412: // gravel (rocks)
         if (h.canPickup()) {
-          h.pickup(new Item(2931));
+          new_i = new Item(2931);
+          h.pickup(new_i);
+          new_i.pickupSound();
           f.number--;
           if (f.number < 1) {
             f.remove = true;
@@ -1423,14 +1450,16 @@ class Level {
           switch(h.weapon().ID) {
             case 2977: // ax
               f.number -= 2;
-              global.sounds.trigger_units("items/melee/ax");
+              global.sounds.trigger_units("items/melee/ax", f.xCenter() -
+                this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
             case 2979: // saw
               f.number -= 1;
               break;
             case 2983: // chainsaw
               f.number -= 4;
-              global.sounds.trigger_units("items/chainsaw_long");
+              global.sounds.trigger_units("items/chainsaw_long", f.xCenter() -
+                this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
           }
           if (randomChance(Constants.feature_treeDropChance)) {
@@ -1452,6 +1481,8 @@ class Level {
           if (f.number < 1) {
             f.remove = true;
           }
+          global.sounds.trigger_units("features/sword_bush", f.xCenter() -
+            this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         }
         break;
       default:

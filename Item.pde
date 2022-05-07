@@ -3290,6 +3290,13 @@ class Item extends MapObject {
   void pickupSound() {
     String sound_name = "items/pickup/";
     switch(this.ID) {
+      case 2204: // Decoy
+      case 2211: // The Thing
+        sound_name += "sword";
+        break;
+      case 2980: // Drill
+        sound_name += "drill" + randomInt(1, 3);
+        break;
       case 2983: // Chainsaw
         sound_name += "chainsaw";
         break;
@@ -3331,8 +3338,20 @@ class Item extends MapObject {
   void attackSound() {
     String sound_name = "items/melee/";
     switch(this.ID) {
+      case 2203: // Knife
+      case 2353: // Ballistic Knife
+      case 2374: // The Krauss Refibrillator
+        sound_name += "knife";
+        break;
+      case 2204: // Decoy
+      case 2211: // The Thing
+        sound_name += "sword";
+        break;
       case 2977: // Ax
         sound_name += "ax";
+        break;
+      case 2980: // Drill
+        sound_name += "drill" + randomInt(1, 3);
         break;
       case 2983: // Chainsaw
         sound_name += "chainsaw";
