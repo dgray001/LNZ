@@ -603,6 +603,7 @@ class Ability {
           this.target_unit.addStatusEffect(StatusEffectCode.INVISIBLE, Constants.ability_115_maxTime);
           this.target_unit.addStatusEffect(StatusEffectCode.UNCOLLIDABLE, Constants.ability_115_maxTime);
           this.target_unit.addStatusEffect(StatusEffectCode.DECAYED, Constants.ability_115_maxTime);
+          global.sounds.trigger_units("units/ability/115", u.x - map.viewX, u.y - map.viewY);
         }
         break;
       case 117: // Tongue Last II
@@ -651,6 +652,7 @@ class Ability {
           this.target_unit.addStatusEffect(StatusEffectCode.INVISIBLE, Constants.ability_120_maxTime);
           this.target_unit.addStatusEffect(StatusEffectCode.UNCOLLIDABLE, Constants.ability_120_maxTime);
           this.target_unit.addStatusEffect(StatusEffectCode.DECAYED, Constants.ability_120_maxTime);
+          global.sounds.trigger_units("units/ability/115", u.x - map.viewX, u.y - map.viewY);
         }
         break;
       default:
@@ -923,6 +925,8 @@ class Ability {
             ability_115_physicalRatio, Constants.ability_115_magicalRatio);
           this.target_unit.damage(u, this.target_unit.calculateDamageFrom(power,
             DamageType.MAGICAL, Element.BROWN, u.piercing(), u.penetration()));
+          global.sounds.trigger_units("units/ability/115_spit", u.x - map.viewX, u.y - map.viewY);
+          global.sounds.silence_units("units/ability/115", u.x - map.viewX, u.y - map.viewY);
         }
         break;
       case 116: // Aposematic Camouflage II
@@ -1084,6 +1088,8 @@ class Ability {
             ability_120_physicalRatio, Constants.ability_120_magicalRatio);
           this.target_unit.damage(u, this.target_unit.calculateDamageFrom(power,
             DamageType.MAGICAL, Element.BROWN, u.piercing(), u.penetration()));
+          global.sounds.trigger_units("units/ability/115_spit", u.x - map.viewX, u.y - map.viewY);
+          global.sounds.silence_units("units/ability/115", u.x - map.viewX, u.y - map.viewY);
         }
         break;
 
