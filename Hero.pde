@@ -3953,6 +3953,11 @@ class Hero extends Unit {
       case 2392: // Porter's X2 Ray Gun
         global.sounds.trigger_player("items/ray_gun_reload");
         break;
+      case 2921: // Backpack
+      case 2922: // Ben's Backpack
+      case 2923: // Purse
+        global.sounds.trigger_player("player/armor_cloth");
+        break;
       default:
         break;
     }
