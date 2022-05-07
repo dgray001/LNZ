@@ -1058,11 +1058,44 @@ class Level {
       case 224:
       case 225:
       case 226:
-        // climb over (?)
-        if (h.holding(2978)) {
+        if (use_item && h.holding(2978)) {
           f.destroy(this.currMap);
           global.sounds.trigger_environment("items/wire_clipper",
             f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+          break;
+        }
+        else if (h.agility() >= 2) {
+          h.setLocation(f.xCenter(), f.yCenter());
+          global.sounds.trigger_units("features/climb_fence",
+            f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+          if (randomChance(0.3)) {
+            h.addStatusEffect(StatusEffectCode.BLEEDING, 2000);
+          }
+        }
+        break;
+      case 231: // barbed wire fence
+      case 232:
+      case 233:
+      case 234:
+      case 235:
+      case 236:
+      case 237:
+      case 238:
+      case 239:
+      case 240:
+      case 241:
+      case 242:
+      case 243:
+      case 244:
+      case 245:
+      case 246:
+        if (h.agility() >= 3) {
+          h.setLocation(f.xCenter(), f.yCenter());
+          global.sounds.trigger_units("features/climb_fence",
+            f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+          if (randomChance(0.8)) {
+            h.addStatusEffect(StatusEffectCode.BLEEDING, 2500);
+          }
         }
         break;
       case 301: // movable brick wall
@@ -1086,6 +1119,8 @@ class Level {
         this.currMap.addFeature(new_f);
         new_f.hovered = true;
         this.currMap.hovered_object = new_f;
+        global.sounds.trigger_environment("features/window_close",
+          f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         break;
       case 322: // window (closed)
         if (use_item && h.holding(2976)) {
@@ -1099,6 +1134,8 @@ class Level {
         this.currMap.addFeature(new_f);
         new_f.hovered = true;
         this.currMap.hovered_object = new_f;
+        global.sounds.trigger_environment("features/window_open",
+          f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         break;
       case 323: // window (locked)
         if (!h.holding(2976)) {

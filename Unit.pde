@@ -2135,7 +2135,7 @@ class Unit extends MapObject {
     }
     // Cast ability
     if (this.buffer_cast > -1) {
-      this.cast(myKey, this.buffer_cast, map);
+      this.cast(this.buffer_cast, map);
       this.buffer_cast = -1;
     }
     // Resolve location logic
@@ -2304,7 +2304,7 @@ class Unit extends MapObject {
     this.buffer_cast = index;
   }
 
-  void cast(int myKey, int index, GameMap map) {
+  void cast(int index, GameMap map) {
     if (this.suppressed() || this.stunned()) {
       return;
     }
@@ -2312,7 +2312,7 @@ class Unit extends MapObject {
       return;
     }
     this.curr_action_id = index;
-    if (myKey == 0) {
+    if (this.map_key == 0) {
       this.curr_action_x = map.mX;
       this.curr_action_y = map.mY;
     }
@@ -2336,14 +2336,14 @@ class Unit extends MapObject {
         this.face(this.object_targeting);
       }
       if (Unit.class.isInstance(this.object_targeting)) {
-        a.activate(this, myKey, map, (Unit)this.object_targeting, this.object_targeting_key);
+        a.activate(this, this.map_key, map, (Unit)this.object_targeting, this.object_targeting_key);
       }
     }
     else {
       if (a.turnsCaster()) {
         this.face(map.mX, map.mY);
       }
-      a.activate(this, myKey, map);
+      a.activate(this, this.map_key, map);
     }
   }
 
@@ -3165,6 +3165,7 @@ class Unit extends MapObject {
     this.object_targeting = null;
     this.curr_action_x = targetX;
     this.curr_action_y = targetY;
+    this.curr_action_id = 0;
   }
 
   void move(float timeElapsed, int myKey, GameMap map, MoveModifier modifier) {
