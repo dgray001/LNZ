@@ -415,6 +415,8 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
+        global.sounds.trigger_units("features/chest", f.xCenter() -
+          this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         break;
       case 101: // wooden table
       case 111: // wooden chair
@@ -431,7 +433,8 @@ class Level {
         switch(h.weapon().ID) {
           case 2977: // ax
             f.number -= 3;
-            global.sounds.trigger_units("items/melee/ax");
+            global.sounds.trigger_units("items/melee/ax", f.xCenter() -
+              this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
           case 2979: // saw
             f.number -= 1;
@@ -441,7 +444,8 @@ class Level {
             break;
           case 2983: // chainsaw
             f.number -= 2;
-            global.sounds.trigger_units("items/chainsaw_long");
+            global.sounds.trigger_units("items/chainsaw_long", f.xCenter() -
+              this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
         }
         if (f.number < 1) {
@@ -454,7 +458,8 @@ class Level {
           switch(h.weapon().ID) {
             case 2977: // ax
               f.number -= 3;
-              global.sounds.trigger_units("items/melee/ax");
+              global.sounds.trigger_units("items/melee/ax", f.xCenter() -
+                this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
             case 2979: // saw
               f.number -= 1;
@@ -464,7 +469,8 @@ class Level {
               break;
             case 2983: // chainsaw
               f.number -= 2;
-              global.sounds.trigger_units("items/chainsaw_long");
+              global.sounds.trigger_units("items/chainsaw_long", f.xCenter() -
+                this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
           }
           if (f.number < 1) {
@@ -477,7 +483,6 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
-        ((DeskInventory)f.inventory).closeDrawers();
         break;
       case 115: // coordinator chair
       case 121: // couch
@@ -488,7 +493,8 @@ class Level {
           switch(h.weapon().ID) {
             case 2977: // ax
               f.number -= 3;
-              global.sounds.trigger_units("items/melee/ax");
+              global.sounds.trigger_units("items/melee/ax", f.xCenter() -
+                this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
             case 2979: // saw
               f.number -= 1;
@@ -498,7 +504,8 @@ class Level {
               break;
             case 2983: // chainsaw
               f.number -= 2;
-              global.sounds.trigger_units("items/chainsaw_long");
+              global.sounds.trigger_units("items/chainsaw_long", f.xCenter() -
+                this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
           }
           if (f.number < 1) {
@@ -622,7 +629,8 @@ class Level {
           switch(h.weapon().ID) {
             case 2977: // ax
               f.number -= 3;
-              global.sounds.trigger_units("items/melee/ax");
+              global.sounds.trigger_units("items/melee/ax", f.xCenter() -
+                this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
             case 2979: // saw
               f.number -= 1;
@@ -632,7 +640,8 @@ class Level {
               break;
             case 2983: // chainsaw
               f.number -= 2;
-              global.sounds.trigger_units("items/chainsaw_long");
+              global.sounds.trigger_units("items/chainsaw_long", f.xCenter() -
+                this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
           }
           if (f.number < 1) {
@@ -718,7 +727,8 @@ class Level {
           switch(h.weapon().ID) {
             case 2977: // ax
               f.number -= 3;
-              global.sounds.trigger_units("items/melee/ax");
+              global.sounds.trigger_units("items/melee/ax", f.xCenter() -
+                this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
             case 2979: // saw
               f.number -= 1;
@@ -728,7 +738,8 @@ class Level {
               break;
             case 2983: // chainsaw
               f.number -= 2;
-              global.sounds.trigger_units("items/chainsaw_long");
+              global.sounds.trigger_units("items/chainsaw_long", f.xCenter() -
+                this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
           }
           if (f.number < 1) {
@@ -984,8 +995,6 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
-        global.sounds.trigger_environment("features/washer",
-          f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         break;
       case 177: // dryer
         if (h.inventory.viewing) {

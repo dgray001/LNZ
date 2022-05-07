@@ -2081,7 +2081,11 @@ class GameMap {
       this.hovered_visible = true;
     }
     boolean default_cursor = true;
-    if (mX > this.xi_map && mY > this.yi_map && mX < this.xf_map && mY < this.yf_map) {
+    boolean viewing_inventory = false;
+    if (this.units.containsKey(0) && Hero.class.isInstance(this.units.get(0))) {
+      viewing_inventory = ((Hero)this.units.get(0)).inventory.viewing;
+    }
+    if (mX > this.xi_map && mY > this.yi_map && mX < this.xf_map && mY < this.yf_map && !viewing_inventory) {
       this.hovered = true;
       this.hovered_area = true;
       this.hovered_border = false;
@@ -2183,7 +2187,7 @@ class GameMap {
       }
     }
     // aiming for player
-    if (this.units.containsKey(0) && global.holding_ctrl) {
+    if (this.units.containsKey(0) && global.holding_ctrl && !viewing_inventory) {
       switch(this.units.get(0).curr_action) {
         case AIMING:
           this.units.get(0).aim(this.mX, this.mY);
