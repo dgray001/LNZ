@@ -2356,51 +2356,51 @@ class Unit extends MapObject {
     map.addProjectile(new Projectile(this.weapon().ID + 1000, myKey, this, this.weapon().shootInaccuracy()));
     switch(this.weapon().ID) {
       case 2118: // Chicken Egg
-        global.sounds.trigger_units("items/throw");
+        global.sounds.trigger_units("items/throw", this.x - map.viewX, this.y - map.viewY);
         break;
       case 2301: // Slingshot
-        global.sounds.trigger_units("items/slingshot");
+        global.sounds.trigger_units("items/slingshot", this.x - map.viewX, this.y - map.viewY);
         break;
       case 2311: // Recurve Bow
-        global.sounds.trigger_units("items/recurve_bow");
+        global.sounds.trigger_units("items/recurve_bow", this.x - map.viewX, this.y - map.viewY);
         break;
       case 2312: // M1911
-        global.sounds.trigger_units("items/m1911");
+        global.sounds.trigger_units("items/m1911", this.x - map.viewX, this.y - map.viewY);
         break;
       case 2321: // War Machine
       case 2342:
       case 2331:
-        global.sounds.trigger_units("items/war_machine");
+        global.sounds.trigger_units("items/war_machine", this.x - map.viewX, this.y - map.viewY);
         break;
       case 2322: // Five-Seven
       case 2343:
-        global.sounds.trigger_units("items/five_seven");
+        global.sounds.trigger_units("items/five_seven", this.x - map.viewX, this.y - map.viewY);
         break;
       case 2323: // Type25
       case 2344:
-        global.sounds.trigger_units("items/type25");
+        global.sounds.trigger_units("items/type25", this.x - map.viewX, this.y - map.viewY);
         break;
       case 2332: // FAL
-        global.sounds.trigger_units("items/FAL");
+        global.sounds.trigger_units("items/FAL", this.x - map.viewX, this.y - map.viewY);
         break;
       case 2333: // Python
       case 2354:
-        global.sounds.trigger_units("items/python");
+        global.sounds.trigger_units("items/python", this.x - map.viewX, this.y - map.viewY);
       case 2341: // RPG
       case 2362:
-        global.sounds.trigger_units("items/RPG");
+        global.sounds.trigger_units("items/RPG", this.x - map.viewX, this.y - map.viewY);
         break;
       case 2345: // Executioner
       case 2364:
-        global.sounds.trigger_units("items/executioner");
+        global.sounds.trigger_units("items/executioner", this.x - map.viewX, this.y - map.viewY);
         break;
       case 2351: // Galil
       case 2373:
-        global.sounds.trigger_units("items/galil");
+        global.sounds.trigger_units("items/galil", this.x - map.viewX, this.y - map.viewY);
         break;
       case 2353: // Ballistic Knife
       case 2374:
-        global.sounds.trigger_units("items/ballistic_knife");
+        global.sounds.trigger_units("items/ballistic_knife", this.x - map.viewX, this.y - map.viewY);
         break;
       case 2352: // WN
         Projectile burst1 = new Projectile(this.weapon().ID + 1000, myKey, this, this.weapon().shootInaccuracy());
@@ -2411,38 +2411,38 @@ class Unit extends MapObject {
         burst2.y -= 0.1 * this.facingY;
         map.addProjectile(burst1);
         map.addProjectile(burst2);
-        global.sounds.trigger_units("items/FAL");
+        global.sounds.trigger_units("items/FAL", this.x - map.viewX, this.y - map.viewY);
         break;
       case 2355: // MTAR
       case 2375:
-        global.sounds.trigger_units("items/MTAR");
+        global.sounds.trigger_units("items/MTAR", this.x - map.viewX, this.y - map.viewY);
         break;
       case 2361: // RPD
       case 2381: // Relativistic Punishment Device
-        global.sounds.trigger_units("items/RPD");
+        global.sounds.trigger_units("items/RPD", this.x - map.viewX, this.y - map.viewY);
         break;
       case 2363: // DSR-50
       case 2382:
-        global.sounds.trigger_units("items/DSR50");
+        global.sounds.trigger_units("items/DSR50", this.x - map.viewX, this.y - map.viewY);
         break;
       case 2371: // HAMR
       case 2391:
-        global.sounds.trigger_units("items/HAMR");
+        global.sounds.trigger_units("items/HAMR", this.x - map.viewX, this.y - map.viewY);
         break;
       case 2372: // Ray Gun
-        global.sounds.trigger_units("items/ray_gun");
+        global.sounds.trigger_units("items/ray_gun", this.x - map.viewX, this.y - map.viewY);
         break;
       case 2392: // Porter's X2 Ray Gun
-        global.sounds.trigger_units("items/porters_x2_ray_gun");
+        global.sounds.trigger_units("items/porters_x2_ray_gun", this.x - map.viewX, this.y - map.viewY);
         break;
       case 2924: // Glass Bottle
       case 2931: // Rock
       case 2932: // Arrow
       case 2933: // Pebble
-        global.sounds.trigger_units("items/throw");
+        global.sounds.trigger_units("items/throw", this.x - map.viewX, this.y - map.viewY);
         break;
       case 2944: // Grenade
-        global.sounds.trigger_units("items/grenade_throw");
+        global.sounds.trigger_units("items/grenade_throw", this.x - map.viewX, this.y - map.viewY);
         break;
       default:
         break;

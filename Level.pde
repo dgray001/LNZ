@@ -1092,6 +1092,8 @@ class Level {
       case 185: // pickle jar
         if (use_item && h.holding(2975)) {
           f.destroy(this.currMap);
+          global.sounds.trigger_environment("items/glass_bottle_hit",
+            f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
           break;
         }
         if (h.canPickup()) {
