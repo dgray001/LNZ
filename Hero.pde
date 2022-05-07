@@ -919,6 +919,9 @@ class Hero extends Unit {
                 break;
               case FEATURE:
                 this.item_holding = super.stash(this.item_holding);
+                if (this.item_holding != null && !this.item_holding.remove) {
+                  this.item_holding = this.gear_inventory.placeAt(this.item_holding, 3, false);
+                }
                 break;
               case CRAFTING:
                 break;

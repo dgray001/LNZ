@@ -114,6 +114,11 @@ class Sounds {
       }
     }
   }
+  void silence_interface(String soundPath) {
+    if (this.sounds_interface.containsKey(soundPath)) {
+      this.sounds_interface.get(soundPath).stop();
+    }
+  }
 
   void trigger_environment(String soundPath) {
     this.trigger_environment(soundPath, 0, 0);
@@ -134,6 +139,11 @@ class Sounds {
       else {
         global.log("Sounds: Missing environment sound " + filePath + ".");
       }
+    }
+  }
+  void silence_environment(String soundPath) {
+    if (this.sounds_environment.containsKey(soundPath)) {
+      this.sounds_environment.get(soundPath).stop();
     }
   }
 
@@ -158,6 +168,11 @@ class Sounds {
       }
     }
   }
+  void silence_units(String soundPath) {
+    if (this.sounds_units.containsKey(soundPath)) {
+      this.sounds_units.get(soundPath).stop();
+    }
+  }
 
   void trigger_player(String soundPath) {
     this.trigger_player(soundPath, 0, 0);
@@ -178,6 +193,11 @@ class Sounds {
       else {
         global.log("Sounds: Missing player sound " + filePath + ".");
       }
+    }
+  }
+  void silence_player(String soundPath) {
+    if (this.sounds_player.containsKey(soundPath)) {
+      this.sounds_player.get(soundPath).stop();
     }
   }
 }

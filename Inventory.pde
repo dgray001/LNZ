@@ -152,6 +152,12 @@ class Inventory {
     }
   }
 
+  void activateSlots() {
+    for (InventorySlot slot : this.slots) {
+      slot.deactivated = false;
+    }
+  }
+
   void fillMaxCapacity() {
     int currSize = this.slots.size();
     int maxSize = this.maxCapacity();
@@ -751,15 +757,254 @@ class StoveInventory extends Inventory {
 
 
 class MinifridgeInventory extends Inventory {
+  class MinifridgeButton extends RectangleButton {
+    protected boolean opened = false;
+    MinifridgeButton() {
+      super(0, 0, 0, 0);
+      this.setColors(color(1, 0), color(1, 0), color(120, 30), color(120, 30), color(1, 0));
+      this.noStroke();
+    }
+
+    void hover() {}
+    void click() {
+      if (this.opened) {
+        this.opened = false;
+        MinifridgeInventory.this.deactivateSlots();
+        this.moveButton(-2 * MinifridgeInventory.this.button_size, 0);
+        global.sounds.trigger_environment("features/minifridge_close");
+      }
+      else {
+        this.opened = true;
+        MinifridgeInventory.this.activateSlots();
+        this.moveButton(2 * MinifridgeInventory.this.button_size, 0);
+        global.sounds.trigger_environment("features/minifridge_open");
+      }
+      this.hovered = false;
+      this.clicked = false;
+    }
+    void dehover() {}
+    void release() {}
+  }
+
+  protected MinifridgeButton button = new MinifridgeButton();
+
   MinifridgeInventory() {
     super(2, 2, true);
+    this.deactivateSlots();
+    this.setButtonSize(this.button_size);
+  }
+
+  @Override
+  void setButtonSize(float button_size) {
+    super.setButtonSize(button_size);
+    this.button.setLocation(2, 2, 2 + 2 * button_size, 2 + 2 * button_size);
+    if (this.button.opened) {
+      this.button.moveButton(2 * button_size, 0);
+    }
+  }
+
+  @Override
+  void update(int millis) {
+    PImage closed_img = global.images.getImage("features/minifridge_closed.png");
+    float display_w = this.display_height * float(closed_img.width) / closed_img.height;
+    if (button.opened) {
+      imageMode(CORNER);
+      PImage open_img = global.images.getImage("features/minifridge_opened.png");
+      float left_side = 0.5 * (this.display_width - display_w);
+      float open_display_w = this.display_height * float(open_img.width) / open_img.height;
+      image(open_img, left_side, 0, open_display_w, this.display_height);
+    }
+    super.update(millis, false);
+    if (!button.opened) {
+      imageMode(CENTER);
+      image(closed_img, 0.5 * this.display_width, 0.5 * this.display_height, display_w, this.display_height);
+    }
+    this.button.update(millis);
+  }
+
+  @Override
+  void mouseMove(float mX, float mY) {
+    super.mouseMove(mX, mY);
+    this.button.mouseMove(mX, mY);
+  }
+
+  @Override
+  void mousePress() {
+    super.mousePress();
+    this.button.mousePress();
+  }
+
+  @Override
+  void mouseRelease(float mX, float mY) {
+    super.mouseRelease(mX, mY);
+    this.button.mouseRelease(mX, mY);
   }
 }
 
 
 class RefridgeratorInventory extends Inventory {
+  class FridgeButton extends RectangleButton {
+    protected boolean opened = false;
+    FridgeButton() {
+      super(0, 0, 0, 0);
+      this.setColors(color(1, 0), color(1, 0), color(120, 30), color(120, 30), color(1, 0));
+      this.noStroke();
+    }
+
+    void hover() {}
+    void click() {
+      if (this.opened) {
+        this.opened = false;
+        RefridgeratorInventory.this.slots.get(4).deactivated = true;
+        RefridgeratorInventory.this.slots.get(5).deactivated = true;
+        RefridgeratorInventory.this.slots.get(6).deactivated = true;
+        RefridgeratorInventory.this.slots.get(7).deactivated = true;
+        RefridgeratorInventory.this.slots.get(8).deactivated = true;
+        RefridgeratorInventory.this.slots.get(9).deactivated = true;
+        this.moveButton(-2 * RefridgeratorInventory.this.button_size, 0);
+        global.sounds.trigger_environment("features/fridge_close");
+      }
+      else {
+        this.opened = true;
+        RefridgeratorInventory.this.slots.get(4).deactivated = false;
+        RefridgeratorInventory.this.slots.get(5).deactivated = false;
+        RefridgeratorInventory.this.slots.get(6).deactivated = false;
+        RefridgeratorInventory.this.slots.get(7).deactivated = false;
+        RefridgeratorInventory.this.slots.get(8).deactivated = false;
+        RefridgeratorInventory.this.slots.get(9).deactivated = false;
+        this.moveButton(2 * RefridgeratorInventory.this.button_size, 0);
+        global.sounds.trigger_environment("features/fridge_open");
+      }
+      this.hovered = false;
+      this.clicked = false;
+    }
+    void dehover() {}
+    void release() {}
+  }
+
+
+  class FreezerButton extends RectangleButton {
+    protected boolean opened = false;
+    FreezerButton() {
+      super(0, 0, 0, 0);
+      this.setColors(color(1, 0), color(1, 0), color(120, 30), color(120, 30), color(1, 0));
+      this.noStroke();
+    }
+
+    void hover() {}
+    void click() {
+      if (this.opened) {
+        this.opened = false;
+        RefridgeratorInventory.this.slots.get(0).deactivated = true;
+        RefridgeratorInventory.this.slots.get(1).deactivated = true;
+        RefridgeratorInventory.this.slots.get(2).deactivated = true;
+        RefridgeratorInventory.this.slots.get(3).deactivated = true;
+        this.moveButton(-2 * RefridgeratorInventory.this.button_size, 0);
+        global.sounds.trigger_environment("features/freezer_close");
+      }
+      else {
+        this.opened = true;
+        RefridgeratorInventory.this.slots.get(0).deactivated = false;
+        RefridgeratorInventory.this.slots.get(1).deactivated = false;
+        RefridgeratorInventory.this.slots.get(2).deactivated = false;
+        RefridgeratorInventory.this.slots.get(3).deactivated = false;
+        this.moveButton(2 * RefridgeratorInventory.this.button_size, 0);
+        global.sounds.trigger_environment("features/freezer_open");
+      }
+      this.hovered = false;
+      this.clicked = false;
+    }
+    void dehover() {}
+    void release() {}
+  }
+
+  protected FridgeButton fridge = new FridgeButton();
+  protected FreezerButton freezer = new FreezerButton();
+  protected int freezer_sound_left = 0;
+  protected float offset = 0;
+
   RefridgeratorInventory() {
-    super(4, 2, true);
+    super(5, 2, true);
+    this.deactivateSlots();
+    this.setButtonSize(this.button_size);
+  }
+
+  @Override
+  void setButtonSize(float button_size) {
+    super.setButtonSize(button_size);
+    this.fridge.setLocation(2, 2 + 2 * button_size, 2 + 2 * button_size, 2 + 5 * button_size);
+    this.freezer.setLocation(2, 2, 2 + 2 * button_size, 2 + 2 * button_size);
+    if (this.fridge.opened) {
+      this.fridge.moveButton(2 * button_size, 0);
+    }
+    if (this.freezer.opened) {
+      this.freezer.moveButton(2 * button_size, 0);
+    }
+  }
+
+  @Override
+  void update(int time_elapsed) {
+    PImage freezer_closed_img = global.images.getImage("features/freezer_closed.png");
+    float display_w = 0.4 * this.display_height * float(freezer_closed_img.width) / freezer_closed_img.height;
+    PImage fridge_closed_img = global.images.getImage("features/fridge_closed.png");
+    float fridge_display_h = display_w * float(fridge_closed_img.height) / fridge_closed_img.width;
+    this.offset = min(0, 0.6 * this.display_height - fridge_display_h);
+    translate(0, this.offset);
+    if (fridge.opened) {
+      imageMode(CORNER);
+      float left_side = 0.5 * (this.display_width - display_w);
+      PImage open_img = global.images.getImage("features/fridge_opened.png");
+      float open_display_w = 1.1285 * fridge_display_h * float(open_img.width) / open_img.height;
+      image(open_img, left_side, 0.4 * this.display_height, open_display_w, 1.1285 * fridge_display_h);
+    }
+    if (freezer.opened) {
+      imageMode(CORNER);
+      float left_side = 0.5 * (this.display_width - display_w);
+      PImage open_img = global.images.getImage("features/freezer_opened.png");
+      float open_display_w = 1.14935 * 0.4 * this.display_height * float(open_img.width) / open_img.height;
+      image(open_img, left_side, - 0.14935 * 0.4 * this.display_height, open_display_w, 1.14935 * 0.4 * this.display_height);
+      this.freezer_sound_left -= time_elapsed;
+      if (this.freezer_sound_left < 10) {
+        global.sounds.trigger_environment("features/freezer_ambience");
+        this.freezer_sound_left = 3250;
+      }
+    }
+    super.update(time_elapsed, false);
+    if (!fridge.opened) {
+      imageMode(CORNER);
+      image(fridge_closed_img, 0.5 * (this.display_width - display_w), 0.4 * this.display_height, display_w, fridge_display_h);
+    }
+    if (!freezer.opened) {
+      imageMode(CORNER);
+      image(freezer_closed_img, 0.5 * (this.display_width - display_w), 0, display_w, 0.4 * this.display_height);
+      global.sounds.silence_environment("features/freezer_ambience");
+      this.freezer_sound_left = 0;
+    }
+    this.fridge.update(time_elapsed);
+    this.freezer.update(time_elapsed);
+    translate(0, -this.offset);
+  }
+
+  @Override
+  void mouseMove(float mX, float mY) {
+    mY -= this.offset;
+    super.mouseMove(mX, mY);
+    this.fridge.mouseMove(mX, mY);
+    this.freezer.mouseMove(mX, mY);
+  }
+
+  @Override
+  void mousePress() {
+    super.mousePress();
+    this.fridge.mousePress();
+    this.freezer.mousePress();
+  }
+
+  @Override
+  void mouseRelease(float mX, float mY) {
+    super.mouseRelease(mX, mY);
+    this.fridge.mouseRelease(mX, mY);
+    this.freezer.mouseRelease(mX, mY);
   }
 }
 
@@ -769,7 +1014,7 @@ class WasherInventory extends Inventory {
     protected boolean opened = false;
     WasherButton() {
       super(0, 0, 0, 0);
-      this.setColors(color(1, 0), color(1, 0), color(1, 0), color(1, 0), color(1, 0));
+      this.setColors(color(1, 0), color(1, 0), color(120, 30), color(120, 30), color(1, 0));
       this.noStroke();
     }
 
@@ -793,6 +1038,8 @@ class WasherInventory extends Inventory {
         this.moveButton(-2 * WasherInventory.this.button_size, 0);
         global.sounds.trigger_environment("features/washer_open");
       }
+      this.hovered = false;
+      this.clicked = false;
     }
     void dehover() {}
     void release() {}
@@ -809,9 +1056,9 @@ class WasherInventory extends Inventory {
   @Override
   void setButtonSize(float button_size) {
     super.setButtonSize(button_size);
-    this.button.setLocation(2 + this.button_size, 2 + this.button_size, 2 + 3 * button_size, 2 + 3 * this.button_size);
+    this.button.setLocation(2 + button_size, 2 + button_size, 2 + 3 * button_size, 2 + 3 * button_size);
     if (this.button.opened) {
-      this.button.moveButton(-2 * WasherInventory.this.button_size, 0);
+      this.button.moveButton(-2 * button_size, 0);
     }
   }
 
@@ -821,7 +1068,7 @@ class WasherInventory extends Inventory {
       imageMode(CORNER);
       PImage open_img = global.images.getImage("features/washer_opened.png");
       PImage closed_img = global.images.getImage("features/washer_closed.png");
-      float right_side = 0.5 * this.display_width * (1 + float(closed_img.width) / closed_img.height);
+      float right_side = 0.5 * this.display_height * (1 + float(closed_img.width) / closed_img.height);
       float display_w = this.display_width * float(open_img.width) / open_img.height;
       image(open_img, right_side - display_w, 0, display_w, this.display_height);
     }
@@ -829,7 +1076,7 @@ class WasherInventory extends Inventory {
     if (!button.opened) {
       imageMode(CENTER);
       PImage closed_img = global.images.getImage("features/washer_closed.png");
-      float display_w = this.display_width * float(closed_img.width) / closed_img.height;
+      float display_w = this.display_height * float(closed_img.width) / closed_img.height;
       image(closed_img, 0.5 * this.display_width, 0.5 * this.display_height, display_w, this.display_height);
     }
     this.button.update(millis);
@@ -856,8 +1103,93 @@ class WasherInventory extends Inventory {
 
 
 class DryerInventory extends Inventory {
+  class DryerButton extends RectangleButton {
+    protected boolean opened = false;
+    DryerButton() {
+      super(0, 0, 0, 0);
+      this.setColors(color(1, 0), color(1, 0), color(120, 30), color(120, 30), color(1, 0));
+      this.noStroke();
+    }
+
+    void hover() {}
+    void click() {
+      if (this.opened) {
+        this.opened = false;
+        DryerInventory.this.slots.get(5).deactivated = true;
+        DryerInventory.this.slots.get(6).deactivated = true;
+        DryerInventory.this.slots.get(9).deactivated = true;
+        DryerInventory.this.slots.get(10).deactivated = true;
+        this.moveButton(-2 * DryerInventory.this.button_size, 0);
+        global.sounds.trigger_environment("features/dryer_close");
+      }
+      else {
+        this.opened = true;
+        DryerInventory.this.slots.get(5).deactivated = false;
+        DryerInventory.this.slots.get(6).deactivated = false;
+        DryerInventory.this.slots.get(9).deactivated = false;
+        DryerInventory.this.slots.get(10).deactivated = false;
+        this.moveButton(2 * DryerInventory.this.button_size, 0);
+        global.sounds.trigger_environment("features/dryer_open");
+      }
+      this.hovered = false;
+      this.clicked = false;
+    }
+    void dehover() {}
+    void release() {}
+  }
+
+  protected DryerButton button = new DryerButton();
+
   DryerInventory() {
-    super(3, 3, true);
+    super(4, 4, true);
+    this.deactivateSlots();
+    this.setButtonSize(this.button_size);
+  }
+
+  @Override
+  void setButtonSize(float button_size) {
+    super.setButtonSize(button_size);
+    this.button.setLocation(2 + button_size, 2 + button_size, 2 + 3 * button_size, 2 + 3 * button_size);
+    if (this.button.opened) {
+      this.button.moveButton(2 * button_size, 0);
+    }
+  }
+
+  @Override
+  void update(int millis) {
+    PImage closed_img = global.images.getImage("features/dryer_closed.png");
+    float display_w = this.display_height * float(closed_img.width) / closed_img.height;
+    if (button.opened) {
+      imageMode(CORNER);
+      PImage open_img = global.images.getImage("features/dryer_opened.png");
+      float left_side = 0.5 * (this.display_width - display_w);
+      float open_display_w = this.display_width * float(open_img.width) / open_img.height;
+      image(open_img, left_side, 0, open_display_w, this.display_height);
+    }
+    super.update(millis, false);
+    if (!button.opened) {
+      imageMode(CENTER);
+      image(closed_img, 0.5 * this.display_width, 0.5 * this.display_height, display_w, this.display_height);
+    }
+    this.button.update(millis);
+  }
+
+  @Override
+  void mouseMove(float mX, float mY) {
+    super.mouseMove(mX, mY);
+    this.button.mouseMove(mX, mY);
+  }
+
+  @Override
+  void mousePress() {
+    super.mousePress();
+    this.button.mousePress();
+  }
+
+  @Override
+  void mouseRelease(float mX, float mY) {
+    super.mouseRelease(mX, mY);
+    this.button.mouseRelease(mX, mY);
   }
 }
 
