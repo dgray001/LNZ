@@ -3297,6 +3297,9 @@ class Item extends MapObject {
       case 2980: // Drill
         sound_name += "drill" + randomInt(1, 3);
         break;
+      case 2981: // Roundsaw
+        sound_name += "roundsaw";
+        break;
       case 2983: // Chainsaw
         sound_name += "chainsaw";
         break;
@@ -3347,8 +3350,17 @@ class Item extends MapObject {
       case 2211: // The Thing
         sound_name += "sword";
         break;
+      case 2212: // Machete
+        sound_name += "machete";
+        break;
+      case 2213: // Spear
+        sound_name += "spear";
+        break;
       case 2977: // Ax
         sound_name += "ax";
+        break;
+      case 2979: // Saw
+        sound_name += "saw";
         break;
       case 2980: // Drill
         sound_name += "drill" + randomInt(1, 3);

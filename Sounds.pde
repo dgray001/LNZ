@@ -124,6 +124,10 @@ class Sounds {
     this.trigger_environment(soundPath, 0, 0);
   }
   void trigger_environment(String soundPath, float xDif, float yDif) {
+    float distance = sqrt(xDif * xDif + yDif * yDif);
+    if (distance > Constants.map_defaultMaxSoundDistance) {
+      return;
+    }
     if (this.sounds_environment.containsKey(soundPath)) {
       this.sounds_environment.get(soundPath).trigger();
     }
@@ -151,6 +155,10 @@ class Sounds {
     this.trigger_units(soundPath, 0, 0);
   }
   void trigger_units(String soundPath, float xDif, float yDif) {
+    float distance = sqrt(xDif * xDif + yDif * yDif);
+    if (distance > Constants.map_defaultMaxSoundDistance) {
+      return;
+    }
     if (this.sounds_units.containsKey(soundPath)) {
       this.sounds_units.get(soundPath).trigger();
     }
@@ -178,6 +186,10 @@ class Sounds {
     this.trigger_player(soundPath, 0, 0);
   }
   void trigger_player(String soundPath, float xDif, float yDif) {
+    float distance = sqrt(xDif * xDif + yDif * yDif);
+    if (distance > Constants.map_defaultMaxSoundDistance) {
+      return;
+    }
     if (this.sounds_player.containsKey(soundPath)) {
       this.sounds_player.get(soundPath).trigger();
     }

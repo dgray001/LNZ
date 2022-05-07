@@ -1415,28 +1415,35 @@ class Feature extends MapObject {
       case 126:
       case 127:
       case 128:
-      case 131: // bed
+      case 131: // Bed
       case 132:
-      case 141: // wardrobe
+      case 141: // Wardrobe
       case 142:
-        if (!u.holding(2977, 2979, 2980, 2983)) {
+        if (!u.holding(2977, 2979, 2980, 2981, 2983)) {
           break;
         }
         switch(u.weapon().ID) {
-          case 2977: // ax
+          case 2977: // Ax
             this.number -= 3;
             global.sounds.trigger_units("items/melee/ax",
               this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
-          case 2979: // saw
+          case 2979: // Saw
             this.number -= 1;
+            global.sounds.trigger_units("items/saw_cut_wood",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
-          case 2980: // drill
+          case 2980: // Drill
             this.number -= 1;
             global.sounds.trigger_units("items/melee/drill" + randomInt(1, 3),
               this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
-          case 2983: // chainsaw
+          case 2981: // Roundsaw
+            this.number -= 2;
+            global.sounds.trigger_units("items/roundsaw_cut_wood",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
+            break;
+          case 2983: // Chainsaw
             this.number -= 2;
             global.sounds.trigger_units("items/chainsaw_long",
               this.xCenter() - map.viewX, this.yCenter() - map.viewY);
@@ -1446,15 +1453,15 @@ class Feature extends MapObject {
           this.destroy(map);
         }
         break;
-      case 161: // water fountain
+      case 161: // Water Fountain
         global.sounds.trigger_environment("features/water_fountain",
           this.xCenter() - map.viewX, this.yCenter() - map.viewY);
         break;
-      case 162: // sink
+      case 162: // Sink
         global.sounds.trigger_environment("features/sink",
           this.xCenter() - map.viewX, this.yCenter() - map.viewY);
         break;
-      case 163: // shower stall
+      case 163: // Shower Stall
         this.number = Constants.feature_showerStallCooldown;
         global.sounds.trigger_environment("features/shower_stall",
           this.xCenter() - map.viewX, this.yCenter() - map.viewY);
@@ -1752,12 +1759,12 @@ class Feature extends MapObject {
           }
         }
         break;
-      case 421: // tree (maple)
-      case 422: // tree (unknown)
-      case 423: // tree (cedar)
-      case 424: // tree (dead)
-      case 425: // tree (large)
-      case 426: // tree (pine)
+      case 421: // Tree (maple)
+      case 422: // Tree (unknown)
+      case 423: // Tree (cedar)
+      case 424: // Tree (dead)
+      case 425: // Tree (large)
+      case 426: // Tree (pine)
         int branch_id = 0;
         switch(this.ID) {
           case 421:
@@ -1779,7 +1786,7 @@ class Feature extends MapObject {
             branch_id = 2968;
             break;
         }
-        if (!use_item || !u.holding(2977, 2979, 2983)) {
+        if (!use_item || !u.holding(2977, 2979, 2981, 2983)) {
           if (this.toggle) {
             map.addItem(new Item(branch_id, u.frontX(), u.frontY()));
             if (randomChance(Constants.feature_treeChanceEndBranches)) {
@@ -1789,15 +1796,22 @@ class Feature extends MapObject {
         }
         else {
           switch(u.weapon().ID) {
-            case 2977: // ax
+            case 2977: // Ax
               this.number -= 2;
               global.sounds.trigger_units("items/melee/ax",
                 this.xCenter() - map.viewX, this.yCenter() - map.viewY);
               break;
-            case 2979: // saw
+            case 2979: // Saw
               this.number -= 1;
+              global.sounds.trigger_units("items/saw_cut_wood",
+                this.xCenter() - map.viewX, this.yCenter() - map.viewY);
               break;
-            case 2983: // chainsaw
+            case 2981: // Roundsaw
+              this.number -= 2;
+              global.sounds.trigger_units("items/roundsaw_cut_wood",
+                this.xCenter() - map.viewX, this.yCenter() - map.viewY);
+              break;
+            case 2983: // Chainsaw
               this.number -= 4;
               global.sounds.trigger_units("items/chainsaw_long",
                 this.xCenter() - map.viewX, this.yCenter() - map.viewY);
@@ -1811,7 +1825,7 @@ class Feature extends MapObject {
           }
         }
         break;
-      case 441: // bush
+      case 441: // Bush
       case 442:
       case 443:
         if (u.holding(2204, 2211)) {

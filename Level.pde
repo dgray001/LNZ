@@ -427,7 +427,7 @@ class Level {
       case 126:
       case 127:
       case 128:
-        if (!h.holding(2977, 2979, 2980, 2983)) {
+        if (!h.holding(2977, 2979, 2980, 2981, 2983)) {
           break;
         }
         switch(h.weapon().ID) {
@@ -438,11 +438,18 @@ class Level {
             break;
           case 2979: // saw
             f.number -= 1;
+            global.sounds.trigger_units("items/saw_cut_wood", f.xCenter() -
+              this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
           case 2980: // drill
             f.number -= 1;
             global.sounds.trigger_units("items/melee/drill" + randomInt(1, 3),
               f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+            break;
+          case 2981: // roundsaw
+            f.number -= 2;
+            global.sounds.trigger_units("items/roundsaw_cut_wood", f.xCenter() -
+              this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
           case 2983: // chainsaw
             f.number -= 2;
@@ -456,7 +463,7 @@ class Level {
         break;
       case 102: // wooden desk
       case 103:
-        if (use_item && h.holding(2977, 2979, 2980, 2983)) {
+        if (use_item && h.holding(2977, 2979, 2980, 2981, 2983)) {
           switch(h.weapon().ID) {
             case 2977: // ax
               f.number -= 3;
@@ -465,11 +472,18 @@ class Level {
               break;
             case 2979: // saw
               f.number -= 1;
+              global.sounds.trigger_units("items/saw_cut_wood", f.xCenter() -
+                this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
             case 2980: // drill
               f.number -= 1;
               global.sounds.trigger_units("items/melee/drill" + randomInt(1, 3),
                 f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+              break;
+            case 2981: // roundsaw
+              f.number -= 2;
+              global.sounds.trigger_units("items/roundsaw_cut_wood", f.xCenter() -
+                this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
             case 2983: // chainsaw
               f.number -= 2;
@@ -493,7 +507,7 @@ class Level {
       case 122:
       case 123:
       case 124:
-        if (use_item && h.holding(2977, 2979, 2980, 2983)) {
+        if (use_item && h.holding(2977, 2979, 2980, 2981, 2983)) {
           switch(h.weapon().ID) {
             case 2977: // ax
               f.number -= 3;
@@ -502,11 +516,18 @@ class Level {
               break;
             case 2979: // saw
               f.number -= 1;
+              global.sounds.trigger_units("items/saw_cut_wood", f.xCenter() -
+                this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
             case 2980: // drill
               f.number -= 1;
               global.sounds.trigger_units("items/melee/drill" + randomInt(1, 3),
                 f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+              break;
+            case 2981: // roundsaw
+              f.number -= 2;
+              global.sounds.trigger_units("items/roundsaw_cut_wood", f.xCenter() -
+                this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
             case 2983: // chainsaw
               f.number -= 2;
@@ -634,7 +655,7 @@ class Level {
       case 132:
       case 133:
       case 134:
-        if (use_item && h.holding(2977, 2979, 2980, 2983)) {
+        if (use_item && h.holding(2977, 2979, 2980, 2981, 2983)) {
           switch(h.weapon().ID) {
             case 2977: // ax
               f.number -= 3;
@@ -643,11 +664,18 @@ class Level {
               break;
             case 2979: // saw
               f.number -= 1;
+              global.sounds.trigger_units("items/saw_cut_wood", f.xCenter() -
+                this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
             case 2980: // drill
               f.number -= 1;
               global.sounds.trigger_units("items/melee/drill" + randomInt(1, 3),
                 f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+              break;
+            case 2981: // roundsaw
+              f.number -= 2;
+              global.sounds.trigger_units("items/roundsaw_cut_wood", f.xCenter() -
+                this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
             case 2983: // chainsaw
               f.number -= 2;
@@ -737,7 +765,7 @@ class Level {
         break;
       case 141: // wardrobe
       case 142:
-        if (use_item && h.holding(2977, 2979, 2980, 2983)) {
+        if (use_item && h.holding(2977, 2979, 2980, 2981, 2983)) {
           switch(h.weapon().ID) {
             case 2977: // ax
               f.number -= 3;
@@ -746,11 +774,18 @@ class Level {
               break;
             case 2979: // saw
               f.number -= 1;
+              global.sounds.trigger_units("items/saw_cut_wood", f.xCenter() -
+                this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
             case 2980: // drill
               f.number -= 1;
               global.sounds.trigger_units("items/melee/drill" + randomInt(1, 3),
                 f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+              break;
+            case 2981: // roundsaw
+              f.number -= 2;
+              global.sounds.trigger_units("items/roundsaw_cut_wood", f.xCenter() -
+                this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
             case 2983: // chainsaw
               f.number -= 2;
@@ -1130,6 +1165,9 @@ class Level {
       case 306:
       case 307:
         f.remove = true;
+        global.sounds.trigger_units("features/movable_wall",
+          f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+        this.currMap.addHeaderMessage("The wall easily slid over");
         break;
       case 321: // window (open)
         if (use_item && h.holding(2976)) {
@@ -1396,7 +1434,7 @@ class Level {
           }
         }
         break;
-      case 412: // gravel (rocks)
+      case 412: // Gravel (rocks)
         if (h.canPickup()) {
           new_i = new Item(2931);
           h.pickup(new_i);
@@ -1411,12 +1449,12 @@ class Level {
           }
         }
         break;
-      case 421: // tree (maple)
-      case 422: // tree (unknown)
-      case 423: // tree (cedar)
-      case 424: // tree (dead)
-      case 425: // tree (large)
-      case 426: // tree (pine)
+      case 421: // Tree (maple)
+      case 422: // Tree (unknown)
+      case 423: // Tree (cedar)
+      case 424: // Tree (dead)
+      case 425: // Tree (large)
+      case 426: // Tree (pine)
         int branch_id = 0;
         switch(f.ID) {
           case 421:
@@ -1438,9 +1476,11 @@ class Level {
             branch_id = 2968;
             break;
         }
-        if (!use_item || !h.holding(2977, 2979, 2983)) {
+        if (!use_item || !h.holding(2977, 2979, 2981, 2983)) {
           if (f.toggle) {
             this.currMap.addItem(new Item(branch_id, h.frontX(), h.frontY()));
+            global.sounds.trigger_units("features/break_branch" + randomInt(1, 6),
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             if (randomChance(Constants.feature_treeChanceEndBranches)) {
               f.toggle = false;
             }
@@ -1455,6 +1495,13 @@ class Level {
               break;
             case 2979: // saw
               f.number -= 1;
+              global.sounds.trigger_units("items/saw_cut_wood", f.xCenter() -
+                this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+              break;
+            case 2981: // roundsaw
+              f.number -= 1;
+              global.sounds.trigger_units("items/roundsaw_cut_wood", f.xCenter() -
+                this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
             case 2983: // chainsaw
               f.number -= 4;
