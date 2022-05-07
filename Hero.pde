@@ -2638,6 +2638,7 @@ class Hero extends Unit {
       this.nodes.get(code).unlock();
       this.updateDependencies();
       Hero.this.upgrade(code);
+      global.sounds.trigger_player("player/unlock_node");
     }
 
     ArrayList<HeroTreeCode> unlockedCodes() {
@@ -3830,6 +3831,7 @@ class Hero extends Unit {
     this.level++;
     this.refreshExperienceNextLevel();
     this.level_tokens += this.level;
+    global.sounds.trigger_player("player/levelup");
   }
 
 
