@@ -2311,11 +2311,6 @@ class Unit extends MapObject {
     if (index < 0 || index >= this.abilities.size()) {
       return;
     }
-    this.curr_action_id = index;
-    if (this.map_key == 0) {
-      this.curr_action_x = map.mX;
-      this.curr_action_y = map.mY;
-    }
     Ability a = this.abilities.get(index);
     if (a == null) {
       return;
@@ -2332,14 +2327,24 @@ class Unit extends MapObject {
       if (this.object_targeting == null) {
         return;
       }
-      if (a.turnsCaster()) {
-        this.face(this.object_targeting);
-      }
       if (Unit.class.isInstance(this.object_targeting)) {
+        this.curr_action_id = index;
+        if (this.map_key == 0) {
+          this.curr_action_x = map.mX;
+          this.curr_action_y = map.mY;
+        }
+        if (a.turnsCaster()) {
+          this.face(this.object_targeting);
+        }
         a.activate(this, this.map_key, map, (Unit)this.object_targeting, this.object_targeting_key);
       }
     }
     else {
+      this.curr_action_id = index;
+      if (this.map_key == 0) {
+        this.curr_action_x = map.mX;
+        this.curr_action_y = map.mY;
+      }
       if (a.turnsCaster()) {
         this.face(map.mX, map.mY);
       }

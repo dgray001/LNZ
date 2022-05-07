@@ -2723,7 +2723,7 @@ class Hero extends Unit {
         return;
       }
       rectMode(CORNERS);
-      fill(0);
+      fill(this.color_background);
       noStroke();
       rect(this.xi, this.yi, this.xf, this.yf);
       translate(this.translateX, this.translateY);

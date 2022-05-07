@@ -485,6 +485,8 @@ class Ability {
     this.activate(u, source_key, map, null, -1);
   }
   void activate(Unit u, int source_key, GameMap map, Unit target_unit, int target_key) {
+    int ability_index = u.curr_action_id;
+    u.curr_action_id = 0;
     switch(this.ID) {
       case 102: // Mighty Pen
       case 107: // Mighty Pen II
@@ -517,15 +519,19 @@ class Ability {
         this.timer_other = Constants.ability_103_castTime;
         this.toggle = true;
         u.curr_action = UnitAction.CASTING;
+        u.curr_action_id = ability_index;
+        global.sounds.trigger_units("units/ability/103", u.x - map.viewX, u.y - map.viewY);
         break;
       case 104: // Senseless Grit
         u.healPercent(Constants.ability_104_activeHealAmount, false);
         u.addStatusEffect(StatusEffectCode.SENSELESS_GRIT, Constants.ability_104_speedBuffTimer);
+        global.sounds.trigger_units("units/ability/104", u.x - map.viewX, u.y - map.viewY);
         break;
       case 105: // Rage of the Ben
         u.increaseMana(Constants.ability_105_rageGain);
         u.addStatusEffect(StatusEffectCode.INVULNERABLE, Constants.ability_105_buffTime);
         u.addStatusEffect(StatusEffectCode.RAGE_OF_THE_BEN, Constants.ability_105_buffTime);
+        global.sounds.trigger_units("units/ability/105", u.x - map.viewX, u.y - map.viewY);
         break;
       case 107: // Mighty Pen II
         map.addProjectile(new Projectile(3002, source_key, u));
@@ -535,20 +541,25 @@ class Ability {
         this.timer_other = Constants.ability_108_castTime;
         this.toggle = true;
         u.curr_action = UnitAction.CASTING;
+        u.curr_action_id = ability_index;
+        global.sounds.trigger_units("units/ability/103", u.x - map.viewX, u.y - map.viewY);
         break;
       case 109: // Senseless Grit II
         u.healPercent(Constants.ability_109_activeHealAmount, false);
         u.addStatusEffect(StatusEffectCode.SENSELESS_GRITII, Constants.ability_109_speedBuffTimer);
+        global.sounds.trigger_units("units/ability/104", u.x - map.viewX, u.y - map.viewY);
         break;
       case 110: // Rage of the Ben II
         u.increaseMana(Constants.ability_110_rageGain);
         u.addStatusEffect(StatusEffectCode.INVULNERABLE, Constants.ability_110_buffTime);
         u.addStatusEffect(StatusEffectCode.RAGE_OF_THE_BENII, Constants.ability_110_buffTime);
+        global.sounds.trigger_units("units/ability/110", u.x - map.viewX, u.y - map.viewY);
         break;
       case 112: // Tongue Lash
         this.timer_other = Constants.ability_112_castTime;
         this.toggle = true;
         u.curr_action = UnitAction.CASTING;
+        u.curr_action_id = ability_index;
         break;
       case 113: // Amphibious Leap
         if (u.drenched()) {
@@ -560,6 +571,7 @@ class Ability {
         this.toggle = true;
         u.curr_action_unhaltable = true;
         u.curr_action = UnitAction.CASTING;
+        u.curr_action_id = ability_index;
         break;
       case 114: // Alkaloid Secretion
         if (u.alkaloidSecretion()) {
