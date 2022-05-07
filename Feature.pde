@@ -1068,6 +1068,22 @@ class Feature extends MapObject {
       case 224:
       case 225:
       case 226:
+      case 231: // barbed wire fence
+      case 232:
+      case 233:
+      case 234:
+      case 235:
+      case 236:
+      case 237:
+      case 238:
+      case 239:
+      case 240:
+      case 241:
+      case 242:
+      case 243:
+      case 244:
+      case 245:
+      case 246:
       case 321: // window (open)
       case 322: // window (closed)
       case 323: // window (locked)
@@ -1211,6 +1227,22 @@ class Feature extends MapObject {
       case 224:
       case 225:
       case 226:
+      case 231: // barbed wire fence
+      case 232:
+      case 233:
+      case 234:
+      case 235:
+      case 236:
+      case 237:
+      case 238:
+      case 239:
+      case 240:
+      case 241:
+      case 242:
+      case 243:
+      case 244:
+      case 245:
+      case 246:
         return Constants.feature_wireFenceInteractionTime;
       case 301: // movable brick wall
       case 302:
@@ -1450,32 +1482,77 @@ class Feature extends MapObject {
       case 224:
       case 225:
       case 226:
-        // climb over
-        if (u.holding(2978)) {
+        if (use_item && u.holding(2978)) {
           this.destroy(map);
+          global.sounds.trigger_environment("items/wire_clipper",
+            this.xCenter() - map.viewX, this.yCenter() - map.viewY);
+          break;
+        }
+        else if (u.agility() >= 2) {
+          u.setLocation(this.xCenter(), this.yCenter());
+          global.sounds.trigger_units("features/climb_fence",
+            this.xCenter() - map.viewX, this.yCenter() - map.viewY);
+          if (randomChance(0.3)) {
+            u.addStatusEffect(StatusEffectCode.BLEEDING, 2000);
+          }
+        }
+        break;
+      case 231: // barbed wire fence
+      case 232:
+      case 233:
+      case 234:
+      case 235:
+      case 236:
+      case 237:
+      case 238:
+      case 239:
+      case 240:
+      case 241:
+      case 242:
+      case 243:
+      case 244:
+      case 245:
+      case 246:
+        if (u.agility() >= 3) {
+          u.setLocation(this.xCenter(), this.yCenter());
+          global.sounds.trigger_units("features/climb_fence",
+            this.xCenter() - map.viewX, this.yCenter() - map.viewY);
+          if (randomChance(0.8)) {
+            u.addStatusEffect(StatusEffectCode.BLEEDING, 2500);
+          }
         }
         break;
       case 321: // window (open)
         if (use_item && u.holding(2976)) {
           this.destroy(map);
+          global.sounds.trigger_environment("items/window_break",
+            this.xCenter() - map.viewX, this.yCenter() - map.viewY);
           break;
         }
         this.remove = true;
         map.addFeature(new Feature(322, this.x, this.y));
+        global.sounds.trigger_environment("features/window_close",
+          this.xCenter() - map.viewX, this.yCenter() - map.viewY);
         break;
       case 322: // window (closed)
         if (use_item && u.holding(2976)) {
           this.destroy(map);
+          global.sounds.trigger_environment("items/window_break",
+            this.xCenter() - map.viewX, this.yCenter() - map.viewY);
           break;
         }
         this.remove = true;
         map.addFeature(new Feature(321, this.x, this.y));
+        global.sounds.trigger_environment("features/window_open",
+          this.xCenter() - map.viewX, this.yCenter() - map.viewY);
         break;
       case 323: // window (locked)
         if (!u.holding(2976)) {
           break;
         }
         this.destroy(map);
+        global.sounds.trigger_environment("items/window_break",
+            this.xCenter() - map.viewX, this.yCenter() - map.viewY);
         break;
       case 331: // wooden door (open)
       case 332:

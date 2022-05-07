@@ -1101,6 +1101,12 @@ class Hero extends Unit {
             textAlign(CENTER, CENTER);
             text(int(ceil(0.001 * this.a.timer_cooldown)), this.xCenter(), this.yCenter());
           }
+          if (this.a.checkMana()) {
+            fill(255);
+            textSize(18);
+            textAlign(LEFT, BOTTOM);
+            text(int(ceil(this.a.manaCost())), this.xi + 2, this.yf - 1);
+          }
           fill(255);
           textSize(18);
           textAlign(LEFT, TOP);
