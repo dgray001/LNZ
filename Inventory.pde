@@ -179,6 +179,9 @@ class Inventory {
       return null;
     }
     for (InventorySlot slot : this.slots) {
+      if (slot.deactivated) {
+        continue;
+      }
       if (slot.item != null && slot.item.ID == i.ID) {
         int stack_left = slot.item.maxStack() - slot.item.stack;
         if (stack_left < 1) {
@@ -195,6 +198,9 @@ class Inventory {
       }
     }
     for (InventorySlot slot : this.slots) {
+      if (slot.deactivated) {
+        continue;
+      }
       if (slot.item == null) {
         slot.item = new Item(i);
         if (slot.item.remove) {
@@ -210,7 +216,7 @@ class Inventory {
     return this.placeAt(i, index, false);
   }
   Item placeAt(Item i, int index, boolean replace) {
-    if (index < 0 || index >= this.slots.size()) {
+    if (index < 0 || index >= this.slots.size() || this.slots.get(index).deactivated) {
       return i;
     }
     if (i != null && i.remove) {
@@ -259,11 +265,20 @@ class Inventory {
   }
 
 
-  void update(int timeElapsed) {
+  void drawBackground() {
     rectMode(CORNER);
     fill(this.color_background);
     noStroke();
     rect(0, 0, this.display_width, this.display_height);
+  }
+
+  void update(int timeElapsed) {
+    this.update(timeElapsed, true);
+  }
+  void update(int timeElapsed, boolean draw_background) {
+    if (draw_background) {
+      this.drawBackground();
+    }
     imageMode(CORNERS);
     for (int x = 0; x < this.max_cols; x++) {
       for (int y = 0; y < this.max_rows; y++) {
@@ -354,12 +369,19 @@ class DeskInventory extends Inventory {
     void hover() {}
     void click() {
       if (this.opened) {
-        return;
+        this.opened = false;
+        DeskInventory.this.slots.get(0).deactivated = true;
+        DeskInventory.this.slots.get(1).deactivated = true;
+        this.moveButton(0, -DeskInventory.this.button_size);
+        global.sounds.trigger_environment("features/desk_drawer1_close");
       }
-      this.opened = true;
-      DeskInventory.this.slots.get(0).deactivated = false;
-      DeskInventory.this.slots.get(1).deactivated = false;
-      this.img = global.images.getTransparentPixel();
+      else {
+        this.opened = true;
+        DeskInventory.this.slots.get(0).deactivated = false;
+        DeskInventory.this.slots.get(1).deactivated = false;
+        this.moveButton(0, DeskInventory.this.button_size);
+        global.sounds.trigger_environment("features/desk_drawer1_open");
+      }
     }
     void dehover() {}
     void release() {}
@@ -374,11 +396,17 @@ class DeskInventory extends Inventory {
     void hover() {}
     void click() {
       if (this.opened) {
-        return;
+        this.opened = false;
+        DeskInventory.this.slots.get(5).deactivated = true;
+        this.moveButton(-DeskInventory.this.button_size, -0.3 * DeskInventory.this.button_size);
+        global.sounds.trigger_environment("features/desk_drawer2_close");
       }
-      this.opened = true;
-      DeskInventory.this.slots.get(5).deactivated = false;
-      this.img = global.images.getTransparentPixel();
+      else {
+        this.opened = true;
+        DeskInventory.this.slots.get(5).deactivated = false;
+        this.moveButton(DeskInventory.this.button_size, 0.3 * DeskInventory.this.button_size);
+        global.sounds.trigger_environment("features/desk_drawer2_open");
+      }
     }
     void dehover() {}
     void release() {}
@@ -393,11 +421,17 @@ class DeskInventory extends Inventory {
     void hover() {}
     void click() {
       if (this.opened) {
-        return;
+        this.opened = false;
+        DeskInventory.this.slots.get(8).deactivated = true;
+        this.moveButton(-DeskInventory.this.button_size, -0.3 * DeskInventory.this.button_size);
+        global.sounds.trigger_environment("features/desk_drawer2_close");
       }
-      this.opened = true;
-      DeskInventory.this.slots.get(8).deactivated = false;
-      this.img = global.images.getTransparentPixel();
+      else {
+        this.opened = true;
+        DeskInventory.this.slots.get(8).deactivated = false;
+        this.moveButton(DeskInventory.this.button_size, 0.3 * DeskInventory.this.button_size);
+        global.sounds.trigger_environment("features/desk_drawer2_open");
+      }
     }
     void dehover() {}
     void release() {}
@@ -427,16 +461,41 @@ class DeskInventory extends Inventory {
   void setButtonSize(float button_size) {
     super.setButtonSize(button_size);
     this.top_drawer.setLocation(2, 2, 2 + 2 * button_size, 2 + this.button_size);
+    if (this.top_drawer.opened) {
+      this.top_drawer.moveButton(0, DeskInventory.this.button_size);
+    }
     this.mid_drawer.setLocation(2 + 2 * button_size, 2 + button_size, 2 + 3 * button_size, 2 + 2 * this.button_size);
+    if (this.mid_drawer.opened) {
+      this.mid_drawer.moveButton(DeskInventory.this.button_size, 0.3 * DeskInventory.this.button_size);
+    }
     this.bottom_drawer.setLocation(2 + 2 * button_size, 2 + 2 * button_size, 2 + 3 * button_size, 2 + 3 * this.button_size);
+    if (this.bottom_drawer.opened) {
+      this.bottom_drawer.moveButton(DeskInventory.this.button_size, 0.3 * DeskInventory.this.button_size);
+    }
   }
 
   @Override
   void update(int millis) {
-    super.update(millis);
-    this.top_drawer.update(millis);
-    this.mid_drawer.update(millis);
-    this.bottom_drawer.update(millis);
+    this.drawBackground();
+    if (top_drawer.opened) {
+      this.top_drawer.update(millis);
+    }
+    if (mid_drawer.opened) {
+      this.mid_drawer.update(millis);
+    }
+    if (bottom_drawer.opened) {
+      this.bottom_drawer.update(millis);
+    }
+    super.update(millis, false);
+    if (!top_drawer.opened) {
+      this.top_drawer.update(millis);
+    }
+    if (!mid_drawer.opened) {
+      this.mid_drawer.update(millis);
+    }
+    if (!bottom_drawer.opened) {
+      this.bottom_drawer.update(millis);
+    }
   }
 
   @Override
@@ -706,8 +765,92 @@ class RefridgeratorInventory extends Inventory {
 
 
 class WasherInventory extends Inventory {
+  class WasherButton extends RectangleButton {
+    protected boolean opened = false;
+    WasherButton() {
+      super(0, 0, 0, 0);
+      this.setColors(color(1, 0), color(1, 0), color(1, 0), color(1, 0), color(1, 0));
+      this.noStroke();
+    }
+
+    void hover() {}
+    void click() {
+      if (this.opened) {
+        this.opened = false;
+        WasherInventory.this.slots.get(5).deactivated = true;
+        WasherInventory.this.slots.get(6).deactivated = true;
+        WasherInventory.this.slots.get(9).deactivated = true;
+        WasherInventory.this.slots.get(10).deactivated = true;
+        this.moveButton(2 * WasherInventory.this.button_size, 0);
+        global.sounds.trigger_environment("features/washer_close");
+      }
+      else {
+        this.opened = true;
+        WasherInventory.this.slots.get(5).deactivated = false;
+        WasherInventory.this.slots.get(6).deactivated = false;
+        WasherInventory.this.slots.get(9).deactivated = false;
+        WasherInventory.this.slots.get(10).deactivated = false;
+        this.moveButton(-2 * WasherInventory.this.button_size, 0);
+        global.sounds.trigger_environment("features/washer_open");
+      }
+    }
+    void dehover() {}
+    void release() {}
+  }
+
+  protected WasherButton button = new WasherButton();
+
   WasherInventory() {
-    super(3, 3, true);
+    super(4, 4, true);
+    this.deactivateSlots();
+    this.setButtonSize(this.button_size);
+  }
+
+  @Override
+  void setButtonSize(float button_size) {
+    super.setButtonSize(button_size);
+    this.button.setLocation(2 + this.button_size, 2 + this.button_size, 2 + 3 * button_size, 2 + 3 * this.button_size);
+    if (this.button.opened) {
+      this.button.moveButton(-2 * WasherInventory.this.button_size, 0);
+    }
+  }
+
+  @Override
+  void update(int millis) {
+    if (button.opened) {
+      imageMode(CORNER);
+      PImage open_img = global.images.getImage("features/washer_opened.png");
+      PImage closed_img = global.images.getImage("features/washer_closed.png");
+      float right_side = 0.5 * this.display_width * (1 + float(closed_img.width) / closed_img.height);
+      float display_w = this.display_width * float(open_img.width) / open_img.height;
+      image(open_img, right_side - display_w, 0, display_w, this.display_height);
+    }
+    super.update(millis, false);
+    if (!button.opened) {
+      imageMode(CENTER);
+      PImage closed_img = global.images.getImage("features/washer_closed.png");
+      float display_w = this.display_width * float(closed_img.width) / closed_img.height;
+      image(closed_img, 0.5 * this.display_width, 0.5 * this.display_height, display_w, this.display_height);
+    }
+    this.button.update(millis);
+  }
+
+  @Override
+  void mouseMove(float mX, float mY) {
+    super.mouseMove(mX, mY);
+    this.button.mouseMove(mX, mY);
+  }
+
+  @Override
+  void mousePress() {
+    super.mousePress();
+    this.button.mousePress();
+  }
+
+  @Override
+  void mouseRelease(float mX, float mY) {
+    super.mouseRelease(mX, mY);
+    this.button.mouseRelease(mX, mY);
   }
 }
 
