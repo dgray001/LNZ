@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220507: v0.6.9u" +
+  "\n20220507: v0.6.9v" +
   "\nLines: 34958 (v0.6.9t)" +
   "\nImages: 1056 (v0.6.9t)" +
   "\nSounds: 206 (v0.6.9t)" +
@@ -168,6 +168,7 @@ static class Constants {
   static final float map_tierImageHeight = 50;
   static final float map_statusImageHeight = 30;
   static final int map_maxHeaderMessages = 5;
+  static final float map_defaultMaxSoundDistance = 8;
 
   // Features
   static final float feature_defaultInteractionDistance = 0.3;
