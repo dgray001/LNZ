@@ -977,8 +977,6 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
-        global.sounds.trigger_environment("features/fridge",
-          f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         break;
       case 175: // refridgerator
         if (h.inventory.viewing) {
@@ -986,8 +984,6 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
-        global.sounds.trigger_environment("features/fridge",
-          f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         break;
       case 176: // washer
         if (h.inventory.viewing) {
@@ -1002,8 +998,6 @@ class Level {
         }
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
-        global.sounds.trigger_environment("features/dryer",
-          f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         break;
       case 181: // garbage can
         if (h.inventory.viewing) {
