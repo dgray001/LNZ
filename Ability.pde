@@ -926,7 +926,7 @@ class Ability {
           this.target_unit.damage(u, this.target_unit.calculateDamageFrom(power,
             DamageType.MAGICAL, Element.BROWN, u.piercing(), u.penetration()));
           global.sounds.trigger_units("units/ability/115_spit", u.x - map.viewX, u.y - map.viewY);
-          global.sounds.silence_units("units/ability/115", u.x - map.viewX, u.y - map.viewY);
+          global.sounds.silence_units("units/ability/115");
         }
         break;
       case 116: // Aposematic Camouflage II
@@ -1089,7 +1089,7 @@ class Ability {
           this.target_unit.damage(u, this.target_unit.calculateDamageFrom(power,
             DamageType.MAGICAL, Element.BROWN, u.piercing(), u.penetration()));
           global.sounds.trigger_units("units/ability/115_spit", u.x - map.viewX, u.y - map.viewY);
-          global.sounds.silence_units("units/ability/115", u.x - map.viewX, u.y - map.viewY);
+          global.sounds.silence_units("units/ability/115");
         }
         break;
 
