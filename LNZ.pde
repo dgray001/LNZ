@@ -63,10 +63,8 @@ void draw() {
       break;
     case ENTERING_TUTORIAL:
       background(60);
-      global.state = ProgramState.ENTERING_MAINMENU;
-      global.profile.achievement(AchievementCode.COMPLETED_TUTORIAL);
-      //global.state = ProgramState.TUTORIAL;
-      //global.menu = new TutorialInterface();
+      global.state = ProgramState.TUTORIAL;
+      global.menu = new TutorialInterface();
       break;
     case TUTORIAL:
       break;

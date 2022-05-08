@@ -1379,6 +1379,7 @@ class MapEditorInterface extends InterfaceLNZ {
   private OpenTestMapThread open_testMap_thread;
   private OpenTestLevelThread open_testLevel_thread;
 
+
   MapEditorInterface() {
     this.buttons[0] = new MapEditorButton1();
     this.buttons[1] = new MapEditorButton2();

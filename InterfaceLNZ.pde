@@ -807,8 +807,6 @@ abstract class InterfaceLNZ {
     }
   }
 
-  abstract void showNerdStats();
-
   void LNZ_mouseMove(float mX, float mY) {
     if (global.profile != null && global.profile.player_tree.curr_viewing) {
       global.profile.player_tree.mouseMove(mX, mY);
@@ -922,11 +920,12 @@ abstract class InterfaceLNZ {
   abstract void loseFocus();
   abstract void gainFocus();
   abstract void update(int millis);
+  abstract void showNerdStats();
   abstract void mouseMove(float mX, float mY);
   abstract void mousePress();
   abstract void mouseRelease(float mX, float mY);
+  abstract void scroll(int amount);
   abstract void keyPress();
   abstract void openEscForm();
   abstract void keyRelease();
-  abstract void scroll(int amount);
 }
