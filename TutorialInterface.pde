@@ -40,7 +40,7 @@ class TutorialInterface extends InterfaceLNZ {
     }
     void release() {
       this.stayDehovered();
-      // options form
+      TutorialInterface.this.form = new OptionsForm();
     }
   }
 
@@ -48,10 +48,11 @@ class TutorialInterface extends InterfaceLNZ {
     TutorialButton3() {
       super();
       this.message = "Achievements";
+      this.text_size = 12;
     }
     void release() {
       this.stayDehovered();
-      // achievements form
+      TutorialInterface.this.form = new AchievementsForm();
     }
   }
 
@@ -62,7 +63,7 @@ class TutorialInterface extends InterfaceLNZ {
     }
     void release() {
       this.stayDehovered();
-      // confirm then save / exit
+      TutorialInterface.this.form = new GoToMainMenuForm();
     }
   }
 
@@ -76,6 +77,17 @@ class TutorialInterface extends InterfaceLNZ {
     void release() {
       this.stayDehovered();
       // help form (help depends on stage in tutorial)
+    }
+  }
+
+
+  class GoToMainMenuForm extends ConfirmForm {
+    GoToMainMenuForm() {
+      super("Main Menu", "Are you sure you want to save and exit to the main menu?");
+    }
+    void submit() {
+      this.canceled = true;
+      TutorialInterface.this.saveAndExitToMainMenu();
     }
   }
 
@@ -159,9 +171,15 @@ class TutorialInterface extends InterfaceLNZ {
   }
 
   void loseFocus() {
+    if (this.tutorial != null) {
+      this.tutorial.loseFocus();
+    }
   }
 
   void gainFocus() {
+    if (this.tutorial != null) {
+      this.tutorial.gainFocus();
+    }
   }
 
   void update(int millis) {
@@ -226,23 +244,111 @@ class TutorialInterface extends InterfaceLNZ {
   }
 
   void mouseMove(float mX, float mY) {
+    boolean refreshMapLocation = false;
+    // level mouse move
+    if (this.tutorial != null) {
+      this.tutorial.mouseMove(mX, mY);
+      if (this.leftPanel.clicked || this.rightPanel.clicked) {
+        refreshMapLocation = true;
+      }
+    }
+    // left panel mouse move
+    this.leftPanel.mouseMove(mX, mY);
+    if (this.leftPanel.open && !this.leftPanel.collapsing) {
+      if (this.tutorial != null) {
+        if (this.tutorial.leftPanelElementsHovered()) {
+          this.leftPanel.hovered = false;
+        }
+      }
+      else if (this.tutorial != null) {
+        if (this.tutorial.leftPanelElementsHovered()) {
+          this.leftPanel.hovered = false;
+        }
+      }
+    }
+    // right panel mouse move
+    this.rightPanel.mouseMove(mX, mY);
+    if (this.rightPanel.open && !this.rightPanel.collapsing) {
+      for (TutorialButton button : this.buttons) {
+        button.mouseMove(mX, mY);
+      }
+    }
+    // refresh map location
+    if (refreshMapLocation) {
+      if (this.tutorial != null) {
+        this.tutorial.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+      }
+    }
+    // cursor icon resolution
+    if (this.leftPanel.clicked || this.rightPanel.clicked) {
+      this.resizeButtons();
+      global.setCursor("icons/cursor_resizeh_white.png");
+    }
+    else if (this.leftPanel.hovered || this.rightPanel.hovered) {
+      global.setCursor("icons/cursor_resizeh.png");
+    }
+    else {
+      global.defaultCursor("icons/cursor_resizeh_white.png", "icons/cursor_resizeh.png");
+    }
   }
 
   void mousePress() {
+    if (this.tutorial != null) {
+      this.tutorial.mousePress();
+    }
+    this.leftPanel.mousePress();
+    this.rightPanel.mousePress();
+    if (this.leftPanel.clicked || this.rightPanel.clicked) {
+      global.setCursor("icons/cursor_resizeh_white.png");
+    }
+    else {
+      global.defaultCursor("icons/cursor_resizeh_white.png");
+    }
+    if (this.rightPanel.open && !this.rightPanel.collapsing) {
+      for (TutorialButton button : this.buttons) {
+        button.mousePress();
+      }
+    }
   }
 
   void mouseRelease(float mX, float mY) {
+    if (this.tutorial != null) {
+      this.tutorial.mouseRelease(mX, mY);
+    }
+    this.leftPanel.mouseRelease(mX, mY);
+    this.rightPanel.mouseRelease(mX, mY);
+    if (this.leftPanel.hovered || this.rightPanel.hovered) {
+      global.setCursor("icons/cursor_resizeh.png");
+    }
+    else {
+      global.defaultCursor("icons/cursor_resizeh.png");
+    }
+    if (this.rightPanel.open && !this.rightPanel.collapsing) {
+      for (TutorialButton button : this.buttons) {
+        button.mouseRelease(mX, mY);
+      }
+    }
   }
 
   void scroll(int amount) {
+    if (this.tutorial != null) {
+      this.tutorial.scroll(amount);
+    }
   }
 
   void keyPress() {
+    if (this.tutorial != null) {
+      this.tutorial.keyPress();
+    }
   }
 
   void openEscForm() {
+    this.form = new EscForm();
   }
 
   void keyRelease() {
+    if (this.tutorial != null) {
+      this.tutorial.keyRelease();
+    }
   }
 }

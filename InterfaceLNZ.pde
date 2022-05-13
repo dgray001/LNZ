@@ -47,6 +47,33 @@ abstract class FormLNZ extends Form {
 
 abstract class InterfaceLNZ {
 
+  abstract class ConfirmForm extends FormLNZ {
+    ConfirmForm(String title, String message) {
+      this(title, message, Constants.mapEditor_formWidth_small, Constants.mapEditor_formHeight_small);
+    }
+    ConfirmForm(String title, String message, boolean mediumForm) {
+      this(title, message, Constants.mapEditor_formWidth, Constants.mapEditor_formHeight);
+    }
+    ConfirmForm(String title, String message, float formWidth, float formHeight) {
+      super(0.5 * (width - formWidth), 0.5 * (height - formHeight),
+        0.5 * (width + formWidth), 0.5 * (height + formHeight));
+      this.setTitleText(title);
+      this.setTitleSize(18);
+      this.color_background = color(180, 250, 180);
+      this.color_header = color(30, 170, 30);
+
+      SubmitCancelFormField submit = new SubmitCancelFormField("  Ok  ", "Cancel");
+      submit.button1.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+      submit.button2.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+      this.addField(new SpacerFormField(0));
+      this.addField(new TextBoxFormField(message, formHeight - 130));
+      this.addField(submit);
+    }
+  }
+
+
   class EscForm extends FormLNZ {
     class EscButtonFormField extends ButtonFormField {
       EscButtonFormField(String message) {
