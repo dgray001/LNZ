@@ -29,7 +29,7 @@ class TutorialInterface extends InterfaceLNZ {
     }
     void release() {
       this.stayDehovered();
-      // restart tutorial
+      TutorialInterface.this.form = new RestartTutorialForm();
     }
   }
 
@@ -47,12 +47,11 @@ class TutorialInterface extends InterfaceLNZ {
   class TutorialButton3 extends TutorialButton {
     TutorialButton3() {
       super();
-      this.message = "Achievements";
-      this.text_size = 12;
+      this.message = "Perk\nTree";
     }
     void release() {
       this.stayDehovered();
-      TutorialInterface.this.form = new AchievementsForm();
+      TutorialInterface.this.openPlayerTree();
     }
   }
 
@@ -91,8 +90,21 @@ class TutorialInterface extends InterfaceLNZ {
     }
   }
 
+  class RestartTutorialForm extends ConfirmForm {
+    RestartTutorialForm() {
+      super("Restart Tutorial", "Are you sure you want to restart the tutorial? " +
+        "Any current progress will be lost.");
+    }
+    void submit() {
+      this.canceled = true;
+      TutorialInterface.this.startNewTutorial();
+    }
+  }
+
 
   class OpenNewTutorialThread extends Thread {
+    private Level level;
+    private String curr_status = "";
 
     OpenNewTutorialThread() {
       super("OpenNewTutorialThread");
@@ -100,11 +112,37 @@ class TutorialInterface extends InterfaceLNZ {
 
     @Override
     void run() {
+      this.curr_status += "\nCreating Level";
+      this.level = new Level("data/locations", Location.TUTORIAL);
+      if (this.level.nullify) {
+        this.curr_status += " -> " + global.lastErrorMessage();
+        delay(2500);
+        return;
+      }
+      this.curr_status += "\nCopying Data";
+      String destination_folder = "data/profiles/" + global.profile.display_name.toLowerCase() + "/locations";
+      if (!folderExists(destination_folder)) {
+        mkdir(destination_folder);
+      }
+      copyFolder("data/locations/" + Location.TUTORIAL.file_name(), destination_folder);
+      this.level.folderPath = destination_folder;
+      this.level.save();
+      if (this.level.nullify) {
+        this.curr_status += " -> " + global.lastErrorMessage();
+        delay(2500);
+        return;
+      }
+      if (!global.images.loaded_map_gifs) {
+        this.curr_status += "\nLoading Animations";
+        global.images.loadMapGifs();
+      }
     }
   }
 
 
   class OpenSavedTutorialThread extends Thread {
+    private Level level;
+    private String curr_status = "";
 
     OpenSavedTutorialThread() {
       super("OpenSavedTutorialThread");
@@ -140,6 +178,7 @@ class TutorialInterface extends InterfaceLNZ {
     this.leftPanel.color_background = global.color_panelBackground;
     this.rightPanel.color_background = global.color_panelBackground;
     this.resizeButtons();
+    this.checkTutorialSave();
   }
 
 
@@ -154,6 +193,19 @@ class TutorialInterface extends InterfaceLNZ {
     xi += buttonSize + Constants.mapEditor_buttonGapSize;
     this.buttons[3].setXLocation(xi, xi + buttonSize);
     this.buttons[4].setXLocation(xi, xi + buttonSize);
+  }
+
+
+  void checkTutorialSave() {
+    // check current save
+    this.startNewTutorial();
+  }
+
+  void startNewTutorial() {
+    this.status = TutorialStatus.STARTING_NEW;
+    this.tutorial = null;
+    this.newTutorialThread = new OpenNewTutorialThread();
+    this.newTutorialThread.start();
   }
 
 
@@ -192,8 +244,62 @@ class TutorialInterface extends InterfaceLNZ {
         rect(this.leftPanel.size, 0, width - this.rightPanel.size, height);
         break;
       case STARTING_NEW:
+        if (this.newTutorialThread.isAlive()) {
+          fill(global.color_mapBorder);
+          noStroke();
+          rectMode(CORNERS);
+          rect(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+          fill(global.color_loadingScreenBackground);
+          rect(this.leftPanel.size + Constants.map_borderSize, Constants.map_borderSize,
+              width - this.rightPanel.size - Constants.map_borderSize, height - Constants.map_borderSize);
+          fill(0);
+          textSize(24);
+          textAlign(LEFT, TOP);
+          text(this.newTutorialThread.curr_status + " ...", this.leftPanel.size +
+            Constants.map_borderSize + 30, Constants.map_borderSize + 30);
+        }
+        else {
+          if (this.newTutorialThread.level == null || this.newTutorialThread.level.nullify) {
+            this.tutorial = null;
+            this.status = TutorialStatus.INITIAL;
+          }
+          else {
+            this.tutorial = this.newTutorialThread.level;
+            this.tutorial.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+            this.status = TutorialStatus.PLAYING;
+          }
+          this.newTutorialThread = null;
+          return;
+        }
         break;
       case LOADING_SAVED:
+        if (this.savedTutorialThread.isAlive()) {
+          fill(global.color_mapBorder);
+          noStroke();
+          rectMode(CORNERS);
+          rect(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+          fill(global.color_loadingScreenBackground);
+          rect(this.leftPanel.size + Constants.map_borderSize, Constants.map_borderSize,
+              width - this.rightPanel.size - Constants.map_borderSize, height - Constants.map_borderSize);
+          fill(0);
+          textSize(24);
+          textAlign(LEFT, TOP);
+          text(this.savedTutorialThread.curr_status + " ...", this.leftPanel.size +
+            Constants.map_borderSize + 30, Constants.map_borderSize + 30);
+        }
+        else {
+          if (this.savedTutorialThread.level == null || this.savedTutorialThread.level.nullify) {
+            this.tutorial = null;
+            this.status = TutorialStatus.INITIAL;
+          }
+          else {
+            this.tutorial = this.savedTutorialThread.level;
+            this.tutorial.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+            this.status = TutorialStatus.PLAYING;
+          }
+          this.savedTutorialThread = null;
+          return;
+        }
         break;
       case PLAYING:
         if (this.tutorial != null) {

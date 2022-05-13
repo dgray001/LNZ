@@ -1,6 +1,6 @@
 // level location
 enum Location {
-  ERROR, HOMEBASE, FRANCISCAN_FRANCIS, FRANCISCAN_OUTSIDE;
+  ERROR, TUTORIAL, FRANCISCAN_FRANCIS, FRANCISCAN_OUTSIDE;
 
   private static final List<Location> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 
@@ -9,12 +9,12 @@ enum Location {
   }
   static public String display_name(Location a) {
     switch(a) {
+      case TUTORIAL:
+        return "Tutorial";
       case FRANCISCAN_FRANCIS:
         return "Francis Hall";
       case FRANCISCAN_OUTSIDE:
         return "Franciscan Campus";
-      case HOMEBASE:
-        return "Home Base";
       default:
         return "-- Error --";
     }
@@ -25,12 +25,12 @@ enum Location {
   }
   static public String file_name(Location a) {
     switch(a) {
+      case TUTORIAL:
+        return "tutorial";
       case FRANCISCAN_FRANCIS:
-        return "FRANCISCAN_FRANCIS";
+        return "franciscan_francis";
       case FRANCISCAN_OUTSIDE:
-        return "FRANCISCAN_OUTSIDE";
-      case HOMEBASE:
-        return "HOMEBASE";
+        return "franciscan_outside";
       default:
         return "ERROR";
     }
@@ -1905,6 +1905,11 @@ class Level {
 
 
   void open2Data(String[] lines) {
+    if (lines == null) {
+      global.errorMessage("ERROR: Null file data for level; possibly missing " +
+        "file at " + this.finalFolderPath() + ".");
+      return;
+    }
     Stack<ReadFileObject> object_queue = new Stack<ReadFileObject>();
 
     Linker curr_linker = null;
