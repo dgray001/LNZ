@@ -2891,9 +2891,45 @@ class Unit extends MapObject {
   void jump(GameMap map, int myKey) {
     this.resolveFloorHeight(map, myKey);
     if (!this.falling && this.curr_height == this.floor_height) {
-      this.curr_height += this.agility() * 2;
+      this.curr_height += this.jumpHeight();
     }
     this.resolveFloorHeight(map, myKey);
+  }
+
+  int jumpHeight() {
+    switch(this.agility()) {
+      case 0:
+        return 0;
+      case 1:
+        return 2;
+      case 2:
+        return 3;
+      case 3:
+        return 4;
+      case 4:
+        return 5;
+      case 5:
+        return 6;
+    }
+    return 0;
+  }
+
+  int walkHeight() {
+    switch(this.agility()) {
+      case 0:
+        return 0;
+      case 1:
+        return 1;
+      case 2:
+        return 1;
+      case 3:
+        return 2;
+      case 4:
+        return 2;
+      case 5:
+        return 2;
+    }
+    return 0;
   }
 
 
@@ -3397,7 +3433,7 @@ class Unit extends MapObject {
 
 
   boolean canMoveUp(int height_difference) {
-    if (height_difference > this.agility()) {
+    if (height_difference > this.walkHeight()) {
       return false;
     }
     return true;

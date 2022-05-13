@@ -96,6 +96,7 @@ class Condition {
 
   private int number1 = 0;
   private int number2 = 0;
+  private Rectangle rectangle = new Rectangle();
 
   private boolean met = false;
 
@@ -104,9 +105,9 @@ class Condition {
   void setID(int ID) {
     this.ID = ID;
     switch(ID) {
-      case 0:
+      case 0: // nothing
         break;
-      case 1:
+      case 1: // timer
         break;
       default:
         global.errorMessage("ERROR: Condition ID " + ID + " not recognized.");
@@ -117,9 +118,9 @@ class Condition {
 
   void setName() {
     switch(this.ID) {
-      case 0:
+      case 0: // nothing
         break;
-      case 1:
+      case 1: // timer
         if (number1 < 1000) {
           this.display_name = "Timer (" + this.number1 + " ms)";
         }
@@ -133,9 +134,9 @@ class Condition {
 
   boolean update(int timeElapsed, Level level) {
     switch(this.ID) {
-      case 0:
+      case 0: // nothing
         break;
-      case 1:
+      case 1: // timer
         if (!this.met) {
           this.number2 -= timeElapsed;
           if (this.number2 < 0) {
@@ -153,9 +154,9 @@ class Condition {
   void reset() {
     this.met = false;
     switch(this.ID) {
-      case 0:
+      case 0: // nothing
         break;
-      case 1:
+      case 1: // timer
         this.number2 = this.number1;
         break;
       default:
@@ -169,6 +170,7 @@ class Condition {
     fileString += "\nID: " + this.ID;
     fileString += "\nnumber1: " + this.number1;
     fileString += "\nnumber2: " + this.number2;
+    fileString += "\nrectangle: " + this.rectangle.fileString();
     fileString += "\nmet: " + this.met;
     fileString += "\nend: Condition\n";
     return fileString;
@@ -184,6 +186,9 @@ class Condition {
         break;
       case "number2":
         this.number2 = toInt(data);
+        break;
+      case "rectangle":
+        this.rectangle.addData(data);
         break;
       case "met":
         this.met = toBoolean(data);
@@ -203,15 +208,20 @@ class Effect {
   private String display_name = "Effect";
 
   private String message = "";
+  private int number = 0;
+  private Rectangle rectangle = new Rectangle();
 
   Effect() {}
 
   void setID(int ID) {
     this.ID = ID;
     switch(ID) {
-      case 0:
-        break;
-      case 1:
+      case 0: // nothing
+      case 1: // console log
+      case 2: // LNZ log
+      case 3: // Timestamp log
+      case 4: // Level chat
+      case 6: // win level
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
@@ -221,10 +231,21 @@ class Effect {
 
   void setName() {
     switch(this.ID) {
-      case 0:
+      case 1: // console log
+        this.display_name = "Console Log";
         break;
-      case 1:
-        this.display_name = "Log";
+      case 2: // LNZ log
+        this.display_name = "LNZ Log";
+        break;
+      case 3: // Timestamp log
+        this.display_name = "Timestamp Log";
+        break;
+      case 4: // Level chat
+        this.display_name = "Level Chat";
+        break;
+      case 6: // win level
+        this.display_name = "Win Level";
+        break;
       default:
         this.display_name = "Effect";
     }
@@ -232,10 +253,22 @@ class Effect {
 
   void actuate(Level level) {
     switch(this.ID) {
-      case 0:
+      case 0: // nothing
         break;
-      case 1:
+      case 1: // console log
+        println(this.message);
+        break;
+      case 2: // LNZ log
         global.log(this.message);
+        break;
+      case 3: // Timestamp log
+        global.log(millis() + this.message);
+        break;
+      case 4: // level chat
+        level.chat(this.message);
+        break;
+      case 6: // win level
+        level.complete(this.number);
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
@@ -247,6 +280,8 @@ class Effect {
     String fileString = "\nnew: Effect";
     fileString += "\nID: " + this.ID;
     fileString += "\nmessage: " + this.message;
+    fileString += "\nnumber: " + this.number;
+    fileString += "\nrectangle: " + this.rectangle.fileString();
     fileString += "\nend: Effect\n";
     return fileString;
   }
@@ -258,6 +293,12 @@ class Effect {
         break;
       case "message":
         this.message = data;
+        break;
+      case "number":
+        this.number = toInt(data);
+        break;
+      case "rectangle":
+        this.rectangle.addData(data);
         break;
       default:
         global.errorMessage("ERROR: Datakey " + datakey + " not recognized for Effect object.");

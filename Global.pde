@@ -111,7 +111,7 @@ class Global {
 
   void log(String message) {
     this.log.println(message);
-    println(message);
+    println("LNZ log: " + message);
   }
 
   String lastErrorMessage() {

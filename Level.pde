@@ -101,6 +101,8 @@ class Level {
   protected String levelName = "error";
   protected Location location = Location.ERROR;
   protected boolean nullify = false;
+  protected boolean completed = false;
+  protected int completion_code = 0;
 
   protected LevelForm level_form = null;
   protected LevelQuestBox level_questbox = null;
@@ -1550,6 +1552,16 @@ class Level {
   }
 
 
+  void complete() {
+    this.complete(0);
+  }
+  void complete(int completion_code) {
+    this.completion_code = completion_code;
+    this.completed = true;
+    this.save();
+  }
+
+
   void restartTimers() {
     this.restart_timers = true;
   }
@@ -1864,6 +1876,8 @@ class Level {
     file.println("new: Level");
     file.println("levelName: " + this.levelName);
     file.println("location: " + this.location.file_name());
+    file.println("completed: " + this.completed);
+    file.println("completion_code: " + this.completion_code);
     if (this.currMapName != null) {
       file.println("currMapName: " + this.currMapName);
     }
@@ -2073,6 +2087,12 @@ class Level {
         break;
       case "location":
         this.location = Location.location(data);
+        break;
+      case "completed":
+        this.completed = toBoolean(data);
+        break;
+      case "completion_code":
+        this.completion_code = toInt(data);
         break;
       case "currMapName":
         this.currMapName = data;
