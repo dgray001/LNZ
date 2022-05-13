@@ -112,7 +112,7 @@ class TutorialInterface extends InterfaceLNZ {
 
     @Override
     void run() {
-      this.curr_status += "\nCreating Level";
+      this.curr_status += "Creating Level";
       this.level = new Level("data/locations", Location.TUTORIAL);
       if (this.level.nullify) {
         this.curr_status += " -> " + global.lastErrorMessage();
@@ -120,13 +120,22 @@ class TutorialInterface extends InterfaceLNZ {
         return;
       }
       this.curr_status += "\nCopying Data";
-      String destination_folder = "data/profiles/" + global.profile.display_name.toLowerCase() + "/locations";
+      String destination_folder = "data/profiles/" + global.profile.display_name.toLowerCase() + "/locations/";
       if (!folderExists(destination_folder)) {
         mkdir(destination_folder);
       }
-      copyFolder("data/locations/" + Location.TUTORIAL.file_name(), destination_folder);
+      deleteFolder(destination_folder + Location.TUTORIAL.file_name());
+      copyFolder("data/locations/" + Location.TUTORIAL.file_name(),
+        destination_folder + Location.TUTORIAL.file_name());
       this.level.folderPath = destination_folder;
       this.level.save();
+      if (this.level.nullify) {
+        this.curr_status += " -> " + global.lastErrorMessage();
+        delay(2500);
+        return;
+      }
+      this.curr_status += "\nOpening Map";
+      this.level.setPlayer(new Hero(HeroCode.BEN));
       if (this.level.nullify) {
         this.curr_status += " -> " + global.lastErrorMessage();
         delay(2500);

@@ -1,0 +1,7 @@
+new: Level
+levelName: tutorial
+location: tutorial
+currMapName: test_tutorial
+mapNames: test_tutorial
+player_start_location: test_tutorial, 0.0, 1.0, 1.0, 2.0
+end: Level

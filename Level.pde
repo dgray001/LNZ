@@ -240,6 +240,13 @@ class Level {
     this.currMap.addPlayer(player);
   }
 
+  void openCurrMap() {
+    this.openMap(this.currMapName);
+    if (this.currMap == null || this.currMap.nullify) {
+      this.nullify = true;
+    }
+  }
+
   void openMap(String mapName) {
     if (mapName == null) {
       return;
@@ -247,6 +254,7 @@ class Level {
     if (!fileExists(this.finalFolderPath() + "/" + mapName + ".map.lnz")) {
       global.errorMessage("ERROR: Level " + this.levelName + " has no map " +
         "with name " + mapName + ".");
+      this.nullify = true;
       return;
     }
     if (mapName.equals(this.currMapName) && this.currMap != null) {
@@ -1906,6 +1914,7 @@ class Level {
 
   void open2Data(String[] lines) {
     if (lines == null) {
+      this.nullify = true;
       global.errorMessage("ERROR: Null file data for level; possibly missing " +
         "file at " + this.finalFolderPath() + ".");
       return;
