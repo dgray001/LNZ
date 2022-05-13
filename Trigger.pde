@@ -219,8 +219,9 @@ class Effect {
       case 0: // nothing
       case 1: // console log
       case 2: // LNZ log
-      case 3: // Timestamp log
-      case 4: // Level chat
+      case 3: // timestamp log
+      case 4: // header messae
+      case 5: // level chat
       case 6: // win level
         break;
       default:
@@ -237,10 +238,13 @@ class Effect {
       case 2: // LNZ log
         this.display_name = "LNZ Log";
         break;
-      case 3: // Timestamp log
+      case 3: // timestamp log
         this.display_name = "Timestamp Log";
         break;
-      case 4: // Level chat
+      case 4: // header messae
+        this.display_name = "Header Message";
+        break;
+      case 5: // level chat
         this.display_name = "Level Chat";
         break;
       case 6: // win level
@@ -264,7 +268,12 @@ class Effect {
       case 3: // Timestamp log
         global.log(millis() + this.message);
         break;
-      case 4: // level chat
+      case 4: // header message
+        if (level.currMap != null) {
+          level.currMap.addHeaderMessage(this.message);
+        }
+        break;
+      case 5: // level chat
         level.chat(this.message);
         break;
       case 6: // win level

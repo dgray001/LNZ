@@ -206,7 +206,10 @@ class TutorialInterface extends InterfaceLNZ {
 
 
   void checkTutorialSave() {
-    // check current save
+    if (folderExists("data/profiles/" + global.profile.display_name.toLowerCase() +
+      "/locations/" + Location.TUTORIAL.file_name())) {
+      //
+    }
     this.startNewTutorial();
   }
 
@@ -215,6 +218,20 @@ class TutorialInterface extends InterfaceLNZ {
     this.tutorial = null;
     this.newTutorialThread = new OpenNewTutorialThread();
     this.newTutorialThread.start();
+  }
+
+  void completedTutorial(int completion_code) {
+    switch(completion_code) {
+      case 0: // default
+        this.tutorial = null;
+        deleteFolder("data/profiles/" + global.profile.display_name.toLowerCase() + "/locations/" + Location.TUTORIAL.file_name());
+        global.profile.achievement(Achievement.COMPLETED_TUTORIAL);
+        this.saveAndExitToMainMenu();
+        break;
+      default:
+        global.errorMessage("ERROR: Completion code " + completion_code + " not recognized for tutorial.");
+        break;
+    }
   }
 
 
@@ -315,6 +332,9 @@ class TutorialInterface extends InterfaceLNZ {
           this.tutorial.update(millis);
           if (this.leftPanel.collapsing || this.rightPanel.collapsing) {
             refreshLevelLocation = true;
+          }
+          if (this.tutorial.completed) {
+            this.completedTutorial(this.tutorial.completion_code);
           }
         }
         break;
