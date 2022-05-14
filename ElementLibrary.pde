@@ -3115,6 +3115,18 @@ class IntegerFormField extends StringFormField {
     this.max_value = max;
   }
 
+  @Override
+  String getValue() {
+    int return_value = toInt(this.input.text);
+    if (return_value < this.min_value) {
+      return_value = this.min_value;
+    }
+    else if (return_value > this.max_value) {
+      return_value = this.max_value;
+    }
+    return Integer.toString(return_value);
+  }
+
   void submit() {
     if (this.focused()) {
       return;
@@ -3148,6 +3160,18 @@ class FloatFormField extends StringFormField {
     super(message, hint);
     this.min_value = min;
     this.max_value = max;
+  }
+
+  @Override
+  String getValue() {
+    float return_value = toFloat(this.input.text);
+    if (return_value < this.min_value) {
+      return_value = this.min_value;
+    }
+    else if (return_value > this.max_value) {
+      return_value = this.max_value;
+    }
+    return Float.toString(return_value);
   }
 
   void submit() {

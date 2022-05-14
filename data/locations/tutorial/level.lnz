@@ -1,7 +1,33 @@
 new: Level
 levelName: tutorial
 location: tutorial
+completed: false
+completion_code: 0
 currMapName: test_tutorial
 mapNames: test_tutorial
+nextTriggerKey: 1
+
+new: Trigger
+triggerName: test completion
+active: true
+looping: false
+amalgam: false
+new: Condition
+ID: 1
+number1: 3000
+number2: 3000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 6
+message:
+number: 0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
 player_start_location: test_tutorial, 0.0, 1.0, 1.0, 2.0
 end: Level

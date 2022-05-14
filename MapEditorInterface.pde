@@ -1074,8 +1074,8 @@ class MapEditorInterface extends InterfaceLNZ {
     void updateFields() {
       this.fields.get(1).setValueIfNotFocused(this.trigger.triggerName);
       this.fields.get(3).setValueIfNotFocused(Boolean.toString(this.trigger.active));
-      this.fields.get(3).setValueIfNotFocused(Boolean.toString(this.trigger.looping));
-      this.fields.get(3).setValueIfNotFocused(Boolean.toString(this.trigger.amalgam));
+      this.fields.get(4).setValueIfNotFocused(Boolean.toString(this.trigger.looping));
+      this.fields.get(5).setValueIfNotFocused(Boolean.toString(this.trigger.amalgam));
     }
   }
 
@@ -1108,9 +1108,9 @@ class MapEditorInterface extends InterfaceLNZ {
     void buttonPress(int i) {}
 
     void updateFields() {
-      this.fields.get(3).setValueIfNotFocused(Integer.toString(this.condition.ID));
+      this.fields.get(1).setValueIfNotFocused(Integer.toString(this.condition.ID));
       this.fields.get(3).setValueIfNotFocused(Integer.toString(this.condition.number1));
-      this.fields.get(3).setValueIfNotFocused(Integer.toString(this.condition.number2));
+      this.fields.get(4).setValueIfNotFocused(Integer.toString(this.condition.number2));
     }
   }
 
@@ -1124,7 +1124,9 @@ class MapEditorInterface extends InterfaceLNZ {
       this.effect = effect;
       this.setTitleText(effect.display_name);
       this.addField(new SpacerFormField(20));
-      this.addField(new IntegerFormField("  ", "Effect ID", 0, 1));
+      this.addField(new IntegerFormField("  ", "Effect ID", 0, 6));
+      this.addField(new SpacerFormField(20));
+      this.addField(new IntegerFormField("  ", "number", Integer.MIN_VALUE + 1, Integer.MAX_VALUE - 1));
       this.addField(new SpacerFormField(20));
       this.addField(new StringFormField("  ", "message"));
       this.updateFields();
@@ -1132,7 +1134,8 @@ class MapEditorInterface extends InterfaceLNZ {
 
     void submit() {
       this.effect.setID(toInt(this.fields.get(1).getValue()));
-      this.effect.message = this.fields.get(3).getValue();
+      this.effect.number = toInt(this.fields.get(3).getValue());
+      this.effect.message = this.fields.get(5).getValue();
       this.effect.setName();
       this.setTitleText(effect.display_name);
       this.updateFields();
@@ -1142,7 +1145,8 @@ class MapEditorInterface extends InterfaceLNZ {
 
     void updateFields() {
       this.fields.get(1).setValueIfNotFocused(Integer.toString(this.effect.ID));
-      this.fields.get(3).setValueIfNotFocused(this.effect.message);
+      this.fields.get(3).setValueIfNotFocused(Integer.toString(this.effect.number));
+      this.fields.get(5).setValueIfNotFocused(this.effect.message);
     }
   }
 

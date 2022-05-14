@@ -932,6 +932,7 @@ class Profile {
       this.achievement_tokens += code.tokens();
       this.save();
       global.notification = new AchievementNotification(code);
+      global.log("Completed achievement: " + code.display_name());
     }
   }
 

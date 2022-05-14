@@ -118,8 +118,6 @@ class Condition {
 
   void setName() {
     switch(this.ID) {
-      case 0: // nothing
-        break;
       case 1: // timer
         if (number1 < 1000) {
           this.display_name = "Timer (" + this.number1 + " ms)";
@@ -127,6 +125,7 @@ class Condition {
         else {
           this.display_name = "Timer (" + round(this.number1/100.0)/10.0 + " s)";
         }
+        break;
       default:
         this.display_name = "Condition";
     }
@@ -137,6 +136,7 @@ class Condition {
       case 0: // nothing
         break;
       case 1: // timer
+        println(this.number2, timeElapsed);
         if (!this.met) {
           this.number2 -= timeElapsed;
           if (this.number2 < 0) {

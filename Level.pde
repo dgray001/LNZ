@@ -1570,7 +1570,6 @@ class Level {
     if (this.currMap != null) {
       this.currMap.lastUpdateTime = millis;
     }
-    // triggers
   }
 
 

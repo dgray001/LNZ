@@ -221,11 +221,12 @@ class TutorialInterface extends InterfaceLNZ {
   }
 
   void completedTutorial(int completion_code) {
+    global.log("Completed tutorial with code " + completion_code + ".");
     switch(completion_code) {
       case 0: // default
         this.tutorial = null;
         deleteFolder("data/profiles/" + global.profile.display_name.toLowerCase() + "/locations/" + Location.TUTORIAL.file_name());
-        global.profile.achievement(Achievement.COMPLETED_TUTORIAL);
+        global.profile.achievement(AchievementCode.COMPLETED_TUTORIAL);
         this.saveAndExitToMainMenu();
         break;
       default:
@@ -292,6 +293,7 @@ class TutorialInterface extends InterfaceLNZ {
           else {
             this.tutorial = this.newTutorialThread.level;
             this.tutorial.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+            this.tutorial.restartTimers();
             this.status = TutorialStatus.PLAYING;
           }
           this.newTutorialThread = null;
