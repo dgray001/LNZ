@@ -4338,7 +4338,7 @@ class Hero extends Unit {
   String fileString() {
     String fileString = "\nnew: Hero: " + this.ID;
     fileString += super.fileString(false);
-    fileString += "\nlocation: " + this.location.file_name();
+    fileString += "\nlevel_location: " + this.location.file_name();
     fileString += "\nlevel_tokens: " + this.level_tokens;
     fileString += "\nexperience: " + this.experience;
     fileString += "\nexperience_next_level: " + this.experience_next_level;
@@ -4360,7 +4360,7 @@ class Hero extends Unit {
   @Override
   void addData(String datakey, String data) {
     switch(datakey) {
-      case "location":
+      case "level_location":
         this.location = Location.location(data);
         break;
       case "perk":

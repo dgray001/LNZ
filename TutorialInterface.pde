@@ -112,7 +112,7 @@ class TutorialInterface extends InterfaceLNZ {
 
     @Override
     void run() {
-      this.curr_status += "Creating Level";
+      this.curr_status += "Creating New Tutorial";
       this.level = new Level("data/locations", Location.TUTORIAL);
       if (this.level.nullify) {
         this.curr_status += " -> " + global.lastErrorMessage();
@@ -159,7 +159,7 @@ class TutorialInterface extends InterfaceLNZ {
 
     @Override
     void run() {
-      this.curr_status += "Opening Level";
+      this.curr_status += "Opening Saved Tutorial";
       String destination_folder = "data/profiles/" + global.profile.display_name.toLowerCase() + "/locations/";
       this.level = new Level(destination_folder, Location.TUTORIAL);
       if (this.level.nullify) {
@@ -203,11 +203,13 @@ class TutorialInterface extends InterfaceLNZ {
               }
               object_queue.push(type);
               hero = new Hero(toInt(trim(parameters[2])));
+              hero.abilities.clear();
               break;
             case INVENTORY:
               if (hero == null) {
                 global.errorMessage("ERROR: Trying to start an inventory in a null hero.");
               }
+              object_queue.push(type);
               break;
             case ITEM:
               if (hero == null) {
@@ -369,7 +371,7 @@ class TutorialInterface extends InterfaceLNZ {
           switch(object_queue.peek()) {
             case HERO:
               if (hero == null) {
-                global.errorMessage("ERROR: Trying to add unit data to a null hero.");
+                global.errorMessage("ERROR: Trying to add hero data to a null hero.");
                 break;
               }
               if (dataname.equals("next_status_code")) {
@@ -421,7 +423,8 @@ class TutorialInterface extends InterfaceLNZ {
         return;
       }
       this.curr_status += "\nOpening Map";
-      this.level.setPlayer(hero);
+      this.level.openCurrMap();
+      this.level.addPlayer(hero);
       if (this.level.nullify) {
         this.curr_status += " -> " + global.lastErrorMessage();
         delay(2500);

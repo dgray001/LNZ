@@ -179,34 +179,35 @@ class Level {
       return;
     }
     this.player = h;
+    this.player.location = this.location;
     if (this.currMap != null) {
       this.currMap.addPlayer(this.player);
     }
   }
 
   void setPlayer(Hero player) {
-    if (this.player == null) {
-      if (this.player_start_location == null || !this.hasMap(this.player_start_location.mapName)) {
-        if (this.mapNames.size() > 0) {
-          this.openMap(this.mapNames.get(0));
-        }
-      }
-      else {
-        this.openMap(this.player_start_location.mapName);
-        player.setLocation(this.player_start_location.centerX(), this.player_start_location.centerY());
-        if (this.currMap == null) {
-          this.nullify = true;
-          global.errorMessage("ERROR: Can't open default map.");
-        }
-        else {
-          this.currMap.addPlayer(player);
-        }
+    if (this.player != null) {
+      global.errorMessage("ERROR: Trying to add player when player already exists.");
+      return;
+    }
+    if (this.player_start_location == null || !this.hasMap(this.player_start_location.mapName)) {
+      if (this.mapNames.size() > 0) {
+        this.openMap(this.mapNames.get(0));
       }
     }
     else {
-      // save previous player
+      this.openMap(this.player_start_location.mapName);
+      player.setLocation(this.player_start_location.centerX(), this.player_start_location.centerY());
+      if (this.currMap == null) {
+        this.nullify = true;
+        global.errorMessage("ERROR: Can't open default map.");
+      }
+      else {
+        this.currMap.addPlayer(player);
+      }
     }
     this.player = player;
+    this.player.location = this.location;
   }
 
 
