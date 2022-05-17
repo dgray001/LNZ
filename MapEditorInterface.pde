@@ -1089,10 +1089,12 @@ class MapEditorInterface extends InterfaceLNZ {
       this.condition = condition;
       this.setTitleText(condition.display_name);
       this.addField(new SpacerFormField(20));
-      this.addField(new IntegerFormField("  ", "Condition ID", 0, 1));
+      this.addField(new IntegerFormField("ID: ", "Enter an integer from 0-6", 0, 6));
       this.addField(new SpacerFormField(20));
-      this.addField(new IntegerFormField("  ", "number 1", 0, Integer.MAX_VALUE - 1));
-      this.addField(new IntegerFormField("  ", "number 2", 0, Integer.MAX_VALUE - 1));
+      this.addField(new IntegerFormField("Number 1: ", "enter an integer", 0, Integer.MAX_VALUE - 1));
+      this.addField(new IntegerFormField("Number 2: ", "enter an integer", 0, Integer.MAX_VALUE - 1));
+      this.addField(new SpacerFormField(20));
+      this.addField(new MessageFormField("Rectangle: "));
       this.updateFields();
     }
 
@@ -1111,6 +1113,15 @@ class MapEditorInterface extends InterfaceLNZ {
       this.fields.get(1).setValueIfNotFocused(Integer.toString(this.condition.ID));
       this.fields.get(3).setValueIfNotFocused(Integer.toString(this.condition.number1));
       this.fields.get(4).setValueIfNotFocused(Integer.toString(this.condition.number2));
+      this.fields.get(6).setValueIfNotFocused("Rectangle: " + this.condition.rectangle.fileString());
+    }
+
+    @Override
+    void keyPress() {
+      super.keyPress();
+      if (key == 'a') {
+        MapEditorInterface.this.addRectangleToCondition(this);
+      }
     }
   }
 
@@ -1124,11 +1135,13 @@ class MapEditorInterface extends InterfaceLNZ {
       this.effect = effect;
       this.setTitleText(effect.display_name);
       this.addField(new SpacerFormField(20));
-      this.addField(new IntegerFormField("  ", "Effect ID", 0, 6));
+      this.addField(new IntegerFormField("ID: ", "enter an integer from 0-6", 0, 6));
       this.addField(new SpacerFormField(20));
-      this.addField(new IntegerFormField("  ", "number", Integer.MIN_VALUE + 1, Integer.MAX_VALUE - 1));
+      this.addField(new IntegerFormField("Number: ", "enter an integer", Integer.MIN_VALUE + 1, Integer.MAX_VALUE - 1));
       this.addField(new SpacerFormField(20));
-      this.addField(new StringFormField("  ", "message"));
+      this.addField(new StringFormField("Message: ", "enter a string"));
+      this.addField(new SpacerFormField(20));
+      this.addField(new MessageFormField("Rectangle: "));
       this.updateFields();
     }
 
@@ -1137,7 +1150,7 @@ class MapEditorInterface extends InterfaceLNZ {
       this.effect.number = toInt(this.fields.get(3).getValue());
       this.effect.message = this.fields.get(5).getValue();
       this.effect.setName();
-      this.setTitleText(effect.display_name);
+      this.setTitleText(this.effect.display_name);
       this.updateFields();
     }
 
@@ -1147,6 +1160,15 @@ class MapEditorInterface extends InterfaceLNZ {
       this.fields.get(1).setValueIfNotFocused(Integer.toString(this.effect.ID));
       this.fields.get(3).setValueIfNotFocused(Integer.toString(this.effect.number));
       this.fields.get(5).setValueIfNotFocused(this.effect.message);
+      this.fields.get(7).setValueIfNotFocused("Rectangle: " + this.effect.rectangle.fileString());
+    }
+
+    @Override
+    void keyPress() {
+      super.keyPress();
+      if (key == 'a') {
+        MapEditorInterface.this.addRectangleToEffect(this);
+      }
     }
   }
 
@@ -1945,7 +1967,7 @@ class MapEditorInterface extends InterfaceLNZ {
     if (conditionIndex < 0 || conditionIndex >= this.curr_trigger.conditions.size()) {
       return;
     }
-    if (conditionIndex == this.curr_trigger_component) {
+    if (conditionIndex == this.curr_trigger_component && ConditionEditorForm.class.isInstance(this.levelForm)) {
       this.curr_trigger_component = -1;
       this.levelForm = new TriggerEditorForm(this.curr_trigger,
         width - this.rightPanel.size_curr + Constants.mapEditor_listBoxGap,
@@ -1967,7 +1989,7 @@ class MapEditorInterface extends InterfaceLNZ {
     if (effectIndex < 0 || effectIndex >= this.curr_trigger.effects.size()) {
       return;
     }
-    if (effectIndex == this.curr_trigger_component) {
+    if (effectIndex == this.curr_trigger_component && EffectEditorForm.class.isInstance(this.levelForm)) {
       this.curr_trigger_component = -1;
       this.levelForm = new TriggerEditorForm(this.curr_trigger,
         width - this.rightPanel.size_curr + Constants.mapEditor_listBoxGap,
@@ -1980,6 +2002,34 @@ class MapEditorInterface extends InterfaceLNZ {
       effectIndex), width - this.rightPanel.size_curr + Constants.mapEditor_listBoxGap,
       width - Constants.mapEditor_listBoxGap);
       this.navigate(MapEditorPage.EFFECT_EDITOR);
+  }
+
+  void addRectangleToCondition(ConditionEditorForm form) {
+    if (this.curr_level == null) {
+      return;
+    }
+    if (!LevelEditor.class.isInstance(this.curr_level)) {
+      return;
+    }
+    Rectangle rect = ((LevelEditor)this.curr_level).getCurrentRectangle();
+    if (rect == null) {
+      return;
+    }
+    form.condition.rectangle = rect;
+  }
+
+  void addRectangleToEffect(EffectEditorForm form) {
+    if (this.curr_level == null) {
+      return;
+    }
+    if (!LevelEditor.class.isInstance(this.curr_level)) {
+      return;
+    }
+    Rectangle rect = ((LevelEditor)this.curr_level).getCurrentRectangle();
+    if (rect == null) {
+      return;
+    }
+    form.effect.rectangle = rect;
   }
 
 

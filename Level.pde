@@ -2602,6 +2602,17 @@ class LevelEditor extends Level {
   }
 
 
+  Rectangle getCurrentRectangle() {
+    if (this.currMap == null) {
+      return null;
+    }
+    if (!GameMapLevelEditor.class.isInstance(this.currMap)) {
+      return null;
+    }
+    return ((GameMapLevelEditor)this.currMap).rectangle_dropping;
+  }
+
+
   void newTrigger() {
     this.addTrigger(new Trigger("Trigger " + this.nextTriggerKey));
   }

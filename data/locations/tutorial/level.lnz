@@ -13,16 +13,16 @@ active: true
 looping: false
 amalgam: false
 new: Condition
-ID: 1
+ID: 6
 number1: 3000
-number2: 3000
-rectangle: , 0.0, 0.0, 0.0, 0.0
+number2: 0
+rectangle: test_tutorial, 4.0, 0.0, 5.0, 2.0
 met: false
 end: Condition
 
 new: Effect
 ID: 6
-message:
+message: 
 number: 0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect

@@ -106,8 +106,12 @@ class Condition {
     this.ID = ID;
     switch(ID) {
       case 0: // nothing
-        break;
       case 1: // timer
+      case 2:
+      case 3:
+      case 4:
+      case 5:
+      case 6: // player in rectangle
         break;
       default:
         global.errorMessage("ERROR: Condition ID " + ID + " not recognized.");
@@ -126,8 +130,12 @@ class Condition {
           this.display_name = "Timer (" + round(this.number1/100.0)/10.0 + " s)";
         }
         break;
+      case 6: // player in rectangle
+        this.display_name = "Player in: " + this.rectangle.fileString();
+        break;
       default:
         this.display_name = "Condition";
+        break;
     }
   }
 
@@ -136,12 +144,30 @@ class Condition {
       case 0: // nothing
         break;
       case 1: // timer
-        println(this.number2, timeElapsed);
         if (!this.met) {
           this.number2 -= timeElapsed;
           if (this.number2 < 0) {
             this.met = true;
           }
+        }
+        break;
+      case 2:
+      case 3:
+      case 4:
+      case 5:
+        break;
+      case 6: // player in rectangle
+        if (this.met) {
+          break;
+        }
+        if (level.player == null) {
+          break;
+        }
+        if (level.currMapName == null) {
+          break;
+        }
+        if (this.rectangle.contains(level.player, level.currMapName)) {
+          this.met = true;
         }
         break;
       default:
@@ -158,6 +184,8 @@ class Condition {
         break;
       case 1: // timer
         this.number2 = this.number1;
+        break;
+      case 6: // player in rectangle
         break;
       default:
         global.errorMessage("ERROR: Condition ID " + ID + " not recognized.");
@@ -228,6 +256,7 @@ class Effect {
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
         break;
     }
+    this.setName();
   }
 
   void setName() {
@@ -252,6 +281,7 @@ class Effect {
         break;
       default:
         this.display_name = "Effect";
+        break;
     }
   }
 

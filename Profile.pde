@@ -1311,7 +1311,7 @@ Profile readProfile(String folder_path) {
           break;
         case ABILITY:
           if (curr_ability == null) {
-            global.errorMessage("ERROR: Trying to add ability data to a null abilityt.");
+            global.errorMessage("ERROR: Trying to add ability data to a null ability.");
             break;
           }
           curr_status.addData(dataname, data);
