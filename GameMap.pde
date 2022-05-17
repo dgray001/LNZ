@@ -1266,6 +1266,9 @@ class GameMap {
       i.disappearing = true;
       i.disappear_timer = Constants.item_disappearTimer;
     }
+    else {
+      i.disappearing = false;
+    }
     this.items.put(code, i);
   }
   // remove item
@@ -2882,6 +2885,20 @@ class GameMapEditor extends GameMap {
     super.update(millis);
   }
 
+
+  @Override
+  void setZoom(float zoom) {
+    if (zoom > 500) {
+      zoom = 500;
+    }
+    else if (zoom < 15) {
+      zoom = 15;
+    }
+    this.zoom = zoom;
+    this.refreshDisplayMapParameters();
+  }
+
+
   @Override
   void update(int millis) {
     if (this.confirm_form != null) {
@@ -3051,7 +3068,7 @@ class GameMapEditor extends GameMap {
           }
           else if (Item.class.isInstance(this.dropping_object)) {
             this.dropping_object.setLocation(this.mX, this.mY);
-            this.addItem((Item)this.dropping_object);
+            this.addItem((Item)this.dropping_object, false);
             this.dropping_object = new Item(this.dropping_object.ID);
           }
         }

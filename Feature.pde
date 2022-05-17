@@ -163,6 +163,16 @@ class Feature extends MapObject {
         this.setSize(3, 2, 3);
         this.number = Constants.feature_woodenBenchLargeHealth;
         break;
+      case 129:
+        this.setStrings("Bench", "Furniture", "");
+        this.setSize(2, 1, 2);
+        this.number = Constants.feature_woodenBenchSmallHealth;
+        break;
+      case 130:
+        this.setStrings("Bench", "Furniture", "");
+        this.setSize(1, 2, 2);
+        this.number = Constants.feature_woodenBenchSmallHealth;
+        break;
       case 131:
       case 132:
         this.setStrings("Bed", "Furniture", "");
@@ -643,6 +653,12 @@ class Feature extends MapObject {
       case 128:
         path += "bench_large_left.png";
         break;
+      case 129:
+        path += "bench_small_down.png";
+        break;
+      case 130:
+        path += "bench_small_right.png";
+        break;
       case 131:
         path += "bed_up.png";
         break;
@@ -1040,6 +1056,8 @@ class Feature extends MapObject {
       case 126:
       case 127:
       case 128:
+      case 129:
+      case 130:
       case 131: // bed
       case 132:
       case 133:
@@ -1286,6 +1304,8 @@ class Feature extends MapObject {
       case 126:
       case 127:
       case 128:
+      case 129:
+      case 130:
       case 115: // coordinator chair
       case 121: // couch
       case 122:
@@ -1415,6 +1435,8 @@ class Feature extends MapObject {
       case 126:
       case 127:
       case 128:
+      case 129:
+      case 130:
       case 131: // Bed
       case 132:
       case 141: // Wardrobe

@@ -438,6 +438,8 @@ class Level {
       case 126:
       case 127:
       case 128:
+      case 129:
+      case 130:
         if (!h.holding(2977, 2979, 2980, 2981, 2983)) {
           break;
         }
