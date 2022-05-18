@@ -1,0 +1,85 @@
+new: Map
+code: ERROR
+mapName: tutorial_stairwell
+dimensions: 7, 5
+terrain: 0, 0: 205, 100, false
+terrain: 0, 1: 205, 100, false
+terrain: 0, 2: 205, 100, false
+terrain: 0, 3: 121, 0, false
+terrain: 0, 4: 205, 100, false
+terrain: 1, 0: 205, 100, false
+terrain: 1, 1: 121, 0, false
+terrain: 1, 2: 121, 0, false
+terrain: 1, 3: 121, 0, false
+terrain: 1, 4: 205, 100, false
+terrain: 2, 0: 205, 100, false
+terrain: 2, 1: 311, 3, false
+terrain: 2, 2: 121, 0, false
+terrain: 2, 3: 312, 3, false
+terrain: 2, 4: 205, 100, false
+terrain: 3, 0: 205, 100, false
+terrain: 3, 1: 311, 3, false
+terrain: 3, 2: 121, 0, false
+terrain: 3, 3: 312, 3, false
+terrain: 3, 4: 205, 100, false
+terrain: 4, 0: 205, 100, false
+terrain: 4, 1: 311, 3, false
+terrain: 4, 2: 121, 0, false
+terrain: 4, 3: 312, 3, false
+terrain: 4, 4: 205, 100, false
+terrain: 5, 0: 205, 100, false
+terrain: 5, 1: 121, 0, false
+terrain: 5, 2: 121, 0, false
+terrain: 5, 3: 121, 0, false
+terrain: 5, 4: 205, 100, false
+terrain: 6, 0: 201, 100, false
+terrain: 6, 1: 201, 100, false
+terrain: 6, 2: 201, 100, false
+terrain: 6, 3: 201, 100, false
+terrain: 6, 4: 201, 100, false
+
+new: Feature: 340
+location: 0.0, 3.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+
+new: Feature: 194
+location: 2.0, 2.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+
+new: Feature: 194
+location: 3.0, 2.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+
+new: Feature: 194
+location: 4.0, 2.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+
+new: Feature: 194
+location: 5.0, 2.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+end: Map

@@ -3,8 +3,32 @@ levelName: tutorial
 location: tutorial
 completed: false
 completion_code: 0
-currMapName: test_tutorial
-mapNames: test_tutorial
+currMapName: tutorial_soldiers
+mapNames: tutorial_frontdoor, tutorial_stairwell, tutorial_soldiers
+
+new: Linker
+rect1: tutorial_frontdoor, 5.0, 26.0, 6.0, 27.0
+rect2: tutorial_stairwell, 4.0, 3.0, 5.0, 4.0
+end: Linker
+
+
+new: Linker
+rect1: tutorial_stairwell, 5.0, 3.0, 6.0, 4.0
+rect2: tutorial_frontdoor, 6.0, 26.0, 7.0, 27.0
+end: Linker
+
+
+new: Linker
+rect1: tutorial_stairwell, 5.0, 1.0, 6.0, 2.0
+rect2: tutorial_soldiers, 67.0, 8.0, 68.0, 9.0
+end: Linker
+
+
+new: Linker
+rect1: tutorial_soldiers, 66.0, 8.0, 67.0, 9.0
+rect2: tutorial_stairwell, 4.0, 1.0, 5.0, 2.0
+end: Linker
+
 nextTriggerKey: 1
 
 new: Trigger
@@ -29,5 +53,5 @@ end: Effect
 
 end: Trigger
 
-player_start_location: test_tutorial, 0.0, 1.0, 1.0, 2.0
+player_start_location: tutorial_frontdoor, 10.0, 0.0, 11.0, 1.0
 end: Level

@@ -24,6 +24,7 @@ class EditItemForm extends EditMapObjectForm {
     this.addField(new IntegerFormField("Agility: ", "agility", -10, 10));
     this.addField(new IntegerFormField("Ammo: ", "ammo", 0, Integer.MAX_VALUE - 1));
     this.addField(new IntegerFormField("Stack: ", "stack", 0, Integer.MAX_VALUE - 1));
+    this.addField(new SubmitFormField("Finished", false));
     this.updateForm();
   }
 

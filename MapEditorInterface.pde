@@ -778,6 +778,55 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
 
+  class LevelHeroSelectorForm extends FormLNZ {
+    protected Level level;
+    protected boolean added_hero = false;
+
+    LevelHeroSelectorForm(Level level) {
+      super(0.5 * (width - Constants.mapEditor_formWidth), 0.5 * (height - Constants.mapEditor_formHeight),
+        0.5 * (width + Constants.mapEditor_formWidth), 0.5 * (height + Constants.mapEditor_formHeight));
+        this.setTitleText("Hero Selecter");
+        this.setTitleSize(18);
+        this.color_background = color(180, 250, 180);
+        this.color_header = color(30, 170, 30);
+        this.setFieldCushion(10);
+        this.level = level;
+        if (this.level == null) {
+          this.canceled = true;
+          return;
+        }
+
+        SubmitFormField submit = new SubmitFormField(" Ok ");
+        submit.button.setColors(color(220), color(190, 240, 190),
+          color(140, 190, 140), color(90, 140, 90), color(0));
+
+        this.addField(new SpacerFormField(10));
+        this.addField(new IntegerFormField("Hero ID: ", 1101, 1102));
+        this.addField(new IntegerFormField("Hero Level: ", 0, 100));
+        this.addField(new IntegerFormField("Level Tokens: ", 0, 5050));
+        this.addField(new SpacerFormField(10));
+        this.addField(submit);
+    }
+
+    @Override
+    void cancel() {
+      if (!this.added_hero && this.level != null) {
+        this.level.setPlayer(new Hero(HeroCode.BEN));
+      }
+      super.cancel();
+    }
+
+    void submit() {
+      Hero h = new Hero(toInt(this.fields.get(1).getValue()));
+      h.level = toInt(this.fields.get(2).getValue());
+      h.level_tokens = toInt(this.fields.get(3).getValue());
+      this.level.setPlayer(h);
+      this.added_hero = true;
+      this.canceled = true;
+    }
+  }
+
+
   class HeroSelectorForm extends FormLNZ {
     protected Level level;
     protected boolean added_hero = false;
@@ -2312,7 +2361,7 @@ class MapEditorInterface extends InterfaceLNZ {
             this.curr_level = this.open_testLevel_thread.level_opening;
             this.curr_level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
             this.navigate(MapEditorPage.TESTLEVEL);
-            this.form = new HeroSelectorForm(this.curr_level);
+            this.form = new LevelHeroSelectorForm(this.curr_level);
           }
           this.open_testLevel_thread = null;
           return;

@@ -870,6 +870,8 @@ class GameMap {
   protected boolean hovered_visible = false;
   protected float mX = 0;
   protected float mY = 0;
+  protected float last_x = 0;
+  protected float last_y = 0;
   protected MapObject hovered_object = null;
   protected int hovered_object_key = -1;
 
@@ -1064,6 +1066,7 @@ class GameMap {
     this.viewY = viewY;
     if (refreshImage) {
       this.refreshDisplayMapParameters();
+      this.updateCursorPosition();
     }
   }
   void moveView(float changeX, float changeY) {
@@ -2072,6 +2075,9 @@ class GameMap {
   }
 
   void mouseMove(float mX, float mY) {
+    this.last_x = mX;
+    this.last_y = mY;
+    this.updateCursorPosition();
     if (this.selected_object != null && this.selected_object_textbox != null) {
       this.selected_object_textbox.mouseMove(mX, mY);
     }
@@ -2092,8 +2098,6 @@ class GameMap {
       this.hovered = true;
       this.hovered_area = true;
       this.hovered_border = false;
-      this.mX = this.startSquareX + (mX - this.xi_map) / this.zoom;
-      this.mY = this.startSquareY + (mY - this.yi_map) / this.zoom;
       // update hovered for map objects
       this.hovered_object = null;
       this.hovered_object_key = -1;
@@ -2164,8 +2168,6 @@ class GameMap {
       this.hovered_visible = false;
       if (mX > this.xi && mY > this.yi && mX < this.xf && mY < this.yf) {
         this.hovered_area = true;
-        this.mX = this.startSquareX + (mX - this.xi_map) / this.zoom;
-        this.mY = this.startSquareY + (mY - this.yi_map) / this.zoom;
         if (mX < this.xi + Constants.map_borderSize || mX > this.xf - Constants.map_borderSize ||
           mY < this.yi + Constants.map_borderSize || mY > this.yf - Constants.map_borderSize) {
           this.hovered_border = true;
@@ -2206,6 +2208,11 @@ class GameMap {
     if (default_cursor) {
       global.defaultCursor("icons/cursor_interact.png", "icons/cursor_attack.png", "icons/cursor_pickup.png");
     }
+  }
+
+  void updateCursorPosition() {
+    this.mX = this.startSquareX + (this.last_x - this.xi_map) / this.zoom;
+    this.mY = this.startSquareY + (this.last_y - this.yi_map) / this.zoom;
   }
 
   void selectHoveredObject() {

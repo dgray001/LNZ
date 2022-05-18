@@ -223,6 +223,7 @@ class EditUnitForm extends EditMapObjectForm {
     this.addField(new FloatFormField("Base Speed: ", "base speed", 0, Float.MAX_VALUE - 1));
     this.addField(new FloatFormField("Base Tenacity: ", "base tenacity", 0, 1));
     this.addField(new IntegerFormField("Base Agility: ", "base agility", 0, 10));
+    this.addField(new SubmitFormField("Finished", false));
     this.updateForm();
   }
 
