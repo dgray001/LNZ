@@ -2266,10 +2266,10 @@ class InputBox extends RectangleButton {
       }
     }
     // if say increased text size
-    else if (this.location_cursor - this.location_display > this.display_text.length()) {
+    if (this.location_cursor - this.location_display > this.display_text.length()) {
       int dif = this.location_cursor - this.location_display - this.display_text.length();
       this.location_display += dif;
-      this.display_text = this.display_text.substring(dif);
+      this.display_text = this.text.substring(this.location_display, this.location_display + this.display_text.length());
     }
   }
 
@@ -2427,6 +2427,7 @@ class InputBox extends RectangleButton {
           }
           this.setText(this.text.substring(0, this.location_cursor - 1) + key +
             this.text.substring(this.location_cursor - 1, this.text.length()));
+          this.updateDisplayText();
           break;
       }
     }

@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220517: v0.7.1l" +
+  "\n20220518: v0.7.1m" +
   "\nLines: 36371 (v0.7l)" +
   "\nImages: 1056 (v0.7)" +
   "\nSounds: 245 (v0.7)" +
@@ -137,17 +137,20 @@ static class Constants {
   static final String help_mapEditor_triggerEditor = "Trigger Editor\n\nIn " +
     "this view you can edit the trigger you selected.\n\nHotkeys:\n z: " +
     "Toggle grid\n x: Toggle fog\n c: Toggle rectangle mode\n v: Toggle square " +
-    "mode\n s: Save last rectangle\n S: Set player start location";
+    "mode\n s: Save last rectangle\n S: Set player start location\n d: Delete " +
+    "selected trigger component from trigger";
   static final String help_mapEditor_conditionEditor = "Condition Editor\n\nIn " +
     "this view you can edit the condition you selected.\n\nHotkeys:\n z: " +
     "Toggle grid\n x: Toggle fog\n c: Toggle rectangle mode\n v: Toggle square " +
     "mode\n s: Save last rectangle\n S: Set player start location\n a: Add " +
-    "current rectangle to condition.";
+    "current rectangle to condition\n d: Delete selected trigger component " +
+    "from trigger";
   static final String help_mapEditor_effectEditor = "Effect Editor\n\nIn " +
     "this view you can edit the effect you selected.\n\nHotkeys:\n z: " +
     "Toggle grid\n x: Toggle fog\n c: Toggle rectangle mode\n v: Toggle square " +
     "mode\n s: Save last rectangle\n S: Set player start location\n a: Add " +
-    "current rectangle to effect.";
+    "current rectangle to effect\n d: Delete selected trigger component " +
+    "from trigger";
 
   // GameMap
   static final float map_borderSize = 30;
@@ -388,6 +391,10 @@ static class Constants {
   static final int gif_lava_time = 3200;
   static final int gif_drenched_frames = 4;
   static final int gif_drenched_time = 500;
+  static final int gif_arrow_frames = 3;
+  static final int gif_arrow_time = 220;
+  static final int gif_loading_frames = 30;
+  static final int gif_loading_time = 950;
 
   // Hero
   static final float hero_defaultInventoryButtonSize = 45;

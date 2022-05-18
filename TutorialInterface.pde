@@ -47,11 +47,11 @@ class TutorialInterface extends InterfaceLNZ {
   class TutorialButton3 extends TutorialButton {
     TutorialButton3() {
       super();
-      this.message = "Perk\nTree";
+      this.message = "Heroes";
     }
     void release() {
       this.stayDehovered();
-      TutorialInterface.this.openPlayerTree();
+      TutorialInterface.this.form = new HeroesForm();
     }
   }
 
@@ -581,6 +581,10 @@ class TutorialInterface extends InterfaceLNZ {
           textAlign(LEFT, TOP);
           text(this.newTutorialThread.curr_status + " ...", this.leftPanel.size +
             Constants.map_borderSize + 30, Constants.map_borderSize + 30);
+          imageMode(CENTER);
+          int frame = int(floor(Constants.gif_loading_frames * (float(millis %
+            Constants.gif_loading_time) / (1 + Constants.gif_loading_time))));
+          image(global.images.getImage("gifs/loading/" + frame + ".png"), 0.5 * width, 0.5 * height, 250, 250);
         }
         else {
           if (this.newTutorialThread.level == null || this.newTutorialThread.level.nullify) {
@@ -612,6 +616,10 @@ class TutorialInterface extends InterfaceLNZ {
           textAlign(LEFT, TOP);
           text(this.savedTutorialThread.curr_status + " ...", this.leftPanel.size +
             Constants.map_borderSize + 30, Constants.map_borderSize + 30);
+          imageMode(CENTER);
+          int frame = int(floor(Constants.gif_loading_frames * (float(millis %
+            Constants.gif_loading_time) / (1 + Constants.gif_loading_time))));
+          image(global.images.getImage("gifs/loading/" + frame + ".png"), 0.5 * width, 0.5 * height, 250, 250);
         }
         else {
           if (this.savedTutorialThread.level == null || this.savedTutorialThread.level.nullify) {

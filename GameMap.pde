@@ -695,6 +695,18 @@ class GameMap {
       this.centerY = this.yi + 0.5 * (this.yf - this.yi);
     }
 
+    void placeCenter() {
+      textSize(this.text_size);
+      float size_width = textWidth(this.message) + 4;
+      float size_height = textAscent() + textDescent() + 2;
+      this.xi = 0.5 * (width - size_width);
+      this.yi = 0.5 * (height - size_height);
+      this.xf = 0.5 * (width + size_width);
+      this.yf = 0.5 * (height + size_height);
+      this.centerX = this.xi + 0.5 * (this.xf - this.xi);
+      this.centerY = this.yi + 0.5 * (this.yf - this.yi);
+    }
+
     void updateView(int timeElapsed, int index) {
       if (this.remove) {
         return;
@@ -705,7 +717,6 @@ class GameMap {
         if (this.fade_time <= 0) {
           if (this.showing) {
             this.fading = false;
-            this.show_time = Constants.map_headerMessageShowTime;
           }
           else {
             this.remove = true;
@@ -1337,6 +1348,24 @@ class GameMap {
       this.headerMessages.remove(0);
     }
   }
+  void addHeaderMessage(String message, int message_id) {
+    HeaderMessage header_message = new HeaderMessage(message);
+    switch(message_id) {
+      case 1: // center of screen
+        header_message.placeCenter();
+        break;
+      case 2: // center of screen and longer
+        header_message.placeCenter();
+        header_message.show_time = 6000;
+        break;
+      default:
+        break;
+    }
+    this.headerMessages.add(header_message);
+    if (this.headerMessages.size() > Constants.map_maxHeaderMessages) {
+      this.headerMessages.remove(0);
+    }
+  }
 
 
   void drawMap() {
@@ -1475,17 +1504,17 @@ class GameMap {
       textAlign(LEFT, TOP);
       text(nameDisplayed, name_xi + 1, name_yi + 1);
     }
+    // display fog
+    if (this.draw_fog) {
+      imageMode(CORNERS);
+      image(this.fog_display, this.xi_map, this.yi_map, this.xf_map, this.yf_map);
+    }
     // map tint
     if (this.show_tint) {
       rectMode(CORNERS);
       fill(this.color_tint);
       noStroke();
-      rect(this.xi_map, this.yi_map, this.xf_map, this.yf_map);
-    }
-    // display fog
-    if (this.draw_fog) {
-      imageMode(CORNERS);
-      image(this.fog_display, this.xi_map, this.yi_map, this.xf_map, this.yf_map);
+      rect(this.xi, this.yi, this.xf, this.yf);
     }
     // header messages
     for (HeaderMessage message : this.headerMessages) {

@@ -208,7 +208,7 @@ class Condition {
   void addData(String datakey, String data) {
     switch(datakey) {
       case "ID":
-        this.ID = toInt(data);
+        this.setID(toInt(data));
         break;
       case "number1":
         this.number1 = toInt(data);
@@ -282,19 +282,19 @@ class Effect {
         this.display_name = "Timestamp Log";
         break;
       case 4: // header messae
-        this.display_name = "Header Message";
+        this.display_name = "Header Message (" + this.number + ")";
         break;
       case 5: // level chat
         this.display_name = "Level Chat";
         break;
       case 6: // win level
-        this.display_name = "Win Level";
+        this.display_name = "Win Level (" + this.number + ")";
         break;
       case 7: // activate trigger
-        this.display_name = "Activate Trigger";
+        this.display_name = "Activate Trigger (" + this.number + ")";
         break;
       case 8: // deactivate trigger
-        this.display_name = "Deactivate Trigger";
+        this.display_name = "Deactivate Trigger (" + this.number + ")";
         break;
       case 9:
         this.display_name = "";
@@ -312,13 +312,13 @@ class Effect {
         this.display_name = "Move View";
         break;
       case 14: // tint map
-        this.display_name = "Tint Map";
+        this.display_name = "Tint Map (" + this.number + ")";
         break;
       case 15: // stop tinting map
         this.display_name = "Remove Map Tint";
         break;
       case 16: // show blinking arrow
-        this.display_name = "Blinking Arrow";
+        this.display_name = "Blinking Arrow (" + this.number + ")";
         break;
       default:
         this.display_name = "Effect";
@@ -341,7 +341,7 @@ class Effect {
         break;
       case 4: // header message
         if (level.currMap != null) {
-          level.currMap.addHeaderMessage(this.message);
+          level.currMap.addHeaderMessage(this.message, this.number);
         }
         break;
       case 5: // level chat
@@ -387,6 +387,30 @@ class Effect {
         }
         break;
       case 16: // show blinking arrow
+        int frame = int(floor(Constants.gif_arrow_frames * (float(millis() %
+          Constants.gif_arrow_time) / (1 + Constants.gif_arrow_time))));
+        switch(this.number) {
+          case 1: // toward buttons
+            float translate_x = level.xf - 80;
+            translate(translate_x, 0.9 * height);
+            rotate(0.1 * PI);
+            imageMode(CENTER);
+            image(global.images.getImage("gifs/arrow/" + frame + ".png"), 0, 0, 130, 130);
+            rotate(-0.1 * PI);
+            translate(-translate_x, -0.9 * height);
+            break;
+          case 2: // button 1
+            break;
+          case 3: // button 2
+            break;
+          case 4: // button 3
+            break;
+          case 5: // button 4
+            break;
+          default:
+            global.errorMessage("ERROR: Blinking arrow ID " + this.number + " not recognized.");
+            break;
+        }
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
@@ -407,7 +431,7 @@ class Effect {
   void addData(String datakey, String data) {
     switch(datakey) {
       case "ID":
-        this.ID = toInt(data);
+        this.setID(toInt(data));
         break;
       case "message":
         this.message = data;

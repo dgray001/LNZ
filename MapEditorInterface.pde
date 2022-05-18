@@ -703,6 +703,21 @@ class MapEditorInterface extends InterfaceLNZ {
                 }
                 MapEditorInterface.this.removeTriggerFromLevel(triggerKey);
                 break;
+              case TRIGGER_EDITOR:
+              case CONDITION_EDITOR:
+              case EFFECT_EDITOR:
+                if (MapEditorInterface.this.curr_trigger == null) {
+                  break;
+                }
+                if (this.line_clicked > MapEditorInterface.this.curr_trigger.conditions.size()) {
+                  MapEditorInterface.this.removeEffectFromTrigger(this.line_clicked -
+                    MapEditorInterface.this.curr_trigger.conditions.size() - 1);
+                }
+                else if (this.line_clicked != -1 && this.line_clicked !=
+                  MapEditorInterface.this.curr_trigger.conditions.size()) {
+                  MapEditorInterface.this.removeConditionFromTrigger(this.line_clicked);
+                }
+                break;
               default:
                 break;
             }
@@ -2205,6 +2220,28 @@ class MapEditorInterface extends InterfaceLNZ {
     this.listBox2.refresh();
   }
 
+  void removeConditionFromTrigger(int index) {
+    if (this.curr_trigger == null) {
+      return;
+    }
+    if (index < 0 || index >= this.curr_trigger.conditions.size()) {
+      return;
+    }
+    this.curr_trigger.conditions.remove(index);
+    this.listBox2.refresh();
+  }
+
+  void removeEffectFromTrigger(int index) {
+    if (this.curr_trigger == null) {
+      return;
+    }
+    if (index < 0 || index >= this.curr_trigger.effects.size()) {
+      return;
+    }
+    this.curr_trigger.effects.remove(index);
+    this.listBox2.refresh();
+  }
+
 
   Hero getCurrentHeroIfExists() {
     if (this.curr_level != null) {
@@ -2267,6 +2304,10 @@ class MapEditorInterface extends InterfaceLNZ {
           textAlign(LEFT, TOP);
           text(this.create_map_thread.curr_status + " ...", this.leftPanel.size +
             Constants.map_borderSize + 30, Constants.map_borderSize + 30);
+          imageMode(CENTER);
+          int frame = int(floor(Constants.gif_loading_frames * (float(millis %
+            Constants.gif_loading_time) / (1 + Constants.gif_loading_time))));
+          image(global.images.getImage("gifs/loading/" + frame + ".png"), 0.5 * width, 0.5 * height, 250, 250);
         }
         else {
           if (this.create_map_thread.map_creating.nullify) {
@@ -2296,6 +2337,10 @@ class MapEditorInterface extends InterfaceLNZ {
           textAlign(LEFT, TOP);
           text(this.open_mapEditor_thread.curr_status + " ...", this.leftPanel.size +
             Constants.map_borderSize + 30, Constants.map_borderSize + 30);
+          imageMode(CENTER);
+          int frame = int(floor(Constants.gif_loading_frames * (float(millis %
+            Constants.gif_loading_time) / (1 + Constants.gif_loading_time))));
+          image(global.images.getImage("gifs/loading/" + frame + ".png"), 0.5 * width, 0.5 * height, 250, 250);
         }
         else {
           if (this.open_mapEditor_thread.map_opening.nullify) {
@@ -2325,6 +2370,10 @@ class MapEditorInterface extends InterfaceLNZ {
           textAlign(LEFT, TOP);
           text(this.open_testMap_thread.curr_status + " ...", this.leftPanel.size +
             Constants.map_borderSize + 30, Constants.map_borderSize + 30);
+          imageMode(CENTER);
+          int frame = int(floor(Constants.gif_loading_frames * (float(millis %
+            Constants.gif_loading_time) / (1 + Constants.gif_loading_time))));
+          image(global.images.getImage("gifs/loading/" + frame + ".png"), 0.5 * width, 0.5 * height, 250, 250);
         }
         else {
           if (this.open_testMap_thread.level_opening == null || this.open_testMap_thread.level_opening.nullify) {
@@ -2356,6 +2405,10 @@ class MapEditorInterface extends InterfaceLNZ {
           textAlign(LEFT, TOP);
           text(this.open_testLevel_thread.curr_status + " ...", this.leftPanel.size +
             Constants.map_borderSize + 30, Constants.map_borderSize + 30);
+          imageMode(CENTER);
+          int frame = int(floor(Constants.gif_loading_frames * (float(millis %
+            Constants.gif_loading_time) / (1 + Constants.gif_loading_time))));
+          image(global.images.getImage("gifs/loading/" + frame + ".png"), 0.5 * width, 0.5 * height, 250, 250);
         }
         else {
           if (this.open_testLevel_thread.level_opening == null || this.open_testLevel_thread.level_opening.nullify) {

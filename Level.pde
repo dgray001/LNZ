@@ -2056,6 +2056,7 @@ class Level {
               if (curr_trigger == null) {
                 global.errorMessage("ERROR: Trying to end an effect but curr_trigger is null.");
               }
+              curr_effect.setName();
               curr_trigger.effects.add(curr_effect);
               curr_effect = null;
               break;
