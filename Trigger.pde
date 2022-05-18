@@ -389,9 +389,10 @@ class Effect {
       case 16: // show blinking arrow
         int frame = int(floor(Constants.gif_arrow_frames * (float(millis() %
           Constants.gif_arrow_time) / (1 + Constants.gif_arrow_time))));
+        float translate_x = 0;
         switch(this.number) {
           case 1: // toward buttons
-            float translate_x = level.xf - 80;
+            translate_x = level.xf - 80;
             translate(translate_x, 0.9 * height);
             rotate(0.1 * PI);
             imageMode(CENTER);
@@ -399,13 +400,54 @@ class Effect {
             rotate(-0.1 * PI);
             translate(-translate_x, -0.9 * height);
             break;
-          case 2: // button 1
+          case 2: // panel collapse buttons
+            translate_x = level.xf - 80;
+            translate(translate_x, 0.05 * height);
+            rotate(-0.2 * PI);
+            imageMode(CENTER);
+            image(global.images.getImage("gifs/arrow/" + frame + ".png"), 0, 0, 130, 130);
+            rotate(0.2 * PI);
+            translate(-translate_x, -0.05 * height);
+            translate_x = level.xi + 80;
+            translate(translate_x, 0.05 * height);
+            rotate(-0.7 * PI);
+            imageMode(CENTER);
+            image(global.images.getImage("gifs/arrow/" + frame + ".png"), 0, 0, 130, 130);
+            rotate(0.7 * PI);
+            translate(-translate_x, -0.05 * height);
             break;
-          case 3: // button 2
+          case 3: // inventory bar
+            translate_x = 0.5 * width;
+            float translate_y = level.player.inventory_bar.yi - 70;
+            translate(translate_x, translate_y);
+            rotate(0.5 * PI);
+            imageMode(CENTER);
+            image(global.images.getImage("gifs/arrow/" + frame + ".png"), 0, 0, 130, 130);
+            rotate(-0.5 * PI);
+            translate(-translate_x, -translate_y);
             break;
-          case 4: // button 3
+          case 4: // player left panel form
+            translate_x = level.xi + 65;
+            translate(translate_x, 0.55 * height);
+            rotate(PI);
+            imageMode(CENTER);
+            image(global.images.getImage("gifs/arrow/" + frame + ".png"), 0, 0, 130, 130);
+            rotate(-PI);
+            translate(-translate_x, -0.55 * height);
             break;
-          case 5: // button 4
+          case 5: // chatbox
+            translate_x = level.xf - 65;
+            translate(translate_x, 0.3 * height);
+            imageMode(CENTER);
+            image(global.images.getImage("gifs/arrow/" + frame + ".png"), 0, 0, 130, 130);
+            translate(-translate_x, -0.3 * height);
+            break;
+          case 6: // questbox
+            translate_x = level.xf - 65;
+            translate(translate_x, 0.08 * height);
+            imageMode(CENTER);
+            image(global.images.getImage("gifs/arrow/" + frame + ".png"), 0, 0, 130, 130);
+            translate(-translate_x, -0.08 * height);
             break;
           default:
             global.errorMessage("ERROR: Blinking arrow ID " + this.number + " not recognized.");

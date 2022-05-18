@@ -640,6 +640,7 @@ class GameMap {
     private int show_time = Constants.map_headerMessageShowTime;
     private color color_background = color(110, 90, 70, 150);
     private color color_text = color(255);
+    private boolean clickable = true;
 
     private float xi = 0;
     private float yi = 0;
@@ -766,7 +767,7 @@ class GameMap {
     }
 
     void mousePress() {
-      if (this.hovered) {
+      if (this.hovered && this.clickable) {
         this.fading = false;
         this.showing = true;
         this.show_time = Constants.map_headerMessageShowTime;
@@ -1353,10 +1354,12 @@ class GameMap {
     switch(message_id) {
       case 1: // center of screen
         header_message.placeCenter();
+        header_message.clickable = false;
         break;
       case 2: // center of screen and longer
         header_message.placeCenter();
         header_message.show_time = 6000;
+        header_message.clickable = false;
         break;
       default:
         break;

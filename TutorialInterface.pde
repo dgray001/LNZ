@@ -29,6 +29,9 @@ class TutorialInterface extends InterfaceLNZ {
     }
     void release() {
       this.stayDehovered();
+      if (!this.hovered) {
+        return;
+      }
       TutorialInterface.this.form = new RestartTutorialForm();
     }
   }
@@ -40,6 +43,9 @@ class TutorialInterface extends InterfaceLNZ {
     }
     void release() {
       this.stayDehovered();
+      if (!this.hovered) {
+        return;
+      }
       TutorialInterface.this.form = new OptionsForm();
     }
   }
@@ -51,6 +57,9 @@ class TutorialInterface extends InterfaceLNZ {
     }
     void release() {
       this.stayDehovered();
+      if (!this.hovered) {
+        return;
+      }
       TutorialInterface.this.form = new HeroesForm();
     }
   }
@@ -62,6 +71,9 @@ class TutorialInterface extends InterfaceLNZ {
     }
     void release() {
       this.stayDehovered();
+      if (!this.hovered) {
+        return;
+      }
       TutorialInterface.this.form = new GoToMainMenuForm();
     }
   }
@@ -75,6 +87,9 @@ class TutorialInterface extends InterfaceLNZ {
     }
     void release() {
       this.stayDehovered();
+      if (!this.hovered) {
+        return;
+      }
       // help form (help depends on stage in tutorial)
     }
   }

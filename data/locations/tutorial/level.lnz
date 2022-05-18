@@ -3,7 +3,7 @@ levelName: tutorial
 location: tutorial
 completed: false
 completion_code: 0
-currMapName: tutorial_soldiers
+currMapName: tutorial_frontdoor
 mapNames: tutorial_stairwell, tutorial_soldiers, tutorial_frontdoor
 
 new: Linker
@@ -32,13 +32,13 @@ end: Linker
 nextTriggerKey: 1
 
 new: Trigger
-triggerName: ### Quest 1
+triggerName: ### Introduction
 active: false
 looping: false
 amalgam: true
 end: Trigger
 
-nextTriggerKey: 3
+nextTriggerKey: 2
 
 new: Trigger
 triggerName: lose control
@@ -55,6 +55,44 @@ end: Effect
 new: Effect
 ID: 7
 message: 
+number: 3
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 14
+message: 
+number: -16777216
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 3
+
+new: Trigger
+triggerName: chat1
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 4
+message: Welcome to Liberal Feminazi Zombies!
+number: 1
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
 number: 4
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
@@ -64,53 +102,22 @@ end: Trigger
 nextTriggerKey: 4
 
 new: Trigger
-triggerName: chat1
-active: false
-looping: false
-amalgam: true
-new: Condition
-ID: 1
-number1: 3000
-number2: 3000
-rectangle: , 0.0, 0.0, 0.0, 0.0
-met: false
-end: Condition
-
-new: Effect
-ID: 4
-message: Welcome to Liberal Feminazi Zombies!
-number: 0
-rectangle: , 0.0, 0.0, 0.0, 0.0
-end: Effect
-
-new: Effect
-ID: 7
-message: 
-number: 5
-rectangle: , 0.0, 0.0, 0.0, 0.0
-end: Effect
-
-end: Trigger
-
-nextTriggerKey: 5
-
-new: Trigger
 triggerName: chat2
 active: false
 looping: false
 amalgam: true
 new: Condition
 ID: 1
-number1: 3000
-number2: 3000
+number1: 3800
+number2: 3800
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
 end: Condition
 
 new: Effect
 ID: 4
-message: Our story begins with a humble soul
-number: 0
+message: In this tutorial we will walk through the basic mechanics of the game
+number: 1
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -121,6 +128,600 @@ number: 6
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
+end: Trigger
+
+nextTriggerKey: 6
+
+new: Trigger
+triggerName: panel buttons
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 3800
+number2: 3800
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 7
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: As a first note, there will always be buttons at the bottom right
+number: 1
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 11
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 7
+
+new: Trigger
+triggerName: button1
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 3800
+number2: 3800
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 4
+message: The first button will cancel your progress and restart the tutorial.
+number: 2
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 8
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 8
+
+new: Trigger
+triggerName: button2
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 6800
+number2: 6800
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 9
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: The hotkey for the Options menu is ctrl-o
+number: 2
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: The second button opens the Options menu where you can adjust and save options to your profile
+number: 2
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 9
+
+new: Trigger
+triggerName: button3
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 6800
+number2: 6800
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 10
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: The hotkey for the heroes menu is ctrl-h
+number: 2
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: The third button opens the Heroes menu, showing the heroes you have unlocked
+number: 2
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 10
+
+new: Trigger
+triggerName: button4
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 6800
+number2: 6800
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 4
+message: The last button will save your progress and return you to the main menu
+number: 2
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 20
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 11
+
+new: Trigger
+triggerName: arrow1
+active: false
+looping: true
+amalgam: true
+new: Effect
+ID: 16
+message: 
+number: 1
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 12
+
+new: Trigger
+triggerName: arrow2
+active: false
+looping: true
+amalgam: true
+new: Effect
+ID: 16
+message: 
+number: 2
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 13
+
+new: Trigger
+triggerName: arrow3
+active: false
+looping: true
+amalgam: true
+new: Effect
+ID: 16
+message: 
+number: 3
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 14
+
+new: Trigger
+triggerName: arrow4
+active: false
+looping: true
+amalgam: true
+new: Effect
+ID: 16
+message: 
+number: 4
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 15
+
+new: Trigger
+triggerName: arrow5
+active: false
+looping: true
+amalgam: true
+new: Effect
+ID: 16
+message: 
+number: 5
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 16
+
+new: Trigger
+triggerName: arrow6
+active: false
+looping: true
+amalgam: true
+new: Effect
+ID: 16
+message: 
+number: 6
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 17
+
+new: Trigger
+triggerName: arrow7
+active: false
+looping: true
+amalgam: true
+new: Effect
+ID: 16
+message: 
+number: 7
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 18
+
+new: Trigger
+triggerName: arrow8
+active: false
+looping: true
+amalgam: true
+new: Effect
+ID: 16
+message: 
+number: 8
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 19
+
+new: Trigger
+triggerName: arrow9
+active: false
+looping: true
+amalgam: true
+new: Effect
+ID: 16
+message: 
+number: 9
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 20
+
+new: Trigger
+triggerName: panel collapse buttons
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 7000
+number2: 7000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 8
+message: 
+number: 11
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 12
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 21
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: These buttons will collapse the panels
+number: 2
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 21
+
+new: Trigger
+triggerName: inventory bar
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 7000
+number2: 7000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 8
+message: 
+number: 12
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 13
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 22
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: This display shows the hero you are playing, what they are holding, and the abilities they can use
+number: 2
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 22
+
+new: Trigger
+triggerName: player left panel form
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 7000
+number2: 7000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 8
+message: 
+number: 13
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 14
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 23
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: Here you can see detailed information about the hero you are playing
+number: 2
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 23
+
+new: Trigger
+triggerName: chatbox 1
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 7000
+number2: 7000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 8
+message: 
+number: 14
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 15
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 24
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: This is the chatbox, where dialog will be displayed
+number: 2
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 24
+
+new: Trigger
+triggerName: chatbox 2
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2500
+number2: 2500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 5
+message: Hello from the chat box
+number: 0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 25
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 25
+
+new: Trigger
+triggerName: questbox
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 5000
+number2: 5000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 8
+message: 
+number: 15
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 16
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 28
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: This is the questbox, where you quests will display
+number: 2
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 26
+
+new: Trigger
+triggerName: 
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 27
+
+new: Trigger
+triggerName: ### Quest 1
+active: false
+looping: false
+amalgam: true
 end: Trigger
 
 player_start_location: tutorial_frontdoor, 10.0, 0.0, 11.0, 1.0
