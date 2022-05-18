@@ -3548,6 +3548,7 @@ class Hero extends Unit {
   protected HeroTree heroTree = new HeroTree();
 
   protected Queue<String> messages = new LinkedList<String>();
+  protected boolean in_control = true;
 
   Hero(int ID) {
     super(ID);
@@ -4291,7 +4292,7 @@ class Hero extends Unit {
           break;
         case 'r':
         case 'R':
-          if (global.holding_ctrl) {
+          if (global.holding_ctrl || !this.in_control) {
             break;
           }
           if (this.weapon() != null && this.weapon().usable()) {

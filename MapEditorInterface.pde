@@ -629,7 +629,11 @@ class MapEditorInterface extends InterfaceLNZ {
               this.addLine(condition.display_name);
             }
           }
-          if (!first) {
+          if (first) {
+            this.setText("");
+            first = false;
+          }
+          else {
             this.addLine("");
           }
           for (Effect effect : MapEditorInterface.this.curr_trigger.effects) {
@@ -785,7 +789,7 @@ class MapEditorInterface extends InterfaceLNZ {
     LevelHeroSelectorForm(Level level) {
       super(0.5 * (width - Constants.mapEditor_formWidth), 0.5 * (height - Constants.mapEditor_formHeight),
         0.5 * (width + Constants.mapEditor_formWidth), 0.5 * (height + Constants.mapEditor_formHeight));
-        this.setTitleText("Hero Selecter");
+        this.setTitleText("Hero Selector");
         this.setTitleSize(18);
         this.color_background = color(180, 250, 180);
         this.color_header = color(30, 170, 30);
@@ -834,7 +838,7 @@ class MapEditorInterface extends InterfaceLNZ {
     HeroSelectorForm(Level level) {
       super(0.5 * (width - Constants.mapEditor_formWidth), 0.5 * (height - Constants.mapEditor_formHeight),
         0.5 * (width + Constants.mapEditor_formWidth), 0.5 * (height + Constants.mapEditor_formHeight));
-        this.setTitleText("Hero Selecter");
+        this.setTitleText("Hero Selector");
         this.setTitleSize(18);
         this.color_background = color(180, 250, 180);
         this.color_header = color(30, 170, 30);
@@ -1184,7 +1188,7 @@ class MapEditorInterface extends InterfaceLNZ {
       this.effect = effect;
       this.setTitleText(effect.display_name);
       this.addField(new SpacerFormField(20));
-      this.addField(new IntegerFormField("ID: ", "enter an integer from 0-6", 0, 6));
+      this.addField(new IntegerFormField("ID: ", "enter an integer from 0-16", 0, 16));
       this.addField(new SpacerFormField(20));
       this.addField(new IntegerFormField("Number: ", "enter an integer", Integer.MIN_VALUE + 1, Integer.MAX_VALUE - 1));
       this.addField(new SpacerFormField(20));
@@ -2332,6 +2336,7 @@ class MapEditorInterface extends InterfaceLNZ {
             this.curr_level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
             this.navigate(MapEditorPage.TESTMAP);
             this.form = new HeroSelectorForm(this.curr_level);
+            this.curr_level.restartTimers();
           }
           this.open_testMap_thread = null;
           return;
@@ -2362,6 +2367,7 @@ class MapEditorInterface extends InterfaceLNZ {
             this.curr_level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
             this.navigate(MapEditorPage.TESTLEVEL);
             this.form = new LevelHeroSelectorForm(this.curr_level);
+            this.curr_level.restartTimers();
           }
           this.open_testLevel_thread = null;
           return;

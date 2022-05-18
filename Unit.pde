@@ -1615,11 +1615,17 @@ class Unit extends MapObject {
               else if (!map.squares[i][j].visible) {
                 map.setTerrainVisible(true, i, j);
               }
+              if (map.squares[i][j].terrain_id == 1) {
+                map.fog_dimg.colorGrid(Constants.color_transparent, i, j);
+              }
             } catch(IndexOutOfBoundsException e) {}
           }
           else if (map.fogHandling.show_fog()) {
             try {
               map.setTerrainVisible(false, i, j);
+              if (map.squares[i][j].terrain_id == 1) {
+                map.fog_dimg.colorGrid(Constants.color_transparent, i, j);
+              }
             } catch(IndexOutOfBoundsException e) {}
           }
         }

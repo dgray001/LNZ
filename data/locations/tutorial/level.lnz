@@ -4,7 +4,7 @@ location: tutorial
 completed: false
 completion_code: 0
 currMapName: tutorial_soldiers
-mapNames: tutorial_frontdoor, tutorial_stairwell, tutorial_soldiers
+mapNames: tutorial_stairwell, tutorial_soldiers, tutorial_frontdoor
 
 new: Linker
 rect1: tutorial_frontdoor, 5.0, 26.0, 6.0, 27.0
@@ -32,22 +32,92 @@ end: Linker
 nextTriggerKey: 1
 
 new: Trigger
-triggerName: test completion
+triggerName: ### Quest 1
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 3
+
+new: Trigger
+triggerName: lose control
 active: true
 looping: false
-amalgam: false
+amalgam: true
+new: Effect
+ID: 11
+message: 
+number: 0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 4
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 4
+
+new: Trigger
+triggerName: chat1
+active: false
+looping: false
+amalgam: true
 new: Condition
-ID: 6
+ID: 1
 number1: 3000
-number2: 0
-rectangle: test_tutorial, 4.0, 0.0, 5.0, 2.0
+number2: 3000
+rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
 end: Condition
 
 new: Effect
-ID: 6
-message: 
+ID: 4
+message: Welcome to Liberal Feminazi Zombies!
 number: 0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 5
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 5
+
+new: Trigger
+triggerName: chat2
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 3000
+number2: 3000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 4
+message: Our story begins with a humble soul
+number: 0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 6
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 

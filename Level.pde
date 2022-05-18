@@ -123,6 +123,7 @@ class Level {
 
   protected Rectangle player_start_location = null;
   protected Hero player;
+  protected boolean in_control = true;
 
   protected int last_update_time = millis();
   protected boolean restart_timers = false;
@@ -145,6 +146,27 @@ class Level {
     this.levelName = testMap.mapName;
     this.currMap = testMap;
     this.currMapName = testMap.mapName;
+  }
+
+
+  void gainControl() {
+    this.in_control = true;
+    if (this.currMap != null) {
+      this.currMap.in_control = true;
+    }
+    if (this.player != null) {
+      this.player.in_control = true;
+    }
+  }
+
+  void loseControl() {
+    this.in_control = false;
+    if (this.currMap != null) {
+      this.currMap.in_control = false;
+    }
+    if (this.player != null) {
+      this.player.in_control = false;
+    }
   }
 
 
@@ -180,6 +202,7 @@ class Level {
     }
     this.player = h;
     this.player.location = this.location;
+    this.player.in_control = this.in_control;
     if (this.currMap != null) {
       this.currMap.addPlayer(this.player);
     }
@@ -208,6 +231,7 @@ class Level {
     }
     this.player = player;
     this.player.location = this.location;
+    this.player.in_control = this.in_control;
   }
 
 
@@ -269,6 +293,7 @@ class Level {
     }
     this.currMap = new GameMap(mapName, this.finalFolderPath());
     this.currMap.setLocation(this.xi, this.yi, this.xf, this.yf);
+    this.currMap.in_control = this.in_control;
   }
 
   void closeMap() {
@@ -2076,9 +2101,9 @@ class Level {
             break;
         }
       }
-
-      this.nextTriggerKey = max_trigger_key + 1;
     }
+
+    this.nextTriggerKey = max_trigger_key + 1;
   }
 
 

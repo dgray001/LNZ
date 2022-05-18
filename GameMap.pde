@@ -850,6 +850,8 @@ class GameMap {
   protected float yf = 0;
   protected color color_border = global.color_mapBackground;
   protected color color_background = global.color_mapBorder;
+  protected color color_tint = Constants.color_transparent;
+  protected boolean show_tint = false;
 
   protected float xi_map = 0;
   protected float yi_map = 0;
@@ -883,6 +885,7 @@ class GameMap {
   protected ArrayList<Feature> features = new ArrayList<Feature>();
   protected HashMap<Integer, Unit> units = new HashMap<Integer, Unit>();
   protected int nextUnitKey = 1;
+  protected boolean in_control = true;
   protected HashMap<Integer, Item> items = new HashMap<Integer, Item>();
   protected int nextItemKey = 1;
   protected ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
@@ -952,7 +955,10 @@ class GameMap {
       case DEFAULT:
         for (int i = 0; i < this.mapWidth; i++) {
           for (int j = 0; j < this.mapHeight; j++) {
-            if (!this.squares[i][j].explored) {
+            if (this.squares[i][j].terrain_id == 1) {
+              this.fog_dimg.colorGrid(Constants.color_transparent, i, j);
+            }
+            else if (!this.squares[i][j].explored) {
               this.fog_dimg.colorGrid(Constants.color_black, i, j);
             }
             else if (!this.squares[i][j].visible) {
@@ -965,7 +971,7 @@ class GameMap {
         }
         break;
       case NONE:
-        this.fog_dimg.colorPixels(color(1, 0));
+        this.fog_dimg.colorPixels(Constants.color_transparent);
         for (int i = 0; i < this.mapWidth; i++) {
           for (int j = 0; j < this.mapHeight; j++) {
             this.exploreTerrainAndVisible(i, j, false);
@@ -976,7 +982,10 @@ class GameMap {
         for (int i = 0; i < this.mapWidth; i++) {
           for (int j = 0; j < this.mapHeight; j++) {
             this.setTerrainVisible(true, i, j, false);
-            if (!this.squares[i][j].explored) {
+            if (this.squares[i][j].terrain_id == 1) {
+              this.fog_dimg.colorGrid(Constants.color_transparent, i, j);
+            }
+            else if (!this.squares[i][j].explored) {
               this.fog_dimg.colorGrid(Constants.color_black, i, j);
             }
             else {
@@ -989,7 +998,10 @@ class GameMap {
         for (int i = 0; i < this.mapWidth; i++) {
           for (int j = 0; j < this.mapHeight; j++) {
             this.exploreTerrain(i, j, false);
-            if (!this.squares[i][j].visible) {
+            if (this.squares[i][j].terrain_id == 1) {
+              this.fog_dimg.colorGrid(Constants.color_transparent, i, j);
+            }
+            else if (!this.squares[i][j].visible) {
               this.fog_dimg.colorGrid(this.fogColor, i, j);
             }
             else {
@@ -1463,6 +1475,13 @@ class GameMap {
       textAlign(LEFT, TOP);
       text(nameDisplayed, name_xi + 1, name_yi + 1);
     }
+    // map tint
+    if (this.show_tint) {
+      rectMode(CORNERS);
+      fill(this.color_tint);
+      noStroke();
+      rect(this.xi_map, this.yi_map, this.xf_map, this.yf_map);
+    }
     // display fog
     if (this.draw_fog) {
       imageMode(CORNERS);
@@ -1858,7 +1877,7 @@ class GameMap {
   void updateView(int timeElapsed) {
     boolean refreshView = false;
     // lockscreen
-    if ((true || global.holding_space) && this.units.containsKey(0)) {
+    if ((true || global.holding_space) && this.in_control && this.units.containsKey(0)) {
       this.setViewLocation(this.units.get(0).x, this.units.get(0).y);
     }
     else {
@@ -2237,7 +2256,7 @@ class GameMap {
         if (!this.hovered_area) {
           break;
         }
-        if (this.units.containsKey(0)) {
+        if (this.units.containsKey(0) && this.in_control) {
           Unit player = this.units.get(0);
           if (player.curr_action_unhaltable) {
             break;
@@ -2301,37 +2320,37 @@ class GameMap {
           break;
         case 'q':
         case 'Q':
-          if (this.units.containsKey(0) && !global.holding_ctrl) {
+          if (this.units.containsKey(0) && !global.holding_ctrl && this.in_control) {
             this.units.get(0).dropWeapon(this);
           }
           break;
         case 'a':
         case 'A':
-          if (this.units.containsKey(0) && !global.holding_ctrl) {
+          if (this.units.containsKey(0) && !global.holding_ctrl && this.in_control) {
             this.units.get(0).cast(1, this);
           }
           break;
         case 's':
         case 'S':
-          if (this.units.containsKey(0) && !global.holding_ctrl) {
+          if (this.units.containsKey(0) && !global.holding_ctrl && this.in_control) {
             this.units.get(0).cast(2, this);
           }
           break;
         case 'd':
         case 'D':
-          if (this.units.containsKey(0) && !global.holding_ctrl) {
+          if (this.units.containsKey(0) && !global.holding_ctrl && this.in_control) {
             this.units.get(0).cast(3, this);
           }
           break;
         case 'f':
         case 'F':
-          if (this.units.containsKey(0) && !global.holding_ctrl) {
+          if (this.units.containsKey(0) && !global.holding_ctrl && this.in_control) {
             this.units.get(0).cast(4, this);
           }
           break;
         case 'v':
         case 'V':
-          if (this.units.containsKey(0) && !global.holding_ctrl) {
+          if (this.units.containsKey(0) && !global.holding_ctrl && this.in_control) {
             this.units.get(0).jump(this, 0);
           }
           break;
@@ -2757,7 +2776,7 @@ class GameMap {
         this.mapName = data;
         break;
       case "fogHandling":
-        this.setFogHandling(MapFogHandling.fogHandling(data));
+        this.fogHandling = MapFogHandling.fogHandling(data);
         break;
       case "dimensions":
         String[] dimensions = split(data, ',');

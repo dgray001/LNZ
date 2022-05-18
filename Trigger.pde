@@ -17,21 +17,22 @@ class Trigger {
     if (!this.active) {
       return;
     }
-    boolean actuate = true;
+    boolean actuate = false;
     if (amalgam) {
-      actuate = false;
+      actuate = true;
     }
     for (Condition condition : this.conditions) {
       if (condition.update(timeElapsed, level)) {
-        if (amalgam) {
+        if (!amalgam) {
           actuate = true;
         }
       }
-      else {
-        if (!amalgam) {
-          actuate = false;
-        }
+      else if (amalgam) {
+        actuate = false;
       }
+    }
+    if (this.conditions.size() == 0 && !this.amalgam) {
+      actuate = true;
     }
     if (actuate) {
       this.actuate(level);
@@ -251,6 +252,16 @@ class Effect {
       case 4: // header messae
       case 5: // level chat
       case 6: // win level
+      case 7: // activate trigger
+      case 8: // deactivate trigger
+      case 9:
+      case 10:
+      case 11: // lose control
+      case 12: // gain control
+      case 13: // move view
+      case 14: // tint map
+      case 15: // stop tinting map
+      case 16: // show blinking arrow
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
@@ -278,6 +289,36 @@ class Effect {
         break;
       case 6: // win level
         this.display_name = "Win Level";
+        break;
+      case 7: // activate trigger
+        this.display_name = "Activate Trigger";
+        break;
+      case 8: // deactivate trigger
+        this.display_name = "Deactivate Trigger";
+        break;
+      case 9:
+        this.display_name = "";
+        break;
+      case 10:
+        this.display_name = "";
+        break;
+      case 11: // lose control
+        this.display_name = "Lose Control";
+        break;
+      case 12: // gain control
+        this.display_name = "Gain Control";
+        break;
+      case 13: // move view
+        this.display_name = "Move View";
+        break;
+      case 14: // tint map
+        this.display_name = "Tint Map";
+        break;
+      case 15: // stop tinting map
+        this.display_name = "Remove Map Tint";
+        break;
+      case 16: // show blinking arrow
+        this.display_name = "Blinking Arrow";
         break;
       default:
         this.display_name = "Effect";
@@ -308,6 +349,44 @@ class Effect {
         break;
       case 6: // win level
         level.complete(this.number);
+        break;
+      case 7: // activate trigger
+        if (level.triggers.containsKey(this.number)) {
+          level.triggers.get(this.number).active = true;
+        }
+        break;
+      case 8: // deactivate trigger
+        if (level.triggers.containsKey(this.number)) {
+          level.triggers.get(this.number).active = false;
+        }
+        break;
+      case 9:
+        break;
+      case 10:
+        break;
+      case 11: // Lose control
+        level.loseControl();
+        break;
+      case 12: // gain control
+        level.gainControl();
+        break;
+      case 13: // move view
+        if (level.currMap != null) {
+          level.currMap.setViewLocation(this.rectangle.centerX(), this.rectangle.centerY());
+        }
+        break;
+      case 14: // tint map
+        if (level.currMap != null) {
+          level.currMap.show_tint = true;
+          level.currMap.color_tint = this.number;
+        }
+        break;
+      case 15: // stop tinting map
+        if (level.currMap != null) {
+          level.currMap.show_tint = false;
+        }
+        break;
+      case 16: // show blinking arrow
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");

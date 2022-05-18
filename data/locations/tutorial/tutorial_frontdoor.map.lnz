@@ -2,6 +2,7 @@ new: Map
 code: ERROR
 mapName: tutorial_frontdoor
 dimensions: 18, 30
+fogHandling: Explored
 terrain: 0, 0: 1, 100, false
 terrain: 0, 1: 1, 100, false
 terrain: 0, 2: 1, 100, false
