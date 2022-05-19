@@ -44,6 +44,10 @@ class Global {
   private color color_perkTreeDarkColor = color(150, 70, 50);
   // Profile
   private Profile profile;
+  // Graphics
+  protected boolean player_blinking = true;
+  protected int player_blinks_left = 0;
+  protected int player_blink_time = Constants.level_questBlinkTime;
 
   Global(LNZ thisInstance) {
     this.images = new Images();

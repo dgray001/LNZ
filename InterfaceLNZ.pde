@@ -766,6 +766,16 @@ abstract class InterfaceLNZ {
   InterfaceLNZ() {
   }
 
+  boolean escFormOpened() {
+    if (this.form == null) {
+      return false;
+    }
+    if (EscForm.class.isInstance(this.form)) {
+      return true;
+    }
+    return false;
+  }
+
   void throwError(String message) {
     if (this.form != null && ErrorForm.class.isInstance(this.form)) {
       ((ErrorForm)this.form).addErrorMessage(message);

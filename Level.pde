@@ -119,7 +119,7 @@ class Level {
   protected ArrayList<Linker> linkers = new ArrayList<Linker>();
   protected int nextTriggerKey = 1;
   protected HashMap<Integer, Trigger> triggers = new HashMap<Integer, Trigger>();
-  //protected HashMap<Integer, Quest> quests = new HashMap<Integer, Quest>();
+  protected HashMap<Integer, Quest> quests = new HashMap<Integer, Quest>();
 
   protected Rectangle player_start_location = null;
   protected Hero player;
@@ -151,6 +151,9 @@ class Level {
 
   void gainControl() {
     this.in_control = true;
+    global.player_blinks_left = 6;
+    global.player_blinking = true;
+    global.player_blink_time = Constants.level_questBlinkTime;
     if (this.currMap != null) {
       this.currMap.in_control = true;
     }
@@ -161,6 +164,9 @@ class Level {
 
   void loseControl() {
     this.in_control = false;
+    global.player_blinks_left = 6;
+    global.player_blinking = false;
+    global.player_blink_time = Constants.level_questBlinkTime;
     if (this.currMap != null) {
       this.currMap.in_control = false;
     }
@@ -343,8 +349,21 @@ class Level {
     this.triggers.remove(triggerKey);
   }
 
-  //void addQuest(Quest quest) {}
-  //void removeQuest(int index) {}
+  void addQuest(int quest_id) {
+    this.addQuest(new Quest(quest_id));
+  }
+  void addQuest(Quest quest) {
+    if (this.quests.containsKey(quest.ID)) {
+      return;
+    }
+    this.quests.put(quest.ID, quest);
+    global.sounds.trigger_player("player/quest");
+  }
+  void removeQuest(int quest_id) {
+    if (this.quests.containsKey(quest_id)) {
+      this.quests.remove(quest_id);
+    }
+  }
 
 
   void setLocation(float xi, float yi, float xf, float yf) {
@@ -1663,6 +1682,9 @@ class Level {
     }
     if (this.player != null) {
       this.player.update_hero(timeElapsed);
+      for (Map.Entry<Integer, Quest> entry : this.quests.entrySet()) {
+        entry.getValue().update(this, timeElapsed);
+      }
     }
     this.last_update_time = millis;
   }
@@ -2155,6 +2177,109 @@ class Level {
       this.color_background = color(250, 190, 140);
       this.color_header = color(220, 180, 130);
       this.setTitleText("Quests");
+    }
+
+    @Override
+    void update(int millis) {
+      this.clearText();
+      boolean first = true;
+      ArrayList<Quest> quests = new ArrayList<Quest>();
+      for (Map.Entry<Integer, Quest> entry : Level.this.quests.entrySet()) {
+        quests.add(entry.getValue());
+        if (first) {
+          this.setText(entry.getValue().name());
+          first = false;
+        }
+        else {
+          this.addLine(entry.getValue().name());
+        }
+      }
+      if (this.line_hovered >= this.text_lines_ref.size()) {
+        this.line_hovered = -1;
+      }
+      if (this.line_clicked >= this.text_lines_ref.size()) {
+        this.line_clicked = this.text_lines_ref.size() - 1;
+      }
+      int timeElapsed = millis - this.lastUpdateTime;
+      rectMode(CORNERS);
+      fill(this.color_background);
+      stroke(this.color_stroke);
+      strokeWeight(1);
+      rect(this.xi, this.yi, this.xf, this.yf);
+      float currY = this.yi + 1;
+      if (this.text_title_ref != null) {
+        fill(this.color_header);
+        textSize(this.title_size);
+        rect(this.xi, this.yi, this.xf, this.yi + textAscent() + textDescent() + 1);
+        fill(this.color_title);
+        textAlign(CENTER, TOP);
+        text(this.text_title, this.xi + 0.5 * (this.xf - this.xi), currY);
+        currY += textAscent() + textDescent() + 2;
+      }
+      textAlign(LEFT, TOP);
+      textSize(this.text_size);
+      float text_height = textAscent() + textDescent();
+      for (int i = int(floor(this.scrollbar.value)); i < this.text_lines.size(); i++, currY += text_height + this.text_leading) {
+        if (currY + text_height + 1 > this.yf) {
+          break;
+        }
+        if (i < 0 || i >= quests.size()) {
+          continue;
+        }
+        fill(this.color_text);
+        if (quests.get(i).blinking) {
+          fill(color(170));
+        }
+        if (this.wordWrap) {
+          text(this.text_lines.get(i), this.xi + 2, currY);
+        }
+        else {
+          text(this.truncateLine(this.text_lines.get(i)), this.xi + 2, currY);
+        }
+        if (quests.get(i).met) {
+          fill(0);
+          line(this.xi + 1, currY + 0.5 * text_height, this.xf - 1, currY + 0.5 * text_height);
+        }
+      }
+      if (this.scrollbar.maxValue != this.scrollbar.minValue) {
+        this.scrollbar.update(millis);
+      }
+      if (!this.wordWrap) {
+        if (this.scrollbar_horizontal.maxValue != this.scrollbar_horizontal.minValue) {
+          this.scrollbar_horizontal.update(millis);
+        }
+      }
+      this.lastUpdateTime = millis;
+      if (this.doubleclickTimer > 0) {
+        this.doubleclickTimer -= timeElapsed;
+      }
+      currY = this.yi + 1;
+      if (this.text_title_ref != null) {
+        textSize(this.title_size);
+        currY += textAscent() + textDescent() + 2;
+      }
+      textSize(this.text_size);
+      text_height = textAscent() + textDescent();
+      if (this.line_hovered >= floor(this.scrollbar.value)) {
+        float hovered_yi = currY + (this.line_hovered - floor(this.scrollbar.value)) * (text_height + this.text_leading);
+        if (hovered_yi + text_height + 1 < this.yf) {
+          rectMode(CORNERS);
+          fill(this.hover_color);
+          strokeWeight(0.001);
+          stroke(this.hover_color);
+          rect(this.xi + 1, hovered_yi, this.xf - 2 - this.scrollbar.bar_size, hovered_yi + text_height);
+        }
+      }
+      if (this.line_clicked >= floor(this.scrollbar.value)) {
+        float clicked_yi = currY + (this.line_clicked - floor(this.scrollbar.value)) * (text_height + this.text_leading);
+        if (clicked_yi + text_height + 1 < this.yf) {
+          rectMode(CORNERS);
+          fill(this.highlight_color);
+          strokeWeight(0.001);
+          stroke(this.highlight_color);
+          rect(this.xi + 1, clicked_yi, this.xf - 2 - this.scrollbar.bar_size, clicked_yi + text_height);
+        }
+      }
     }
 
     void click() {

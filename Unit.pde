@@ -371,6 +371,22 @@ class Unit extends MapObject {
         this.size = 0.45;
         this.sizeZ = 6;
         break;
+      case 1005:
+        this.setStrings("Rooster", "Gaia", "");
+        this.baseStats(2.8, 1.2, 0, 0, 1.4);
+        this.timer_ai_action1 = int(Constants.ai_chickenTimer1 + random(Constants.ai_chickenTimer1));
+        this.timer_ai_action2 = int(Constants.ai_chickenTimer2 + random(Constants.ai_chickenTimer2));
+        this.level = 2;
+        this.sizeZ = 2;
+        break;
+      case 1006:
+        this.setStrings("Father Dom", "Human", "");
+        this.baseStats(3.5, 2, 0, 0, 2);
+        this.magicStats(2, 4, 0.05);
+        this.alliance = Alliance.BEN;
+        this.level = 3;
+        this.sizeZ = 4;
+        break;
 
       // Heroes
       case 1101:
@@ -382,7 +398,7 @@ class Unit extends MapObject {
         this.element = Element.GRAY;
         break;
       case 1102:
-        this.setStrings("Daniel Gray", "Hero", "");
+        this.setStrings("Dan Gray", "Hero", "");
         this.baseStats(4, 1, 0, 0, 2);
         this.base_agility = 1;
         this.base_magic = 3;
@@ -391,7 +407,7 @@ class Unit extends MapObject {
         this.element = Element.BROWN;
         break;
       case 1103:
-        this.setStrings("John-Francis", "Hero", "");
+        this.setStrings("JIF", "Hero", "");
         break;
       case 1104:
         this.setStrings("Mark Spinny", "Hero", "");
@@ -541,6 +557,12 @@ class Unit extends MapObject {
     this.base_speed = speed;
   }
 
+  void magicStats(float magic, float resistance, float penetration) {
+    this.base_magic = magic;
+    this.base_resistance = resistance;
+    this.base_penetration = penetration;
+  }
+
   void gearSlots(String ... strings) {
     for (String string : strings) {
       this.gear.put(GearSlot.gearSlot(string), null);
@@ -597,6 +619,12 @@ class Unit extends MapObject {
         break;
       case 1004:
         path += "john_rankin.png";
+        break;
+      case 1005:
+        path += "rooster.png";
+        break;
+      case 1006:
+        path += "father_dom.png";
         break;
       case 1101:
         path += "ben.png";
@@ -2950,6 +2978,7 @@ class Unit extends MapObject {
         return;
       case 1002: // Chicken
       case 1003: // Chick
+      case 1005: // Rooster
         global.sounds.trigger_units("units/walk/chicken");
         return;
       default:
@@ -3029,6 +3058,7 @@ class Unit extends MapObject {
     switch(this.ID) {
       case 1002: // Chicken
       case 1003: // Chick
+      case 1005: // Rooster
         sound_name += "chicken" + randomInt(1, 3);
         break;
       case 1201: // Zombies
@@ -3110,6 +3140,7 @@ class Unit extends MapObject {
     switch(this.ID) {
       case 1002: // Chicken
       case 1003: // Chick
+      case 1005: // Rooster
         sound_name += "chicken" + randomInt(1, 2);
         break;
       case 1201: // Zombies
@@ -3138,6 +3169,7 @@ class Unit extends MapObject {
     switch(this.ID) {
       case 1002: // Chicken
       case 1003: // Chick
+      case 1005: // Rooster
         sound_name += "chicken" + randomInt(1, 2);
         break;
       case 1201: // Zombies
@@ -3479,6 +3511,23 @@ class Unit extends MapObject {
           if (this.timer_ai_action2 < 0) {
             this.timer_ai_action2 = int(Constants.ai_chickenTimer2 + random(Constants.ai_chickenTimer2));
             this.setUnitID(1002);
+          }
+        }
+        break;
+      case 1005: // Rooster
+        if (this.curr_action == UnitAction.NONE || this.last_move_collision) {
+          this.timer_ai_action1 -= timeElapsed;
+          this.timer_ai_action2 -= timeElapsed;
+          if (this.timer_ai_action1 < 0) {
+            this.timer_ai_action1 = int(Constants.ai_chickenTimer1 + random(Constants.ai_chickenTimer1));
+            this.moveTo(this.x + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance),
+              this.y + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance));
+          }
+          if (this.timer_ai_action2 < 0) {
+            this.timer_ai_action2 = int(0.4 * Constants.ai_chickenTimer2 + 0.4 * random(Constants.ai_chickenTimer2));
+            if (this.in_view) {
+              global.sounds.trigger_units("units/other/rooster_crow" + randomInt(1, 3));
+            }
           }
         }
         break;

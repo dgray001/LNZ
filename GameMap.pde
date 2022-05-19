@@ -1297,6 +1297,7 @@ class GameMap {
       i.disappearing = false;
     }
     this.items.put(code, i);
+    i.map_key = code;
   }
   // remove item
   void removeItem(int code) {
@@ -1618,6 +1619,13 @@ class GameMap {
     }
     translate(extra_translate_x, extra_translate_y);
     image(u.getImage(), 0, 0, u.width() * this.zoom, u.height() * this.zoom);
+    if (player_unit && global.player_blinking) {
+      ellipseMode(CENTER);
+      noFill();
+      stroke(255);
+      strokeWeight(0.5);
+      ellipse(0, 0, u.width() * this.zoom, u.height() * this.zoom);
+    }
     if (u.weapon() != null) {
       float translateItemX = 0.9 * (u.xRadius() + Constants.unit_weaponDisplayScaleFactor * Constants.item_defaultSize) * this.zoom;
       float translateItemY = 0.4 * (u.yRadius() + Constants.unit_weaponDisplayScaleFactor * Constants.item_defaultSize) * this.zoom;

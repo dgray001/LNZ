@@ -28,10 +28,10 @@ class TutorialInterface extends InterfaceLNZ {
       this.message = "Restart\nTutorial";
     }
     void release() {
-      this.stayDehovered();
       if (!this.hovered) {
         return;
       }
+      this.stayDehovered();
       TutorialInterface.this.form = new RestartTutorialForm();
     }
   }
@@ -42,10 +42,10 @@ class TutorialInterface extends InterfaceLNZ {
       this.message = "Options";
     }
     void release() {
-      this.stayDehovered();
       if (!this.hovered) {
         return;
       }
+      this.stayDehovered();
       TutorialInterface.this.form = new OptionsForm();
     }
   }
@@ -56,10 +56,10 @@ class TutorialInterface extends InterfaceLNZ {
       this.message = "Heroes";
     }
     void release() {
-      this.stayDehovered();
       if (!this.hovered) {
         return;
       }
+      this.stayDehovered();
       TutorialInterface.this.form = new HeroesForm();
     }
   }
@@ -70,10 +70,10 @@ class TutorialInterface extends InterfaceLNZ {
       this.message = "Main\nMenu";
     }
     void release() {
-      this.stayDehovered();
       if (!this.hovered) {
         return;
       }
+      this.stayDehovered();
       TutorialInterface.this.form = new GoToMainMenuForm();
     }
   }
@@ -86,10 +86,10 @@ class TutorialInterface extends InterfaceLNZ {
       this.message = "Help";
     }
     void release() {
-      this.stayDehovered();
       if (!this.hovered) {
         return;
       }
+      this.stayDehovered();
       // help form (help depends on stage in tutorial)
     }
   }

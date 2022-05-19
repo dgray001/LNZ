@@ -80,6 +80,7 @@ class EditItemForm extends EditMapObjectForm {
 class Item extends MapObject {
   protected boolean disappearing = false;
   protected int disappear_timer = 0;
+  protected int map_key = -10;
 
   protected int stack = 1;
 

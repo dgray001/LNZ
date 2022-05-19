@@ -108,10 +108,10 @@ class Condition {
     switch(ID) {
       case 0: // nothing
       case 1: // timer
-      case 2:
-      case 3:
-      case 4:
-      case 5:
+      case 2: // selected specific unit
+      case 3: // selected specific item
+      case 4: // selected unit
+      case 5: // selected item
       case 6: // player in rectangle
         break;
       default:
@@ -130,6 +130,18 @@ class Condition {
         else {
           this.display_name = "Timer (" + round(this.number1/100.0)/10.0 + " s)";
         }
+        break;
+      case 2: // selected specific unit
+        this.display_name = "Select specific unit (" + this.number1 + ")";
+        break;
+      case 3: // selected specific item
+        this.display_name = "Select specific item (" + this.number1 + ")";
+        break;
+      case 4: // selected unit id
+        this.display_name = "Select unit (" + this.number1 + ")";
+        break;
+      case 5: // selected item id
+        this.display_name = "Select item (" + this.number1 + ")";
         break;
       case 6: // player in rectangle
         this.display_name = "Player in: " + this.rectangle.fileString();
@@ -152,10 +164,61 @@ class Condition {
           }
         }
         break;
-      case 2:
-      case 3:
-      case 4:
-      case 5:
+      case 2: // selected specific unit
+        if (this.met) {
+          break;
+        }
+        if (level.currMap == null) {
+          break;
+        }
+        if (Unit.class.isInstance(level.currMap.selected_object)) {
+          Unit u = (Unit)level.currMap.selected_object;
+          if (u.map_key == this.number1) {
+            this.met = true;
+          }
+        }
+        break;
+      case 3: // selected specific item
+        if (this.met) {
+          break;
+        }
+        if (level.currMap == null) {
+          break;
+        }
+        if (Item.class.isInstance(level.currMap.selected_object)) {
+          Item i = (Item)level.currMap.selected_object;
+          if (i.map_key == this.number1) {
+            this.met = true;
+          }
+        }
+        break;
+      case 4: // selected unit
+        if (this.met) {
+          break;
+        }
+        if (level.currMap == null) {
+          break;
+        }
+        if (Unit.class.isInstance(level.currMap.selected_object)) {
+          Unit u = (Unit)level.currMap.selected_object;
+          if (u.ID == this.number1) {
+            this.met = true;
+          }
+        }
+        break;
+      case 5: // selected item
+        if (this.met) {
+          break;
+        }
+        if (level.currMap == null) {
+          break;
+        }
+        if (Item.class.isInstance(level.currMap.selected_object)) {
+          Item i = (Item)level.currMap.selected_object;
+          if (i.ID == this.number1) {
+            this.met = true;
+          }
+        }
         break;
       case 6: // player in rectangle
         if (this.met) {
@@ -185,6 +248,14 @@ class Condition {
         break;
       case 1: // timer
         this.number2 = this.number1;
+        break;
+      case 2: // selected specific unit
+        break;
+      case 3: // selected specific item
+        break;
+      case 4: // selected unit
+        break;
+      case 5: // selected item
         break;
       case 6: // player in rectangle
         break;
@@ -254,14 +325,20 @@ class Effect {
       case 6: // win level
       case 7: // activate trigger
       case 8: // deactivate trigger
-      case 9:
-      case 10:
+      case 9: // add quest
+      case 10: // remove quest
       case 11: // lose control
       case 12: // gain control
       case 13: // move view
       case 14: // tint map
       case 15: // stop tinting map
       case 16: // show blinking arrow
+      case 17: // complete quest
+      case 21: // stop unit
+      case 22: // stop player
+      case 23: // stop units in rectangle
+      case 24: // move unit
+      case 25: // move player
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
@@ -296,11 +373,11 @@ class Effect {
       case 8: // deactivate trigger
         this.display_name = "Deactivate Trigger (" + this.number + ")";
         break;
-      case 9:
-        this.display_name = "";
+      case 9: // add quest
+        this.display_name = "Add Quest (" + this.number + ")";
         break;
-      case 10:
-        this.display_name = "";
+      case 10: // remove quest
+        this.display_name = "Remove Quest (" + this.number + ")";
         break;
       case 11: // lose control
         this.display_name = "Lose Control";
@@ -319,6 +396,24 @@ class Effect {
         break;
       case 16: // show blinking arrow
         this.display_name = "Blinking Arrow (" + this.number + ")";
+        break;
+      case 17: // complete quest
+        this.display_name = "Complete Quest (" + this.number + ")";
+        break;
+      case 21: // stop unit
+        this.display_name = "Stop Unit (" + this.number + ")";
+        break;
+      case 22: // stop player
+        this.display_name = "Stop Player";
+        break;
+      case 23: // stop units in rectangle
+        this.display_name = "Stop Units in Rectangle";
+        break;
+      case 24: // move unit
+        this.display_name = "Move Unit (" + this.number + ")";
+        break;
+      case 25: // move player
+        this.display_name = "Move Player";
         break;
       default:
         this.display_name = "Effect";
@@ -360,9 +455,11 @@ class Effect {
           level.triggers.get(this.number).active = false;
         }
         break;
-      case 9:
+      case 9: // add quest
+        level.addQuest(this.number);
         break;
-      case 10:
+      case 10: // remove quest
+        level.removeQuest(this.number);
         break;
       case 11: // Lose control
         level.loseControl();
@@ -449,9 +546,68 @@ class Effect {
             image(global.images.getImage("gifs/arrow/" + frame + ".png"), 0, 0, 130, 130);
             translate(-translate_x, -0.08 * height);
             break;
+          case 7: // selected object
+            translate_x = level.xi + 65;
+            translate(translate_x, 0.1 * height);
+            rotate(PI);
+            imageMode(CENTER);
+            image(global.images.getImage("gifs/arrow/" + frame + ".png"), 0, 0, 130, 130);
+            rotate(-PI);
+            translate(-translate_x, -0.1 * height);
+            break;
+          case 8: // move toward arrow
+            translate_x = 0.5 * width;
+            translate(translate_x, 0.5 * height + 300);
+            rotate(0.5 * PI);
+            imageMode(CENTER);
+            image(global.images.getImage("gifs/arrow/" + frame + ".png"), 0, 0, 130, 130);
+            rotate(-0.5 * PI);
+            translate(-translate_x, -0.5 * height - 300);
+            break;
           default:
             global.errorMessage("ERROR: Blinking arrow ID " + this.number + " not recognized.");
             break;
+        }
+        break;
+      case 17: // remove quest
+        if (level.quests.containsKey(this.number)) {
+          level.quests.get(this.number).meet();
+        }
+        break;
+      case 21: // stop unit
+        if (level.currMap == null) {
+          break;
+        }
+        if (level.currMap.units.containsKey(this.number)) {
+          level.currMap.units.get(this.number).stopAction();
+        }
+        break;
+      case 22: // stop player
+        if (level.player != null) {
+          level.player.stopAction();
+        }
+        break;
+      case 23: // stop units in rectangle
+        if (level.currMap == null) {
+          break;
+        }
+        for (Map.Entry<Integer, Unit> entry : level.currMap.units.entrySet()) {
+          if (this.rectangle.contains(entry.getValue())) {
+            entry.getValue().stopAction();
+          }
+        }
+        break;
+      case 24: // move unit
+        if (level.currMap == null) {
+          break;
+        }
+        if (level.currMap.units.containsKey(this.number)) {
+          level.currMap.units.get(this.number).moveTo(this.rectangle.centerX(), this.rectangle.centerY());
+        }
+        break;
+      case 25: // move player
+        if (level.player != null) {
+          level.player.moveTo(this.rectangle.centerX(), this.rectangle.centerY());
         }
         break;
       default:

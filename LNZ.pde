@@ -11,7 +11,7 @@ Global global;
 
 void setup() {
   fullScreen(FX2D);
-  pixelDensity(displayDensity());
+  //pixelDensity(displayDensity());
   surface.setSize(Constants.initialInterface_size, Constants.initialInterface_size);
   surface.setLocation(int(0.5 * (displayWidth - Constants.initialInterface_size)),
     int(0.5 * (displayHeight - Constants.initialInterface_size)));
@@ -33,6 +33,15 @@ void draw() {
     global.lastFPS = (Constants.frameAverageCache * global.lastFPS + float(frameCount - global.frameCounter) *
       (1000.0 / Constants.frameUpdateTime)) / (Constants.frameAverageCache + 1);
     global.frameCounter = frameCount + 1;
+  }
+  // Player unit ellipse
+  if (global.player_blinks_left > 0) {
+    global.player_blink_time -= timeElapsed;
+    if (global.player_blink_time < 0) {
+      global.player_blink_time += Constants.level_questBlinkTime;
+      global.player_blinks_left--;
+      global.player_blinking = !global.player_blinking;
+    }
   }
   // Program
   if (global.menu != null) {
