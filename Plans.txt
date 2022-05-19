@@ -15,8 +15,6 @@ v0.7.1: TutorialInterface
  - 1681075482 is brown with transparency of 100
  - sleep mechanics
  - death mechanics
- - Make quests show tip and if double click a quest form with details of quest
- - Can't move when having inventory open
  - Can drop items from inventory
 
  - Add button to navigate to perk tree in achievementform
@@ -124,6 +122,7 @@ Parking Lot:
  - StoveInventory door image / burner images / knob functionality
  - TrashInventories only display what's on top, items 'fall' down trash can
  - Achievements form has button to PlayerTree and vice/versa
+ - Double click quests to open QuestForm
 
 
 v0.8: HomeBase and Campaign II

@@ -1824,6 +1824,10 @@ class TextBox {
       }
     }
   }
+
+  void scrollBottom() {
+    this.scrollbar.updateValue(this.scrollbar.maxValue);
+  }
 }
 
 
@@ -1831,7 +1835,7 @@ abstract class ListTextBox extends TextBox {
   protected ArrayList<String> text_lines_ref;
   protected int line_hovered = -1;
   protected int line_clicked = -1;
-  protected color hover_color = color(1, 0);
+  protected color hover_color = color(180, 180, 200, 60);
   protected color highlight_color = color(100, 100, 250, 120);
   protected int doubleclickTimer = 0;
   protected int doubleclickTime = 400;
@@ -1841,6 +1845,12 @@ abstract class ListTextBox extends TextBox {
   }
   ListTextBox(float xi, float yi, float xf, float yf) {
     super(xi, yi, xf, yf);
+  }
+
+  @Override
+  void clearText() {
+    this.setText("");
+    this.text_lines.clear();
   }
 
   @Override

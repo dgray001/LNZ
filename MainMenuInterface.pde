@@ -772,5 +772,6 @@ class MainMenuInterface extends InterfaceLNZ {
 
   void loseFocus() {}
   void gainFocus() {}
+  void restartTimers() {}
   void saveAndExitToMainMenu() {}
 }

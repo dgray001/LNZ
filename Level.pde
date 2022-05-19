@@ -339,6 +339,7 @@ class Level {
       global.errorMessage("ERROR: Can't add null trigger to triggers.");
       return;
     }
+    trigger.triggerID = triggerCode;
     this.triggers.put(triggerCode, trigger);
   }
   void removeTrigger(int triggerKey) {
@@ -2176,6 +2177,12 @@ class Level {
         level_questBoxHeightRatio * height - Constants.mapEditor_listBoxGap);
       this.color_background = color(250, 190, 140);
       this.color_header = color(220, 180, 130);
+      this.scrollbar.setButtonColors(color(220), color(220, 160, 110), color(
+        240, 180, 130), color(200, 140, 90), color(0));
+      this.scrollbar.button_upspace.setColors(color(170), color(255, 200, 150),
+        color(255, 200, 150), color(60, 30, 0), color(0));
+      this.scrollbar.button_downspace.setColors(color(170), color(255, 200, 150),
+        color(255, 200, 150), color(60, 30, 0), color(0));
       this.setTitleText("Quests");
     }
 
@@ -2278,6 +2285,18 @@ class Level {
           strokeWeight(0.001);
           stroke(this.highlight_color);
           rect(this.xi + 1, clicked_yi, this.xf - 2 - this.scrollbar.bar_size, clicked_yi + text_height);
+          if (this.line_hovered == this.line_clicked) {
+            try {
+              String tooltip = quests.get(this.line_clicked).shortDescription();
+              float tooltip_width = textWidth(tooltip) + 2;
+              noStroke();
+              fill(global.color_nameDisplayed_background);
+              rect(mouseX - tooltip_width - 2, mouseY + 2, mouseX - 2, mouseY + 2 + text_height + 2);
+              fill(global.color_nameDisplayed_text);
+              textAlign(LEFT, TOP);
+              text(tooltip, mouseX - tooltip_width - 1, mouseY + 1);
+            } catch(Exception e) {}
+          }
         }
       }
     }
@@ -2302,6 +2321,12 @@ class Level {
         0.9 * height - Constants.mapEditor_listBoxGap);
       this.color_background = color(250, 190, 140);
       this.color_header = color(220, 180, 130);
+      this.scrollbar.setButtonColors(color(220), color(220, 160, 110), color(
+        240, 180, 130), color(200, 140, 90), color(0));
+      this.scrollbar.button_upspace.setColors(color(170), color(255, 200, 150),
+        color(255, 200, 150), color(60, 30, 0), color(0));
+      this.scrollbar.button_downspace.setColors(color(170), color(255, 200, 150),
+        color(255, 200, 150), color(60, 30, 0), color(0));
       this.setTitleText("Chat Log");
     }
 

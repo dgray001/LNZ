@@ -5,7 +5,8 @@ class InitialInterface extends InterfaceLNZ {
       super(Constants.initialInterface_size - Constants.initialInterface_buttonWidth -
         Constants.initialInterface_buttonGap, yi, Constants.initialInterface_size -
         Constants.initialInterface_buttonGap, yf);
-      this.setColors(color(0, 100, 30, 200), color(0, 129, 50, 150), color(0, 129, 50, 190), color(0, 129, 50, 230), color(255));
+      this.setColors(color(0, 100, 30, 200), color(0, 129, 50, 150),
+        color(0, 129, 50, 190), color(0, 129, 50, 230), color(255));
       this.noStroke();
       this.show_message = true;
       this.text_size = 15;
@@ -131,12 +132,17 @@ class InitialInterface extends InterfaceLNZ {
       this.setTitleSize(18);
       this.color_background = color(180, 250, 180);
       this.color_header = color(30, 170, 30);
+      this.scrollbar.setButtonColors(color(170), color(190, 255, 190),
+        color(220, 255, 220), color(160, 220, 160), color(0));
 
       SubmitFormField submit = new SubmitFormField("  Ok  ");
       submit.button.setColors(color(220), color(190, 240, 190),
         color(140, 190, 140), color(90, 140, 90), color(0));
       this.addField(new SpacerFormField(0));
-      this.addField(new TextBoxFormField(message, 120));
+      TextBoxFormField textbox = new TextBoxFormField(message, 120);
+      textbox.textbox.scrollbar.setButtonColors(color(170), color(190, 255, 190),
+        color(220, 255, 220), color(160, 220, 160), color(0));
+      this.addField(textbox);
       this.addField(submit);
     }
     void submit() {
@@ -207,4 +213,5 @@ class InitialInterface extends InterfaceLNZ {
   void keyRelease() {}
   void loseFocus() {}
   void gainFocus() {}
+  void restartTimers() {}
 }

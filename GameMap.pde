@@ -1838,6 +1838,14 @@ class GameMap {
       }
       else if (Unit.class.isInstance(this.selected_object) || Hero.class.isInstance(this.selected_object)) {
         Unit u = (Unit)this.selected_object;
+        // weapon
+        if (u.weapon() != null) {
+          float weapon_image_width = image_width * Constants.unit_weaponDisplayScaleFactor * u.weapon().width() / u.width();
+          float weapon_image_height = image_height * Constants.unit_weaponDisplayScaleFactor * u.weapon().height() / u.height();
+          float weapon_image_x = 0.5 * this.xi + 0.45 * (image_width + weapon_image_width);
+          float weapon_image_y = currY + 0.2 * (image_height + weapon_image_height);
+          image(u.weapon().getImage(), weapon_image_x, weapon_image_y, weapon_image_width, weapon_image_height);
+        }
         boolean lower_textbox = (u.statuses.size() > 0);
         if (lower_textbox) {
           this.selected_object_textbox.setYLocation(this.selected_object_textbox.yi +
@@ -2297,7 +2305,11 @@ class GameMap {
         if (!this.hovered_area) {
           break;
         }
-        if (this.units.containsKey(0) && this.in_control) {
+        boolean viewing_inventory = false;
+        if (this.units.containsKey(0) && Hero.class.isInstance(this.units.get(0))) {
+          viewing_inventory = ((Hero)this.units.get(0)).inventory.viewing;
+        }
+        if (this.units.containsKey(0) && this.in_control && !viewing_inventory) {
           Unit player = this.units.get(0);
           if (player.curr_action_unhaltable) {
             break;

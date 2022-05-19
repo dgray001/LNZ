@@ -837,6 +837,9 @@ abstract class InterfaceLNZ {
           this.form.img = this.esc_menu_img;
           this.esc_menu_img = null;
         }
+        else {
+          this.restartTimers();
+        }
       }
     }
     if (this.showing_nerd_stats) {
@@ -904,25 +907,25 @@ abstract class InterfaceLNZ {
           break;
         case 'a':
         case 'A':
-          if (this.form == null && global.holding_ctrl) {
+          if (this.form == null && global.holding_ctrl && global.profile != null) {
             this.form = new AchievementsForm();
           }
           break;
         case 'o':
         case 'O':
-          if (this.form == null && global.holding_ctrl) {
+          if (this.form == null && global.holding_ctrl && global.profile != null) {
             this.form = new OptionsForm();
           }
           break;
         case 'h':
         case 'H':
-          if (this.form == null && global.holding_ctrl) {
+          if (this.form == null && global.holding_ctrl && global.profile != null) {
             this.form = new HeroesForm();
           }
           break;
         case 'p':
         case 'P':
-          if (global.holding_ctrl) {
+          if (global.holding_ctrl && global.profile != null) {
             this.openPlayerTree();
           }
           break;
@@ -956,6 +959,7 @@ abstract class InterfaceLNZ {
   abstract void saveAndExitToMainMenu();
   abstract void loseFocus();
   abstract void gainFocus();
+  abstract void restartTimers();
   abstract void update(int millis);
   abstract void showNerdStats();
   abstract void mouseMove(float mX, float mY);

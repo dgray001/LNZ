@@ -147,6 +147,12 @@ class MapEditorInterface extends InterfaceLNZ {
       super(width, Constants.mapEditor_listBoxGap, width, 0.9 * height - Constants.mapEditor_listBoxGap);
       this.color_background = color(250, 190, 140);
       this.color_header = color(220, 180, 130);
+      this.scrollbar.setButtonColors(color(220), color(220, 160, 110), color(
+        240, 180, 130), color(200, 140, 90), color(0));
+      this.scrollbar.button_upspace.setColors(color(170), color(255, 200, 150),
+        color(255, 200, 150), color(60, 30, 0), color(0));
+      this.scrollbar.button_downspace.setColors(color(170), color(255, 200, 150),
+        color(255, 200, 150), color(60, 30, 0), color(0));
     }
 
     @Override
@@ -535,11 +541,22 @@ class MapEditorInterface extends InterfaceLNZ {
 
   class LevelEditorListTextBox extends ListTextBox {
     protected boolean active = false;
+    protected MapEditorPage previous_page = MapEditorPage.LEVEL_INFO;
+    protected float scroll_maps = 0;
+    protected float scroll_linkers = 0;
+    protected float scroll_triggers = 0;
+    protected float scroll_components = 0;
 
     LevelEditorListTextBox() {
       super(width, Constants.mapEditor_listBoxGap, width, 0.9 * height - Constants.mapEditor_listBoxGap);
       this.color_background = color(250, 190, 140);
       this.color_header = color(220, 180, 130);
+      this.scrollbar.setButtonColors(color(220), color(220, 160, 110), color(
+        240, 180, 130), color(200, 140, 90), color(0));
+      this.scrollbar.button_upspace.setColors(color(170), color(255, 200, 150),
+        color(255, 200, 150), color(60, 30, 0), color(0));
+      this.scrollbar.button_downspace.setColors(color(170), color(255, 200, 150),
+        color(255, 200, 150), color(60, 30, 0), color(0));
     }
 
     void setPosition(RightPanelElementLocation position) {
@@ -557,6 +574,29 @@ class MapEditorInterface extends InterfaceLNZ {
     }
 
     void setList(MapEditorPage page) {
+      if (page == null) {
+        return;
+      }
+      switch(this.previous_page) {
+        case LEVEL_INFO:
+        case LEVEL_MAPS:
+          this.scroll_maps = this.scrollbar.value;
+          break;
+        case LINKERS:
+          this.scroll_linkers = this.scrollbar.value;
+          break;
+        case TRIGGERS:
+          this.scroll_triggers = this.scrollbar.value;
+          break;
+        case TRIGGER_EDITOR:
+        case CONDITION_EDITOR:
+        case EFFECT_EDITOR:
+          this.scroll_components = this.scrollbar.value;
+          break;
+        default:
+          break;
+      }
+      this.previous_page = page;
       this.clearText();
       this.line_hovered = -1;
       this.line_clicked = -1;
@@ -577,6 +617,7 @@ class MapEditorInterface extends InterfaceLNZ {
               }
             }
           }
+          this.scrollbar.updateValue(this.scroll_maps);
           break;
         case LINKERS:
           this.setTitleText("Linkers");
@@ -595,6 +636,7 @@ class MapEditorInterface extends InterfaceLNZ {
               }
             }
           }
+          this.scrollbar.updateValue(this.scroll_linkers);
           break;
         case TRIGGERS:
           this.setTitleText("Triggers");
@@ -611,14 +653,15 @@ class MapEditorInterface extends InterfaceLNZ {
               }
             }
           }
+          this.scrollbar.updateValue(this.scroll_triggers);
           break;
         case TRIGGER_EDITOR:
         case CONDITION_EDITOR:
         case EFFECT_EDITOR:
-          this.setTitleText("Trigger Components");
           if (MapEditorInterface.this.curr_trigger == null) {
             break;
           }
+          this.setTitleText("Trigger " + MapEditorInterface.this.curr_trigger.triggerID + " Components");
           boolean first = true;
           for (Condition condition : MapEditorInterface.this.curr_trigger.conditions) {
             if (first) {
@@ -645,6 +688,7 @@ class MapEditorInterface extends InterfaceLNZ {
               this.addLine(effect.display_name);
             }
           }
+          this.scrollbar.updateValue(this.scroll_components);
           break;
         default:
           this.active = false;
@@ -653,7 +697,9 @@ class MapEditorInterface extends InterfaceLNZ {
     }
 
     void refresh() {
+      float scroll_value = this.scrollbar.value;
       this.setList(MapEditorInterface.this.page);
+      this.scrollbar.updateValue(scroll_value);
     }
 
     @Override
@@ -1055,6 +1101,12 @@ class MapEditorInterface extends InterfaceLNZ {
       super(xi, Constants.mapEditor_listBoxGap, xf, 0.45 * height - Constants.mapEditor_listBoxGap);
       this.color_background = color(250, 190, 140);
       this.color_header = color(220, 180, 130);
+      this.scrollbar.setButtonColors(color(220), color(220, 160, 110), color(
+        240, 180, 130), color(200, 140, 90), color(0));
+      this.scrollbar.button_upspace.setColors(color(170), color(255, 200, 150),
+        color(255, 200, 150), color(60, 30, 0), color(0));
+      this.scrollbar.button_downspace.setColors(color(170), color(255, 200, 150),
+        color(255, 200, 150), color(60, 30, 0), color(0));
       this.setFieldCushion(0);
     }
 
@@ -1102,7 +1154,6 @@ class MapEditorInterface extends InterfaceLNZ {
     TriggerEditorForm(Trigger trigger, float xi, float xf) {
       super(xi, xf);
       this.trigger = trigger;
-      this.setTitleText(trigger.triggerName);
       this.addField(new SpacerFormField(20));
       this.addField(new StringFormField("  ", "Trigger Name"));
       this.addField(new SpacerFormField(20));
@@ -1112,6 +1163,10 @@ class MapEditorInterface extends InterfaceLNZ {
       this.addField(new SpacerFormField(45));
       ButtonsFormField buttons = new ButtonsFormField("Add\nCondition", "Add\nEffect");
       buttons.setButtonHeight(45);
+      buttons.button1.setColors(color(220), color(240, 190, 150), color(190, 140, 115),
+        color(140, 90, 50), color(0));
+      buttons.button2.setColors(color(220), color(240, 190, 150), color(190, 140, 115),
+        color(140, 90, 50), color(0));
       this.addField(buttons);
       this.updateFields();
     }
@@ -1140,6 +1195,7 @@ class MapEditorInterface extends InterfaceLNZ {
     }
 
     void updateFields() {
+      this.setTitleText(trigger.triggerName);
       this.fields.get(1).setValueIfNotFocused(this.trigger.triggerName);
       this.fields.get(3).setValueIfNotFocused(Boolean.toString(this.trigger.active));
       this.fields.get(4).setValueIfNotFocused(Boolean.toString(this.trigger.looping));
@@ -1155,7 +1211,6 @@ class MapEditorInterface extends InterfaceLNZ {
       super(xi, xf);
       condition.setName();
       this.condition = condition;
-      this.setTitleText(condition.display_name);
       this.addField(new SpacerFormField(20));
       this.addField(new IntegerFormField("ID: ", "Enter an integer from 0-6", 0, 6));
       this.addField(new SpacerFormField(20));
@@ -1178,6 +1233,7 @@ class MapEditorInterface extends InterfaceLNZ {
     void buttonPress(int i) {}
 
     void updateFields() {
+      this.setTitleText(condition.display_name);
       this.fields.get(1).setValueIfNotFocused(Integer.toString(this.condition.ID));
       this.fields.get(3).setValueIfNotFocused(Integer.toString(this.condition.number1));
       this.fields.get(4).setValueIfNotFocused(Integer.toString(this.condition.number2));
@@ -1201,7 +1257,6 @@ class MapEditorInterface extends InterfaceLNZ {
       super(xi, xf);
       effect.setName();
       this.effect = effect;
-      this.setTitleText(effect.display_name);
       this.addField(new SpacerFormField(20));
       this.addField(new IntegerFormField("ID: ", "enter an integer from 0-32", 0, 32));
       this.addField(new SpacerFormField(20));
@@ -1231,6 +1286,7 @@ class MapEditorInterface extends InterfaceLNZ {
     void buttonPress(int i) {}
 
     void updateFields() {
+      this.setTitleText(effect.display_name);
       this.fields.get(1).setValueIfNotFocused(Integer.toString(this.effect.ID));
       this.fields.get(3).setValueIfNotFocused(Integer.toString(this.effect.number));
       this.fields.get(5).setValueIfNotFocused(Float.toString(this.effect.decimal1));
@@ -2176,6 +2232,7 @@ class MapEditorInterface extends InterfaceLNZ {
     }
     ((LevelEditor)this.curr_level).newLinker();
     this.listBox2.refresh();
+    this.listBox2.scrollBottom();
   }
 
   void removeLinkerFromLevel(int linker_index) {
@@ -2198,6 +2255,7 @@ class MapEditorInterface extends InterfaceLNZ {
     }
     ((LevelEditor)this.curr_level).newTrigger();
     this.listBox2.refresh();
+    this.listBox2.scrollBottom();
   }
 
   void removeTriggerFromLevel(int trigger_key) {
@@ -2733,6 +2791,12 @@ class MapEditorInterface extends InterfaceLNZ {
     }
     else if (this.curr_map != null) {
       this.curr_map.gainFocus();
+    }
+  }
+
+  void restartTimers() {
+    if (this.curr_level != null) {
+      this.curr_level.restartTimers();
     }
   }
 }

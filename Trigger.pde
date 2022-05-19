@@ -1,5 +1,6 @@
 class Trigger {
   private String triggerName = "";
+  private int triggerID = -1; // level id
 
   private boolean active = false;
   private boolean looping = false;
@@ -624,7 +625,7 @@ class Effect {
       case 19: // move view to player
         if (level.currMap != null) {
           if (level.player != null) {
-            level.player.setViewLocation(level.player.x, level.player.y);
+            level.currMap.setViewLocation(level.player.x, level.player.y);
           }
         }
         break;

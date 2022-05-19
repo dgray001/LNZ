@@ -573,6 +573,12 @@ class TutorialInterface extends InterfaceLNZ {
     }
   }
 
+  void restartTimers() {
+    if (this.tutorial != null) {
+      this.tutorial.restartTimers();
+    }
+  }
+
   void update(int millis) {
     boolean refreshLevelLocation = false;
     switch(this.status) {
