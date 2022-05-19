@@ -43,7 +43,7 @@ class VisualEffect extends MapObject {
         this.setValues(2 * Constants.ability_119_range, 2 * Constants.ability_119_range, 100);
         break;
       case 4009: // chat bubble
-        this.setValues(0.8, 0.8, Constants.gif_explosionNormal_time);
+        this.setValues(0.8, 0.8, 800);
         break;
       case 4010: // war machine explosion
         this.setValues(2 * Constants.projectile_grenadeExplosionRadius, 2 *

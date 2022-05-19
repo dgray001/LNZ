@@ -1203,9 +1203,13 @@ class MapEditorInterface extends InterfaceLNZ {
       this.effect = effect;
       this.setTitleText(effect.display_name);
       this.addField(new SpacerFormField(20));
-      this.addField(new IntegerFormField("ID: ", "enter an integer from 0-26", 0, 26));
+      this.addField(new IntegerFormField("ID: ", "enter an integer from 0-32", 0, 32));
       this.addField(new SpacerFormField(20));
       this.addField(new IntegerFormField("Number: ", "enter an integer", Integer.MIN_VALUE + 1, Integer.MAX_VALUE - 1));
+      this.addField(new SpacerFormField(20));
+      this.addField(new FloatFormField("Decimal1: ", "enter a float", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
+      this.addField(new SpacerFormField(20));
+      this.addField(new FloatFormField("Decimal2: ", "enter a float", -Float.MAX_VALUE + 1, Float.MAX_VALUE - 1));
       this.addField(new SpacerFormField(20));
       this.addField(new StringFormField("Message: ", "enter a string"));
       this.addField(new SpacerFormField(20));
@@ -1216,7 +1220,9 @@ class MapEditorInterface extends InterfaceLNZ {
     void submit() {
       this.effect.setID(toInt(this.fields.get(1).getValue()));
       this.effect.number = toInt(this.fields.get(3).getValue());
-      this.effect.message = this.fields.get(5).getValue();
+      this.effect.decimal1 = toFloat(this.fields.get(5).getValue());
+      this.effect.decimal2 = toFloat(this.fields.get(7).getValue());
+      this.effect.message = this.fields.get(9).getValue();
       this.effect.setName();
       this.setTitleText(this.effect.display_name);
       this.updateFields();
@@ -1227,8 +1233,10 @@ class MapEditorInterface extends InterfaceLNZ {
     void updateFields() {
       this.fields.get(1).setValueIfNotFocused(Integer.toString(this.effect.ID));
       this.fields.get(3).setValueIfNotFocused(Integer.toString(this.effect.number));
-      this.fields.get(5).setValueIfNotFocused(this.effect.message);
-      this.fields.get(7).setValueIfNotFocused("Rectangle: " + this.effect.rectangle.fileString());
+      this.fields.get(5).setValueIfNotFocused(Float.toString(this.effect.decimal1));
+      this.fields.get(7).setValueIfNotFocused(Float.toString(this.effect.decimal2));
+      this.fields.get(9).setValueIfNotFocused(this.effect.message);
+      this.fields.get(11).setValueIfNotFocused("Rectangle: " + this.effect.rectangle.fileString());
     }
 
     @Override
@@ -1991,7 +1999,6 @@ class MapEditorInterface extends InterfaceLNZ {
     if (this.curr_level != null) {
       this.curr_level.save();
     }
-    this.closeLevelEditor();
   }
 
   void closeLevelEditor() {

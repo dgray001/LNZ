@@ -1919,6 +1919,7 @@ class GameMap {
     // lockscreen
     if ((true || global.holding_space) && this.in_control && this.units.containsKey(0)) {
       this.setViewLocation(this.units.get(0).x, this.units.get(0).y);
+      refreshView = true;
     }
     else {
       // moving view
@@ -2251,7 +2252,7 @@ class GameMap {
       }
     }
     // aiming for player
-    if (this.units.containsKey(0) && global.holding_ctrl && !viewing_inventory) {
+    if (this.units.containsKey(0) && global.holding_ctrl && !viewing_inventory && this.in_control) {
       switch(this.units.get(0).curr_action) {
         case AIMING:
           this.units.get(0).aim(this.mX, this.mY);

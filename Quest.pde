@@ -37,6 +37,8 @@ class Quest {
         break;
       case 2: // move toward arrow
         break;
+      case 3: // go to room
+        break;
       default:
         global.errorMessage("ERROR: Quest ID " + this.ID + " not recognized.");
         break;
@@ -49,6 +51,8 @@ class Quest {
         return "Select Ben Nelson";
       case 2: // move toward arrow
         return "Move Ben Nelson toward the arrow";
+      case 3: // go to room
+        return "Go to your room";
       default:
         return "";
     }
@@ -60,6 +64,8 @@ class Quest {
         return "Select Ben Nelson by left-clicking him";
       case 2: // move toward arrow
         return "Move Ben Nelson toward the arrow by right-clicking near the arrow";
+      case 3: // go to room
+        return "Your room is on the second floor of Francis Hall";
       default:
         return "";
     }

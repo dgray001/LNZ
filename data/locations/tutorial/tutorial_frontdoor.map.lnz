@@ -821,4 +821,45 @@ number: 3
 toggle: false
 end: Feature
 
+
+new: Feature: 441
+location: 16.0, 6.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextUnitKey: 2
+
+new: Unit: 1006
+location: 12.529998, 9.339996, 4
+curr_height: 4
+remove: false
+size: 0.35
+level: 3
+alliance: Ben
+element: Gray
+facingX: 1.0
+facingY: 0.0
+base_health: 3.5
+base_attack: 2.0
+base_magic: 2.0
+base_defense: 0.0
+base_resistance: 4.0
+base_piercing: 0.0
+base_penetration: 0.05
+base_attackRange: 0.2
+base_attackCooldown: 1200.0
+base_attackTime: 300.0
+base_sight: 5.5
+base_speed: 2.0
+base_tenacity: 0.0
+base_agility: 1
+base_lifesteal: 0.0
+curr_health: 3.5
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
 end: Map

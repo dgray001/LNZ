@@ -309,6 +309,8 @@ class Effect {
 
   private String message = "";
   private int number = 0;
+  private float decimal1 = 0;
+  private float decimal2 = 0;
   private Rectangle rectangle = new Rectangle();
 
   Effect() {}
@@ -334,11 +336,21 @@ class Effect {
       case 15: // stop tinting map
       case 16: // show blinking arrow
       case 17: // complete quest
+      case 18: // add visual effect
+      case 19:
+      case 20: // unit chats
       case 21: // stop unit
       case 22: // stop player
       case 23: // stop units in rectangle
       case 24: // move unit
       case 25: // move player
+      case 26: // move units in rectangle
+      case 27: // face unit
+      case 28: // face player
+      case 29: // face units in rectangle
+      case 30: // teleport unit
+      case 31: // teleport player
+      case 32: // teleport units in rectangle
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
@@ -400,6 +412,14 @@ class Effect {
       case 17: // complete quest
         this.display_name = "Complete Quest (" + this.number + ")";
         break;
+      case 18: // add visual effect
+        this.display_name = "Add Visual Effect (" + this.number + ")";
+        break;
+      case 19:
+        break;
+      case 20: // unit chats
+        this.display_name = "Unit Chats (" + this.number + ")";
+        break;
       case 21: // stop unit
         this.display_name = "Stop Unit (" + this.number + ")";
         break;
@@ -414,6 +434,27 @@ class Effect {
         break;
       case 25: // move player
         this.display_name = "Move Player";
+        break;
+      case 26: // move units rectangle
+        this.display_name = "Move Units in Rectangle";
+        break;
+      case 27: // face unit
+        this.display_name = "Face Unit (" + this.number + ")";
+        break;
+      case 28: // face player
+        this.display_name = "Face Player";
+        break;
+      case 29: // face units in rectangle
+        this.display_name = "Face Units in Rectangle";
+        break;
+      case 30: // teleport unit
+        this.display_name = "Teleport Unit (" + this.number + ")";
+        break;
+      case 31: // teleport player
+        this.display_name = "Teleport Player";
+        break;
+      case 32: // teleport units in rectangle
+        this.display_name = "Teleport Units in Rectangle";
         break;
       default:
         this.display_name = "Effect";
@@ -574,6 +615,22 @@ class Effect {
           level.quests.get(this.number).meet();
         }
         break;
+      case 18: // add visual effect
+        if (level.currMap != null) {
+          level.currMap.addVisualEffect(this.number, this.rectangle.centerX(), this.rectangle.centerY());
+        }
+        break;
+      case 19:
+        break;
+      case 20: // unit chats
+        if (level.currMap == null) {
+          break;
+        }
+        if (level.currMap.units.containsKey(this.number)) {
+          level.chat(level.currMap.units.get(this.number).display_name() + ": " + this.message);
+          level.currMap.addVisualEffect(4009, level.currMap.units.get(this.number).x + 0.6, level.currMap.units.get(this.number).y - 0.4);
+        }
+        break;
       case 21: // stop unit
         if (level.currMap == null) {
           break;
@@ -610,6 +667,62 @@ class Effect {
           level.player.moveTo(this.rectangle.centerX(), this.rectangle.centerY());
         }
         break;
+      case 26: // move units in rectangle
+        if (level.currMap == null) {
+          break;
+        }
+        for (Map.Entry<Integer, Unit> entry : level.currMap.units.entrySet()) {
+          if (this.rectangle.contains(entry.getValue())) {
+            level.player.moveTo(this.decimal1, this.decimal2);
+          }
+        }
+        break;
+      case 27: // face unit
+        if (level.currMap == null) {
+          break;
+        }
+        if (level.currMap.units.containsKey(this.number)) {
+          level.currMap.units.get(this.number).turnTo(PI * this.decimal1 / 180.0);
+        }
+        break;
+      case 28: // face player
+        if (level.player != null) {
+          level.player.turnTo(PI * this.decimal1 / 180.0);
+        }
+        break;
+      case 29: // face units in rectangle
+        if (level.currMap == null) {
+          break;
+        }
+        for (Map.Entry<Integer, Unit> entry : level.currMap.units.entrySet()) {
+          if (this.rectangle.contains(entry.getValue())) {
+            entry.getValue().turnTo(PI * this.decimal1 / 180.0);
+          }
+        }
+        break;
+      case 30: // teleport unit
+        if (level.currMap == null) {
+          break;
+        }
+        if (level.currMap.units.containsKey(this.number)) {
+          level.currMap.units.get(this.number).setLocation(this.rectangle.centerX(), this.rectangle.centerY());
+        }
+        break;
+      case 31: // teleport player
+        if (level.player != null) {
+          level.player.setLocation(this.rectangle.centerX(), this.rectangle.centerY());
+        }
+        break;
+      case 32: // teleport units in rectangle
+        if (level.currMap == null) {
+          break;
+        }
+        for (Map.Entry<Integer, Unit> entry : level.currMap.units.entrySet()) {
+          if (this.rectangle.contains(entry.getValue())) {
+            level.player.setLocation(this.decimal1, this.decimal2);
+          }
+        }
+        break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
         break;
@@ -621,6 +734,8 @@ class Effect {
     fileString += "\nID: " + this.ID;
     fileString += "\nmessage: " + this.message;
     fileString += "\nnumber: " + this.number;
+    fileString += "\ndecimal1: " + this.decimal1;
+    fileString += "\ndecimal2: " + this.decimal2;
     fileString += "\nrectangle: " + this.rectangle.fileString();
     fileString += "\nend: Effect\n";
     return fileString;
@@ -636,6 +751,12 @@ class Effect {
         break;
       case "number":
         this.number = toInt(data);
+        break;
+      case "decimal1":
+        this.decimal1 = toFloat(data);
+        break;
+      case "decimal2":
+        this.decimal2 = toFloat(data);
         break;
       case "rectangle":
         this.rectangle.addData(data);

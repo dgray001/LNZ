@@ -1,5 +1,4 @@
 v0.7.1: TutorialInterface
- q: quest3 => talk to father (cut scene of confession)
  r: quest4 => enter Francis Hall (add "francis hall" sign)
  s: quest5 => kill chicken in stairwell (unlocks door)
  t: quest6 => unlock inventory (get ben's backpack and key in inventory)
@@ -13,12 +12,11 @@ v0.7.1: TutorialInterface
  aa: Use ultimate to cross lava
 
  - Make sure trigger timers reset when timers are to be reset
- - make tint brown when not in control
- - lose control after completing quest 2
- - when gaining or losing control blink the ellipse around Ben
  - 1681075482 is brown with transparency of 100
  - sleep mechanics
  - death mechanics
+ - give father dom a cig
+ - Make quests show tip and if double click a quest form with details of quest
 
  - Add button to navigate to perk tree in achievementform
  - Outline maps for tutorial

@@ -4,7 +4,7 @@ location: tutorial
 completed: false
 completion_code: 0
 currMapName: tutorial_frontdoor
-mapNames: tutorial_stairwell, tutorial_soldiers, tutorial_frontdoor
+mapNames: tutorial_soldiers, tutorial_stairwell, tutorial_frontdoor
 
 new: Linker
 rect1: tutorial_frontdoor, 5.0, 26.0, 6.0, 27.0
@@ -49,6 +49,8 @@ new: Effect
 ID: 11
 message: 
 number: 0
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -56,6 +58,8 @@ new: Effect
 ID: 7
 message: 
 number: 3
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -63,6 +67,8 @@ new: Effect
 ID: 14
 message: 
 number: -16777216
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -87,6 +93,8 @@ new: Effect
 ID: 4
 message: Welcome to Liberal Feminazi Zombies!
 number: 1
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -94,6 +102,8 @@ new: Effect
 ID: 7
 message: 
 number: 4
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -118,6 +128,8 @@ new: Effect
 ID: 4
 message: In this tutorial we will walk through the basic mechanics of the game
 number: 1
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -125,6 +137,8 @@ new: Effect
 ID: 7
 message: 
 number: 6
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -149,6 +163,8 @@ new: Effect
 ID: 7
 message: 
 number: 7
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -156,6 +172,8 @@ new: Effect
 ID: 4
 message: As a first note, there will always be buttons at the bottom right
 number: 1
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -163,6 +181,8 @@ new: Effect
 ID: 7
 message: 
 number: 11
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -187,6 +207,8 @@ new: Effect
 ID: 4
 message: The first button will cancel your progress and restart the tutorial.
 number: 2
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -194,6 +216,8 @@ new: Effect
 ID: 7
 message: 
 number: 8
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -218,6 +242,8 @@ new: Effect
 ID: 7
 message: 
 number: 9
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -225,6 +251,8 @@ new: Effect
 ID: 4
 message: The hotkey for the Options menu is ctrl-o
 number: 2
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -232,6 +260,8 @@ new: Effect
 ID: 4
 message: The second button opens the Options menu where you can adjust and save options to your profile
 number: 2
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -256,6 +286,8 @@ new: Effect
 ID: 7
 message: 
 number: 10
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -263,6 +295,8 @@ new: Effect
 ID: 4
 message: The hotkey for the heroes menu is ctrl-h
 number: 2
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -270,6 +304,8 @@ new: Effect
 ID: 4
 message: The third button opens the Heroes menu, showing the heroes you have unlocked
 number: 2
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -294,6 +330,8 @@ new: Effect
 ID: 4
 message: The last button will save your progress and return you to the main menu
 number: 2
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -301,6 +339,8 @@ new: Effect
 ID: 7
 message: 
 number: 20
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -317,6 +357,8 @@ new: Effect
 ID: 16
 message: 
 number: 1
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -333,6 +375,8 @@ new: Effect
 ID: 16
 message: 
 number: 2
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -349,6 +393,8 @@ new: Effect
 ID: 16
 message: 
 number: 3
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -365,6 +411,8 @@ new: Effect
 ID: 16
 message: 
 number: 4
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -381,6 +429,8 @@ new: Effect
 ID: 16
 message: 
 number: 5
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -397,6 +447,8 @@ new: Effect
 ID: 16
 message: 
 number: 6
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -413,6 +465,8 @@ new: Effect
 ID: 16
 message: 
 number: 7
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -429,6 +483,8 @@ new: Effect
 ID: 16
 message: 
 number: 8
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -445,6 +501,8 @@ new: Effect
 ID: 16
 message: 
 number: 9
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -469,6 +527,8 @@ new: Effect
 ID: 8
 message: 
 number: 11
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -476,6 +536,8 @@ new: Effect
 ID: 7
 message: 
 number: 12
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -483,6 +545,8 @@ new: Effect
 ID: 7
 message: 
 number: 21
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -490,6 +554,8 @@ new: Effect
 ID: 4
 message: These buttons will collapse the panels
 number: 2
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -514,6 +580,8 @@ new: Effect
 ID: 8
 message: 
 number: 12
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -521,6 +589,8 @@ new: Effect
 ID: 7
 message: 
 number: 13
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -528,6 +598,8 @@ new: Effect
 ID: 7
 message: 
 number: 22
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -535,6 +607,8 @@ new: Effect
 ID: 4
 message: This display shows the hero you are playing, what they are holding, and the abilities they can use
 number: 2
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -559,6 +633,8 @@ new: Effect
 ID: 8
 message: 
 number: 13
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -566,6 +642,8 @@ new: Effect
 ID: 7
 message: 
 number: 14
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -573,6 +651,8 @@ new: Effect
 ID: 7
 message: 
 number: 23
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -580,6 +660,8 @@ new: Effect
 ID: 4
 message: Here you can see detailed information about the hero you are playing
 number: 2
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -604,6 +686,8 @@ new: Effect
 ID: 8
 message: 
 number: 14
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -611,6 +695,8 @@ new: Effect
 ID: 7
 message: 
 number: 15
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -618,6 +704,8 @@ new: Effect
 ID: 7
 message: 
 number: 24
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -625,6 +713,8 @@ new: Effect
 ID: 4
 message: This is the chatbox, where dialog will be displayed
 number: 2
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -649,6 +739,8 @@ new: Effect
 ID: 5
 message: Hello from the chat box
 number: 0
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -656,6 +748,8 @@ new: Effect
 ID: 7
 message: 
 number: 25
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -680,6 +774,8 @@ new: Effect
 ID: 8
 message: 
 number: 15
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -687,6 +783,8 @@ new: Effect
 ID: 7
 message: 
 number: 16
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -694,13 +792,17 @@ new: Effect
 ID: 7
 message: 
 number: 28
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
 new: Effect
 ID: 4
-message: This is the questbox, where you quests will display
+message: This is the questbox, where your quests will display
 number: 2
+decimal1: 0.0
+decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
@@ -722,6 +824,1123 @@ triggerName: ### Quest 1
 active: false
 looping: false
 amalgam: true
+end: Trigger
+
+nextTriggerKey: 28
+
+new: Trigger
+triggerName: quest1 directions
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 7000
+number2: 7000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 8
+message: 
+number: 16
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 29
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: Left-click Ben Nelson to select him
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 14
+message: 
+number: 1681075482
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 29
+
+new: Trigger
+triggerName: quest1 activation
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 800
+number2: 800
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 9
+message: 
+number: 1
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 30
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 30
+
+new: Trigger
+triggerName: ben nelson selected
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 2
+number1: 0
+number2: 0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 17
+message: 
+number: 1
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: Very good! See the details of anything you select here
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 17
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 33
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 31
+
+new: Trigger
+triggerName: 
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 32
+
+new: Trigger
+triggerName: ### Quest 2
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 33
+
+new: Trigger
+triggerName: quest 2 prep
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 8
+message: 
+number: 17
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 34
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 34
+
+new: Trigger
+triggerName: instructions
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 3000
+number2: 3000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 4
+message: Now right-click to move Ben Nelson to toward the arrow
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 18
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 35
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 35
+
+new: Trigger
+triggerName: activate quest2
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1000
+number2: 1000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 12
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 9
+message: 
+number: 2
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 36
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 15
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 36
+
+new: Trigger
+triggerName: complete
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: tutorial_frontdoor, 0.0, 6.0, 18.0, 8.0
+met: false
+end: Condition
+
+new: Effect
+ID: 17
+message: 
+number: 2
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: Very good!
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 14
+message: 
+number: 1681075482
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 39
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 8
+message: 
+number: 18
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 22
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 37
+
+new: Trigger
+triggerName: 
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 38
+
+new: Trigger
+triggerName: ### Quest 3 - confession
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 39
+
+new: Trigger
+triggerName: move view
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 3800
+number2: 3800
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 45
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_frontdoor, 12.0, 9.0, 13.0, 10.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 42
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 25
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_frontdoor, 11.0, 7.0, 12.0, 8.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 42
+
+new: Trigger
+triggerName: move to bench
+active: false
+looping: false
+amalgam: false
+new: Condition
+ID: 1
+number1: 3000
+number2: 3000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: tutorial_frontdoor, 11.0, 7.0, 12.0, 8.0
+met: false
+end: Condition
+
+new: Effect
+ID: 25
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_frontdoor, 11.0, 10.0, 12.0, 11.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 43
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 43
+
+new: Trigger
+triggerName: say hello
+active: false
+looping: false
+amalgam: false
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: tutorial_frontdoor, 11.0, 10.0, 12.0, 11.0
+met: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 44
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 22
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 28
+message: 
+number: 0
+decimal1: -45.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: Hey what's up Father?
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 44
+
+new: Trigger
+triggerName: father responds
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2700
+number2: 2700
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 46
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: Hello, son.
+number: 2
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 27
+message: 
+number: 2
+decimal1: 15.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 45
+
+new: Trigger
+triggerName: view lock
+active: false
+looping: true
+amalgam: true
+new: Effect
+ID: 13
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_frontdoor, 12.0, 9.0, 13.0, 10.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 46
+
+new: Trigger
+triggerName: ask for confession
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 3000
+number2: 3000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 47
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: Will you hear my confession?
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 47
+
+new: Trigger
+triggerName: father says sit
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4500
+number2: 4500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 48
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: hmm, sure. Sit down, son.
+number: 2
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 48
+
+new: Trigger
+triggerName: sit down
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 49
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 31
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_frontdoor, 12.0, 10.0, 13.0, 11.0
+end: Effect
+
+new: Effect
+ID: 28
+message: 
+number: 0
+decimal1: -90.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 49
+
+new: Trigger
+triggerName: forgive me father
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 50
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: Forgive me father, for I have sinned.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_frontdoor, 12.0, 10.0, 13.0, 11.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 50
+
+new: Trigger
+triggerName: I hate everyone
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 51
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: I hate everyone I come in contact with, especially those closest to me.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 51
+
+new: Trigger
+triggerName: not listening
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 52
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: *not listening* hmm...
+number: 2
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 52
+
+new: Trigger
+triggerName: penance
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4500
+number2: 4500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 53
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: For your penance be more honest with people and treat them how you want to be treated.
+number: 2
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 27
+message: 
+number: 2
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 53
+
+new: Trigger
+triggerName: hail mary
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4500
+number2: 4500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 54
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: Oh and say a Hail Mary for good measure.
+number: 2
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 54
+
+new: Trigger
+triggerName: ok father
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 3000
+number2: 3000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 55
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: Sure thing Father.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 55
+
+new: Trigger
+triggerName: get off bench
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1200
+number2: 1200
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 56
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 31
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_frontdoor, 11.0, 10.0, 12.0, 11.0
+end: Effect
+
+new: Effect
+ID: 28
+message: 
+number: 0
+decimal1: -45.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 56
+
+new: Trigger
+triggerName: goodbye
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 57
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: Well I'm gonna go up to my room now, see you around Father.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 25
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_frontdoor, 9.0, 18.0, 10.0, 19.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 57
+
+new: Trigger
+triggerName: father says goodbye
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 3000
+number2: 3000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 58
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: Goodbye son. *to himself* What a strange kid.
+number: 2
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 58
+
+new: Trigger
+triggerName: gain control
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2500
+number2: 2500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+end: Condition
+
+new: Effect
+ID: 12
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 15
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 9
+message: 
+number: 3
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: Ben is rejuvenated after his riveting confession
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 8
+message: 
+number: 45
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
 end: Trigger
 
 player_start_location: tutorial_frontdoor, 10.0, 0.0, 11.0, 1.0

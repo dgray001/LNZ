@@ -2,7 +2,6 @@ new: Map
 code: ERROR
 mapName: tutorial_stairwell
 dimensions: 7, 5
-fogHandling: Explored
 terrain: 0, 0: 205, 100, true
 terrain: 0, 1: 205, 100, true
 terrain: 0, 2: 205, 100, true
@@ -82,5 +81,37 @@ remove: false
 number: 0
 toggle: false
 end: Feature
+
+nextUnitKey: 1
+
+new: Unit: 1002
+location: 1.47, 2.5099988, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 1
+alliance: None
+element: Gray
+facingX: 1.0
+facingY: 0.0
+base_health: 2.5
+base_attack: 0.0
+base_magic: 0.0
+base_defense: 0.0
+base_resistance: 0.0
+base_piercing: 0.0
+base_penetration: 0.0
+base_attackRange: 0.2
+base_attackCooldown: 1200.0
+base_attackTime: 300.0
+base_sight: 5.5
+base_speed: 1.4
+base_tenacity: 0.0
+base_agility: 1
+base_lifesteal: 0.0
+curr_health: 2.5
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
 
 end: Map
