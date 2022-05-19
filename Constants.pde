@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220519: v0.7.1q" +
+  "\n20220519: v0.7.1r" +
   "\nLines: 36551 (v0.7n)" +
   "\nImages: 1091 (v0.7n)" +
   "\nSounds: 245 (v0.7)" +
@@ -186,7 +186,7 @@ static class Constants {
   static final int feature_woodenBenchLargeHealth = 8;
   static final int feature_bedHealth = 8;
   static final int feature_wardrobeHealth = 10;
-  static final int feature_signCooldown = 5000;
+  static final int feature_signCooldown = 2000;
   static final String feature_signDescriptionDelimiter = "***";
   static final int feature_showerStallCooldown = 6000;
   static final int feature_urinalCooldown = 6000;
@@ -355,6 +355,7 @@ static class Constants {
   static final float item_starPieceAnimationTime = 450;
   static final float item_defaultInteractionDistance = 0.3;
   static final float item_stackTextSizeRatio = 0.25;
+  static final int item_cigarLitTime = 200000;
 
   // Projectiles
   static final float projectile_defaultSize = 0.25;

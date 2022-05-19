@@ -337,7 +337,7 @@ class Effect {
       case 16: // show blinking arrow
       case 17: // complete quest
       case 18: // add visual effect
-      case 19:
+      case 19: // move view to player
       case 20: // unit chats
       case 21: // stop unit
       case 22: // stop player
@@ -415,7 +415,8 @@ class Effect {
       case 18: // add visual effect
         this.display_name = "Add Visual Effect (" + this.number + ")";
         break;
-      case 19:
+      case 19: // move view to player
+        this.display_name = "Move View to Player";
         break;
       case 20: // unit chats
         this.display_name = "Unit Chats (" + this.number + ")";
@@ -620,7 +621,12 @@ class Effect {
           level.currMap.addVisualEffect(this.number, this.rectangle.centerX(), this.rectangle.centerY());
         }
         break;
-      case 19:
+      case 19: // move view to player
+        if (level.currMap != null) {
+          if (level.player != null) {
+            level.player.setViewLocation(level.player.x, level.player.y);
+          }
+        }
         break;
       case 20: // unit chats
         if (level.currMap == null) {

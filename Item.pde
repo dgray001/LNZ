@@ -109,6 +109,7 @@ class Item extends MapObject {
   protected float lifesteal = 0; // percentage
 
   protected int ammo = 0; // also used for other things (like key code)
+  protected boolean toggled = false; // for various uses, not displayed
 
   // graphics
   protected BounceInt bounce = new BounceInt(Constants.item_bounceConstant);
@@ -1100,6 +1101,10 @@ class Item extends MapObject {
         this.attack = 1;
         this.attackRange = 0.02;
         break;
+      case 2928:
+        this.setStrings("Cigar", "Utility", "");
+        this.ammo = Constants.item_cigarLitTime;
+        break;
       case 2931:
         this.setStrings("Rock", "Ammo", "");
         this.attack = 1;
@@ -2008,6 +2013,14 @@ class Item extends MapObject {
         break;
       case 2927:
         path += "water_jug.png";
+        break;
+      case 2928:
+        if (this.toggled) {
+          path += "cigar_lit.png";
+        }
+        else {
+          path += "cigar.png";
+        }
         break;
       case 2931:
         path += "rock.png";
@@ -3394,6 +3407,18 @@ class Item extends MapObject {
         this.remove = true;
       }
     }
+    switch(this.ID) {
+      case 2928: // Cigar
+        if (this.toggled) { // lit
+          this.ammo -= timeElapsed;
+          if (this.ammo < 0) {
+            this.remove = true;
+          }
+        }
+        break;
+      default:
+        break;
+    }
   }
 
   String fileString() {
@@ -3426,6 +3451,7 @@ class Item extends MapObject {
     fileString += "\nagility: " + this.agility;
     fileString += "\nlifesteal: " + this.lifesteal;
     fileString += "\nammo: " + this.ammo;
+    fileString += "\ntoggled: " + this.toggled;
     fileString += "\nend: Item";
     if (slot != null) {
       fileString += ": " + slot.slot_name();
@@ -3509,6 +3535,9 @@ class Item extends MapObject {
         break;
       case "ammo":
         this.ammo = toInt(data);
+        break;
+      case "toggled":
+        this.toggled = toBoolean(data);
         break;
       default:
         global.errorMessage("ERROR: Datakey " + datakey + " not found for Item data.");

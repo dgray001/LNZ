@@ -2666,11 +2666,19 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
   void keyPress() {
-    if (this.curr_level != null) {
-      this.curr_level.keyPress();
-    }
-    else if (this.curr_map != null) {
-      this.curr_map.keyPress();
+    switch(this.page) {
+      case TRIGGER_EDITOR:
+      case CONDITION_EDITOR:
+      case EFFECT_EDITOR:
+        break;
+      default:
+        if (this.curr_level != null) {
+          this.curr_level.keyPress();
+        }
+        else if (this.curr_map != null) {
+          this.curr_map.keyPress();
+        }
+        break;
     }
     if (this.rightPanel.open && !this.rightPanel.collapsing) {
       if (this.listBox1.active) {

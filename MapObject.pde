@@ -188,6 +188,9 @@ abstract class MapObject {
       case "remove":
         this.remove = toBoolean(data);
         return true;
+      case "description":
+        this.description = data;
+        return true;
     }
     return false;
   }

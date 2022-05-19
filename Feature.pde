@@ -6,6 +6,20 @@ class EditFeatureForm extends EditMapObjectForm {
     this.feature = feature;
     this.addField(new IntegerFormField("Number: ", "number", Integer.MIN_VALUE + 1, Integer.MAX_VALUE - 1));
     this.addField(new CheckboxFormField("Toggle:  "));
+    switch(this.feature.ID) {
+      case 151: // Sign, green
+      case 152:
+      case 153:
+      case 154:
+      case 155: // Sign, gray
+      case 156:
+      case 157:
+      case 158:
+        this.addField(new StringFormField("Message: ", "enter the message for the sign"));
+        break;
+      default:
+        break;
+    }
     this.addField(new SubmitFormField("Finished", false));
     this.updateForm();
   }
@@ -13,11 +27,46 @@ class EditFeatureForm extends EditMapObjectForm {
   void updateObject() {
     this.feature.number = toInt(this.fields.get(1).getValue());
     this.feature.toggle = toBoolean(this.fields.get(2).getValue());
+    switch(this.feature.ID) {
+      case 151: // Sign, green
+      case 152:
+      case 153:
+      case 154:
+      case 155: // Sign, gray
+      case 156:
+      case 157:
+      case 158:
+        try {
+          this.feature.description = split(this.feature.description, Constants.
+            feature_signDescriptionDelimiter)[0] + Constants.
+            feature_signDescriptionDelimiter + this.fields.get(3).getValue();
+        } catch(Exception e) {}
+        break;
+      default:
+        break;
+    }
   }
 
   void updateForm() {
     this.fields.get(1).setValueIfNotFocused(Integer.toString(this.feature.number));
     this.fields.get(2).setValueIfNotFocused(Boolean.toString(this.feature.toggle));
+    switch(this.feature.ID) {
+      case 151: // Sign, green
+      case 152:
+      case 153:
+      case 154:
+      case 155: // Sign, gray
+      case 156:
+      case 157:
+      case 158:
+        try {
+          this.fields.get(3).setValueIfNotFocused(split(this.feature.description,
+            Constants.feature_signDescriptionDelimiter)[1]);
+        } catch(Exception e) {}
+        break;
+      default:
+        break;
+    }
   }
 }
 
@@ -1874,6 +1923,14 @@ class Feature extends MapObject {
 
   void update(int timeElapsed) {
     switch(this.ID) {
+      case 151: // sign
+      case 152:
+      case 153:
+      case 154:
+      case 155:
+      case 156:
+      case 157:
+      case 158:
       case 163: // shower stall
       case 164: // urinal
       case 165: // toilet
@@ -1904,6 +1961,20 @@ class Feature extends MapObject {
     fileString += "\ntoggle: " + this.toggle;
     if (this.inventory != null && this.ID != 22) {
       fileString += this.inventory.internalFileString();
+    }
+    switch(this.ID) {
+      case 151: // Sign, green
+      case 152:
+      case 153:
+      case 154:
+      case 155: // Sign, gray
+      case 156:
+      case 157:
+      case 158:
+        fileString += "\ndescription: " + this.description;
+        break;
+      default:
+        break;
     }
     fileString += "\nend: Feature\n";
     return fileString;

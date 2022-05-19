@@ -386,6 +386,8 @@ class Unit extends MapObject {
         this.alliance = Alliance.BEN;
         this.level = 3;
         this.sizeZ = 4;
+        this.gearSlots("Weapon");
+        this.pickup(new Item(2928));
         break;
 
       // Heroes

@@ -15,8 +15,9 @@ v0.7.1: TutorialInterface
  - 1681075482 is brown with transparency of 100
  - sleep mechanics
  - death mechanics
- - give father dom a cig
  - Make quests show tip and if double click a quest form with details of quest
+ - Can't move when having inventory open
+ - Can drop items from inventory
 
  - Add button to navigate to perk tree in achievementform
  - Outline maps for tutorial
