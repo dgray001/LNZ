@@ -1047,7 +1047,9 @@ class Effect {
         }
         break;
       case 46: // clear level chat
-        level.level_chatbox.clearText();
+        if (level.level_chatbox != null) {
+          level.level_chatbox.clearText();
+        }
         break;
       case 47: // grant hero tree upgrade
         if (level.player != null) {

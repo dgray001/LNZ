@@ -3,7 +3,13 @@ levelName: tutorial
 location: tutorial
 completed: false
 completion_code: 0
-currMapName: tutorial_frontdoor
+time: 6.5
+respawning: false
+respawn_timer: 0
+sleeping: false
+sleep_timer: 0
+in_control: true
+currMapName: tutorial_soldiers
 mapNames: tutorial_stairwell, tutorial_frontdoor, tutorial_soldiers
 
 new: Linker
@@ -2000,8 +2006,8 @@ looping: false
 amalgam: true
 new: Condition
 ID: 1
-number1: 4000
-number2: 4000
+number1: 7000
+number2: 7000
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
 not_condition: false
@@ -3305,7 +3311,7 @@ looping: true
 amalgam: true
 new: Condition
 ID: 9
-number1: 0
+number1: 1
 number2: 0
 rectangle: tutorial_stairwell, 5.0, 1.0, 6.0, 2.0
 met: false
@@ -3313,9 +3319,9 @@ not_condition: false
 end: Condition
 
 new: Effect
-ID: 26
+ID: 24
 message: 
-number: 0
+number: 1
 decimal1: 4.0
 decimal2: 1.5
 rectangle: tutorial_stairwell, 5.0, 1.0, 6.0, 2.0
@@ -4827,7 +4833,7 @@ end: Effect
 new: Effect
 ID: 20
 message: Hey what's up little punk!
-number: 1
+number: 11
 decimal1: 0.0
 decimal2: 0.0
 rectangle: tutorial_soldiers, 14.0, 9.0, 16.0, 11.0
@@ -4844,7 +4850,7 @@ looping: false
 amalgam: true
 new: Condition
 ID: 10
-number1: 1
+number1: 11
 number2: 6
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
@@ -4854,7 +4860,7 @@ end: Condition
 new: Effect
 ID: 20
 message: Ouch you broke my glasses!
-number: 1
+number: 11
 decimal1: 0.0
 decimal2: 0.0
 rectangle: tutorial_soldiers, 14.0, 9.0, 16.0, 11.0
@@ -4863,7 +4869,7 @@ end: Effect
 new: Effect
 ID: 24
 message: 
-number: 1
+number: 11
 decimal1: 32.0
 decimal2: 9.5
 rectangle: tutorial_soldiers, 30.0, 12.0, 31.0, 13.0
@@ -5335,7 +5341,7 @@ nextTriggerKey: 141
 new: Trigger
 triggerName: keep hunger up
 active: false
-looping: false
+looping: true
 amalgam: true
 new: Effect
 ID: 36
@@ -5374,9 +5380,45 @@ not_condition: false
 end: Condition
 
 new: Effect
-ID: 7
+ID: 8
 message: 
 number: 145
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 146
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 14
+message: 
+number: 1681075482
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 22
+message: 
+number: 0
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
@@ -5405,19 +5447,1270 @@ end: Trigger
 nextTriggerKey: 145
 
 new: Trigger
-triggerName: Trigger 145
-active: false
-looping: false
+triggerName: keep time day
+active: true
+looping: true
 amalgam: true
+new: Effect
+ID: 42
+message: 
+number: 0
+decimal1: 19.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
 end: Trigger
 
 nextTriggerKey: 146
 
 new: Trigger
-triggerName: Trigger 146
+triggerName: bed explanation
 active: false
 looping: false
 amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: When you die you will lose your items and some XP
+number: 3
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 147
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 147
+
+new: Trigger
+triggerName: explanation2
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 6500
+number2: 6500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: You will then respawn at your last respawn point
+number: 3
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 148
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 148
+
+new: Trigger
+triggerName: explanation3
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 6500
+number2: 6500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: Sleeping in a bed will reset your spawn point
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 149
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 149
+
+new: Trigger
+triggerName: explanation4
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: You can only sleep at night, and sleeping will make it morning time
+number: 3
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 150
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 150
+
+new: Trigger
+triggerName: explanation5
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 6500
+number2: 6500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: It's nighttime! Go ahead and fall asleep
+number: 3
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 8
+message: 
+number: 145
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 151
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 151
+
+new: Trigger
+triggerName: activate quest
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 9
+message: 
+number: 10
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 152
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 153
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 42
+message: 
+number: 0
+decimal1: 21.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 152
+
+new: Trigger
+triggerName: gain control
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 12
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 15
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 154
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 153
+
+new: Trigger
+triggerName: keep time night
+active: false
+looping: true
+amalgam: true
+new: Condition
+ID: 15
+number1: 3
+number2: 0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Condition
+ID: 15
+number1: 5
+number2: 0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: true
+end: Condition
+
+new: Effect
+ID: 42
+message: 
+number: 0
+decimal1: 21.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 154
+
+new: Trigger
+triggerName: at dawn
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 15
+number1: 6
+number2: 0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Condition
+ID: 15
+number1: 15
+number2: 0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: true
+end: Condition
+
+new: Effect
+ID: 17
+message: 
+number: 10
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 14
+message: 
+number: 1681075482
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 155
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 22
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 155
+
+new: Trigger
+triggerName: wake up
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: Ben fell asleep and began to sleep-walk
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 156
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 156
+
+new: Trigger
+triggerName: directions
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: He dreamt of lava creaping into his room
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 159
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 49
+message: 
+number: 191
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 0.0, 9.0, 21.0, 11.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 157
+
+new: Trigger
+triggerName: 
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 158
+
+new: Trigger
+triggerName: ### Quest 11
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 159
+
+new: Trigger
+triggerName: directions
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 5500
+number2: 5500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: Now test your reset spawn point by dying in the lava
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 160
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 160
+
+new: Trigger
+triggerName: activate quest
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: Let's see if that lava is real
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 9
+message: 
+number: 11
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 161
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 161
+
+new: Trigger
+triggerName: gain control
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1500
+number2: 1500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 12
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 15
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 162
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 162
+
+new: Trigger
+triggerName: died
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 7
+number1: 0
+number2: 0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: true
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 163
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 163
+
+new: Trigger
+triggerName: message
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 500
+number2: 500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: Congratulations on your first death!
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 164
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 164
+
+new: Trigger
+triggerName: complete
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1500
+number2: 1500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 165
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 17
+message: 
+number: 11
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 14
+message: 
+number: 1681075482
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 165
+
+new: Trigger
+triggerName: message2
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 3000
+number2: 3000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: Notice you respawned at the bed and lost any items you had in your inventory
+number: 3
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 168
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 166
+
+new: Trigger
+triggerName: 
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 167
+
+new: Trigger
+triggerName: ### Quest 12
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 168
+
+new: Trigger
+triggerName: directions1
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 7000
+number2: 7000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: In Ben's dreams he has any ability he wants
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 169
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 169
+
+new: Trigger
+triggerName: directions2
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 47
+message: 
+number: 5
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: You can use your ultimate ability to cross the lava without being damaged
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 170
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 170
+
+new: Trigger
+triggerName: directions3
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: You can either click its icon or press 'f' to activate it
+number: 3
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 171
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 172
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 171
+
+new: Trigger
+triggerName: ultimate cd refreshed
+active: false
+looping: true
+amalgam: true
+new: Effect
+ID: 48
+message: 
+number: 4
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 172
+
+new: Trigger
+triggerName: activate quest
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 9
+message: 
+number: 12
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 173
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 173
+
+new: Trigger
+triggerName: gain control
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1500
+number2: 1500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 12
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 15
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 8
+message: 
+number: 126
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 8
+message: 
+number: 127
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 174
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 174
+
+new: Trigger
+triggerName: enter common room
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: tutorial_soldiers, 8.0, 12.0, 11.0, 13.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 14
+message: 
+number: 1681075482
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 22
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 17
+message: 
+number: 12
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 178
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 176
+
+new: Trigger
+triggerName: 
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 177
+
+new: Trigger
+triggerName: ### Final cut scene
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 178
+
+new: Trigger
+triggerName: ben walks in
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: Ben slept-walk into the common room where his friends were watching the election-night news
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 179
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 179
+
+new: Trigger
+triggerName: change view
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 3000
+number2: 3000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 13
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 9.0, 15.0, 10.0, 16.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 180
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 180
+
+new: Trigger
+triggerName: wakes up
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1000
+number2: 1000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: *wakes up* I hate all of you
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 9.0, 15.0, 10.0, 16.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 181
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 181
+
+new: Trigger
+triggerName: complete tutorial
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4500
+number2: 4500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 6
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
 end: Trigger
 
 player_start_location: tutorial_frontdoor, 10.0, 0.0, 11.0, 1.0

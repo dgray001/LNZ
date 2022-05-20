@@ -2,6 +2,8 @@ new: Map
 code: ERROR
 mapName: tutorial_soldiers
 dimensions: 69, 20
+color_tint: 65793
+show_tint: false
 terrain: 0, 0: 207, 100, true
 terrain: 0, 1: 207, 100, true
 terrain: 0, 2: 207, 100, true
@@ -1694,7 +1696,7 @@ location: 5.0, 6.0, 0
 curr_height: 0
 remove: false
 number: 10
-toggle: true
+toggle: false
 end: Feature
 
 
@@ -1703,7 +1705,7 @@ location: 5.0, 12.0, 0
 curr_height: 0
 remove: false
 number: 10
-toggle: true
+toggle: false
 end: Feature
 
 
@@ -1712,7 +1714,7 @@ location: 1.0, 12.0, 0
 curr_height: 0
 remove: false
 number: 10
-toggle: true
+toggle: false
 end: Feature
 
 
@@ -1766,7 +1768,7 @@ location: 11.0, 13.0, 0
 curr_height: 0
 remove: false
 number: 4
-toggle: true
+toggle: false
 end: Feature
 
 
@@ -1775,7 +1777,7 @@ location: 7.0, 14.0, 0
 curr_height: 0
 remove: false
 number: 4
-toggle: true
+toggle: false
 end: Feature
 
 
@@ -1784,15 +1786,6 @@ location: 7.0, 18.0, 0
 curr_height: 0
 remove: false
 number: 4
-toggle: true
-end: Feature
-
-
-new: Feature: 181
-location: 9.0, 17.0, 0
-curr_height: 0
-remove: false
-number: 0
 toggle: false
 end: Feature
 
@@ -2296,5 +2289,189 @@ remove: false
 number: 0
 toggle: false
 end: Feature
+
+
+new: Feature: 181
+location: 11.0, 16.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+
+new: Feature: 22
+location: 7.0, 1.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextUnitKey: 6
+
+new: Unit: 1106
+location: 11.519997, 12.49, 2
+curr_height: 2
+remove: false
+size: 0.35
+level: 0
+alliance: Ben
+element: Gray
+facingX: 1.0
+facingY: 0.0
+base_health: 4.0
+base_attack: 1.0
+base_magic: 0.0
+base_defense: 0.0
+base_resistance: 0.0
+base_piercing: 0.0
+base_penetration: 0.0
+base_attackRange: 0.2
+base_attackCooldown: 1200.0
+base_attackTime: 300.0
+base_sight: 5.5
+base_speed: 2.0
+base_tenacity: 0.0
+base_agility: 1
+base_lifesteal: 0.0
+curr_health: 4.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 7
+
+new: Unit: 1105
+location: 8.999996, 18.439999, 2
+curr_height: 2
+remove: false
+size: 0.35
+level: 0
+alliance: Ben
+element: Gray
+facingX: 1.0
+facingY: 0.0
+base_health: 4.0
+base_attack: 1.0
+base_magic: 0.0
+base_defense: 0.0
+base_resistance: 0.0
+base_piercing: 0.0
+base_penetration: 0.0
+base_attackRange: 0.2
+base_attackCooldown: 1200.0
+base_attackTime: 300.0
+base_sight: 5.5
+base_speed: 2.0
+base_tenacity: 0.0
+base_agility: 1
+base_lifesteal: 0.0
+curr_health: 4.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 8
+
+new: Unit: 1103
+location: 7.529997, 17.4, 2
+curr_height: 2
+remove: false
+size: 0.35
+level: 0
+alliance: Ben
+element: Gray
+facingX: 1.0
+facingY: 0.0
+base_health: 4.0
+base_attack: 1.0
+base_magic: 0.0
+base_defense: 0.0
+base_resistance: 0.0
+base_piercing: 0.0
+base_penetration: 0.0
+base_attackRange: 0.2
+base_attackCooldown: 1200.0
+base_attackTime: 300.0
+base_sight: 5.5
+base_speed: 2.0
+base_tenacity: 0.0
+base_agility: 1
+base_lifesteal: 0.0
+curr_health: 4.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 9
+
+new: Unit: 1102
+location: 7.4699965, 14.86, 2
+curr_height: 2
+remove: false
+size: 0.35
+level: 0
+alliance: Ben
+element: Brown
+gearSlot: LEGS
+gearSlot: ERROR
+gearSlot: WEAPON
+gearSlot: FEET
+gearSlot: CHEST
+gearSlot: HEAD
+facingX: 1.0
+facingY: 0.0
+base_health: 4.0
+base_attack: 1.0
+base_magic: 3.0
+base_defense: 0.0
+base_resistance: 0.0
+base_piercing: 0.0
+base_penetration: 0.0
+base_attackRange: 0.2
+base_attackCooldown: 1200.0
+base_attackTime: 300.0
+base_sight: 5.5
+base_speed: 2.0
+base_tenacity: 0.0
+base_agility: 1
+base_lifesteal: 0.0
+curr_health: 4.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 10
+
+new: Unit: 1104
+location: 11.499996, 14.709999, 2
+curr_height: 2
+remove: false
+size: 0.35
+level: 0
+alliance: Ben
+element: Gray
+facingX: 1.0
+facingY: 0.0
+base_health: 4.0
+base_attack: 1.0
+base_magic: 0.0
+base_defense: 0.0
+base_resistance: 0.0
+base_piercing: 0.0
+base_penetration: 0.0
+base_attackRange: 0.2
+base_attackCooldown: 1200.0
+base_attackTime: 300.0
+base_sight: 5.5
+base_speed: 2.0
+base_tenacity: 0.0
+base_agility: 1
+base_lifesteal: 0.0
+curr_health: 4.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
 
 end: Map

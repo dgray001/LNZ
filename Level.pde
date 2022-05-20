@@ -1037,9 +1037,6 @@ class Level {
         else if (random_number > 0.4) {
           item_id = 2917;
         }
-        else if (random_number > 0.38) {
-          item_id = 2918;
-        }
         else if (random_number > 0.37) {
           item_id = 2924;
         }
@@ -2040,6 +2037,12 @@ class Level {
     file.println("location: " + this.location.file_name());
     file.println("completed: " + this.completed);
     file.println("completion_code: " + this.completion_code);
+    file.println("time: " + this.time.value);
+    file.println("respawning: " + this.respawning);
+    file.println("respawn_timer: " + this.respawn_timer);
+    file.println("sleeping: " + this.sleeping);
+    file.println("sleep_timer: " + this.sleep_timer);
+    file.println("in_control: " + this.in_control);
     if (this.currMapName != null) {
       file.println("currMapName: " + this.currMapName);
     }
@@ -2259,6 +2262,29 @@ class Level {
         break;
       case "completion_code":
         this.completion_code = toInt(data);
+        break;
+      case "time":
+        this.time.set(toFloat(data));
+        break;
+      case "respawning":
+        this.respawning = toBoolean(data);
+        break;
+      case "respawn_timer":
+        this.respawn_timer = toInt(data);
+        break;
+      case "sleeping":
+        this.sleeping = toBoolean(data);
+        break;
+      case "sleep_timer":
+        this.sleep_timer = toInt(data);
+        break;
+      case "in_control":
+        if (toBoolean(data)) {
+          this.gainControl();
+        }
+        else {
+          this.loseControl();
+        }
         break;
       case "currMapName":
         this.currMapName = data;

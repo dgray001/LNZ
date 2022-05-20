@@ -410,15 +410,23 @@ class Unit extends MapObject {
         break;
       case 1103:
         this.setStrings("JIF", "Hero", "");
+        this.baseStats(4, 1, 0, 0, 2);
+        this.alliance = Alliance.BEN;
         break;
       case 1104:
         this.setStrings("Mark Spinny", "Hero", "");
+        this.baseStats(4, 1, 0, 0, 2);
+        this.alliance = Alliance.BEN;
         break;
       case 1105:
         this.setStrings("Mad Dog Mattus", "Hero", "");
+        this.baseStats(4, 1, 0, 0, 2);
+        this.alliance = Alliance.BEN;
         break;
       case 1106:
         this.setStrings("Jeremiah", "Hero", "");
+        this.baseStats(4, 1, 0, 0, 2);
+        this.alliance = Alliance.BEN;
         break;
 
       // Zombies

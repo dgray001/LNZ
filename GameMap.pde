@@ -2473,6 +2473,8 @@ class GameMap {
     file.println("code: " + this.code.file_name());
     file.println("mapName: " + this.mapName);
     file.println("dimensions: " + this.mapWidth + ", " + this.mapHeight);
+    file.println("color_tint: " + this.color_tint);
+    file.println("show_tint: " + this.show_tint);
     for (int i = 0; i < this.mapWidth; i++) {
       for (int j = 0; j < this.mapHeight; j++) {
         file.println("terrain: " + i + ", " + j + ": " + this.squares[i][j].terrain_id +
@@ -2849,6 +2851,12 @@ class GameMap {
         break;
       case "fogHandling":
         this.fogHandling = MapFogHandling.fogHandling(data);
+        break;
+      case "color_tint":
+        this.color_tint = toInt(data);
+        break;
+      case "show_tint":
+        this.show_tint = toBoolean(data);
         break;
       case "dimensions":
         String[] dimensions = split(data, ',');

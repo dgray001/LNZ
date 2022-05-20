@@ -1,41 +1,3 @@
-v0.7.1: TutorialInterface
- z: final cut scene (Ben was sleep walking) to end tutorial
- aa: ender chest room is achievement
- ab: kill john rankin is achievement
-
- - Make sure trigger timers reset when timers are to be reset
- - 1681075482 is brown with transparency of 100
- - Can drop items from view inventory
- - Button to open HeroTree (displays tokens) from leftpanelform
- - Add background sounds to tutorial (and john rankin sounds)
- - Tutorial can catch errors to prevent errorform
- - fog in rooms
-
-   *Tutorial notes:
-       - Easter egg is if you can kill John Rankin he drops "The Third Ball"
-       - Killing John Rankin is an Achievement
-       - Done by body-blocking his escape route
-         - When he is damaged he will cry "You broke my glasses" and start running away
-         - He will also activate a "rage" ability to make himself invulnerable for 3s or smth
-       - Since he is blocking hallway you have to go over him
-         - Wait for chicken to lay egg, then kill it, hatch egg to make another chicken (height 2)
-         - Use chicken to jump on water fountain (height 4), then onto Rankin (height 6)
-     - Sleep to reset spawn point (dropped items disappear when you sleep, manually make desk items disappear)
-     - Dream of lava in hallway => die and respawn at bed
-     - Experience gained / unlock abilities
-       - Forced to unlock Ben's ultimate ability
-     - Use ultimate to cross lava
-       - A previously locked door is now unlocked which has an ender chest in it
-       - Place "The Third Ball" in the ender chest to have it for later
-       - Finding this chest is also an Achievement
-     - Finish level by entering common room (just another evening in the life of Ben Nelson)
-
-Bugs:
- - In OptionsForm the 'apply' and 'defaults' buttons don't work although they used to...
- - Remove colors from edge of map images
- - Status effects on selected object left panel will have names behind others when hovered
- - tint affects other images still
-
 v0.7.2: Campaign I Prep
  - PlayingInterface outline
  - Levels save in a levels/level_location folder
@@ -44,6 +6,39 @@ v0.7.2: Campaign I Prep
  - Fix all outstanding bugs
  - Creating profile should create a Ben Nelson hero located in Francis Hall campaign
  - When pressing play game if only 1 hero auto go to that one, else display hero form to choose
+
+ - Make sure trigger timers reset when timers are to be reset
+ - Can drop items from view inventory
+ - Button to open HeroTree (displays tokens) from leftpanelform
+ - Add background sounds to tutorial (and john rankin sounds)
+ - Tutorial can catch errors to prevent errorform
+ - fog in rooms
+ - save in control and map tint
+ - show father as ben walks away
+ - ender chest achievement
+ - kill rankin achievement
+ - white cursor in player tree
+
+  *Tutorial notes:
+     - Easter egg is if you can kill John Rankin he drops "The Third Ball"
+     - Killing John Rankin is an Achievement
+     - Done by body-blocking his escape route
+       - When he is damaged he will cry "You broke my glasses" and start running away
+       - He will also activate a "rage" ability to make himself invulnerable for 3s or smth
+     - Since he is blocking hallway you have to go over him
+       - Wait for chicken to lay egg, then kill it, hatch egg to make another chicken (height 2)
+       - Use chicken to jump on water fountain (height 4), then onto Rankin (height 6)s
+     - A previously locked door is now unlocked which has an ender chest in it
+     - Place "The Third Ball" in the ender chest to have it for later
+     - Finding this chest is also an Achievement
+
+Bugs:
+ - In OptionsForm the 'apply' and 'defaults' buttons don't work although they used to...
+ - Remove colors from edge of map images
+ - Status effects on selected object left panel will have names behind others when hovered
+ - tint affects other images still
+
+
 v0.7.3: Francis Hall maps
 v0.7.4: Francis Hall triggers
 v0.7.5: Lev2 maps
@@ -57,10 +52,6 @@ v0.7.8: Lev3 triggers
 -Level 3 has forest/golf course and that whole western part of Franciscan, includes a town minigame if you wander into town
   Town minigame isn't same as CoD town yet, that will be a future one I think
 
-
- Sounds to Add:
-  - All Ben unit sounds
-  - All Dan unit sounds
 
 
  Fatal Bugs:
@@ -92,18 +83,8 @@ Parking Lot:
  - Achievements form has button to PlayerTree and vice/versa
  - Double click quests to open QuestForm
  - Add condition/effect selector (dropdownlist instead of typing id)
-
-Far Parking Lot:
- - LoseFocus can turn off expensive visual calculations (and maybe pause game in SP)
- - Textbox that's editable
- - Make an installer??
- - Automated test for map readfile
- - When closing/opening panel while form is open need to update background image
- - Interrupting action stops action sound effect (don't assign curr_action have function that assigns it and in that if player silence appropriate sounds)
- - Visual effects for remaining status effects
- - Sound effects use directional information
- - Fridge/freezer/minifridge makes items cold
- - Stove/fire makes items hot
+ - All Ben unit sounds
+ - All Dan unit sounds
 
 
 v0.8: HomeBase and Campaign II
@@ -119,53 +100,26 @@ v0.8: HomeBase and Campaign II
   -Can switch between Heroes (Ben doing one Campaign, Daniel at HomeBase, etc..)
 
 
+
+ Far Parking Lot:
+  - LoseFocus can turn off expensive visual calculations (and maybe pause game in SP)
+  - Textbox that's editable
+  - Make an installer??
+  - Automated test for map readfile
+  - When closing/opening panel while form is open need to update background image
+  - Interrupting action stops action sound effect (don't assign curr_action have function that assigns it and in that if player silence appropriate sounds)
+  - Visual effects for remaining status effects
+  - Sound effects use directional information
+  - Fridge/freezer/minifridge makes items cold
+  - Stove/fire makes items hot
+
+
+
 v0.9: Campaign III / IV / V
 - Campaign III is Patrick Rolwes campaign in St Louis (???, ???)
-  one ability is streaking which increases move speed and makes him
+  one ability is streaking which increases move speed and makes him ??
 - Campaign IV is JF Ellis campaign in North Dakota (BOIZ, CYAN, ICE)
 - Campaign V is Mike Mattus campaign in Atlanta (Confederates, MAGENTA, NUCLEAR)
-
-
-
-
-
-Other campaign ideas:
- - Zombie campaign to kill Hillary Clinton and unlock Donald Trump hero
- - Spinny campaign at Rome (VATICAN, RED, FIRE)
- - Ethan campaign at ??? (AIRFORCE, ORANGE, AIR)
- - Connor Giddens campaign at ??? (MAGIC??, YELLOW, ELECTRIC)
- - Mike Hanlon campaign at ??? (USGOV, ???, ???)
- - Connor Smith campaign at ??? (BLUE, SEALS, WATER)
- - (SPACEFORCE, PURPLE, GRAVITY)
-
-
-
-Future Ideas:
- - Many more single-player campaigns each that have minigame, unlock hero, some new theme or color
- - Campaigns have a difficulty tier (1, 2, 3, etc) and can only go for a tier 2 once 2 tier 1s complete, etc,
- - Zombie campaign is say tier 3 and once it's complete you destroy the multiverse device and unlock multiplayer content
- - You then port all info into server to begin multiplayer content
- - World map then split into areas (longitude/latitude) and stored on server
- - You can raise armies, make alliances, conquer areas
- - Areas are squares with 5 sub-areas: western front, eastern front, northern front, southern front, center
- - The fronts are just battlegrounds where you can't do anything but fight with armies
- - All 5 areas have a Level (set of maps) associated with it and autogenerated
- - Roads/airports in/through areas as in real world
- - Can build things in sub-areas like a blockade to prevent enemies from using road, or a taxing service in center to tax citizens
- - Areas have a population, etc
- - Armies have morale
-
-Future 'Update' Ideas:
-  - Crafting Update, workbench, gray
-  - Geology Update, ores, can dig, brown
-  - Chemistry Update, extensive chemistry, magenta
-  - Nether Update, nether (one for each homebase?), red
-  - Ocean Update, boat vehicles, swimming, blue
-  - Business Update, economics, control towns/cities
-  - Narnia Update, wardrobe, cyan
-  - Clouds Update, flying vehicles/units, dragon, orange
-  - Electricity Update, circuits, yellow
-  - Interstellar Update, space travel/battles, purple
 
 
 
@@ -173,6 +127,7 @@ To make tint work on FX2D:
 g.removeCache()
 
 
+- 1681075482 is brown with transparency of 100
 
 
 PowerShell commands:
@@ -182,6 +137,48 @@ Rename all images in folder:
   >> ls | %{Rename-Item $_ -NewName ("{0}.png" -f $nr++)}
 Get number of image (png) files:
   >> Get-ChildItem -Path './data/images/' -recurse -include '*.png' | Measure-Object -line
+
+
+
+
+
+  Other campaign ideas:
+   - Zombie campaign to kill Hillary Clinton and unlock Donald Trump hero
+   - Spinny campaign at Rome (VATICAN, RED, FIRE)
+   - Ethan campaign at ??? (AIRFORCE, ORANGE, AIR)
+   - Connor Giddens campaign at ??? (MAGIC??, YELLOW, ELECTRIC)
+   - Mike Hanlon campaign at ??? (USGOV, ???, ???)
+   - Connor Smith campaign at ??? (BLUE, SEALS, WATER)
+   - (SPACEFORCE, PURPLE, GRAVITY)
+
+
+
+  Future Ideas:
+   - Many more single-player campaigns each that have minigame, unlock hero, some new theme or color
+   - Campaigns have a difficulty tier (1, 2, 3, etc) and can only go for a tier 2 once 2 tier 1s complete, etc,
+   - Zombie campaign is say tier 3 and once it's complete you destroy the multiverse device and unlock multiplayer content
+   - You then port all info into server to begin multiplayer content
+   - World map then split into areas (longitude/latitude) and stored on server
+   - You can raise armies, make alliances, conquer areas
+   - Areas are squares with 5 sub-areas: western front, eastern front, northern front, southern front, center
+   - The fronts are just battlegrounds where you can't do anything but fight with armies
+   - All 5 areas have a Level (set of maps) associated with it and autogenerated
+   - Roads/airports in/through areas as in real world
+   - Can build things in sub-areas like a blockade to prevent enemies from using road, or a taxing service in center to tax citizens
+   - Areas have a population, etc
+   - Armies have morale
+
+  Future 'Update' Ideas:
+    - Crafting Update, workbench, gray
+    - Geology Update, ores, can dig, brown
+    - Chemistry Update, extensive chemistry, magenta
+    - Nether Update, nether (one for each homebase?), red
+    - Ocean Update, boat vehicles, swimming, blue
+    - Business Update, economics, control towns/cities
+    - Narnia Update, wardrobe, cyan
+    - Clouds Update, flying vehicles/units, dragon, orange
+    - Electricity Update, circuits, yellow
+    - Interstellar Update, space travel/battles, purple
 
 
 
