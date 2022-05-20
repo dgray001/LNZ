@@ -113,6 +113,12 @@ class Inventory {
     }
   }
 
+  void clear() {
+    for (InventorySlot slot : this.slots) {
+      slot.item = null;
+    }
+  }
+
   int maxCapacity() {
     return this.max_rows * this.max_cols;
   }

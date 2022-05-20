@@ -7,7 +7,7 @@ enum Location {
   public String display_name() {
     return Location.display_name(this);
   }
-  static public String display_name(Location a) {
+  public static String display_name(Location a) {
     switch(a) {
       case TUTORIAL:
         return "Tutorial";
@@ -23,7 +23,7 @@ enum Location {
   public String file_name() {
     return Location.file_name(this);
   }
-  static public String file_name(Location a) {
+  public static String file_name(Location a) {
     switch(a) {
       case TUTORIAL:
         return "tutorial";
@@ -36,7 +36,7 @@ enum Location {
     }
   }
 
-  static public Location location(String display_name) {
+  public static Location location(String display_name) {
     for (Location location : Location.VALUES) {
       if (location == Location.ERROR) {
         continue;
@@ -95,6 +95,33 @@ class Linker {
 
 
 
+enum DayCycle {
+  DAWN, DAY, DUSK, NIGHT;
+
+  public static DayCycle dayTime(float time) {
+    if (time > 21) {
+      return DayCycle.NIGHT;
+    }
+    else if (time > 20.5) {
+      return DayCycle.DUSK;
+    }
+    else if (time > 6.5) {
+      return DayCycle.DAY;
+    }
+    else if (time > 6) {
+      return DayCycle.DAWN;
+    }
+    else {
+      return DayCycle.NIGHT;
+    }
+  }
+
+  public static float lightFraction(float time) {
+    return 1.0;
+  }
+}
+
+
 
 class Level {
   protected String folderPath; // to level folder
@@ -120,8 +147,10 @@ class Level {
   protected int nextTriggerKey = 1;
   protected HashMap<Integer, Trigger> triggers = new HashMap<Integer, Trigger>();
   protected HashMap<Integer, Quest> quests = new HashMap<Integer, Quest>();
+  protected ClockFloat time = new ClockFloat(24, 20); // day cycle
 
   protected Rectangle player_start_location = null;
+  protected Rectangle player_spawn_location = null;
   protected Hero player;
   protected boolean in_control = true;
 
@@ -146,6 +175,45 @@ class Level {
     this.levelName = testMap.mapName;
     this.currMap = testMap;
     this.currMapName = testMap.mapName;
+  }
+
+
+  String timeString() {
+    return this.timeString(false, false);
+  }
+  String timeString(boolean military_time, boolean show_seconds) {
+    float minutes = 60.0 * (this.time.value - floor(this.time.value));
+    float seconds = 60.0 * (minutes - floor(minutes));
+    String hrs = Integer.toString(int(floor(this.time.value)));
+    String mins = Integer.toString(int(floor(minutes)));
+    while(mins.length() < 2) {
+      mins = "0" + mins;
+    }
+    String secs = Integer.toString(int(floor(seconds)));
+    while(secs.length() < 2) {
+      secs = "0" + secs;
+    }
+    if (military_time) {
+      if (show_seconds) {
+        return hrs + ":" + mins + ":" + secs;
+      }
+      else {
+        return hrs + ":" + mins;
+      }
+    }
+    else {
+      String suffix = " am";
+      if (this.time.value > 12) {
+        suffix = " pm";
+        hrs = Integer.toString(int(floor(this.time.value - 12)));
+      }
+      if (show_seconds) {
+        return hrs + ":" + mins + ":" + secs + suffix;
+      }
+      else {
+        return hrs + ":" + mins + suffix;
+      }
+    }
   }
 
 
@@ -195,6 +263,16 @@ class Level {
     }
   }
 
+  String getPlayerSpawnLocationDisplay() {
+    if (this.player_spawn_location == null) {
+      return "No player spawn location";
+    }
+    else {
+      return "Player respawns at " + this.player_spawn_location.mapName + " at (" +
+        this.player_spawn_location.centerX() + ", " + this.player_spawn_location.centerY() + ")";
+    }
+  }
+
 
   void addTestPlayer() {
     Hero h = new Hero(HeroCode.BEN);
@@ -222,22 +300,63 @@ class Level {
     if (this.player_start_location == null || !this.hasMap(this.player_start_location.mapName)) {
       if (this.mapNames.size() > 0) {
         this.openMap(this.mapNames.get(0));
+        player.setLocation(0, 0);
+      }
+      else {
+        player.setLocation(0, 0);
       }
     }
     else {
       this.openMap(this.player_start_location.mapName);
       player.setLocation(this.player_start_location.centerX(), this.player_start_location.centerY());
-      if (this.currMap == null) {
-        this.nullify = true;
-        global.errorMessage("ERROR: Can't open default map.");
-      }
-      else {
-        this.currMap.addPlayer(player);
-      }
+    }
+    if (this.currMap == null || this.currMap.nullify) {
+      this.nullify = true;
+      global.errorMessage("ERROR: Can't open default map.");
+    }
+    else {
+      this.currMap.addPlayer(player);
     }
     this.player = player;
     this.player.location = this.location;
     this.player.in_control = this.in_control;
+  }
+
+  void respawnPlayer() {
+    if (this.player == null) {
+      global.errorMessage("ERROR: Trying to respawn player when player doesn't exists.");
+      return;
+    }
+    this.player.remove = false;
+    this.player.curr_health = this.player.health();
+    this.player.curr_mana = 0;
+    this.player.hunger = Constants.hero_maxHunger;
+    this.player.thirst = Constants.hero_maxThirst;
+    this.player.experience *= int(floor(Constants.hero_experienceRespawnMultiplier));
+    if (this.player_spawn_location != null && this.hasMap(this.player_spawn_location.mapName)) {
+      this.openMap(this.player_spawn_location.mapName);
+      player.setLocation(this.player_spawn_location.centerX(), this.player_spawn_location.centerY());
+    }
+    else if (this.player_start_location != null && this.hasMap(this.player_start_location.mapName)) {
+      this.openMap(this.player_start_location.mapName);
+      player.setLocation(this.player_start_location.centerX(), this.player_start_location.centerY());
+    }
+    else {
+      if (this.mapNames.size() > 0) {
+        this.openMap(this.mapNames.get(0));
+        player.setLocation(0, 0);
+      }
+      else {
+        player.setLocation(0, 0);
+      }
+    }
+    if (this.currMap == null || this.currMap.nullify) {
+      this.nullify = true;
+      global.errorMessage("ERROR: Can't open map with name " + this.currMapName + ".");
+    }
+    else {
+      this.currMap.addPlayer(player);
+    }
   }
 
 
@@ -746,80 +865,12 @@ class Level {
           }
           break;
         }
-        global.sounds.trigger_environment("features/bed_shuffle", f.xCenter() -
-          this.currMap.viewX, f.yCenter() - this.currMap.viewY);
-        if (!f.toggle) {
-          this.currMap.addHeaderMessage("This " + f.display_name() + " has nothing in it.");
-          break;
-        }
-        if (random_number > 0.99) {
-          item_id = 2154;
-        }
-        else if (random_number > 0.96) {
-          item_id = 2153;
-        }
-        else if (random_number > 0.91) {
-          item_id = 2152;
-        }
-        else if (random_number > 0.73) {
-          item_id = 2151;
-        }
-        else if (random_number > 0.7) {
-          item_id = 2101;
-        }
-        else if (random_number > 0.69) {
-          item_id = 2102;
-        }
-        else if (random_number > 0.68) {
-          item_id = 2103;
-        }
-        else if (random_number > 0.67) {
-          item_id = 2104;
-        }
-        else if (random_number > 0.66) {
-          item_id = 2105;
-        }
-        else if (random_number > 0.65) {
-          item_id = 2134;
-        }
-        else if (random_number > 0.63) {
-          item_id = 2402;
-        }
-        else if (random_number > 0.6) {
-          item_id = 2502;
-        }
-        else if (random_number > 0.57) {
-          item_id = 2602;
-        }
-        else if (random_number > 0.55) {
-          item_id = 2603;
-        }
-        else if (random_number > 0.54) {
-          item_id = 2604;
-        }
-        else if (random_number > 0.52) {
-          item_id = 2916;
-        }
-        else if (random_number > 0.51) {
-          item_id = 2925;
-        }
-        else if (random_number > 0.5) {
-          item_id = 2933;
+        if (DayCycle.dayTime(this.time.value) == DayCycle.NIGHT) {
+          // sleep
         }
         else {
-          f.toggle = false;
-          this.currMap.addHeaderMessage("This " + f.display_name() + " has nothing left in it.");
-          break;
+          this.currMap.addHeaderMessage("You can only sleep at night.");
         }
-        new_i = new Item(item_id, h.frontX(), h.frontY());
-        if (h.canPickup()) {
-          h.pickup(new_i);
-          new_i.pickupSound();
-        }
-        else {
-          this.currMap.addItem(new_i);
-        }
-        this.currMap.addHeaderMessage("You found a " + new_i.display_name() + ".");
         break;
       case 141: // wardrobe
       case 142:
@@ -1627,6 +1678,7 @@ class Level {
       this.restartTimers(millis);
     }
     int timeElapsed = millis - this.last_update_time;
+    this.time.add(timeElapsed * Constants.level_timeConstants);
     if (this.player != null && this.player.heroTree.curr_viewing) {
       this.player.heroTree.update(timeElapsed);
       this.last_update_time = millis;
@@ -1682,9 +1734,22 @@ class Level {
       rect(this.xi, this.yi, this.xf, this.yf);
     }
     if (this.player != null) {
+      // if respawning ...
       this.player.update_hero(timeElapsed);
       for (Map.Entry<Integer, Quest> entry : this.quests.entrySet()) {
         entry.getValue().update(this, timeElapsed);
+      }
+      if (this.player.seesTime()) {
+        fill(255);
+        textSize(14);
+        textAlign(LEFT, TOP);
+        float line_height = textAscent() + textDescent() + 2;
+        String time_line = this.timeString();
+        text(time_line, this.xf - 40 - textWidth(time_line), 1);
+      }
+      if (this.player.remove) {
+        // respawn timer
+        this.respawnPlayer();
       }
     }
     this.last_update_time = millis;
@@ -1700,7 +1765,7 @@ class Level {
       textAlign(LEFT, TOP);
       float y_stats = 1;
       float line_height = textAscent() + textDescent() + 2;
-      text("FPS: " + int(global.lastFPS), 1, y_stats);
+      text("FPS: " + int(global.lastFPS), this.xi + 1, y_stats);
     }
   }
 
@@ -2842,9 +2907,17 @@ class LevelEditor extends Level {
             this.last_rectangle = ((GameMapLevelEditor)this.currMap).rectangle_dropping;
             ((GameMapLevelEditor)this.currMap).rectangle_dropping = null;
             if (this.last_rectangle != null) {
-              this.player_start_location = this.last_rectangle;
-              this.currMap.headerMessages.clear();
-              this.currMap.addHeaderMessage("Player start location set");
+              if (global.holding_ctrl) {
+                this.player_spawn_location = this.last_rectangle;
+                this.currMap.headerMessages.clear();
+                this.currMap.addHeaderMessage("Player respawn location set");
+              }
+              else {
+                this.player_start_location = this.last_rectangle;
+                this.currMap.headerMessages.clear();
+                this.currMap.addHeaderMessage("Player start location set");
+              }
+              this.last_rectangle = null;
             }
           }
           break;

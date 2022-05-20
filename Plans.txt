@@ -1,21 +1,24 @@
 v0.7.1: TutorialInterface
- r: quest4 => enter Francis Hall (add "francis hall" sign)
- s: quest5 => kill chicken in stairwell (unlocks door)
- t: quest6 => unlock inventory (get ben's backpack and key in inventory)
- u: quest7 => go to room (key unlocks)
- v: quest8 => drop backpack (can't exit room until this completed)
- w: quest9 => attack John Rankin who starts yelling easy company => if you use hands it does no damage so need knife from desk
- x: NEED TO FINISH DESK DRAWER IMAGES AND ETC
- y: quest10 => Drink from water fountain, eat food now in desk (food wasn't there before)
- z: quest11 => go to sleep
- z: cut scene where Ben enters room and will put knife back in desk and go to "sleep", then wake up and there's lava and ben has r ability
- aa: Use ultimate to cross lava
+ t: chicken quest (4), triggers to not go into main doors or around building, effects to keep hunger/thirst up
+ u: once chicken killed can go upstairs, quest to unlock inventory (5)
+ v: unlock inventory (get ben's backpack and key in inventory), trigger to mention no one is around, instructions to explain 'q', 'w', 'e', 'r'
+ w: quest (6) to use backpack in inventory to gain more inventory slots, once you go into room you stop getting food/water replenished
+ x: fight John Rankin (quest 7) (must use knife in desk, if try with hands it will say so)
+ y: drink from water fountain and eat pickle (quest 8 / quest 9) to get hunger/thirst above 95 (set hunger/thirst to 90 before this)
+ z: go to sleep to reset spawn point (quest 10), take away current bed logic
+ aa: wake up and there's lava, quest 11 is to die
+ ab: gain ultimate and quest 12 is to cross lava into common room (can get access to ender chest room now)
+ ac: cut scene where Ben wakes up at bed and no lava, he walks to common room, complete tutorial
+ ad: ender chest room is achievement
+ ae: kill john rankin is achievement
 
  - Make sure trigger timers reset when timers are to be reset
  - 1681075482 is brown with transparency of 100
  - sleep mechanics
  - death mechanics
  - Can drop items from inventory
+ - Button to open HeroTree (displays tokens) from leftpanelform
+ - Desk drawer images
 
  - Add button to navigate to perk tree in achievementform
  - Outline maps for tutorial

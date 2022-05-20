@@ -4395,6 +4395,11 @@ class ClockInt {
     this.value += amount;
     this.resolve();
   }
+
+  void set(int amount) {
+    this.value = amount;
+    this.resolve();
+  }
 }
 
 
@@ -4433,6 +4438,11 @@ class ClockFloat {
 
   void add(float amount) {
     this.value += amount;
+    this.resolve();
+  }
+
+  void set(float amount) {
+    this.value = amount;
     this.resolve();
   }
 }
@@ -4496,6 +4506,11 @@ class BounceInt {
     }
     this.resolve();
   }
+
+  void set(int amount) {
+    this.value = amount;
+    this.resolve();
+  }
 }
 
 class BounceFloat {
@@ -4555,6 +4570,11 @@ class BounceFloat {
     else {
       this.value -= amount;
     }
+    this.resolve();
+  }
+
+  void set(float amount) {
+    this.value = amount;
     this.resolve();
   }
 }

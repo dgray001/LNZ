@@ -39,6 +39,20 @@ class Quest {
         break;
       case 3: // go to room
         break;
+      case 4: // kill chicken
+        break;
+      case 5: // unlock inventory
+        break;
+      case 6: // use backpack
+        break;
+      case 7: // damage john rankin
+        break;
+      case 8: // drink water
+        break;
+      case 9: // eat food
+        break;
+      case 10: // sleep
+        break;
       default:
         global.errorMessage("ERROR: Quest ID " + this.ID + " not recognized.");
         break;
@@ -53,6 +67,20 @@ class Quest {
         return "Move Ben Nelson toward the arrow";
       case 3: // go to room
         return "Go to your room";
+      case 4: // kill chicken
+        return "Kill the chicken";
+      case 5: // unlock inventory
+        return "Unlock your inventory";
+      case 6: // use backpack
+        return "Use your backpack";
+      case 7: // damage john rankin
+        return "Chase away John Rankin";
+      case 8: // drink water
+        return "Drink water";
+      case 9: // eat food
+        return "Eat food";
+      case 10: // sleep
+        return "Go to sleep";
       default:
         return "";
     }
@@ -61,11 +89,25 @@ class Quest {
   String shortDescription() {
     switch(this.ID) {
       case 1: // select ben
-        return "Select Ben Nelson by left-clicking him";
+        return "Select Ben Nelson by left-clicking him.";
       case 2: // move toward arrow
-        return "Move Ben Nelson toward the arrow by right-clicking near the arrow";
+        return "Move Ben Nelson toward the arrow by right-clicking near the arrow.";
       case 3: // go to room
-        return "Your room is on the second floor of Francis Hall";
+        return "Your room is on the second floor of Francis Hall.";
+      case 4: // kill chicken
+        return "Attack the chicken by right-clicking it.";
+      case 5: // unlock inventory
+        return "Unlock your inventory in the HeroTree, which you can open with 'ctrl-t'.";
+      case 6: // use backpack
+        return "Use your backpack by placing it in your primary hand and pressing 'r'.";
+      case 7: // damage john rankin
+        return "Chase away John Rankin by damaging him. Your base attack won't be enough.";
+      case 8: // drink water
+        return "Drink water by right-clicking the water fountain outside your room.";
+      case 9: // eat food
+        return "There's food in your fridge that will quell your hunger.";
+      case 10: // sleep
+        return "Go to sleep by right-clicking your bed at night-time.";
       default:
         return "";
     }

@@ -3843,6 +3843,10 @@ class Hero extends Unit {
   }
 
 
+  boolean seesTime() {
+    return true;
+  }
+
   void startUseItemTimer() {
     if (this.weapon() == null) {
       return;
@@ -4052,6 +4056,12 @@ class Hero extends Unit {
 
 
   @Override
+  void destroy(GameMap map) {
+    super.destroy(map);
+    this.inventory.clear();
+  }
+
+  @Override
   ArrayList<Item> drops() {
     ArrayList<Item> drops = super.drops();
     for (Item i : this.inventory.items()) {
@@ -4087,7 +4097,11 @@ class Hero extends Unit {
   }
 
   void changeHunger(int amount) {
-    this.hunger += amount;
+    this.setHunger(this.hunger + amount);
+  }
+
+  void setHunger(int amount) {
+    this.hunger = amount;
     if (this.hunger > 100) {
       this.hunger = 100;
     }
@@ -4105,7 +4119,11 @@ class Hero extends Unit {
   }
 
   void changeThirst(int amount) {
-    this.thirst += amount;
+    this.setThirst(this.thirst + amount);
+  }
+
+  void setThirst(int amount) {
+    this.thirst = amount;
     if (this.thirst > 100) {
       this.thirst = 100;
     }
@@ -4124,8 +4142,12 @@ class Hero extends Unit {
     this.changeMana(-amount);
   }
 
-  void changeMana(int amount) {
-    this.curr_mana += amount;
+  void changeMana(float amount) {
+    this.setMana(this.curr_mana + amount);
+  }
+
+  void setMana(float amount) {
+    this.curr_mana = amount;
     if (this.curr_mana < 0) {
       this.curr_mana = 0;
     }

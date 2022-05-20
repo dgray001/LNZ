@@ -4,8 +4,8 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220519: v0.7.1s" +
-  "\nLines: 36551 (v0.7n)" +
+  "\n20220519: v0.7.1t" +
+  "\nLines: 37620 (v0.7t)" +
   "\nImages: 1091 (v0.7n)" +
   "\nSounds: 245 (v0.7)" +
   "";
@@ -117,38 +117,38 @@ static class Constants {
     "view you see an overview of your level and the maps in it.\nDouble-click " +
     "a map to view it.\n\nHotkeys:\n z: Toggle grid\n x: Toggle fog\n c: Toggle " +
     "rectangle mode\n v: Toggle square mode\n s: Save last rectangle\n S: Set " +
-    "player start location";
+    "player start/respawn location";
   static final String help_mapEditor_levelMaps = "Maps\n\nIn this view you " +
     "can see the maps that can be added to your level.\nDouble-click a map " +
     "to add it to your level.\n\nHotkeys:\n z: Toggle grid\n x: Toggle fog\n c: " +
     "Toggle rectangle mode\n v: Toggle square mode\n s: Save last rectangle\n S: " +
-    "Set player start location\n d: Remove selected map from level";
+    "Set player start/respawn location\n d: Remove selected map from level";
   static final String help_mapEditor_linkers = "Linkers\n\nIn this view you " +
     "see the linkers in your level.\n\nHotkeys:\n z: Toggle grid\n x: Toggle " +
     "fog\n c: Toggle rectangle mode\n v: Toggle square mode\n s: Save last " +
-    "rectangle\n S: Set player start location\n a: Add linker from current " +
+    "rectangle\n S: Set player start/respawn location\n a: Add linker from current " +
     "rectangles\n d: Delete selected linker from level";
   static final String help_mapEditor_triggers = "Triggers\n\nIn this view " +
     "you see the triggers in your level.\nDouble-click a trigger to open the " +
     "trigger editor.\n\nHotkeys:\n z: Toggle grid\n x: Toggle fog\n c: Toggle " +
     "rectangle mode\n v: Toggle square mode\n s: Save last rectangle\n S: Set " +
-    "player start location\n a: Add a new trigger to level\n d: Delete selected " +
+    "player start/respawn location\n a: Add a new trigger to level\n d: Delete selected " +
     "trigger from level";
   static final String help_mapEditor_triggerEditor = "Trigger Editor\n\nIn " +
     "this view you can edit the trigger you selected.\n\nHotkeys:\n z: " +
     "Toggle grid\n x: Toggle fog\n c: Toggle rectangle mode\n v: Toggle square " +
-    "mode\n s: Save last rectangle\n S: Set player start location\n d: Delete " +
+    "mode\n s: Save last rectangle\n S: Set player start/respawn location\n d: Delete " +
     "selected trigger component from trigger";
   static final String help_mapEditor_conditionEditor = "Condition Editor\n\nIn " +
     "this view you can edit the condition you selected.\n\nHotkeys:\n z: " +
     "Toggle grid\n x: Toggle fog\n c: Toggle rectangle mode\n v: Toggle square " +
-    "mode\n s: Save last rectangle\n S: Set player start location\n a: Add " +
+    "mode\n s: Save last rectangle\n S: Set player start/respawn location\n a: Add " +
     "current rectangle to condition\n d: Delete selected trigger component " +
     "from trigger";
   static final String help_mapEditor_effectEditor = "Effect Editor\n\nIn " +
     "this view you can edit the effect you selected.\n\nHotkeys:\n z: " +
     "Toggle grid\n x: Toggle fog\n c: Toggle rectangle mode\n v: Toggle square " +
-    "mode\n s: Save last rectangle\n S: Set player start location\n a: Add " +
+    "mode\n s: Save last rectangle\n S: Set player start/respawn location\n a: Add " +
     "current rectangle to effect\n d: Delete selected trigger component " +
     "from trigger";
 
@@ -426,6 +426,7 @@ static class Constants {
   static final float hero_treeForm_width = 300;
   static final float hero_treeForm_height = 340;
   static final float hero_manabarHeight = 0.05;
+  static final float hero_experienceRespawnMultiplier = 0.3;
 
   // Upgrade
   static final int upgrade_inventoryI = 2;
@@ -585,4 +586,5 @@ static class Constants {
   static final float level_khalilFormHeight = 500;
   static final int level_questBlinkTime = 500;
   static final int level_questBlinks = 3;
+  static final float level_timeConstants = 0.0001;
 }

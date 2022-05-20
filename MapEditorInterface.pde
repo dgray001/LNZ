@@ -1134,16 +1134,23 @@ class MapEditorInterface extends InterfaceLNZ {
         this.addField(new MessageFormField("Location: " + MapEditorInterface.this.curr_level.location.display_name()));
         this.addField(new SpacerFormField(20));
         this.addField(new MessageFormField(MapEditorInterface.this.curr_level.getPlayerStartLocationDisplay()));
+        this.addField(new SpacerFormField(10));
+        this.addField(new MessageFormField(MapEditorInterface.this.curr_level.getPlayerSpawnLocationDisplay()));
       }
     }
 
     void submit() {
+      this.updateFields();
     }
 
     void buttonPress(int i) {
     }
 
     void updateFields() {
+      this.fields.get(1).setValue(MapEditorInterface.this.curr_level.getCurrMapNameDisplay());
+      this.fields.get(3).setValue("Location: " + MapEditorInterface.this.curr_level.location.display_name());
+      this.fields.get(5).setValue(MapEditorInterface.this.curr_level.getPlayerStartLocationDisplay());
+      this.fields.get(7).setValue(MapEditorInterface.this.curr_level.getPlayerSpawnLocationDisplay());
     }
   }
 
@@ -1258,7 +1265,7 @@ class MapEditorInterface extends InterfaceLNZ {
       effect.setName();
       this.effect = effect;
       this.addField(new SpacerFormField(20));
-      this.addField(new IntegerFormField("ID: ", "enter an integer from 0-32", 0, 32));
+      this.addField(new IntegerFormField("ID: ", "enter an integer from 0-42", 0, 42));
       this.addField(new SpacerFormField(20));
       this.addField(new IntegerFormField("Number: ", "enter an integer", Integer.MIN_VALUE + 1, Integer.MAX_VALUE - 1));
       this.addField(new SpacerFormField(20));

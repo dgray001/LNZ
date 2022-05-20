@@ -2759,6 +2759,9 @@ class Unit extends MapObject {
     for (Item i : this.drops()) {
       map.addItem(i, this.x + this.size - random(this.size), this.y + this.size - random(this.size));
     }
+    for (Map.Entry<GearSlot, Item> entry : this.gear.entrySet()) {
+      this.gear.put(entry.getKey(), null);
+    }
   }
 
 
@@ -2825,10 +2828,23 @@ class Unit extends MapObject {
   }
   void heal(float amount, boolean overheal) {
     this.curr_health += amount;
-    if (this.curr_health <= 0) {
+    if (this.curr_health < 0) {
       this.curr_health = 0;
     }
     if (!overheal && this.curr_health > this.health()) {
+      this.curr_health = this.health();
+    }
+  }
+
+  void changeHealth(float amount) {
+    this.setHealth(this.curr_health + amount);
+  }
+  void setHealth(float amount) {
+    this.curr_health = amount;
+    if (this.curr_health < 0) {
+      this.curr_health = 0;
+    }
+    if (this.curr_health > this.health()) {
       this.curr_health = this.health();
     }
   }

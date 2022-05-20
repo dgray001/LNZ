@@ -352,6 +352,16 @@ class Effect {
       case 30: // teleport unit
       case 31: // teleport player
       case 32: // teleport units in rectangle
+      case 33: // change player hunger
+      case 34: // change player thirst
+      case 35: // change player mana
+      case 36: // set player hunger
+      case 37: // set player thirst
+      case 38: // set player mana
+      case 39: // change unit health
+      case 40: // set unit health
+      case 41: // change time
+      case 42: // set time
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
@@ -457,6 +467,36 @@ class Effect {
         break;
       case 32: // teleport units in rectangle
         this.display_name = "Teleport Units in Rectangle";
+        break;
+      case 33: // change player hunger
+        this.display_name = "Change Player Hunger (" + this.number + ")";
+        break;
+      case 34: // change player thirst
+        this.display_name = "Change Player Thirst (" + this.number + ")";
+        break;
+      case 35: // change player mana
+        this.display_name = "Change Player Mana (" + this.number + ")";
+        break;
+      case 36: // set player hunger
+        this.display_name = "Set Player Hunger (" + this.number + ")";
+        break;
+      case 37: // set player thirst
+        this.display_name = "Set Player Thirst (" + this.number + ")";
+        break;
+      case 38: // set player mana
+        this.display_name = "Set Player Mana (" + this.number + ")";
+        break;
+      case 39: // change unit health
+        this.display_name = "Change Unit (" + this.number + ") Health (" + this.decimal1 + ")";
+        break;
+      case 40: // set unit health
+        this.display_name = "Set Unit (" + this.number + ") Health (" + this.decimal1 + ")";
+        break;
+      case 41: // change time
+        this.display_name = "Change Time (" + this.number + ")";
+        break;
+      case 42: // set time
+        this.display_name = "Set Time (" + this.number + ")";
         break;
       default:
         this.display_name = "Effect";
@@ -729,6 +769,58 @@ class Effect {
             level.player.setLocation(this.decimal1, this.decimal2);
           }
         }
+        break;
+      case 33: // change player hunger
+        if (level.player != null) {
+          level.player.changeHunger(this.number);
+        }
+        break;
+      case 34: // change player thirst
+        if (level.player != null) {
+          level.player.changeThirst(this.number);
+        }
+        break;
+      case 35: // change player mana
+        if (level.player != null) {
+          level.player.changeMana(this.number);
+        }
+        break;
+      case 36: // set player hunger
+        if (level.player != null) {
+          level.player.setHunger(this.number);
+        }
+        break;
+      case 37: // set player thirst
+        if (level.player != null) {
+          level.player.setThirst(this.number);
+        }
+        break;
+      case 38: // set player mana
+        if (level.player != null) {
+          level.player.setMana(this.number);
+        }
+        break;
+      case 39: // change unit health
+        if (level.currMap == null) {
+          break;
+        }
+        if (level.currMap.units.containsKey(this.number)) {
+          level.currMap.units.get(this.number).changeHealth(this.decimal1);
+        }
+        break;
+      case 40: // set unit health
+        if (level.currMap == null) {
+          break;
+        }
+        if (level.currMap.units.containsKey(this.number)) {
+          level.currMap.units.get(this.number).setHealth(this.decimal1);
+        }
+        break;
+      case 41: // change time
+        level.time.add(this.decimal1);
+        break;
+      case 42: // set time
+        level.time.set(this.decimal1);
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
