@@ -77,6 +77,13 @@ void draw() {
       break;
     case TUTORIAL:
       break;
+    case ENTERING_PLAYING:
+      background(60);
+      global.state = ProgramState.PLAYING;
+      global.menu = new PlayingInterface();
+      break;
+    case PLAYING:
+      break;
     case EXITING:
       global.timer_exiting -= timeElapsed;
       if (global.timer_exiting < 0) {

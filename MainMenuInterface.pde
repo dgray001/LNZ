@@ -272,7 +272,7 @@ class MainMenuInterface extends InterfaceLNZ {
       this.color_text = color(50, 10, 50);
       if (this.hovered) {
         if (global.profile.upgraded(PlayerTreeCode.CAN_PLAY)) {
-          println("launch game");
+          global.state = ProgramState.ENTERING_PLAYING;
         }
         else {
           println("complete tutorial first");
