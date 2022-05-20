@@ -3,7 +3,7 @@ levelName: tutorial
 location: tutorial
 completed: false
 completion_code: 0
-currMapName: tutorial_frontdoor
+currMapName: tutorial_stairwell
 mapNames: tutorial_soldiers, tutorial_stairwell, tutorial_frontdoor
 
 new: Linker
@@ -42,7 +42,7 @@ nextTriggerKey: 2
 
 new: Trigger
 triggerName: lose control
-active: true
+active: false
 looping: false
 amalgam: true
 new: Effect
@@ -87,6 +87,7 @@ number1: 2000
 number2: 2000
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -122,6 +123,7 @@ number1: 3800
 number2: 3800
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -157,6 +159,7 @@ number1: 3800
 number2: 3800
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -201,6 +204,7 @@ number1: 3800
 number2: 3800
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -236,6 +240,7 @@ number1: 6800
 number2: 6800
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -280,6 +285,7 @@ number1: 6800
 number2: 6800
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -324,6 +330,7 @@ number1: 6800
 number2: 6800
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -521,6 +528,7 @@ number1: 7000
 number2: 7000
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -574,6 +582,7 @@ number1: 7000
 number2: 7000
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -627,6 +636,7 @@ number1: 7000
 number2: 7000
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -680,6 +690,7 @@ number1: 7000
 number2: 7000
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -733,6 +744,7 @@ number1: 2500
 number2: 2500
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -768,6 +780,7 @@ number1: 5000
 number2: 5000
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -820,7 +833,7 @@ end: Trigger
 nextTriggerKey: 27
 
 new: Trigger
-triggerName: ### Quest 1
+triggerName: ### Quest 1 - select
 active: false
 looping: false
 amalgam: true
@@ -839,6 +852,7 @@ number1: 7000
 number2: 7000
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -892,6 +906,7 @@ number1: 800
 number2: 800
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -927,6 +942,7 @@ number1: 0
 number2: 0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -979,7 +995,7 @@ end: Trigger
 nextTriggerKey: 32
 
 new: Trigger
-triggerName: ### Quest 2
+triggerName: ### Quest 2 - move
 active: false
 looping: false
 amalgam: true
@@ -998,6 +1014,7 @@ number1: 4000
 number2: 4000
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -1033,6 +1050,7 @@ number1: 3000
 number2: 3000
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -1077,6 +1095,7 @@ number1: 1000
 number2: 1000
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -1130,6 +1149,7 @@ number1: 0
 number2: 0
 rectangle: tutorial_frontdoor, 0.0, 6.0, 18.0, 8.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -1228,6 +1248,7 @@ number1: 3800
 number2: 3800
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -1272,6 +1293,7 @@ number1: 3000
 number2: 3000
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Condition
@@ -1280,6 +1302,7 @@ number1: 0
 number2: 0
 rectangle: tutorial_frontdoor, 11.0, 7.0, 12.0, 8.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -1315,6 +1338,7 @@ number1: 2000
 number2: 2000
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Condition
@@ -1323,6 +1347,7 @@ number1: 0
 number2: 0
 rectangle: tutorial_frontdoor, 11.0, 10.0, 12.0, 11.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -1376,6 +1401,7 @@ number1: 2700
 number2: 2700
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -1438,6 +1464,7 @@ number1: 3000
 number2: 3000
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -1473,6 +1500,7 @@ number1: 4500
 number2: 4500
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -1508,6 +1536,7 @@ number1: 2000
 number2: 2000
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -1552,6 +1581,7 @@ number1: 4000
 number2: 4000
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -1587,6 +1617,7 @@ number1: 4000
 number2: 4000
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -1622,6 +1653,7 @@ number1: 4000
 number2: 4000
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -1657,6 +1689,7 @@ number1: 4500
 number2: 4500
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -1701,6 +1734,7 @@ number1: 4500
 number2: 4500
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -1736,6 +1770,7 @@ number1: 3000
 number2: 3000
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -1771,6 +1806,7 @@ number1: 1200
 number2: 1200
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -1815,6 +1851,7 @@ number1: 2000
 number2: 2000
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -1859,6 +1896,7 @@ number1: 3000
 number2: 3000
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
 
 new: Effect
@@ -1884,7 +1922,7 @@ end: Trigger
 nextTriggerKey: 58
 
 new: Trigger
-triggerName: gain control
+triggerName: move view
 active: false
 looping: false
 amalgam: true
@@ -1894,7 +1932,476 @@ number1: 2500
 number2: 2500
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
+not_condition: false
 end: Condition
+
+new: Effect
+ID: 4
+message: Ben is rejuvenated after his riveting confession
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 8
+message: 
+number: 45
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 19
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 61
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 59
+
+new: Trigger
+triggerName: 
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 60
+
+new: Trigger
+triggerName: ### Extra instructions
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 61
+
+new: Trigger
+triggerName: instructions
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: To interact with a feature simply right-click it
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 62
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 62
+
+new: Trigger
+triggerName: instructions2
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 63
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: For example, you can right-click the doors to open them
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 63
+
+new: Trigger
+triggerName: instructions3
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 64
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: Give it a try!
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 64
+
+new: Trigger
+triggerName: gain control
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 12
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 9
+message: 
+number: 3
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 15
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 65
+
+new: Trigger
+triggerName: 
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 66
+
+new: Trigger
+triggerName: ### Quest 4 - chicken
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 67
+
+new: Trigger
+triggerName: no hunger / thirst
+active: true
+looping: true
+amalgam: true
+new: Effect
+ID: 36
+message: 
+number: 100
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 37
+message: 
+number: 100
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 68
+
+new: Trigger
+triggerName: no main doors1
+active: true
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: tutorial_frontdoor, 0.0, 19.0, 2.0, 21.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 25
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_frontdoor, 2.0, 21.0, 3.0, 22.0
+end: Effect
+
+new: Effect
+ID: 20
+message: How about I go up the stairs: less chance to see someone
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_frontdoor, 2.0, 21.0, 3.0, 22.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 69
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 69
+
+new: Trigger
+triggerName: no main doors2
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: tutorial_frontdoor, 2.0, 21.0, 3.0, 22.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 68
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 12
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 70
+
+new: Trigger
+triggerName: chicken quest activation
+active: true
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: tutorial_stairwell, 2.0, 3.0, 3.0, 4.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: To attack a unit just right click it.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_stairwell, 2.0, 3.0, 3.0, 4.0
+end: Effect
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 14
+message: 
+number: 1681075482
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 71
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 22
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 71
+
+new: Trigger
+triggerName: directions
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: Try it! Kill the chicken by right-clicking it.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 72
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 72
+
+new: Trigger
+triggerName: gain control
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 9
+message: 
+number: 4
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
 
 new: Effect
 ID: 12
@@ -1915,18 +2422,252 @@ rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
 new: Effect
-ID: 9
+ID: 7
 message: 
-number: 3
+number: 77
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 73
+
+new: Trigger
+triggerName: prevent going upstairs1
+active: true
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: tutorial_stairwell, 4.0, 1.0, 5.0, 2.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 74
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
 new: Effect
-ID: 4
-message: Ben is rejuvenated after his riveting confession
+ID: 11
+message: 
 number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 25
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_stairwell, 3.0, 1.0, 4.0, 2.0
+end: Effect
+
+new: Effect
+ID: 4
+message: Kill the chicken before going upstairs
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_stairwell, 3.0, 1.0, 4.0, 2.0
+end: Effect
+
+new: Effect
+ID: 14
+message: 
+number: 1681075482
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 74
+
+new: Trigger
+triggerName: prevent going upstairs2
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: tutorial_stairwell, 3.0, 1.0, 4.0, 2.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 73
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 12
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 15
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 75
+
+new: Trigger
+triggerName: prevent going through door1
+active: true
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: tutorial_stairwell, 0.0, 3.0, 1.0, 4.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 76
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: The last thing I want is to go to Disciple's Wing
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_stairwell, 1.0, 3.0, 2.0, 4.0
+end: Effect
+
+new: Effect
+ID: 14
+message: 
+number: 1681075482
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 25
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_stairwell, 1.0, 3.0, 2.0, 4.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 76
+
+new: Trigger
+triggerName: prevent going through door2
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: tutorial_stairwell, 1.0, 3.0, 2.0, 4.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 15
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 75
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 12
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 77
+
+new: Trigger
+triggerName: kill chicken
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 7
+number1: 1
+number2: 0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: true
+end: Condition
+
+new: Effect
+ID: 17
+message: 
+number: 4
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
@@ -1935,12 +2676,399 @@ end: Effect
 new: Effect
 ID: 8
 message: 
-number: 45
+number: 73
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
+new: Effect
+ID: 42
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 14
+message: 
+number: 1681075482
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 80
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 78
+
+new: Trigger
+triggerName: 
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 79
+
+new: Trigger
+triggerName: ### Quest 5 - hero tree
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 80
+
+new: Trigger
+triggerName: explanation1
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: By killing units you gain XP
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 81
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 19
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 81
+
+new: Trigger
+triggerName: explanation2
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 3000
+number2: 3000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 82
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: Killing the chicken gave you enough XP to level up
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 82
+
+new: Trigger
+triggerName: explanation3
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: Leveling up will earn you level tokens, which you can spend to upgrade your hero
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 83
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 83
+
+new: Trigger
+triggerName: explanation4
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 84
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: To spend your level tokens simply press the button next to your level tokens, or use ctrl-t
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 84
+
+new: Trigger
+triggerName: activate quest
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 9
+message: 
+number: 5
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 85
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 85
+
+new: Trigger
+triggerName: finish quest
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 8
+number1: 0
+number2: 0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 17
+message: 
+number: 5
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 15
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 12
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 86
+
+new: Trigger
+triggerName: Trigger 86
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 87
+
+new: Trigger
+triggerName: Trigger 87
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 88
+
+new: Trigger
+triggerName: Trigger 88
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 89
+
+new: Trigger
+triggerName: Trigger 89
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 90
+
+new: Trigger
+triggerName: Trigger 90
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 91
+
+new: Trigger
+triggerName: Trigger 91
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 92
+
+new: Trigger
+triggerName: Trigger 92
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 93
+
+new: Trigger
+triggerName: Trigger 93
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 94
+
+new: Trigger
+triggerName: Trigger 94
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 95
+
+new: Trigger
+triggerName: Trigger 95
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 96
+
+new: Trigger
+triggerName: Trigger 96
+active: false
+looping: false
+amalgam: true
 end: Trigger
 
 player_start_location: tutorial_frontdoor, 10.0, 0.0, 11.0, 1.0

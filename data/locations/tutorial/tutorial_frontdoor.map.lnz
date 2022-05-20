@@ -588,24 +588,6 @@ toggle: true
 end: Feature
 
 
-new: Feature: 340
-location: 7.0, 19.0, 0
-curr_height: 0
-remove: false
-number: 0
-toggle: false
-end: Feature
-
-
-new: Feature: 340
-location: 7.0, 20.0, 0
-curr_height: 0
-remove: false
-number: 0
-toggle: true
-end: Feature
-
-
 new: Feature: 339
 location: 2.0, 23.0, 0
 curr_height: 0
@@ -830,6 +812,34 @@ number: 3
 toggle: false
 end: Feature
 
+
+new: Feature: 157
+location: 12.0, 16.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+description: ***Francis Hall
+end: Feature
+
+
+new: Feature: 340
+location: 7.0, 20.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+
+new: Feature: 340
+location: 7.0, 19.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
 nextUnitKey: 2
 
 new: Unit: 1006
@@ -840,6 +850,38 @@ size: 0.35
 level: 3
 alliance: Ben
 element: Gray
+gearSlot: WEAPON
+new: Item: 2928
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 200000
+toggled: true
+end: Item: Weapon
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 base_health: 3.5

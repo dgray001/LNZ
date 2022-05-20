@@ -1219,12 +1219,14 @@ class MapEditorInterface extends InterfaceLNZ {
       condition.setName();
       this.condition = condition;
       this.addField(new SpacerFormField(20));
-      this.addField(new IntegerFormField("ID: ", "Enter an integer from 0-6", 0, 6));
+      this.addField(new IntegerFormField("ID: ", "Enter an integer from 0-8", 0, 8));
       this.addField(new SpacerFormField(20));
       this.addField(new IntegerFormField("Number 1: ", "enter an integer", 0, Integer.MAX_VALUE - 1));
       this.addField(new IntegerFormField("Number 2: ", "enter an integer", 0, Integer.MAX_VALUE - 1));
       this.addField(new SpacerFormField(20));
       this.addField(new MessageFormField("Rectangle: "));
+      this.addField(new SpacerFormField(10));
+      this.addField(new CheckboxFormField("Not: "));
       this.updateFields();
     }
 
@@ -1234,6 +1236,7 @@ class MapEditorInterface extends InterfaceLNZ {
       this.condition.number2 = toInt(this.fields.get(4).getValue());
       this.condition.setName();
       this.setTitleText(condition.display_name);
+      this.condition.not_condition = toBoolean(this.fields.get(8).getValue());
       this.updateFields();
     }
 
@@ -1245,6 +1248,7 @@ class MapEditorInterface extends InterfaceLNZ {
       this.fields.get(3).setValueIfNotFocused(Integer.toString(this.condition.number1));
       this.fields.get(4).setValueIfNotFocused(Integer.toString(this.condition.number2));
       this.fields.get(6).setValueIfNotFocused("Rectangle: " + this.condition.rectangle.fileString());
+      this.fields.get(8).setValueIfNotFocused(Boolean.toString(this.condition.not_condition));
     }
 
     @Override

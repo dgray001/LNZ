@@ -100,6 +100,7 @@ class Condition {
   private int number2 = 0;
   private Rectangle rectangle = new Rectangle();
 
+  private boolean not_condition = false;
   private boolean met = false;
 
   Condition() {}
@@ -114,6 +115,8 @@ class Condition {
       case 4: // selected unit
       case 5: // selected item
       case 6: // player in rectangle
+      case 7: // unit exists
+      case 8: // has hero upgrade
         break;
       default:
         global.errorMessage("ERROR: Condition ID " + ID + " not recognized.");
@@ -133,19 +136,25 @@ class Condition {
         }
         break;
       case 2: // selected specific unit
-        this.display_name = "Select specific unit (" + this.number1 + ")";
+        this.display_name = "Select Specific Unit (" + this.number1 + ")";
         break;
       case 3: // selected specific item
-        this.display_name = "Select specific item (" + this.number1 + ")";
+        this.display_name = "Select Specific Item (" + this.number1 + ")";
         break;
       case 4: // selected unit id
-        this.display_name = "Select unit (" + this.number1 + ")";
+        this.display_name = "Select Unit (" + this.number1 + ")";
         break;
       case 5: // selected item id
-        this.display_name = "Select item (" + this.number1 + ")";
+        this.display_name = "Select Item (" + this.number1 + ")";
         break;
       case 6: // player in rectangle
-        this.display_name = "Player in: " + this.rectangle.fileString();
+        this.display_name = "Player In: " + this.rectangle.fileString();
+        break;
+      case 7: // unit exists
+        this.display_name = "Unit Exists (" + this.number1 + ")";
+        break;
+      case 8: // has hero upgrade
+        this.display_name = "Has Hero Upgrade (" + HeroTreeCode.codeFromId(this.number1) + ")";
         break;
       default:
         this.display_name = "Condition";
@@ -235,9 +244,34 @@ class Condition {
           this.met = true;
         }
         break;
+      case 7: // unit exists
+        if (this.met) {
+          break;
+        }
+        if (level.currMap == null) {
+          break;
+        }
+        if (level.currMap.units.containsKey(this.number1)) {
+          this.met = true;
+        }
+        break;
+      case 8: // has hero upgrade
+        if (this.met) {
+          break;
+        }
+        if (level.player == null) {
+          break;
+        }
+        if (level.player.heroTree.nodes.get(HeroTreeCode.codeFromId(this.number1)).unlocked) {
+          this.met = true;
+        }
+        break;
       default:
         global.errorMessage("ERROR: Condition ID " + ID + " not recognized.");
         return false;
+    }
+    if (this.not_condition) {
+      this.met = !this.met;
     }
     return this.met;
   }
@@ -260,6 +294,10 @@ class Condition {
         break;
       case 6: // player in rectangle
         break;
+      case 7: // unit exists
+        break;
+      case 8: // has hero upgrade
+        break;
       default:
         global.errorMessage("ERROR: Condition ID " + ID + " not recognized.");
         break;
@@ -273,6 +311,7 @@ class Condition {
     fileString += "\nnumber2: " + this.number2;
     fileString += "\nrectangle: " + this.rectangle.fileString();
     fileString += "\nmet: " + this.met;
+    fileString += "\nnot_condition: " + this.not_condition;
     fileString += "\nend: Condition\n";
     return fileString;
   }
@@ -293,6 +332,9 @@ class Condition {
         break;
       case "met":
         this.met = toBoolean(data);
+        break;
+      case "not_condition":
+        this.not_condition = toBoolean(data);
         break;
       default:
         global.errorMessage("ERROR: Datakey " + datakey + " not recognized for Condition object.");
@@ -646,6 +688,15 @@ class Effect {
             image(global.images.getImage("gifs/arrow/" + frame + ".png"), 0, 0, 130, 130);
             rotate(-0.5 * PI);
             translate(-translate_x, -0.5 * height - 300);
+            break;
+          case 9: // xp/level
+            translate_x = level.xi + 65;
+            translate(translate_x, 0.65 * height);
+            rotate(PI);
+            imageMode(CENTER);
+            image(global.images.getImage("gifs/arrow/" + frame + ".png"), 0, 0, 130, 130);
+            rotate(-PI);
+            translate(-translate_x, -0.65 * height);
             break;
           default:
             global.errorMessage("ERROR: Blinking arrow ID " + this.number + " not recognized.");

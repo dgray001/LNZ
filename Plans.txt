@@ -1,7 +1,5 @@
 v0.7.1: TutorialInterface
- t: chicken quest (4), triggers to not go into main doors or around building, effects to keep hunger/thirst up
- u: once chicken killed can go upstairs, quest to unlock inventory (5)
- v: unlock inventory (get ben's backpack and key in inventory), trigger to mention no one is around, instructions to explain 'q', 'w', 'e', 'r'
+ v: get ben's backpack and key in inventory, trigger to mention no one is around, instructions to explain 'q', 'w', 'e', 'r'
  w: quest (6) to use backpack in inventory to gain more inventory slots, once you go into room you stop getting food/water replenished
  x: fight John Rankin (quest 7) (must use knife in desk, if try with hands it will say so)
  y: drink from water fountain and eat pickle (quest 8 / quest 9) to get hunger/thirst above 95 (set hunger/thirst to 90 before this)

@@ -313,6 +313,95 @@ enum HeroTreeCode {
     }
   }
 
+  public static HeroTreeCode codeFromId(int id) {
+    switch(id) {
+      case 0:
+        return HeroTreeCode.INVENTORYI;
+      case 1:
+        return HeroTreeCode.PASSIVEI;
+      case 2:
+        return HeroTreeCode.AI;
+      case 3:
+        return HeroTreeCode.SI;
+      case 4:
+        return HeroTreeCode.DI;
+      case 5:
+        return HeroTreeCode.FI;
+      case 6:
+        return HeroTreeCode.PASSIVEII;
+      case 7:
+        return HeroTreeCode.AII;
+      case 8:
+        return HeroTreeCode.SII;
+      case 9:
+        return HeroTreeCode.DII;
+      case 10:
+        return HeroTreeCode.FII;
+      case 11:
+        return HeroTreeCode.HEALTHI;
+      case 12:
+        return HeroTreeCode.ATTACKI;
+      case 13:
+        return HeroTreeCode.DEFENSEI;
+      case 14:
+        return HeroTreeCode.PIERCINGI;
+      case 15:
+        return HeroTreeCode.SPEEDI;
+      case 16:
+        return HeroTreeCode.SIGHTI;
+      case 17:
+        return HeroTreeCode.TENACITYI;
+      case 18:
+        return HeroTreeCode.AGILITYI;
+      case 19:
+        return HeroTreeCode.MAGICI;
+      case 20:
+        return HeroTreeCode.RESISTANCEI;
+      case 21:
+        return HeroTreeCode.PENETRATIONI;
+      case 22:
+        return HeroTreeCode.HEALTHII;
+      case 23:
+        return HeroTreeCode.ATTACKII;
+      case 24:
+        return HeroTreeCode.DEFENSEII;
+      case 25:
+        return HeroTreeCode.PIERCINGII;
+      case 26:
+        return HeroTreeCode.SPEEDII;
+      case 27:
+        return HeroTreeCode.SIGHTII;
+      case 28:
+        return HeroTreeCode.TENACITYII;
+      case 29:
+        return HeroTreeCode.AGILITYII;
+      case 30:
+        return HeroTreeCode.MAGICII;
+      case 31:
+        return HeroTreeCode.RESISTANCEII;
+      case 32:
+        return HeroTreeCode.PENETRATIONII;
+      case 33:
+        return HeroTreeCode.HEALTHIII;
+      case 34:
+        return HeroTreeCode.OFFHAND;
+      case 35:
+        return HeroTreeCode.BELTI;
+      case 36:
+        return HeroTreeCode.BELTII;
+      case 37:
+        return HeroTreeCode.INVENTORYII;
+      case 38:
+        return HeroTreeCode.INVENTORY_BARI;
+      case 39:
+        return HeroTreeCode.INVENTORY_BARII;
+      case 40:
+        return HeroTreeCode.FOLLOWERI;
+      default:
+        return HeroTreeCode.INVENTORYI;
+    }
+  }
+
   public static HeroTreeCode code(String display_name) {
     for (HeroTreeCode code : HeroTreeCode.VALUES) {
       if (code.file_name().equals(display_name)) {
