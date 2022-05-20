@@ -337,7 +337,6 @@ class Level {
     this.player.hunger = Constants.hero_maxHunger;
     this.player.thirst = Constants.hero_maxThirst;
     this.player.experience *= int(floor(Constants.hero_experienceRespawnMultiplier));
-    println(this.player_spawn_location.fileString());
     if (this.player_spawn_location != null && this.hasMap(this.player_spawn_location.mapName)) {
       this.openMap(this.player_spawn_location.mapName);
       player.setLocation(this.player_spawn_location.centerX(), this.player_spawn_location.centerY());
@@ -871,9 +870,6 @@ class Level {
           break;
         }
         if (DayCycle.dayTime(this.time.value) == DayCycle.NIGHT) {
-          if (this.quests.containsKey(10)) {
-            this.quests.get(10).meet();
-          }
           this.sleeping = true;
           this.sleep_timer = Constants.feature_bedSleepTimer;
           this.loseControl();

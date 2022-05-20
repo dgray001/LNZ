@@ -2226,7 +2226,8 @@ class Unit extends MapObject {
             case 191: // Lava
               this.refreshStatusEffect(StatusEffectCode.BURNT, 4000);
               this.refreshStatusEffect(StatusEffectCode.CHARRED, 1000);
-              this.calculateDotDamage(timeElapsed * 0.0001, true);
+              this.calculateDotDamage(timeElapsed * 0.00015, true);
+              this.damage(null, timeElapsed * 0.01);
               break;
             default:
               break;
@@ -2764,6 +2765,7 @@ class Unit extends MapObject {
       this.gear.put(entry.getKey(), null);
     }
     this.statuses.clear();
+    this.stopAction();
   }
 
 

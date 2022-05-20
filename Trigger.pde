@@ -128,6 +128,7 @@ class Condition {
       case 12: // player hunger
       case 13: // player thirst
       case 14: // player mana
+      case 15: // time after
         break;
       default:
         global.errorMessage("ERROR: Condition ID " + ID + " not recognized.");
@@ -184,6 +185,9 @@ class Condition {
         break;
       case 14: // player mana
         this.display_name = "Player Mana Above (" + this.number1 + ")";
+        break;
+      case 15: // time after
+        this.display_name = "Time after (" + this.number1 + ")";
         break;
       default:
         this.display_name = "Condition";
@@ -367,6 +371,14 @@ class Condition {
           this.met = true;
         }
         break;
+      case 15: // time after
+        if (this.met) {
+          break;
+        }
+        if (level.time.value >= this.number1) {
+          this.met = true;
+        }
+        break;
       default:
         global.errorMessage("ERROR: Condition ID " + ID + " not recognized.");
         return false;
@@ -410,6 +422,8 @@ class Condition {
       case 13: // player thirst
         break;
       case 14: // player mana
+        break;
+      case 15: // time after
         break;
       default:
         global.errorMessage("ERROR: Condition ID " + ID + " not recognized.");
@@ -521,6 +535,9 @@ class Effect {
       case 44: // clear player inventory
       case 45: // create unit
       case 46: // clear level chat
+      case 47: // grant hero tree upgrade
+      case 48: // refresh cooldown on ability
+      case 49: // change terrain in rectangle
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
@@ -652,10 +669,10 @@ class Effect {
         this.display_name = "Set Unit (" + this.number + ") Health (" + this.decimal1 + ")";
         break;
       case 41: // change time
-        this.display_name = "Change Time (" + this.number + ")";
+        this.display_name = "Change Time (" + this.decimal1 + ")";
         break;
       case 42: // set time
-        this.display_name = "Set Time (" + this.number + ")";
+        this.display_name = "Set Time (" + this.decimal1 + ")";
         break;
       case 43: // add item to player inventory
         this.display_name = "Add Item to Inventory (" + this.number + ")";
@@ -668,6 +685,15 @@ class Effect {
         break;
       case 46: // clear level chat
         this.display_name = "Clear Level Chat";
+        break;
+      case 47: // grant hero tree upgrade
+        this.display_name = "Give Player Upgrade (" + HeroTreeCode.codeFromId(this.number) + ")";
+        break;
+      case 48: // refresh cooldown on ability
+        this.display_name = "Refresh Ability (" + this.number + ")";
+        break;
+      case 49: // change terrain in rectangle
+        this.display_name = "Change Terrain to (" + this.number + ")";
         break;
       default:
         this.display_name = "Effect";
@@ -1022,6 +1048,36 @@ class Effect {
         break;
       case 46: // clear level chat
         level.level_chatbox.clearText();
+        break;
+      case 47: // grant hero tree upgrade
+        if (level.player != null) {
+          level.player.upgrade(HeroTreeCode.codeFromId(this.number));
+        }
+        break;
+      case 48: // refresh cooldown on ability
+        if (level.player == null) {
+          break;
+        }
+        if (this.number < 0 || this.number >= level.player.abilities.size()) {
+          break;
+        }
+        if (level.player.abilities.get(this.number) == null) {
+          break;
+        }
+        level.player.abilities.get(this.number).timer_cooldown = 0;
+        break;
+      case 49: // change terrain in rectangle
+        if (level.currMap == null) {
+          break;
+        }
+        for (int i = int(round(this.rectangle.xi)); i < int(round(this.rectangle.xf)); i++) {
+          for (int j = int(round(this.rectangle.yi)); j < int(round(this.rectangle.yf)); j++) {
+            try {
+              level.currMap.setTerrain(this.number, i, j, false);
+            } catch(Exception e) {}
+          }
+        }
+        level.currMap.refreshDisplayImages();
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");

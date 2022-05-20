@@ -62,6 +62,10 @@ class Quest {
         break;
       case 10: // sleep
         break;
+      case 11: // die
+        break;
+      case 12: // enter common room
+        break;
       default:
         global.errorMessage("ERROR: Quest ID " + this.ID + " not recognized.");
         break;
@@ -90,6 +94,10 @@ class Quest {
         return "Eat food";
       case 10: // sleep
         return "Go to sleep";
+      case 11: // die
+        return "Die";
+      case 12: // enter common room
+        return "Enter the common room";
       default:
         return "";
     }
@@ -117,6 +125,10 @@ class Quest {
         return "There's food in your fridge that will quell your hunger.";
       case 10: // sleep
         return "Go to sleep by right-clicking your bed at night-time.";
+      case 11: // die
+        return "Die by walking in lava; you will respawn at your bed.";
+      case 12: // enter common room
+        return "The lava won't damage you while your ultimate is activated.";
       default:
         return "";
     }
