@@ -2197,7 +2197,7 @@ class Unit extends MapObject {
       int no_damage_fall_amount = Constants.unit_noDamageFallHeight + 2 * this.agility();
       if (this.fall_amount > no_damage_fall_amount) {
         this.calculateDotDamage(Constants.unit_fallDamageMultiplier * (this.fall_amount - no_damage_fall_amount), true);
-        // sound effect
+        global.sounds.trigger_units("player/fall", this.x - map.viewX, this.y - map.viewY);
       }
       this.fall_amount = 0;
     }
@@ -2226,6 +2226,7 @@ class Unit extends MapObject {
             case 191: // Lava
               this.refreshStatusEffect(StatusEffectCode.BURNT, 4000);
               this.refreshStatusEffect(StatusEffectCode.CHARRED, 1000);
+              this.calculateDotDamage(timeElapsed * 0.0001, true);
               break;
             default:
               break;
@@ -2762,6 +2763,7 @@ class Unit extends MapObject {
     for (Map.Entry<GearSlot, Item> entry : this.gear.entrySet()) {
       this.gear.put(entry.getKey(), null);
     }
+    this.statuses.clear();
   }
 
 

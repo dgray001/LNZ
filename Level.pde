@@ -147,11 +147,15 @@ class Level {
   protected int nextTriggerKey = 1;
   protected HashMap<Integer, Trigger> triggers = new HashMap<Integer, Trigger>();
   protected HashMap<Integer, Quest> quests = new HashMap<Integer, Quest>();
-  protected ClockFloat time = new ClockFloat(24, 20); // day cycle
+  protected ClockFloat time = new ClockFloat(24, 6.5); // day cycle
 
   protected Rectangle player_start_location = null;
   protected Rectangle player_spawn_location = null;
   protected Hero player;
+  protected boolean respawning = false;
+  protected int respawn_timer = 0;
+  protected boolean sleeping = false;
+  protected int sleep_timer = 0;
   protected boolean in_control = true;
 
   protected int last_update_time = millis();
@@ -333,6 +337,7 @@ class Level {
     this.player.hunger = Constants.hero_maxHunger;
     this.player.thirst = Constants.hero_maxThirst;
     this.player.experience *= int(floor(Constants.hero_experienceRespawnMultiplier));
+    println(this.player_spawn_location.fileString());
     if (this.player_spawn_location != null && this.hasMap(this.player_spawn_location.mapName)) {
       this.openMap(this.player_spawn_location.mapName);
       player.setLocation(this.player_spawn_location.centerX(), this.player_spawn_location.centerY());
@@ -866,7 +871,13 @@ class Level {
           break;
         }
         if (DayCycle.dayTime(this.time.value) == DayCycle.NIGHT) {
-          // sleep
+          if (this.quests.containsKey(10)) {
+            this.quests.get(10).meet();
+          }
+          this.sleeping = true;
+          this.sleep_timer = Constants.feature_bedSleepTimer;
+          this.loseControl();
+          h.stopAction();
         }
         else {
           this.currMap.addHeaderMessage("You can only sleep at night.");
@@ -1734,23 +1745,63 @@ class Level {
       rect(this.xi, this.yi, this.xf, this.yf);
     }
     if (this.player != null) {
-      // if respawning ...
-      this.player.update_hero(timeElapsed);
-      for (Map.Entry<Integer, Quest> entry : this.quests.entrySet()) {
-        entry.getValue().update(this, timeElapsed);
+      if (this.respawning) {
+        this.respawn_timer -= timeElapsed;
+        if (this.respawn_timer < 0) {
+          this.respawnPlayer();
+          this.respawning = false;
+        }
       }
-      if (this.player.seesTime()) {
-        fill(255);
-        textSize(14);
-        textAlign(LEFT, TOP);
-        float line_height = textAscent() + textDescent() + 2;
-        String time_line = this.timeString();
-        text(time_line, this.xf - 40 - textWidth(time_line), 1);
+      else if (this.sleeping) {
+        this.sleep_timer -= timeElapsed;
+        if (this.sleep_timer < 0) {
+          this.gainControl();
+          this.sleeping = false;
+          this.player_spawn_location = new Rectangle(this.currMapName, this.player);
+          this.time.set(6);
+          if (this.currMap != null) {
+            this.currMap.addHeaderMessage("Spawn Point Reset");
+          }
+        }
       }
-      if (this.player.remove) {
-        // respawn timer
-        this.respawnPlayer();
+      else {
+        this.player.update_hero(timeElapsed);
+        for (Map.Entry<Integer, Quest> entry : this.quests.entrySet()) {
+          entry.getValue().update(this, timeElapsed);
+        }
+        if (this.player.seesTime()) {
+          fill(255);
+          textSize(14);
+          textAlign(LEFT, TOP);
+          float line_height = textAscent() + textDescent() + 2;
+          String time_line = this.timeString();
+          text(time_line, this.xf - 40 - textWidth(time_line), 1);
+        }
+        if (this.player.remove && !this.respawning) {
+          this.respawning = true;
+          this.respawn_timer = Constants.level_defaultRespawnTimer;
+        }
       }
+    }
+    if (this.respawning) {
+      rectMode(CORNERS);
+      noStroke();
+      fill(color(100, 100));
+      rect(this.xi, this.yi, this.xf, this.yf);
+      fill(255);
+      textSize(55);
+      textAlign(CENTER, BOTTOM);
+      text("You Died", 0.5 * width, 0.5 * height);
+      textSize(35);
+      textAlign(CENTER, TOP);
+      text("Respawning in " + int(ceil(this.respawn_timer * 0.001)) + " s", 0.5 * width, 0.5 * height + 5);
+    }
+    if (this.sleeping) {
+      rectMode(CORNERS);
+      noStroke();
+      float alpha_amount = int(255 * (1 - this.sleep_timer / float(Constants.feature_bedSleepTimer)));
+      fill(color(0, alpha_amount));
+      rect(this.xi, this.yi, this.xf, this.yf);
     }
     this.last_update_time = millis;
   }
@@ -2014,6 +2065,9 @@ class Level {
     if (this.player_start_location != null) {
       file.println("player_start_location: " + this.player_start_location.fileString());
     }
+    if (this.player_spawn_location != null) {
+      file.println("player_spawn_location: " + this.player_spawn_location.fileString());
+    }
     file.println("end: Level");
     file.flush();
     file.close();
@@ -2227,6 +2281,10 @@ class Level {
       case "player_start_location":
         this.player_start_location = new Rectangle();
         this.player_start_location.addData(data);
+        break;
+      case "player_spawn_location":
+        this.player_spawn_location = new Rectangle();
+        this.player_spawn_location.addData(data);
         break;
       default:
         global.errorMessage("ERROR: Datakey " + datakey + " not recognized for Level object.");

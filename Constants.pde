@@ -4,8 +4,8 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220520: v0.7.1w" +
-  "\nLines: 37620 (v0.7t)" +
+  "\n20220520: v0.7.1x" +
+  "\nLines: 38054 (v0.7x)" +
   "\nImages: 1091 (v0.7n)" +
   "\nSounds: 245 (v0.7)" +
   "";
@@ -205,6 +205,7 @@ static class Constants {
   static final int feature_bushHealth = 3;
   static final float feature_bushDropChance = 0.5;
   static final float feature_vendingEatMoneyChance = 0.3;
+  static final int feature_bedSleepTimer = 5000;
 
   // Units
   static final float unit_defaultSize = 0.35;
@@ -587,4 +588,5 @@ static class Constants {
   static final int level_questBlinkTime = 500;
   static final int level_questBlinks = 3;
   static final float level_timeConstants = 0.0001;
+  static final int level_defaultRespawnTimer = 5000;
 }

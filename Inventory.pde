@@ -375,7 +375,7 @@ class DeskInventory extends Inventory {
   class DrawerButton1 extends ImageButton {
     protected boolean opened = false;
     DrawerButton1() {
-      super(global.images.getImage("features/default.png"), 0, 0, 0, 0);
+      super(global.images.getImage("features/desk_drawer1_closed.png"), 0, 0, 0, 0);
     }
 
     void hover() {}
@@ -386,6 +386,7 @@ class DeskInventory extends Inventory {
         DeskInventory.this.slots.get(1).deactivated = true;
         this.moveButton(0, -DeskInventory.this.button_size);
         global.sounds.trigger_environment("features/desk_drawer1_close");
+        this.img = global.images.getImage("features/desk_drawer1_closed.png");
       }
       else {
         this.opened = true;
@@ -393,6 +394,7 @@ class DeskInventory extends Inventory {
         DeskInventory.this.slots.get(1).deactivated = false;
         this.moveButton(0, DeskInventory.this.button_size);
         global.sounds.trigger_environment("features/desk_drawer1_open");
+        this.img = global.images.getImage("features/desk_drawer1_opened.png");
       }
     }
     void dehover() {}
@@ -402,22 +404,24 @@ class DeskInventory extends Inventory {
   class DrawerButton2 extends ImageButton {
     protected boolean opened = false;
     DrawerButton2() {
-      super(global.images.getImage("features/default.png"), 0, 0, 0, 0);
+      super(global.images.getImage("features/desk_drawer2_closed.png"), 0, 0, 0, 0);
     }
 
     void hover() {}
     void click() {
       if (this.opened) {
         this.opened = false;
-        DeskInventory.this.slots.get(5).deactivated = true;
+        DeskInventory.this.slots.get(2).deactivated = true;
         this.moveButton(-DeskInventory.this.button_size, -0.3 * DeskInventory.this.button_size);
         global.sounds.trigger_environment("features/desk_drawer2_close");
+        this.img = global.images.getImage("features/desk_drawer2_closed.png");
       }
       else {
         this.opened = true;
-        DeskInventory.this.slots.get(5).deactivated = false;
+        DeskInventory.this.slots.get(2).deactivated = false;
         this.moveButton(DeskInventory.this.button_size, 0.3 * DeskInventory.this.button_size);
         global.sounds.trigger_environment("features/desk_drawer2_open");
+        this.img = global.images.getImage("features/desk_drawer2_opened.png");
       }
     }
     void dehover() {}
@@ -427,7 +431,34 @@ class DeskInventory extends Inventory {
   class DrawerButton3 extends ImageButton {
     protected boolean opened = false;
     DrawerButton3() {
-      super(global.images.getImage("features/default.png"), 0, 0, 0, 0);
+      super(global.images.getImage("features/desk_drawer3_closed.png"), 0, 0, 0, 0);
+    }
+
+    void hover() {}
+    void click() {
+      if (this.opened) {
+        this.opened = false;
+        DeskInventory.this.slots.get(5).deactivated = true;
+        this.moveButton(-DeskInventory.this.button_size, -0.3 * DeskInventory.this.button_size);
+        global.sounds.trigger_environment("features/desk_drawer2_close");
+        this.img = global.images.getImage("features/desk_drawer3_closed.png");
+      }
+      else {
+        this.opened = true;
+        DeskInventory.this.slots.get(5).deactivated = false;
+        this.moveButton(DeskInventory.this.button_size, 0.3 * DeskInventory.this.button_size);
+        global.sounds.trigger_environment("features/desk_drawer2_open");
+        this.img = global.images.getImage("features/desk_drawer2_opened.png");
+      }
+    }
+    void dehover() {}
+    void release() {}
+  }
+
+  class DrawerButton4 extends ImageButton {
+    protected boolean opened = false;
+    DrawerButton4() {
+      super(global.images.getImage("features/desk_drawer4_closed.png"), 0, 0, 0, 0);
     }
 
     void hover() {}
@@ -437,12 +468,14 @@ class DeskInventory extends Inventory {
         DeskInventory.this.slots.get(8).deactivated = true;
         this.moveButton(-DeskInventory.this.button_size, -0.3 * DeskInventory.this.button_size);
         global.sounds.trigger_environment("features/desk_drawer2_close");
+        this.img = global.images.getImage("features/desk_drawer4_closed.png");
       }
       else {
         this.opened = true;
         DeskInventory.this.slots.get(8).deactivated = false;
         this.moveButton(DeskInventory.this.button_size, 0.3 * DeskInventory.this.button_size);
         global.sounds.trigger_environment("features/desk_drawer2_open");
+        this.img = global.images.getImage("features/desk_drawer2_opened.png");
       }
     }
     void dehover() {}
@@ -451,7 +484,8 @@ class DeskInventory extends Inventory {
 
   protected DrawerButton1 top_drawer = new DrawerButton1();
   protected DrawerButton2 mid_drawer = new DrawerButton2();
-  protected DrawerButton3 bottom_drawer = new DrawerButton3();
+  protected DrawerButton3 mid_drawer2 = new DrawerButton3();
+  protected DrawerButton4 bottom_drawer = new DrawerButton4();
 
   DeskInventory() {
     super(3, 3, true);
@@ -463,9 +497,10 @@ class DeskInventory extends Inventory {
     this.top_drawer.opened = false;
     this.mid_drawer.opened = false;
     this.bottom_drawer.opened = false;
-    this.top_drawer.img = global.images.getImage("features/default.png");
-    this.mid_drawer.img = global.images.getImage("features/default.png");
-    this.bottom_drawer.img = global.images.getImage("features/default.png");
+    this.top_drawer.img = global.images.getImage("features/desk_drawer1_closed.png");
+    this.mid_drawer.img = global.images.getImage("features/desk_drawer2_closed.png");
+    this.mid_drawer2.img = global.images.getImage("features/desk_drawer3_closed.png");
+    this.bottom_drawer.img = global.images.getImage("features/desk_drawer4_closed.png");
     this.deactivateSlots();
   }
 
@@ -476,9 +511,13 @@ class DeskInventory extends Inventory {
     if (this.top_drawer.opened) {
       this.top_drawer.moveButton(0, DeskInventory.this.button_size);
     }
-    this.mid_drawer.setLocation(2 + 2 * button_size, 2 + button_size, 2 + 3 * button_size, 2 + 2 * this.button_size);
+    this.mid_drawer.setLocation(2 + 2 * button_size, 2, 2 + 3 * button_size, 2 + this.button_size);
     if (this.mid_drawer.opened) {
       this.mid_drawer.moveButton(DeskInventory.this.button_size, 0.3 * DeskInventory.this.button_size);
+    }
+    this.mid_drawer2.setLocation(2 + 2 * button_size, 2 + button_size, 2 + 3 * button_size, 2 + 2 * this.button_size);
+    if (this.mid_drawer2.opened) {
+      this.mid_drawer2.moveButton(DeskInventory.this.button_size, 0.3 * DeskInventory.this.button_size);
     }
     this.bottom_drawer.setLocation(2 + 2 * button_size, 2 + 2 * button_size, 2 + 3 * button_size, 2 + 3 * this.button_size);
     if (this.bottom_drawer.opened) {
@@ -489,11 +528,16 @@ class DeskInventory extends Inventory {
   @Override
   void update(int millis) {
     this.drawBackground();
+    imageMode(CORNERS);
+    image(global.images.getImage("features/desk_inventory.png"), 0, 0, this.display_width, this.display_height);
     if (top_drawer.opened) {
       this.top_drawer.update(millis);
     }
     if (mid_drawer.opened) {
       this.mid_drawer.update(millis);
+    }
+    if (mid_drawer2.opened) {
+      this.mid_drawer2.update(millis);
     }
     if (bottom_drawer.opened) {
       this.bottom_drawer.update(millis);
@@ -505,6 +549,9 @@ class DeskInventory extends Inventory {
     if (!mid_drawer.opened) {
       this.mid_drawer.update(millis);
     }
+    if (!mid_drawer2.opened) {
+      this.mid_drawer2.update(millis);
+    }
     if (!bottom_drawer.opened) {
       this.bottom_drawer.update(millis);
     }
@@ -515,6 +562,7 @@ class DeskInventory extends Inventory {
     super.mouseMove(mX, mY);
     this.top_drawer.mouseMove(mX, mY);
     this.mid_drawer.mouseMove(mX, mY);
+    this.mid_drawer2.mouseMove(mX, mY);
     this.bottom_drawer.mouseMove(mX, mY);
   }
 
@@ -523,6 +571,7 @@ class DeskInventory extends Inventory {
     super.mousePress();
     this.top_drawer.mousePress();
     this.mid_drawer.mousePress();
+    this.mid_drawer2.mousePress();
     this.bottom_drawer.mousePress();
   }
 
@@ -531,6 +580,7 @@ class DeskInventory extends Inventory {
     super.mouseRelease(mX, mY);
     this.top_drawer.mouseRelease(mX, mY);
     this.mid_drawer.mouseRelease(mX, mY);
+    this.mid_drawer2.mouseRelease(mX, mY);
     this.bottom_drawer.mouseRelease(mX, mY);
   }
 }

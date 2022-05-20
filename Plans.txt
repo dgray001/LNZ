@@ -8,25 +8,13 @@ v0.7.1: TutorialInterface
 
  - Make sure trigger timers reset when timers are to be reset
  - 1681075482 is brown with transparency of 100
- - Respawn timer
- - Sleep mechanics
- - Can drop items from inventory
+ - Can drop items from view inventory
  - Button to open HeroTree (displays tokens) from leftpanelform
- - Desk drawer images
- - Fall sound effect
- - Fix times in tutorial (level starts at 7am)
  - Add background sounds to tutorial (and john rankin sounds)
  - Tutorial can catch errors to prevent errorform
- - clear chat once ben enters francis hall
- - prevent going in common room initially then disable
  - fog in rooms
 
    *Tutorial notes:
-     - Attack enemy (John Rankin) => he's yelling easy company
-     - Open inventory and get key
-     - Unlock door
-     - Get knife from desk
-     - Pickup item (knife) then stab John Rankin (he runs away)
        - Easter egg is if you can kill John Rankin he drops "The Third Ball"
        - Killing John Rankin is an Achievement
        - Done by body-blocking his escape route
@@ -35,8 +23,6 @@ v0.7.1: TutorialInterface
        - Since he is blocking hallway you have to go over him
          - Wait for chicken to lay egg, then kill it, hatch egg to make another chicken (height 2)
          - Use chicken to jump on water fountain (height 4), then onto Rankin (height 6)
-     - Use item => consumable (food), money, throwable (pebble), ranged weapon (slingshot)
-     - Put everything back in desk/ground/whatever (doesn't force you to remove "The Third Ball")
      - Sleep to reset spawn point (dropped items disappear when you sleep, manually make desk items disappear)
      - Dream of lava in hallway => die and respawn at bed
      - Experience gained / unlock abilities
@@ -49,11 +35,7 @@ v0.7.1: TutorialInterface
 
 Bugs:
  - In OptionsForm the 'apply' and 'defaults' buttons don't work although they used to...
- - Profile button in main menu has fucked up ripple (circle too small and has rect)
- - In TriggerEditor the effect name doesn't show up until you click it
  - Remove colors from edge of map images
- - Pressing exit plays next song in track
- - InputBox is fucking bugged
 
 v0.7.2: Campaign I Prep
  - PlayingInterface outline

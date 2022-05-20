@@ -46,7 +46,6 @@ class Sounds {
     if (this.background_track != null) {
       this.background_track.pause();
       this.background_track.close();
-      this.background_track = null;
     }
   }
 

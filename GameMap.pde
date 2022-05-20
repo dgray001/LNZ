@@ -564,6 +564,10 @@ class Rectangle {
       this.yf = yf;
     }
   }
+  Rectangle(String mapName, MapObject object) {
+    this.mapName = mapName;
+    this.setLocation(object);
+  }
 
   float centerX() {
     return this.xi + 0.5 * (this.xf - this.xi);
@@ -606,6 +610,13 @@ class Rectangle {
       return true;
     }
     return false;
+  }
+
+  void setLocation(MapObject object) {
+    this.xi = object.xi();
+    this.yi = object.yi();
+    this.xf = object.xf();
+    this.yf = object.yf();
   }
 
   String fileString() {

@@ -271,7 +271,6 @@ class Global {
   }
 
   void exitDelay() {
-    this.sounds.stop_background();
     this.log("Exiting normally.");
     this.log.flush();
     this.log.close();

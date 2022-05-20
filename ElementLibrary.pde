@@ -644,7 +644,14 @@ abstract class RippleCircleButton extends RippleRectangleButton {
     this.refreshColor();
   }
 
+  @Override
+  void setLocation(float xi, float yi, float xf, float yf) {
+    super.setLocation(xi, yi, xf, yf);
+    this.findTransparentPixels();
+  }
+
   void findTransparentPixels() {
+    this.transparentPixels = new ArrayList<Pixel>();
     float r = 0.5 * (this.xf - this.xi);
     for (int i = 0; i < this.img.height; i++) {
       for (int j = 0; j < this.img.width; j++) {
