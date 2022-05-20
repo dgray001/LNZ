@@ -4065,7 +4065,7 @@ class Hero extends Unit {
   }
   void useItem(GameMap map, InventoryKey location) {
     Item i = this.inventory.getItem(location);
-    if (i == null || !i.usable()) {
+    if (i == null || !i.usable() || i.remove) {
       return;
     }
     if (i.consumable()) {
@@ -4122,12 +4122,15 @@ class Hero extends Unit {
       switch(i.ID) {
         case 2921: // backpack
           this.inventory.addSlots(2);
+          i.remove = true;
           break;
         case 2922: // Ben's backpack
           this.inventory.addSlots(4);
+          i.remove = true;
           break;
         case 2923: // purse
           this.inventory.addSlots(1);
+          i.remove = true;
           break;
         case 2924: // water bottles
         case 2925:

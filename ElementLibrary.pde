@@ -2283,6 +2283,9 @@ class InputBox extends RectangleButton {
       if (end_index > this.text.length()) {
         end_index = this.text.length();
       }
+      if (this.location_display > this.text.length()) {
+        this.location_display = this.text.length();
+      }
       this.display_text = this.text.substring(this.location_display, end_index);
     }
   }

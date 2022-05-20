@@ -1,6 +1,5 @@
 v0.7.1: TutorialInterface
- v: get ben's backpack and key in inventory, trigger to mention no one is around, instructions to explain 'q', 'w', 'e', 'r'
- w: quest (6) to use backpack in inventory to gain more inventory slots, once you go into room you stop getting food/water replenished
+ w: once you go into room you stop getting food/water replenished
  x: fight John Rankin (quest 7) (must use knife in desk, if try with hands it will say so)
  y: drink from water fountain and eat pickle (quest 8 / quest 9) to get hunger/thirst above 95 (set hunger/thirst to 90 before this)
  z: go to sleep to reset spawn point (quest 10), take away current bed logic
@@ -12,24 +11,22 @@ v0.7.1: TutorialInterface
 
  - Make sure trigger timers reset when timers are to be reset
  - 1681075482 is brown with transparency of 100
- - sleep mechanics
- - death mechanics
+ - Respawn timer
+ - Sleep mechanics
  - Can drop items from inventory
  - Button to open HeroTree (displays tokens) from leftpanelform
  - Desk drawer images
+ - Fall sound effect
+ - Fix times in tutorial (level starts at 7am)
+ - Add sounds to tutorial
+ - Tutorial can catch errors to prevent errorform
+ - remove arrow 9
+ - clear chat once ben enters francis hall
+ - prevent going in common room initially then disable
+ - fog in rooms
+ - change view once you reach desk, etc.
 
- - Add button to navigate to perk tree in achievementform
- - Outline maps for tutorial
- - If saved file corrupted need to restart tutorial
- - Make tutorial itself ?
    *Tutorial notes:
-     - QuestBox (all the following are quests) and ChatBox
-     - How to move (move up stairwell)
-     - Fall from height (railing removed) => need fall sound effect / damage more properly
-     - Linkers (map to map) => go to FrancisHall floor 2
-     - Select object (chicken)
-     - Jump on chicken
-     - Attack / kill enemy (chicken)
      - Attack enemy (John Rankin) => he's yelling easy company
      - Open inventory and get key
      - Unlock door
@@ -59,20 +56,24 @@ Bugs:
  - In OptionsForm the 'apply' and 'defaults' buttons don't work although they used to...
  - Profile button in main menu has fucked up ripple (circle too small and has rect)
  - In TriggerEditor the effect name doesn't show up until you click it
- - remove colors from edge of map images
- - pressing exit plays next song in track
+ - Remove colors from edge of map images
+ - Pressing exit plays next song in track
+ - InputBox is fucking bugged
 
-v0.7.2: Tutorial
- - PlayingInterface
+v0.7.2: Campaign I Prep
+ - PlayingInterface outline
  - Levels save in a levels/level_location folder
  - When trying to start a level with a hero first check if another hero is currently in that level
+ - Finish tutorial, including easter eggs
+ - Fix all outstanding bugs
+ - Creating profile should create a Ben Nelson hero located in Francis Hall campaign
+ - When pressing play game if only 1 hero auto go to that one, else display hero form to choose
 v0.7.3: Francis Hall maps
 v0.7.4: Francis Hall triggers
 v0.7.5: Lev2 maps
 v0.7.6: Lev2 triggers
 v0.7.7: Lev3 maps
 v0.7.8: Lev3 triggers
--Launching game puts Ben in FrancisHall Campaign since HomeBase = null
 -Remake Francis Hall maps (with terrain instead of features everywhere)
 -Each door has natural progression to a final battle or some shit
   End level when you find a vehicle / can fuel it / can start it
@@ -102,28 +103,31 @@ v0.7.8: Lev3 triggers
 
 
 Parking Lot:
- - LoseFocus can turn off expensive visual calculations (and maybe pause game in SP)
- - Textbox that's editable
- - Make an installer??
- - Automated test for map readfile
- - When closing/opening panel while form is open need to update background image
  - Finish PlayerLeftPanelForm (buttons to other forms to right of player image)
  - Create XpLeftPanelForm / other LeftPanelForms
  - Other TriangleButtons in InventoryBar
- - Interrupting action stops action sound effect (don't assign curr_action have function that assigns it and in that if player silence appropriate sounds)
- - Visual effects for remaining status effects
- - Sound effects use directional information
  - Now that we have Unit::map_key remove all the useless int myKey arguments in Unit (and maybe elsewehere?)
  - Make Features an arraylist since they can be removed and add Feature::map_key
  - Same with VisualEffects and Projectiles
- - Fridge/freezer/minifridge makes items cold
- - Stove/fire makes items hot
  - Status effect descriptions use Constants
  - DeskInventory drawer images
  - StoveInventory door image / burner images / knob functionality
  - TrashInventories only display what's on top, items 'fall' down trash can
  - Achievements form has button to PlayerTree and vice/versa
  - Double click quests to open QuestForm
+ - Add condition/effect selector (dropdownlist instead of typing id)
+
+Far Parking Lot:
+ - LoseFocus can turn off expensive visual calculations (and maybe pause game in SP)
+ - Textbox that's editable
+ - Make an installer??
+ - Automated test for map readfile
+ - When closing/opening panel while form is open need to update background image
+ - Interrupting action stops action sound effect (don't assign curr_action have function that assigns it and in that if player silence appropriate sounds)
+ - Visual effects for remaining status effects
+ - Sound effects use directional information
+ - Fridge/freezer/minifridge makes items cold
+ - Stove/fire makes items hot
 
 
 v0.8: HomeBase and Campaign II

@@ -1235,6 +1235,10 @@ class GameMap {
   }
 
   // add unit
+  void addUnit(Unit u, float x, float y) {
+    u.setLocation(x, y);
+    this.addUnit(u);
+  }
   void addUnit(Unit u) {
     this.addUnit(u, this.nextUnitKey);
     this.nextUnitKey++;
@@ -1360,6 +1364,10 @@ class GameMap {
       case 2: // center of screen and longer
         header_message.placeCenter();
         header_message.show_time = 6000;
+        header_message.clickable = false;
+        break;
+      case 3: // longer
+        header_message.show_time = 5000;
         header_message.clickable = false;
         break;
       default:

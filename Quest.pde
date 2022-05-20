@@ -32,6 +32,9 @@ class Quest {
         }
       }
     }
+    if (this.met) {
+      return;
+    }
     switch(this.ID) {
       case 1: // select ben
         break;
@@ -44,6 +47,9 @@ class Quest {
       case 5: // unlock inventory
         break;
       case 6: // use backpack
+        if (level.player != null && level.player.inventory.slots.size() > 2) {
+          this.meet();
+        }
         break;
       case 7: // damage john rankin
         break;

@@ -78,22 +78,6 @@ class TutorialInterface extends InterfaceLNZ {
     }
   }
 
-  class TutorialButton5 extends TutorialButton {
-    TutorialButton5() {
-      super();
-      this.setLocation(0, 0.9 * height + Constants.mapEditor_buttonGapSize,
-        0, 0.94 * height - Constants.mapEditor_buttonGapSize);
-      this.message = "Help";
-    }
-    void release() {
-      if (!this.hovered) {
-        return;
-      }
-      this.stayDehovered();
-      // help form (help depends on stage in tutorial)
-    }
-  }
-
 
   class GoToMainMenuForm extends ConfirmForm {
     GoToMainMenuForm() {
@@ -453,7 +437,7 @@ class TutorialInterface extends InterfaceLNZ {
   }
 
 
-  private TutorialButton[] buttons = new TutorialButton[5];
+  private TutorialButton[] buttons = new TutorialButton[4];
   private Panel leftPanel = new Panel(LEFT, Constants.mapEditor_panelMinWidth,
     Constants.mapEditor_panelMaxWidth, Constants.mapEditor_panelStartWidth);
   private Panel rightPanel = new Panel(RIGHT, Constants.mapEditor_panelMinWidth,
@@ -471,7 +455,6 @@ class TutorialInterface extends InterfaceLNZ {
     this.buttons[1] = new TutorialButton2();
     this.buttons[2] = new TutorialButton3();
     this.buttons[3] = new TutorialButton4();
-    this.buttons[4] = new TutorialButton5();
     this.leftPanel.addIcon(global.images.getImage("icons/triangle_gray.png"));
     this.rightPanel.addIcon(global.images.getImage("icons/triangle_gray.png"));
     this.leftPanel.color_background = global.color_panelBackground;
@@ -491,7 +474,6 @@ class TutorialInterface extends InterfaceLNZ {
     this.buttons[2].setXLocation(xi, xi + buttonSize);
     xi += buttonSize + Constants.mapEditor_buttonGapSize;
     this.buttons[3].setXLocation(xi, xi + buttonSize);
-    this.buttons[4].setXLocation(xi, xi + buttonSize);
   }
 
 

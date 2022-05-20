@@ -117,6 +117,7 @@ class Condition {
       case 6: // player in rectangle
       case 7: // unit exists
       case 8: // has hero upgrade
+      case 9: // unit in rectangle
         break;
       default:
         global.errorMessage("ERROR: Condition ID " + ID + " not recognized.");
@@ -155,6 +156,9 @@ class Condition {
         break;
       case 8: // has hero upgrade
         this.display_name = "Has Hero Upgrade (" + HeroTreeCode.codeFromId(this.number1) + ")";
+        break;
+      case 9: // unit in rectangle
+        this.display_name = "Unit (" + this.number1 + ") In: " + this.rectangle.fileString();
         break;
       default:
         this.display_name = "Condition";
@@ -266,6 +270,20 @@ class Condition {
           this.met = true;
         }
         break;
+      case 9: // unit in rectangle
+        if (this.met) {
+          break;
+        }
+        if (level.currMap == null) {
+          break;
+        }
+        if (!level.currMap.units.containsKey(this.number1)) {
+          break;
+        }
+        if (this.rectangle.contains(level.currMap.units.get(this.number1), level.currMapName)) {
+          this.met = true;
+        }
+        break;
       default:
         global.errorMessage("ERROR: Condition ID " + ID + " not recognized.");
         return false;
@@ -297,6 +315,8 @@ class Condition {
       case 7: // unit exists
         break;
       case 8: // has hero upgrade
+        break;
+      case 9: // unit in rectangle
         break;
       default:
         global.errorMessage("ERROR: Condition ID " + ID + " not recognized.");
@@ -404,6 +424,9 @@ class Effect {
       case 40: // set unit health
       case 41: // change time
       case 42: // set time
+      case 43: // add item to player inventory
+      case 44: // clear player inventory
+      case 45: // create unit
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
@@ -539,6 +562,15 @@ class Effect {
         break;
       case 42: // set time
         this.display_name = "Set Time (" + this.number + ")";
+        break;
+      case 43: // add item to player inventory
+        this.display_name = "Add Item to Inventory (" + this.number + ")";
+        break;
+      case 44: // clear player inventory
+        this.display_name = "Clear Player Inventory";
+        break;
+      case 45: // create unit
+        this.display_name = "Create Unit (" + this.number + ")";
         break;
       default:
         this.display_name = "Effect";
@@ -872,6 +904,24 @@ class Effect {
         break;
       case 42: // set time
         level.time.set(this.decimal1);
+        break;
+      case 43: // add item to player inventory
+        if (level.player != null) {
+          Item leftover = level.player.inventory.stash(new Item(this.number));
+          if (leftover != null && !leftover.remove && level.currMap != null) {
+            level.currMap.addItem(leftover, level.player.frontX(), level.player.frontY());
+          }
+        }
+        break;
+      case 44: // clear player inventory
+        if (level.player != null) {
+          level.player.inventory.clear();
+        }
+        break;
+      case 45: // create unit
+        if (level.currMap != null) {
+          level.currMap.addUnit(new Unit(this.number), this.rectangle.centerX(), this.rectangle.centerY());
+        }
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
