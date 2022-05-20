@@ -1,23 +1,24 @@
-v0.7.2: Campaign I Prep
- - PlayingInterface outline
- - Levels save in a levels/level_location folder
- - When trying to start a level with a hero first check if another hero is currently in that level
- - Finish tutorial, including easter eggs
- - Fix all outstanding bugs
- - Creating profile should create a Ben Nelson hero located in Francis Hall campaign
- - When pressing play game if only 1 hero auto go to that one, else display hero form to choose
+v0.7.2: PlayingInterface
+ a: PlayingInterface outline
+ b: Pressing play game goes to HeroForm if multiple heroes
+ c: Creating profile should create a Ben Nelson hero in Campaign I
+ d: Create mock Campaign I
+ e: Create mock homebase near Franciscan
+ f: Finishing Campaign sends hero back to homebase
+ g: Can open and edit homebase
+ h: Can redo Campaigns (only I so far)
+ i: Can only start a Campaign if no other hero in that campaign (test by giving player multiple heroes)
+ j: Other tutorial achievements (make 2 of the 3 locked rooms go away since not needed)
+ k: Test achievements (killing Rankin and finding ender chest)
+ l: Button in achievement form to view player tree
+ m: Display level tokens and can click to view hero tree
+ n: Fix OptionsForm buttons and set initialinterface volume lower (to default if not already, if is lower defaults)
+ o: Show father as ben walks away, white cursor in player tree
+ p: Can drop items onto map from inventory view
+ q: Background tracks / Rankin sounds in tutorial
 
+ - Fix all outstanding bugs
  - Make sure trigger timers reset when timers are to be reset
- - Can drop items from view inventory
- - Button to open HeroTree (displays tokens) from leftpanelform
- - Add background sounds to tutorial (and john rankin sounds)
- - Tutorial can catch errors to prevent errorform
- - fog in rooms
- - save in control and map tint
- - show father as ben walks away
- - ender chest achievement
- - kill rankin achievement
- - white cursor in player tree
 
   *Tutorial notes:
      - Easter egg is if you can kill John Rankin he drops "The Third Ball"
@@ -33,11 +34,12 @@ v0.7.2: Campaign I Prep
      - Finding this chest is also an Achievement
 
 Bugs:
- - In OptionsForm the 'apply' and 'defaults' buttons don't work although they used to...
+ - Error where inventory not ended properly so hero never ended
  - Remove colors from edge of map images
  - Status effects on selected object left panel will have names behind others when hovered
  - tint affects other images still
 
+ - If still has slots open start on parking lot
 
 v0.7.3: Francis Hall maps
 v0.7.4: Francis Hall triggers
@@ -77,7 +79,6 @@ Parking Lot:
  - Make Features an arraylist since they can be removed and add Feature::map_key
  - Same with VisualEffects and Projectiles
  - Status effect descriptions use Constants
- - DeskInventory drawer images
  - StoveInventory door image / burner images / knob functionality
  - TrashInventories only display what's on top, items 'fall' down trash can
  - Achievements form has button to PlayerTree and vice/versa
