@@ -850,7 +850,6 @@ size: 0.35
 level: 3
 alliance: Ben
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
 new: Item: 2928
 location: 0.0, 0.0, 0
@@ -882,6 +881,7 @@ lifesteal: 0.0
 ammo: 200000
 toggled: true
 end: Item: Weapon
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 base_health: 3.5

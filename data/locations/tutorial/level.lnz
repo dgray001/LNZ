@@ -3,8 +3,8 @@ levelName: tutorial
 location: tutorial
 completed: false
 completion_code: 0
-currMapName: tutorial_soldiers
-mapNames: tutorial_soldiers, tutorial_stairwell, tutorial_frontdoor
+currMapName: tutorial_frontdoor
+mapNames: tutorial_stairwell, tutorial_frontdoor, tutorial_soldiers
 
 new: Linker
 rect1: tutorial_frontdoor, 5.0, 26.0, 6.0, 27.0
@@ -2142,6 +2142,15 @@ decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
+new: Effect
+ID: 7
+message: 
+number: 128
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
 end: Trigger
 
 nextTriggerKey: 65
@@ -2929,6 +2938,15 @@ new: Effect
 ID: 7
 message: 
 number: 85
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 8
+message: 
+number: 19
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
@@ -4009,7 +4027,7 @@ new: Condition
 ID: 6
 number1: 0
 number2: 0
-rectangle: tutorial_soldiers, 3.0, 12.0, 4.0, 13.0
+rectangle: tutorial_soldiers, 2.0, 12.0, 5.0, 13.0
 met: false
 not_condition: false
 end: Condition
@@ -4053,7 +4071,7 @@ end: Effect
 new: Effect
 ID: 17
 message: 
-number: 2
+number: 3
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
@@ -4167,6 +4185,24 @@ decimal2: 0.0
 rectangle: tutorial_soldiers, 4.0, 14.0, 5.0, 15.0
 end: Effect
 
+new: Effect
+ID: 19
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 44
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
 end: Trigger
 
 nextTriggerKey: 115
@@ -4270,6 +4306,15 @@ new: Effect
 ID: 7
 message: 
 number: 118
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 19
+message: 
+number: 0
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
@@ -4384,7 +4429,7 @@ active: false
 looping: false
 amalgam: true
 new: Condition
-ID: 0
+ID: 6
 number1: 0
 number2: 0
 rectangle: tutorial_soldiers, 3.0, 16.0, 4.0, 17.0
@@ -4442,79 +4487,934 @@ end: Trigger
 nextTriggerKey: 123
 
 new: Trigger
-triggerName: Trigger 123
+triggerName: ben talks
 active: false
 looping: false
 amalgam: true
+new: Condition
+ID: 1
+number1: 1500
+number2: 1500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: Well I guess it's time to scare Rankin away again.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 124
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
 end: Trigger
 
 nextTriggerKey: 124
 
 new: Trigger
-triggerName: Trigger 124
+triggerName: quest activation
 active: false
 looping: false
 amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 9
+message: 
+number: 7
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 125
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: Chase Rankin from your wing
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
 end: Trigger
 
 nextTriggerKey: 125
 
 new: Trigger
-triggerName: Trigger 125
+triggerName: gain control
 active: false
 looping: false
 amalgam: true
+new: Condition
+ID: 1
+number1: 1500
+number2: 1500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 12
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 15
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 16.0, 9.0, 17.0, 11.0
+end: Effect
+
+new: Effect
+ID: 45
+message: 
+number: 1004
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 16.009985, 9.019995, 16.979984, 10.659995
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 129
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 130
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 8
+message: 
+number: 67
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
 end: Trigger
 
 nextTriggerKey: 126
 
 new: Trigger
-triggerName: Trigger 126
-active: false
+triggerName: prevent common 1
+active: true
 looping: false
 amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: tutorial_soldiers, 9.0, 11.0, 10.0, 12.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 14
+message: 
+number: 1681075482
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 25
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 9.0, 10.0, 10.0, 11.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 127
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: I don't want to socialize right now.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 9.0, 10.0, 10.0, 11.0
+end: Effect
+
 end: Trigger
 
 nextTriggerKey: 127
 
 new: Trigger
-triggerName: Trigger 127
+triggerName: prevent common 2
 active: false
 looping: false
 amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: tutorial_soldiers, 9.0, 10.0, 10.0, 11.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 12
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 15
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 126
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
 end: Trigger
 
 nextTriggerKey: 128
 
 new: Trigger
-triggerName: Trigger 128
-active: false
+triggerName: clear chat
+active: true
 looping: false
 amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 46
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
 end: Trigger
 
 nextTriggerKey: 129
 
 new: Trigger
-triggerName: Trigger 129
+triggerName: no knife
 active: false
-looping: false
+looping: true
 amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Condition
+ID: 11
+number1: 2203
+number2: 0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: true
+end: Condition
+
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: tutorial_soldiers, 14.0, 9.0, 16.0, 11.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: You won't be able to hurt him without your knife.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 14.0, 9.0, 16.0, 11.0
+end: Effect
+
+new: Effect
+ID: 20
+message: Hey what's up little punk!
+number: 1
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 14.0, 9.0, 16.0, 11.0
+end: Effect
+
 end: Trigger
 
 nextTriggerKey: 130
 
 new: Trigger
-triggerName: Trigger 130
+triggerName: damage rankin
 active: false
 looping: false
 amalgam: true
+new: Condition
+ID: 10
+number1: 1
+number2: 6
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: true
+end: Condition
+
+new: Effect
+ID: 20
+message: Ouch you broke my glasses!
+number: 1
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 14.0, 9.0, 16.0, 11.0
+end: Effect
+
+new: Effect
+ID: 24
+message: 
+number: 1
+decimal1: 32.0
+decimal2: 9.5
+rectangle: tutorial_soldiers, 30.0, 12.0, 31.0, 13.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 131
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 132
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 8
+message: 
+number: 129
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
 end: Trigger
 
 nextTriggerKey: 131
 
 new: Trigger
-triggerName: Trigger 131
+triggerName: complete quest
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: You scared away Rankin!
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 16.0, 9.0, 17.0, 11.0
+end: Effect
+
+new: Effect
+ID: 17
+message: 
+number: 7
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 134
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 132
+
+new: Trigger
+triggerName: prevent chase 1
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: tutorial_soldiers, 19.0, 9.0, 21.0, 11.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 14
+message: 
+number: 1681075482
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: I want to stay on Soldier's wing
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 19.0, 9.0, 21.0, 11.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 133
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 25
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 16.0, 9.0, 18.0, 11.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 133
+
+new: Trigger
+triggerName: prevent chase 2
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: tutorial_soldiers, 16.0, 9.0, 18.0, 11.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 12
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 15
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 132
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 134
+
+new: Trigger
+triggerName: hungry and thirsty
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: I'm getting pretty hungry and thirsty.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 16.0, 9.0, 18.0, 11.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 137
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 8
+message: 
+number: 119
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 8
+message: 
+number: 120
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 33
+message: 
+number: -6
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 34
+message: 
+number: -6
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 135
+
+new: Trigger
+triggerName: 
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 3000
+number2: 3000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 9
+message: 
+number: 8
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 9
+message: 
+number: 9
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: Eat food and drink water to replenish your hunger and thirst
+number: 3
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 16.0, 9.0, 18.0, 11.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 136
+
+new: Trigger
+triggerName: ### Hunger / Thirst
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 137
+
+new: Trigger
+triggerName: activate quests
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 3000
+number2: 3000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 9
+message: 
+number: 8
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 9
+message: 
+number: 9
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 138
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 139
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 142
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 138
+
+new: Trigger
+triggerName: hunger quest
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 12
+number1: 95
+number2: 0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 17
+message: 
+number: 9
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 141
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 139
+
+new: Trigger
+triggerName: thirst quest
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 13
+number1: 95
+number2: 0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 17
+message: 
+number: 8
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 140
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 140
+
+new: Trigger
+triggerName: keep thirst up
+active: false
+looping: true
+amalgam: true
+new: Effect
+ID: 37
+message: 
+number: 100
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 141
+
+new: Trigger
+triggerName: keep hunger up
+active: false
+looping: false
+amalgam: true
+new: Effect
+ID: 36
+message: 
+number: 100
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 142
+
+new: Trigger
+triggerName: activate bed quest
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 12
+number1: 99
+number2: 0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Condition
+ID: 13
+number1: 99
+number2: 0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 145
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 143
+
+new: Trigger
+triggerName: 
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 144
+
+new: Trigger
+triggerName: ### Quest 10
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 145
+
+new: Trigger
+triggerName: Trigger 145
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 146
+
+new: Trigger
+triggerName: Trigger 146
 active: false
 looping: false
 amalgam: true

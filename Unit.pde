@@ -366,7 +366,7 @@ class Unit extends MapObject {
         break;
       case 1004:
         this.setStrings("Rankin", "Human", "");
-        this.baseStats(8, 3, 0, 0, 3);
+        this.baseStats(8, 3, 2, 0, 3);
         this.level = 5;
         this.size = 0.45;
         this.sizeZ = 6;
@@ -2773,6 +2773,17 @@ class Unit extends MapObject {
           drops.add(new Item(2116));
         }
         if (randomChance(0.5)) {
+          drops.add(new Item(2807));
+        }
+        break;
+      case 1005: // Rooster
+        if (randomChance(0.7)) {
+          drops.add(new Item(2116));
+        }
+        if (randomChance(0.7)) {
+          drops.add(new Item(2807));
+        }
+        if (randomChance(0.25)) {
           drops.add(new Item(2807));
         }
         break;

@@ -1685,7 +1685,7 @@ location: 1.0, 6.0, 0
 curr_height: 0
 remove: false
 number: 10
-toggle: true
+toggle: false
 end: Feature
 
 
@@ -1875,6 +1875,36 @@ curr_height: 0
 remove: false
 number: 10
 toggle: false
+new: Item: 2203
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.3
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 2.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 4.0
+penetration: 0.0
+attackRange: 0.01
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 1
 end: Feature
 
 
@@ -1947,6 +1977,126 @@ curr_height: 0
 remove: false
 number: 0
 toggle: false
+new: Item: 2108
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 25
+thirst: 5
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 0
+new: Item: 2108
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 25
+thirst: 5
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 1
+new: Item: 2106
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 10
+thirst: 5
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 2
+new: Item: 2134
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 8
+thirst: 20
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 3
 end: Feature
 
 

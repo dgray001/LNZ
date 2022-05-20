@@ -1,7 +1,4 @@
 v0.7.1: TutorialInterface
- w: once you go into room you stop getting food/water replenished
- x: fight John Rankin (quest 7) (must use knife in desk, if try with hands it will say so)
- y: drink from water fountain and eat pickle (quest 8 / quest 9) to get hunger/thirst above 95 (set hunger/thirst to 90 before this)
  z: go to sleep to reset spawn point (quest 10), take away current bed logic
  aa: wake up and there's lava, quest 11 is to die
  ab: gain ultimate and quest 12 is to cross lava into common room (can get access to ender chest room now)
@@ -18,13 +15,11 @@ v0.7.1: TutorialInterface
  - Desk drawer images
  - Fall sound effect
  - Fix times in tutorial (level starts at 7am)
- - Add sounds to tutorial
+ - Add background sounds to tutorial (and john rankin sounds)
  - Tutorial can catch errors to prevent errorform
- - remove arrow 9
  - clear chat once ben enters francis hall
  - prevent going in common room initially then disable
  - fog in rooms
- - change view once you reach desk, etc.
 
    *Tutorial notes:
      - Attack enemy (John Rankin) => he's yelling easy company

@@ -38,6 +38,11 @@ class Trigger {
     if (actuate) {
       this.actuate(level);
     }
+    else if (this.amalgam) {
+      for (Condition condition : this.conditions) {
+        condition.met = false;
+      }
+    }
   }
 
   void actuate(Level level) {
@@ -118,6 +123,11 @@ class Condition {
       case 7: // unit exists
       case 8: // has hero upgrade
       case 9: // unit in rectangle
+      case 10: // unit health
+      case 11: // holding item
+      case 12: // player hunger
+      case 13: // player thirst
+      case 14: // player mana
         break;
       default:
         global.errorMessage("ERROR: Condition ID " + ID + " not recognized.");
@@ -159,6 +169,21 @@ class Condition {
         break;
       case 9: // unit in rectangle
         this.display_name = "Unit (" + this.number1 + ") In: " + this.rectangle.fileString();
+        break;
+      case 10: // unit health
+        this.display_name = "Unit (" + this.number1 + ") Health above (" + this.number2 + ")";
+        break;
+      case 11: // holding item
+        this.display_name = "Player Holding Item (" + this.number1 + ")";
+        break;
+      case 12: // player hunger
+        this.display_name = "Player Hunger Above (" + this.number1 + ")";
+        break;
+      case 13: // player thirst
+        this.display_name = "Player Thirst Above (" + this.number1 + ")";
+        break;
+      case 14: // player mana
+        this.display_name = "Player Mana Above (" + this.number1 + ")";
         break;
       default:
         this.display_name = "Condition";
@@ -284,6 +309,64 @@ class Condition {
           this.met = true;
         }
         break;
+      case 10: // unit health
+        if (this.met) {
+          break;
+        }
+        if (level.currMap == null) {
+          break;
+        }
+        if (!level.currMap.units.containsKey(this.number1)) {
+          break;
+        }
+        if (level.currMap.units.get(this.number1).curr_health > this.number2) {
+          this.met = true;
+        }
+        break;
+      case 11: // holding item
+        if (this.met) {
+          break;
+        }
+        if (level.player == null) {
+          break;
+        }
+        if (level.player.holding(this.number1)) {
+          this.met = true;
+        }
+        break;
+      case 12: // player hunger
+        if (this.met) {
+          break;
+        }
+        if (level.player == null) {
+          break;
+        }
+        if (level.player.hunger > this.number1) {
+          this.met = true;
+        }
+        break;
+      case 13: // player thirst
+        if (this.met) {
+          break;
+        }
+        if (level.player == null) {
+          break;
+        }
+        if (level.player.thirst > this.number1) {
+          this.met = true;
+        }
+        break;
+      case 14: // player mana
+        if (this.met) {
+          break;
+        }
+        if (level.player == null) {
+          break;
+        }
+        if (level.player.curr_mana > this.number1) {
+          this.met = true;
+        }
+        break;
       default:
         global.errorMessage("ERROR: Condition ID " + ID + " not recognized.");
         return false;
@@ -317,6 +400,16 @@ class Condition {
       case 8: // has hero upgrade
         break;
       case 9: // unit in rectangle
+        break;
+      case 10: // unit health
+        break;
+      case 11: // holding item
+        break;
+      case 12: // player hunger
+        break;
+      case 13: // player thirst
+        break;
+      case 14: // player mana
         break;
       default:
         global.errorMessage("ERROR: Condition ID " + ID + " not recognized.");
@@ -427,6 +520,7 @@ class Effect {
       case 43: // add item to player inventory
       case 44: // clear player inventory
       case 45: // create unit
+      case 46: // clear level chat
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
@@ -571,6 +665,9 @@ class Effect {
         break;
       case 45: // create unit
         this.display_name = "Create Unit (" + this.number + ")";
+        break;
+      case 46: // clear level chat
+        this.display_name = "Clear Level Chat";
         break;
       default:
         this.display_name = "Effect";
@@ -922,6 +1019,9 @@ class Effect {
         if (level.currMap != null) {
           level.currMap.addUnit(new Unit(this.number), this.rectangle.centerX(), this.rectangle.centerY());
         }
+        break;
+      case 46: // clear level chat
+        level.level_chatbox.clearText();
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");

@@ -10,6 +10,9 @@ class Quest {
   }
 
   void meet() {
+    if (this.met) {
+      return;
+    }
     this.met = true;
     global.sounds.trigger_player("player/quest");
     this.blink_time_left = Constants.level_questBlinkTime;
