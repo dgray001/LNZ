@@ -712,6 +712,7 @@ class GameMap {
     }
 
     void placeCenter() {
+      this.text_size = 36;
       textSize(this.text_size);
       float size_width = textWidth(this.message) + 4;
       float size_height = textAscent() + textDescent() + 2;
@@ -1447,7 +1448,9 @@ class GameMap {
         continue;
       }
       if (this.draw_fog && !this.squares[int(floor(u.x))][int(floor(u.y))].visible) {
-        continue;
+        if (!this.units.containsKey(0) || u.alliance != this.units.get(0).alliance) {
+          continue;
+        }
       }
       this.displayUnit(u);
     }
@@ -1475,7 +1478,7 @@ class GameMap {
         fill(255);
         textSize(14);
         textAlign(RIGHT, BOTTOM);
-        text(i.stack, i.width() * this.zoom - 2, i.height() * this.zoom - 2);
+        text(i.stack, i.size * this.zoom - 2, i.size * this.zoom - 2);
       }
       translate(-translateX, -translateY);
     }

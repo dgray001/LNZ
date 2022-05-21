@@ -1055,7 +1055,13 @@ class Effect {
         break;
       case 45: // create unit
         if (level.currMap != null) {
-          level.currMap.addUnit(new Unit(this.number), this.rectangle.centerX(), this.rectangle.centerY());
+          Unit u = new Unit(this.number, this.rectangle.centerX(), this.rectangle.centerY());
+          if (this.decimal1 > 0) {
+            level.currMap.addUnit(u, int(round(this.decimal1)));
+          }
+          else {
+            level.currMap.addUnit(u);
+          }
         }
         break;
       case 46: // clear level chat
@@ -1094,18 +1100,18 @@ class Effect {
         level.currMap.refreshDisplayImages();
         break;
       case 50: // add feature
-        if (level.currMap == null) {
-          break;
+        if (level.currMap != null) {
+          Feature f = new Feature(this.number, int(floor(this.rectangle.xi)), int(floor(this.rectangle.yi)));
+          f.number = int(round(this.decimal1));
+          level.currMap.addFeature(f);
         }
-        level.currMap.addFeature(this.number, int(floor(this.rectangle.xi)), int(floor(this.rectangle.yi)));
         break;
       case 51: // remove features in rectangle
-        if (level.currMap == null) {
-          break;
-        }
-        for (Feature f : level.currMap.features) {
-          if (this.rectangle.contains(f)) {
-            f.remove = true;
+        if (level.currMap != null) {
+          for (Feature f : level.currMap.features) {
+            if (this.rectangle.contains(f)) {
+              f.remove = true;
+            }
           }
         }
         break;

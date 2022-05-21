@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220521: v0.7.2c" +
+  "\n20220521: v0.7.2d" +
   "\nLines: 38164 (v0.7.2)" +
   "\nImages: 1102 (v0.7.2)" +
   "\nSounds: 250 (v0.7.2)" +
@@ -163,7 +163,7 @@ static class Constants {
   static final float map_minCameraSpeed = 0.001;
   static final float map_maxCameraSpeed = 0.1;
   static final float map_defaultCameraSpeed = 0.01;
-  static final float map_defaultHeaderMessageTextSize = 24;
+  static final float map_defaultHeaderMessageTextSize = 28;
   static final int map_headerMessageFadeTime = 250;
   static final int map_headerMessageShowTime = 3000;
   static final float map_selectedObjectTitleTextSize = 22;

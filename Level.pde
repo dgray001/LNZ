@@ -305,6 +305,7 @@ class Level {
     }
     else {
       this.currMap.addPlayer(player);
+      this.currMap.setViewLocation(player.x, player.y);
     }
   }
 
@@ -1419,7 +1420,12 @@ class Level {
             break;
           case 343: // door locked (up)
             if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
-              this.currMap.addHeaderMessage("The door is locked");
+              if (h.weapon() != null && h.weapon().type.equals("Key")) {
+                this.currMap.addHeaderMessage("The key doesn't unlock this door");
+              }
+              else {
+                this.currMap.addHeaderMessage("The door is locked");
+              }
               break;
             }
             f.remove = true;
@@ -1432,7 +1438,12 @@ class Level {
             break;
           case 344: // door locked (left)
             if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
-              this.currMap.addHeaderMessage("The door is locked");
+              if (h.weapon() != null && h.weapon().type.equals("Key")) {
+                this.currMap.addHeaderMessage("The key doesn't unlock this door");
+              }
+              else {
+                this.currMap.addHeaderMessage("The door is locked");
+              }
               break;
             }
             f.remove = true;
@@ -1445,7 +1456,12 @@ class Level {
             break;
           case 345: // door locked (diagonal left)
             if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
-              this.currMap.addHeaderMessage("The door is locked");
+              if (h.weapon() != null && h.weapon().type.equals("Key")) {
+                this.currMap.addHeaderMessage("The key doesn't unlock this door");
+              }
+              else {
+                this.currMap.addHeaderMessage("The door is locked");
+              }
               break;
             }
             f.remove = true;
@@ -1458,7 +1474,12 @@ class Level {
             break;
           case 346: // door locked (diagonal right)
             if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
-              this.currMap.addHeaderMessage("The door is locked");
+              if (h.weapon() != null && h.weapon().type.equals("Key")) {
+                this.currMap.addHeaderMessage("The key doesn't unlock this door");
+              }
+              else {
+                this.currMap.addHeaderMessage("The door is locked");
+              }
               break;
             }
             f.remove = true;
@@ -2620,6 +2641,13 @@ class Level {
           question.addRadio("Answer 3");
           question.addRadio("Answer 4");
           break;
+        case 1: // tutorial
+          question.setMessage("Which of these is not part of Ben's penance?");
+          question.addRadio("The Golden Rule");
+          question.addRadio("Praying to Mary");
+          question.addRadio("Telling everyone how much he hates them");
+          question.addRadio("Being kinder to those around him");
+          break;
         default:
           global.errorMessage("ERROR: Chuck Quizmo ID " + this.chuck_quizmo.number +
             " not found.");
@@ -2682,6 +2710,9 @@ class Level {
       switch(this.chuck_quizmo.number) {
         case 0:
           correct_answer = 1;
+          break;
+        case 1:
+          correct_answer = 3;
           break;
         default:
           global.errorMessage("ERROR: Chuck Quizmo ID " + this.chuck_quizmo.number +

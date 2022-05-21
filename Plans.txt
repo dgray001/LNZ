@@ -11,17 +11,14 @@ v0.7.2: PlayingInterface
  l: Button in achievement form to view player tree
  m: Display level tokens and can click to view hero tree
  n: Fix OptionsForm buttons and set initialinterface volume lower (to default if not already, if is lower defaults)
- o: Show father dom as ben walks away, white cursor in player tree
  p: Can drop items onto map from inventory view
  q: Rankin sounds in tutorial
 
  - Fix all outstanding bugs
  - Make sure trigger timers reset when timers are to be reset
- - number for item stack too far down/to left on map
- - make sure egg can't be thrown into wall
- - chicken should grow when it grows up
- - key doesn't fit message if holding key
- - ability to set feature number in trigger
+ - Can pick up item if can stack
+ - If item tier too high show header message saying so
+ - Chuck quizmo covers question, put him above it
 
   *Tutorial notes:
      - Easter egg is if you can kill John Rankin he drops "The Third Ball"
@@ -32,6 +29,7 @@ v0.7.2: PlayingInterface
      - A previously locked door is now unlocked which has an ender chest in it
      - Place "The Third Ball" in the ender chest to have it for later
      - Finding this chest is also an Achievement
+     - Prevent multiple guesses spammed on chuck quizmo
 
 Bugs:
  - Error where inventory not ended properly so hero never ended
@@ -86,6 +84,7 @@ Parking Lot:
  - Add condition/effect selector (dropdownlist instead of typing id)
  - All Ben unit sounds
  - All Dan unit sounds
+ - Constants to speed up trigger times / header message times (for testing purposes, maybe for in-game options too)
 
 
 v0.8: HomeBase and Campaign II

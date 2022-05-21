@@ -376,6 +376,7 @@ class DeskInventory extends Inventory {
     protected boolean opened = false;
     DrawerButton1() {
       super(global.images.getImage("features/desk_drawer1_closed.png"), 0, 0, 0, 0);
+      this.force_left_button = false;
     }
 
     void hover() {}
@@ -405,6 +406,7 @@ class DeskInventory extends Inventory {
     protected boolean opened = false;
     DrawerButton2() {
       super(global.images.getImage("features/desk_drawer2_closed.png"), 0, 0, 0, 0);
+      this.force_left_button = false;
     }
 
     void hover() {}
@@ -432,6 +434,7 @@ class DeskInventory extends Inventory {
     protected boolean opened = false;
     DrawerButton3() {
       super(global.images.getImage("features/desk_drawer3_closed.png"), 0, 0, 0, 0);
+      this.force_left_button = false;
     }
 
     void hover() {}
@@ -459,6 +462,7 @@ class DeskInventory extends Inventory {
     protected boolean opened = false;
     DrawerButton4() {
       super(global.images.getImage("features/desk_drawer4_closed.png"), 0, 0, 0, 0);
+      this.force_left_button = false;
     }
 
     void hover() {}
@@ -591,6 +595,7 @@ class StoveInventory extends Inventory {
     protected boolean opened = false;
     StoveDoor() {
       super(global.images.getImage("features/default.png"), 0, 0, 0, 0);
+      this.force_left_button = false;
     }
 
     void hover() {}
@@ -617,6 +622,7 @@ class StoveInventory extends Inventory {
     KnobButton(PImage img, int max_value) {
       super(img, 0, 0, 0, 0);
       this.max_value = max_value;
+      this.force_left_button = false;
     }
 
     @Override
@@ -819,6 +825,7 @@ class MinifridgeInventory extends Inventory {
       super(0, 0, 0, 0);
       this.setColors(color(1, 0), color(1, 0), color(120, 30), color(120, 30), color(1, 0));
       this.noStroke();
+      this.force_left_button = false;
     }
 
     void hover() {}
@@ -905,6 +912,7 @@ class RefridgeratorInventory extends Inventory {
       super(0, 0, 0, 0);
       this.setColors(color(1, 0), color(1, 0), color(120, 30), color(120, 30), color(1, 0));
       this.noStroke();
+      this.force_left_button = false;
     }
 
     void hover() {}
@@ -945,6 +953,7 @@ class RefridgeratorInventory extends Inventory {
       super(0, 0, 0, 0);
       this.setColors(color(1, 0), color(1, 0), color(120, 30), color(120, 30), color(1, 0));
       this.noStroke();
+      this.force_left_button = false;
     }
 
     void hover() {}
@@ -1072,6 +1081,7 @@ class WasherInventory extends Inventory {
       super(0, 0, 0, 0);
       this.setColors(color(1, 0), color(1, 0), color(120, 30), color(120, 30), color(1, 0));
       this.noStroke();
+      this.force_left_button = false;
     }
 
     void hover() {}
@@ -1165,6 +1175,7 @@ class DryerInventory extends Inventory {
       super(0, 0, 0, 0);
       this.setColors(color(1, 0), color(1, 0), color(120, 30), color(120, 30), color(1, 0));
       this.noStroke();
+      this.force_left_button = false;
     }
 
     void hover() {}

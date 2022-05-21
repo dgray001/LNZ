@@ -48,7 +48,7 @@ nextTriggerKey: 2
 
 new: Trigger
 triggerName: lose control
-active: true
+active: false
 looping: false
 amalgam: true
 new: Effect
@@ -3319,12 +3319,21 @@ not_condition: false
 end: Condition
 
 new: Effect
+ID: 21
+message: 
+number: 1
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
 ID: 24
 message: 
 number: 1
-decimal1: 4.0
-decimal2: 1.5
-rectangle: tutorial_stairwell, 5.0, 1.0, 6.0, 2.0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_stairwell, 4.0, 1.0, 5.0, 2.0
 end: Effect
 
 end: Trigger
@@ -4618,7 +4627,7 @@ new: Effect
 ID: 45
 message: 
 number: 1004
-decimal1: 0.0
+decimal1: 1.0
 decimal2: 0.0
 rectangle: tutorial_soldiers, 16.009985, 9.019995, 16.979984, 10.659995
 end: Effect
@@ -4824,7 +4833,7 @@ end: Effect
 new: Effect
 ID: 20
 message: Hey what's up little punk!
-number: 11
+number: 1
 decimal1: 0.0
 decimal2: 0.0
 rectangle: tutorial_soldiers, 14.0, 9.0, 16.0, 11.0
@@ -4841,7 +4850,7 @@ looping: false
 amalgam: true
 new: Condition
 ID: 10
-number1: 11
+number1: 1
 number2: 6
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
@@ -4851,7 +4860,7 @@ end: Condition
 new: Effect
 ID: 20
 message: Ouch you broke my glasses!
-number: 11
+number: 1
 decimal1: 0.0
 decimal2: 0.0
 rectangle: tutorial_soldiers, 14.0, 9.0, 16.0, 11.0
@@ -4860,7 +4869,7 @@ end: Effect
 new: Effect
 ID: 24
 message: 
-number: 11
+number: 1
 decimal1: 32.0
 decimal2: 9.5
 rectangle: tutorial_soldiers, 30.0, 12.0, 31.0, 13.0
@@ -5597,7 +5606,7 @@ end: Condition
 
 new: Effect
 ID: 4
-message: It's nighttime! Go ahead and fall asleep
+message: It's night-time! Go ahead and fall asleep
 number: 3
 decimal1: 0.0
 decimal2: 0.0
@@ -5925,7 +5934,7 @@ message:
 number: 339
 decimal1: 0.0
 decimal2: 0.0
-rectangle: , 0.0, 0.0, 0.0, 0.0
+rectangle: tutorial_soldiers, 9.0, 8.0, 10.0, 9.0
 end: Effect
 
 end: Trigger
@@ -6778,9 +6787,9 @@ new: Effect
 ID: 50
 message: 
 number: 12
-decimal1: 0.0
+decimal1: 1.0
 decimal2: 0.0
-rectangle: , 0.0, 0.0, 0.0, 0.0
+rectangle: tutorial_soldiers, 52.0, 13.0, 53.0, 14.0
 end: Effect
 
 end: Trigger
@@ -6821,7 +6830,7 @@ looping: false
 amalgam: true
 new: Condition
 ID: 7
-number1: 1004
+number1: 1
 number2: 0
 rectangle: tutorial_soldiers, 13.0, 4.0, 42.0, 16.0
 met: false
@@ -6848,5 +6857,5 @@ end: Effect
 
 end: Trigger
 
-player_start_location: tutorial_frontdoor, 10.0, 0.0, 11.0, 1.0
+player_start_location: tutorial_stairwell, 4.0, 3.0, 5.0, 4.0
 end: Level

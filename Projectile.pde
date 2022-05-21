@@ -712,7 +712,7 @@ class Projectile extends MapObject {
     }
     switch(this.ID) {
       case 3118: // Chicken Egg (thrown)
-        if (randomChance(1.2)) {
+        if (randomChance(0.2)) {
           Unit u = new Unit(1003);
           u.setLocation(this.x - this.facingX * u.size - Constants.small_number,
             this.y - this.facingY * u.size - Constants.small_number);

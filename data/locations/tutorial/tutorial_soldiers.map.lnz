@@ -2,6 +2,7 @@ new: Map
 code: ERROR
 mapName: tutorial_soldiers
 dimensions: 69, 20
+maxHeight: 10
 color_tint: 65793
 show_tint: false
 terrain: 0, 0: 1, 100, true
