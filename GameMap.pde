@@ -145,6 +145,9 @@ class GameMapSquare {
     else if (id > 100) { // floors
       this.base_elevation = 0;
     }
+    else if (id == 2) { // walkable map edge
+      this.base_elevation = 0;
+    }
     else if (id == 1) { // map edge
       this.base_elevation = 100;
     }
@@ -291,6 +294,7 @@ class GameMapSquare {
     String imageName = "terrain/";
     switch(this.terrain_id) {
       case 1:
+      case 2:
         imageName += "default.jpg";
         break;
       case 101:
@@ -850,6 +854,7 @@ class GameMap {
   protected int mapWidth = 0;
   protected int mapHeight = 0;
   protected GameMapSquare[][] squares;
+  protected int maxHeight = 10;
 
   protected DImg terrain_dimg;
   protected DImg fog_dimg;
@@ -1184,6 +1189,9 @@ class GameMap {
   }
 
   // add feature
+  void addFeature(int id, int x, int y) {
+    this.addFeature(new Feature(id, x, y), true);
+  }
   void addFeature(Feature f) {
     this.addFeature(f, true);
   }
@@ -1270,7 +1278,7 @@ class GameMap {
       u.y = this.mapHeight - u.size - Constants.small_number;
     }
     u.curr_squares_on = u.getSquaresOn();
-    u.resolveFloorHeight(this, code);
+    u.resolveFloorHeight(this);
   }
   // remove unit
   void removeUnit(int code) {
@@ -2423,7 +2431,7 @@ class GameMap {
         case 'v':
         case 'V':
           if (this.units.containsKey(0) && !global.holding_ctrl && this.in_control) {
-            this.units.get(0).jump(this, 0);
+            this.units.get(0).jump(this);
           }
           break;
       }
@@ -2473,6 +2481,7 @@ class GameMap {
     file.println("code: " + this.code.file_name());
     file.println("mapName: " + this.mapName);
     file.println("dimensions: " + this.mapWidth + ", " + this.mapHeight);
+    file.println("maxHeight: " + this.maxHeight);
     file.println("color_tint: " + this.color_tint);
     file.println("show_tint: " + this.show_tint);
     for (int i = 0; i < this.mapWidth; i++) {
@@ -2870,6 +2879,9 @@ class GameMap {
           this.mapHeight = toInt(trim(dimensions[1]));
         }
         this.initializeSquares();
+        break;
+      case "maxHeight":
+        this.maxHeight = toInt(data);
         break;
       case "terrain":
         String[] data_split = split(data, ':');

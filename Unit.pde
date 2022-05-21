@@ -2191,7 +2191,7 @@ class Unit extends MapObject {
           this.timer_falling += Constants.unit_fallTimer;
           this.fall_amount++;
           this.curr_height--;
-          this.resolveFloorHeight(map, myKey);
+          this.resolveFloorHeight(map);
         }
       }
       else {
@@ -2964,12 +2964,12 @@ class Unit extends MapObject {
   }
 
 
-  void jump(GameMap map, int myKey) {
-    this.resolveFloorHeight(map, myKey);
+  void jump(GameMap map) {
+    this.resolveFloorHeight(map);
     if (!this.falling && this.curr_height == this.floor_height) {
       this.curr_height += this.jumpHeight();
     }
-    this.resolveFloorHeight(map, myKey);
+    this.resolveFloorHeight(map);
   }
 
   int jumpHeight() {
@@ -3330,7 +3330,7 @@ class Unit extends MapObject {
     this.moveY(tryMoveY, myKey, map);
     // calculates squares_on and height
     this.curr_squares_on = this.getSquaresOn();
-    this.resolveFloorHeight(map, myKey);
+    this.resolveFloorHeight(map);
     // move stat
     float moveX = this.x - startX;
     float moveY = this.y - startY;
@@ -3403,10 +3403,16 @@ class Unit extends MapObject {
       return true;
     }
     // terrain collisions
-    int new_height = map.maxHeightOfSquares(this.getSquaresOn(), true);
+    ArrayList<IntegerCoordinate> squares_moving_on = this.getSquaresOn();
+    int new_height = map.maxHeightOfSquares(squares_moving_on, true);
     if (!this.canMoveUp(new_height - this.curr_height)) {
-      this.x = startX;
-      return true;
+      for (IntegerCoordinate coordinate : squares_moving_on) {
+        if (this.currentlyOn(coordinate)) {
+          continue;
+        }
+        this.x = startX;
+        return true;
+      }
     }
     // unit collisions
     for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
@@ -3442,10 +3448,16 @@ class Unit extends MapObject {
       return true;
     }
     // terrain collisions
-    int new_height = map.maxHeightOfSquares(this.getSquaresOn(), true);
+    ArrayList<IntegerCoordinate> squares_moving_on = this.getSquaresOn();
+    int new_height = map.maxHeightOfSquares(squares_moving_on, true);
     if (!this.canMoveUp(new_height - this.curr_height)) {
-      this.y = startY;
-      return true;
+      for (IntegerCoordinate coordinate : squares_moving_on) {
+        if (this.currentlyOn(coordinate)) {
+          continue;
+        }
+        this.y = startY;
+        return true;
+      }
     }
     // unit collisions
     for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
@@ -3473,11 +3485,11 @@ class Unit extends MapObject {
   }
 
 
-  void resolveFloorHeight(GameMap map, int myKey) {
+  void resolveFloorHeight(GameMap map) {
     this.floor_height = map.maxHeightOfSquares(this.curr_squares_on, false);
     this.unit_height = -100;
     for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
-      if (entry.getKey() == myKey) {
+      if (entry.getKey() == this.map_key) {
         continue;
       }
       Unit u = entry.getValue();
@@ -3498,6 +3510,15 @@ class Unit extends MapObject {
     if (this.floor_height > this.curr_height) {
       this.curr_height = this.floor_height;
     }
+    if (this.unit_height > map.maxHeight) {
+      this.unit_height = map.maxHeight;
+    }
+    if (this.floor_height > map.maxHeight) {
+      this.floor_height = map.maxHeight;
+    }
+    if (this.curr_height > map.maxHeight) {
+      this.curr_height = map.maxHeight;
+    }
   }
 
 
@@ -3517,6 +3538,15 @@ class Unit extends MapObject {
       return false;
     }
     return true;
+  }
+
+  boolean currentlyOn(IntegerCoordinate coordinate) {
+    for (IntegerCoordinate coordinate_on : this.curr_squares_on) {
+      if (coordinate_on.equals(coordinate)) {
+        return true;
+      }
+    }
+    return false;
   }
 
 
@@ -3552,6 +3582,7 @@ class Unit extends MapObject {
           if (this.timer_ai_action2 < 0) {
             this.timer_ai_action2 = int(Constants.ai_chickenTimer2 + random(Constants.ai_chickenTimer2));
             this.setUnitID(1002);
+            this.size = Constants.unit_defaultSize;
           }
         }
         break;

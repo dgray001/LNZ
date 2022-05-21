@@ -2686,7 +2686,7 @@ class Hero extends Unit {
     protected float highestX = 0;
     protected float highestY = 0;
 
-    protected color color_background = color(30);
+    protected color color_background = color(50);
     protected color color_connectorStroke_locked = elementalColorDark(Hero.this.element);
     protected color color_connectorStroke_visible = elementalColor(Hero.this.element);
     protected color color_connectorStroke_unlocked = elementalColorLight(Hero.this.element);

@@ -1,5 +1,5 @@
 enum AchievementCode {
-  COMPLETED_TUTORIAL;
+  COMPLETED_TUTORIAL, KILLED_JOHN_RANKIN;
 
   private static final List<AchievementCode> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 
@@ -10,6 +10,8 @@ enum AchievementCode {
     switch(code) {
       case COMPLETED_TUTORIAL:
         return "Completed Tutorial";
+      case KILLED_JOHN_RANKIN:
+        return "Killed John Rankin";
       default:
         return "-- Error --";
     }
@@ -22,6 +24,8 @@ enum AchievementCode {
     switch(code) {
       case COMPLETED_TUTORIAL:
         return "Completed_Tutorial";
+      case KILLED_JOHN_RANKIN:
+        return "Killed_John_Rankin";
       default:
         return "ERROR";
     }
@@ -36,6 +40,14 @@ enum AchievementCode {
     }
     return null;
   }
+  public static AchievementCode achievementCode(int id) {
+    for (AchievementCode code : AchievementCode.VALUES) {
+      if (AchievementCode.id(code) == id) {
+        return code;
+      }
+    }
+    return null;
+  }
 
   public int tokens() {
     return AchievementCode.tokens(this);
@@ -44,6 +56,20 @@ enum AchievementCode {
     switch(code) {
       default:
         return 1;
+    }
+  }
+
+  public int id() {
+    return AchievementCode.id(this);
+  }
+  public static int id(AchievementCode code) {
+    switch(code) {
+      case COMPLETED_TUTORIAL:
+        return 0;
+      case KILLED_JOHN_RANKIN:
+        return 1;
+      default:
+        return -1;
     }
   }
 }

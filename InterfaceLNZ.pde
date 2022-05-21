@@ -163,6 +163,7 @@ abstract class InterfaceLNZ {
     class HeroesFormField extends FormField {
       class HeroButton extends IconInverseButton {
         protected HeroCode code;
+        protected Hero hero = null;
         HeroButton(float xi, float yi, float xf, float yf, HeroCode code) {
           super(xi, yi, xf, yf, global.images.getImage(code.getImagePath()));
           this.roundness = 4;
@@ -174,16 +175,22 @@ abstract class InterfaceLNZ {
             elementalColorLight(e), elementalColorText(e));
           this.show_message = true;
           this.message = code.display_name();
-          this.text_size = 16;
+          this.text_size = 24;
           this.rippleTimer = 450;
+          if (global.profile.heroes.containsKey(this.code)) {
+            this.hero = global.profile.heroes.get(this.code);
+          }
         }
         void hover() {
           super.hover();
-          this.message = code.display_name() + "\n" + code.title();
+          this.message = this.code.display_name() + "\n" + this.code.title() +
+            "\nLocation: " + this.hero.location.display_name();
+          this.text_size = 16;
         }
         void dehover() {
           super.dehover();
-          this.message = code.display_name();
+          this.message = this.code.display_name();
+          this.text_size = 24;
         }
         void release() {
           super.release();
@@ -414,8 +421,14 @@ abstract class InterfaceLNZ {
       this.setFieldCushion(15);
 
       this.addField(new SpacerFormField(80));
+      this.addField(new MessageFormField("Location: " + hero.location.display_name()));
+      if (PlayingInterface.class.isInstance(InterfaceLNZ.this)) {
+        this.addField(new SubmitFormField(" Play "));
+      }
+      this.addField(new SpacerFormField(10));
       this.addField(new MessageFormField(hero.code.title()));
       this.addField(new TextBoxFormField(hero.code.description(), 100));
+      this.addField(new SpacerFormField(10));
     }
 
     @Override
@@ -425,7 +438,10 @@ abstract class InterfaceLNZ {
       image(global.images.getImage(this.hero.code.getImagePath()), this.xCenter(), this.yStart + 40, 75, 75);
     }
 
-    void submit() {}
+    void submit() {
+      println("switch to hero.");
+      // switch to hero
+    }
 
     void buttonPress(int i) {}
   }

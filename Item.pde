@@ -1074,7 +1074,6 @@ class Item extends MapObject {
         break;
       case 2922:
         this.setStrings("Ben's Backpack", "Utility", "");
-        this.tier = 2;
         this.attackRange = 0.04;
         break;
       case 2923:

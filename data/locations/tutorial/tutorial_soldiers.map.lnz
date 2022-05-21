@@ -4,14 +4,14 @@ mapName: tutorial_soldiers
 dimensions: 69, 20
 color_tint: 65793
 show_tint: false
-terrain: 0, 0: 207, 100, true
-terrain: 0, 1: 207, 100, true
-terrain: 0, 2: 207, 100, true
-terrain: 0, 3: 207, 100, true
-terrain: 0, 4: 207, 100, true
-terrain: 0, 5: 207, 100, true
-terrain: 0, 6: 207, 100, true
-terrain: 0, 7: 207, 100, true
+terrain: 0, 0: 1, 100, true
+terrain: 0, 1: 1, 100, true
+terrain: 0, 2: 1, 100, true
+terrain: 0, 3: 1, 100, true
+terrain: 0, 4: 1, 100, true
+terrain: 0, 5: 1, 100, true
+terrain: 0, 6: 1, 100, true
+terrain: 0, 7: 1, 100, true
 terrain: 0, 8: 207, 100, true
 terrain: 0, 9: 102, 0, true
 terrain: 0, 10: 102, 0, true
@@ -24,14 +24,14 @@ terrain: 0, 16: 207, 100, true
 terrain: 0, 17: 207, 100, true
 terrain: 0, 18: 207, 100, true
 terrain: 0, 19: 207, 100, true
-terrain: 1, 0: 207, 100, true
-terrain: 1, 1: 121, 0, true
-terrain: 1, 2: 121, 0, true
-terrain: 1, 3: 121, 0, true
-terrain: 1, 4: 121, 0, true
-terrain: 1, 5: 121, 0, true
-terrain: 1, 6: 121, 0, true
-terrain: 1, 7: 121, 0, true
+terrain: 1, 0: 1, 100, true
+terrain: 1, 1: 1, 100, true
+terrain: 1, 2: 1, 100, true
+terrain: 1, 3: 1, 100, true
+terrain: 1, 4: 1, 100, true
+terrain: 1, 5: 1, 100, true
+terrain: 1, 6: 1, 100, true
+terrain: 1, 7: 1, 100, true
 terrain: 1, 8: 207, 100, true
 terrain: 1, 9: 102, 0, true
 terrain: 1, 10: 102, 0, true
@@ -44,14 +44,14 @@ terrain: 1, 16: 121, 0, true
 terrain: 1, 17: 121, 0, true
 terrain: 1, 18: 121, 0, true
 terrain: 1, 19: 207, 100, true
-terrain: 2, 0: 207, 100, true
-terrain: 2, 1: 121, 0, true
-terrain: 2, 2: 121, 0, true
-terrain: 2, 3: 121, 0, true
-terrain: 2, 4: 121, 0, true
-terrain: 2, 5: 121, 0, true
-terrain: 2, 6: 121, 0, true
-terrain: 2, 7: 121, 0, true
+terrain: 2, 0: 1, 100, true
+terrain: 2, 1: 1, 100, true
+terrain: 2, 2: 1, 100, true
+terrain: 2, 3: 1, 100, true
+terrain: 2, 4: 1, 100, true
+terrain: 2, 5: 1, 100, true
+terrain: 2, 6: 1, 100, true
+terrain: 2, 7: 1, 100, true
 terrain: 2, 8: 207, 100, true
 terrain: 2, 9: 102, 0, true
 terrain: 2, 10: 102, 0, true
@@ -64,14 +64,14 @@ terrain: 2, 16: 121, 0, true
 terrain: 2, 17: 121, 0, true
 terrain: 2, 18: 121, 0, true
 terrain: 2, 19: 207, 100, true
-terrain: 3, 0: 121, 0, true
-terrain: 3, 1: 121, 0, true
-terrain: 3, 2: 121, 0, true
-terrain: 3, 3: 121, 0, true
-terrain: 3, 4: 121, 0, true
-terrain: 3, 5: 121, 0, true
-terrain: 3, 6: 121, 0, true
-terrain: 3, 7: 121, 0, true
+terrain: 3, 0: 1, 100, true
+terrain: 3, 1: 1, 100, true
+terrain: 3, 2: 1, 100, true
+terrain: 3, 3: 1, 100, true
+terrain: 3, 4: 1, 100, true
+terrain: 3, 5: 1, 100, true
+terrain: 3, 6: 1, 100, true
+terrain: 3, 7: 1, 100, true
 terrain: 3, 8: 121, 0, true
 terrain: 3, 9: 102, 0, true
 terrain: 3, 10: 102, 0, true
@@ -84,14 +84,14 @@ terrain: 3, 16: 121, 0, true
 terrain: 3, 17: 121, 0, true
 terrain: 3, 18: 121, 0, true
 terrain: 3, 19: 121, 0, true
-terrain: 4, 0: 207, 100, true
-terrain: 4, 1: 121, 0, true
-terrain: 4, 2: 121, 0, true
-terrain: 4, 3: 121, 0, true
-terrain: 4, 4: 121, 0, true
-terrain: 4, 5: 121, 0, true
-terrain: 4, 6: 121, 0, true
-terrain: 4, 7: 121, 0, true
+terrain: 4, 0: 1, 100, true
+terrain: 4, 1: 1, 100, true
+terrain: 4, 2: 1, 100, true
+terrain: 4, 3: 1, 100, true
+terrain: 4, 4: 1, 100, true
+terrain: 4, 5: 1, 100, true
+terrain: 4, 6: 1, 100, true
+terrain: 4, 7: 1, 100, true
 terrain: 4, 8: 207, 100, true
 terrain: 4, 9: 102, 0, true
 terrain: 4, 10: 102, 0, true
@@ -104,14 +104,14 @@ terrain: 4, 16: 121, 0, true
 terrain: 4, 17: 121, 0, true
 terrain: 4, 18: 121, 0, true
 terrain: 4, 19: 207, 100, true
-terrain: 5, 0: 207, 100, true
-terrain: 5, 1: 121, 0, true
-terrain: 5, 2: 121, 0, true
-terrain: 5, 3: 121, 0, true
-terrain: 5, 4: 121, 0, true
-terrain: 5, 5: 121, 0, true
-terrain: 5, 6: 121, 0, true
-terrain: 5, 7: 121, 0, true
+terrain: 5, 0: 1, 100, true
+terrain: 5, 1: 1, 100, true
+terrain: 5, 2: 1, 100, true
+terrain: 5, 3: 1, 100, true
+terrain: 5, 4: 1, 100, true
+terrain: 5, 5: 1, 100, true
+terrain: 5, 6: 1, 100, true
+terrain: 5, 7: 1, 100, true
 terrain: 5, 8: 207, 100, true
 terrain: 5, 9: 102, 0, true
 terrain: 5, 10: 102, 0, true
@@ -996,14 +996,14 @@ terrain: 49, 8: 207, 100, true
 terrain: 49, 9: 102, 0, true
 terrain: 49, 10: 102, 0, true
 terrain: 49, 11: 207, 100, true
-terrain: 49, 12: 207, 100, true
-terrain: 49, 13: 207, 100, true
-terrain: 49, 14: 207, 100, true
-terrain: 49, 15: 207, 100, true
-terrain: 49, 16: 207, 100, true
-terrain: 49, 17: 207, 100, true
-terrain: 49, 18: 207, 100, true
-terrain: 49, 19: 207, 100, true
+terrain: 49, 12: 1, 100, true
+terrain: 49, 13: 1, 100, true
+terrain: 49, 14: 1, 100, true
+terrain: 49, 15: 1, 100, true
+terrain: 49, 16: 1, 100, true
+terrain: 49, 17: 1, 100, true
+terrain: 49, 18: 1, 100, true
+terrain: 49, 19: 1, 100, true
 terrain: 50, 0: 1, 100, true
 terrain: 50, 1: 1, 100, true
 terrain: 50, 2: 1, 100, true
@@ -1016,14 +1016,14 @@ terrain: 50, 8: 207, 100, true
 terrain: 50, 9: 102, 0, true
 terrain: 50, 10: 102, 0, true
 terrain: 50, 11: 207, 100, true
-terrain: 50, 12: 121, 0, true
-terrain: 50, 13: 121, 0, true
-terrain: 50, 14: 121, 0, true
-terrain: 50, 15: 121, 0, true
-terrain: 50, 16: 121, 0, true
-terrain: 50, 17: 121, 0, true
-terrain: 50, 18: 121, 0, true
-terrain: 50, 19: 207, 100, true
+terrain: 50, 12: 1, 100, true
+terrain: 50, 13: 1, 100, true
+terrain: 50, 14: 1, 100, true
+terrain: 50, 15: 1, 100, true
+terrain: 50, 16: 1, 100, true
+terrain: 50, 17: 1, 100, true
+terrain: 50, 18: 1, 100, true
+terrain: 50, 19: 1, 100, true
 terrain: 51, 0: 1, 100, true
 terrain: 51, 1: 1, 100, true
 terrain: 51, 2: 1, 100, true
@@ -1036,14 +1036,14 @@ terrain: 51, 8: 207, 100, true
 terrain: 51, 9: 102, 0, true
 terrain: 51, 10: 102, 0, true
 terrain: 51, 11: 207, 100, true
-terrain: 51, 12: 121, 0, true
-terrain: 51, 13: 121, 0, true
-terrain: 51, 14: 121, 0, true
-terrain: 51, 15: 121, 0, true
-terrain: 51, 16: 121, 0, true
-terrain: 51, 17: 121, 0, true
-terrain: 51, 18: 121, 0, true
-terrain: 51, 19: 207, 100, true
+terrain: 51, 12: 1, 100, true
+terrain: 51, 13: 1, 100, true
+terrain: 51, 14: 1, 100, true
+terrain: 51, 15: 1, 100, true
+terrain: 51, 16: 1, 100, true
+terrain: 51, 17: 1, 100, true
+terrain: 51, 18: 1, 100, true
+terrain: 51, 19: 1, 100, true
 terrain: 52, 0: 1, 100, true
 terrain: 52, 1: 1, 100, true
 terrain: 52, 2: 1, 100, true
@@ -1056,14 +1056,14 @@ terrain: 52, 8: 121, 0, true
 terrain: 52, 9: 102, 0, true
 terrain: 52, 10: 102, 0, true
 terrain: 52, 11: 121, 0, true
-terrain: 52, 12: 121, 0, true
-terrain: 52, 13: 121, 0, true
-terrain: 52, 14: 121, 0, true
-terrain: 52, 15: 121, 0, true
-terrain: 52, 16: 121, 0, true
-terrain: 52, 17: 121, 0, true
-terrain: 52, 18: 121, 0, true
-terrain: 52, 19: 121, 0, true
+terrain: 52, 12: 2, 0, true
+terrain: 52, 13: 2, 0, true
+terrain: 52, 14: 1, 100, true
+terrain: 52, 15: 1, 100, true
+terrain: 52, 16: 1, 100, true
+terrain: 52, 17: 1, 100, true
+terrain: 52, 18: 1, 100, true
+terrain: 52, 19: 1, 100, true
 terrain: 53, 0: 1, 100, true
 terrain: 53, 1: 1, 100, true
 terrain: 53, 2: 1, 100, true
@@ -1076,14 +1076,14 @@ terrain: 53, 8: 207, 100, true
 terrain: 53, 9: 102, 0, true
 terrain: 53, 10: 102, 0, true
 terrain: 53, 11: 207, 100, true
-terrain: 53, 12: 121, 0, true
-terrain: 53, 13: 121, 0, true
-terrain: 53, 14: 121, 0, true
-terrain: 53, 15: 121, 0, true
-terrain: 53, 16: 121, 0, true
-terrain: 53, 17: 121, 0, true
-terrain: 53, 18: 121, 0, true
-terrain: 53, 19: 207, 100, true
+terrain: 53, 12: 1, 100, true
+terrain: 53, 13: 1, 100, true
+terrain: 53, 14: 1, 100, true
+terrain: 53, 15: 1, 100, true
+terrain: 53, 16: 1, 100, true
+terrain: 53, 17: 1, 100, true
+terrain: 53, 18: 1, 100, true
+terrain: 53, 19: 1, 100, true
 terrain: 54, 0: 1, 100, true
 terrain: 54, 1: 1, 100, true
 terrain: 54, 2: 1, 100, true
@@ -1096,14 +1096,14 @@ terrain: 54, 8: 207, 100, true
 terrain: 54, 9: 102, 0, true
 terrain: 54, 10: 102, 0, true
 terrain: 54, 11: 207, 100, true
-terrain: 54, 12: 121, 0, true
-terrain: 54, 13: 121, 0, true
-terrain: 54, 14: 121, 0, true
-terrain: 54, 15: 121, 0, true
-terrain: 54, 16: 121, 0, true
-terrain: 54, 17: 121, 0, true
-terrain: 54, 18: 121, 0, true
-terrain: 54, 19: 207, 100, true
+terrain: 54, 12: 1, 100, true
+terrain: 54, 13: 1, 100, true
+terrain: 54, 14: 1, 100, true
+terrain: 54, 15: 1, 100, true
+terrain: 54, 16: 1, 100, true
+terrain: 54, 17: 1, 100, true
+terrain: 54, 18: 1, 100, true
+terrain: 54, 19: 1, 100, true
 terrain: 55, 0: 1, 100, true
 terrain: 55, 1: 1, 100, true
 terrain: 55, 2: 1, 100, true
@@ -1116,14 +1116,14 @@ terrain: 55, 8: 207, 100, true
 terrain: 55, 9: 102, 0, true
 terrain: 55, 10: 102, 0, true
 terrain: 55, 11: 207, 100, true
-terrain: 55, 12: 207, 100, true
-terrain: 55, 13: 207, 100, true
-terrain: 55, 14: 207, 100, true
-terrain: 55, 15: 207, 100, true
-terrain: 55, 16: 207, 100, true
-terrain: 55, 17: 207, 100, true
-terrain: 55, 18: 207, 100, true
-terrain: 55, 19: 207, 100, true
+terrain: 55, 12: 1, 100, true
+terrain: 55, 13: 1, 100, true
+terrain: 55, 14: 1, 100, true
+terrain: 55, 15: 1, 100, true
+terrain: 55, 16: 1, 100, true
+terrain: 55, 17: 1, 100, true
+terrain: 55, 18: 1, 100, true
+terrain: 55, 19: 1, 100, true
 terrain: 56, 0: 1, 100, true
 terrain: 56, 1: 1, 100, true
 terrain: 56, 2: 1, 100, true
@@ -1539,15 +1539,6 @@ end: Feature
 
 
 new: Feature: 323
-location: 3.0, 0.0, 0
-curr_height: 0
-remove: false
-number: 0
-toggle: false
-end: Feature
-
-
-new: Feature: 323
 location: 9.0, 0.0, 0
 curr_height: 0
 remove: false
@@ -1637,24 +1628,6 @@ toggle: false
 end: Feature
 
 
-new: Feature: 131
-location: 1.0, 1.0, 0
-curr_height: 0
-remove: false
-number: 8
-toggle: true
-end: Feature
-
-
-new: Feature: 131
-location: 4.0, 1.0, 0
-curr_height: 0
-remove: false
-number: 8
-toggle: true
-end: Feature
-
-
 new: Feature: 132
 location: 7.0, 2.0, 0
 curr_height: 0
@@ -1679,24 +1652,6 @@ curr_height: 0
 remove: false
 number: 8
 toggle: true
-end: Feature
-
-
-new: Feature: 142
-location: 1.0, 6.0, 0
-curr_height: 0
-remove: false
-number: 10
-toggle: false
-end: Feature
-
-
-new: Feature: 142
-location: 5.0, 6.0, 0
-curr_height: 0
-remove: false
-number: 10
-toggle: false
 end: Feature
 
 
@@ -1836,24 +1791,6 @@ end: Feature
 
 
 new: Feature: 103
-location: 1.0, 4.0, 0
-curr_height: 0
-remove: false
-number: 10
-toggle: false
-end: Feature
-
-
-new: Feature: 103
-location: 5.0, 4.0, 0
-curr_height: 0
-remove: false
-number: 10
-toggle: false
-end: Feature
-
-
-new: Feature: 103
 location: 1.0, 14.0, 0
 curr_height: 0
 remove: false
@@ -1910,15 +1847,6 @@ toggle: false
 end: Feature
 
 
-new: Feature: 112
-location: 2.0, 4.0, 0
-curr_height: 0
-remove: false
-number: 2
-toggle: false
-end: Feature
-
-
 new: Feature: 111
 location: 11.0, 3.0, 0
 curr_height: 0
@@ -1942,15 +1870,6 @@ location: 7.0, 5.0, 0
 curr_height: 0
 remove: false
 number: 10
-toggle: false
-end: Feature
-
-
-new: Feature: 114
-location: 4.0, 5.0, 0
-curr_height: 0
-remove: false
-number: 2
 toggle: false
 end: Feature
 
@@ -1979,7 +1898,7 @@ disappear_timer: 0
 stack: 1
 size: 0.25
 curr_health: 0.0
-hunger: 25
+hunger: 45
 thirst: 5
 money: 0.0
 health: 0.0
@@ -2009,7 +1928,7 @@ disappear_timer: 0
 stack: 1
 size: 0.25
 curr_health: 0.0
-hunger: 25
+hunger: 45
 thirst: 5
 money: 0.0
 health: 0.0
@@ -2129,101 +2048,11 @@ toggle: false
 end: Feature
 
 
-new: Feature: 343
-location: 52.0, 11.0, 0
-curr_height: 0
-remove: false
-number: 2
-toggle: false
-end: Feature
-
-
-new: Feature: 323
-location: 52.0, 19.0, 0
-curr_height: 0
-remove: false
-number: 0
-toggle: false
-end: Feature
-
-
 new: Feature: 339
 location: 46.0, 11.0, 0
 curr_height: 0
 remove: false
 number: 0
-toggle: false
-end: Feature
-
-
-new: Feature: 131
-location: 50.0, 16.0, 0
-curr_height: 0
-remove: false
-number: 8
-toggle: true
-end: Feature
-
-
-new: Feature: 131
-location: 53.0, 16.0, 0
-curr_height: 0
-remove: false
-number: 8
-toggle: true
-end: Feature
-
-
-new: Feature: 142
-location: 54.0, 12.0, 0
-curr_height: 0
-remove: false
-number: 10
-toggle: true
-end: Feature
-
-
-new: Feature: 142
-location: 50.0, 12.0, 0
-curr_height: 0
-remove: false
-number: 10
-toggle: true
-end: Feature
-
-
-new: Feature: 103
-location: 54.0, 14.0, 0
-curr_height: 0
-remove: false
-number: 10
-toggle: false
-end: Feature
-
-
-new: Feature: 103
-location: 50.0, 14.0, 0
-curr_height: 0
-remove: false
-number: 10
-toggle: false
-end: Feature
-
-
-new: Feature: 113
-location: 51.0, 14.0, 0
-curr_height: 0
-remove: false
-number: 2
-toggle: false
-end: Feature
-
-
-new: Feature: 114
-location: 53.0, 15.0, 0
-curr_height: 0
-remove: false
-number: 2
 toggle: false
 end: Feature
 
@@ -2302,6 +2131,15 @@ end: Feature
 
 new: Feature: 22
 location: 7.0, 1.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+
+new: Feature: 339
+location: 52.0, 11.0, 0
 curr_height: 0
 remove: false
 number: 0
@@ -2414,12 +2252,12 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Brown
-gearSlot: LEGS
-gearSlot: ERROR
 gearSlot: WEAPON
-gearSlot: FEET
 gearSlot: CHEST
+gearSlot: LEGS
 gearSlot: HEAD
+gearSlot: ERROR
+gearSlot: FEET
 facingX: 1.0
 facingY: 0.0
 base_health: 4.0

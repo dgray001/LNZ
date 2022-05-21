@@ -918,6 +918,17 @@ class Profile {
     this.save();
   }
 
+  void addInitialHero() {
+    if (this.heroes.size() > 0) {
+      global.errorMessage("ERROR: Cannot add initial hero when heroes already in profile.");
+      return;
+    }
+    Hero hero = new Hero(HeroCode.BEN);
+    hero.location = Location.FRANCISCAN_FRANCIS;
+    this.heroes.put(HeroCode.BEN, hero);
+    this.save();
+  }
+
   void addHero(HeroCode code) {
     if (this.heroes.containsKey(code)) {
       return;
@@ -927,6 +938,9 @@ class Profile {
   }
 
   void achievement(AchievementCode code) {
+    if (code == null) {
+      return;
+    }
     if (this.achievements.get(code).equals(Boolean.FALSE)) {
       this.achievements.put(code, Boolean.TRUE);
       this.achievement_tokens += code.tokens();

@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220521: v0.7.2b" +
+  "\n20220521: v0.7.2c" +
   "\nLines: 38164 (v0.7.2)" +
   "\nImages: 1102 (v0.7.2)" +
   "\nSounds: 250 (v0.7.2)" +
@@ -345,7 +345,7 @@ static class Constants {
   // AI
   static final float ai_chickenMoveDistance = 2;
   static final float ai_chickenTimer1 = 3000;
-  static final float ai_chickenTimer2 = 45000;
+  static final float ai_chickenTimer2 = 3000;
 
   // Items
   static final int item_disappearTimer = 300000; // 5 minutes

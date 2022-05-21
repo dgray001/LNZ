@@ -4641,15 +4641,6 @@ decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
-new: Effect
-ID: 8
-message: 
-number: 67
-decimal1: 0.0
-decimal2: 0.0
-rectangle: , 0.0, 0.0, 0.0, 0.0
-end: Effect
-
 end: Trigger
 
 nextTriggerKey: 126
@@ -4902,6 +4893,15 @@ decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
+new: Effect
+ID: 8
+message: 
+number: 67
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
 end: Trigger
 
 nextTriggerKey: 131
@@ -4942,6 +4942,15 @@ new: Effect
 ID: 7
 message: 
 number: 134
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 186
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
@@ -5110,18 +5119,18 @@ rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
 new: Effect
-ID: 33
+ID: 36
 message: 
-number: -6
+number: 80
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
 new: Effect
-ID: 34
+ID: 37
 message: 
-number: -6
+number: 80
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
@@ -5135,43 +5144,7 @@ new: Trigger
 triggerName: 
 active: false
 looping: false
-amalgam: true
-new: Condition
-ID: 1
-number1: 3000
-number2: 3000
-rectangle: , 0.0, 0.0, 0.0, 0.0
-met: false
-not_condition: false
-end: Condition
-
-new: Effect
-ID: 9
-message: 
-number: 8
-decimal1: 0.0
-decimal2: 0.0
-rectangle: , 0.0, 0.0, 0.0, 0.0
-end: Effect
-
-new: Effect
-ID: 9
-message: 
-number: 9
-decimal1: 0.0
-decimal2: 0.0
-rectangle: , 0.0, 0.0, 0.0, 0.0
-end: Effect
-
-new: Effect
-ID: 4
-message: Eat food and drink water to replenish your hunger and thirst
-number: 3
-decimal1: 0.0
-decimal2: 0.0
-rectangle: tutorial_soldiers, 16.0, 9.0, 18.0, 11.0
-end: Effect
-
+amalgam: false
 end: Trigger
 
 nextTriggerKey: 136
@@ -5935,6 +5908,24 @@ number: 191
 decimal1: 0.0
 decimal2: 0.0
 rectangle: tutorial_soldiers, 0.0, 9.0, 21.0, 11.0
+end: Effect
+
+new: Effect
+ID: 51
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 9.0, 8.0, 10.0, 9.0
+end: Effect
+
+new: Effect
+ID: 50
+message: 
+number: 339
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
 end: Trigger
@@ -6706,6 +6697,150 @@ new: Effect
 ID: 6
 message: 
 number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 182
+
+new: Trigger
+triggerName: 
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 183
+
+new: Trigger
+triggerName: ### Hidden Achievements
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: tutorial_soldiers, 52.0, 12.0, 53.0, 13.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: Congratulations! You found Chuck Quizmo! He is hidden in every level
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 52.0, 12.0, 53.0, 13.0
+end: Effect
+
+new: Effect
+ID: 0
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 184
+
+new: Trigger
+triggerName: chuck quizmo
+active: true
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: tutorial_soldiers, 52.0, 12.0, 53.0, 13.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: You found Chuck Quizmo! He is hidden once in every level
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 52.0, 12.0, 53.0, 13.0
+end: Effect
+
+new: Effect
+ID: 50
+message: 
+number: 12
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 185
+
+new: Trigger
+triggerName: ender chest
+active: true
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: tutorial_soldiers, 7.0, 1.0, 9.0, 3.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: You found an ender chest! These can be used to teleport items between levels
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 7.0, 1.0, 9.0, 3.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 186
+
+new: Trigger
+triggerName: kill rankin
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 7
+number1: 1004
+number2: 0
+rectangle: tutorial_soldiers, 13.0, 4.0, 42.0, 16.0
+met: false
+not_condition: true
+end: Condition
+
+new: Effect
+ID: 4
+message: Just treating him the way you want to be treated
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 13.0, 4.0, 42.0, 16.0
+end: Effect
+
+new: Effect
+ID: 52
+message: 
+number: 1
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0

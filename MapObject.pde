@@ -5,6 +5,12 @@ class IntegerCoordinate {
     this.x = x;
     this.y = y;
   }
+  boolean equals(IntegerCoordinate coordinate) {
+    if (this.x == coordinate.x && this.y == coordinate.y) {
+      return true;
+    }
+    return false;
+  }
 }
 
 
@@ -100,7 +106,8 @@ abstract class MapObject {
   }
 
   boolean inView(float xStart, float yStart, float xEnd, float yEnd) {
-    if (this.xi() >= xStart && this.yi() >= yStart && this.xf() <= xEnd && this.yf() <= yEnd) {
+    if (this.xi() >= xStart - Constants.small_number && this.yi() >= yStart - Constants.small_number &&
+      this.xf() <= xEnd + Constants.small_number && this.yf() <= yEnd + Constants.small_number) {
       this.in_view = true;
       return true;
     }

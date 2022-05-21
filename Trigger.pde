@@ -538,6 +538,9 @@ class Effect {
       case 47: // grant hero tree upgrade
       case 48: // refresh cooldown on ability
       case 49: // change terrain in rectangle
+      case 50: // add feature
+      case 51: // remove features in rectangle
+      case 52: // unlock achievement
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
@@ -694,6 +697,15 @@ class Effect {
         break;
       case 49: // change terrain in rectangle
         this.display_name = "Change Terrain to (" + this.number + ")";
+        break;
+      case 50: // add feature
+        this.display_name = "Add Feature (" + this.number + ")";
+        break;
+      case 51: // remove features in rectangle
+        this.display_name = "Remove Features from rectangle";
+        break;
+      case 52: // unlock achievement
+        this.display_name = "Unlock Achievement (" + this.number + ")";
         break;
       default:
         this.display_name = "Effect";
@@ -1080,6 +1092,25 @@ class Effect {
           }
         }
         level.currMap.refreshDisplayImages();
+        break;
+      case 50: // add feature
+        if (level.currMap == null) {
+          break;
+        }
+        level.currMap.addFeature(this.number, int(floor(this.rectangle.xi)), int(floor(this.rectangle.yi)));
+        break;
+      case 51: // remove features in rectangle
+        if (level.currMap == null) {
+          break;
+        }
+        for (Feature f : level.currMap.features) {
+          if (this.rectangle.contains(f)) {
+            f.remove = true;
+          }
+        }
+        break;
+      case 52: // unlock achievement
+        global.profile.achievement(AchievementCode.achievementCode(this.number));
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");

@@ -200,7 +200,6 @@ class MainMenuInterface extends InterfaceLNZ {
     void release() {
       if (this.hovered) {
         global.state = ProgramState.ENTERING_TUTORIAL;
-        global.profile.addHero(HeroCode.BEN);
       }
       super.release();
     }
@@ -581,7 +580,7 @@ class MainMenuInterface extends InterfaceLNZ {
           Profile p = new Profile(possibleProfileName);
           p.save();
           global.profile = p;
-          p.addHero(HeroCode.BEN);
+          p.addInitialHero();
           p.save();
           this.canceled = true;
           if (this.fields.get(4).getValue().equals("true")) {
