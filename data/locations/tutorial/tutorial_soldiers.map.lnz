@@ -1,8 +1,7 @@
 new: Map
-code: ERROR
+code: FRANCIS_FLOOR2
 mapName: tutorial_soldiers
 dimensions: 69, 20
-maxHeight: 10
 color_tint: 65793
 show_tint: false
 terrain: 0, 0: 1, 100, true
@@ -2255,10 +2254,10 @@ alliance: Ben
 element: Brown
 gearSlot: WEAPON
 gearSlot: CHEST
-gearSlot: LEGS
-gearSlot: HEAD
-gearSlot: ERROR
 gearSlot: FEET
+gearSlot: HEAD
+gearSlot: LEGS
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 base_health: 4.0

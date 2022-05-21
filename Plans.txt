@@ -1,13 +1,10 @@
 v0.7.2: PlayingInterface
  b: Pressing play game goes to HeroForm if multiple heroes
- d: Create mock Campaign I
  e: Create mock homebase near Franciscan
  f: Finishing Campaign sends hero back to homebase
  g: Can open and edit homebase
  h: Can redo Campaigns (only I so far)
  i: Can only start a Campaign if no other hero in that campaign (test by giving player multiple heroes)
- j: Other tutorial achievements (make 2 of the 3 locked rooms go away since not needed)
- k: Test achievements (killing Rankin and finding ender chest)
  l: Button in achievement form to view player tree
  m: Display level tokens and can click to view hero tree
  n: Fix OptionsForm buttons and set initialinterface volume lower (to default if not already, if is lower defaults)
@@ -21,15 +18,7 @@ v0.7.2: PlayingInterface
  - Chuck quizmo covers question, put him above it
 
   *Tutorial notes:
-     - Easter egg is if you can kill John Rankin he drops "The Third Ball"
-     - Killing John Rankin is an Achievement
-     - Done by body-blocking his escape route
-       - Wait for chicken to lay egg, then kill it, hatch egg to make another chicken (height 2)
-       - Use chicken to jump on water fountain (height 4), then onto Rankin (height 6)s
-     - A previously locked door is now unlocked which has an ender chest in it
-     - Place "The Third Ball" in the ender chest to have it for later
-     - Finding this chest is also an Achievement
-     - Prevent multiple guesses spammed on chuck quizmo
+     - Place "The Third Ball" in the ender chest to have it for later (TEST in mock campaign(s))
 
 Bugs:
  - Error where inventory not ended properly so hero never ended
@@ -37,7 +26,7 @@ Bugs:
  - Status effects on selected object left panel will have names behind others when hovered
  - tint affects other images still
 
- - If still has slots open start on parking lot
+ - If still has commits left start on the parking lot lines
 
 v0.7.3: Francis Hall maps
 v0.7.4: Francis Hall triggers

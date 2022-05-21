@@ -1,5 +1,5 @@
 new: Map
-code: ERROR
+code: FRANCIS_GROUND
 mapName: tutorial_frontdoor
 dimensions: 18, 30
 terrain: 0, 0: 1, 100, true
@@ -881,7 +881,6 @@ lifesteal: 0.0
 ammo: 200000
 toggled: true
 end: Item: Weapon
-gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 base_health: 3.5

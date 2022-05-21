@@ -58,6 +58,7 @@ void draw() {
         global.state = ProgramState.MAINMENU_INTERFACE;
         global.menu = new MainMenuInterface();
         global.sounds.play_background("main");
+        global.defaultCursor();
       }
       break;
     case MAINMENU_INTERFACE:
@@ -67,6 +68,7 @@ void draw() {
       global.state = ProgramState.MAPEDITOR_INTERFACE;
       global.menu = new MapEditorInterface();
       global.sounds.play_background("aoc");
+      global.defaultCursor();
       break;
     case MAPEDITOR_INTERFACE:
       break;
@@ -75,6 +77,7 @@ void draw() {
       global.state = ProgramState.TUTORIAL;
       global.menu = new TutorialInterface();
       global.sounds.play_background("starset");
+      global.defaultCursor();
       break;
     case TUTORIAL:
       break;
@@ -82,6 +85,7 @@ void draw() {
       background(60);
       global.state = ProgramState.PLAYING;
       global.menu = new PlayingInterface();
+      global.defaultCursor();
       break;
     case PLAYING:
       break;

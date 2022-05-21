@@ -9,8 +9,8 @@ respawn_timer: 0
 sleeping: false
 sleep_timer: 0
 in_control: true
-currMapName: tutorial_soldiers
-mapNames: tutorial_stairwell, tutorial_frontdoor, tutorial_soldiers
+currMapName: tutorial_frontdoor
+mapNames: tutorial_frontdoor, tutorial_soldiers, tutorial_stairwell
 
 new: Linker
 rect1: tutorial_frontdoor, 5.0, 26.0, 6.0, 27.0
@@ -48,7 +48,7 @@ nextTriggerKey: 2
 
 new: Trigger
 triggerName: lose control
-active: false
+active: true
 looping: false
 amalgam: true
 new: Effect
@@ -99,7 +99,7 @@ end: Condition
 new: Effect
 ID: 4
 message: Welcome to Liberal Feminazi Zombies!
-number: 1
+number: 4
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
@@ -269,7 +269,16 @@ end: Effect
 
 new: Effect
 ID: 4
-message: The second button opens the Options menu where you can adjust and save options to your profile
+message: where you can adjust and save options to your profile
+number: 2
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: The second button opens the Options menu,
 number: 2
 decimal1: 0.0
 decimal2: 0.0
@@ -620,7 +629,16 @@ end: Effect
 
 new: Effect
 ID: 4
-message: This display shows the hero you are playing, what they are holding, and the abilities they can use
+message: and the abilities they can use
+number: 2
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: This shows the hero you are playing, what they are holding,
 number: 2
 decimal1: 0.0
 decimal2: 0.0
@@ -674,7 +692,7 @@ end: Effect
 
 new: Effect
 ID: 4
-message: Here you can see detailed information about the hero you are playing
+message: Here you see detailed information about the hero you are playing
 number: 2
 decimal1: 0.0
 decimal2: 0.0
@@ -4365,7 +4383,7 @@ end: Effect
 new: Effect
 ID: 4
 message: EASY COMPANY!!!
-number: 2
+number: 5
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
@@ -6857,5 +6875,5 @@ end: Effect
 
 end: Trigger
 
-player_start_location: tutorial_stairwell, 4.0, 3.0, 5.0, 4.0
+player_start_location: tutorial_frontdoor, 10.0, 0.0, 11.0, 1.0
 end: Level

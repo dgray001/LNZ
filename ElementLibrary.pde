@@ -1090,6 +1090,7 @@ class ScrollBar {
     ScrollBarButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
       this.roundness = 0;
+      this.raised_border = true;
     }
 
     @Override

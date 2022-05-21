@@ -1,5 +1,7 @@
 enum GameMapCode {
-  ERROR, HOMEBASE, FRANCIS_FLOOR2, FRANCIS_FLOOR1, FRANCIS_GROUND;
+  ERROR, HOMEBASE, FRANCIS_FLOOR2, FRANCIS_FLOOR1, FRANCIS_GROUND, FRANCIS_OUTSIDE_FRONT,
+    FRANCIS_OUTSIDE_AHIM, FRANCIS_OUTSIDE_BROTHERS, FRANCIS_OUTSIDE_CHAPEL,
+    FRANCIS_OUTSIDE_CUSTODIAL;
 
   private static final List<GameMapCode> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 
@@ -16,6 +18,10 @@ enum GameMapCode {
         return "Francis Hall, 1st floor";
       case FRANCIS_GROUND:
         return "Francis Hall, ground floor";
+      case FRANCIS_OUTSIDE_FRONT:
+        return "Outside Francis Hall, front door";
+      case FRANCIS_OUTSIDE_AHIM:
+        return "Outside Francis Hall, Ahim door";
       default:
         return "-- Error --";
     }
@@ -34,6 +40,10 @@ enum GameMapCode {
         return "FRANCIS_FLOOR1";
       case FRANCIS_GROUND:
         return "FRANCIS_GROUND";
+      case FRANCIS_OUTSIDE_FRONT:
+        return "FRANCIS_OUTSIDE_FRONT";
+      case FRANCIS_OUTSIDE_AHIM:
+        return "FRANCIS_OUTSIDE_FRONT";
       default:
         return "ERROR";
     }
@@ -153,6 +163,16 @@ class GameMapSquare {
     }
     else {
       global.errorMessage("ERROR: Terrain ID " + id + " not found.");
+    }
+  }
+
+  boolean mapEdge() {
+    switch(this.terrain_id) {
+      case 1:
+      case 2:
+        return true;
+      default:
+        return false;
     }
   }
 
@@ -682,6 +702,11 @@ class GameMap {
       this.evaluateSize();
     }
 
+    void setTextSize(float text_size) {
+      this.text_size = text_size;
+      this.evaluateSize();
+    }
+
     void evaluateSize() {
       textSize(this.text_size);
       float size_width = textWidth(this.message) + 4;
@@ -712,7 +737,10 @@ class GameMap {
     }
 
     void placeCenter() {
-      this.text_size = 36;
+      this.placeCenter(34);
+    }
+    void placeCenter(float text_size) {
+      this.text_size = text_size;
       textSize(this.text_size);
       float size_width = textWidth(this.message) + 4;
       float size_height = textAscent() + textDescent() + 2;
@@ -984,7 +1012,7 @@ class GameMap {
       case DEFAULT:
         for (int i = 0; i < this.mapWidth; i++) {
           for (int j = 0; j < this.mapHeight; j++) {
-            if (this.squares[i][j].terrain_id == 1) {
+            if (this.squares[i][j].mapEdge()) {
               this.fog_dimg.colorGrid(Constants.color_transparent, i, j);
             }
             else if (!this.squares[i][j].explored) {
@@ -1011,7 +1039,7 @@ class GameMap {
         for (int i = 0; i < this.mapWidth; i++) {
           for (int j = 0; j < this.mapHeight; j++) {
             this.setTerrainVisible(true, i, j, false);
-            if (this.squares[i][j].terrain_id == 1) {
+            if (this.squares[i][j].mapEdge()) {
               this.fog_dimg.colorGrid(Constants.color_transparent, i, j);
             }
             else if (!this.squares[i][j].explored) {
@@ -1027,7 +1055,7 @@ class GameMap {
         for (int i = 0; i < this.mapWidth; i++) {
           for (int j = 0; j < this.mapHeight; j++) {
             this.exploreTerrain(i, j, false);
-            if (this.squares[i][j].terrain_id == 1) {
+            if (this.squares[i][j].mapEdge()) {
               this.fog_dimg.colorGrid(Constants.color_transparent, i, j);
             }
             else if (!this.squares[i][j].visible) {
@@ -1390,6 +1418,15 @@ class GameMap {
         header_message.show_time = 5000;
         header_message.clickable = false;
         break;
+      case 4: // center of screen and bigger
+        header_message.placeCenter(40);
+        header_message.clickable = false;
+        break;
+      case 5: // center of screen and bigger and longer
+        header_message.placeCenter(40);
+        header_message.show_time = 6000;
+        header_message.clickable = false;
+        break;
       default:
         break;
     }
@@ -1562,6 +1599,8 @@ class GameMap {
     textAlign(LEFT, TOP);
     float y_stats = this.yi + 31;
     float line_height = textAscent() + textDescent() + 2;
+    text("Map Location: " + this.code.display_name(), this.xi + 1, y_stats);
+    y_stats += line_height;
     text("FPS: " + int(global.lastFPS), this.xi + 1, y_stats);
     if (this.units.containsKey(0)) {
       y_stats += line_height;
@@ -2474,12 +2513,7 @@ class GameMap {
 
   void save(String folderPath) {
     PrintWriter file;
-    if (this.code == GameMapCode.ERROR) {
-      file = createWriter(folderPath + "/" + this.mapName + ".map.lnz");
-    }
-    else {
-      file = createWriter(folderPath + "/" + this.code.file_name() + ".map.lnz");
-    }
+    file = createWriter(folderPath + "/" + this.mapName + ".map.lnz");
     file.println("new: Map");
     file.println("code: " + this.code.file_name());
     file.println("mapName: " + this.mapName);
@@ -2526,12 +2560,7 @@ class GameMap {
   String[] open1File(String folderPath) {
     String[] lines;
     String path;
-    if (this.code == GameMapCode.ERROR) {
-      path = folderPath + "/" + this.mapName + ".map.lnz";
-    }
-    else {
-      path = folderPath + "/" + this.code.file_name() + ".map.lnz";
-    }
+    path = folderPath + "/" + this.mapName + ".map.lnz";
     lines = loadStrings(path);
     if (lines == null) {
       global.errorMessage("ERROR: Reading map at path " + path + " but no file exists.");

@@ -1,9 +1,7 @@
 new: Map
-code: ERROR
+code: FRANCIS_FLOOR1
 mapName: tutorial_stairwell
 dimensions: 7, 5
-color_tint: 65793
-show_tint: false
 terrain: 0, 0: 205, 100, true
 terrain: 0, 1: 205, 100, true
 terrain: 0, 2: 205, 100, true

@@ -340,6 +340,7 @@ class Level {
     this.player.setLocation(rect.centerX(), rect.centerY());
     this.player.stopAction();
     this.currMap.addPlayer(player);
+    this.currMap.addHeaderMessage(GameMapCode.display_name(this.currMap.code));
   }
 
   void openCurrMap() {
@@ -2624,6 +2625,7 @@ class Level {
     protected float time_before_cancel = Constants.level_quizmoTimeDelay;
     protected boolean canceling = false;
     protected boolean correct_guess = false;
+    protected boolean guessed = false;
 
     QuizmoForm(Feature f, Hero h) {
       super(0.5 * (width - Constants.level_quizmoFormWidth), 0.5 * (height - Constants.level_quizmoFormHeight),
@@ -2706,6 +2708,11 @@ class Level {
         Level.this.currMap.addVisualEffect(4009, this.chuck_quizmo.x + 0.7, this.chuck_quizmo.y - 0.4);
         return;
       }
+      if (this.guessed) {
+        return;
+      }
+      this.guessed = true;
+      this.fields.get(3).disable();
       int correct_answer = -1;
       switch(this.chuck_quizmo.number) {
         case 0:

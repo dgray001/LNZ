@@ -1,0 +1,20 @@
+new: Map
+code: FRANCIS_OUTSIDE_FRONT
+mapName: mock_campaign1_lev2_1
+dimensions: 4, 3
+maxHeight: 10
+color_tint: 65793
+show_tint: false
+terrain: 0, 0: 173, 0, false
+terrain: 0, 1: 173, 0, false
+terrain: 0, 2: 173, 0, false
+terrain: 1, 0: 173, 0, false
+terrain: 1, 1: 173, 0, false
+terrain: 1, 2: 173, 0, false
+terrain: 2, 0: 173, 0, false
+terrain: 2, 1: 173, 0, false
+terrain: 2, 2: 173, 0, false
+terrain: 3, 0: 173, 0, false
+terrain: 3, 1: 173, 0, false
+terrain: 3, 2: 173, 0, false
+end: Map
