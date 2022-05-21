@@ -12,9 +12,9 @@ v0.7.2: PlayingInterface
  l: Button in achievement form to view player tree
  m: Display level tokens and can click to view hero tree
  n: Fix OptionsForm buttons and set initialinterface volume lower (to default if not already, if is lower defaults)
- o: Show father as ben walks away, white cursor in player tree
+ o: Show father dom as ben walks away, white cursor in player tree
  p: Can drop items onto map from inventory view
- q: Background tracks / Rankin sounds in tutorial
+ q: Rankin sounds in tutorial
 
  - Fix all outstanding bugs
  - Make sure trigger timers reset when timers are to be reset

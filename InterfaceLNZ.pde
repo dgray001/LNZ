@@ -816,12 +816,15 @@ abstract class InterfaceLNZ {
 
   void LNZ_update(int millis) {
     if (global.profile != null && global.profile.player_tree.curr_viewing) {
+      global.setCursor("icons/cursor_white.png");
       global.profile.player_tree.update(millis);
     }
     else if (this.form == null) {
+      global.defaultCursor("icons/cursor_white.png");
       this.update(millis);
     }
     else {
+      global.defaultCursor("icons/cursor_white.png");
       this.form.update(millis);
       if (this.form.canceled) {
         this.form = null;

@@ -74,6 +74,7 @@ void draw() {
       background(60);
       global.state = ProgramState.TUTORIAL;
       global.menu = new TutorialInterface();
+      global.sounds.play_background("starset");
       break;
     case TUTORIAL:
       break;

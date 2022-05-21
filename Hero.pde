@@ -1257,7 +1257,12 @@ class Hero extends Unit {
 
 
     InventoryBar() {
-      this.setHeight(global.profile.options.inventory_bar_size);
+      if (global.profile == null) {
+        this.setHeight(Constants.hero_defaultInventoryBarHeight);
+      }
+      else {
+        this.setHeight(global.profile.options.inventory_bar_size);
+      }
     }
 
 

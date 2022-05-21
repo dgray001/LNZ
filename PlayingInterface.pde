@@ -490,7 +490,7 @@ class PlayingInterface extends InterfaceLNZ {
       global.setCursor("icons/cursor_resizeh.png");
     }
     else {
-      global.defaultCursor("icons/cursor_resizeh.png");
+      global.defaultCursor("icons/cursor_resizeh.png", "icons/cursor_resizeh_white.png");
     }
     if (this.rightPanel.open && !this.rightPanel.collapsing) {
       for (PlayingButton button : this.buttons) {

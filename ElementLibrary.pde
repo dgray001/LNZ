@@ -4912,5 +4912,6 @@ class Panel {
   void mouseRelease(float mX, float mY) {
     this.button.mouseRelease(mX, mY);
     this.clicked = false;
+    this.mouseMove(mX, mY);
   }
 }

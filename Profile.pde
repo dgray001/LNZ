@@ -1076,10 +1076,9 @@ Profile readProfile(String folder_path) {
         break;
     }
   }
-  p.profileUpdated();
   lines = loadStrings(folder_path + "/heroes.lnz");
   if (lines == null) {
-    global.errorMessage("ERROR: Reading heroes file but path " + (folder_path + "/heroes.lnz") + " doesn't exist.");
+    global.errorMessage("ERROR: Reading heroes file but file " + (folder_path + "/heroes.lnz") + " doesn't exist.");
     return p;
   }
   Stack<ReadFileObject> object_queue = new Stack<ReadFileObject>();
@@ -1112,6 +1111,7 @@ Profile readProfile(String folder_path) {
           if (curr_hero == null) {
             global.errorMessage("ERROR: Trying to start an inventory in a null hero.");
           }
+          object_queue.push(type);
           break;
         case ITEM:
           if (curr_hero == null) {

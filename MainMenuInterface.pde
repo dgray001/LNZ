@@ -275,7 +275,7 @@ class MainMenuInterface extends InterfaceLNZ {
           global.state = ProgramState.ENTERING_PLAYING;
         }
         else {
-          println("complete tutorial first");
+          MainMenuInterface.this.form = new CompleteTutorialForm();
         }
       }
     }
@@ -581,6 +581,8 @@ class MainMenuInterface extends InterfaceLNZ {
           Profile p = new Profile(possibleProfileName);
           p.save();
           global.profile = p;
+          p.addHero(HeroCode.BEN);
+          p.save();
           this.canceled = true;
           if (this.fields.get(4).getValue().equals("true")) {
             global.configuration.default_profile_name = possibleProfileName;
@@ -613,6 +615,54 @@ class MainMenuInterface extends InterfaceLNZ {
     @Override
     void buttonPress(int i) {
       MainMenuInterface.this.loadExistingProfile();
+    }
+  }
+
+
+  class CompleteTutorialForm extends FormLNZ {
+    protected float arrow_x = 0;
+    protected float arrow_y = 0;
+    CompleteTutorialForm() {
+      super(0.5 * width - 120, 0.5 * height - 120, 0.5 * width + 120, 0.5 * height + 120);
+      this.setTitleText("Play Game");
+      this.setTitleSize(18);
+      this.color_background = color(180, 250, 180);
+      this.color_header = color(30, 170, 30);
+      this.scrollbar.setButtonColors(color(170), color(190, 255, 190),
+        color(220, 255, 220), color(160, 220, 160), color(0));
+
+      SubmitFormField submit = new SubmitFormField("  Ok  ");
+      submit.button.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+      this.addField(new SpacerFormField(0));
+      TextBoxFormField textbox = new TextBoxFormField("Please complete the tutorial " +
+        "before launching the game.\nThe tutorial can be found here and normally takes " +
+        "about 10 minutes to complete.", 120);
+      textbox.textbox.scrollbar.setButtonColors(color(170), color(190, 255, 190),
+        color(220, 255, 220), color(160, 220, 160), color(0));
+      this.addField(textbox);
+      this.addField(submit);
+
+      MainMenuGrowButton button = null;
+      try {
+        button = MainMenuInterface.this.growButtons[4];
+        this.arrow_x = button.xf + 70;
+        this.arrow_y = button.yCenter();
+      } catch(ArrayIndexOutOfBoundsException e) {}
+    }
+    void update(int millis) {
+      super.update(millis);
+      int frame = int(floor(Constants.gif_arrow_frames * (millis %
+        Constants.gif_arrow_time) / (1 + Constants.gif_arrow_time)));
+      translate(this.arrow_x, this.arrow_y);
+      rotate(PI);
+      imageMode(CENTER);
+      image(global.images.getImage("gifs/arrow/" + frame + ".png"), 0, 0, 130, 130);
+      rotate(-PI);
+      translate(-this.arrow_x, -this.arrow_y);
+    }
+    void submit() {
+      this.canceled = true;
     }
   }
 
@@ -686,6 +736,14 @@ class MainMenuInterface extends InterfaceLNZ {
     }
     if (!fileExists("data/profiles/" + profile_name.toLowerCase() + "/profile.lnz")) {
       global.errorMessage("ERROR: Profile file missing for " + profile_name + ".");
+      return false;
+    }
+    if (!fileExists("data/profiles/" + profile_name.toLowerCase() + "/heroes.lnz")) {
+      global.errorMessage("ERROR: Heroes file missing for " + profile_name + ".");
+      return false;
+    }
+    if (!fileExists("data/profiles/" + profile_name.toLowerCase() + "/options.lnz")) {
+      global.errorMessage("ERROR: Options file missing for " + profile_name + ".");
       return false;
     }
     global.profile = readProfile(sketchPath("data/profiles/" + profile_name.toLowerCase()));
