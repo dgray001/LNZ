@@ -3021,7 +3021,7 @@ class Unit extends MapObject {
 
 
   void walkSound(int terrain_id) {
-    if (!this.in_view) {
+    if (!this.in_view || this.last_move_collision) {
       return;
     }
     // custom walk sounds

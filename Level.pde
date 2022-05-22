@@ -356,7 +356,7 @@ class Level {
     }
     if (!fileExists(this.finalFolderPath() + "/" + mapName + ".map.lnz")) {
       global.errorMessage("ERROR: Level " + this.levelName + " has no map " +
-        "with name " + mapName + ".");
+        "with name " + mapName + " at location " + this.finalFolderPath() + ".");
       this.nullify = true;
       return;
     }
