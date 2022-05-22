@@ -32,7 +32,10 @@ class PlayingInterface extends InterfaceLNZ {
         return;
       }
       this.stayDehovered();
-      PlayingInterface.this.form = new AbandonLevelForm();
+      Hero h = PlayingInterface.this.getCurrentHeroIfExists();
+      if (h != null) {
+        PlayingInterface.this.form = new AbandonLevelForm(h);
+      }
     }
   }
 
@@ -89,10 +92,90 @@ class PlayingInterface extends InterfaceLNZ {
     }
   }
 
-  class AbandonLevelForm extends ConfirmForm {
-    AbandonLevelForm() {
-      super("Abandon Level", "Are you sure you want to restart the tutorial? " +
-        "Any current progress will be lost.");
+
+  abstract class PlayingForm extends FormLNZ {
+    PlayingForm(String title, float formWidth, float formHeight) {
+      super(0.5 * (width - formWidth), 0.5 * (height - formHeight),
+        0.5 * (width + formWidth), 0.5 * (height + formHeight));
+      this.setTitleText(title);
+      this.setTitleSize(18);
+      this.color_background = color(180, 250, 180);
+      this.color_header = color(30, 170, 30);
+    }
+  }
+
+
+  class ConfirmStartLevelForm extends PlayingForm {
+    ConfirmStartLevelForm(Hero hero) {
+      super("Start Level: " + hero.location.display_name(), 550, 350);
+
+      MessageFormField message1 = new MessageFormField("Begin the following level?");
+      MessageFormField message2 = new MessageFormField("Hero: " + hero.display_name());
+      message2.text_color = color(120, 30, 120);
+      MessageFormField message3 = new MessageFormField("Location: " + hero.location.display_name());
+      message3.text_color = color(120, 30, 120);
+      SubmitCancelFormField submit = new SubmitCancelFormField("Begin Level", "Abandon Level");
+      submit.button1.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+      submit.button2.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+      ButtonFormField switch_hero = new ButtonFormField("Switch Hero");
+      switch_hero.button.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+
+      this.addField(new SpacerFormField(10));
+      this.addField(message1);
+      this.addField(message2);
+      this.addField(message3);
+      this.addField(new SpacerFormField(10));
+      this.addField(submit);
+      this.addField(switch_hero);
+    }
+
+    @Override
+    void cancel() {
+      // attempt to return to homebase (if exists, if not hero selector)
+    }
+
+    void submit() {
+      PlayingInterface.this.openLevelSave();
+    }
+
+    @Override
+    void buttonPress(int i) {
+      switch(i) {
+        case 6: // switch hero
+          println("Switch Hero Form");
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+
+  class ConfirmContinueLevelForm extends PlayingForm {
+    ConfirmContinueLevelForm(Hero hero) {
+      super("Continue Level: " + hero.location.display_name(), 550, 600);
+    }
+
+    @Override
+    void cancel() {
+      // hero selector form
+    }
+
+    void submit() {
+    }
+
+    @Override
+    void buttonPress(int i) {
+    }
+  }
+
+
+  class AbandonLevelForm extends PlayingForm {
+    AbandonLevelForm(Hero hero) {
+      super("Abandon Level: " + hero.location.display_name(), 550, 600);
     }
     void submit() {
       this.canceled = true;
@@ -103,12 +186,12 @@ class PlayingInterface extends InterfaceLNZ {
 
   class OpenNewLevelThread extends Thread {
     private Level level;
-    private Location location;
+    private Hero hero;
     private String curr_status = "";
 
-    OpenNewLevelThread(Location location) {
+    OpenNewLevelThread(Hero hero) {
       super("OpenNewLevelThread");
-      this.location = location;
+      this.hero = hero;
     }
 
     @Override
@@ -189,6 +272,7 @@ class PlayingInterface extends InterfaceLNZ {
   private Panel rightPanel = new Panel(RIGHT, Constants.mapEditor_panelMinWidth,
     Constants.mapEditor_panelMaxWidth, Constants.mapEditor_panelStartWidth);
 
+  private String savePath = "data/profiles/" + global.profile.display_name.toLowerCase() + "/locations/";
   private Level level = null;
   private PlayingStatus status = PlayingStatus.INITIAL;
 
@@ -223,12 +307,60 @@ class PlayingInterface extends InterfaceLNZ {
 
 
   void checkLevelSave() {
-    // check location of currHero from profile
+    if (global.profile.curr_hero == null || global.profile.curr_hero == HeroCode.ERROR) {
+      global.errorMessage("ERROR: Profile has no current hero.");
+      return;
+    }
+    Hero curr_hero = global.profile.heroes.get(global.profile.curr_hero);
+    if (curr_hero == null) {
+      global.errorMessage("ERROR: Profile missing curr hero " + global.profile.curr_hero + ".");
+      return;
+    }
+    if (curr_hero.location == null || curr_hero.location == Location.ERROR) {
+      global.errorMessage("ERROR: Hero " + curr_hero.display_name() + " missing location data.");
+      return;
+    }
+    if (folderExists(this.savePath + curr_hero.location.file_name())) {
+      this.form = new ConfirmContinueLevelForm(curr_hero);
+    }
+    else {
+      this.form = new ConfirmStartLevelForm(curr_hero);
+    }
   }
 
-  void startNewLevel() {
-    // from location of currHero from profile
+
+  void openLevelSave() {
+    if (this.level != null) {
+      global.errorMessage("ERROR: Trying to open level save when current level not null.");
+      return;
+    }
+    if (this.status != PlayingStatus.INITIAL) {
+      global.errorMessage("ERROR: Trying to open level save when current status is " + this.status + ".");
+      return;
+    }
+    if (global.profile.curr_hero == null || global.profile.curr_hero == HeroCode.ERROR) {
+      global.errorMessage("ERROR: Profile has no current hero.");
+      return;
+    }
+    Hero curr_hero = global.profile.heroes.get(global.profile.curr_hero);
+    if (curr_hero == null) {
+      global.errorMessage("ERROR: Profile missing curr hero " + global.profile.curr_hero + ".");
+      return;
+    }
+    if (curr_hero.location == null || curr_hero.location == Location.ERROR) {
+      global.errorMessage("ERROR: Hero " + curr_hero.display_name() + " missing location data.");
+      return;
+    }
+    if (folderExists(this.savePath + curr_hero.location.file_name())) {
+      this.form = new ConfirmContinueLevelForm(curr_hero);
+    }
+    else {
+      status = PlayingStatus.STARTING_NEW;
+      this.newLevelThread = new OpenNewLevelThread(curr_hero);
+      this.newLevelThread.start();
+    }
   }
+
 
   void completedLevel(int completion_code) {
     global.log("Completed level with code " + completion_code + ".");
@@ -257,7 +389,7 @@ class PlayingInterface extends InterfaceLNZ {
       return;
     }
     this.level.save();
-    // save profile heroes
+    global.profile.saveHeroesFile();
   }
 
   void saveAndExitToMainMenu() {
@@ -395,6 +527,9 @@ class PlayingInterface extends InterfaceLNZ {
       if (this.level != null) {
         this.level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
       }
+    }
+    if (this.status == PlayingStatus.INITIAL) {
+      this.checkLevelSave();
     }
   }
 
