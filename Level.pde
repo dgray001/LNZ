@@ -1941,6 +1941,13 @@ class Level {
             this.player.heroTree.setLocation(this.xi, this.yi, this.xf, this.yf);
           }
           break;
+        case 'c':
+        case 'C':
+          if (global.holding_ctrl && this.player != null) {
+            this.completed = true;
+            this.completion_code = 0;
+          }
+          break;
       }
     }
   }

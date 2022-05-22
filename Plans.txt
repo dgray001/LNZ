@@ -6,7 +6,7 @@ v0.7.2: PlayingInterface
  i: Can only start a Campaign if no other hero in that campaign (test by giving player multiple heroes)
  l: Button in achievement form to view player tree
  m: Display level tokens and can click to view hero tree
- n: Fix OptionsForm buttons and set initialinterface volume lower (to default if not already, if is lower defaults)
+ n: Fix/upgrade OptionsForm buttons and set initialinterface volume lower (to default if not already, if is lower defaults)
  p: Can drop items onto map from inventory view
  q: Rankin sounds in tutorial
 
@@ -14,14 +14,10 @@ v0.7.2: PlayingInterface
  - Chuck quizmo covers question, put him above it
  - Make Achievements form a little darker is so bright
  - Completed tutorial but not unlocked perk give arrow/form for that
- - Either unlocking perk or opening PlayingInterface reset Profile heroes again (saved empty file...)
-      ===> Second time neither of these reset the heroes.lnz but logging out and back in did
  - Can hover items in inventory
  - If hovering status effect don't hover map objects
  - Save music track/location in level
- - Can pick up any item regardless of tier
  - Can only move away from center of feature that's too tall (like with unit collisions)
- - Make space buttons not raised
 
   *Tutorial notes:
      - Place "The Third Ball" in the ender chest to have it for later (TEST in mock campaign(s))

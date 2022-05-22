@@ -2130,9 +2130,6 @@ class Item extends MapObject {
 
 
   boolean targetable(Unit u) {
-    if (this.tier > u.tier()) {
-      return false;
-    }
     return true;
   }
 

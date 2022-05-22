@@ -1238,6 +1238,7 @@ class ScrollBar {
     ScrollBarUpSpaceButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
       this.setColors(color(180), color(235), color(235), color(0), color(0));
+      this.raised_border = false;
     }
     void click() {
       ScrollBar.this.decreaseValuePercent(0.1);
@@ -1253,6 +1254,7 @@ class ScrollBar {
     ScrollBarDownSpaceButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
       this.setColors(color(180), color(235), color(235), color(0), color(0));
+      this.raised_border = false;
     }
     void click() {
       ScrollBar.this.increaseValuePercent(0.1);

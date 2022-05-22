@@ -406,6 +406,13 @@ abstract class InterfaceLNZ {
         InterfaceLNZ.this.openHeroForm(code_clicked);
       }
     }
+
+    void keyPress() {
+      super.keyPress();
+      if (key == 'h' && global.holding_ctrl) {
+        this.cancel();
+      }
+    }
   }
 
 
@@ -733,6 +740,13 @@ abstract class InterfaceLNZ {
           break;
       }
     }
+
+    void keyPress() {
+      super.keyPress();
+      if (key == 'o' && global.holding_ctrl) {
+        this.cancel();
+      }
+    }
   }
 
 
@@ -772,6 +786,13 @@ abstract class InterfaceLNZ {
     }
 
     void submit() {
+    }
+
+    void keyPress() {
+      super.keyPress();
+      if (key == 'a' && global.holding_ctrl) {
+        this.cancel();
+      }
     }
   }
 

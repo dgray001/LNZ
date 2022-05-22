@@ -134,7 +134,7 @@ void mkdir(Path p, boolean replace, boolean replace_file) {
       println("ERROR: IOException at mkdir(" + p + ")");
     }
   }
-  else if ((replace || replace_file) && !Files.isDirectory(p)) {
+  else if (replace_file && !Files.isDirectory(p)) {
     deleteFile(p);
     try {
       Files.createDirectory(p);

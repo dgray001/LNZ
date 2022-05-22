@@ -425,6 +425,8 @@ class MainMenuInterface extends InterfaceLNZ {
     }
 
     void submit() {
+      global.profile.save();
+      global.profile = null;
       MainMenuInterface.this.loadExistingProfile();
     }
   }
@@ -468,6 +470,7 @@ class MainMenuInterface extends InterfaceLNZ {
       this.profiles = listFolders("data/profiles");
       if (this.profiles.size() == 0) {
         MainMenuInterface.this.createNewProfile();
+        return;
       }
       for (Path p : this.profiles) {
         radios.addRadio(p.getFileName().toString() + "  ");
@@ -542,12 +545,12 @@ class MainMenuInterface extends InterfaceLNZ {
       this.color_background = color(250, 180, 180);
       this.color_header = color(180, 50, 50);
 
-      StringFormField input = new StringFormField("", "Enter profile name");
+      StringFormField input = new StringFormField("  ", "Enter profile name");
       input.input.typing = true;
-      MessageFormField error = new MessageFormField("");
+      MessageFormField error = new MessageFormField(" ");
       error.text_color = color(150, 20, 20);
       error.setTextSize(18);
-      CheckboxFormField checkbox = new CheckboxFormField("Save as default profile  ");
+      CheckboxFormField checkbox = new CheckboxFormField(" Save as default profile  ");
       checkbox.setTextSize(16);
       checkbox.checkbox.checked = true;
       SubmitFormField submit = new SubmitFormField("Create New Profile");
@@ -679,7 +682,6 @@ class MainMenuInterface extends InterfaceLNZ {
     @Override
     void run() {
       DImg dimg = new DImg(this.img);
-      //dimg.brightenGradient(0.02, this.distance_threshhold, this.mX, this.mY);
       dimg.transparencyGradientFromPoint(this.mX, this.mY, this.distance_threshhold);
       this.img = dimg.img;
     }

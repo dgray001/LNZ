@@ -872,7 +872,7 @@ class Profile {
         this.node_details.keyPress();
         return;
       }
-      if (key == ESC) {
+      if (key == ESC || (key == 'p' && global.holding_ctrl)) {
         this.curr_viewing = false;
       }
     }
@@ -930,7 +930,7 @@ class Profile {
     hero.location = Location.FRANCISCAN_FRANCIS;
     this.heroes.put(HeroCode.BEN, hero);
     this.curr_hero = HeroCode.BEN;
-    this.save();
+    this.saveHeroesFile();
   }
 
   void addHero(HeroCode code) {
@@ -948,7 +948,7 @@ class Profile {
     if (this.achievements.get(code).equals(Boolean.FALSE)) {
       this.achievements.put(code, Boolean.TRUE);
       this.achievement_tokens += code.tokens();
-      this.save();
+      this.saveProfileFile();
       global.notification = new AchievementNotification(code);
       global.log("Completed achievement: " + code.display_name());
     }
@@ -959,14 +959,15 @@ class Profile {
       default:
         break;
     }
-    this.save();
+    this.saveProfileFile();
+    global.log("Unlocked perk: " + code.display_name());
   }
 
   boolean upgraded(PlayerTreeCode code) {
     return this.player_tree.nodes.get(code).unlocked;
   }
 
-  void save() {
+  void saveProfileFile() {
     if (this.display_name.equals("")) {
       return;
     }
@@ -986,12 +987,27 @@ class Profile {
     file.println(this.ender_chest.internalFileString());
     file.flush();
     file.close();
+  }
+
+  void saveHeroesFile() {
+    if (this.display_name.equals("")) {
+      return;
+    }
     PrintWriter heroes_file = createWriter(sketchPath("data/profiles/" + this.display_name.toLowerCase() + "/heroes.lnz"));
     for (Map.Entry<HeroCode, Hero> entry : this.heroes.entrySet()) {
       heroes_file.println(entry.getValue().fileString());
+      heroes_file.println("");
     }
     heroes_file.flush();
     heroes_file.close();
+  }
+
+  void save() {
+    if (this.display_name.equals("")) {
+      return;
+    }
+    this.saveProfileFile();
+    this.saveHeroesFile();
     this.options.save();
   }
 }
@@ -1124,6 +1140,7 @@ Profile readProfile(String folder_path) {
           }
           object_queue.push(type);
           curr_hero = new Hero(toInt(trim(parameters[2])));
+          curr_hero.abilities.clear();
           break;
         case INVENTORY:
           if (curr_hero == null) {
