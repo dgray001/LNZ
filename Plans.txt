@@ -1,20 +1,21 @@
 v0.7.2: PlayingInterface
- b: Pressing play game goes to HeroForm if multiple heroes
- f: Finishing Campaign sends hero back to homebase
- g: Can open and edit homebase
- h: Can redo Campaigns (only I so far)
- i: Can only start a Campaign if no other hero in that campaign (test by giving player multiple heroes)
- l: Button in achievement form to view player tree
- m: Display level tokens and can click to view hero tree
- n: Fix/upgrade OptionsForm buttons and set initialinterface volume lower (to default if not already, if is lower defaults)
- p: Can drop items onto map from inventory view
- q: Rankin sounds in tutorial
+ k: Finishing mock level goes to next mock level
+ l: Can finish mock campaign and unlock corresponding homebase (save in profile which homebases are active)
+ m: Can restart / abandon level
+ n: Can open and edit homebase
+ o: Can redo Campaigns (only I so far)
+ p: Can only start a Campaign if no other hero in that campaign (test by giving player multiple heroes)
+ q: Button in achievement form to view player tree (upgrade achievementform in general)
+ r: Display level tokens and can click to view hero tree
+ s: Fix/upgrade OptionsForm buttons and set initialinterface volume lower (to default if not already, if is lower defaults)
+ t: Can drop items onto map from inventory view / Can hover items in inventory
+ u: Rankin sounds in tutorial
+ v: If playing track hasn't been chosen have form to choose it (then can edit in optionsform with all options including aoc / etc.)
 
  - Fix all outstanding bugs
  - Chuck quizmo covers question, put him above it
  - Make Achievements form a little darker is so bright
  - Completed tutorial but not unlocked perk give arrow/form for that
- - Can hover items in inventory
  - If hovering status effect don't hover map objects
  - Save music track/location in level
  - Can only move away from center of feature that's too tall (like with unit collisions)

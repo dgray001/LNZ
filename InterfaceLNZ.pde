@@ -418,6 +418,7 @@ abstract class InterfaceLNZ {
 
   class HeroForm extends FormLNZ {
     protected Hero hero;
+    protected boolean switch_hero = true;
     HeroForm(Hero hero) {
       super(0.5 * (width - Constants.profile_heroFormWidth), 0.5 * (height - Constants.profile_heroFormHeight),
         0.5 * (width + Constants.profile_heroFormWidth), 0.5 * (height + Constants.profile_heroFormHeight));
@@ -431,14 +432,33 @@ abstract class InterfaceLNZ {
       this.color_title = elementalColorText(e);
       this.setFieldCushion(15);
 
+      MessageFormField message1 = new MessageFormField("Location: " + hero.location.display_name());
+      message1.text_color = elementalColorText(hero.element);
+      MessageFormField message2 = new MessageFormField(hero.code.title());
+      message2.text_color = elementalColorText(hero.element);
+      TextBoxFormField textbox = new TextBoxFormField(hero.code.description(), 100);
+      textbox.textbox.color_text = elementalColorText(hero.element);
+
       this.addField(new SpacerFormField(80));
-      this.addField(new MessageFormField("Location: " + hero.location.display_name()));
+      this.addField(message1);
       if (PlayingInterface.class.isInstance(InterfaceLNZ.this)) {
-        this.addField(new SubmitFormField(" Play "));
+        SubmitFormField submit = null;
+        if (global.profile.curr_hero == hero.code) {
+          submit = new SubmitFormField("Continue Playing");
+          this.switch_hero = false;
+        }
+        else {
+          submit = new SubmitFormField("Play Hero");
+        }
+        submit.button.text_size = 18;
+        submit.button.setColors(elementalColorLocked(hero.element), elementalColor(
+          hero.element), elementalColorLight(hero.element), elementalColorDark(
+          hero.element), elementalColorText(hero.element));
+        this.addField(submit);
       }
       this.addField(new SpacerFormField(10));
-      this.addField(new MessageFormField(hero.code.title()));
-      this.addField(new TextBoxFormField(hero.code.description(), 100));
+      this.addField(message2);
+      this.addField(textbox);
       this.addField(new SpacerFormField(10));
     }
 
@@ -450,8 +470,11 @@ abstract class InterfaceLNZ {
     }
 
     void submit() {
-      println("switch to hero.");
-      // switch to hero
+      if (this.switch_hero && PlayingInterface.class.isInstance(InterfaceLNZ.this)) {
+        ((PlayingInterface)InterfaceLNZ.this).switchHero(this.hero);
+      }
+      this.canceled = true;
+      InterfaceLNZ.this.return_to_heroes_menu = false;
     }
 
     void buttonPress(int i) {}

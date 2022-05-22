@@ -77,7 +77,7 @@ enum HeroCode {
       case BEN:
         return "Ben description";
       case DAN:
-        return "";
+        return "Dan description";
       case JF:
         return "";
       case SPINNY:

@@ -930,6 +930,9 @@ class Profile {
     hero.location = Location.FRANCISCAN_FRANCIS;
     this.heroes.put(HeroCode.BEN, hero);
     this.curr_hero = HeroCode.BEN;
+    Hero hero2 = new Hero(HeroCode.DAN);
+    hero2.location = Location.FRANCISCAN_FRANCIS;
+    this.heroes.put(HeroCode.DAN, hero2);
     this.saveHeroesFile();
   }
 

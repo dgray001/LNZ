@@ -34,7 +34,12 @@ class PlayingInterface extends InterfaceLNZ {
       this.stayDehovered();
       Hero h = PlayingInterface.this.getCurrentHeroIfExists();
       if (h != null) {
-        PlayingInterface.this.form = new AbandonLevelForm(h);
+        //if (homebase explored) {
+          //PlayingInterface.this.abandonLevel();
+        //}
+        //else {
+          PlayingInterface.this.restartLevel();
+        //}
       }
     }
   }
@@ -134,7 +139,12 @@ class PlayingInterface extends InterfaceLNZ {
 
     @Override
     void cancel() {
-      // attempt to return to homebase (if exists, if not hero selector)
+      //if (homebase explored) {
+        //PlayingInterface.this.abandonLevel();
+      //}
+      //else {
+        PlayingInterface.this.heroesForm();
+      //}
     }
 
     void submit() {
@@ -146,7 +156,7 @@ class PlayingInterface extends InterfaceLNZ {
     void buttonPress(int i) {
       switch(i) {
         case 6: // switch hero
-          println("Switch Hero Form");
+          PlayingInterface.this.heroesForm();
           break;
         default:
           break;
@@ -184,7 +194,12 @@ class PlayingInterface extends InterfaceLNZ {
 
     @Override
     void cancel() {
-      // attempt to return to homebase (if exists, if not restart level)
+      //if (homebase explored) {
+        //PlayingInterface.this.abandonLevel();
+      //}
+      //else {
+        PlayingInterface.this.restartLevel();
+      //}
     }
 
     void submit() {
@@ -196,7 +211,7 @@ class PlayingInterface extends InterfaceLNZ {
     void buttonPress(int i) {
       switch(i) {
         case 6: // switch hero
-          println("Switch Hero Form");
+          PlayingInterface.this.heroesForm();
           break;
         default:
           break;
@@ -220,53 +235,62 @@ class PlayingInterface extends InterfaceLNZ {
     private Level level = null;
     private Hero hero = null;
     private String curr_status = "";
+    private boolean running = true;
 
     OpenNewLevelThread(Hero hero) {
       super("OpenNewLevelThread");
       this.hero = hero;
     }
 
+    void stopThread() {
+      this.running = false;
+      deleteFolder(PlayingInterface.this.savePath + this.hero.location.file_name());
+    }
+
     @Override
     void run() {
-      this.curr_status += "Gathering Level Data";
-      if (this.hero == null) {
-        this.curr_status += " -> No hero found.";
-        delay(2500);
-        return;
-      }
-      if (this.hero.location == null || this.hero.location == Location.ERROR) {
-        this.curr_status += " -> No hero location found.";
-        delay(2500);
-        return;
-      }
-      this.level = new Level("data/locations", this.hero.location);
-      if (this.level.nullify) {
-        this.curr_status += " -> " + global.lastErrorMessage();
-        delay(2500);
-        return;
-      }
-      this.curr_status += "\nCopying Data";
-      mkdir(PlayingInterface.this.savePath);
-      String destination_folder = PlayingInterface.this.savePath + this.hero.location.file_name();
-      deleteFolder(destination_folder);
-      copyFolder("data/locations/" + this.hero.location.file_name(), destination_folder);
-      this.level.folderPath = PlayingInterface.this.savePath;
-      this.level.save();
-      if (this.level.nullify) {
-        this.curr_status += " -> " + global.lastErrorMessage();
-        delay(2500);
-        return;
-      }
-      this.curr_status += "\nOpening Map";
-      this.level.setPlayer(this.hero);
-      if (this.level.nullify) {
-        this.curr_status += " -> " + global.lastErrorMessage();
-        delay(2500);
-        return;
-      }
-      if (!global.images.loaded_map_gifs) {
-        this.curr_status += "\nLoading Animations";
-        global.images.loadMapGifs();
+      while(this.running) {
+        this.curr_status += "Gathering Level Data";
+        if (this.hero == null) {
+          this.curr_status += " -> No hero found.";
+          delay(2500);
+          return;
+        }
+        if (this.hero.location == null || this.hero.location == Location.ERROR) {
+          this.curr_status += " -> No hero location found.";
+          delay(2500);
+          return;
+        }
+        this.level = new Level("data/locations", this.hero.location);
+        if (this.level.nullify) {
+          this.curr_status += " -> " + global.lastErrorMessage();
+          delay(2500);
+          return;
+        }
+        this.curr_status += "\nCopying Data";
+        mkdir(PlayingInterface.this.savePath);
+        String destination_folder = PlayingInterface.this.savePath + this.hero.location.file_name();
+        deleteFolder(destination_folder);
+        copyFolder("data/locations/" + this.hero.location.file_name(), destination_folder);
+        this.level.folderPath = PlayingInterface.this.savePath;
+        this.level.save();
+        if (this.level.nullify) {
+          this.curr_status += " -> " + global.lastErrorMessage();
+          delay(2500);
+          return;
+        }
+        this.curr_status += "\nOpening Map";
+        this.level.setPlayer(this.hero);
+        if (this.level.nullify) {
+          this.curr_status += " -> " + global.lastErrorMessage();
+          delay(2500);
+          return;
+        }
+        if (!global.images.loaded_map_gifs) {
+          this.curr_status += "\nLoading Animations";
+          global.images.loadMapGifs();
+        }
+        break;
       }
     }
   }
@@ -276,43 +300,51 @@ class PlayingInterface extends InterfaceLNZ {
     private Level level = null;
     private Hero hero = null;
     private String curr_status = "";
+    private boolean running = true;
 
     OpenSavedLevelThread(Hero hero) {
       super("OpenSavedLevelThread");
       this.hero = hero;
     }
 
+    void stopThread() {
+      this.running = false;
+    }
+
     @Override
     void run() {
-      this.curr_status += "Opening Saved Level";
-      if (this.hero == null) {
-        this.curr_status += " -> No hero found.";
-        delay(2500);
-        return;
-      }
-      if (this.hero.location == null || this.hero.location == Location.ERROR) {
-        this.curr_status += " -> No hero location found.";
-        delay(2500);
-        return;
-      }
-      String destination_folder = "data/profiles/" + global.profile.display_name.toLowerCase() + "/locations/";
-      this.level = new Level(destination_folder, this.hero.location);
-      if (this.level.nullify) {
-        this.curr_status += " -> " + global.lastErrorMessage();
-        delay(2500);
-        return;
-      }
-      curr_status += "\nOpening Map";
-      this.level.openCurrMap();
-      this.level.addPlayer(this.hero);
-      if (this.level.nullify) {
-        this.curr_status += " -> " + global.lastErrorMessage();
-        delay(2500);
-        return;
-      }
-      if (!global.images.loaded_map_gifs) {
-        this.curr_status += "\nLoading Animations";
-        global.images.loadMapGifs();
+      while(this.running) {
+        this.curr_status += "Opening Saved Level";
+        if (this.hero == null) {
+          this.curr_status += " -> No hero found.";
+          delay(2500);
+          return;
+        }
+        if (this.hero.location == null || this.hero.location == Location.ERROR) {
+          this.curr_status += " -> No hero location found.";
+          delay(2500);
+          return;
+        }
+        String destination_folder = "data/profiles/" + global.profile.display_name.toLowerCase() + "/locations/";
+        this.level = new Level(destination_folder, this.hero.location);
+        if (this.level.nullify) {
+          this.curr_status += " -> " + global.lastErrorMessage();
+          delay(2500);
+          return;
+        }
+        curr_status += "\nOpening Map";
+        this.level.openCurrMap();
+        this.level.addPlayer(this.hero);
+        if (this.level.nullify) {
+          this.curr_status += " -> " + global.lastErrorMessage();
+          delay(2500);
+          return;
+        }
+        if (!global.images.loaded_map_gifs) {
+          this.curr_status += "\nLoading Animations";
+          global.images.loadMapGifs();
+        }
+        break;
       }
     }
   }
@@ -436,6 +468,62 @@ class PlayingInterface extends InterfaceLNZ {
     status = PlayingStatus.LOADING_SAVED;
     this.savedLevelThread = new OpenSavedLevelThread(curr_hero);
     this.savedLevelThread.start();
+  }
+
+  void restartLevel() {
+    // to restart level need to have a hero saved from before it started level
+  }
+
+  void abandonLevel() {
+    // to abandon level need to have a hero saved from before it started level
+  }
+
+  void switchHero(Hero hero) {
+    if (hero == null || hero.code == null || hero.code == HeroCode.ERROR) {
+      global.errorMessage("Can't switch to a hero code that doesn't exist.");
+      return;
+    }
+    if (!global.profile.heroes.containsKey(hero.code)) {
+      global.errorMessage("Can't switch to a hero that hasn't been unlocked.");
+      return;
+    }
+    if (global.profile.curr_hero == hero.code) {
+      return;
+    }
+    switch(this.status) {
+      case INITIAL:
+        break;
+      case STARTING_NEW:
+        if (this.newLevelThread == null) {
+          global.errorMessage("No thread in new level status.");
+          break;
+        }
+        this.newLevelThread.stopThread();
+        this.newLevelThread = null;
+        break;
+      case LOADING_SAVED:
+        if (this.savedLevelThread == null) {
+          global.errorMessage("No thread in open level status.");
+          break;
+        }
+        this.savedLevelThread.stopThread();
+        this.savedLevelThread = null;
+        break;
+      case PLAYING:
+        if (this.level == null) {
+          global.errorMessage("No level in playing status.");
+          break;
+        }
+        this.level.save();
+        this.level = null;
+        break;
+      default:
+        global.errorMessage("Playing status " + this.status + " not recognized.");
+        break;
+    }
+    global.profile.saveHeroesFile();
+    global.profile.curr_hero = hero.code;
+    this.status = PlayingStatus.INITIAL;
   }
 
 
@@ -588,7 +676,7 @@ class PlayingInterface extends InterfaceLNZ {
         }
         break;
       default:
-        global.errorMessage("Tutorial status " + this.status + " not recognized.");
+        global.errorMessage("Playing status " + this.status + " not recognized.");
         break;
     }
     this.leftPanel.update(millis);
