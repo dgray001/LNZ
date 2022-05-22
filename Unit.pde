@@ -1863,7 +1863,18 @@ class Unit extends MapObject {
               if (!this.ai_controlled) {
                 i.pickupSound();
               }
-              if (myKey == 0) {
+              if (this.map_key == 0) {
+                map.selected_object = this.weapon();
+              }
+            }
+            else if (this.weapon().ID == i.ID && this.weapon().maxStack() > this.weapon().stack) {
+              int stack_to_pickup = min(this.weapon().maxStack() - this.weapon().stack, i.stack);
+              i.removeStack(stack_to_pickup);
+              this.weapon().addStack(stack_to_pickup);
+              if (!this.ai_controlled) {
+                i.pickupSound();
+              }
+              if (this.map_key == 0) {
                 map.selected_object = this.weapon();
               }
             }

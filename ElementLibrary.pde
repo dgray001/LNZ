@@ -592,6 +592,13 @@ abstract class IconButton extends RippleRectangleButton {
   @Override
   void update(int millis) {
     rectMode(CORNERS);
+    if (this.show_stroke) {
+      stroke(this.color_stroke);
+      strokeWeight(this.stroke_weight);
+    }
+    else {
+      noStroke();
+    }
     fill(this.background_color);
     rect(this.xi, this.yi, this.xf, this.yf);
     imageMode(CORNER);
@@ -628,6 +635,13 @@ abstract class IconInverseButton extends IconButton {
     image(this.icon, this.xi, this.yi, this.icon_width, this.icon_width);
     if (this.disabled) {
       rectMode(CORNERS);
+      if (this.show_stroke) {
+        stroke(this.color_stroke);
+        strokeWeight(this.stroke_weight);
+      }
+      else {
+        noStroke();
+      }
       fill(this.background_color);
       rect(this.xi, this.yi, this.xf, this.yf);
     }

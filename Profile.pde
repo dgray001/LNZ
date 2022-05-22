@@ -93,7 +93,7 @@ class Profile {
     void defaults() {
       this.volume_master = Constants.options_defaultVolume;
       this.volume_master_muted = false;
-      this.volume_music = Constants.options_defaultVolume;
+      this.volume_music = Constants.options_defaultMusicVolume;
       this.volume_music_muted = false;
       this.volume_interface = Constants.options_defaultVolume;
       this.volume_interface_muted = false;
@@ -482,6 +482,9 @@ class Profile {
         }
         else {
           buttons.button1.disabled = true;
+          if (node.unlocked) {
+            buttons.button1.message = "Unlocked";
+          }
         }
         this.addField(buttons);
       }
@@ -926,6 +929,7 @@ class Profile {
     Hero hero = new Hero(HeroCode.BEN);
     hero.location = Location.FRANCISCAN_FRANCIS;
     this.heroes.put(HeroCode.BEN, hero);
+    this.curr_hero = HeroCode.BEN;
     this.save();
   }
 

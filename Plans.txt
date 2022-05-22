@@ -1,6 +1,5 @@
 v0.7.2: PlayingInterface
  b: Pressing play game goes to HeroForm if multiple heroes
- e: Create mock homebase near Franciscan
  f: Finishing Campaign sends hero back to homebase
  g: Can open and edit homebase
  h: Can redo Campaigns (only I so far)
@@ -12,10 +11,17 @@ v0.7.2: PlayingInterface
  q: Rankin sounds in tutorial
 
  - Fix all outstanding bugs
- - Make sure trigger timers reset when timers are to be reset
- - Can pick up item if can stack
- - If item tier too high show header message saying so
  - Chuck quizmo covers question, put him above it
+ - Make Achievements form a little darker is so bright
+ - Completed tutorial but not unlocked perk give arrow/form for that
+ - Either unlocking perk or opening PlayingInterface reset Profile heroes again (saved empty file...)
+      ===> Second time neither of these reset the heroes.lnz but logging out and back in did
+ - Can hover items in inventory
+ - If hovering status effect don't hover map objects
+ - Save music track/location in level
+ - Can pick up any item regardless of tier
+ - Can only move away from center of feature that's too tall (like with unit collisions)
+ - Make space buttons not raised
 
   *Tutorial notes:
      - Place "The Third Ball" in the ender chest to have it for later (TEST in mock campaign(s))
@@ -24,7 +30,9 @@ Bugs:
  - Error where inventory not ended properly so hero never ended
  - Remove colors from edge of map images
  - Status effects on selected object left panel will have names behind others when hovered
- - tint affects other images still
+ - Tint affects other images still
+ - Options volumes are all fucked up
+ - The file "C:\Users\yodan\github\LNZ\data/images/gifs/fire/32.png" is missing or inaccessible, make sure the URL is valid or that the file has been added to your sketch and is readable.
 
  - If still has commits left start on the parking lot lines
 

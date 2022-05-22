@@ -177,8 +177,12 @@ abstract class InterfaceLNZ {
           this.message = code.display_name();
           this.text_size = 24;
           this.rippleTimer = 450;
+          this.setStroke(color(0), 1);
           if (global.profile.heroes.containsKey(this.code)) {
             this.hero = global.profile.heroes.get(this.code);
+            if (global.profile.curr_hero == this.code) {
+              this.setStroke(color(255), 6);
+            }
           }
         }
         void hover() {

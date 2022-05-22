@@ -1,5 +1,5 @@
 enum GameMapCode {
-  ERROR, HOMEBASE, FRANCIS_FLOOR2, FRANCIS_FLOOR1, FRANCIS_GROUND, FRANCIS_OUTSIDE_FRONT,
+  ERROR, AREA_GOLFCOURSE, FRANCIS_FLOOR2, FRANCIS_FLOOR1, FRANCIS_GROUND, FRANCIS_OUTSIDE_FRONT,
     FRANCIS_OUTSIDE_AHIM, FRANCIS_OUTSIDE_BROTHERS, FRANCIS_OUTSIDE_CHAPEL,
     FRANCIS_OUTSIDE_CUSTODIAL;
 
@@ -10,8 +10,8 @@ enum GameMapCode {
   }
   public static String display_name(GameMapCode a) {
     switch(a) {
-      case HOMEBASE:
-        return "Home Base";
+      case AREA_GOLFCOURSE:
+        return "Golf Course";
       case FRANCIS_FLOOR2:
         return "Francis Hall, 2nd floor";
       case FRANCIS_FLOOR1:
@@ -32,8 +32,8 @@ enum GameMapCode {
   }
   public static String file_name(GameMapCode a) {
     switch(a) {
-      case HOMEBASE:
-        return "HOMEBASE";
+      case AREA_GOLFCOURSE:
+        return "AREA_GOLFCOURSE";
       case FRANCIS_FLOOR2:
         return "FRANCIS_FLOOR2";
       case FRANCIS_FLOOR1:
@@ -1319,6 +1319,7 @@ class GameMap {
   void addPlayer(Hero player) {
     player.ai_controlled = false;
     this.addUnit(player, 0);
+    this.setViewLocation(player.x, player.y);
   }
 
   // add item
@@ -2240,18 +2241,18 @@ class GameMap {
       this.hovered_object_key = -1;
       try {
         if (!this.draw_fog || this.squares[int(floor(this.mX))][int(floor(this.mY))].visible) {
-          hovered_explored = true;
-          hovered_visible = true;
+          this.hovered_explored = true;
+          this.hovered_visible = true;
         }
         else if (!this.draw_fog || this.squares[int(floor(this.mX))][int(floor(this.mY))].explored) {
-          hovered_explored = true;
+          this.hovered_explored = true;
         }
       } catch(ArrayIndexOutOfBoundsException e) {}
       for (int i = 0; i < this.features.size(); i++) {
         Feature f = this.features.get(i);
         f.mouseMove(this.mX, this.mY);
         if (f.hovered) {
-          if (!hovered_explored) {
+          if (!this.hovered_explored) {
             f.hovered = false;
             continue;
           }
@@ -2265,9 +2266,17 @@ class GameMap {
         Unit u = entry.getValue();
         u.mouseMove(this.mX, this.mY);
         if (u.hovered) {
-          if (!hovered_visible) {
-            u.hovered = false;
-            continue;
+          if (!this.hovered_visible) {
+            if (this.units.containsKey(0)) {
+              if (!this.hovered_explored || this.units.get(0).alliance != u.alliance) {
+                u.hovered = false;
+                continue;
+              }
+            }
+            else {
+              u.hovered = false;
+              continue;
+            }
           }
           this.hovered_object = u;
           this.hovered_object_key = entry.getKey();
@@ -2281,7 +2290,7 @@ class GameMap {
         Item i = entry.getValue();
         i.mouseMove(this.mX, this.mY);
         if (i.hovered) {
-          if (!hovered_visible) {
+          if (!this.hovered_visible) {
             i.hovered = false;
             continue;
           }

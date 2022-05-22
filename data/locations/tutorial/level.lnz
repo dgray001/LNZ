@@ -9,7 +9,7 @@ respawn_timer: 0
 sleeping: false
 sleep_timer: 0
 in_control: true
-currMapName: tutorial_frontdoor
+currMapName: tutorial_soldiers
 mapNames: tutorial_frontdoor, tutorial_soldiers, tutorial_stairwell
 
 new: Linker
@@ -3158,7 +3158,7 @@ end: Condition
 
 new: Effect
 ID: 4
-message: Lastly, pressing 'r' will "use" your item, including eating it if it is food, or reloading it if it's a reloadable weapon
+message: or reloading it if it's a reloadable weapon
 number: 3
 decimal1: 0.0
 decimal2: 0.0
@@ -3172,6 +3172,15 @@ number: 92
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: Finally, 'r' will "use" your item, including eating it if it's food,
+number: 3
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 3.0, 13.0, 4.0, 14.0
 end: Effect
 
 end: Trigger
@@ -4220,15 +4229,6 @@ end: Effect
 
 new: Effect
 ID: 19
-message: 
-number: 0
-decimal1: 0.0
-decimal2: 0.0
-rectangle: , 0.0, 0.0, 0.0, 0.0
-end: Effect
-
-new: Effect
-ID: 44
 message: 
 number: 0
 decimal1: 0.0
@@ -5953,6 +5953,15 @@ number: 339
 decimal1: 0.0
 decimal2: 0.0
 rectangle: tutorial_soldiers, 9.0, 8.0, 10.0, 9.0
+end: Effect
+
+new: Effect
+ID: 13
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 3.0, 13.0, 4.0, 14.0
 end: Effect
 
 end: Trigger

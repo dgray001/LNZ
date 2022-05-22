@@ -1,6 +1,6 @@
 // level location
 enum Location {
-  ERROR, TUTORIAL, FRANCISCAN_FRANCIS, FRANCISCAN_OUTSIDE;
+  ERROR, TUTORIAL, FRANCISCAN_FRANCIS, FRANCISCAN_OUTSIDE, AREA_GOLFCOURSE;
 
   private static final List<Location> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 
@@ -15,6 +15,8 @@ enum Location {
         return "Francis Hall";
       case FRANCISCAN_OUTSIDE:
         return "Franciscan Campus";
+      case AREA_GOLFCOURSE:
+        return "Golf Course";
       default:
         return "-- Error --";
     }
@@ -31,6 +33,8 @@ enum Location {
         return "franciscan_francis";
       case FRANCISCAN_OUTSIDE:
         return "franciscan_outside";
+      case AREA_GOLFCOURSE:
+        return "golf_course";
       default:
         return "ERROR";
     }

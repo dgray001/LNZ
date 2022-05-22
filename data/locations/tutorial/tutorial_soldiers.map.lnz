@@ -2,6 +2,7 @@ new: Map
 code: FRANCIS_FLOOR2
 mapName: tutorial_soldiers
 dimensions: 69, 20
+maxHeight: 10
 color_tint: 65793
 show_tint: false
 terrain: 0, 0: 1, 100, true
@@ -2252,11 +2253,11 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Brown
-gearSlot: WEAPON
-gearSlot: CHEST
 gearSlot: FEET
 gearSlot: HEAD
+gearSlot: WEAPON
 gearSlot: LEGS
+gearSlot: CHEST
 gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0

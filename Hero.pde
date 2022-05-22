@@ -2602,6 +2602,9 @@ class Hero extends Unit {
         }
         else {
           buttons.button1.disabled = true;
+          if (button.unlocked) {
+            buttons.button1.message = "Unlocked";
+          }
         }
         this.addField(buttons);
       }
