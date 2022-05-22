@@ -21,7 +21,7 @@ nextTriggerKey: 1
 
 new: Trigger
 triggerName: Trigger 1
-active: false
+active: true
 looping: false
 amalgam: true
 new: Condition
@@ -35,7 +35,7 @@ end: Condition
 
 new: Effect
 ID: 6
-message:
+message: 
 number: 0
 decimal1: 0.0
 decimal2: 0.0

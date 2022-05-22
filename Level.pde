@@ -2886,7 +2886,7 @@ class LevelEditor extends Level {
     }
     if (!fileExists(this.finalFolderPath() + "/" + mapName + ".map.lnz")) {
       global.errorMessage("ERROR: Level " + this.levelName + " has no map " +
-        "with name " + mapName + ".");
+        "with name " + mapName + " at location " + this.finalFolderPath() + ".");
       return;
     }
     if (mapName.equals(this.currMapName)) {
@@ -2993,5 +2993,10 @@ class LevelEditor extends Level {
           break;
       }
     }
+  }
+
+  @Override
+  String finalFolderPath() {
+    return this.folderPath + "/" + this.levelName;
   }
 }

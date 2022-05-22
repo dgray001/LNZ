@@ -22,6 +22,12 @@ enum GameMapCode {
         return "Outside Francis Hall, front door";
       case FRANCIS_OUTSIDE_AHIM:
         return "Outside Francis Hall, Ahim door";
+      case FRANCIS_OUTSIDE_BROTHERS:
+        return "Outside Francis Hall, Brother's door";
+      case FRANCIS_OUTSIDE_CHAPEL:
+        return "Outside Francis Hall, chapel door";
+      case FRANCIS_OUTSIDE_CUSTODIAL:
+        return "Outside Francis Hall, custodial door";
       default:
         return "-- Error --";
     }
@@ -44,6 +50,12 @@ enum GameMapCode {
         return "FRANCIS_OUTSIDE_FRONT";
       case FRANCIS_OUTSIDE_AHIM:
         return "FRANCIS_OUTSIDE_FRONT";
+      case FRANCIS_OUTSIDE_BROTHERS:
+        return "FRANCIS_OUTSIDE_BROTHERS";
+      case FRANCIS_OUTSIDE_CHAPEL:
+        return "FRANCIS_OUTSIDE_CHAPEL";
+      case FRANCIS_OUTSIDE_CUSTODIAL:
+        return "FRANCIS_OUTSIDE_CUSTODIAL";
       default:
         return "ERROR";
     }

@@ -480,11 +480,11 @@ class PlayingInterface extends InterfaceLNZ {
 
   void switchHero(Hero hero) {
     if (hero == null || hero.code == null || hero.code == HeroCode.ERROR) {
-      global.errorMessage("Can't switch to a hero code that doesn't exist.");
+      global.errorMessage("ERROR: Can't switch to a hero code that doesn't exist.");
       return;
     }
     if (!global.profile.heroes.containsKey(hero.code)) {
-      global.errorMessage("Can't switch to a hero that hasn't been unlocked.");
+      global.errorMessage("ERROR: Can't switch to a hero that hasn't been unlocked.");
       return;
     }
     if (global.profile.curr_hero == hero.code) {
@@ -495,7 +495,7 @@ class PlayingInterface extends InterfaceLNZ {
         break;
       case STARTING_NEW:
         if (this.newLevelThread == null) {
-          global.errorMessage("No thread in new level status.");
+          global.errorMessage("ERROR: No thread in new level status.");
           break;
         }
         this.newLevelThread.stopThread();
@@ -503,7 +503,7 @@ class PlayingInterface extends InterfaceLNZ {
         break;
       case LOADING_SAVED:
         if (this.savedLevelThread == null) {
-          global.errorMessage("No thread in open level status.");
+          global.errorMessage("ERROR: No thread in open level status.");
           break;
         }
         this.savedLevelThread.stopThread();
@@ -511,14 +511,14 @@ class PlayingInterface extends InterfaceLNZ {
         break;
       case PLAYING:
         if (this.level == null) {
-          global.errorMessage("No level in playing status.");
+          global.errorMessage("ERROR: No level in playing status.");
           break;
         }
         this.level.save();
         this.level = null;
         break;
       default:
-        global.errorMessage("Playing status " + this.status + " not recognized.");
+        global.errorMessage("ERROR: Playing status " + this.status + " not recognized.");
         break;
     }
     global.profile.saveHeroesFile();
@@ -528,17 +528,27 @@ class PlayingInterface extends InterfaceLNZ {
 
 
   void completedLevel(int completion_code) {
-    global.log("Completed level with code " + completion_code + ".");
-    switch(completion_code) {
-      case 0: // default
-        this.level = null;
-        // delete saved folder deleteFolder(this.destination_folder() + Location.TUTORIAL.file_name());
-        // transition into next level
-        break;
-      default:
-        global.errorMessage("ERROR: Completion code " + completion_code + " not recognized for level.");
-        break;
+    if (this.level == null || this.status != PlayingStatus.PLAYING) {
+      global.errorMessage("ERROR: Can't complete level when not playing one.");
+      return;
     }
+    if (this.level.player == null || this.level.player.code == null || this.level.player.code == HeroCode.ERROR) {
+      global.errorMessage("ERROR: Can't complete level without a player object.");
+      return;
+    }
+    global.log("Completed level with code " + completion_code + ".");
+    Location next_location = Location.nextLocation(this.level.location, completion_code);
+    if (next_location == Location.ERROR) {
+      global.errorMessage("ERROR: Completion code " + completion_code +
+        " not recognized for location " + this.level.location.display_name() + ".");
+    }
+    this.level.player.stopAction();
+    this.level.player.statuses.clear();
+    this.level.player.restartAbilityTimers();
+    this.level.player.location = next_location;
+    global.profile.saveHeroesFile();
+    this.status = PlayingStatus.INITIAL;
+    this.level = null;
   }
 
 

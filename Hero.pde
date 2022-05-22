@@ -3625,7 +3625,6 @@ class Hero extends Unit {
 
 
   protected HeroCode code;
-
   protected Location location = Location.ERROR;
 
   protected int level_tokens = 0;

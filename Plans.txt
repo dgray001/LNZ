@@ -1,5 +1,4 @@
 v0.7.2: PlayingInterface
- k: Finishing mock level goes to next mock level
  l: Can finish mock campaign and unlock corresponding homebase (save in profile which homebases are active)
  m: Can restart / abandon level
  n: Can open and edit homebase

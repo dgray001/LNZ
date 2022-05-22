@@ -52,4 +52,49 @@ enum Location {
     }
     return Location.ERROR;
   }
+
+  public Location nextLocation(int completion_code) {
+    return Location.nextLocation(this, completion_code);
+  }
+  public static Location nextLocation(Location a, int completion_code) {
+    Location return_location = Location.ERROR;
+    switch(a) {
+      case FRANCISCAN_FRANCIS:
+        switch(completion_code) {
+          case 0:
+            return_location = Location.FRANCISCAN_OUTSIDE;
+            break;
+          default:
+            return_location = Location.ERROR;
+            break;
+        }
+        break;
+      case FRANCISCAN_OUTSIDE:
+        switch(completion_code) {
+          case 0:
+            return_location = Location.AREA_GOLFCOURSE;
+            break;
+          default:
+            return_location = Location.ERROR;
+            break;
+        }
+        break;
+      default:
+        return_location = Location.ERROR;
+        break;
+    }
+    return return_location;
+  }
+
+  public boolean isArea() {
+    return Location.isArea(this);
+  }
+  public static boolean isArea(Location a) {
+    switch(a) {
+      case AREA_GOLFCOURSE:
+        return true;
+      default:
+        return false;
+    }
+  }
 }

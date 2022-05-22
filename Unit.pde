@@ -2350,6 +2350,14 @@ class Unit extends MapObject {
   }
 
 
+  void restartAbilityTimers() {
+    for (Ability a : this.abilities) {
+      if (a != null) {
+        a.timer_cooldown = 0;
+      }
+    }
+  }
+
   // Cast ability
   void bufferCast(int index) {
     if (index < 0 || index >= this.abilities.size()) {
@@ -2785,6 +2793,7 @@ class Unit extends MapObject {
     }
     this.statuses.clear();
     this.stopAction();
+    this.restartAbilityTimers();
   }
 
 
