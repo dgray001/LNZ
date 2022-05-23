@@ -188,6 +188,13 @@ class GameMapSquare {
     }
   }
 
+  boolean isWall() {
+    if (this.elevation(false) > Constants.map_maxHeight) {
+      return true;
+    }
+    return false;
+  }
+
   int elevation(boolean moving_onto) {
     int net_elevation = this.base_elevation + this.feature_elevation;
     switch(this.terrain_id) {
@@ -895,7 +902,7 @@ class GameMap {
   protected int mapWidth = 0;
   protected int mapHeight = 0;
   protected GameMapSquare[][] squares;
-  protected int maxHeight = 10;
+  protected int maxHeight = Constants.map_maxHeight;
 
   protected DImg terrain_dimg;
   protected DImg fog_dimg;
@@ -959,6 +966,9 @@ class GameMap {
   protected int nextItemKey = 1;
   protected ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
   protected ArrayList<VisualEffect> visualEffects = new ArrayList<VisualEffect>();
+
+  protected float timer_refresh_fog = Constants.map_timer_refresh_fog;
+  protected boolean refresh_fog = false;
 
   GameMap() {}
   GameMap(GameMapCode code, String folderPath) {
@@ -1184,10 +1194,13 @@ class GameMap {
   }
   void exploreTerrain(int x, int y, boolean refreshFogImage) {
     try {
+      if (this.squares[x][y].explored) {
+        return;
+      }
       this.squares[x][y].explored = true;
       if (refreshFogImage) {
-        if (this.squares[x][y].visible) {
-          this.fog_dimg.colorGrid(color(1, 0), x, y);
+        if (this.squares[x][y].visible || this.squares[x][y].mapEdge()) {
+          this.fog_dimg.colorGrid(Constants.color_transparent, x, y);
         }
         else {
           this.fog_dimg.colorGrid(this.fogColor, x, y);
@@ -1201,10 +1214,13 @@ class GameMap {
   }
   void exploreTerrainAndVisible(int x, int y, boolean refreshFogImage) {
     try {
+      if (this.squares[x][y].explored && this.squares[x][y].visible) {
+        return;
+      }
       this.squares[x][y].explored = true;
       this.squares[x][y].visible = true;
       if (refreshFogImage) {
-        this.fog_dimg.colorGrid(color(1, 0), x, y);
+        this.fog_dimg.colorGrid(Constants.color_transparent, x, y);
       }
     }
     catch(IndexOutOfBoundsException e) {}
@@ -1214,6 +1230,9 @@ class GameMap {
   }
   void setTerrainVisible(boolean visible, int x, int y, boolean refreshFogImage) {
     try {
+      if (this.squares[x][y].visible == visible) {
+        return;
+      }
       this.squares[x][y].visible = visible;
       if (refreshFogImage) {
         if (!this.squares[x][y].explored) {
@@ -1222,7 +1241,7 @@ class GameMap {
           this.fog_dimg.colorGrid(this.fogColor, x, y);
         }
         else {
-          this.fog_dimg.colorGrid(color(1, 0), x, y);
+          this.fog_dimg.colorGrid(Constants.color_transparent, x, y);
         }
       }
     }
@@ -2044,6 +2063,11 @@ class GameMap {
         this.headerMessages.remove(i);
       }
     }
+    this.timer_refresh_fog -= timeElapsed;
+    if (this.timer_refresh_fog < 0) {
+      this.timer_refresh_fog += Constants.map_timer_refresh_fog;
+      this.refresh_fog = true;
+    }
   }
 
 
@@ -2071,7 +2095,7 @@ class GameMap {
         unit_iterator.remove();
         continue;
       }
-      u.update(timeElapsed, entry.getKey(), this);
+      u.update(timeElapsed, this);
       if (u.remove) {
         u.destroy(this);
         unit_iterator.remove();

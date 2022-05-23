@@ -315,6 +315,7 @@ class Unit extends MapObject {
   protected boolean last_move_any_collision = false;
 
   protected ArrayList<IntegerCoordinate> curr_squares_on = new ArrayList<IntegerCoordinate>(); // squares unit is on
+  protected ArrayList<IntegerCoordinate> curr_squares_sight = new ArrayList<IntegerCoordinate>(); // squares unit can see
   protected int unit_height = 0; // height of unit you are standing on
   protected int floor_height = 0; // height of ground
   protected boolean falling = false;
@@ -1633,45 +1634,24 @@ class Unit extends MapObject {
   }
 
 
-  void update(int timeElapsed, int myKey, GameMap map) {
+  void update(int timeElapsed, GameMap map) {
     // timers
     this.update(timeElapsed);
     // fog logic for player units
-    if (myKey == 0) {
-      float unit_sight = this.sight();
-      float inner_square_distance = Constants.inverse_root_two * unit_sight;
-      for (int i = int(floor(this.x - unit_sight)) - 1; i <= int(ceil(this.x + unit_sight)); i++) {
-        for (int j = int(floor(this.y - unit_sight)) - 1; j <= int(ceil(this.y + unit_sight)); j++) {
-          float distanceX = abs(i + 0.5 - this.x);
-          float distanceY = abs(j + 0.5 - this.y);
-          if ( (distanceX < inner_square_distance && distanceY < inner_square_distance) ||
-            (sqrt(distanceX * distanceX + distanceY * distanceY) < unit_sight) ) {
-            try {
-              if (!map.squares[i][j].explored) {
-                map.exploreTerrainAndVisible(i, j);
-              }
-              else if (!map.squares[i][j].visible) {
-                map.setTerrainVisible(true, i, j);
-              }
-              if (map.squares[i][j].mapEdge()) {
-                map.fog_dimg.colorGrid(Constants.color_transparent, i, j);
-              }
-            } catch(IndexOutOfBoundsException e) {}
-          }
-          else if (map.fogHandling.show_fog()) {
-            try {
-              map.setTerrainVisible(false, i, j);
-              if (map.squares[i][j].mapEdge()) {
-                map.fog_dimg.colorGrid(Constants.color_transparent, i, j);
-              }
-            } catch(IndexOutOfBoundsException e) {}
-          }
+    if (this.map_key == 0) {
+      if (map.refresh_fog) {
+        for (IntegerCoordinate coordinate : this.curr_squares_sight) {
+          map.setTerrainVisible(false, coordinate.x, coordinate.y);
+        }
+        this.curr_squares_sight = this.getSquaresSight(map);
+        for (IntegerCoordinate coordinate : this.curr_squares_sight) {
+          map.exploreTerrainAndVisible(coordinate.x, coordinate.y);
         }
       }
     }
     // ai logic for ai units
     if (this.ai_controlled) {
-      this.aiLogic(timeElapsed, myKey, map);
+      this.aiLogic(timeElapsed, map);
     }
     if ((this.suppressed() || this.stunned()) && !this.curr_action_unstoppable) {
       this.stopAction();
@@ -1682,14 +1662,14 @@ class Unit extends MapObject {
         boolean collision_last_move = this.last_move_collision;
         switch(this.curr_action_id) {
           case 1: // Anuran Appetite regurgitate
-            this.move(timeElapsed, myKey, map, MoveModifier.ANURAN_APPETITE);
+            this.move(timeElapsed, map, MoveModifier.ANURAN_APPETITE);
             if (this.last_move_collision) {
               this.stopAction(true);
             }
             break;
           default:
             this.face(this.curr_action_x, this.curr_action_y); // pathfinding
-            this.move(timeElapsed, myKey, map, MoveModifier.NONE);
+            this.move(timeElapsed, map, MoveModifier.NONE);
             if (this.last_move_collision) {
               if (collision_last_move) {
                 this.timer_actionTime -= timeElapsed;
@@ -1721,7 +1701,7 @@ class Unit extends MapObject {
         switch(a.ID) {
           case 113: // Amphibious Leap
           case 118: // Amphibious Leap II
-            this.move(timeElapsed, myKey, map, MoveModifier.AMPHIBIOUS_LEAP);
+            this.move(timeElapsed, map, MoveModifier.AMPHIBIOUS_LEAP);
             if (this.last_move_any_collision) {
               a.timer_other = 0;
             }
@@ -1743,7 +1723,7 @@ class Unit extends MapObject {
         }
         this.face(f);
         if (this.distance(f) > f.interactionDistance()) {
-          this.move(timeElapsed, myKey, map, MoveModifier.NONE);
+          this.move(timeElapsed, map, MoveModifier.NONE);
           this.timer_walk -= timeElapsed;
           if (this.timer_walk < 0) {
             this.timer_walk += Constants.unit_timer_walk;
@@ -1801,7 +1781,7 @@ class Unit extends MapObject {
         this.face(u);
         float distance = this.distance(u);
         if (distance > this.attackRange()) {
-          this.move(timeElapsed, myKey, map, MoveModifier.NONE);
+          this.move(timeElapsed, map, MoveModifier.NONE);
           this.timer_walk -= timeElapsed;
           if (this.timer_walk < 0) {
             this.timer_walk += Constants.unit_timer_walk;
@@ -1848,7 +1828,7 @@ class Unit extends MapObject {
         }
         this.face(i);
         if (this.distance(i) > i.interactionDistance()) {
-          this.move(timeElapsed, myKey, map, MoveModifier.NONE);
+          this.move(timeElapsed, map, MoveModifier.NONE);
           this.timer_walk -= timeElapsed;
           if (this.timer_walk < 0) {
             this.timer_walk += Constants.unit_timer_walk;
@@ -1921,9 +1901,9 @@ class Unit extends MapObject {
         }
         this.timer_actionTime -= timeElapsed;
         if (this.timer_actionTime < 0) {
-          this.shoot(myKey, map);
+          this.shoot(map);
           if (this.weapon().shootable() && this.weapon().automatic() && global.holding_rightclick) {
-            if (myKey == 0 && global.holding_ctrl) {
+            if (this.map_key == 0 && global.holding_ctrl) {
               this.curr_action = UnitAction.AIMING;
             }
             else {
@@ -1957,7 +1937,7 @@ class Unit extends MapObject {
           this.curr_action = UnitAction.MOVING;
         }
         this.face(this.curr_action_x, this.curr_action_y); // pathfinding
-        this.move(timeElapsed, myKey, map, MoveModifier.NONE);
+        this.move(timeElapsed, map, MoveModifier.NONE);
         if (this.last_move_collision) {
           this.curr_action = UnitAction.USING_ITEM;
         }
@@ -2420,11 +2400,11 @@ class Unit extends MapObject {
 
 
   // Shoot projectile
-  void shoot(int myKey, GameMap map) {
+  void shoot(GameMap map) {
     if (this.weapon() == null || !this.weapon().shootable()) {
       return;
     }
-    map.addProjectile(new Projectile(this.weapon().ID + 1000, myKey, this, this.weapon().shootInaccuracy()));
+    map.addProjectile(new Projectile(this.weapon().ID + 1000, this.map_key, this, this.weapon().shootInaccuracy()));
     switch(this.weapon().ID) {
       case 2118: // Chicken Egg
         global.sounds.trigger_units("items/throw", this.x - map.viewX, this.y - map.viewY);
@@ -2474,8 +2454,8 @@ class Unit extends MapObject {
         global.sounds.trigger_units("items/ballistic_knife", this.x - map.viewX, this.y - map.viewY);
         break;
       case 2352: // WN
-        Projectile burst1 = new Projectile(this.weapon().ID + 1000, myKey, this, this.weapon().shootInaccuracy());
-        Projectile burst2 = new Projectile(this.weapon().ID + 1000, myKey, this, this.weapon().shootInaccuracy());
+        Projectile burst1 = new Projectile(this.weapon().ID + 1000, this.map_key, this, this.weapon().shootInaccuracy());
+        Projectile burst2 = new Projectile(this.weapon().ID + 1000, this.map_key, this, this.weapon().shootInaccuracy());
         burst1.x -= 0.05 * this.facingX;
         burst1.y -= 0.05 * this.facingY;
         burst2.x -= 0.1 * this.facingX;
@@ -2519,7 +2499,7 @@ class Unit extends MapObject {
         break;
     }
     this.weapon().shot();
-    this.move(this.weapon().shootRecoil(), myKey, map, MoveModifier.RECOIL);
+    this.move(this.weapon().shootRecoil(), map, MoveModifier.RECOIL);
     this.timer_attackCooldown = this.attackCooldown();
   }
 
@@ -3309,7 +3289,7 @@ class Unit extends MapObject {
     this.curr_action_id = 0;
   }
 
-  void move(float timeElapsed, int myKey, GameMap map, MoveModifier modifier) {
+  void move(float timeElapsed, GameMap map, MoveModifier modifier) {
     // remove camouflage
     if (this.aposematicCamouflage()) {
       this.removeStatusEffect(StatusEffectCode.APOSEMATIC_CAMOUFLAGE);
@@ -3345,9 +3325,9 @@ class Unit extends MapObject {
     this.last_move_collision = false;
     this.last_move_any_collision = false;
     // move in x direction
-    this.moveX(tryMoveX, myKey, map);
+    this.moveX(tryMoveX, map);
     // move in y direction
-    this.moveY(tryMoveY, myKey, map);
+    this.moveY(tryMoveY, map);
     // calculates squares_on and height
     this.curr_squares_on = this.getSquaresOn();
     this.resolveFloorHeight(map);
@@ -3357,10 +3337,10 @@ class Unit extends MapObject {
     this.last_move_distance = sqrt(moveX * moveX + moveY * moveY);
   }
 
-  void moveX(float tryMoveX, int myKey, GameMap map) {
+  void moveX(float tryMoveX, GameMap map) {
     while(abs(tryMoveX) > Constants.map_moveLogicCap) {
       if (tryMoveX > 0) {
-        if (this.collisionLogicX(Constants.map_moveLogicCap, myKey, map)) {
+        if (this.collisionLogicX(Constants.map_moveLogicCap, map)) {
           this.last_move_collision = true;
           this.last_move_any_collision = true;
           return;
@@ -3368,7 +3348,7 @@ class Unit extends MapObject {
         tryMoveX -= Constants.map_moveLogicCap;
       }
       else {
-        if (this.collisionLogicX(-Constants.map_moveLogicCap, myKey, map)) {
+        if (this.collisionLogicX(-Constants.map_moveLogicCap, map)) {
           this.last_move_collision = true;
           this.last_move_any_collision = true;
           return;
@@ -3376,7 +3356,7 @@ class Unit extends MapObject {
         tryMoveX += Constants.map_moveLogicCap;
       }
     }
-    if (this.collisionLogicX(tryMoveX, myKey, map)) {
+    if (this.collisionLogicX(tryMoveX, map)) {
       this.last_move_collision = true;
       this.last_move_any_collision = true;
       return;
@@ -3387,24 +3367,24 @@ class Unit extends MapObject {
     }
   }
 
-  void moveY(float tryMoveY, int myKey, GameMap map) {
+  void moveY(float tryMoveY, GameMap map) {
     while(abs(tryMoveY) > Constants.map_moveLogicCap) {
       if (tryMoveY > 0) {
-        if (this.collisionLogicY(Constants.map_moveLogicCap, myKey, map)) {
+        if (this.collisionLogicY(Constants.map_moveLogicCap, map)) {
           this.last_move_any_collision = true;
           return;
         }
         tryMoveY -= Constants.map_moveLogicCap;
       }
       else {
-        if (this.collisionLogicY(-Constants.map_moveLogicCap, myKey, map)) {
+        if (this.collisionLogicY(-Constants.map_moveLogicCap, map)) {
           this.last_move_any_collision = true;
           return;
         }
         tryMoveY += Constants.map_moveLogicCap;
       }
     }
-    if (this.collisionLogicY(tryMoveY, myKey, map)) {
+    if (this.collisionLogicY(tryMoveY, map)) {
       this.last_move_any_collision = true;
       return;
     }
@@ -3414,7 +3394,7 @@ class Unit extends MapObject {
   }
 
   // returns true if collision occurs
-  boolean collisionLogicX(float tryMoveX, int myKey, GameMap map) {
+  boolean collisionLogicX(float tryMoveX, GameMap map) {
     float startX = this.x;
     this.x += tryMoveX;
     // map collisions
@@ -3436,7 +3416,7 @@ class Unit extends MapObject {
     }
     // unit collisions
     for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
-      if (entry.getKey() == myKey) {
+      if (entry.getKey() == this.map_key) {
         continue;
       }
       Unit u = entry.getValue();
@@ -3460,7 +3440,7 @@ class Unit extends MapObject {
   }
 
   // returns true if collision occurs
-  boolean collisionLogicY(float tryMoveY, int myKey, GameMap map) {
+  boolean collisionLogicY(float tryMoveY, GameMap map) {
     float startY = this.y;
     this.y += tryMoveY;
     if (!this.inMapY(map.mapHeight)) {
@@ -3481,7 +3461,7 @@ class Unit extends MapObject {
     }
     // unit collisions
     for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
-      if (entry.getKey() == myKey) {
+      if (entry.getKey() == this.map_key) {
         continue;
       }
       Unit u = entry.getValue();
@@ -3542,6 +3522,94 @@ class Unit extends MapObject {
   }
 
 
+  ArrayList<IntegerCoordinate> getSquaresSight(GameMap map) {
+    ArrayList<IntegerCoordinate> squares_sight = new ArrayList<IntegerCoordinate>();
+    float unit_sight = this.sight();
+    float inner_square_distance = Constants.inverse_root_two * unit_sight;
+    boolean walls_dont_block = false; // feature flag to make walls not block
+    float see_around_cutoff = Constants.inverse_root_two + Constants.small_number;
+    float see_around_blocked_cutoff = 2 * see_around_cutoff;
+    float see_around_distance = see_around_cutoff - this.size;
+    for (int i = int(floor(this.x - unit_sight)) - 1; i <= int(ceil(this.x + unit_sight)); i++) {
+      for (int j = int(floor(this.y - unit_sight)) - 1; j <= int(ceil(this.y + unit_sight)); j++) {
+        float distanceX = abs(i + 0.5 - this.x);
+        float distanceY = abs(j + 0.5 - this.y);
+        if ( (distanceX < inner_square_distance && distanceY < inner_square_distance) ||
+          (sqrt(distanceX * distanceX + distanceY * distanceY) < unit_sight) ) {
+          if (walls_dont_block) {
+            squares_sight.add(new IntegerCoordinate(i, j));
+            continue;
+          }
+          boolean add_square = true;
+          int xi = int(min(floor(this.xi() + Constants.small_number), i));
+          int yi = int(min(floor(this.yi() + Constants.small_number), j));
+          int xf = int(max(floor(this.xf() - Constants.small_number), i));
+          int yf = int(max(floor(this.yf() - Constants.small_number), j));
+          int my_x = int(floor(this.x));
+          int my_y = int(floor(this.y));
+          float left_blocked = 2 * Constants.inverse_root_two;
+          float right_blocked = 2 * Constants.inverse_root_two;
+          for (int a = xi; a <= xf; a++) {
+            for (int b = yi; b <= yf; b++) {
+              if (a == i && b == j) {
+                continue;
+              }
+              if (a == my_x && b == my_y) {
+                continue;
+              }
+              try {
+                if (!map.squares[a][b].isWall()) {
+                  continue;
+                }
+                float p_x = a + 0.5;
+                float p_y = b + 0.5;
+                float x_dif = i + 0.5 - this.x;
+                float y_dif = j + 0.5 - this.y;
+                float area_parrallelogram = x_dif * (p_y - this.y) - y_dif * (p_x - this.x);
+                boolean left_side = true;
+                if (area_parrallelogram < 0) {
+                  left_side = false;
+                  area_parrallelogram = abs(area_parrallelogram);
+                }
+                float line_segment_distance = sqrt(x_dif * x_dif + y_dif * y_dif);
+                float distance_from_line = area_parrallelogram / line_segment_distance;
+                if (distance_from_line < see_around_distance) {
+                  add_square = false;
+                  break;
+                }
+                else if (distance_from_line < see_around_blocked_cutoff) {
+                  if (left_side) {
+                    if (distance_from_line < left_blocked) {
+                      left_blocked = distance_from_line;
+                    }
+                  }
+                  else {
+                    if (distance_from_line < right_blocked) {
+                      right_blocked = distance_from_line;
+                    }
+                  }
+                  if (left_blocked + right_blocked < see_around_blocked_cutoff) {
+                    add_square = false;
+                    break;
+                  }
+                }
+                break;
+              } catch(Exception e) {}
+            }
+            if (!add_square) {
+              break;
+            }
+          }
+          if (add_square) {
+            squares_sight.add(new IntegerCoordinate(i, j));
+          }
+        }
+      }
+    }
+    return squares_sight;
+  }
+
+
   int zi() {
     return this.curr_height;
   }
@@ -3570,7 +3638,7 @@ class Unit extends MapObject {
   }
 
 
-  void aiLogic(int timeElapsed, int myKey, GameMap map) {
+  void aiLogic(int timeElapsed, GameMap map) {
     switch(this.ID) {
       case 1002: // Chicken
         if (this.curr_action == UnitAction.NONE || this.last_move_collision) {
@@ -3639,7 +3707,7 @@ class Unit extends MapObject {
             this.timer_ai_action1 = 400;
             boolean no_target = true;
             for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
-              if (entry.getKey() == myKey) {
+              if (entry.getKey() == this.map_key) {
                 continue;
               }
               Unit u = entry.getValue();

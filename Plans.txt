@@ -17,12 +17,12 @@ v0.7.2: PlayingInterface
  - Save music track/location in level
  - Can only move away from center of feature that's too tall (like with unit collisions)
  - Save unit facing data
+ - Log profile open / create events in main menu
 
   *Tutorial notes:
      - Place "The Third Ball" in the ender chest to have it for later (TEST in mock campaign(s))
 
 Bugs:
- - Error where inventory not ended properly so hero never ended
  - Remove colors from edge of map images
  - Status effects on selected object left panel will have names behind others when hovered
  - Tint affects other images still
