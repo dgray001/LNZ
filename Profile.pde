@@ -896,6 +896,7 @@ class Profile {
 
   private HashMap<HeroCode, Hero> heroes = new HashMap<HeroCode, Hero>();
   private HeroCode curr_hero = HeroCode.ERROR; // hero the player is playing as
+  private HashMap<Location, Boolean> areas = new HashMap<Location, Boolean>();
 
   private EnderChestInventory ender_chest = new EnderChestInventory();
   private float money = 0;
@@ -907,6 +908,11 @@ class Profile {
     this.display_name = s;
     for (AchievementCode code : AchievementCode.VALUES) {
       this.achievements.put(code, false);
+    }
+    for (Location location : Location.VALUES) {
+      if (location.isArea()) {
+        this.areas.put(location, false);
+      }
     }
     this.options = new Options();
   }
@@ -957,6 +963,18 @@ class Profile {
     }
   }
 
+  void unlockArea(Location location) {
+    if (location == null || !this.areas.containsKey(location)) {
+      global.errorMessage("ERROR: Trying to unlock area that doesn't exist.");
+      return;
+    }
+    if (this.areas.get(location).equals(Boolean.FALSE)) {
+      this.areas.put(location, Boolean.TRUE);
+      this.saveProfileFile();
+      global.log("Unlocked area: " + location.display_name());
+    }
+  }
+
   void upgrade(PlayerTreeCode code) {
     switch(code) {
       default:
@@ -979,6 +997,11 @@ class Profile {
     for (AchievementCode code : AchievementCode.VALUES) {
       if (this.achievements.get(code).equals(Boolean.TRUE)) {
         file.println("achievement: " + code.file_name());
+      }
+    }
+    for (Map.Entry<Location, Boolean> entry : this.areas.entrySet()) {
+      if (entry.getValue().equals(Boolean.TRUE)) {
+        file.println("areaUnlocked: " + entry.getKey().file_name());
       }
     }
     file.println("achievement_tokens: " + this.achievement_tokens);
@@ -1036,8 +1059,20 @@ Profile readProfile(String folder_path) {
         break;
       case "achievement":
         AchievementCode code = AchievementCode.achievementCode(trim(data[1]));
-        if (code != null) {
+        if (code != null && p.achievements.containsKey(code)) {
           p.achievements.put(code, Boolean.TRUE);
+        }
+        else {
+          global.errorMessage("ERROR: Unknown achievement " + code.display_name() + " in profile data.");
+        }
+        break;
+      case "areaUnlocked":
+        Location location = Location.location(trim(data[1]));
+        if (location != null && p.areas.containsKey(location)) {
+          p.areas.put(location, Boolean.TRUE);
+        }
+        else {
+          global.errorMessage("ERROR: Unknown location " + location.display_name() + " in profile data.");
         }
         break;
       case "perk":

@@ -111,10 +111,15 @@ class PlayingInterface extends InterfaceLNZ {
 
 
   class ConfirmStartLevelForm extends PlayingForm {
+    protected Hero hero = null;
     ConfirmStartLevelForm(Hero hero) {
       super("Start Level: " + hero.location.display_name(), 550, 350);
+      this.hero = hero;
 
       MessageFormField message1 = new MessageFormField("Begin the following level?");
+      if (hero.location.isArea()) {
+        message1.setValue("Begin playing in the following area?");
+      }
       MessageFormField message2 = new MessageFormField("Hero: " + hero.display_name());
       message2.text_color = color(120, 30, 120);
       MessageFormField message3 = new MessageFormField("Location: " + hero.location.display_name());
@@ -124,6 +129,11 @@ class PlayingInterface extends InterfaceLNZ {
         color(140, 190, 140), color(90, 140, 90), color(0));
       submit.button2.setColors(color(220), color(190, 240, 190),
         color(140, 190, 140), color(90, 140, 90), color(0));
+      if (hero.location.isArea()) {
+        submit.button1.message = "Enter Area";
+        submit.button2.message = "";
+        submit.button2.disabled = true;
+      }
       ButtonFormField switch_hero = new ButtonFormField("Switch Hero");
       switch_hero.button.setColors(color(220), color(190, 240, 190),
         color(140, 190, 140), color(90, 140, 90), color(0));
@@ -139,16 +149,22 @@ class PlayingInterface extends InterfaceLNZ {
 
     @Override
     void cancel() {
-      //if (homebase explored) {
-        //PlayingInterface.this.abandonLevel();
-      //}
-      //else {
+      if (this.hero.location.isArea()) {
+        return;
+      }
+      Location area_location = this.hero.location.areaLocation();
+      if (global.profile.areas.containsKey(area_location) && global.profile.areas.get(area_location) == Boolean.TRUE) {
+        PlayingInterface.this.abandonLevel();
+      }
+      else {
+        // message informing that you can't abandon level with said hero
         PlayingInterface.this.heroesForm();
-      //}
+      }
+      this.canceled = true;
     }
 
     void submit() {
-      PlayingInterface.this.startOrRestartLevel();
+      PlayingInterface.this.startLevel();
       this.canceled = true;
     }
 
@@ -166,10 +182,15 @@ class PlayingInterface extends InterfaceLNZ {
 
 
   class ConfirmContinueLevelForm extends PlayingForm {
+    protected Hero hero = null;
     ConfirmContinueLevelForm(Hero hero) {
       super("Continue Level: " + hero.location.display_name(), 550, 600);
+      this.hero = hero;
 
       MessageFormField message1 = new MessageFormField("Continue the following level?");
+      if (hero.location.isArea()) {
+        message1.setValue("Continue playing in the following area?");
+      }
       MessageFormField message2 = new MessageFormField("Hero: " + hero.display_name());
       message2.text_color = color(120, 30, 120);
       MessageFormField message3 = new MessageFormField("Location: " + hero.location.display_name());
@@ -179,6 +200,11 @@ class PlayingInterface extends InterfaceLNZ {
         color(140, 190, 140), color(90, 140, 90), color(0));
       submit.button2.setColors(color(220), color(190, 240, 190),
         color(140, 190, 140), color(90, 140, 90), color(0));
+      if (hero.location.isArea()) {
+        submit.button1.message = "Continue";
+        submit.button2.message = "";
+        submit.button2.disabled = true;
+      }
       ButtonFormField switch_hero = new ButtonFormField("Switch Hero");
       switch_hero.button.setColors(color(220), color(190, 240, 190),
         color(140, 190, 140), color(90, 140, 90), color(0));
@@ -194,12 +220,17 @@ class PlayingInterface extends InterfaceLNZ {
 
     @Override
     void cancel() {
-      //if (homebase explored) {
-        //PlayingInterface.this.abandonLevel();
-      //}
-      //else {
+      if (this.hero.location.isArea()) {
+        return;
+      }
+      Location area_location = this.hero.location.areaLocation();
+      if (global.profile.areas.containsKey(area_location) && global.profile.areas.get(area_location) == Boolean.TRUE) {
+        PlayingInterface.this.abandonLevel();
+      }
+      else {
         PlayingInterface.this.restartLevel();
-      //}
+      }
+      this.canceled = true;
     }
 
     void submit() {
@@ -274,6 +305,12 @@ class PlayingInterface extends InterfaceLNZ {
         copyFolder("data/locations/" + this.hero.location.file_name(), destination_folder);
         this.level.folderPath = PlayingInterface.this.savePath;
         this.level.save();
+        if (!this.hero.location.isArea()) {
+          PrintWriter hero_file = createWriter(destination_folder + "/old_hero.lnz");
+          hero_file.println(this.hero.fileString());
+          hero_file.flush();
+          hero_file.close();
+        }
         if (this.level.nullify) {
           this.curr_status += " -> " + global.lastErrorMessage();
           delay(2500);
@@ -412,7 +449,7 @@ class PlayingInterface extends InterfaceLNZ {
     }
   }
 
-  void startOrRestartLevel() {
+  void startLevel() {
     if (this.level != null) {
       global.errorMessage("ERROR: Trying to open level save when current level not null.");
       return;
@@ -471,7 +508,44 @@ class PlayingInterface extends InterfaceLNZ {
   }
 
   void restartLevel() {
-    // to restart level need to have a hero saved from before it started level
+    if (this.level != null) {
+      global.errorMessage("ERROR: Trying to restart level when current level not null.");
+      return;
+    }
+    if (this.status != PlayingStatus.INITIAL) {
+      global.errorMessage("ERROR: Trying to restart level save when current status is " + this.status + ".");
+      return;
+    }
+    if (global.profile.curr_hero == null || global.profile.curr_hero == HeroCode.ERROR) {
+      global.errorMessage("ERROR: Profile has no current hero.");
+      return;
+    }
+    Hero curr_hero = global.profile.heroes.get(global.profile.curr_hero);
+    if (curr_hero == null) {
+      global.errorMessage("ERROR: Profile missing curr hero " + global.profile.curr_hero + ".");
+      return;
+    }
+    if (curr_hero.location == null || curr_hero.location == Location.ERROR) {
+      global.errorMessage("ERROR: Hero " + curr_hero.display_name() + " missing location data.");
+      return;
+    }
+    if (!folderExists(this.savePath + curr_hero.location.file_name())) {
+      global.errorMessage("ERROR: No save folder at " + (this.savePath + curr_hero.location.file_name()) + ".");
+      return;
+    }
+    if (curr_hero.location.isArea()) {
+      global.errorMessage("ERROR: Can't restart " + curr_hero.location.display_name() + " since it's an area.");
+      return;
+    }
+    Hero hero = readHeroFile(this.savePath + curr_hero.location.file_name() + "/old_hero.lnz");
+    if (hero == null || hero.code == HeroCode.ERROR || hero.code != curr_hero.code || hero.location != curr_hero.location) {
+      global.errorMessage("ERROR: Can't restart " + curr_hero.location.display_name() + " since old hero data corrupted.");
+      return;
+    }
+    global.profile.heroes.put(hero.code, hero);
+    status = PlayingStatus.STARTING_NEW;
+    this.newLevelThread = new OpenNewLevelThread(hero);
+    this.newLevelThread.start();
   }
 
   void abandonLevel() {
@@ -545,8 +619,12 @@ class PlayingInterface extends InterfaceLNZ {
     this.level.player.stopAction();
     this.level.player.statuses.clear();
     this.level.player.restartAbilityTimers();
+    deleteFolder(this.savePath + this.level.player.location.file_name());
     this.level.player.location = next_location;
     global.profile.saveHeroesFile();
+    if (next_location.isArea()) {
+      global.profile.unlockArea(next_location);
+    }
     this.status = PlayingStatus.INITIAL;
     this.level = null;
   }

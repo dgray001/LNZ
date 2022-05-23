@@ -97,4 +97,17 @@ enum Location {
         return false;
     }
   }
+
+  public Location areaLocation() {
+    return Location.areaLocation(this);
+  }
+  public static Location areaLocation(Location a) {
+    switch(a) {
+      case FRANCISCAN_FRANCIS:
+      case FRANCISCAN_OUTSIDE:
+        return Location.AREA_GOLFCOURSE;
+      default:
+        return Location.ERROR;
+    }
+  }
 }

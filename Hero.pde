@@ -4472,7 +4472,7 @@ class Hero extends Unit {
     fileString += "\nthirst_timer: " + this.thirst_timer;
     fileString += this.inventory.fileString();
     for (HeroTreeCode code : this.heroTree.unlockedCodes()) {
-      fileString += "perk: " + code.file_name();
+      fileString += "\nperk: " + code.file_name();
     }
     fileString += "\nend: Hero\n";
     return fileString;
@@ -4523,4 +4523,256 @@ class Hero extends Unit {
         break;
     }
   }
+}
+
+
+Hero readHeroFile(String filePath) {
+  Hero hero = null;
+  String[] lines = loadStrings(filePath);
+  if (lines == null) {
+    global.errorMessage("ERROR: Reading hero at path " + filePath + " but no hero file exists.");
+    return null;
+  }
+  Stack<ReadFileObject> object_queue = new Stack<ReadFileObject>();
+  StatusEffectCode curr_status_code = StatusEffectCode.ERROR;
+  StatusEffect curr_status = null;
+  Ability curr_ability = null;
+  Item curr_item = null;
+  boolean ended_hero = false;
+  for (String line : lines) {
+    String[] parameters = split(line, ':');
+    if (parameters.length < 2) {
+      continue;
+    }
+    String dataname = trim(parameters[0]);
+    String data = trim(parameters[1]);
+    for (int i = 2; i < parameters.length; i++) {
+      data += ":" + parameters[i];
+    }
+    if (dataname.equals("new")) {
+      ReadFileObject type = ReadFileObject.objectType(trim(parameters[1]));
+      switch(type) {
+        case HERO:
+          if (parameters.length < 3) {
+            global.errorMessage("ERROR: Unit ID missing in Hero constructor.");
+            break;
+          }
+          object_queue.push(type);
+          hero = new Hero(toInt(trim(parameters[2])));
+          hero.abilities.clear();
+          break;
+        case INVENTORY:
+          if (hero == null) {
+            global.errorMessage("ERROR: Trying to start an inventory in a null hero.");
+          }
+          object_queue.push(type);
+          break;
+        case ITEM:
+          if (hero == null) {
+            global.errorMessage("ERROR: Trying to start an item in a null hero.");
+          }
+          if (parameters.length < 3) {
+            global.errorMessage("ERROR: Item ID missing in Item constructor.");
+            break;
+          }
+          object_queue.push(type);
+          curr_item = new Item(toInt(trim(parameters[2])));
+          break;
+        case STATUS_EFFECT:
+          if (hero == null) {
+            global.errorMessage("ERROR: Trying to start a status effect in a null hero.");
+          }
+          object_queue.push(type);
+          curr_status = new StatusEffect();
+          break;
+        case ABILITY:
+          if (hero == null) {
+            global.errorMessage("ERROR: Trying to start an ability in a null hero.");
+          }
+          if (parameters.length < 3) {
+            global.errorMessage("ERROR: Ability ID missing in Projectile constructor.");
+            break;
+          }
+          object_queue.push(type);
+          curr_ability = new Ability(toInt(trim(parameters[2])));
+          break;
+        default:
+          global.errorMessage("ERROR: Can't add a " + type + " type to Heroes data.");
+          break;
+      }
+    }
+    else if (dataname.equals("end")) {
+      ReadFileObject type = ReadFileObject.objectType(trim(parameters[1]));
+      if (object_queue.empty()) {
+        global.errorMessage("ERROR: Tring to end a " + type.name + " object but not inside any object.");
+      }
+      else if (type.name.equals(object_queue.peek().name)) {
+        switch(object_queue.pop()) {
+          case HERO:
+            if (hero == null) {
+              global.errorMessage("ERROR: Trying to end a null hero.");
+              break;
+            }
+            if (!object_queue.empty()) {
+              global.errorMessage("ERROR: Trying to end a hero but inside another object.");
+              break;
+            }
+            if (hero.code == HeroCode.ERROR) {
+              global.errorMessage("ERROR: Trying to end hero with errored code.");
+              break;
+            }
+            ended_hero = true;
+            break;
+          case INVENTORY:
+            if (hero == null) {
+              global.errorMessage("ERROR: Trying to end an inventory in a null hero.");
+              break;
+            }
+            break;
+          case ITEM:
+            if (curr_item == null) {
+              global.errorMessage("ERROR: Trying to end a null item.");
+              break;
+            }
+            if (object_queue.empty()) {
+              global.errorMessage("ERROR: Trying to end an item not inside any other object.");
+              break;
+            }
+            if (object_queue.peek() != ReadFileObject.HERO) {
+              global.errorMessage("ERROR: Trying to end an ability not inside a hero.");
+              break;
+            }
+            switch(object_queue.peek()) {
+              case HERO:
+                if (parameters.length < 3) {
+                  global.errorMessage("ERROR: GearSlot code missing in Item constructor.");
+                  break;
+                }
+                GearSlot code = GearSlot.gearSlot(trim(parameters[2]));
+                if (hero == null) {
+                  global.errorMessage("ERROR: Trying to add gear to null hero.");
+                  break;
+                }
+                hero.gear.put(code, curr_item);
+                break;
+              case INVENTORY:
+                if (parameters.length < 3) {
+                  global.errorMessage("ERROR: No positional information for inventory item.");
+                  break;
+                }
+                int index = toInt(trim(parameters[2]));
+                if (hero == null) {
+                  global.errorMessage("ERROR: Trying to add inventory item to null hero.");
+                  break;
+                }
+                Item i = hero.inventory.placeAt(curr_item, index, true);
+                if (i != null) {
+                  global.errorMessage("ERROR: Item already exists at position " + index + ".");
+                  break;
+                }
+                break;
+              default:
+                global.errorMessage("ERROR: Trying to end an item inside a " + object_queue.peek().name + ".");
+                break;
+            }
+            curr_item = null;
+            break;
+          case STATUS_EFFECT:
+            if (curr_status == null) {
+              global.errorMessage("ERROR: Trying to end a null status effect.");
+              break;
+            }
+            if (object_queue.empty()) {
+              global.errorMessage("ERROR: Trying to end a status effect not inside any other object.");
+              break;
+            }
+            if (object_queue.peek() != ReadFileObject.HERO) {
+              global.errorMessage("ERROR: Trying to end a status effect not inside a hero.");
+              break;
+            }
+            if (hero == null) {
+              global.errorMessage("ERROR: Trying to end a status effect inside a null hero.");
+              break;
+            }
+            hero.statuses.put(curr_status_code, curr_status);
+            curr_status = null;
+            break;
+          case ABILITY:
+            if (curr_ability == null) {
+              global.errorMessage("ERROR: Trying to end a null ability.");
+              break;
+            }
+            if (object_queue.empty()) {
+              global.errorMessage("ERROR: Trying to end an ability not inside any other object.");
+              break;
+            }
+            if (object_queue.peek() != ReadFileObject.HERO) {
+              global.errorMessage("ERROR: Trying to end an ability not inside a hero.");
+              break;
+            }
+            if (hero == null) {
+              global.errorMessage("ERROR: Trying to end an ability inside a null hero.");
+              break;
+            }
+            hero.abilities.add(curr_ability);
+            curr_ability = null;
+            break;
+        }
+      }
+      else {
+        global.errorMessage("ERROR: Tring to end a " + type.name + " object but current object is a " + object_queue.peek().name + ".");
+      }
+    }
+    else {
+      switch(object_queue.peek()) {
+        case HERO:
+          if (hero == null) {
+            global.errorMessage("ERROR: Trying to add hero data to a null hero.");
+            break;
+          }
+          if (dataname.equals("next_status_code")) {
+            curr_status_code = StatusEffectCode.code(data);
+          }
+          else {
+            hero.addData(dataname, data);
+          }
+          break;
+        case INVENTORY:
+          if (hero == null) {
+            global.errorMessage("ERROR: Trying to add hero inventory data to a null hero.");
+            break;
+          }
+          hero.inventory.addData(dataname, data);
+          break;
+        case ITEM:
+          if (curr_item == null) {
+            global.errorMessage("ERROR: Trying to add item data to a null item.");
+            break;
+          }
+          curr_item.addData(dataname, data);
+          break;
+        case STATUS_EFFECT:
+          if (curr_status == null) {
+            global.errorMessage("ERROR: Trying to add status effect data to a null status effect.");
+            break;
+          }
+          curr_status.addData(dataname, data);
+          break;
+        case ABILITY:
+          if (curr_ability == null) {
+            global.errorMessage("ERROR: Trying to add ability data to a null ability.");
+            break;
+          }
+          curr_status.addData(dataname, data);
+          break;
+        default:
+          break;
+      }
+    }
+  }
+  if (!ended_hero) {
+    global.errorMessage("ERROR: Hero data never ended.");
+    return null;
+  }
+  return hero;
 }

@@ -1,7 +1,5 @@
 v0.7.2: PlayingInterface
- l: Can finish mock campaign and unlock corresponding homebase (save in profile which homebases are active)
- m: Can restart / abandon level
- n: Can open and edit homebase
+ m: Can abandon level
  o: Can redo Campaigns (only I so far)
  p: Can only start a Campaign if no other hero in that campaign (test by giving player multiple heroes)
  q: Button in achievement form to view player tree (upgrade achievementform in general)
@@ -28,7 +26,7 @@ Bugs:
  - Status effects on selected object left panel will have names behind others when hovered
  - Tint affects other images still
  - Options volumes are all fucked up
- - The file "C:\Users\yodan\github\LNZ\data/images/gifs/fire/32.png" is missing or inaccessible, make sure the URL is valid or that the file has been added to your sketch and is readable.
+ - The file "C:\Users\yodan\github\LNZ\data/images/gifs/fire/32.png" is missing or inaccessible
 
  - If still has commits left start on the parking lot lines
 
