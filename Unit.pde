@@ -3593,7 +3593,6 @@ class Unit extends MapObject {
                     break;
                   }
                 }
-                break;
               } catch(Exception e) {}
             }
             if (!add_square) {

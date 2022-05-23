@@ -4,8 +4,8 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220523: v0.7.2n" +
-  "\nLines: 39591 (v0.7.2m)" +
+  "\n20220523: v0.7.2o" +
+  "\nLines: 39680 (v0.7.2o)" +
   "\nImages: 1102 (v0.7.2)" +
   "\nSounds: 250 (v0.7.2)" +
   "";
@@ -213,7 +213,7 @@ static class Constants {
   // Units
   static final float unit_defaultSize = 0.35;
   static final int unit_defaultHeight = 5;
-  static final float unit_defaultSight = 5.5;
+  static final float unit_defaultSight = 6.5;
   static final float unit_sneakSpeed = 0.5;
   static final float unit_moveCollisionStopActionTime = 300;
   static final float unit_small_facing_threshhold = 0.01;

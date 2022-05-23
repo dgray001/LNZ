@@ -18,6 +18,8 @@ v0.7.2: PlayingInterface
  - Can only move away from center of feature that's too tall (like with unit collisions)
  - Save unit facing data
  - Log profile open / create events in main menu
+ - If header message is placeCenter() then don't have it be lowered by upper ones, and vice versa
+ - Make quest sound much louder
 
   *Tutorial notes:
      - Place "The Third Ball" in the ender chest to have it for later (TEST in mock campaign(s))
