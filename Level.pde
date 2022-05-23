@@ -347,6 +347,7 @@ class Level {
     this.openMap(this.currMapName);
     if (this.currMap == null || this.currMap.nullify) {
       this.nullify = true;
+      global.errorMessage("ERROR: Can't open curr map.");
     }
   }
 

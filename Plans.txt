@@ -1,6 +1,6 @@
 v0.7.2: PlayingInterface
- m: Can abandon level
- o: Can redo Campaigns (only I so far)
+ m: Can abandon level while playing (make abandon level confirm form)
+ o: Can redo Campaigns from their areas (only I so far)
  p: Can only start a Campaign if no other hero in that campaign (test by giving player multiple heroes)
  q: Button in achievement form to view player tree (upgrade achievementform in general)
  r: Display level tokens and can click to view hero tree
@@ -16,6 +16,7 @@ v0.7.2: PlayingInterface
  - If hovering status effect don't hover map objects
  - Save music track/location in level
  - Can only move away from center of feature that's too tall (like with unit collisions)
+ - Save unit facing data
 
   *Tutorial notes:
      - Place "The Third Ball" in the ender chest to have it for later (TEST in mock campaign(s))

@@ -157,7 +157,7 @@ class PlayingInterface extends InterfaceLNZ {
         PlayingInterface.this.abandonLevel();
       }
       else {
-        // message informing that you can't abandon level with said hero
+        // message informing that you can't abandon level since no-where for hero to run
         PlayingInterface.this.heroesForm();
       }
       this.canceled = true;
@@ -228,6 +228,7 @@ class PlayingInterface extends InterfaceLNZ {
         PlayingInterface.this.abandonLevel();
       }
       else {
+        // message informing that you can't abandon level since no-where for hero to run
         PlayingInterface.this.restartLevel();
       }
       this.canceled = true;
@@ -471,7 +472,7 @@ class PlayingInterface extends InterfaceLNZ {
       global.errorMessage("ERROR: Hero " + curr_hero.display_name() + " missing location data.");
       return;
     }
-    status = PlayingStatus.STARTING_NEW;
+    this.status = PlayingStatus.STARTING_NEW;
     this.newLevelThread = new OpenNewLevelThread(curr_hero);
     this.newLevelThread.start();
   }
@@ -502,7 +503,7 @@ class PlayingInterface extends InterfaceLNZ {
       global.errorMessage("ERROR: No save folder at " + (this.savePath + curr_hero.location.file_name()) + ".");
       return;
     }
-    status = PlayingStatus.LOADING_SAVED;
+    this.status = PlayingStatus.LOADING_SAVED;
     this.savedLevelThread = new OpenSavedLevelThread(curr_hero);
     this.savedLevelThread.start();
   }
@@ -542,14 +543,63 @@ class PlayingInterface extends InterfaceLNZ {
       global.errorMessage("ERROR: Can't restart " + curr_hero.location.display_name() + " since old hero data corrupted.");
       return;
     }
+    deleteFolder(this.savePath + curr_hero.location.file_name());
     global.profile.heroes.put(hero.code, hero);
-    status = PlayingStatus.STARTING_NEW;
+    this.status = PlayingStatus.STARTING_NEW;
     this.newLevelThread = new OpenNewLevelThread(hero);
     this.newLevelThread.start();
   }
 
   void abandonLevel() {
-    // to abandon level need to have a hero saved from before it started level
+    if (this.level != null) {
+      global.errorMessage("ERROR: Trying to restart level when current level not null.");
+      return;
+    }
+    if (this.status != PlayingStatus.INITIAL) {
+      global.errorMessage("ERROR: Trying to restart level save when current status is " + this.status + ".");
+      return;
+    }
+    if (global.profile.curr_hero == null || global.profile.curr_hero == HeroCode.ERROR) {
+      global.errorMessage("ERROR: Profile has no current hero.");
+      return;
+    }
+    Hero curr_hero = global.profile.heroes.get(global.profile.curr_hero);
+    if (curr_hero == null) {
+      global.errorMessage("ERROR: Profile missing curr hero " + global.profile.curr_hero + ".");
+      return;
+    }
+    if (curr_hero.location == null || curr_hero.location == Location.ERROR) {
+      global.errorMessage("ERROR: Hero " + curr_hero.display_name() + " missing location data.");
+      return;
+    }
+    if (curr_hero.location.isArea()) {
+      global.errorMessage("ERROR: Can't abandon " + curr_hero.location.display_name() + " since it's an area.");
+      return;
+    }
+    Location area_location = curr_hero.location.areaLocation();
+    if (!global.profile.areas.containsKey(area_location) || global.profile.areas.get(area_location) == Boolean.FALSE) {
+      global.errorMessage("ERROR: Can't abandon " + curr_hero.location.display_name() + " since its area isn't unlocked.");
+      return;
+    }
+    if (folderExists(this.savePath + curr_hero.location.file_name())) {
+      Hero hero = readHeroFile(this.savePath + curr_hero.location.file_name() + "/old_hero.lnz");
+      if (hero == null || hero.code == HeroCode.ERROR || hero.code != curr_hero.code || hero.location != curr_hero.location) {
+        global.errorMessage("ERROR: Can't restart " + curr_hero.location.display_name() + " since old hero data corrupted.");
+        return;
+      }
+      deleteFolder(this.savePath + curr_hero.location.file_name());
+      hero.location = area_location;
+      global.profile.heroes.put(hero.code, hero);
+      this.status = PlayingStatus.LOADING_SAVED;
+      this.savedLevelThread = new OpenSavedLevelThread(hero);
+      this.savedLevelThread.start();
+    }
+    else {
+      curr_hero.location = area_location;
+      this.status = PlayingStatus.STARTING_NEW;
+      this.newLevelThread = new OpenNewLevelThread(curr_hero);
+      this.newLevelThread.start();
+    }
   }
 
   void switchHero(Hero hero) {
