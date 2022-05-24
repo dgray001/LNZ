@@ -695,6 +695,7 @@ class GameMap {
     private color color_background = color(110, 90, 70, 150);
     private color color_text = color(255);
     private boolean clickable = true;
+    private boolean centered = false;
 
     private float xi = 0;
     private float yi = 0;
@@ -759,6 +760,7 @@ class GameMap {
       this.placeCenter(34);
     }
     void placeCenter(float text_size) {
+      this.centered = true;
       this.text_size = text_size;
       textSize(this.text_size);
       float size_width = textWidth(this.message) + 4;
@@ -2063,9 +2065,14 @@ class GameMap {
       this.refreshFogImage();
     }
     // header messages
-    int j = 0;
-    for (int i = this.headerMessages.size() - 1; i >= 0; i--, j++) {
-      this.headerMessages.get(i).updateView(timeElapsed, j);
+    int centered = 0;
+    for (int i = 0; i < this.headerMessages.size(); i++) {
+      int index = i - centered;
+      if (this.headerMessages.get(i).centered) {
+        index = centered;
+        centered++;
+      }
+      this.headerMessages.get(i).updateView(timeElapsed, index);
       if (this.headerMessages.get(i).remove) {
         this.headerMessages.remove(i);
       }

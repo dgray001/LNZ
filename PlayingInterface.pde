@@ -160,8 +160,7 @@ class PlayingInterface extends InterfaceLNZ {
       }
       Location area_location = this.hero.location.areaLocation();
       if (global.profile.areas.containsKey(area_location) && global.profile.areas.get(area_location) == Boolean.TRUE) {
-        // confirm abandon
-        PlayingInterface.this.abandonLevel();
+        PlayingInterface.this.form = new ConfirmAbandonForm();
         this.canceled = true;
       }
       else {
@@ -246,8 +245,7 @@ class PlayingInterface extends InterfaceLNZ {
       }
       Location area_location = this.hero.location.areaLocation();
       if (global.profile.areas.containsKey(area_location) && global.profile.areas.get(area_location) == Boolean.TRUE) {
-        // confirm abandon
-        PlayingInterface.this.abandonLevel();
+        PlayingInterface.this.form = new ConfirmAbandonForm();
         this.canceled = true;
       }
       else {
@@ -271,8 +269,7 @@ class PlayingInterface extends InterfaceLNZ {
             this.fields.get(5).setValue("You can't restart an area.");
             return;
           }
-          // confirm restart
-          PlayingInterface.this.restartLevel();
+          PlayingInterface.this.form = new ConfirmRestartForm();
           this.canceled = true;
           break;
         default:
@@ -338,9 +335,7 @@ class PlayingInterface extends InterfaceLNZ {
         this.fields.get(5).setValue("You can't restart an area.");
         return;
       }
-      // confirm restart
-      PlayingInterface.this.saveAndReturnToInitialState();
-      PlayingInterface.this.restartLevel();
+      PlayingInterface.this.form = new ConfirmRestartForm();
       this.canceled = true;
     }
 
@@ -351,9 +346,7 @@ class PlayingInterface extends InterfaceLNZ {
       }
       Location area_location = this.hero.location.areaLocation();
       if (global.profile.areas.containsKey(area_location) && global.profile.areas.get(area_location) == Boolean.TRUE) {
-        // confirm abandon
-        PlayingInterface.this.saveAndReturnToInitialState();
-        PlayingInterface.this.abandonLevel();
+        PlayingInterface.this.form = new ConfirmAbandonForm();
         this.canceled = true;
       }
       else {
@@ -408,6 +401,32 @@ class PlayingInterface extends InterfaceLNZ {
     }
 
     abstract void doAction();
+  }
+
+
+  class ConfirmAbandonForm extends ConfirmActionForm {
+    ConfirmAbandonForm() {
+      super("Abandon Level", "Are you sure you want to abandon the level?");
+    }
+    void doAction() {
+      if (PlayingInterface.this.status == PlayingStatus.PLAYING) {
+        PlayingInterface.this.saveAndReturnToInitialState();
+      }
+      PlayingInterface.this.abandonLevel();
+    }
+  }
+
+
+  class ConfirmRestartForm extends ConfirmActionForm {
+    ConfirmRestartForm() {
+      super("Restart Level", "Are you sure you want to restart the level?");
+    }
+    void doAction() {
+      if (PlayingInterface.this.status == PlayingStatus.PLAYING) {
+        PlayingInterface.this.saveAndReturnToInitialState();
+      }
+      PlayingInterface.this.restartLevel();
+    }
   }
 
 
@@ -812,7 +831,7 @@ class PlayingInterface extends InterfaceLNZ {
       global.errorMessage("ERROR: Can't complete level without a player object.");
       return;
     }
-    global.log("Completed level with code " + completion_code + ".");
+    global.log("Completed level " + this.level.location.display_name() + " with code " + completion_code + ".");
     Location next_location = Location.nextLocation(this.level.location, completion_code);
     if (next_location == Location.ERROR) {
       global.errorMessage("ERROR: Completion code " + completion_code +

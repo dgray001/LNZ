@@ -1,5 +1,4 @@
 v0.7.2: PlayingInterface
- s: ConfirmAction forms
  t: AbandonLevel button is EnterCampaign button if in an area
     => EnterCampaignForm (which will eventually get major upgrade so make it very simple)
     => Make sure no other heroes in that campaign (check in profile not saves)
@@ -10,7 +9,6 @@ v0.7.2: PlayingInterface
  y: Can drop items onto map from inventory view, garbage can inventories (4x1)
 
  - Chuck quizmo covers question, put him above it with you on left
- - If header message is placeCenter() then don't have it be lowered by upper ones, and vice versa
  - Rankin sounds in tutorial
  - Can directly place items in feature inventory in map editor
 
