@@ -1806,6 +1806,10 @@ class Level {
     }
     if (this.currMap != null) {
       this.currMap.mouseMove(mX, mY);
+      if (this.player != null && this.player.inventory_bar.hovered) {
+        this.currMap.hovered_object = null;
+        global.defaultCursor("icons/cursor_interact.png", "icons/cursor_attack.png", "icons/cursor_pickup.png");
+      }
     }
   }
 

@@ -3325,9 +3325,9 @@ class Unit extends MapObject {
     this.last_move_collision = false;
     this.last_move_any_collision = false;
     // move in x direction
-    this.moveX(tryMoveX, map);
+    this.moveX(tryMoveX, tryMoveY, map);
     // move in y direction
-    this.moveY(tryMoveY, map);
+    this.moveY(tryMoveX, tryMoveY, map);
     // calculates squares_on and height
     this.curr_squares_on = this.getSquaresOn();
     this.resolveFloorHeight(map);
@@ -3337,10 +3337,16 @@ class Unit extends MapObject {
     this.last_move_distance = sqrt(moveX * moveX + moveY * moveY);
   }
 
-  void moveX(float tryMoveX, GameMap map) {
+  void moveX(float tryMoveX, float tryMoveY, GameMap map) {
+    if (tryMoveX == 0) {
+      return;
+    }
+    float originalTryMoveX = tryMoveX;
+    float moveCapRatio = Constants.map_moveLogicCap / tryMoveX;
+    float equivalentMoveY = moveCapRatio * tryMoveY;
     while(abs(tryMoveX) > Constants.map_moveLogicCap) {
       if (tryMoveX > 0) {
-        if (this.collisionLogicX(Constants.map_moveLogicCap, map)) {
+        if (this.collisionLogicX(Constants.map_moveLogicCap, equivalentMoveY, map)) {
           this.last_move_collision = true;
           this.last_move_any_collision = true;
           return;
@@ -3348,7 +3354,7 @@ class Unit extends MapObject {
         tryMoveX -= Constants.map_moveLogicCap;
       }
       else {
-        if (this.collisionLogicX(-Constants.map_moveLogicCap, map)) {
+        if (this.collisionLogicX(-Constants.map_moveLogicCap, -equivalentMoveY, map)) {
           this.last_move_collision = true;
           this.last_move_any_collision = true;
           return;
@@ -3356,7 +3362,9 @@ class Unit extends MapObject {
         tryMoveX += Constants.map_moveLogicCap;
       }
     }
-    if (this.collisionLogicX(tryMoveX, map)) {
+    moveCapRatio = tryMoveX / originalTryMoveX;
+    equivalentMoveY = moveCapRatio * tryMoveY;
+    if (this.collisionLogicX(tryMoveX, equivalentMoveY, map)) {
       this.last_move_collision = true;
       this.last_move_any_collision = true;
       return;
@@ -3367,24 +3375,32 @@ class Unit extends MapObject {
     }
   }
 
-  void moveY(float tryMoveY, GameMap map) {
+  void moveY(float tryMoveX, float tryMoveY, GameMap map) {
+    if (tryMoveY == 0) {
+      return;
+    }
+    float originalTryMoveY = tryMoveY;
+    float moveCapRatio = Constants.map_moveLogicCap / tryMoveY;
+    float equivalentMoveX = moveCapRatio * tryMoveX;
     while(abs(tryMoveY) > Constants.map_moveLogicCap) {
       if (tryMoveY > 0) {
-        if (this.collisionLogicY(Constants.map_moveLogicCap, map)) {
+        if (this.collisionLogicY(Constants.map_moveLogicCap, equivalentMoveX, map)) {
           this.last_move_any_collision = true;
           return;
         }
         tryMoveY -= Constants.map_moveLogicCap;
       }
       else {
-        if (this.collisionLogicY(-Constants.map_moveLogicCap, map)) {
+        if (this.collisionLogicY(-Constants.map_moveLogicCap, equivalentMoveX, map)) {
           this.last_move_any_collision = true;
           return;
         }
         tryMoveY += Constants.map_moveLogicCap;
       }
     }
-    if (this.collisionLogicY(tryMoveY, map)) {
+    moveCapRatio = tryMoveY / originalTryMoveY;
+    equivalentMoveX = moveCapRatio * tryMoveX;
+    if (this.collisionLogicY(tryMoveY, equivalentMoveX, map)) {
       this.last_move_any_collision = true;
       return;
     }
@@ -3394,7 +3410,7 @@ class Unit extends MapObject {
   }
 
   // returns true if collision occurs
-  boolean collisionLogicX(float tryMoveX, GameMap map) {
+  boolean collisionLogicX(float tryMoveX, float equivalentMoveY, GameMap map) {
     float startX = this.x;
     this.x += tryMoveX;
     // map collisions
@@ -3404,15 +3420,32 @@ class Unit extends MapObject {
     }
     // terrain collisions
     ArrayList<IntegerCoordinate> squares_moving_on = this.getSquaresOn();
-    int new_height = map.maxHeightOfSquares(squares_moving_on, true);
-    if (!this.canMoveUp(new_height - this.curr_height)) {
-      for (IntegerCoordinate coordinate : squares_moving_on) {
-        if (this.currentlyOn(coordinate)) {
-          continue;
-        }
+    int max_height = this.curr_height + this.walkHeight();
+    for (IntegerCoordinate coordinate : squares_moving_on) {
+      int coordinate_height = map.heightOfSquare(coordinate, true);
+      if (coordinate_height <= max_height) {
+        continue;
+      }
+      if (!this.currentlyOn(coordinate)) {
         this.x = startX;
         return true;
       }
+      float s_x = coordinate.x + 0.5;
+      if ( (this.x > s_x && this.facingX > 0) || (this.x < s_x && this.facingX < 0) ) {
+        continue;
+      }
+      float s_y = coordinate.y + 0.5;
+      float original_xDif = s_x - startX;
+      float original_yDif = s_y - this.y;
+      float original_distance = sqrt(original_xDif * original_xDif + original_yDif * original_yDif);
+      float new_xDif = s_x - this.x;
+      float new_yDif = s_y - this.y - equivalentMoveY;
+      float new_distance = sqrt(new_xDif * new_xDif + new_yDif * new_yDif);
+      if (new_distance > original_distance) {
+        continue;
+      }
+      this.x = startX;
+      return true;
     }
     // unit collisions
     for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
@@ -3440,7 +3473,7 @@ class Unit extends MapObject {
   }
 
   // returns true if collision occurs
-  boolean collisionLogicY(float tryMoveY, GameMap map) {
+  boolean collisionLogicY(float tryMoveY, float equivalentMoveX, GameMap map) {
     float startY = this.y;
     this.y += tryMoveY;
     if (!this.inMapY(map.mapHeight)) {
@@ -3449,17 +3482,33 @@ class Unit extends MapObject {
     }
     // terrain collisions
     ArrayList<IntegerCoordinate> squares_moving_on = this.getSquaresOn();
-    int new_height = map.maxHeightOfSquares(squares_moving_on, true);
-    if (!this.canMoveUp(new_height - this.curr_height)) {
-      for (IntegerCoordinate coordinate : squares_moving_on) {
-        if (this.currentlyOn(coordinate)) {
-          continue;
-        }
+    int max_height = this.curr_height + this.walkHeight();
+    for (IntegerCoordinate coordinate : squares_moving_on) {
+      int coordinate_height = map.heightOfSquare(coordinate, true);
+      if (coordinate_height <= max_height) {
+        continue;
+      }
+      if (!this.currentlyOn(coordinate)) {
         this.y = startY;
         return true;
       }
+      float s_y = coordinate.y + 0.5;
+      if ( (this.y > s_y && this.facingY > 0) || (this.y < s_y && this.facingY < 0) ) {
+        continue;
+      }
+      float s_x = coordinate.x + 0.5;
+      float original_xDif = s_x - this.x;
+      float original_yDif = s_y - startY;
+      float original_distance = sqrt(original_xDif * original_xDif + original_yDif * original_yDif);
+      float new_xDif = s_x - this.x - equivalentMoveX;
+      float new_yDif = s_y - this.y;
+      float new_distance = sqrt(new_xDif * new_xDif + new_yDif * new_yDif);
+      if (new_distance > original_distance) {
+        continue;
+      }
+      this.y = startY;
+      return true;
     }
-    // unit collisions
     for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
       if (entry.getKey() == this.map_key) {
         continue;
@@ -3770,6 +3819,7 @@ class Unit extends MapObject {
     }
     fileString += "\nfacingX: " + this.facingX;
     fileString += "\nfacingY: " + this.facingY;
+    fileString += "\nfacingA: " + this.facingA;
     fileString += "\nbase_health: " + this.base_health;
     fileString += "\nbase_attack: " + this.base_attack;
     fileString += "\nbase_magic: " + this.base_magic;
@@ -3819,6 +3869,9 @@ class Unit extends MapObject {
         break;
       case "facingY":
         this.facingY = toFloat(data);
+        break;
+      case "facingA":
+        this.facingA = toFloat(data);
         break;
       case "addNullAbility":
         this.abilities.add(null);

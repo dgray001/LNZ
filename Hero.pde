@@ -1246,6 +1246,7 @@ class Hero extends Unit {
     private ArrayList<AbilityButton> ability_buttons = new ArrayList<AbilityButton>();
     private boolean portrait_hovered = false;
     private boolean portrait_clicked = false;
+    private boolean hovered = false;
 
     protected color color_background = color(210, 153, 108);
     protected color color_ability_border = color(120, 70, 40);
@@ -1510,6 +1511,7 @@ class Hero extends Unit {
     }
 
     void mouseMove(float mX, float mY) {
+      this.hovered = false;
       if (global.profile.options.inventory_bar_hidden) {
         return;
       }
@@ -1521,6 +1523,9 @@ class Hero extends Unit {
       if (this.code_description.display) {
         this.code_description.mouseMove(mX, mY);
       }
+      if (this.code_hovered != null || this.code_description.hovered) {
+        this.hovered = true;
+      }
       if ((this.code_hovered == null || !this.code_hovered.code_name().equals(
         this.code_description.text_title)) && !this.code_description.hovered) {
         this.code_description.display = false;
@@ -1529,9 +1534,15 @@ class Hero extends Unit {
       float portrait_distance_y = mY - this.yi_picture - this.radius_picture;
       if (sqrt(portrait_distance_x * portrait_distance_x + portrait_distance_y * portrait_distance_y) < this.radius_picture) {
         this.portrait_hovered = true;
+        this.hovered = true;
       }
       else {
         this.portrait_hovered = false;
+      }
+      if (!this.hovered) {
+        if (mX > this.xi_bar && mY > this.yi && mX < this.xf_bar && mY < this.yf) {
+          this.hovered = true;
+        }
       }
       if (!Hero.this.inventory.viewing) {
         mX -= this.xi_bar + 3;

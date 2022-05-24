@@ -273,6 +273,9 @@ class MainMenuInterface extends InterfaceLNZ {
         if (global.profile.upgraded(PlayerTreeCode.CAN_PLAY)) {
           global.state = ProgramState.ENTERING_PLAYING;
         }
+        else if (global.profile.achievementUnlocked(AchievementCode.COMPLETED_TUTORIAL)) {
+          MainMenuInterface.this.form = new UnlockPlayForm();
+        }
         else {
           MainMenuInterface.this.form = new CompleteTutorialForm();
         }
@@ -517,6 +520,7 @@ class MainMenuInterface extends InterfaceLNZ {
           global.configuration.default_profile_name = profileName;
           global.configuration.save();
         }
+        global.log("Opened profile: " + profileName);
       }
       else {
         this.fields.get(2).setValue("There was an error opening the profile");
@@ -590,6 +594,7 @@ class MainMenuInterface extends InterfaceLNZ {
             global.configuration.default_profile_name = possibleProfileName;
             global.configuration.save();
           }
+          global.log("Creating new profile: " + possibleProfileName);
           break;
         case 1:
           this.fields.get(2).setValue("Enter a profile name.");
@@ -652,6 +657,56 @@ class MainMenuInterface extends InterfaceLNZ {
         this.arrow_y = button.yCenter();
       } catch(ArrayIndexOutOfBoundsException e) {}
     }
+    
+    void update(int millis) {
+      super.update(millis);
+      int frame = int(floor(Constants.gif_arrow_frames * (millis %
+        Constants.gif_arrow_time) / (1 + Constants.gif_arrow_time)));
+      translate(this.arrow_x, this.arrow_y);
+      rotate(PI);
+      imageMode(CENTER);
+      image(global.images.getImage("gifs/arrow/" + frame + ".png"), 0, 0, 130, 130);
+      rotate(-PI);
+      translate(-this.arrow_x, -this.arrow_y);
+    }
+    void submit() {
+      this.canceled = true;
+    }
+  }
+
+
+  class UnlockPlayForm extends FormLNZ {
+    protected float arrow_x = 0;
+    protected float arrow_y = 0;
+    UnlockPlayForm() {
+      super(0.5 * width - 120, 0.5 * height - 120, 0.5 * width + 120, 0.5 * height + 120);
+      this.setTitleText("Play Game");
+      this.setTitleSize(18);
+      this.color_background = color(180, 250, 180);
+      this.color_header = color(30, 170, 30);
+      this.scrollbar.setButtonColors(color(170), color(190, 255, 190),
+        color(220, 255, 220), color(160, 220, 160), color(0));
+
+      SubmitFormField submit = new SubmitFormField("  Ok  ");
+      submit.button.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+      this.addField(new SpacerFormField(0));
+      TextBoxFormField textbox = new TextBoxFormField("You must unlock the " +
+        "ability to play the game in your perk tree. You can open your perk " +
+        "tree with 'ctrl-p' or from the Achievements view.", 120);
+      textbox.textbox.scrollbar.setButtonColors(color(170), color(190, 255, 190),
+        color(220, 255, 220), color(160, 220, 160), color(0));
+      this.addField(textbox);
+      this.addField(submit);
+
+      MainMenuGrowButton button = null;
+      try {
+        button = MainMenuInterface.this.growButtons[2];
+        this.arrow_x = button.xf + 70;
+        this.arrow_y = button.yCenter();
+      } catch(ArrayIndexOutOfBoundsException e) {}
+    }
+
     void update(int millis) {
       super.update(millis);
       int frame = int(floor(Constants.gif_arrow_frames * (millis %
@@ -716,8 +771,10 @@ class MainMenuInterface extends InterfaceLNZ {
     for (Path p : profiles) {
       if (global.configuration.default_profile_name.toLowerCase().equals(p.getFileName().toString().toLowerCase())) {
         if (!loadProfile(global.configuration.default_profile_name)) {
+          global.log("Failed to load default profile: " + global.configuration.default_profile_name);
           break;
         }
+        global.log("Loading default profile: " + global.configuration.default_profile_name);
         return;
       }
     }

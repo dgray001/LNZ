@@ -423,8 +423,12 @@ class Ability {
 
   boolean checkMana() {
     switch(this.ID) {
+      case 101:
       case 102:
       case 103:
+      case 106:
+      case 107:
+      case 108:
         return false;
       case 115:
       case 120:

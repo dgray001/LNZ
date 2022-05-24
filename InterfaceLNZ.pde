@@ -774,12 +774,54 @@ abstract class InterfaceLNZ {
 
 
   class AchievementsForm extends FormLNZ {
+    class OpenPerkTreeButton extends RippleRectangleButton {
+      OpenPerkTreeButton(float xi, float yi, float xf, float yf) {
+        super(xi, yi, xf, yf);
+        this.roundness = 4;
+        this.show_message = true;
+        this.noStroke();
+        this.message = "Open Perk Tree";
+        this.setColors(color(170, 170), color(1, 0), color(1, 0), color(150, 150), color(0));
+        this.rippleTime = 700;
+        this.text_size = 22;
+      }
+      @Override
+      void drawButton() {
+        super.drawButton();
+        if (this.hovered) {
+          noFill();
+          stroke(150, 40, 40);
+          strokeWeight(1);
+          rectMode(CORNERS);
+          rect(this.xi, this.yi, this.xf, this.yf, this.roundness);
+        }
+      }
+      @Override
+      void hover() {
+        super.hover();
+        this.color_text = color(150, 40, 40);
+      }
+      @Override
+      void dehover() {
+        super.dehover();
+        this.color_text = color(0);
+      }
+      @Override
+      void release() {
+        super.release();
+        if (this.hovered || this.button_focused) {
+          AchievementsForm.this.submit();
+        }
+      }
+    }
+
     AchievementsForm() {
       super(Constants.achievementsForm_widthOffset, Constants.achievementsForm_heightOffset,
         width - Constants.achievementsForm_widthOffset, height - Constants.achievementsForm_heightOffset);
       this.setTitleText("Achievements");
       this.setTitleSize(20);
-      this.color_background = color(180, 250, 250);
+      //this.color_background = color(180, 250, 250);
+      this.color_background = color(150, 220, 220);
       this.color_header = color(50, 180, 180);
       if (global.profile == null) {
         this.canceled = true;
@@ -787,6 +829,11 @@ abstract class InterfaceLNZ {
       }
       this.addField(new SpacerFormField(10));
       this.addField(new MessageFormField("Achievement Tokens: " + global.profile.achievement_tokens + " 〶"));
+      SubmitFormField perk_tree = new SubmitFormField("");
+      perk_tree.button = new OpenPerkTreeButton(0, 0, 0, 30);
+      perk_tree.align_left = true;
+      perk_tree.make_button_extra_tall = true;
+      this.addField(perk_tree);
       this.addField(new SpacerFormField(30));
       ArrayList<MessageFormField> achievements_complete = new ArrayList<MessageFormField>();
       ArrayList<MessageFormField> achievements_incomplete = new ArrayList<MessageFormField>();
@@ -809,6 +856,7 @@ abstract class InterfaceLNZ {
     }
 
     void submit() {
+      InterfaceLNZ.this.openPlayerTree();
     }
 
     void keyPress() {

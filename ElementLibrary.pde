@@ -3651,10 +3651,12 @@ class SubmitFormField extends FormField {
     }
   }
 
-  protected SubmitButton button = new SubmitButton(0, 0, 0, 30);
+  protected RectangleButton button = new SubmitButton(0, 0, 0, 30);
   protected boolean submitted = false;
   protected boolean submit_button = true;
   protected boolean extend_width = false;
+  protected boolean align_left = false;
+  protected boolean make_button_extra_tall = false;
 
   SubmitFormField(String message) {
     this(message, true);
@@ -3693,8 +3695,14 @@ class SubmitFormField extends FormField {
     textSize(this.button.text_size);
     float desiredWidth = textWidth(this.button.message + "  ");
     float button_height = textDescent() + textAscent() + 4;
+    if (this.make_button_extra_tall) {
+      button_height *= 1.2;
+    }
     if (desiredWidth > this.field_width || this.extend_width) {
       this.button.setLocation(0, 0, this.field_width, button_height);
+    }
+    else if (this.align_left) {
+      this.button.setLocation(4, 0, desiredWidth + 4, button_height);
     }
     else {
       this.button.setLocation(0.5 * (this.field_width - desiredWidth), 0,

@@ -963,6 +963,13 @@ class Profile {
     }
   }
 
+  boolean achievementUnlocked(AchievementCode code) {
+    if (code == null || !this.achievements.containsKey(code)) {
+      return false;
+    }
+    return this.achievements.get(code).equals(Boolean.TRUE);
+  }
+
   void unlockArea(Location location) {
     if (location == null || !this.areas.containsKey(location)) {
       global.errorMessage("ERROR: Trying to unlock area that doesn't exist.");
@@ -985,6 +992,9 @@ class Profile {
   }
 
   boolean upgraded(PlayerTreeCode code) {
+    if (code == null || !this.player_tree.nodes.containsKey(code)) {
+      return false;
+    }
     return this.player_tree.nodes.get(code).unlocked;
   }
 
