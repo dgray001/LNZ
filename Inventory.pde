@@ -34,6 +34,8 @@ class Inventory {
     protected InventoryButton button = new InventoryButton();
     protected Item item = null;
     protected boolean deactivated = false;
+    protected float last_mX = 0;
+    protected float last_mY = 0;
 
     InventorySlot() {
       this(0);
@@ -51,6 +53,9 @@ class Inventory {
     }
 
     void update(int timeElapsed) {
+      this.update(timeElapsed, true);
+    }
+    void update(int timeElapsed, boolean show_slot_hovered_message) {
       if (this.deactivated) {
         return;
       }
@@ -67,9 +72,24 @@ class Inventory {
       if (this.item != null && this.item.remove) {
         this.item = null;
       }
+      if (this.button.hovered && this.item != null && show_slot_hovered_message) {
+        textSize(20);
+        float rect_height = textAscent() + textDescent() + 2;
+        float rect_width = textWidth(this.item.display_name()) + 2;
+        rectMode(CORNER);
+        fill(global.color_nameDisplayed_background);
+        stroke(1, 0);
+        strokeWeight(0.1);
+        rect(this.last_mX - rect_width - 1, this.last_mY - rect_height - 1, rect_width, rect_height);
+        fill(255);
+        textAlign(LEFT, TOP);
+        text(this.item.display_name(), this.last_mX - rect_width - 1, this.last_mY - rect_height - 1);
+      }
     }
 
     void mouseMove(float mX, float mY) {
+      this.last_mX = mX;
+      this.last_mY = mY;
       if (this.deactivated) {
         return;
       }
@@ -231,8 +251,8 @@ class Inventory {
     if (index < 0 || index >= this.slots.size() || this.slots.get(index).deactivated) {
       return i;
     }
-    if (i != null && i.remove) {
-      i = null;
+    if (i == null || i.remove) {
+      return null;
     }
     if (this.slots.get(index).item == null) {
       this.slots.get(index).item = new Item(i);

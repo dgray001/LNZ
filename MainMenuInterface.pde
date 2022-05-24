@@ -644,7 +644,7 @@ class MainMenuInterface extends InterfaceLNZ {
       this.addField(new SpacerFormField(0));
       TextBoxFormField textbox = new TextBoxFormField("Please complete the tutorial " +
         "before launching the game.\nThe tutorial can be found here and normally takes " +
-        "about 10 minutes to complete.", 120);
+        "about 15 minutes to complete.", 120);
       textbox.textbox.scrollbar.setButtonColors(color(170), color(190, 255, 190),
         color(220, 255, 220), color(160, 220, 160), color(0));
       this.addField(textbox);
@@ -657,7 +657,7 @@ class MainMenuInterface extends InterfaceLNZ {
         this.arrow_y = button.yCenter();
       } catch(ArrayIndexOutOfBoundsException e) {}
     }
-    
+
     void update(int millis) {
       super.update(millis);
       int frame = int(floor(Constants.gif_arrow_frames * (millis %

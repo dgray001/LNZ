@@ -1960,6 +1960,7 @@ class GameMap {
         // status effects
         float x_status = 3;
         float y_status = this.selected_object_textbox.yi - Constants.map_statusImageHeight - 2;
+        StatusEffectCode status_effect_hovered = null;
         for (Map.Entry<StatusEffectCode, StatusEffect> entry : u.statuses.entrySet()) {
           imageMode(CORNER);
           rectMode(CORNER);
@@ -1982,17 +1983,20 @@ class GameMap {
           }
           if (mouseX > x_status && mouseX < x_status + Constants.map_statusImageHeight &&
             mouseY > y_status && mouseY < y_status + Constants.map_statusImageHeight) {
-            noStroke();
-            fill(global.color_nameDisplayed_background);
-            textSize(14);
-            float rect_height = textAscent() + textDescent() + 2;
-            float rect_width = textWidth(entry.getKey().code_name()) + 2;
-            rect(mouseX + 1, mouseY - rect_height - 1, rect_width, rect_height);
-            fill(255);
-            textAlign(LEFT, TOP);
-            text(entry.getKey().code_name(), mouseX + 2, mouseY - rect_height - 1);
+            status_effect_hovered = entry.getKey();
           }
           x_status += Constants.map_statusImageHeight + 2;
+        }
+        if (status_effect_hovered != null) {
+          noStroke();
+          fill(global.color_nameDisplayed_background);
+          textSize(14);
+          float rect_height = textAscent() + textDescent() + 2;
+          float rect_width = textWidth(status_effect_hovered.code_name()) + 2;
+          rect(mouseX + 1, mouseY - rect_height - 1, rect_width, rect_height);
+          fill(255);
+          textAlign(LEFT, TOP);
+          text(status_effect_hovered.code_name(), mouseX + 2, mouseY - rect_height - 1);
         }
         // unit tier image
         PImage tier_image = global.images.getImage("icons/tier_" + u.tier() + ".png");

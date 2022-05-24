@@ -1652,6 +1652,11 @@ class Level {
     int timeElapsed = millis - this.last_update_time;
     this.time.add(timeElapsed * Constants.level_timeConstants);
     if (this.player != null && this.player.heroTree.curr_viewing) {
+      if (this.player.heroTree.set_screen_location) {
+        this.player.heroTree.set_screen_location = false;
+        global.defaultCursor();
+        this.player.heroTree.setLocation(this.xi, this.yi, this.xf, this.yf);
+      }
       this.player.heroTree.update(timeElapsed);
       this.last_update_time = millis;
       return;

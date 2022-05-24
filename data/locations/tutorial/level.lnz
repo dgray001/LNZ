@@ -10,7 +10,7 @@ sleeping: false
 sleep_timer: 0
 in_control: true
 currMapName: tutorial_soldiers
-mapNames: tutorial_frontdoor, tutorial_soldiers, tutorial_stairwell
+mapNames: tutorial_frontdoor, tutorial_stairwell, tutorial_soldiers
 
 new: Linker
 rect1: tutorial_frontdoor, 5.0, 26.0, 6.0, 27.0
@@ -1440,7 +1440,7 @@ end: Effect
 new: Effect
 ID: 20
 message: Hello, son.
-number: 2
+number: 1
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
@@ -1449,7 +1449,7 @@ end: Effect
 new: Effect
 ID: 27
 message: 
-number: 2
+number: 1
 decimal1: 15.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
@@ -1539,7 +1539,7 @@ end: Effect
 new: Effect
 ID: 20
 message: hmm, sure. Sit down, son.
-number: 2
+number: 1
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
@@ -1692,7 +1692,7 @@ end: Effect
 new: Effect
 ID: 20
 message: *not listening* hmm...
-number: 2
+number: 1
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
@@ -1728,7 +1728,7 @@ end: Effect
 new: Effect
 ID: 20
 message: For your penance be more honest with people and treat them how you want to be treated.
-number: 2
+number: 1
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
@@ -1737,7 +1737,7 @@ end: Effect
 new: Effect
 ID: 27
 message: 
-number: 2
+number: 1
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
@@ -1773,7 +1773,7 @@ end: Effect
 new: Effect
 ID: 20
 message: Oh and say a Hail Mary for good measure.
-number: 2
+number: 1
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
@@ -1935,7 +1935,7 @@ end: Effect
 new: Effect
 ID: 20
 message: Goodbye son. *to himself* What a strange kid.
-number: 2
+number: 1
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0

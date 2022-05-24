@@ -530,9 +530,9 @@ class Hero extends Unit {
     }
 
     void updateSlot(int timeElapsed, int index, Item i) {
-      this.updateSlot(timeElapsed, index, i, true, 0);
+      this.updateSlot(timeElapsed, index, i, true, 0, true);
     }
-    void updateSlot(int timeElapsed, int index, Item i, boolean translate_first, float temp_slot_width) {
+    void updateSlot(int timeElapsed, int index, Item i, boolean translate_first, float temp_slot_width, boolean show_slot_hovered_message) {
       int x = index % this.max_cols;
       if (x < 0 || x >= this.max_cols) {
         return;
@@ -551,7 +551,7 @@ class Hero extends Unit {
           this.slots.get(index).button.setStroke(color(255), 4);
         }
       }
-      this.slots.get(index).update(timeElapsed);
+      this.slots.get(index).update(timeElapsed, show_slot_hovered_message);
       if (this.slots.get(index).item == null) {
         String iconName = "icons/";
         switch(index) {
@@ -1457,6 +1457,7 @@ class Hero extends Unit {
             noStroke();
             fill(global.color_nameDisplayed_background);
             textSize(14);
+            rectMode(CORNER);
             float rect_height = textAscent() + textDescent() + 2;
             float rect_width = textWidth(entry.getKey().code_name()) + 2;
             rect(this.last_mX - rect_width - 1, this.last_mY - rect_height - 1, rect_width, rect_height);
@@ -1480,7 +1481,7 @@ class Hero extends Unit {
       translate(this.xi_bar + 3, this.yi_slot);
       float translate_x = this.equipped_index * (this.slot_width + 2);
       translate(translate_x, 0);
-      Hero.this.inventory.gear_inventory.updateSlot(timeElapsed, 3, Hero.this.weapon(), false, this.slot_width);
+      Hero.this.inventory.gear_inventory.updateSlot(timeElapsed, 3, Hero.this.weapon(), false, this.slot_width, !Hero.this.inventory.viewing);
       translate(-translate_x, 0);
       int inventory_slots_to_show = 0;
       if (this.unlocked_inventory_bar2) {
@@ -1497,7 +1498,7 @@ class Hero extends Unit {
         translate_x = translate_index * (this.slot_width + 2);
         translate(translate_x, 0);
         Hero.this.inventory.slots.get(i).setWidth(this.slot_width);
-        Hero.this.inventory.slots.get(i).update(timeElapsed);
+        Hero.this.inventory.slots.get(i).update(timeElapsed, !Hero.this.inventory.viewing);
         Hero.this.inventory.slots.get(i).setWidth(Hero.this.inventory.button_size);
         translate(-translate_x, 0);
       }
@@ -1647,11 +1648,12 @@ class Hero extends Unit {
     }
 
     void scroll(int amount) {
-      if (!global.profile.options.inventory_bar_hidden) {
+      if (global.profile.options.inventory_bar_hidden) {
         return;
       }
       if (this.code_description.display) {
         this.code_description.scroll(amount);
+        return;
       }
       if (!Hero.this.inventory.viewing && !global.holding_ctrl) {
         int max_equipped_index = 0;
@@ -1743,6 +1745,42 @@ class Hero extends Unit {
       void release() {}
 
       abstract void updateHoverMessage();
+    }
+
+
+    class LevelTokensButton extends LeftPanelButton {
+      LevelTokensButton(float yi, float yf) {
+        super(0, yi, 0, yf);
+        this.setColors(color(170), color(1, 0), color(150, 100), color(150, 200), color(0));
+        this.text_size = 18;
+        this.show_message = true;
+        this.roundness = 2;
+        this.noStroke();
+      }
+
+      @Override
+      void release() {
+        super.release();
+        if (!this.hovered) {
+          return;
+        }
+        if (PlayerLeftPanelMenu.this.hero().heroTree.curr_viewing) {
+          PlayerLeftPanelMenu.this.hero().heroTree.curr_viewing = false;
+        }
+        else {
+          PlayerLeftPanelMenu.this.hero().heroTree.curr_viewing = true;
+          PlayerLeftPanelMenu.this.hero().heroTree.set_screen_location = true;
+        }
+      }
+
+      void updateHoverMessage() {
+        if (PlayerLeftPanelMenu.this.hero().heroTree.curr_viewing) {
+          this.hover_message = "Close Level Tree";
+        }
+        else {
+          this.hover_message = "Open Level Tree";
+        }
+      }
     }
 
 
@@ -2156,6 +2194,7 @@ class Hero extends Unit {
     protected float yi;
     protected float image_yi;
     protected float image_size;
+    protected LevelTokensButton level_tokens;
     protected LevelButton level;
     protected ExperienceButton experience;
     protected HealthButton health;
@@ -2179,8 +2218,10 @@ class Hero extends Unit {
       float currY = this.yi + textAscent() + textDescent() + Constants.map_selectedObjectPanelGap;
       this.image_yi = currY;
       this.image_size = 0.1 * height;
-      currY += image_size + Constants.map_selectedObjectPanelGap;
       textSize(18);
+      float button_text_height = textAscent() + textDescent() + Constants.map_selectedObjectPanelGap;
+      this.level_tokens = new LevelTokensButton(currY + this.image_size - button_text_height, currY + this.image_size - Constants.map_selectedObjectPanelGap);
+      currY += image_size + Constants.map_selectedObjectPanelGap;
       this.level = new LevelButton(currY, currY + textAscent() + textDescent() + Constants.map_selectedObjectPanelGap);
       currY += textAscent() + textDescent() + Constants.map_selectedObjectPanelGap + 2;
       this.experience = new ExperienceButton(currY, currY + Constants.hero_leftPanelBarHeight);
@@ -2222,6 +2263,10 @@ class Hero extends Unit {
       // picture
       imageMode(CORNER);
       image(Hero.this.getImage(), 1, this.image_yi, this.image_size, this.image_size);
+      // level tokens
+      this.level_tokens.message = "Level Tokens: " + Hero.this.level_tokens;
+      this.level_tokens.setXLocation(half_panel_width + 2, panel_width - 2);
+      this.level_tokens.update(millis);
       // level
       this.level.message = "Level " + Hero.this.level;
       this.level.setXLocation(2, panel_width - 2);
@@ -2265,6 +2310,7 @@ class Hero extends Unit {
     }
 
     void mouseMove(float mX, float mY) {
+      this.level_tokens.mouseMove(mX, mY);
       this.level.mouseMove(mX, mY);
       this.experience.mouseMove(mX, mY);
       this.health.mouseMove(mX, mY);
@@ -2284,6 +2330,7 @@ class Hero extends Unit {
     }
 
     void mousePress() {
+      this.level_tokens.mousePress();
       this.level.mousePress();
       this.experience.mousePress();
       this.health.mousePress();
@@ -2303,6 +2350,7 @@ class Hero extends Unit {
     }
 
     void mouseRelease(float mX, float mY) {
+      this.level_tokens.mouseRelease(mX, mY);
       this.level.mouseRelease(mX, mY);
       this.experience.mouseRelease(mX, mY);
       this.health.mouseRelease(mX, mY);
@@ -2689,6 +2737,7 @@ class Hero extends Unit {
     protected float zoom = 1.0;
     protected float inverse_zoom = 1.0;
     protected boolean curr_viewing = false;
+    protected boolean set_screen_location = false;
 
     protected boolean dragging = false;
     protected float last_mX = mouseX;

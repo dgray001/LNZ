@@ -3,9 +3,8 @@ v0.7.2: PlayingInterface
  o: Can redo Campaigns from their areas (only I so far)
  p: Can only start a Campaign if no other hero in that campaign (test by giving player multiple heroes)
  q: Upgrade achievementform in general, AchievementFormField, make background darker (?)
- r: Display level tokens and can click to view hero tree
  s: Fix/upgrade OptionsForm buttons and set initialinterface volume lower (to default if not already, if is lower defaults)
- t: Can drop items onto map from inventory view / Can hover items in inventory
+ t: Can drop items onto map from inventory view
  u: Rankin sounds in tutorial
  v: If playing track hasn't been chosen have form to choose it (then can edit in optionsform with all options including aoc / etc.)
 
@@ -13,16 +12,16 @@ v0.7.2: PlayingInterface
  - Chuck quizmo covers question, put him above it
  - Save music track/location in level
  - If header message is placeCenter() then don't have it be lowered by upper ones, and vice versa
- - Make quest sound much louder
 
   *Tutorial notes:
      - Place "The Third Ball" in the ender chest to have it for later (TEST in mock campaign(s))
 
 Bugs:
  - Remove colors from edge of map images
- - Status effects on selected object left panel will have names behind others when hovered
  - Options volumes are all fucked up
- - The file "C:\Users\yodan\github\LNZ\data/images/gifs/fire/32.png" is missing or inaccessible
+ - Sometimes fog shows up in map edges (when unexploring it seems)
+ - Make sure item disappear timer rest if you pick it up and drop it off again
+ - When moving while moving/eating the eating resets
 
  - If still has commits left start on the parking lot lines
 
@@ -72,6 +71,8 @@ Parking Lot:
  - All Ben unit sounds
  - All Dan unit sounds
  - Constants to speed up trigger times / header message times (for testing purposes, maybe for in-game options too)
+ - Make inventory bar place items back where there were when scrolling through (some bugs in it apparently, seems mostly a display bug)
+ - Outline inventory squares that are part of inventory bar
 
 
 v0.8: HomeBase and Campaign II

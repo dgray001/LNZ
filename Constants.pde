@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\n20220523: v0.7.2p" +
+  "\n20220523: v0.7.2q" +
   "\nLines: 39680 (v0.7.2o)" +
   "\nImages: 1102 (v0.7.2)" +
   "\nSounds: 250 (v0.7.2)" +
@@ -402,7 +402,7 @@ static class Constants {
   static final int gif_loading_time = 950;
 
   // Hero
-  static final float hero_defaultInventoryButtonSize = 45;
+  static final float hero_defaultInventoryButtonSize = 50;
   static final int hero_inventoryMaxRows = 6;
   static final int hero_inventoryMaxCols = 9;
   static final int hero_inventoryDefaultStartSlots = 0;
