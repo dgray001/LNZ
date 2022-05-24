@@ -260,7 +260,7 @@ end: Effect
 
 new: Effect
 ID: 4
-message: The hotkey for the Options menu is ctrl-o
+message: The second button opens the Options menu,
 number: 2
 decimal1: 0.0
 decimal2: 0.0
@@ -278,7 +278,7 @@ end: Effect
 
 new: Effect
 ID: 4
-message: The second button opens the Options menu,
+message: The hotkey for the Options menu is ctrl-o
 number: 2
 decimal1: 0.0
 decimal2: 0.0
@@ -314,7 +314,7 @@ end: Effect
 
 new: Effect
 ID: 4
-message: The hotkey for the heroes menu is ctrl-h
+message: The third button opens the Heroes menu, showing the heroes you have unlocked
 number: 2
 decimal1: 0.0
 decimal2: 0.0
@@ -323,7 +323,7 @@ end: Effect
 
 new: Effect
 ID: 4
-message: The third button opens the Heroes menu, showing the heroes you have unlocked
+message: The hotkey for the heroes menu is ctrl-h
 number: 2
 decimal1: 0.0
 decimal2: 0.0
@@ -629,7 +629,7 @@ end: Effect
 
 new: Effect
 ID: 4
-message: and the abilities they can use
+message: This shows the hero you are playing, what they are holding,
 number: 2
 decimal1: 0.0
 decimal2: 0.0
@@ -638,7 +638,7 @@ end: Effect
 
 new: Effect
 ID: 4
-message: This shows the hero you are playing, what they are holding,
+message: and the abilities they can use
 number: 2
 decimal1: 0.0
 decimal2: 0.0
@@ -6765,32 +6765,6 @@ triggerName: ### Hidden Achievements
 active: false
 looping: false
 amalgam: true
-new: Condition
-ID: 6
-number1: 0
-number2: 0
-rectangle: tutorial_soldiers, 52.0, 12.0, 53.0, 13.0
-met: false
-not_condition: false
-end: Condition
-
-new: Effect
-ID: 4
-message: Congratulations! You found Chuck Quizmo! He is hidden in every level
-number: 0
-decimal1: 0.0
-decimal2: 0.0
-rectangle: tutorial_soldiers, 52.0, 12.0, 53.0, 13.0
-end: Effect
-
-new: Effect
-ID: 0
-message:
-number: 0
-decimal1: 0.0
-decimal2: 0.0
-rectangle: , 0.0, 0.0, 0.0, 0.0
-end: Effect
 
 end: Trigger
 

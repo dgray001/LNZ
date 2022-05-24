@@ -17,4 +17,14 @@ terrain: 2, 2: 173, 0, false
 terrain: 3, 0: 173, 0, false
 terrain: 3, 1: 173, 0, false
 terrain: 3, 2: 173, 0, false
+
+
+new: Feature: 22
+location: 3.0, 2.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
 end: Map

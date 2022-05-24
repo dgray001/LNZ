@@ -1115,9 +1115,11 @@ class GameMap {
     this.refreshFogImage();
   }
   void refreshTerrainImage() {
-    this.terrain_display = resizeImage(this.terrain_dimg.getImagePiece(int(this.startSquareX * Constants.map_terrainResolution),
+    PImage new_terrain_display = this.terrain_dimg.getImagePiece(int(this.startSquareX * Constants.map_terrainResolution),
       int(this.startSquareY * Constants.map_terrainResolution), int(this.visSquareX * Constants.map_terrainResolution),
-      int(this.visSquareY * Constants.map_terrainResolution)), int(this.xf_map - this.xi_map), int(this.yf_map - this.yi_map));
+      int(this.visSquareY * Constants.map_terrainResolution));
+    this.terrain_display = resizeImage(new_terrain_display, int(this.xf_map -
+      this.xi_map), int(this.yf_map - this.yi_map));
   }
   void refreshFogImage() {
     this.fog_display = this.fog_dimg.getImagePiece(int(this.startSquareX * Constants.map_fogResolution),
@@ -1239,11 +1241,11 @@ class GameMap {
       if (refreshFogImage) {
         if (!this.squares[x][y].explored) {
         }
-        else if (!this.squares[x][y].visible) {
-          this.fog_dimg.colorGrid(this.fogColor, x, y);
+        else if (this.squares[x][y].visible || this.squares[x][y].mapEdge()) {
+          this.fog_dimg.colorGrid(Constants.color_transparent, x, y);
         }
         else {
-          this.fog_dimg.colorGrid(Constants.color_transparent, x, y);
+          this.fog_dimg.colorGrid(this.fogColor, x, y);
         }
       }
     }
@@ -3417,6 +3419,12 @@ class GameMapEditor extends GameMap {
     }
     else {
       switch(key) {
+        case 'p':
+          this.terrain_dimg.img.save("data/maps/terrain.png");
+          this.fog_dimg.img.save("data/maps/fog.png");
+          this.terrain_display.save("data/maps/terrain_display.png");
+          this.fog_display.save("data/maps/fog_display.png");
+          break;
         case 'z':
           this.draw_grid = !this.draw_grid;
           if (this.draw_grid) {

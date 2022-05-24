@@ -358,7 +358,7 @@ PImage resizeImage(PImage img, int w, int h) {
   for (int i = 0; i < h; i++) {
     int imgY = int(round(scaling_height * i + 0.5));
     for (int j = 0; j < w; j++) {
-      int imgX = int(round(scaling_width * j + 0.5));
+      int imgX = int(floor(scaling_width * j + 0.5)); // must floor to avoid artifacts
       int index = i * w + j;
       int img_index = imgY * img.width + imgX;
       try {

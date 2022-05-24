@@ -344,7 +344,11 @@ class MapEditorInterface extends InterfaceLNZ {
           if (folderExists("data/maps")) {
             boolean first = true;
             for (Path p : listFiles("data/maps/")) {
-              String mapName = split(p.getFileName().toString(), '.')[0];
+              String filename = p.getFileName().toString();
+              if (!filename.endsWith(".map.lnz")) {
+                continue;
+              }
+              String mapName = split(filename, '.')[0];
               if (first) {
                 this.setText(mapName);
                 first = false;
