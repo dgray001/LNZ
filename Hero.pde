@@ -4009,7 +4009,7 @@ class Hero extends Unit {
     if (this.weapon() == null) {
       return;
     }
-    if (this.curr_action == UnitAction.MOVING) {
+    if (this.curr_action == UnitAction.MOVING || this.curr_action == UnitAction.MOVING_AND_USING_ITEM) {
       this.curr_action = UnitAction.MOVING_AND_USING_ITEM;
     }
     else {

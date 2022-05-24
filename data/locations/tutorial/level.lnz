@@ -53,7 +53,7 @@ looping: false
 amalgam: true
 new: Effect
 ID: 11
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -62,7 +62,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 3
 decimal1: 0.0
 decimal2: 0.0
@@ -71,7 +71,7 @@ end: Effect
 
 new: Effect
 ID: 14
-message: 
+message:
 number: -16777216
 decimal1: 0.0
 decimal2: 0.0
@@ -107,7 +107,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 4
 decimal1: 0.0
 decimal2: 0.0
@@ -143,7 +143,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 6
 decimal1: 0.0
 decimal2: 0.0
@@ -170,7 +170,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 7
 decimal1: 0.0
 decimal2: 0.0
@@ -188,7 +188,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 11
 decimal1: 0.0
 decimal2: 0.0
@@ -224,7 +224,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 8
 decimal1: 0.0
 decimal2: 0.0
@@ -251,7 +251,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 9
 decimal1: 0.0
 decimal2: 0.0
@@ -305,7 +305,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 10
 decimal1: 0.0
 decimal2: 0.0
@@ -359,7 +359,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 20
 decimal1: 0.0
 decimal2: 0.0
@@ -377,7 +377,7 @@ looping: true
 amalgam: true
 new: Effect
 ID: 16
-message: 
+message:
 number: 1
 decimal1: 0.0
 decimal2: 0.0
@@ -395,7 +395,7 @@ looping: true
 amalgam: true
 new: Effect
 ID: 16
-message: 
+message:
 number: 2
 decimal1: 0.0
 decimal2: 0.0
@@ -413,7 +413,7 @@ looping: true
 amalgam: true
 new: Effect
 ID: 16
-message: 
+message:
 number: 3
 decimal1: 0.0
 decimal2: 0.0
@@ -431,7 +431,7 @@ looping: true
 amalgam: true
 new: Effect
 ID: 16
-message: 
+message:
 number: 4
 decimal1: 0.0
 decimal2: 0.0
@@ -449,7 +449,7 @@ looping: true
 amalgam: true
 new: Effect
 ID: 16
-message: 
+message:
 number: 5
 decimal1: 0.0
 decimal2: 0.0
@@ -467,7 +467,7 @@ looping: true
 amalgam: true
 new: Effect
 ID: 16
-message: 
+message:
 number: 6
 decimal1: 0.0
 decimal2: 0.0
@@ -485,7 +485,7 @@ looping: true
 amalgam: true
 new: Effect
 ID: 16
-message: 
+message:
 number: 7
 decimal1: 0.0
 decimal2: 0.0
@@ -503,7 +503,7 @@ looping: true
 amalgam: true
 new: Effect
 ID: 16
-message: 
+message:
 number: 8
 decimal1: 0.0
 decimal2: 0.0
@@ -521,7 +521,7 @@ looping: true
 amalgam: true
 new: Effect
 ID: 16
-message: 
+message:
 number: 9
 decimal1: 0.0
 decimal2: 0.0
@@ -548,7 +548,7 @@ end: Condition
 
 new: Effect
 ID: 8
-message: 
+message:
 number: 11
 decimal1: 0.0
 decimal2: 0.0
@@ -557,7 +557,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 12
 decimal1: 0.0
 decimal2: 0.0
@@ -566,7 +566,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 21
 decimal1: 0.0
 decimal2: 0.0
@@ -602,7 +602,7 @@ end: Condition
 
 new: Effect
 ID: 8
-message: 
+message:
 number: 12
 decimal1: 0.0
 decimal2: 0.0
@@ -611,7 +611,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 13
 decimal1: 0.0
 decimal2: 0.0
@@ -620,7 +620,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 22
 decimal1: 0.0
 decimal2: 0.0
@@ -665,7 +665,7 @@ end: Condition
 
 new: Effect
 ID: 8
-message: 
+message:
 number: 13
 decimal1: 0.0
 decimal2: 0.0
@@ -674,7 +674,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 14
 decimal1: 0.0
 decimal2: 0.0
@@ -683,7 +683,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 23
 decimal1: 0.0
 decimal2: 0.0
@@ -719,7 +719,7 @@ end: Condition
 
 new: Effect
 ID: 8
-message: 
+message:
 number: 14
 decimal1: 0.0
 decimal2: 0.0
@@ -728,7 +728,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 15
 decimal1: 0.0
 decimal2: 0.0
@@ -737,7 +737,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 24
 decimal1: 0.0
 decimal2: 0.0
@@ -782,7 +782,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 25
 decimal1: 0.0
 decimal2: 0.0
@@ -809,7 +809,7 @@ end: Condition
 
 new: Effect
 ID: 8
-message: 
+message:
 number: 15
 decimal1: 0.0
 decimal2: 0.0
@@ -818,7 +818,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 16
 decimal1: 0.0
 decimal2: 0.0
@@ -827,7 +827,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 28
 decimal1: 0.0
 decimal2: 0.0
@@ -848,7 +848,7 @@ end: Trigger
 nextTriggerKey: 26
 
 new: Trigger
-triggerName: 
+triggerName:
 active: false
 looping: false
 amalgam: true
@@ -881,7 +881,7 @@ end: Condition
 
 new: Effect
 ID: 8
-message: 
+message:
 number: 16
 decimal1: 0.0
 decimal2: 0.0
@@ -890,7 +890,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 29
 decimal1: 0.0
 decimal2: 0.0
@@ -908,7 +908,7 @@ end: Effect
 
 new: Effect
 ID: 14
-message: 
+message:
 number: 1681075482
 decimal1: 0.0
 decimal2: 0.0
@@ -935,7 +935,7 @@ end: Condition
 
 new: Effect
 ID: 9
-message: 
+message:
 number: 1
 decimal1: 0.0
 decimal2: 0.0
@@ -944,7 +944,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 30
 decimal1: 0.0
 decimal2: 0.0
@@ -971,7 +971,7 @@ end: Condition
 
 new: Effect
 ID: 17
-message: 
+message:
 number: 1
 decimal1: 0.0
 decimal2: 0.0
@@ -989,7 +989,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 17
 decimal1: 0.0
 decimal2: 0.0
@@ -998,7 +998,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 33
 decimal1: 0.0
 decimal2: 0.0
@@ -1010,7 +1010,7 @@ end: Trigger
 nextTriggerKey: 31
 
 new: Trigger
-triggerName: 
+triggerName:
 active: false
 looping: false
 amalgam: true
@@ -1043,7 +1043,7 @@ end: Condition
 
 new: Effect
 ID: 8
-message: 
+message:
 number: 17
 decimal1: 0.0
 decimal2: 0.0
@@ -1052,7 +1052,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 34
 decimal1: 0.0
 decimal2: 0.0
@@ -1088,7 +1088,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 18
 decimal1: 0.0
 decimal2: 0.0
@@ -1097,7 +1097,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 35
 decimal1: 0.0
 decimal2: 0.0
@@ -1124,7 +1124,7 @@ end: Condition
 
 new: Effect
 ID: 12
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -1133,7 +1133,7 @@ end: Effect
 
 new: Effect
 ID: 9
-message: 
+message:
 number: 2
 decimal1: 0.0
 decimal2: 0.0
@@ -1142,7 +1142,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 36
 decimal1: 0.0
 decimal2: 0.0
@@ -1151,7 +1151,7 @@ end: Effect
 
 new: Effect
 ID: 15
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -1178,7 +1178,7 @@ end: Condition
 
 new: Effect
 ID: 17
-message: 
+message:
 number: 2
 decimal1: 0.0
 decimal2: 0.0
@@ -1196,7 +1196,7 @@ end: Effect
 
 new: Effect
 ID: 14
-message: 
+message:
 number: 1681075482
 decimal1: 0.0
 decimal2: 0.0
@@ -1205,7 +1205,7 @@ end: Effect
 
 new: Effect
 ID: 11
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -1214,7 +1214,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 39
 decimal1: 0.0
 decimal2: 0.0
@@ -1223,7 +1223,7 @@ end: Effect
 
 new: Effect
 ID: 8
-message: 
+message:
 number: 18
 decimal1: 0.0
 decimal2: 0.0
@@ -1232,7 +1232,7 @@ end: Effect
 
 new: Effect
 ID: 22
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -1244,7 +1244,7 @@ end: Trigger
 nextTriggerKey: 37
 
 new: Trigger
-triggerName: 
+triggerName:
 active: false
 looping: false
 amalgam: true
@@ -1277,7 +1277,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 45
 decimal1: 0.0
 decimal2: 0.0
@@ -1286,7 +1286,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 42
 decimal1: 0.0
 decimal2: 0.0
@@ -1295,7 +1295,7 @@ end: Effect
 
 new: Effect
 ID: 25
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -1331,7 +1331,7 @@ end: Condition
 
 new: Effect
 ID: 25
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -1340,7 +1340,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 43
 decimal1: 0.0
 decimal2: 0.0
@@ -1376,7 +1376,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 44
 decimal1: 0.0
 decimal2: 0.0
@@ -1385,7 +1385,7 @@ end: Effect
 
 new: Effect
 ID: 22
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -1394,7 +1394,7 @@ end: Effect
 
 new: Effect
 ID: 28
-message: 
+message:
 number: 0
 decimal1: -45.0
 decimal2: 0.0
@@ -1430,7 +1430,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 46
 decimal1: 0.0
 decimal2: 0.0
@@ -1448,7 +1448,7 @@ end: Effect
 
 new: Effect
 ID: 27
-message: 
+message:
 number: 1
 decimal1: 15.0
 decimal2: 0.0
@@ -1466,7 +1466,7 @@ looping: true
 amalgam: true
 new: Effect
 ID: 13
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -1493,7 +1493,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 47
 decimal1: 0.0
 decimal2: 0.0
@@ -1529,7 +1529,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 48
 decimal1: 0.0
 decimal2: 0.0
@@ -1565,7 +1565,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 49
 decimal1: 0.0
 decimal2: 0.0
@@ -1574,7 +1574,7 @@ end: Effect
 
 new: Effect
 ID: 31
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -1583,7 +1583,7 @@ end: Effect
 
 new: Effect
 ID: 28
-message: 
+message:
 number: 0
 decimal1: -90.0
 decimal2: 0.0
@@ -1610,7 +1610,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 50
 decimal1: 0.0
 decimal2: 0.0
@@ -1646,7 +1646,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 51
 decimal1: 0.0
 decimal2: 0.0
@@ -1682,7 +1682,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 52
 decimal1: 0.0
 decimal2: 0.0
@@ -1718,7 +1718,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 53
 decimal1: 0.0
 decimal2: 0.0
@@ -1736,7 +1736,7 @@ end: Effect
 
 new: Effect
 ID: 27
-message: 
+message:
 number: 1
 decimal1: 0.0
 decimal2: 0.0
@@ -1763,7 +1763,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 54
 decimal1: 0.0
 decimal2: 0.0
@@ -1799,7 +1799,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 55
 decimal1: 0.0
 decimal2: 0.0
@@ -1835,7 +1835,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 56
 decimal1: 0.0
 decimal2: 0.0
@@ -1844,7 +1844,7 @@ end: Effect
 
 new: Effect
 ID: 31
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -1853,7 +1853,7 @@ end: Effect
 
 new: Effect
 ID: 28
-message: 
+message:
 number: 0
 decimal1: -45.0
 decimal2: 0.0
@@ -1880,7 +1880,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 57
 decimal1: 0.0
 decimal2: 0.0
@@ -1898,7 +1898,7 @@ end: Effect
 
 new: Effect
 ID: 25
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -1925,7 +1925,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 58
 decimal1: 0.0
 decimal2: 0.0
@@ -1970,7 +1970,7 @@ end: Effect
 
 new: Effect
 ID: 8
-message: 
+message:
 number: 45
 decimal1: 0.0
 decimal2: 0.0
@@ -1979,7 +1979,7 @@ end: Effect
 
 new: Effect
 ID: 19
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -1988,7 +1988,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 61
 decimal1: 0.0
 decimal2: 0.0
@@ -2000,7 +2000,7 @@ end: Trigger
 nextTriggerKey: 59
 
 new: Trigger
-triggerName: 
+triggerName:
 active: false
 looping: false
 amalgam: true
@@ -2042,7 +2042,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 62
 decimal1: 0.0
 decimal2: 0.0
@@ -2069,7 +2069,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 63
 decimal1: 0.0
 decimal2: 0.0
@@ -2105,7 +2105,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 64
 decimal1: 0.0
 decimal2: 0.0
@@ -2141,7 +2141,7 @@ end: Condition
 
 new: Effect
 ID: 12
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -2150,7 +2150,7 @@ end: Effect
 
 new: Effect
 ID: 9
-message: 
+message:
 number: 3
 decimal1: 0.0
 decimal2: 0.0
@@ -2159,7 +2159,7 @@ end: Effect
 
 new: Effect
 ID: 15
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -2168,7 +2168,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 128
 decimal1: 0.0
 decimal2: 0.0
@@ -2180,7 +2180,7 @@ end: Trigger
 nextTriggerKey: 65
 
 new: Trigger
-triggerName: 
+triggerName:
 active: false
 looping: false
 amalgam: true
@@ -2204,7 +2204,7 @@ looping: true
 amalgam: true
 new: Effect
 ID: 36
-message: 
+message:
 number: 100
 decimal1: 0.0
 decimal2: 0.0
@@ -2213,7 +2213,7 @@ end: Effect
 
 new: Effect
 ID: 37
-message: 
+message:
 number: 100
 decimal1: 0.0
 decimal2: 0.0
@@ -2240,7 +2240,7 @@ end: Condition
 
 new: Effect
 ID: 25
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -2258,7 +2258,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 69
 decimal1: 0.0
 decimal2: 0.0
@@ -2267,7 +2267,7 @@ end: Effect
 
 new: Effect
 ID: 11
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -2294,7 +2294,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 68
 decimal1: 0.0
 decimal2: 0.0
@@ -2303,7 +2303,7 @@ end: Effect
 
 new: Effect
 ID: 12
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -2339,7 +2339,7 @@ end: Effect
 
 new: Effect
 ID: 11
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -2348,7 +2348,7 @@ end: Effect
 
 new: Effect
 ID: 14
-message: 
+message:
 number: 1681075482
 decimal1: 0.0
 decimal2: 0.0
@@ -2357,7 +2357,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 71
 decimal1: 0.0
 decimal2: 0.0
@@ -2366,8 +2366,17 @@ end: Effect
 
 new: Effect
 ID: 22
-message: 
+message:
 number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 53
+message: Fertilized
+number: 1
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
@@ -2402,7 +2411,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 72
 decimal1: 0.0
 decimal2: 0.0
@@ -2429,7 +2438,7 @@ end: Condition
 
 new: Effect
 ID: 9
-message: 
+message:
 number: 4
 decimal1: 0.0
 decimal2: 0.0
@@ -2438,7 +2447,7 @@ end: Effect
 
 new: Effect
 ID: 12
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -2447,7 +2456,7 @@ end: Effect
 
 new: Effect
 ID: 15
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -2456,7 +2465,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 77
 decimal1: 0.0
 decimal2: 0.0
@@ -2483,7 +2492,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 74
 decimal1: 0.0
 decimal2: 0.0
@@ -2492,7 +2501,7 @@ end: Effect
 
 new: Effect
 ID: 11
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -2501,7 +2510,7 @@ end: Effect
 
 new: Effect
 ID: 25
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -2519,7 +2528,7 @@ end: Effect
 
 new: Effect
 ID: 14
-message: 
+message:
 number: 1681075482
 decimal1: 0.0
 decimal2: 0.0
@@ -2546,7 +2555,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 73
 decimal1: 0.0
 decimal2: 0.0
@@ -2555,7 +2564,7 @@ end: Effect
 
 new: Effect
 ID: 12
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -2564,7 +2573,7 @@ end: Effect
 
 new: Effect
 ID: 15
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -2591,7 +2600,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 76
 decimal1: 0.0
 decimal2: 0.0
@@ -2600,7 +2609,7 @@ end: Effect
 
 new: Effect
 ID: 11
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -2618,7 +2627,7 @@ end: Effect
 
 new: Effect
 ID: 14
-message: 
+message:
 number: 1681075482
 decimal1: 0.0
 decimal2: 0.0
@@ -2627,7 +2636,7 @@ end: Effect
 
 new: Effect
 ID: 25
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -2654,7 +2663,7 @@ end: Condition
 
 new: Effect
 ID: 15
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -2663,7 +2672,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 75
 decimal1: 0.0
 decimal2: 0.0
@@ -2672,7 +2681,7 @@ end: Effect
 
 new: Effect
 ID: 12
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -2699,7 +2708,7 @@ end: Condition
 
 new: Effect
 ID: 17
-message: 
+message:
 number: 4
 decimal1: 0.0
 decimal2: 0.0
@@ -2708,7 +2717,7 @@ end: Effect
 
 new: Effect
 ID: 8
-message: 
+message:
 number: 73
 decimal1: 0.0
 decimal2: 0.0
@@ -2717,7 +2726,7 @@ end: Effect
 
 new: Effect
 ID: 42
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -2726,7 +2735,7 @@ end: Effect
 
 new: Effect
 ID: 11
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -2735,7 +2744,7 @@ end: Effect
 
 new: Effect
 ID: 14
-message: 
+message:
 number: 1681075482
 decimal1: 0.0
 decimal2: 0.0
@@ -2744,7 +2753,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 80
 decimal1: 0.0
 decimal2: 0.0
@@ -2753,7 +2762,7 @@ end: Effect
 
 new: Effect
 ID: 8
-message: 
+message:
 number: 95
 decimal1: 0.0
 decimal2: 0.0
@@ -2765,7 +2774,7 @@ end: Trigger
 nextTriggerKey: 78
 
 new: Trigger
-triggerName: 
+triggerName:
 active: false
 looping: false
 amalgam: true
@@ -2807,7 +2816,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 81
 decimal1: 0.0
 decimal2: 0.0
@@ -2816,7 +2825,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 19
 decimal1: 0.0
 decimal2: 0.0
@@ -2843,7 +2852,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 82
 decimal1: 0.0
 decimal2: 0.0
@@ -2888,7 +2897,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 83
 decimal1: 0.0
 decimal2: 0.0
@@ -2915,7 +2924,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 84
 decimal1: 0.0
 decimal2: 0.0
@@ -2951,7 +2960,7 @@ end: Condition
 
 new: Effect
 ID: 9
-message: 
+message:
 number: 5
 decimal1: 0.0
 decimal2: 0.0
@@ -2960,7 +2969,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 85
 decimal1: 0.0
 decimal2: 0.0
@@ -2969,7 +2978,7 @@ end: Effect
 
 new: Effect
 ID: 8
-message: 
+message:
 number: 19
 decimal1: 0.0
 decimal2: 0.0
@@ -2996,7 +3005,7 @@ end: Condition
 
 new: Effect
 ID: 17
-message: 
+message:
 number: 5
 decimal1: 0.0
 decimal2: 0.0
@@ -3005,7 +3014,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 86
 decimal1: 0.0
 decimal2: 0.0
@@ -3014,7 +3023,7 @@ end: Effect
 
 new: Effect
 ID: 43
-message: 
+message:
 number: 2901
 decimal1: 0.0
 decimal2: 0.0
@@ -3023,7 +3032,7 @@ end: Effect
 
 new: Effect
 ID: 43
-message: 
+message:
 number: 2922
 decimal1: 0.0
 decimal2: 0.0
@@ -3059,7 +3068,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 87
 decimal1: 0.0
 decimal2: 0.0
@@ -3095,7 +3104,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 88
 decimal1: 0.0
 decimal2: 0.0
@@ -3122,7 +3131,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 89
 decimal1: 0.0
 decimal2: 0.0
@@ -3167,7 +3176,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 92
 decimal1: 0.0
 decimal2: 0.0
@@ -3188,7 +3197,7 @@ end: Trigger
 nextTriggerKey: 90
 
 new: Trigger
-triggerName: 
+triggerName:
 active: false
 looping: false
 amalgam: true
@@ -3230,7 +3239,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 93
 decimal1: 0.0
 decimal2: 0.0
@@ -3257,7 +3266,7 @@ end: Condition
 
 new: Effect
 ID: 9
-message: 
+message:
 number: 6
 decimal1: 0.0
 decimal2: 0.0
@@ -3266,7 +3275,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 94
 decimal1: 0.0
 decimal2: 0.0
@@ -3293,7 +3302,7 @@ end: Condition
 
 new: Effect
 ID: 12
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3302,7 +3311,7 @@ end: Effect
 
 new: Effect
 ID: 15
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3311,7 +3320,7 @@ end: Effect
 
 new: Effect
 ID: 8
-message: 
+message:
 number: 68
 decimal1: 0.0
 decimal2: 0.0
@@ -3320,7 +3329,7 @@ end: Effect
 
 new: Effect
 ID: 8
-message: 
+message:
 number: 69
 decimal1: 0.0
 decimal2: 0.0
@@ -3347,7 +3356,7 @@ end: Condition
 
 new: Effect
 ID: 21
-message: 
+message:
 number: 1
 decimal1: 0.0
 decimal2: 0.0
@@ -3356,7 +3365,7 @@ end: Effect
 
 new: Effect
 ID: 24
-message: 
+message:
 number: 1
 decimal1: 0.0
 decimal2: 0.0
@@ -3410,7 +3419,7 @@ end: Condition
 
 new: Effect
 ID: 11
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3428,7 +3437,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 98
 decimal1: 0.0
 decimal2: 0.0
@@ -3437,7 +3446,7 @@ end: Effect
 
 new: Effect
 ID: 14
-message: 
+message:
 number: 1681075482
 decimal1: 0.0
 decimal2: 0.0
@@ -3446,7 +3455,7 @@ end: Effect
 
 new: Effect
 ID: 25
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3473,7 +3482,7 @@ end: Condition
 
 new: Effect
 ID: 12
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3482,7 +3491,7 @@ end: Effect
 
 new: Effect
 ID: 15
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3491,7 +3500,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 97
 decimal1: 0.0
 decimal2: 0.0
@@ -3518,7 +3527,7 @@ end: Condition
 
 new: Effect
 ID: 11
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3527,7 +3536,7 @@ end: Effect
 
 new: Effect
 ID: 14
-message: 
+message:
 number: 1681075482
 decimal1: 0.0
 decimal2: 0.0
@@ -3536,7 +3545,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 100
 decimal1: 0.0
 decimal2: 0.0
@@ -3545,7 +3554,7 @@ end: Effect
 
 new: Effect
 ID: 25
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3581,7 +3590,7 @@ end: Condition
 
 new: Effect
 ID: 12
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3590,7 +3599,7 @@ end: Effect
 
 new: Effect
 ID: 15
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3599,7 +3608,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 99
 decimal1: 0.0
 decimal2: 0.0
@@ -3626,7 +3635,7 @@ end: Condition
 
 new: Effect
 ID: 11
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3635,7 +3644,7 @@ end: Effect
 
 new: Effect
 ID: 14
-message: 
+message:
 number: 1681075482
 decimal1: 0.0
 decimal2: 0.0
@@ -3644,7 +3653,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 102
 decimal1: 0.0
 decimal2: 0.0
@@ -3653,7 +3662,7 @@ end: Effect
 
 new: Effect
 ID: 25
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3689,7 +3698,7 @@ end: Condition
 
 new: Effect
 ID: 12
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3698,7 +3707,7 @@ end: Effect
 
 new: Effect
 ID: 15
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3707,7 +3716,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 101
 decimal1: 0.0
 decimal2: 0.0
@@ -3734,7 +3743,7 @@ end: Condition
 
 new: Effect
 ID: 11
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3743,7 +3752,7 @@ end: Effect
 
 new: Effect
 ID: 14
-message: 
+message:
 number: 1681075482
 decimal1: 0.0
 decimal2: 0.0
@@ -3752,7 +3761,7 @@ end: Effect
 
 new: Effect
 ID: 25
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3761,7 +3770,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 104
 decimal1: 0.0
 decimal2: 0.0
@@ -3797,7 +3806,7 @@ end: Condition
 
 new: Effect
 ID: 12
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3806,7 +3815,7 @@ end: Effect
 
 new: Effect
 ID: 15
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3815,7 +3824,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 103
 decimal1: 0.0
 decimal2: 0.0
@@ -3842,7 +3851,7 @@ end: Condition
 
 new: Effect
 ID: 11
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3851,7 +3860,7 @@ end: Effect
 
 new: Effect
 ID: 14
-message: 
+message:
 number: 1681075482
 decimal1: 0.0
 decimal2: 0.0
@@ -3869,7 +3878,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 106
 decimal1: 0.0
 decimal2: 0.0
@@ -3878,7 +3887,7 @@ end: Effect
 
 new: Effect
 ID: 25
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3905,7 +3914,7 @@ end: Condition
 
 new: Effect
 ID: 12
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3914,7 +3923,7 @@ end: Effect
 
 new: Effect
 ID: 15
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3923,7 +3932,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 105
 decimal1: 0.0
 decimal2: 0.0
@@ -3950,7 +3959,7 @@ end: Condition
 
 new: Effect
 ID: 11
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3959,7 +3968,7 @@ end: Effect
 
 new: Effect
 ID: 14
-message: 
+message:
 number: 1681075482
 decimal1: 0.0
 decimal2: 0.0
@@ -3977,7 +3986,7 @@ end: Effect
 
 new: Effect
 ID: 25
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -3986,7 +3995,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 108
 decimal1: 0.0
 decimal2: 0.0
@@ -4013,7 +4022,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 107
 decimal1: 0.0
 decimal2: 0.0
@@ -4022,7 +4031,7 @@ end: Effect
 
 new: Effect
 ID: 12
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -4031,7 +4040,7 @@ end: Effect
 
 new: Effect
 ID: 15
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -4043,7 +4052,7 @@ end: Trigger
 nextTriggerKey: 109
 
 new: Trigger
-triggerName: 
+triggerName:
 active: false
 looping: false
 amalgam: true
@@ -4076,7 +4085,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 112
 decimal1: 0.0
 decimal2: 0.0
@@ -4085,7 +4094,7 @@ end: Effect
 
 new: Effect
 ID: 11
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -4094,7 +4103,7 @@ end: Effect
 
 new: Effect
 ID: 14
-message: 
+message:
 number: 1681075482
 decimal1: 0.0
 decimal2: 0.0
@@ -4103,7 +4112,7 @@ end: Effect
 
 new: Effect
 ID: 22
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -4112,7 +4121,7 @@ end: Effect
 
 new: Effect
 ID: 17
-message: 
+message:
 number: 3
 decimal1: 0.0
 decimal2: 0.0
@@ -4148,7 +4157,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 113
 decimal1: 0.0
 decimal2: 0.0
@@ -4175,7 +4184,7 @@ end: Condition
 
 new: Effect
 ID: 25
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -4184,7 +4193,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 114
 decimal1: 0.0
 decimal2: 0.0
@@ -4211,7 +4220,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 115
 decimal1: 0.0
 decimal2: 0.0
@@ -4229,7 +4238,7 @@ end: Effect
 
 new: Effect
 ID: 19
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -4256,7 +4265,7 @@ end: Condition
 
 new: Effect
 ID: 25
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -4265,7 +4274,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 116
 decimal1: 0.0
 decimal2: 0.0
@@ -4292,7 +4301,7 @@ end: Condition
 
 new: Effect
 ID: 25
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -4301,7 +4310,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 117
 decimal1: 0.0
 decimal2: 0.0
@@ -4337,7 +4346,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 118
 decimal1: 0.0
 decimal2: 0.0
@@ -4346,7 +4355,7 @@ end: Effect
 
 new: Effect
 ID: 19
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -4373,7 +4382,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 123
 decimal1: 0.0
 decimal2: 0.0
@@ -4409,7 +4418,7 @@ end: Condition
 
 new: Effect
 ID: 11
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -4418,7 +4427,7 @@ end: Effect
 
 new: Effect
 ID: 14
-message: 
+message:
 number: 1681075482
 decimal1: 0.0
 decimal2: 0.0
@@ -4427,7 +4436,7 @@ end: Effect
 
 new: Effect
 ID: 25
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -4445,7 +4454,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 120
 decimal1: 0.0
 decimal2: 0.0
@@ -4472,7 +4481,7 @@ end: Condition
 
 new: Effect
 ID: 12
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -4481,7 +4490,7 @@ end: Effect
 
 new: Effect
 ID: 15
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -4490,7 +4499,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 119
 decimal1: 0.0
 decimal2: 0.0
@@ -4502,7 +4511,7 @@ end: Trigger
 nextTriggerKey: 121
 
 new: Trigger
-triggerName: 
+triggerName:
 active: false
 looping: false
 amalgam: true
@@ -4544,7 +4553,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 124
 decimal1: 0.0
 decimal2: 0.0
@@ -4571,7 +4580,7 @@ end: Condition
 
 new: Effect
 ID: 9
-message: 
+message:
 number: 7
 decimal1: 0.0
 decimal2: 0.0
@@ -4580,7 +4589,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 125
 decimal1: 0.0
 decimal2: 0.0
@@ -4616,7 +4625,7 @@ end: Condition
 
 new: Effect
 ID: 12
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -4625,7 +4634,7 @@ end: Effect
 
 new: Effect
 ID: 15
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -4634,7 +4643,7 @@ end: Effect
 
 new: Effect
 ID: 4
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -4643,7 +4652,7 @@ end: Effect
 
 new: Effect
 ID: 45
-message: 
+message:
 number: 1004
 decimal1: 1.0
 decimal2: 0.0
@@ -4652,7 +4661,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 129
 decimal1: 0.0
 decimal2: 0.0
@@ -4661,7 +4670,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 130
 decimal1: 0.0
 decimal2: 0.0
@@ -4688,7 +4697,7 @@ end: Condition
 
 new: Effect
 ID: 11
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -4697,7 +4706,7 @@ end: Effect
 
 new: Effect
 ID: 14
-message: 
+message:
 number: 1681075482
 decimal1: 0.0
 decimal2: 0.0
@@ -4706,7 +4715,7 @@ end: Effect
 
 new: Effect
 ID: 25
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -4715,7 +4724,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 127
 decimal1: 0.0
 decimal2: 0.0
@@ -4751,7 +4760,7 @@ end: Condition
 
 new: Effect
 ID: 12
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -4760,7 +4769,7 @@ end: Effect
 
 new: Effect
 ID: 15
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -4769,7 +4778,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 126
 decimal1: 0.0
 decimal2: 0.0
@@ -4796,7 +4805,7 @@ end: Condition
 
 new: Effect
 ID: 46
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -4886,7 +4895,7 @@ end: Effect
 
 new: Effect
 ID: 24
-message: 
+message:
 number: 1
 decimal1: 32.0
 decimal2: 9.5
@@ -4895,7 +4904,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 131
 decimal1: 0.0
 decimal2: 0.0
@@ -4904,7 +4913,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 132
 decimal1: 0.0
 decimal2: 0.0
@@ -4913,7 +4922,7 @@ end: Effect
 
 new: Effect
 ID: 8
-message: 
+message:
 number: 129
 decimal1: 0.0
 decimal2: 0.0
@@ -4922,7 +4931,7 @@ end: Effect
 
 new: Effect
 ID: 8
-message: 
+message:
 number: 67
 decimal1: 0.0
 decimal2: 0.0
@@ -4958,7 +4967,7 @@ end: Effect
 
 new: Effect
 ID: 17
-message: 
+message:
 number: 7
 decimal1: 0.0
 decimal2: 0.0
@@ -4967,7 +4976,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 134
 decimal1: 0.0
 decimal2: 0.0
@@ -4976,7 +4985,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 186
 decimal1: 0.0
 decimal2: 0.0
@@ -5003,7 +5012,7 @@ end: Condition
 
 new: Effect
 ID: 11
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -5012,7 +5021,7 @@ end: Effect
 
 new: Effect
 ID: 14
-message: 
+message:
 number: 1681075482
 decimal1: 0.0
 decimal2: 0.0
@@ -5030,7 +5039,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 133
 decimal1: 0.0
 decimal2: 0.0
@@ -5039,7 +5048,7 @@ end: Effect
 
 new: Effect
 ID: 25
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -5066,7 +5075,7 @@ end: Condition
 
 new: Effect
 ID: 12
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -5075,7 +5084,7 @@ end: Effect
 
 new: Effect
 ID: 15
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -5084,7 +5093,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 132
 decimal1: 0.0
 decimal2: 0.0
@@ -5120,7 +5129,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 137
 decimal1: 0.0
 decimal2: 0.0
@@ -5129,7 +5138,7 @@ end: Effect
 
 new: Effect
 ID: 8
-message: 
+message:
 number: 119
 decimal1: 0.0
 decimal2: 0.0
@@ -5138,7 +5147,7 @@ end: Effect
 
 new: Effect
 ID: 8
-message: 
+message:
 number: 120
 decimal1: 0.0
 decimal2: 0.0
@@ -5147,7 +5156,7 @@ end: Effect
 
 new: Effect
 ID: 36
-message: 
+message:
 number: 80
 decimal1: 0.0
 decimal2: 0.0
@@ -5156,7 +5165,7 @@ end: Effect
 
 new: Effect
 ID: 37
-message: 
+message:
 number: 80
 decimal1: 0.0
 decimal2: 0.0
@@ -5168,7 +5177,7 @@ end: Trigger
 nextTriggerKey: 135
 
 new: Trigger
-triggerName: 
+triggerName:
 active: false
 looping: false
 amalgam: false
@@ -5201,7 +5210,7 @@ end: Condition
 
 new: Effect
 ID: 9
-message: 
+message:
 number: 8
 decimal1: 0.0
 decimal2: 0.0
@@ -5210,7 +5219,7 @@ end: Effect
 
 new: Effect
 ID: 9
-message: 
+message:
 number: 9
 decimal1: 0.0
 decimal2: 0.0
@@ -5219,7 +5228,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 138
 decimal1: 0.0
 decimal2: 0.0
@@ -5228,7 +5237,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 139
 decimal1: 0.0
 decimal2: 0.0
@@ -5237,7 +5246,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 142
 decimal1: 0.0
 decimal2: 0.0
@@ -5264,7 +5273,7 @@ end: Condition
 
 new: Effect
 ID: 17
-message: 
+message:
 number: 9
 decimal1: 0.0
 decimal2: 0.0
@@ -5273,7 +5282,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 141
 decimal1: 0.0
 decimal2: 0.0
@@ -5300,7 +5309,7 @@ end: Condition
 
 new: Effect
 ID: 17
-message: 
+message:
 number: 8
 decimal1: 0.0
 decimal2: 0.0
@@ -5309,7 +5318,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 140
 decimal1: 0.0
 decimal2: 0.0
@@ -5327,7 +5336,7 @@ looping: true
 amalgam: true
 new: Effect
 ID: 37
-message: 
+message:
 number: 100
 decimal1: 0.0
 decimal2: 0.0
@@ -5345,7 +5354,7 @@ looping: true
 amalgam: true
 new: Effect
 ID: 36
-message: 
+message:
 number: 100
 decimal1: 0.0
 decimal2: 0.0
@@ -5381,7 +5390,7 @@ end: Condition
 
 new: Effect
 ID: 8
-message: 
+message:
 number: 145
 decimal1: 0.0
 decimal2: 0.0
@@ -5390,7 +5399,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 146
 decimal1: 0.0
 decimal2: 0.0
@@ -5399,7 +5408,7 @@ end: Effect
 
 new: Effect
 ID: 11
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -5408,7 +5417,7 @@ end: Effect
 
 new: Effect
 ID: 14
-message: 
+message:
 number: 1681075482
 decimal1: 0.0
 decimal2: 0.0
@@ -5417,7 +5426,7 @@ end: Effect
 
 new: Effect
 ID: 22
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -5429,7 +5438,7 @@ end: Trigger
 nextTriggerKey: 143
 
 new: Trigger
-triggerName: 
+triggerName:
 active: false
 looping: false
 amalgam: true
@@ -5453,7 +5462,7 @@ looping: true
 amalgam: true
 new: Effect
 ID: 42
-message: 
+message:
 number: 0
 decimal1: 19.0
 decimal2: 0.0
@@ -5489,7 +5498,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 147
 decimal1: 0.0
 decimal2: 0.0
@@ -5525,7 +5534,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 148
 decimal1: 0.0
 decimal2: 0.0
@@ -5561,7 +5570,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 149
 decimal1: 0.0
 decimal2: 0.0
@@ -5597,7 +5606,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 150
 decimal1: 0.0
 decimal2: 0.0
@@ -5633,7 +5642,7 @@ end: Effect
 
 new: Effect
 ID: 8
-message: 
+message:
 number: 145
 decimal1: 0.0
 decimal2: 0.0
@@ -5642,7 +5651,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 151
 decimal1: 0.0
 decimal2: 0.0
@@ -5669,7 +5678,7 @@ end: Condition
 
 new: Effect
 ID: 9
-message: 
+message:
 number: 10
 decimal1: 0.0
 decimal2: 0.0
@@ -5678,7 +5687,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 152
 decimal1: 0.0
 decimal2: 0.0
@@ -5687,7 +5696,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 153
 decimal1: 0.0
 decimal2: 0.0
@@ -5696,7 +5705,7 @@ end: Effect
 
 new: Effect
 ID: 42
-message: 
+message:
 number: 0
 decimal1: 21.0
 decimal2: 0.0
@@ -5723,7 +5732,7 @@ end: Condition
 
 new: Effect
 ID: 12
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -5732,7 +5741,7 @@ end: Effect
 
 new: Effect
 ID: 15
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -5741,7 +5750,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 154
 decimal1: 0.0
 decimal2: 0.0
@@ -5777,7 +5786,7 @@ end: Condition
 
 new: Effect
 ID: 42
-message: 
+message:
 number: 0
 decimal1: 21.0
 decimal2: 0.0
@@ -5813,7 +5822,7 @@ end: Condition
 
 new: Effect
 ID: 17
-message: 
+message:
 number: 10
 decimal1: 0.0
 decimal2: 0.0
@@ -5822,7 +5831,7 @@ end: Effect
 
 new: Effect
 ID: 11
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -5831,7 +5840,7 @@ end: Effect
 
 new: Effect
 ID: 14
-message: 
+message:
 number: 1681075482
 decimal1: 0.0
 decimal2: 0.0
@@ -5840,7 +5849,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 155
 decimal1: 0.0
 decimal2: 0.0
@@ -5849,7 +5858,7 @@ end: Effect
 
 new: Effect
 ID: 22
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -5885,7 +5894,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 156
 decimal1: 0.0
 decimal2: 0.0
@@ -5921,7 +5930,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 159
 decimal1: 0.0
 decimal2: 0.0
@@ -5930,7 +5939,7 @@ end: Effect
 
 new: Effect
 ID: 49
-message: 
+message:
 number: 191
 decimal1: 0.0
 decimal2: 0.0
@@ -5939,7 +5948,7 @@ end: Effect
 
 new: Effect
 ID: 51
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -5948,7 +5957,7 @@ end: Effect
 
 new: Effect
 ID: 50
-message: 
+message:
 number: 339
 decimal1: 0.0
 decimal2: 0.0
@@ -5957,7 +5966,7 @@ end: Effect
 
 new: Effect
 ID: 13
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -5969,7 +5978,7 @@ end: Trigger
 nextTriggerKey: 157
 
 new: Trigger
-triggerName: 
+triggerName:
 active: false
 looping: false
 amalgam: true
@@ -6011,7 +6020,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 160
 decimal1: 0.0
 decimal2: 0.0
@@ -6047,7 +6056,7 @@ end: Effect
 
 new: Effect
 ID: 9
-message: 
+message:
 number: 11
 decimal1: 0.0
 decimal2: 0.0
@@ -6056,7 +6065,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 161
 decimal1: 0.0
 decimal2: 0.0
@@ -6083,7 +6092,7 @@ end: Condition
 
 new: Effect
 ID: 12
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -6092,7 +6101,7 @@ end: Effect
 
 new: Effect
 ID: 15
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -6101,7 +6110,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 162
 decimal1: 0.0
 decimal2: 0.0
@@ -6128,7 +6137,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 163
 decimal1: 0.0
 decimal2: 0.0
@@ -6164,7 +6173,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 164
 decimal1: 0.0
 decimal2: 0.0
@@ -6191,7 +6200,7 @@ end: Condition
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 165
 decimal1: 0.0
 decimal2: 0.0
@@ -6200,7 +6209,7 @@ end: Effect
 
 new: Effect
 ID: 17
-message: 
+message:
 number: 11
 decimal1: 0.0
 decimal2: 0.0
@@ -6209,7 +6218,7 @@ end: Effect
 
 new: Effect
 ID: 11
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -6218,7 +6227,7 @@ end: Effect
 
 new: Effect
 ID: 14
-message: 
+message:
 number: 1681075482
 decimal1: 0.0
 decimal2: 0.0
@@ -6254,7 +6263,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 168
 decimal1: 0.0
 decimal2: 0.0
@@ -6266,7 +6275,7 @@ end: Trigger
 nextTriggerKey: 166
 
 new: Trigger
-triggerName: 
+triggerName:
 active: false
 looping: false
 amalgam: true
@@ -6308,7 +6317,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 169
 decimal1: 0.0
 decimal2: 0.0
@@ -6335,7 +6344,7 @@ end: Condition
 
 new: Effect
 ID: 47
-message: 
+message:
 number: 5
 decimal1: 0.0
 decimal2: 0.0
@@ -6353,7 +6362,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 170
 decimal1: 0.0
 decimal2: 0.0
@@ -6389,7 +6398,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 171
 decimal1: 0.0
 decimal2: 0.0
@@ -6398,7 +6407,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 172
 decimal1: 0.0
 decimal2: 0.0
@@ -6416,7 +6425,7 @@ looping: true
 amalgam: true
 new: Effect
 ID: 48
-message: 
+message:
 number: 4
 decimal1: 0.0
 decimal2: 0.0
@@ -6443,7 +6452,7 @@ end: Condition
 
 new: Effect
 ID: 9
-message: 
+message:
 number: 12
 decimal1: 0.0
 decimal2: 0.0
@@ -6452,7 +6461,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 173
 decimal1: 0.0
 decimal2: 0.0
@@ -6479,7 +6488,7 @@ end: Condition
 
 new: Effect
 ID: 12
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -6488,7 +6497,7 @@ end: Effect
 
 new: Effect
 ID: 15
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -6497,7 +6506,7 @@ end: Effect
 
 new: Effect
 ID: 8
-message: 
+message:
 number: 126
 decimal1: 0.0
 decimal2: 0.0
@@ -6506,7 +6515,7 @@ end: Effect
 
 new: Effect
 ID: 8
-message: 
+message:
 number: 127
 decimal1: 0.0
 decimal2: 0.0
@@ -6515,7 +6524,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 174
 decimal1: 0.0
 decimal2: 0.0
@@ -6542,7 +6551,7 @@ end: Condition
 
 new: Effect
 ID: 11
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -6551,7 +6560,7 @@ end: Effect
 
 new: Effect
 ID: 14
-message: 
+message:
 number: 1681075482
 decimal1: 0.0
 decimal2: 0.0
@@ -6560,7 +6569,7 @@ end: Effect
 
 new: Effect
 ID: 22
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -6569,7 +6578,7 @@ end: Effect
 
 new: Effect
 ID: 17
-message: 
+message:
 number: 12
 decimal1: 0.0
 decimal2: 0.0
@@ -6578,7 +6587,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 178
 decimal1: 0.0
 decimal2: 0.0
@@ -6590,7 +6599,7 @@ end: Trigger
 nextTriggerKey: 176
 
 new: Trigger
-triggerName: 
+triggerName:
 active: false
 looping: false
 amalgam: true
@@ -6632,7 +6641,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 179
 decimal1: 0.0
 decimal2: 0.0
@@ -6659,7 +6668,7 @@ end: Condition
 
 new: Effect
 ID: 13
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -6668,7 +6677,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 180
 decimal1: 0.0
 decimal2: 0.0
@@ -6704,7 +6713,7 @@ end: Effect
 
 new: Effect
 ID: 7
-message: 
+message:
 number: 181
 decimal1: 0.0
 decimal2: 0.0
@@ -6731,7 +6740,7 @@ end: Condition
 
 new: Effect
 ID: 6
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -6743,7 +6752,7 @@ end: Trigger
 nextTriggerKey: 182
 
 new: Trigger
-triggerName: 
+triggerName:
 active: false
 looping: false
 amalgam: true
@@ -6776,7 +6785,7 @@ end: Effect
 
 new: Effect
 ID: 0
-message: 
+message:
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -6812,7 +6821,7 @@ end: Effect
 
 new: Effect
 ID: 50
-message: 
+message:
 number: 12
 decimal1: 1.0
 decimal2: 0.0
@@ -6875,7 +6884,7 @@ end: Effect
 
 new: Effect
 ID: 52
-message: 
+message:
 number: 1
 decimal1: 0.0
 decimal2: 0.0

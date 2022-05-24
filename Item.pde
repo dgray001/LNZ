@@ -109,7 +109,7 @@ class Item extends MapObject {
   protected float lifesteal = 0; // percentage
 
   protected int ammo = 0; // also used for other things (like key code)
-  protected boolean toggled = false; // for various uses, not displayed
+  protected boolean toggled = false; // various uses
 
   // graphics
   protected BounceInt bounce = new BounceInt(Constants.item_bounceConstant);
@@ -154,6 +154,7 @@ class Item extends MapObject {
     this.agility = i.agility;
     this.lifesteal = i.lifesteal;
     this.ammo = i.ammo;
+    this.toggled = i.toggled;
   }
   Item(int ID) {
     super(ID);
@@ -1275,12 +1276,22 @@ class Item extends MapObject {
 
   String display_name() {
     switch(this.ID) {
+      case 2118: // chicken egg
+        if (this.toggled) {
+          return "Fertilized " + this.display_name;
+        }
+        return this.display_name;
       case 2901: // key
         return this.display_name + " (" + this.ammo + ")";
       case 2902: // master key
         return this.display_name + " (" + this.ammo * 10 + " - " + int(this.ammo * 10 + 9) + ")";
       case 2903: // skeleton key
         return this.display_name + " (" + this.ammo * 100 + " - " + int(this.ammo * 100 + 99) + ")";
+      case 2928: // cigar
+        if (this.toggled) {
+          return "Lit " + this.display_name;
+        }
+        return this.display_name;
       default:
         return this.display_name;
     }
@@ -2198,6 +2209,9 @@ class Item extends MapObject {
   }
 
   int maxStack() {
+    if (this.toggled) {
+      return 1;
+    }
     switch(this.ID) {
       case 2101: // crumb
       case 2102: // unknown food

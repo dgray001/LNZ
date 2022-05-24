@@ -1547,6 +1547,9 @@ class Unit extends MapObject {
   boolean running() {
     return this.hasStatusEffect(StatusEffectCode.RUNNING);
   }
+  boolean fertilized() {
+    return this.hasStatusEffect(StatusEffectCode.FERTILIZED);
+  }
   boolean drenched() {
     return this.hasStatusEffect(StatusEffectCode.DRENCHED);
   }
@@ -3277,7 +3280,7 @@ class Unit extends MapObject {
   }
 
   void moveTo(float targetX, float targetY) {
-    if (this.curr_action == UnitAction.USING_ITEM) {
+    if (this.curr_action == UnitAction.USING_ITEM || this.curr_action == UnitAction.MOVING_AND_USING_ITEM) {
       this.curr_action = UnitAction.MOVING_AND_USING_ITEM;
     }
     else {
@@ -3699,7 +3702,11 @@ class Unit extends MapObject {
           }
           if (this.timer_ai_action2 < 0) {
             this.timer_ai_action2 = int(Constants.ai_chickenTimer2 + random(Constants.ai_chickenTimer2));
-            map.addItem(new Item(2118, this.x, this.y));
+            Item egg_item = new Item(2118, this.x, this.y);
+            if (this.fertilized() || randomChance(0.2)) {
+              egg_item.toggled = true;
+            }
+            map.addItem(egg_item);
             if (this.in_view) {
               global.sounds.trigger_units("units/other/chicken_lay_egg");
             }

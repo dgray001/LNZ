@@ -12,6 +12,7 @@ class Projectile extends MapObject {
   protected float penetration = 0;
   protected Element element = Element.GRAY;
   protected DamageType damageType = DamageType.PHYSICAL;
+  protected boolean toggled = false; // various uses
 
   protected float speed = 0;
   protected float decay = 0;
@@ -62,6 +63,11 @@ class Projectile extends MapObject {
               ability_107_powerRatio, Constants.ability_107_powerRatio);
           }
           this.damageType = DamageType.MIXED;
+          break;
+        case 3118: // Chicken Egg (thrown)
+          if (u.holding(2118)) {
+            this.toggled = u.weapon().toggled;
+          }
           break;
         case 3372: // Ray Gun
         case 3392: // Porter's X2 Ray Gun
@@ -530,10 +536,12 @@ class Projectile extends MapObject {
     }
     if (speed < Constants.projectile_threshholdSpeed) {
       this.dropOnGround(map);
+      this.dropSound(map);
     }
     this.range_left -= distance_moved;
     if (this.range_left < 0) {
       this.dropOnGround(map);
+      this.dropSound(map);
     }
   }
 
@@ -712,7 +720,7 @@ class Projectile extends MapObject {
     }
     switch(this.ID) {
       case 3118: // Chicken Egg (thrown)
-        if (randomChance(0.2)) {
+        if (this.toggled) {
           Unit u = new Unit(1003);
           u.setLocation(this.x - this.facingX * u.size - Constants.small_number,
             this.y - this.facingY * u.size - Constants.small_number);
@@ -761,6 +769,18 @@ class Projectile extends MapObject {
     }
     else {
       this.remove = true;
+    }
+  }
+
+
+  void dropSound(GameMap map) {
+    switch(this.ID) {
+      case 3118: // Chicken Egg
+        global.sounds.trigger_units("items/egg_crack", this.x - map.viewX, this.y - map.viewY);
+        break;
+      default:
+      // default drop sound
+        break;
     }
   }
 

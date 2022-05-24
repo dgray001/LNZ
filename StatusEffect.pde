@@ -4,7 +4,7 @@ enum StatusEffectCode {
   BLEEDING("Bleeding"), HEMORRHAGING("Hemorrhaging"), WILTED("Wilted"), WITHERED("Withered"),
   VISIBLE("Visible"), SUPPRESSED("Suppressed"), UNTARGETABLE("Untargetable"),
   STUNNED("Stunned"), INVISIBLE("Invisible"), UNCOLLIDABLE("Uncollidable"),
-  RUNNING("Running"),
+  RUNNING("Running"), FERTILIZED("Fertilized"),
 
   DRENCHED("Drenched"), DROWNING("Drowning"), BURNT("Burning"), CHARRED("Charred"),
   CHILLED("Chilled"), FROZEN("Frozen"), SICK("Sick"), DISEASED("Diseased"), ROTTING("Rotting"),
@@ -56,6 +56,7 @@ enum StatusEffectCode {
       case INVISIBLE:
       case UNCOLLIDABLE:
       case RUNNING:
+      case FERTILIZED:
       case SENSELESS_GRIT:
       case SENSELESS_GRITII:
       case RAGE_OF_THE_BEN:
@@ -165,6 +166,9 @@ enum StatusEffectCode {
         break;
       case RUNNING:
         image_path += "running.png";
+        break;
+      case FERTILIZED:
+        image_path += "fertilized.png";
         break;
       case DRENCHED:
         image_path += "drenched.png";
@@ -287,6 +291,8 @@ enum StatusEffectCode {
         return "This unit is uncollidable and cannot be collided with.";
       case RUNNING:
         return "This unit is running and has moves 35% faster.";
+      case FERTILIZED:
+        return "This unit is fertilized.";
       case DRENCHED:
         return "This unit is drenched so will take more damage from blue damage." +
           "\nIf this unit is red it will also slowly take damage to 20% max health.";
@@ -321,17 +327,17 @@ enum StatusEffectCode {
         return "This unit is decayed and will take damage to their death." +
           "\nIf this unit is brown they will only take damage to 10% max health.";
       case SHAKEN:
-        return "";
+        return "This unit is shaken.";
       case FALLEN:
-        return "";
+        return "This unit is fallen.";
       case SHOCKED:
-        return "";
+        return "This unit is shocked.";
       case PARALYZED:
-        return "";
+        return "This unit is paralyzed.";
       case UNSTABLE:
-        return "";
+        return "This unit is unstable.";
       case RADIOACTIVE:
-        return "";
+        return "This unit is radioactive.";
       case NELSON_GLARE:
         return "This unit is Nelson glared and has 15% reduced attack and speed.";
       case NELSON_GLAREII:

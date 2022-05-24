@@ -1,18 +1,16 @@
 v0.7.2: PlayingInterface
- u: Fix OptionsForm buttons and set volumes to a proper default level (which initialinterface will start with)
- v: PlayingTrack option in OptionsForm (effects to play / silence sounds, so 10 effects total)
- w: Save music track/location in level (although can overwrite with OptionsForm)
- x: Fix moving/eating bug and test/fix item disappear timer to be reset when pickup/drop item
+ v: Fix OptionsForm buttons and set volumes to a proper default level (which initialinterface will start with)
+ w: PlayingTrack option in OptionsForm (effects to play / silence sounds, so 10 effects total)
+ x: Save music track/location in level (although can overwrite with OptionsForm)
  y: Can drop items onto map from inventory view, garbage can inventories (4x1)
 
  - Chuck quizmo covers question, put him above it with you on left
  - Rankin sounds in tutorial
  - Can directly place items in feature inventory in map editor
+ - Can sneak if holding shift (status effect)
 
   *Tutorial notes:
      - Place "The Third Ball" in the ender chest to have it for later (TEST in mock campaign(s))
-     - Egg can be fertilized (you can't see) where normally is 20% chance to be fertilized
-         => from a fertilized hen is 100% chance so make tutorial hen fertilized
 
 Bugs:
  - Remove colors from edge of map images

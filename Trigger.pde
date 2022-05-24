@@ -541,6 +541,9 @@ class Effect {
       case 50: // add feature
       case 51: // remove features in rectangle
       case 52: // unlock achievement
+      case 53: // give unit status effect
+      case 54: // give player status effect
+      case 55: // give units in rectangle status effect
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
@@ -707,6 +710,15 @@ class Effect {
       case 52: // unlock achievement
         this.display_name = "Unlock Achievement (" + this.number + ")";
         break;
+      case 53: // give unit status effect
+        this.display_name = "Give Unit (" + this.number + ") Status Effect " + this.message;
+        break;
+      case 54: // give player status effect
+        this.display_name = "Give Player Status Effect " + this.message;
+        break;
+      case 55: // give units in rectangle status effect
+        this.display_name = "Give Units in Rectangle Status Effect " + this.message;
+        break;
       default:
         this.display_name = "Effect";
         break;
@@ -714,6 +726,7 @@ class Effect {
   }
 
   void actuate(Level level) {
+    StatusEffectCode code = null;
     switch(this.ID) {
       case 0: // nothing
         break;
@@ -938,7 +951,7 @@ class Effect {
         }
         for (Map.Entry<Integer, Unit> entry : level.currMap.units.entrySet()) {
           if (this.rectangle.contains(entry.getValue())) {
-            level.player.moveTo(this.decimal1, this.decimal2);
+            entry.getValue().moveTo(this.decimal1, this.decimal2);
           }
         }
         break;
@@ -984,7 +997,7 @@ class Effect {
         }
         for (Map.Entry<Integer, Unit> entry : level.currMap.units.entrySet()) {
           if (this.rectangle.contains(entry.getValue())) {
-            level.player.setLocation(this.decimal1, this.decimal2);
+            entry.getValue().setLocation(this.decimal1, this.decimal2);
           }
         }
         break;
@@ -1117,6 +1130,57 @@ class Effect {
         break;
       case 52: // unlock achievement
         global.profile.achievement(AchievementCode.achievementCode(this.number));
+        break;
+      case 53: // give unit status effect
+        code = StatusEffectCode.code(this.message);
+        if (code == null || code == StatusEffectCode.ERROR) {
+          break;
+        }
+        if (level.currMap == null) {
+          break;
+        }
+        if (level.currMap.units.containsKey(this.number)) {
+          if (this.decimal1 > 0) {
+            level.currMap.units.get(this.number).refreshStatusEffect(code, this.decimal1);
+          }
+          else {
+            level.currMap.units.get(this.number).addStatusEffect(code);
+          }
+        }
+        break;
+      case 54: // give player status effect
+        code = StatusEffectCode.code(this.message);
+        if (code == null || code == StatusEffectCode.ERROR) {
+          break;
+        }
+        if (level.player == null) {
+          break;
+        }
+        if (this.decimal1 > 0) {
+          level.player.refreshStatusEffect(code, this.decimal1);
+        }
+        else {
+          level.player.addStatusEffect(code);
+        }
+        break;
+      case 55: // give units in rectangle status effect
+        code = StatusEffectCode.code(this.message);
+        if (code == null || code == StatusEffectCode.ERROR) {
+          break;
+        }
+        if (level.currMap == null) {
+          break;
+        }
+        for (Map.Entry<Integer, Unit> entry : level.currMap.units.entrySet()) {
+          if (this.rectangle.contains(entry.getValue())) {
+            if (this.decimal1 > 0) {
+              entry.getValue().refreshStatusEffect(code, this.decimal1);
+            }
+            else {
+              entry.getValue().addStatusEffect(code);
+            }
+          }
+        }
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
