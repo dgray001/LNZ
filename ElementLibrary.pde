@@ -1852,6 +1852,9 @@ class TextBox {
   void scrollBottom() {
     this.scrollbar.updateValue(this.scrollbar.maxValue);
   }
+
+  void keyPress() {
+  }
 }
 
 
@@ -2027,6 +2030,7 @@ abstract class ListTextBox extends TextBox {
     }
   }
 
+  @Override
   void keyPress() {
     if (!this.hovered) {
       return;
@@ -2089,7 +2093,6 @@ abstract class MaxListTextBox extends ListTextBox {
 }
 
 
-
 class DropDownList extends ListTextBox {
   protected boolean active = false;
   protected boolean show_highlight = false;
@@ -2135,12 +2138,16 @@ class DropDownList extends ListTextBox {
 
   @Override
   void mousePress() {
-    if (!this.hovered) {
-      this.doubleclick();
-      this.show_highlight = false;
-    }
     if (this.active) {
-      super.mousePress();
+      if (this.hovered) {
+        int last_line_clicked = this.line_clicked;
+        super.mousePress();
+        this.line_clicked = last_line_clicked;
+      }
+      else {
+        this.show_highlight = false;
+        this.active = false;
+      }
     }
     else {
       int last_line_clicked = this.line_clicked;
@@ -2161,6 +2168,13 @@ class DropDownList extends ListTextBox {
         this.show_highlight = false;
       }
     }
+  }
+
+  @Override
+  void mouseRelease(float mX, float mY) {
+    int last_line_clicked = this.line_clicked;
+    super.mouseRelease(mX, mY);
+    this.line_clicked = last_line_clicked;
   }
 
   @Override
@@ -2211,8 +2225,10 @@ class DropDownList extends ListTextBox {
   void click() {}
 
   void doubleclick() {
-    this.active = false;
-    this.show_highlight = true;
+    if (this.active) {
+      this.active = false;
+      this.show_highlight = true;
+    }
   }
 }
 
@@ -3047,7 +3063,9 @@ class TextBoxFormField extends FormField {
     this.textbox.scroll(amount);
   }
 
-  void keyPress() {}
+  void keyPress() {
+    this.textbox.keyPress();
+  }
   void keyRelease() {}
   void submit() {}
 }

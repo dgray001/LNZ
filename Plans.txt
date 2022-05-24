@@ -1,7 +1,4 @@
 v0.7.2: PlayingInterface
- t: AbandonLevel button is EnterCampaign button if in an area
-    => EnterCampaignForm (which will eventually get major upgrade so make it very simple)
-    => Make sure no other heroes in that campaign (check in profile not saves)
  u: Fix OptionsForm buttons and set volumes to a proper default level (which initialinterface will start with)
  v: PlayingTrack option in OptionsForm (effects to play / silence sounds, so 10 effects total)
  w: Save music track/location in level (although can overwrite with OptionsForm)
@@ -20,8 +17,6 @@ v0.7.2: PlayingInterface
 Bugs:
  - Remove colors from edge of map images
  - Sometimes fog shows up in map edges (when unexploring it seems)
- - LNZ log: ERROR: In playing status but no level to update.
-    => Only a log error no affect on gameplay that I notice
 
 
 v0.7.3: Francis Hall maps
@@ -73,6 +68,7 @@ Parking Lot:
     => Also only show relevant fields and name them properly
  - Rooster will fight back if you attack any chicken/chick/rooster near it
  - Chickens generally stay together if in groups
+ - Overhaul of DropDownList
 
 
 v0.8: HomeBase and Campaign II

@@ -25,7 +25,7 @@ class PlayingInterface extends InterfaceLNZ {
   class PlayingButton1 extends PlayingButton {
     PlayingButton1() {
       super();
-      this.message = "Abandon\nLevel";
+      this.message = "";
     }
     void release() {
       if (!this.hovered) {
@@ -37,7 +37,12 @@ class PlayingInterface extends InterfaceLNZ {
         if (PlayingInterface.this.form != null || PlayingInterface.this.status != PlayingStatus.PLAYING) {
           return;
         }
-        PlayingInterface.this.form = new AbandonLevelWhilePlayingForm(h);
+        if (this.message.contains("Abandon")) {
+          PlayingInterface.this.form = new AbandonLevelWhilePlayingForm(h);
+        }
+        else {
+          PlayingInterface.this.form = new EnterNewCampaignForm(h);
+        }
       }
     }
   }
@@ -430,6 +435,86 @@ class PlayingInterface extends InterfaceLNZ {
   }
 
 
+  class ConfirmLaunchCampaign extends ConfirmActionForm {
+    protected Location location = Location.ERROR;
+    ConfirmLaunchCampaign(Location location) {
+      super("Launch Campaign", "Are you sure you want to launch a new campaign?");
+      this.location = location;
+    }
+    void doAction() {
+      PlayingInterface.this.saveAndReturnToInitialState();
+      PlayingInterface.this.launchCampaign(this.location);
+    }
+  }
+
+
+  class EnterNewCampaignForm extends FormLNZ {
+    protected Hero hero = null;
+    protected DropDownList list = null;
+
+    EnterNewCampaignForm(Hero hero) {
+      super(0.5 * (width - 300), 0.5 * (height - 400),
+        0.5 * (width + 300), 0.5 * (height + 400));
+      this.setTitleText("Enter New Campaign");
+      this.setTitleSize(18);
+      this.color_background = color(180, 250, 180);
+      this.color_header = color(30, 170, 30);
+      this.hero = hero;
+
+      TextBoxFormField list_field = new TextBoxFormField("", 100);
+      this.list = new DropDownList();
+      this.list.setLocation(0, 0, 0, 100);
+      this.list.hint_text = "Select Campaign to Launch";
+      boolean first = true;
+      for (Location a : hero.location.locationsFromArea()) {
+        if (first) {
+          first = false;
+          this.list.setText(a.display_name());
+        }
+        else {
+          this.list.addLine(a.display_name());
+        }
+      }
+      list_field.textbox = this.list;
+      SubmitCancelFormField submit = new SubmitCancelFormField("Launch Campaign", "Cancel");
+      submit.button1.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+      submit.button2.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+
+      this.addField(new SpacerFormField(0));
+      this.addField(list_field);
+      this.addField(submit);
+    }
+
+    void submit() {
+      String location_name = this.list.highlightedLine();
+      if (location_name == null) {
+        return;
+      }
+      Location new_location = Location.location(location_name);
+      if (new_location == null || new_location == Location.ERROR) {
+        global.errorMessage("ERROR: The location name " + location_name +
+          " gave an invalid location.");
+        return;
+      }
+      if (!new_location.isCampaignStart()) {
+        global.errorMessage("ERROR: The location " + new_location.display_name() +
+          " is not the start of any campaign.");
+        return;
+      }
+      for (Map.Entry<HeroCode, Hero> entry : global.profile.heroes.entrySet()) {
+        // can't enter campaign another hero is in
+        if (entry.getValue().location.getCampaignStart() == new_location) {
+          return;
+        }
+      }
+      PlayingInterface.this.form = new ConfirmLaunchCampaign(new_location);
+      this.canceled = true;
+    }
+  }
+
+
   class OpenNewLevelThread extends Thread {
     private Level level = null;
     private Hero hero = null;
@@ -773,6 +858,69 @@ class PlayingInterface extends InterfaceLNZ {
     }
   }
 
+  void launchCampaign(Location new_location) {
+    if (this.level != null) {
+      global.errorMessage("ERROR: Trying to launch new campaign when current level not null.");
+      return;
+    }
+    if (this.status != PlayingStatus.INITIAL) {
+      global.errorMessage("ERROR: Trying to launch new campaign save when current status is " + this.status + ".");
+      return;
+    }
+    if (global.profile.curr_hero == null || global.profile.curr_hero == HeroCode.ERROR) {
+      global.errorMessage("ERROR: Profile has no current hero.");
+      return;
+    }
+    Hero curr_hero = global.profile.heroes.get(global.profile.curr_hero);
+    if (curr_hero == null) {
+      global.errorMessage("ERROR: Profile missing curr hero " + global.profile.curr_hero + ".");
+      return;
+    }
+    if (curr_hero.location == null || curr_hero.location == Location.ERROR) {
+      global.errorMessage("ERROR: Hero " + curr_hero.display_name() + " missing location data.");
+      return;
+    }
+    if (!curr_hero.location.isArea()) {
+      global.errorMessage("ERROR: Can't launch new campaign since hero in " +
+        curr_hero.location.display_name() + " which is not an area.");
+      return;
+    }
+    if (new_location == null || new_location == Location.ERROR) {
+      global.errorMessage("ERROR: New location does not exist.");
+      return;
+    }
+    ArrayList<Location> campaign_locations = curr_hero.location.locationsFromArea();
+    boolean valid_new_location = false;
+    for (Location a : campaign_locations) {
+      if (a == new_location) {
+        valid_new_location = true;
+        break;
+      }
+    }
+    if (!valid_new_location) {
+      global.errorMessage("ERROR: New location " + new_location.display_name() +
+        " is not accessible from hero's current location " + curr_hero.location.display_name());
+      return;
+    }
+    if (!new_location.isCampaignStart()) {
+      global.errorMessage("ERROR: New location " + new_location.display_name() +
+        " is not a campaign start point.");
+      return;
+    }
+    for (Map.Entry<HeroCode, Hero> entry : global.profile.heroes.entrySet()) {
+      // can't enter campaign another hero is in
+      if (entry.getValue().location.getCampaignStart() == new_location) {
+        global.errorMessage("ERROR: New location " + new_location.display_name() +
+          " is being played by " + entry.getValue().display_name() + " already.");
+        return;
+      }
+    }
+    curr_hero.location = new_location;
+    this.status = PlayingStatus.STARTING_NEW;
+    this.newLevelThread = new OpenNewLevelThread(curr_hero);
+    this.newLevelThread.start();
+  }
+
   void switchHero(Hero hero) {
     if (hero == null || hero.code == null || hero.code == HeroCode.ERROR) {
       global.errorMessage("ERROR: Can't switch to a hero code that doesn't exist.");
@@ -869,13 +1017,14 @@ class PlayingInterface extends InterfaceLNZ {
   void saveAndExitToMainMenu() {
     this.saveLevel();
     this.level = null;
+    this.status = PlayingStatus.INITIAL;
     global.state = ProgramState.ENTERING_MAINMENU;
   }
 
   void saveAndReturnToInitialState() {
     this.saveLevel();
+    this.status = PlayingStatus.INITIAL;
     this.level = null;
-    PlayingInterface.this.status = PlayingStatus.INITIAL;
   }
 
   void loseFocus() {
@@ -934,6 +1083,12 @@ class PlayingInterface extends InterfaceLNZ {
             this.level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
             this.level.restartTimers();
             this.status = PlayingStatus.PLAYING;
+            if (this.level.location.isArea()) {
+              this.buttons[0].message = "Launch\nCampaign";
+            }
+            else {
+              this.buttons[0].message = "Abandon\nLevel";
+            }
           }
           this.newLevelThread = null;
           return;
@@ -970,6 +1125,12 @@ class PlayingInterface extends InterfaceLNZ {
             this.level.restartTimers();
             this.level.currMap.addHeaderMessage(GameMapCode.display_name(this.level.currMap.code));
             this.status = PlayingStatus.PLAYING;
+            if (this.level.location.isArea()) {
+              this.buttons[0].message = "Launch\nCampaign";
+            }
+            else {
+              this.buttons[0].message = "Abandon\nLevel";
+            }
           }
           this.savedLevelThread = null;
           return;

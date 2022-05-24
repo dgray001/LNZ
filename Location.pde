@@ -86,6 +86,31 @@ enum Location {
     return return_location;
   }
 
+  public boolean isCampaignStart() {
+    return Location.isCampaignStart(this);
+  }
+  public static boolean isCampaignStart(Location a) {
+    switch(a) {
+      case FRANCISCAN_FRANCIS:
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  public Location getCampaignStart() {
+    return Location.getCampaignStart(this);
+  }
+  public static Location getCampaignStart(Location a) {
+    switch(a) {
+      case FRANCISCAN_FRANCIS:
+      case FRANCISCAN_OUTSIDE:
+        return Location.FRANCISCAN_FRANCIS;
+      default:
+        return Location.ERROR;
+    }
+  }
+
   public boolean isArea() {
     return Location.isArea(this);
   }
@@ -109,5 +134,20 @@ enum Location {
       default:
         return Location.ERROR;
     }
+  }
+
+  public ArrayList<Location> locationsFromArea() {
+    return Location.locationsFromArea(this);
+  }
+  public static ArrayList<Location> locationsFromArea(Location a) {
+    ArrayList<Location> locations = new ArrayList<Location>();
+    switch(a) {
+      case AREA_GOLFCOURSE:
+        locations.add(Location.FRANCISCAN_FRANCIS);
+        break;
+      default:
+        break;
+    }
+    return locations;
   }
 }

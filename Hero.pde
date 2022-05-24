@@ -1742,7 +1742,9 @@ class Hero extends Unit {
         this.updateHoverMessage();
         this.show_hover_message = true;
       }
-      void release() {}
+      void release() {
+        this.updateHoverMessage();
+      }
 
       abstract void updateHoverMessage();
     }
@@ -1760,7 +1762,6 @@ class Hero extends Unit {
 
       @Override
       void release() {
-        super.release();
         if (!this.hovered) {
           return;
         }
@@ -1771,6 +1772,7 @@ class Hero extends Unit {
           PlayerLeftPanelMenu.this.hero().heroTree.curr_viewing = true;
           PlayerLeftPanelMenu.this.hero().heroTree.set_screen_location = true;
         }
+        super.release();
       }
 
       void updateHoverMessage() {
