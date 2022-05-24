@@ -34,12 +34,10 @@ class PlayingInterface extends InterfaceLNZ {
       this.stayDehovered();
       Hero h = PlayingInterface.this.getCurrentHeroIfExists();
       if (h != null) {
-        //if (homebase explored) {
-          //PlayingInterface.this.abandonLevel();
-        //}
-        //else {
-          PlayingInterface.this.restartLevel();
-        //}
+        if (PlayingInterface.this.form != null || PlayingInterface.this.status != PlayingStatus.PLAYING) {
+          return;
+        }
+        PlayingInterface.this.form = new AbandonLevelWhilePlayingForm(h);
       }
     }
   }
@@ -113,7 +111,7 @@ class PlayingInterface extends InterfaceLNZ {
   class ConfirmStartLevelForm extends PlayingForm {
     protected Hero hero = null;
     ConfirmStartLevelForm(Hero hero) {
-      super("Start Level: " + hero.location.display_name(), 550, 350);
+      super("Start Level: " + hero.location.display_name(), 550, 390);
       this.hero = hero;
 
       MessageFormField message1 = new MessageFormField("Begin the following level?");
@@ -122,8 +120,13 @@ class PlayingInterface extends InterfaceLNZ {
       }
       MessageFormField message2 = new MessageFormField("Hero: " + hero.display_name());
       message2.text_color = color(120, 30, 120);
+      message2.setTextSize(18);
       MessageFormField message3 = new MessageFormField("Location: " + hero.location.display_name());
       message3.text_color = color(120, 30, 120);
+      message3.setTextSize(18);
+      MessageFormField message4 = new MessageFormField("");
+      message4.text_color = color(150, 20, 20);
+      message4.setTextSize(18);
       SubmitCancelFormField submit = new SubmitCancelFormField("Begin Level", "Abandon Level");
       submit.button1.setColors(color(220), color(190, 240, 190),
         color(140, 190, 140), color(90, 140, 90), color(0));
@@ -143,6 +146,8 @@ class PlayingInterface extends InterfaceLNZ {
       this.addField(message2);
       this.addField(message3);
       this.addField(new SpacerFormField(10));
+      this.addField(message4);
+      this.addField(new SpacerFormField(10));
       this.addField(submit);
       this.addField(switch_hero);
     }
@@ -150,17 +155,18 @@ class PlayingInterface extends InterfaceLNZ {
     @Override
     void cancel() {
       if (this.hero.location.isArea()) {
+        this.fields.get(5).setValue("You can't abandon an area.");
         return;
       }
       Location area_location = this.hero.location.areaLocation();
       if (global.profile.areas.containsKey(area_location) && global.profile.areas.get(area_location) == Boolean.TRUE) {
+        // confirm abandon
         PlayingInterface.this.abandonLevel();
+        this.canceled = true;
       }
       else {
-        // message informing that you can't abandon level since no-where for hero to run
-        PlayingInterface.this.heroesForm();
+        this.fields.get(5).setValue("You can't abandon this level as you haven't explored the surrounding area.");
       }
-      this.canceled = true;
     }
 
     void submit() {
@@ -171,10 +177,11 @@ class PlayingInterface extends InterfaceLNZ {
     @Override
     void buttonPress(int i) {
       switch(i) {
-        case 6: // switch hero
+        case 8: // switch hero
           PlayingInterface.this.heroesForm();
           break;
         default:
+          global.errorMessage("ERROR: Button press code " + i + " not recognized in ConfirmStartLevelForm.");
           break;
       }
     }
@@ -184,7 +191,7 @@ class PlayingInterface extends InterfaceLNZ {
   class ConfirmContinueLevelForm extends PlayingForm {
     protected Hero hero = null;
     ConfirmContinueLevelForm(Hero hero) {
-      super("Continue Level: " + hero.location.display_name(), 550, 600);
+      super("Continue Level: " + hero.location.display_name(), 550, 440);
       this.hero = hero;
 
       MessageFormField message1 = new MessageFormField("Continue the following level?");
@@ -193,8 +200,13 @@ class PlayingInterface extends InterfaceLNZ {
       }
       MessageFormField message2 = new MessageFormField("Hero: " + hero.display_name());
       message2.text_color = color(120, 30, 120);
+      message2.setTextSize(18);
       MessageFormField message3 = new MessageFormField("Location: " + hero.location.display_name());
       message3.text_color = color(120, 30, 120);
+      message3.setTextSize(18);
+      MessageFormField message4 = new MessageFormField("");
+      message4.text_color = color(150, 20, 20);
+      message4.setTextSize(18);
       SubmitCancelFormField submit = new SubmitCancelFormField("Continue Level", "Abandon Level");
       submit.button1.setColors(color(220), color(190, 240, 190),
         color(140, 190, 140), color(90, 140, 90), color(0));
@@ -208,30 +220,39 @@ class PlayingInterface extends InterfaceLNZ {
       ButtonFormField switch_hero = new ButtonFormField("Switch Hero");
       switch_hero.button.setColors(color(220), color(190, 240, 190),
         color(140, 190, 140), color(90, 140, 90), color(0));
+      ButtonFormField restart_level = new ButtonFormField("Restart Level");
+      restart_level.button.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
 
       this.addField(new SpacerFormField(10));
       this.addField(message1);
       this.addField(message2);
       this.addField(message3);
       this.addField(new SpacerFormField(10));
+      this.addField(message4);
+      this.addField(new SpacerFormField(10));
       this.addField(submit);
       this.addField(switch_hero);
+      if (!hero.location.isArea()) {
+        this.addField(restart_level);
+      }
     }
 
     @Override
     void cancel() {
       if (this.hero.location.isArea()) {
+        this.fields.get(5).setValue("You can't abandon an area.");
         return;
       }
       Location area_location = this.hero.location.areaLocation();
       if (global.profile.areas.containsKey(area_location) && global.profile.areas.get(area_location) == Boolean.TRUE) {
+        // confirm abandon
         PlayingInterface.this.abandonLevel();
+        this.canceled = true;
       }
       else {
-        // message informing that you can't abandon level since no-where for hero to run
-        PlayingInterface.this.restartLevel();
+        this.fields.get(5).setValue("You can't abandon this level as you haven't explored the surrounding area.");
       }
-      this.canceled = true;
     }
 
     void submit() {
@@ -242,24 +263,151 @@ class PlayingInterface extends InterfaceLNZ {
     @Override
     void buttonPress(int i) {
       switch(i) {
-        case 6: // switch hero
+        case 8: // switch hero
           PlayingInterface.this.heroesForm();
           break;
+        case 9: // restart level
+          if (this.hero.location.isArea()) {
+            this.fields.get(5).setValue("You can't restart an area.");
+            return;
+          }
+          // confirm restart
+          PlayingInterface.this.restartLevel();
+          this.canceled = true;
+          break;
         default:
+          global.errorMessage("ERROR: Button press code " + i + " not recognized in ConfirmContinueLevelForm.");
           break;
       }
     }
   }
 
 
-  class AbandonLevelForm extends PlayingForm {
-    AbandonLevelForm(Hero hero) {
-      super("Abandon Level: " + hero.location.display_name(), 550, 600);
+  class AbandonLevelWhilePlayingForm extends PlayingForm {
+    protected Hero hero = null;
+    AbandonLevelWhilePlayingForm(Hero hero) {
+      super("Abandon Level: " + hero.location.display_name(), 550, 440);
+      this.hero = hero;
+      this.cancel = null;
+
+      MessageFormField message1 = new MessageFormField("Abandon the following level?");
+      MessageFormField message2 = new MessageFormField("Hero: " + hero.display_name());
+      message2.text_color = color(120, 30, 120);
+      message2.setTextSize(18);
+      MessageFormField message3 = new MessageFormField("Location: " + hero.location.display_name());
+      message3.text_color = color(120, 30, 120);
+      if (hero.location.isArea()) {
+        message1.setValue("You can't abandon an area."); // basic instruction on how to start next level
+      }
+      message3.setTextSize(18);
+      MessageFormField message4 = new MessageFormField("");
+      message4.text_color = color(150, 20, 20);
+      message4.setTextSize(18);
+      SubmitCancelFormField submit = new SubmitCancelFormField("Abandon Level", "Restart Level");
+      submit.button1.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+      submit.button2.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+      if (hero.location.isArea()) {
+        submit.button1.message = "Continue";
+        submit.button2.message = "";
+        submit.button2.disabled = true;
+      }
+      ButtonFormField switch_hero = new ButtonFormField("Switch Hero");
+      switch_hero.button.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+      ButtonFormField continue_level = new ButtonFormField("Continue Level");
+      continue_level.button.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+
+      this.addField(new SpacerFormField(10));
+      this.addField(message1);
+      this.addField(message2);
+      this.addField(message3);
+      this.addField(new SpacerFormField(10));
+      this.addField(message4);
+      this.addField(new SpacerFormField(10));
+      this.addField(submit);
+      this.addField(switch_hero);
+      this.addField(continue_level);
     }
+
+    @Override
+    void cancel() {
+      if (this.hero.location.isArea()) {
+        this.fields.get(5).setValue("You can't restart an area.");
+        return;
+      }
+      // confirm restart
+      PlayingInterface.this.saveAndReturnToInitialState();
+      PlayingInterface.this.restartLevel();
+      this.canceled = true;
+    }
+
+    void submit() {
+      if (this.hero.location.isArea()) {
+        this.fields.get(5).setValue("You can't abandon an area.");
+        return;
+      }
+      Location area_location = this.hero.location.areaLocation();
+      if (global.profile.areas.containsKey(area_location) && global.profile.areas.get(area_location) == Boolean.TRUE) {
+        // confirm abandon
+        PlayingInterface.this.saveAndReturnToInitialState();
+        PlayingInterface.this.abandonLevel();
+        this.canceled = true;
+      }
+      else {
+        this.fields.get(5).setValue("You can't abandon this level as you haven't explored the surrounding area.");
+      }
+    }
+
+    @Override
+    void buttonPress(int i) {
+      switch(i) {
+        case 8: // switch hero
+          PlayingInterface.this.heroesForm();
+          break;
+        case 9: // continue level
+          this.canceled = true;
+          break;
+        default:
+          global.errorMessage("ERROR: Button press code " + i + " not recognized in AbandonLevelWhilePlayingForm.");
+          break;
+      }
+    }
+  }
+
+
+  abstract class ConfirmActionForm extends FormLNZ {
+    ConfirmActionForm(String title, String message) {
+      super(0.5 * width - 120, 0.5 * height - 120, 0.5 * width + 120, 0.5 * height + 120);
+      this.setTitleText(title);
+      this.setTitleSize(18);
+      this.color_background = color(180, 250, 180);
+      this.color_header = color(30, 170, 30);
+      this.scrollbar.setButtonColors(color(170), color(190, 255, 190),
+        color(220, 255, 220), color(160, 220, 160), color(0));
+
+      SubmitCancelFormField submit = new SubmitCancelFormField("  Ok  ", "Cancel");
+      submit.button1.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+      submit.button2.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+      TextBoxFormField textbox = new TextBoxFormField(message, 120);
+      textbox.textbox.scrollbar.setButtonColors(color(170), color(190, 255, 190),
+        color(220, 255, 220), color(160, 220, 160), color(0));
+
+      this.addField(new SpacerFormField(0));
+      this.addField(textbox);
+      this.addField(submit);
+    }
+
     void submit() {
       this.canceled = true;
-      // need option to restart or actually abandon level, where actual abandon is not possible if you don't have a home base
+      this.doAction();
     }
+
+    abstract void doAction();
   }
 
 
@@ -400,6 +548,10 @@ class PlayingInterface extends InterfaceLNZ {
 
   private OpenNewLevelThread newLevelThread = null;
   private OpenSavedLevelThread savedLevelThread = null;
+
+  private boolean return_to_confirmStartLevelForm = false;
+  private boolean return_to_confirmContinueLevelForm = false;
+  private boolean return_to_confirmAbandonLevelForm = false;
 
 
   PlayingInterface() {
@@ -701,6 +853,12 @@ class PlayingInterface extends InterfaceLNZ {
     global.state = ProgramState.ENTERING_MAINMENU;
   }
 
+  void saveAndReturnToInitialState() {
+    this.saveLevel();
+    this.level = null;
+    PlayingInterface.this.status = PlayingStatus.INITIAL;
+  }
+
   void loseFocus() {
     if (this.level != null) {
       this.level.loseFocus();
@@ -814,7 +972,7 @@ class PlayingInterface extends InterfaceLNZ {
         }
         break;
       default:
-        global.errorMessage("Playing status " + this.status + " not recognized.");
+        global.errorMessage("ERROR: Playing status " + this.status + " not recognized.");
         break;
     }
     this.leftPanel.update(millis);
