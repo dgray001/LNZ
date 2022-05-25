@@ -68,6 +68,7 @@ class Projectile extends MapObject {
           if (u.holding(2118)) {
             this.toggled = u.weapon().toggled;
           }
+          this.power = u.attack();
           break;
         case 3372: // Ray Gun
         case 3392: // Porter's X2 Ray Gun

@@ -131,6 +131,12 @@ int randomInt(int min, int max) {
   }
   return min + int(floor(random(1 + max - min)));
 }
+float randomFloat(float min, float max) {
+  if (max < min) {
+    return randomFloat(max, min);
+  }
+  return min + random(max - min);
+}
 
 // String to primitive casts
 boolean isInt(String str) {

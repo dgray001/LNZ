@@ -325,6 +325,8 @@ class Unit extends MapObject {
   protected boolean ai_controlled = true;
   protected int timer_ai_action1 = 0;
   protected int timer_ai_action2 = 0;
+  protected int timer_ai_action3 = 0;
+  protected boolean ai_toggle = false;
 
   // graphics
   protected float random_number = random(100);
@@ -351,6 +353,7 @@ class Unit extends MapObject {
       case 1002:
         this.setStrings("Chicken", "Gaia", "");
         this.baseStats(2.5, 0, 0, 0, 1.4);
+        this.base_agility = 1;
         this.timer_ai_action1 = int(Constants.ai_chickenTimer1 + random(Constants.ai_chickenTimer1));
         this.timer_ai_action2 = int(Constants.ai_chickenTimer2 + random(Constants.ai_chickenTimer2));
         this.level = 1;
@@ -375,6 +378,7 @@ class Unit extends MapObject {
       case 1005:
         this.setStrings("Rooster", "Gaia", "");
         this.baseStats(2.8, 1.2, 0, 0, 1.4);
+        this.base_agility = 1;
         this.timer_ai_action1 = int(Constants.ai_chickenTimer1 + random(Constants.ai_chickenTimer1));
         this.timer_ai_action2 = int(Constants.ai_chickenTimer2 + random(Constants.ai_chickenTimer2));
         this.level = 2;
@@ -1695,6 +1699,17 @@ class Unit extends MapObject {
               else {
                 this.timer_actionTime = Constants.unit_moveCollisionStopActionTime;
               }
+              switch(this.ID) {
+                case 1002: // Chicken
+                case 1003: // Chick
+                case 1005: // Rooster
+                  if (!this.falling) {
+                    this.jump(map);
+                  }
+                  break;
+                default:
+                  break;
+              }
               if (this.timer_actionTime < 0) { // colliding over and over
                 this.stopAction(true);
               }
@@ -1809,6 +1824,19 @@ class Unit extends MapObject {
           }
           else {
             this.move(timeElapsed, map, MoveModifier.NONE);
+          }
+          if (this.last_move_collision) {
+            switch(this.ID) {
+              case 1002: // Chicken
+              case 1003: // Chick
+              case 1005: // Rooster
+                if (!this.falling) {
+                  this.jump(map);
+                }
+                break;
+              default:
+                break;
+            }
           }
           this.timer_walk -= timeElapsed;
           if (this.timer_walk < 0) {
@@ -2696,6 +2724,14 @@ class Unit extends MapObject {
           }
           this.addStatusEffect(StatusEffectCode.RUNNING, 3000);
           this.moveForward(4);
+          this.ai_toggle = true;
+          this.timer_ai_action3 = 300;
+          break;
+        case 1005: // Rooster
+          if (source != null) {
+            this.target(source, source.map_key);
+            this.addStatusEffect(StatusEffectCode.RUNNING, 3000);
+          }
           break;
         case 1201: // Tier I Zombie
         case 1202:
@@ -3730,10 +3766,55 @@ class Unit extends MapObject {
         if (this.curr_action == UnitAction.NONE || this.last_move_collision) {
           this.timer_ai_action1 -= timeElapsed;
           this.timer_ai_action2 -= timeElapsed;
+          if (this.timer_ai_action3 > 0) {
+            this.timer_ai_action3 -= timeElapsed;
+            if (this.timer_ai_action3 <= 0) {
+              this.ai_toggle = false;
+            }
+          }
           if (this.timer_ai_action1 < 0) {
+            float other_chicken_face_x = 0;
+            float other_chicken_face_y = 0;
+            int other_chickens_moved_from = 0;
+            if (!this.ai_toggle) {
+              this.timer_ai_action3 = 0;
+              for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
+                if (entry.getKey() == this.map_key) {
+                  continue;
+                }
+                Unit u = entry.getValue();
+                if (u.ID != 1002 && u.ID != 1003) {
+                  continue;
+                }
+                if (!u.ai_toggle) {
+                  continue;
+                }
+                if (randomChance(0.3)) {
+                  continue;
+                }
+                if (this.distance(u) > this.sight()) {
+                  continue;
+                }
+                this.ai_toggle = true;
+                this.timer_ai_action3 = int(0.5 * (this.timer_ai_action3 + u.timer_ai_action3));
+                other_chickens_moved_from++;
+                other_chicken_face_x += u.facingX;
+                other_chicken_face_y += u.facingY;
+              }
+            }
             this.timer_ai_action1 = int(Constants.ai_chickenTimer1 + random(Constants.ai_chickenTimer1));
-            this.moveTo(this.x + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance),
-              this.y + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance));
+            if (other_chickens_moved_from > 0) {
+              other_chicken_face_x /= other_chickens_moved_from;
+              other_chicken_face_y /= other_chickens_moved_from;
+              this.refreshStatusEffect(StatusEffectCode.RUNNING, 0.8 * Constants.ai_chickenTimer1);
+              this.moveTo(this.x + other_chicken_face_x * Constants.ai_chickenMoveDistance +
+                randomFloat(-1, 1), other_chicken_face_y * Constants.ai_chickenMoveDistance +
+                randomFloat(-1, 1));
+            }
+            else {
+              this.moveTo(this.x + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance),
+                this.y + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance));
+            }
           }
           if (this.timer_ai_action2 < 0) {
             this.timer_ai_action2 = int(Constants.ai_chickenTimer2 + random(Constants.ai_chickenTimer2));
@@ -3752,14 +3833,64 @@ class Unit extends MapObject {
         if (this.curr_action == UnitAction.NONE || this.last_move_collision) {
           this.timer_ai_action1 -= timeElapsed;
           this.timer_ai_action2 -= timeElapsed;
+          if (this.timer_ai_action3 > 0) {
+            this.timer_ai_action3 -= timeElapsed;
+            if (this.timer_ai_action3 <= 0) {
+              this.ai_toggle = false;
+            }
+          }
           if (this.timer_ai_action1 < 0) {
+            float other_chicken_face_x = 0;
+            float other_chicken_face_y = 0;
+            int other_chickens_moved_from = 0;
+            if (!this.ai_toggle) {
+              this.timer_ai_action3 = 0;
+              for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
+                if (entry.getKey() == this.map_key) {
+                  continue;
+                }
+                Unit u = entry.getValue();
+                if (u.ID != 1002 && u.ID != 1003) {
+                  continue;
+                }
+                if (!u.ai_toggle) {
+                  continue;
+                }
+                if (randomChance(0.1)) {
+                  continue;
+                }
+                if (this.distance(u) > this.sight()) {
+                  continue;
+                }
+                this.ai_toggle = true;
+                this.timer_ai_action3 = int(0.5 * (this.timer_ai_action3 + u.timer_ai_action3));
+                other_chickens_moved_from++;
+                other_chicken_face_x += u.facingX;
+                other_chicken_face_y += u.facingY;
+              }
+            }
             this.timer_ai_action1 = int(Constants.ai_chickenTimer1 + random(Constants.ai_chickenTimer1));
-            this.moveTo(this.x + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance),
-              this.y + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance));
+            if (other_chickens_moved_from > 0) {
+              other_chicken_face_x /= other_chickens_moved_from;
+              other_chicken_face_y /= other_chickens_moved_from;
+              this.refreshStatusEffect(StatusEffectCode.RUNNING, 0.8 * Constants.ai_chickenTimer1);
+              this.moveTo(this.x + other_chicken_face_x * Constants.ai_chickenMoveDistance +
+                randomFloat(-1, 1), other_chicken_face_y * Constants.ai_chickenMoveDistance +
+                randomFloat(-1, 1));
+            }
+            else {
+              this.moveTo(this.x + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance),
+                this.y + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance));
+            }
           }
           if (this.timer_ai_action2 < 0) {
             this.timer_ai_action2 = int(Constants.ai_chickenTimer2 + random(Constants.ai_chickenTimer2));
-            this.setUnitID(1002);
+            if (randomChance(0.5)) {
+              this.setUnitID(1002);
+            }
+            else {
+              this.setUnitID(1005);
+            }
             this.size = Constants.unit_defaultSize;
           }
         }
@@ -3769,9 +3900,41 @@ class Unit extends MapObject {
           this.timer_ai_action1 -= timeElapsed;
           this.timer_ai_action2 -= timeElapsed;
           if (this.timer_ai_action1 < 0) {
-            this.timer_ai_action1 = int(Constants.ai_chickenTimer1 + random(Constants.ai_chickenTimer1));
-            this.moveTo(this.x + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance),
-              this.y + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance));
+            boolean random_walk = true;
+            for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
+              if (entry.getKey() == this.map_key) {
+                continue;
+              }
+              Unit u = entry.getValue();
+              if (u.ID != 1002 && u.ID != 1003) {
+                continue;
+              }
+              if (!u.ai_toggle) {
+                continue;
+              }
+              if (u.timer_ai_action3 <= 0) {
+                continue;
+              }
+              if (this.distance(u) > this.sight()) {
+                continue;
+              }
+              if (u.last_damage_from == null || u.last_damage_from.remove) {
+                continue;
+              }
+              if (this.distance(u.last_damage_from) > this.sight()) {
+                continue;
+              }
+              try {
+                this.target(u.last_damage_from, ((Unit)u.last_damage_from).map_key);
+                random_walk = false;
+              } catch(Exception e) {}
+              break;
+            }
+            if (random_walk) {
+              this.timer_ai_action1 = int(Constants.ai_chickenTimer1 + random(Constants.ai_chickenTimer1));
+              this.moveTo(this.x + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance),
+                this.y + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance));
+            }
           }
           if (this.timer_ai_action2 < 0) {
             this.timer_ai_action2 = int(0.4 * Constants.ai_chickenTimer2 + 0.4 * random(Constants.ai_chickenTimer2));
