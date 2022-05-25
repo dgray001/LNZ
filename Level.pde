@@ -2874,6 +2874,12 @@ class Level {
       }
     }
   }
+
+
+  class QuestForm extends LevelForm {
+    QuestForm() {
+    }
+  }
 }
 
 

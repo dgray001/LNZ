@@ -328,7 +328,7 @@ class Inventory {
   }
 
   void mouseMove(float mX, float mY) {
-    if (mX + 3 < 0 || mY + 3 < 0 || mX - 3 > this.display_width || mY - 3 > this.display_height) {
+    if (mX + 5 < 0 || mY + 5 < 0 || mX - 5 > this.display_width || mY - 5 > this.display_height) {
       this.hovered = false;
     }
     else {

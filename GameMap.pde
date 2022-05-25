@@ -3291,6 +3291,20 @@ class GameMapEditor extends GameMap {
             this.dropping_object = new Unit(this.dropping_object.ID);
           }
           else if (Item.class.isInstance(this.dropping_object)) {
+            if (!global.holding_ctrl && Feature.class.isInstance(this.hovered_object)) {
+              Feature hovered_object_feature = (Feature)this.hovered_object;
+              if (hovered_object_feature.inventory != null) {
+                hovered_object_feature.inventory.stash(new Item(this.dropping_object.ID));
+                break;
+              }
+            }
+            else if (!global.holding_ctrl && Unit.class.isInstance(this.hovered_object)) {
+              Unit hovered_object_unit = (Unit)this.hovered_object;
+              if (hovered_object_unit.canPickup()) {
+                hovered_object_unit.pickup(new Item(this.dropping_object.ID));
+                break;
+              }
+            }
             this.dropping_object.setLocation(this.mX, this.mY);
             this.addItem((Item)this.dropping_object, false);
             this.dropping_object = new Item(this.dropping_object.ID);
