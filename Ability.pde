@@ -485,10 +485,10 @@ class Ability {
   }
 
 
-  void activate(Unit u, int source_key, GameMap map) {
-    this.activate(u, source_key, map, null, -1);
+  void activate(Unit u, GameMap map) {
+    this.activate(u, map, null);
   }
-  void activate(Unit u, int source_key, GameMap map, Unit target_unit, int target_key) {
+  void activate(Unit u, GameMap map, Unit target_unit) {
     int ability_index = u.curr_action_id;
     u.curr_action_id = 0;
     switch(this.ID) {
@@ -503,7 +503,12 @@ class Ability {
     }
     if (this.castsOnTarget()) {
       this.target_unit = target_unit;
-      this.target_key = target_key;
+      if (target_unit != null) {
+        this.target_key = target_unit.map_key;
+      }
+      else {
+        this.target_key = -1;
+      }
       if (this.target_unit == null || this.target_unit.remove) {
         return;
       }
@@ -516,7 +521,7 @@ class Ability {
     VisualEffect ve;
     switch(this.ID) {
       case 102: // Mighty Pen
-        map.addProjectile(new Projectile(3001, source_key, u));
+        map.addProjectile(new Projectile(3001, u));
         global.sounds.trigger_units("items/throw", u.x - map.viewX, u.y - map.viewY);
         break;
       case 103: // Nelson Glare
@@ -538,7 +543,7 @@ class Ability {
         global.sounds.trigger_units("units/ability/105", u.x - map.viewX, u.y - map.viewY);
         break;
       case 107: // Mighty Pen II
-        map.addProjectile(new Projectile(3002, source_key, u));
+        map.addProjectile(new Projectile(3002, u));
         global.sounds.trigger_units("items/throw", u.x - map.viewX, u.y - map.viewY);
         break;
       case 108: // Nelson Glare II

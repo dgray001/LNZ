@@ -752,10 +752,10 @@ abstract class InterfaceLNZ {
 
     void buttonPress(int index) {
       switch(index) {
-        case 9: // apply
+        case 11: // apply
           this.apply();
           break;
-        case 13: // defaults
+        case 15: // defaults
           global.profile.options.defaults();
           this.setFormFieldValues();
           break;

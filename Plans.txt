@@ -1,13 +1,10 @@
 v0.7.2: PlayingInterface
- v: Fix OptionsForm buttons and set volumes to a proper default level (which initialinterface will start with)
- w: PlayingTrack option in OptionsForm (effects to play / silence sounds, so 10 effects total)
- x: Save music track/location in level (although can overwrite with OptionsForm)
- y: Can drop items onto map from inventory view, garbage can inventories (4x1)
+ z: Can drop items onto map from inventory view, garbage can inventories (4x1)
 
  - Chuck quizmo covers question, put him above it with you on left
  - Rankin sounds in tutorial
  - Can directly place items in feature inventory in map editor
- - Can sneak if holding shift (status effect)
+ - Add curr_mana to HeroSelector
 
 
 v0.7.3: Francis Hall maps
@@ -42,8 +39,7 @@ v0.7.8: Lev3 triggers
 
 
 Parking Lot:
- - Now that we have Unit::map_key remove all the useless int myKey arguments in Unit (and maybe elsewehere?)
- - Make Features an arraylist since they can be removed and add Feature::map_key
+ - Make Features a hashmap since they can be removed and add Feature::map_key
  - Same with VisualEffects and Projectiles
  - Status effect descriptions use Constants
  - StoveInventory door image / burner images / knob functionality
@@ -60,6 +56,9 @@ Parking Lot:
  - Rooster will fight back if you attack any chicken/chick/rooster near it
  - Chickens generally stay together if in groups
  - Overhaul of DropDownList
+ - "CastWhenInRange" unit state
+ - PlayingTrack option in OptionsForm (effects to play / silence sounds, so 10 effects total)
+ - Save music track/location in level (although can overwrite with OptionsForm)
 
 
 v0.8: HomeBase and Campaign II

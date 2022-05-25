@@ -2266,7 +2266,7 @@ class Hero extends Unit {
       imageMode(CORNER);
       image(Hero.this.getImage(), 1, this.image_yi, this.image_size, this.image_size);
       // level tokens
-      this.level_tokens.message = "Level Tokens: " + Hero.this.level_tokens;
+      this.level_tokens.message = "Tokens: " + Hero.this.level_tokens;
       this.level_tokens.setXLocation(half_panel_width + 2, panel_width - 2);
       this.level_tokens.update(millis);
       // level
@@ -2654,11 +2654,19 @@ class Hero extends Unit {
         this.color_title = elementalColorText(e);
 
         this.addField(new SpacerFormField(20));
-        this.addField(new TextBoxFormField(HeroTree.this.upgradeDescription(button.code), 200));
+        TextBoxFormField textbox = new TextBoxFormField(HeroTree.this.upgradeDescription(button.code), 200);
+        textbox.textbox.scrollbar.setButtonColors(elementalColorLocked(e), elementalColor(e),
+          elementalColorLight(e), elementalColorDark(e), elementalColorText(e));
+        textbox.textbox.useElapsedTime();
+        this.addField(textbox);
         this.addField(new SpacerFormField(20));
         boolean has_enough = HeroTree.this.hero().level_tokens >= HeroTree.this.upgradeCost(button.code);
         SubmitCancelFormField buttons = new SubmitCancelFormField(HeroTree.this.hero().
           level_tokens + "/" + HeroTree.this.upgradeCost(button.code), "Cancel");
+        buttons.button1.setColors(elementalColorLocked(e), elementalColor(e),
+          elementalColorLight(e), elementalColorDark(e), elementalColorText(e));
+        buttons.button2.setColors(elementalColorLocked(e), elementalColor(e),
+          elementalColorLight(e), elementalColorDark(e), elementalColorText(e));
         if (has_enough && button.visible && !button.unlocked) {
         }
         else {
@@ -3757,7 +3765,7 @@ class Hero extends Unit {
         this.upgradeAbility(4);
         break;
       case HEALTHI:
-        this.base_health += Constants.upgrade_healthI;
+        this.addBaseHealth(Constants.upgrade_healthI);
         break;
       case ATTACKI:
         this.base_attack += Constants.upgrade_attackI;
@@ -3790,7 +3798,7 @@ class Hero extends Unit {
         this.base_penetration += Constants.upgrade_penetrationI;
         break;
       case HEALTHII:
-        this.base_health += Constants.upgrade_healthII;
+        this.addBaseHealth(Constants.upgrade_healthII);
         break;
       case ATTACKII:
         this.base_attack += Constants.upgrade_attackII;
@@ -3823,7 +3831,7 @@ class Hero extends Unit {
         this.base_penetration += Constants.upgrade_penetrationII;
         break;
       case HEALTHIII:
-        this.base_health += Constants.upgrade_healthIII;
+        this.addBaseHealth(Constants.upgrade_healthIII);
         break;
       case OFFHAND:
         this.gearSlots("Offhand");

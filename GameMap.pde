@@ -2217,7 +2217,12 @@ class GameMap {
       return;
     }
     Hero player = (Hero)this.units.get(0);
-    //player.explore_terrain(this.squares);
+    if (global.holding_shift) {
+      player.addStatusEffect(StatusEffectCode.SNEAKING);
+    }
+    else {
+      player.removeStatusEffect(StatusEffectCode.SNEAKING);
+    }
   }
 
 

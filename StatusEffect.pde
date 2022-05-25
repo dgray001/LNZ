@@ -4,7 +4,7 @@ enum StatusEffectCode {
   BLEEDING("Bleeding"), HEMORRHAGING("Hemorrhaging"), WILTED("Wilted"), WITHERED("Withered"),
   VISIBLE("Visible"), SUPPRESSED("Suppressed"), UNTARGETABLE("Untargetable"),
   STUNNED("Stunned"), INVISIBLE("Invisible"), UNCOLLIDABLE("Uncollidable"),
-  RUNNING("Running"), FERTILIZED("Fertilized"),
+  RUNNING("Running"), FERTILIZED("Fertilized"), SNEAKING("Sneaking"),
 
   DRENCHED("Drenched"), DROWNING("Drowning"), BURNT("Burning"), CHARRED("Charred"),
   CHILLED("Chilled"), FROZEN("Frozen"), SICK("Sick"), DISEASED("Diseased"), ROTTING("Rotting"),
@@ -57,6 +57,7 @@ enum StatusEffectCode {
       case UNCOLLIDABLE:
       case RUNNING:
       case FERTILIZED:
+      case SNEAKING:
       case SENSELESS_GRIT:
       case SENSELESS_GRITII:
       case RAGE_OF_THE_BEN:
@@ -169,6 +170,9 @@ enum StatusEffectCode {
         break;
       case FERTILIZED:
         image_path += "fertilized.png";
+        break;
+      case SNEAKING:
+        image_path += "sneaking.png";
         break;
       case DRENCHED:
         image_path += "drenched.png";

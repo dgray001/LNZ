@@ -24,12 +24,12 @@ class Projectile extends MapObject {
     super(ID);
     this.setID();
   }
-  Projectile(int ID, int source_key, Unit u) {
-    this(ID, source_key, u, 0);
+  Projectile(int ID, Unit u) {
+    this(ID, u, 0);
   }
-  Projectile(int ID, int source_key, Unit u, float inaccuracy) {
+  Projectile(int ID, Unit u, float inaccuracy) {
     super(ID);
-    this.source_key = source_key;
+    this.source_key = u.map_key;
     this.setID();
     if (u != null) {
       this.x = u.frontX();

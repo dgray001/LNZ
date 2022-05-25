@@ -774,6 +774,13 @@ class Unit extends MapObject {
     return health;
   }
 
+  void addBaseHealth(float amount) {
+    this.base_health += amount;
+    if (amount > 0) {
+      this.curr_health += amount;
+    }
+  }
+
   // To make abilities array in Unit instead of Hero
   float currMana() {
     return 0;
@@ -1550,6 +1557,9 @@ class Unit extends MapObject {
   boolean fertilized() {
     return this.hasStatusEffect(StatusEffectCode.FERTILIZED);
   }
+  boolean sneaking() {
+    return this.hasStatusEffect(StatusEffectCode.SNEAKING);
+  }
   boolean drenched() {
     return this.hasStatusEffect(StatusEffectCode.DRENCHED);
   }
@@ -1672,7 +1682,12 @@ class Unit extends MapObject {
             break;
           default:
             this.face(this.curr_action_x, this.curr_action_y); // pathfinding
-            this.move(timeElapsed, map, MoveModifier.NONE);
+            if (this.sneaking()) {
+              this.move(timeElapsed, map, MoveModifier.SNEAK);
+            }
+            else {
+              this.move(timeElapsed, map, MoveModifier.NONE);
+            }
             if (this.last_move_collision) {
               if (collision_last_move) {
                 this.timer_actionTime -= timeElapsed;
@@ -1726,7 +1741,12 @@ class Unit extends MapObject {
         }
         this.face(f);
         if (this.distance(f) > f.interactionDistance()) {
-          this.move(timeElapsed, map, MoveModifier.NONE);
+          if (this.sneaking()) {
+            this.move(timeElapsed, map, MoveModifier.SNEAK);
+          }
+          else {
+            this.move(timeElapsed, map, MoveModifier.NONE);
+          }
           this.timer_walk -= timeElapsed;
           if (this.timer_walk < 0) {
             this.timer_walk += Constants.unit_timer_walk;
@@ -1784,7 +1804,12 @@ class Unit extends MapObject {
         this.face(u);
         float distance = this.distance(u);
         if (distance > this.attackRange()) {
-          this.move(timeElapsed, map, MoveModifier.NONE);
+          if (this.sneaking()) {
+            this.move(timeElapsed, map, MoveModifier.SNEAK);
+          }
+          else {
+            this.move(timeElapsed, map, MoveModifier.NONE);
+          }
           this.timer_walk -= timeElapsed;
           if (this.timer_walk < 0) {
             this.timer_walk += Constants.unit_timer_walk;
@@ -1831,7 +1856,12 @@ class Unit extends MapObject {
         }
         this.face(i);
         if (this.distance(i) > i.interactionDistance()) {
-          this.move(timeElapsed, map, MoveModifier.NONE);
+          if (this.sneaking()) {
+            this.move(timeElapsed, map, MoveModifier.SNEAK);
+          }
+          else {
+            this.move(timeElapsed, map, MoveModifier.NONE);
+          }
           this.timer_walk -= timeElapsed;
           if (this.timer_walk < 0) {
             this.timer_walk += Constants.unit_timer_walk;
@@ -1940,7 +1970,12 @@ class Unit extends MapObject {
           this.curr_action = UnitAction.MOVING;
         }
         this.face(this.curr_action_x, this.curr_action_y); // pathfinding
-        this.move(timeElapsed, map, MoveModifier.NONE);
+        if (this.sneaking()) {
+          this.move(timeElapsed, map, MoveModifier.SNEAK);
+        }
+        else {
+          this.move(timeElapsed, map, MoveModifier.NONE);
+        }
         if (this.last_move_collision) {
           this.curr_action = UnitAction.USING_ITEM;
         }
@@ -2385,7 +2420,7 @@ class Unit extends MapObject {
         if (a.turnsCaster()) {
           this.face(this.object_targeting);
         }
-        a.activate(this, this.map_key, map, (Unit)this.object_targeting, this.object_targeting_key);
+        a.activate(this, map, (Unit)this.object_targeting);
       }
     }
     else {
@@ -2397,7 +2432,7 @@ class Unit extends MapObject {
       if (a.turnsCaster()) {
         this.face(map.mX, map.mY);
       }
-      a.activate(this, this.map_key, map);
+      a.activate(this, map);
     }
   }
 
@@ -2407,7 +2442,7 @@ class Unit extends MapObject {
     if (this.weapon() == null || !this.weapon().shootable()) {
       return;
     }
-    map.addProjectile(new Projectile(this.weapon().ID + 1000, this.map_key, this, this.weapon().shootInaccuracy()));
+    map.addProjectile(new Projectile(this.weapon().ID + 1000, this, this.weapon().shootInaccuracy()));
     switch(this.weapon().ID) {
       case 2118: // Chicken Egg
         global.sounds.trigger_units("items/throw", this.x - map.viewX, this.y - map.viewY);
@@ -2457,8 +2492,8 @@ class Unit extends MapObject {
         global.sounds.trigger_units("items/ballistic_knife", this.x - map.viewX, this.y - map.viewY);
         break;
       case 2352: // WN
-        Projectile burst1 = new Projectile(this.weapon().ID + 1000, this.map_key, this, this.weapon().shootInaccuracy());
-        Projectile burst2 = new Projectile(this.weapon().ID + 1000, this.map_key, this, this.weapon().shootInaccuracy());
+        Projectile burst1 = new Projectile(this.weapon().ID + 1000, this, this.weapon().shootInaccuracy());
+        Projectile burst2 = new Projectile(this.weapon().ID + 1000, this, this.weapon().shootInaccuracy());
         burst1.x -= 0.05 * this.facingX;
         burst1.y -= 0.05 * this.facingY;
         burst2.x -= 0.1 * this.facingX;
