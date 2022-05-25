@@ -1,10 +1,5 @@
 v0.7.2: PlayingInterface
- z: Can drop items onto map from inventory view, garbage can inventories (4x1)
-
- - Chuck quizmo covers question, put him above it with you on left
- - Rankin sounds in tutorial
  - Can directly place items in feature inventory in map editor
- - Add curr_mana to HeroSelector
 
 
 v0.7.3: Francis Hall maps
@@ -39,11 +34,12 @@ v0.7.8: Lev3 triggers
 
 
 Parking Lot:
+ - EASY COMPANY sound in tutorial
+ - Mike Fischer steals Ben's eyes in tutorial when he crossing main area of 2nd floor
  - Make Features a hashmap since they can be removed and add Feature::map_key
  - Same with VisualEffects and Projectiles
  - Status effect descriptions use Constants
  - StoveInventory door image / burner images / knob functionality
- - TrashInventories only display what's on top, items 'fall' down trash can
  - Double click quests to open QuestForm
  - All Ben unit sounds
  - All Dan unit sounds
@@ -59,6 +55,7 @@ Parking Lot:
  - "CastWhenInRange" unit state
  - PlayingTrack option in OptionsForm (effects to play / silence sounds, so 10 effects total)
  - Save music track/location in level (although can overwrite with OptionsForm)
+ - Chuck quizmo covers question, put him above it with you on left
 
 
 v0.8: HomeBase and Campaign II

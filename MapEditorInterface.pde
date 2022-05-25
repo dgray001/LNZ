@@ -873,6 +873,7 @@ class MapEditorInterface extends InterfaceLNZ {
         this.addField(new IntegerFormField("Hero ID: ", 1101, 1102));
         this.addField(new IntegerFormField("Hero Level: ", 0, 100));
         this.addField(new IntegerFormField("Level Tokens: ", 0, 5050));
+        this.addField(new FloatFormField("Curr Mana: ", 0, 100));
         this.addField(new SpacerFormField(10));
         this.addField(submit);
     }
@@ -889,6 +890,7 @@ class MapEditorInterface extends InterfaceLNZ {
       Hero h = new Hero(toInt(this.fields.get(1).getValue()));
       h.level = toInt(this.fields.get(2).getValue());
       h.level_tokens = toInt(this.fields.get(3).getValue());
+      h.curr_mana = toFloat(this.fields.get(4).getValue());
       this.level.setPlayer(h);
       this.added_hero = true;
       this.canceled = true;
@@ -922,6 +924,7 @@ class MapEditorInterface extends InterfaceLNZ {
         this.addField(new IntegerFormField("Hero ID: ", 1101, 1102));
         this.addField(new IntegerFormField("Hero Level: ", 0, 100));
         this.addField(new IntegerFormField("Level Tokens: ", 0, 5050));
+        this.addField(new FloatFormField("Curr Mana: ", 0, 100));
         this.addField(new FloatFormField("Location (x): ", 0, Float.MAX_VALUE - 1));
         this.addField(new FloatFormField("Location (y): ", 0, Float.MAX_VALUE - 1));
         this.addField(new SpacerFormField(10));
@@ -940,7 +943,8 @@ class MapEditorInterface extends InterfaceLNZ {
       Hero h = new Hero(toInt(this.fields.get(1).getValue()));
       h.level = toInt(this.fields.get(2).getValue());
       h.level_tokens = toInt(this.fields.get(3).getValue());
-      h.setLocation(toFloat(this.fields.get(4).getValue()), toFloat(this.fields.get(5).getValue()));
+      h.curr_mana = toFloat(this.fields.get(4).getValue());
+      h.setLocation(toFloat(this.fields.get(5).getValue()), toFloat(this.fields.get(6).getValue()));
       this.level.addPlayer(h);
       this.added_hero = true;
       this.canceled = true;

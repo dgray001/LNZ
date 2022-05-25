@@ -610,6 +610,12 @@ class Hero extends Unit {
 
     @Override
     void mouseMove(float mX, float mY) {
+      if (mX + 3 < 0 || mY + 3 < 0 || mX - 3 > this.display_width || mY - 3 > this.display_height) {
+        this.hovered = false;
+      }
+      else {
+        this.hovered = true;
+      }
       for (int x = 0; x < this.max_cols; x++) {
         for (int y = 0; y < this.max_rows; y++) {
           int i = y * this.max_cols + x;
@@ -650,6 +656,7 @@ class Hero extends Unit {
     protected float last_mX = 0;
     protected float last_mY = 0;
     protected boolean viewing = false;
+    protected boolean any_hovered = false;
 
     HeroInventory() {
       super(Constants.hero_inventoryMaxRows, Constants.hero_inventoryMaxCols, false);
@@ -662,7 +669,7 @@ class Hero extends Unit {
       if (this.item_holding == null) {
         return;
       }
-      if (this.item_origin == null) {
+      if (this.item_origin == null || !this.any_hovered) {
         this.item_dropping = this.item_holding;
       }
       else {
@@ -845,6 +852,7 @@ class Hero extends Unit {
 
     @Override
     void mouseMove(float mX, float mY) {
+      this.any_hovered = false;
       // item holding
       if (this.item_holding != null) {
         this.item_holding.x += mX - this.last_mX;
@@ -854,15 +862,24 @@ class Hero extends Unit {
       this.last_mY = mY;
       // main inventory
       super.mouseMove(mX, mY);
+      if (this.hovered) {
+        this.any_hovered = true;
+      }
       // gear
       float gearInventoryTranslateX = - this.gear_inventory.display_width - 2;
       float gearInventoryTranslateY = 0.5 * (this.display_height - this.gear_inventory.display_height);
       this.gear_inventory.mouseMove(mX - gearInventoryTranslateX, mY - gearInventoryTranslateY);
+      if (this.gear_inventory.hovered) {
+        this.any_hovered = true;
+      }
       // feature
       if (this.feature_inventory != null) {
         float featureInventoryTranslateX = 0.5 * (this.display_width - this.feature_inventory.display_width);
         float featureInventoryTranslateY = - this.feature_inventory.display_height - 2;
         this.feature_inventory.mouseMove(mX - featureInventoryTranslateX, mY - featureInventoryTranslateY);
+        if (this.feature_inventory.hovered) {
+          this.any_hovered = true;
+        }
       }
     }
 

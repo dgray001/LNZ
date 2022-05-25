@@ -122,6 +122,8 @@ class Inventory {
   protected float display_width = 0;
   protected float display_height = 0;
 
+  protected boolean hovered = false;
+
   Inventory(int rows, int cols) {
     this(rows, cols, true);
   }
@@ -326,6 +328,12 @@ class Inventory {
   }
 
   void mouseMove(float mX, float mY) {
+    if (mX + 3 < 0 || mY + 3 < 0 || mX - 3 > this.display_width || mY - 3 > this.display_height) {
+      this.hovered = false;
+    }
+    else {
+      this.hovered = true;
+    }
     for (int x = 0; x < this.max_cols; x++) {
       for (int y = 0; y < this.max_rows; y++) {
         int i = y * this.max_cols + x;
@@ -1282,15 +1290,60 @@ class DryerInventory extends Inventory {
 
 
 class GarbageInventory extends Inventory {
+  protected int drop_time = 100;
   GarbageInventory() {
-    super(3, 1, true);
+    super(4, 1, true);
+  }
+
+  @Override
+  void update(int timeElapsed) {
+    super.update(timeElapsed);
+    this.drop_time -= timeElapsed;
+    if (this.drop_time < 0) {
+      this.drop_time += 100;
+      this.makeItemsFall();
+    }
+  }
+
+  @Override
+  void mouseMove(float mX, float mY) {
+    super.mouseMove(mX, mY);
+    this.dehoverBottomItems();
+  }
+
+  @Override
+  void mouseRelease(float mX, float mY) {
+    super.mouseRelease(mX, mY);
+    this.dehoverBottomItems();
+  }
+
+  void makeItemsFall() {
+    for (int i = 0; i < this.slots.size() - 1; i++) {
+      if (this.slots.get(i).item != null && this.slots.get(i+1).item == null) {
+        this.slots.get(i+1).item = this.slots.get(i).item;
+        this.slots.get(i).item = null;
+        i++;
+      }
+    }
+  }
+
+  void dehoverBottomItems() {
+    boolean found_item = false;
+    for (int i = 0; i < this.slots.size(); i++) {
+      if (found_item) {
+        this.slots.get(i).button.hovered = false;
+      }
+      else if (this.slots.get(i).item != null) {
+        found_item = true;
+      }
+    }
   }
 }
 
 
-class RecycleInventory extends Inventory {
+class RecycleInventory extends GarbageInventory {
   RecycleInventory() {
-    super(3, 1, true);
+    super();
   }
 }
 
