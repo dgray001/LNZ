@@ -546,6 +546,8 @@ class Level {
           this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         break;
       case 101: // wooden table
+      case 106: // small wooden table
+      case 107:
       case 111: // wooden chair
       case 112:
       case 113:
@@ -592,6 +594,8 @@ class Level {
         break;
       case 102: // wooden desk
       case 103:
+      case 104:
+      case 105:
         if (use_item && h.holding(2977, 2979, 2980, 2981, 2983)) {
           switch(h.weapon().ID) {
             case 2977: // ax

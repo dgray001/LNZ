@@ -164,6 +164,28 @@ class Feature extends MapObject {
         this.inventory = new DeskInventory();
         this.number = Constants.feature_woodenDeskHealth;
         break;
+      case 104:
+        this.setStrings("Wooden Desk", "Furniture", "");
+        this.setSize(2, 1, 4);
+        this.inventory = new DeskInventory();
+        this.number = Constants.feature_woodenDeskHealth;
+        break;
+      case 105:
+        this.setStrings("Wooden Desk", "Furniture", "");
+        this.setSize(1, 2, 4);
+        this.inventory = new DeskInventory();
+        this.number = Constants.feature_woodenDeskHealth;
+        break;
+      case 106:
+        this.setStrings("Wooden Table", "Furniture", "");
+        this.setSize(2, 1, 4);
+        this.number = Constants.feature_woodenTableHealth;
+        break;
+      case 107:
+        this.setStrings("Wooden Table", "Furniture", "");
+        this.setSize(1, 2, 4);
+        this.number = Constants.feature_woodenTableHealth;
+        break;
       case 111:
       case 112:
       case 113:
@@ -663,6 +685,18 @@ class Feature extends MapObject {
       case 103:
         path += "desk_left.png";
         break;
+      case 104:
+        path += "desk_down.png";
+        break;
+      case 105:
+        path += "desk_right.png";
+        break;
+      case 106:
+        path += "table_small_up.png";
+        break;
+      case 107:
+        path += "table_small_left.png";
+        break;
       case 111:
         path += "chair_up.png";
         break;
@@ -1092,6 +1126,10 @@ class Feature extends MapObject {
       case 101: // wooden table
       case 102: // desk
       case 103:
+      case 104:
+      case 105:
+      case 106: // small wooden table
+      case 107:
       case 111: // wooden chair
       case 112:
       case 113:
@@ -1345,6 +1383,10 @@ class Feature extends MapObject {
       case 101: // wooden table
       case 102: // desk
       case 103:
+      case 104:
+      case 105:
+      case 106: // small wooden table
+      case 107:
       case 111: // wooden chair
       case 112:
       case 113:
@@ -1471,6 +1513,10 @@ class Feature extends MapObject {
       case 101: // wooden table
       case 102: // wooden desk
       case 103:
+      case 104:
+      case 105:
+      case 106: // small wooden table
+      case 107:
       case 111: // wooden chair
       case 112:
       case 113:

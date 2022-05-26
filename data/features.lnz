@@ -17,6 +17,10 @@ Ender Chest: 22
 Wooden Table: 101
 Desk, up: 102
 Desk, left: 103
+Desk, down: 104
+Desk, right: 105
+Wooden Table, small, up: 106
+Wooden Table, small, left: 107
 Wooden Chair, up: 111
 Wooden Chair, down: 112
 Wooden Chair, left: 113

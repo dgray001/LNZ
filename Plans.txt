@@ -1,5 +1,30 @@
 v0.7.3: Francis Hall
  - put mousemove calculation in thread if it will be so expensive (it seems more expensive than moving)
+ Add features:
+   - Steel doors (cannot break)
+   - Fix chair images
+   - Microwave
+   - TV
+   - Countertop
+   - Mirror
+   - Different colors of wooden table (for ping pong table, etc.)
+   - Signs have 0 height difference
+ Add items:
+   - More food possibilities: fresh fruit, hot pocket, bread
+   - More misc tools: different wrenches, metal pipe, scissors
+   - More melee weapons: wooden handle, wooden sword, wooden spear, wooden knife, compound bow, crossbow
+   - Misc materials: string, wooden log, wooden plank, wooden piece, nail, screw
+   - Offhand items: quiver which reloads bow much faster and makes it shoot faster
+   - Other items: candlestick, broken candlestick, woodglue, candle, lighter, flint and steel, signed covenant, lords day paper
+   - Make lit cigar have little flames and also give "relaxed" status which slows, reduces stats, and increases healing of unit
+   - Make items not disappear when added by gamemapeditor
+   - Make item disappear / timer be correct in gamemapfilereader (uses addItem which sets disappear = true)
+ Add units:
+   - Various named zombies for francis hall
+   - Duggy for sitting and playing video games in room (zombie duggy just playing video games)
+   - Mike schmiesing, molly schmiesing, schmielet (schmielet is hero that you can unlock in francis hall level)
+   - First BOIZ units who have captured molly schmiesing
+   - Add param for passive healing (default 0)
 
 v0.7.4: Francis Hall triggers
 v0.7.5: Lev2 maps
