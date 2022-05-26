@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\nAlpha v0.7.3: 20220524" +
+  "\nAlpha v0.7.3a: 20220525" +
   "\nLines: 40732 (v0.7.3)" +
   "\nImages: 1104 (v0.7.3)" +
   "\nSounds: 310 (v0.7.3)" +
@@ -155,7 +155,7 @@ static class Constants {
 
   // GameMap
   static final float map_borderSize = 30;
-  static final int map_terrainResolution = 60;
+  static final int map_terrainResolution = 90;
   static final int map_fogResolution = 20;
   static final float map_defaultZoom = 100;
   static final float map_minZoom = 60;

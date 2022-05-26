@@ -73,10 +73,14 @@ class DImg {
       global.log("DImg: addImageGrid coordinate out of range");
       return;
     }
-    this.copyImage(newImg,
-      round(this.img.width * (float(x) / this.gridX)),
-      round(this.img.height * (float(y) / this.gridY)),
-      w * (this.img.width / this.gridX), h * (this.img.height / this.gridY));
+    this.img.blend(newImg, 0, 0, newImg.width, newImg.height,
+      int(this.img.width * (float(x) / this.gridX)),
+      int(this.img.height * (float(y) / this.gridY)),
+      int(w * (float(this.img.width) / this.gridX)), int(h * (float(this.img.height) / this.gridY)), BLEND);
+    /*this.copyImage(newImg,
+      this.img.width * (float(x) / this.gridX),
+      this.img.height * (float(y) / this.gridY),
+      w * (float(this.img.width) / this.gridX), h * (float(this.img.height) / this.gridY));*/
   }
 
   // make grid a specific color
@@ -111,11 +115,11 @@ class DImg {
     float scaling_width = newImg.width / w;
     float scaling_height = newImg.height / h;
     for (int i = 0; i < h; i++) {
-      int imgY = int(round(scaling_height * i + 0.5));
+      int imgY = int(floor(scaling_height * i + 0.5));
       for (int j = 0; j < w; j++) {
-        int imgX = int(round(scaling_width * j + 0.5));
+        int imgX = int(floor(scaling_width * j + 0.5));
 
-        int index = int(round((i + y) * this.img.width + (j + x)));
+        int index = int(floor((i + y) * this.img.width + (j + x)));
         int img_index = imgY * newImg.width + imgX;
         try {
           float r_source = newImg.pixels[img_index] >> 16 & 0xFF;
@@ -341,8 +345,7 @@ int ccolor(float r, float g, float b, float a) {
 }
 int ccolor(int r, int g, int b, int a) {
   int max = 256;
-  return max*max*max*a + max*max*r + max*g + b;
-  //return ((255 - a) << 32) | (r << 16) | (g << 8) | b;
+  return (a << 24) | (r << 16) | (g << 8) | b;
 }
 
 
@@ -356,7 +359,7 @@ PImage resizeImage(PImage img, int w, int h) {
   PImage return_image = createImage(w, h, ARGB);
   return_image.loadPixels();
   for (int i = 0; i < h; i++) {
-    int imgY = int(round(scaling_height * i + 0.5));
+    int imgY = int(floor(scaling_height * i + 0.5));
     for (int j = 0; j < w; j++) {
       int imgX = int(floor(scaling_width * j + 0.5)); // must floor to avoid artifacts
       int index = i * w + j;
