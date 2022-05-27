@@ -771,6 +771,42 @@ class Hero extends Unit {
       return null;
     }
 
+    void setItem(Item i, InventoryKey inventory_key) {
+      if (i == null) {
+        return;
+      }
+      if (inventory_key == null) {
+        this.item_dropping = i;
+        return;
+      }
+      switch(inventory_key.location) {
+        case INVENTORY:
+          try {
+            this.slots.get(inventory_key.index).item = i;
+            return;
+          } catch(Exception e) {}
+          break;
+        case GEAR:
+          try {
+            this.gear_inventory.setItem(inventory_key.index, i);
+            return;
+          } catch(Exception e) {}
+          break;
+        case FEATURE:
+          try {
+            this.feature_inventory.slots.get(inventory_key.index).item = i;
+            return;
+          } catch(Exception e) {}
+          break;
+        case CRAFTING:
+          try {
+            //return this.cafting_inventory.slots.get(inventory_key.index).item;
+          } catch(Exception e) {}
+          break;
+      }
+      this.item_dropping = i;
+    }
+
 
     void featureInventory(Inventory feature_inventory) {
       this.feature_inventory = feature_inventory;
@@ -4061,7 +4097,16 @@ class Hero extends Unit {
       case 2117: // cooked chicken
       case 2118: // chicken egg
       case 2119: // rotten flesh
+      case 2120: // apple
+      case 2121: // banana
+      case 2122: // pear
+      case 2123: // bread
+      case 2125: // hot pocket
+      case 2142: // golden apple
         global.sounds.trigger_player("player/eat");
+        break;
+      case 2124: // hot pocket package
+        global.sounds.trigger_player("player/open_package");
         break;
       case 2131: // water cup
       case 2132: // coke
@@ -4185,6 +4230,19 @@ class Hero extends Unit {
           break;
       }
       i.consumed();
+      return;
+    }
+    if (i.openable()) {
+      switch(i.ID) {
+        case 2124: // hot pocket package
+          i = new Item(2125);
+          i.stack = 5;
+          this.inventory.setItem(i, location);
+          break;
+        default:
+          global.errorMessage("ERROR: Item ID " + i.ID + " not a recognized package.");
+          break;
+      }
       return;
     }
     if (i.reloadable()) {

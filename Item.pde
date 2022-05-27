@@ -270,6 +270,14 @@ class Item extends MapObject {
         this.setStrings("Bread", "Food", "");
         this.hunger = 25;
         break;
+      case 2124:
+        this.setStrings("Hot Pocket Box", "Package", "");
+        break;
+      case 2125:
+        this.setStrings("Hot Pocket", "Food", "");
+        this.hunger = 25;
+        this.thirst = 5;
+        break;
       case 2131:
         this.setStrings("Water Cup", "Drink", "");
         this.thirst = 12;
@@ -1517,6 +1525,12 @@ class Item extends MapObject {
       case 2123:
         path += "bread.png";
         break;
+      case 2124:
+        path += "hotpocket_box.png";
+        break;
+      case 2125:
+        path += "hotpocket.png";
+        break;
       case 2131:
         path += "water_cup.png";
         break;
@@ -2015,7 +2029,7 @@ class Item extends MapObject {
         path += "eraser.png";
         break;
       case 2918:
-        path += "eraser.png";
+        path += "scissors.png";
         break;
       case 2921:
         path += "backpack.png";
@@ -2270,6 +2284,11 @@ class Item extends MapObject {
       case 2117: // cooked chicken
       case 2118: // chicken egg
       case 2119: // rotten flesh
+      case 2120: // apple
+      case 2121: // banana
+      case 2122: // pear
+      case 2123: // bread
+      case 2125: // hot pocket
         return 8;
       case 2131: // water cup
       case 2132: // coke
@@ -2384,7 +2403,11 @@ class Item extends MapObject {
   }
 
   boolean usable() {
-    return this.consumable() || this.reloadable() || this.money() || this.utility();
+    return this.consumable() || this.reloadable() || this.money() || this.utility() || this.openable();
+  }
+
+  boolean openable() {
+    return this.type.equals("Package");
   }
 
   boolean utility() {
@@ -3280,6 +3303,11 @@ class Item extends MapObject {
       case 2117: // cooked chicken
       case 2118: // chicken egg
       case 2119: // rotten flesh
+      case 2120: // apple
+      case 2121: // banana
+      case 2122: // pear
+      case 2123: // bread
+      case 2125: // hot pocket
       case 2142: // golden apple
         return 1450;
       case 2131: // water cup
@@ -3292,6 +3320,8 @@ class Item extends MapObject {
       case 2926: // Canteen
       case 2927: // Water Jug
         return 1800;
+      case 2124: // hot pocket package
+        return 1400;
       case 2301: // Slingshot
         return 800;
       case 2311: // Recurve Bow
