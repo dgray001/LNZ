@@ -1289,6 +1289,104 @@ class DryerInventory extends Inventory {
 }
 
 
+class MicrowaveInventory extends Inventory {
+  class MicrowaveButton extends RectangleButton {
+    protected boolean opened = false;
+    MicrowaveButton() {
+      super(0, 0, 0, 0);
+      this.setColors(color(1, 0), color(1, 0), color(120, 30), color(120, 30), color(1, 0));
+      this.noStroke();
+      this.force_left_button = false;
+    }
+
+    void hover() {}
+    void click() {
+      if (this.opened) {
+        this.opened = false;
+        MicrowaveInventory.this.slots.get(4).deactivated = true;
+        this.setXLocation(-MicrowaveInventory.this.button_size + MicrowaveInventory.
+          this.image_offset, 2 + 2 * MicrowaveInventory.this.button_size +
+          MicrowaveInventory.this.image_offset);
+        global.sounds.trigger_environment("features/microwave_close");
+      }
+      else {
+        this.opened = true;
+        MicrowaveInventory.this.slots.get(4).deactivated = false;
+        this.setXLocation(-1.5 * MicrowaveInventory.this.button_size +
+          MicrowaveInventory.this.image_offset, -0.5 * MicrowaveInventory.
+          this.button_size + MicrowaveInventory.this.image_offset);
+        global.sounds.trigger_environment("features/microwave_open");
+      }
+      this.hovered = false;
+      this.clicked = false;
+    }
+    void dehover() {}
+    void release() {}
+  }
+
+  protected MicrowaveButton button = new MicrowaveButton();
+  protected float image_offset = 0;
+
+  MicrowaveInventory() {
+    super(3, 3, true);
+    this.deactivateSlots();
+    this.setButtonSize(this.button_size);
+  }
+
+  @Override
+  void setButtonSize(float button_size) {
+    super.setButtonSize(button_size);
+    this.image_offset = 0.5 * button_size;
+    this.button.setLocation(-button_size + this.image_offset, 2, 2 + 2 *
+      button_size + this.image_offset, 2 + 3 * button_size);
+    if (this.button.opened) {
+      this.button.setLocation(-1.5 * button_size + this.image_offset, 2, -0.5 *
+        button_size + this.image_offset, 2 + 3 * button_size);
+    }
+  }
+
+  @Override
+  void update(int millis) {
+    PImage opened_img = global.images.getImage("features/microwave_opened.png");
+    PImage closed_img = global.images.getImage("features/microwave_closed.png");
+    float closed_display_w = this.display_height * float(closed_img.width) / closed_img.height;
+    float opened_display_w = closed_display_w * float(opened_img.width) / closed_img.width;
+    float right_side = 0.5 * (this.display_width + closed_display_w);
+    if (button.opened) {
+      imageMode(CORNERS);
+      float display_h = this.display_height * float(opened_img.height) / closed_img.height;
+      image(opened_img, right_side - opened_display_w + this.image_offset, 0,
+        right_side + this.image_offset, display_h);
+    }
+    super.update(millis, false);
+    if (!button.opened) {
+      imageMode(CORNERS);
+      image(closed_img, right_side - closed_display_w + this.image_offset, 0,
+        right_side + this.image_offset, this.display_height);
+    }
+    this.button.update(millis);
+  }
+
+  @Override
+  void mouseMove(float mX, float mY) {
+    super.mouseMove(mX, mY);
+    this.button.mouseMove(mX, mY);
+  }
+
+  @Override
+  void mousePress() {
+    super.mousePress();
+    this.button.mousePress();
+  }
+
+  @Override
+  void mouseRelease(float mX, float mY) {
+    super.mouseRelease(mX, mY);
+    this.button.mouseRelease(mX, mY);
+  }
+}
+
+
 class GarbageInventory extends Inventory {
   protected int drop_time = 100;
   GarbageInventory() {

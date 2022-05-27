@@ -1118,6 +1118,13 @@ class Level {
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
         break;
+      case 178: // microwave
+        if (h.inventory.viewing) {
+          break;
+        }
+        h.inventory.featureInventory(f.inventory);
+        h.inventory.viewing = true;
+        break;
       case 181: // garbage can
         if (h.inventory.viewing) {
           break;

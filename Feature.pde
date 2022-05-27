@@ -334,6 +334,15 @@ class Feature extends MapObject {
         this.setSize(1, 1, 4);
         this.inventory = new DryerInventory();
         break;
+      case 178:
+        this.setStrings("Microwave", "Appliance", "");
+        this.setSize(1, 1, 1);
+        this.inventory = new MicrowaveInventory();
+        break;
+      case 179:
+        this.setStrings("TV", "Appliance", "");
+        this.setSize(1, 1, 2);
+        break;
       case 181:
         this.setStrings("Garbage Can", "Furniture", "");
         this.setSize(1, 1, 4);
@@ -820,6 +829,12 @@ class Feature extends MapObject {
       case 177:
         path += "dryer.png";
         break;
+      case 178:
+        path += "microwave.png";
+        break;
+      case 179:
+        path += "tv.png";
+        break;
       case 181:
         path += "garbage_can.png";
         break;
@@ -1246,6 +1261,7 @@ class Feature extends MapObject {
       case 175: // refridgerator
       case 176: // washer
       case 177: // dryer
+      case 178: // microwave
       case 181: // garbage can
       case 182: // recycle can
       case 183: // crate
