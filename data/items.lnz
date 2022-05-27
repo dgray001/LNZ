@@ -17,6 +17,10 @@ Raw Chicken: 2116
 Cooked Chicken: 2117
 Chicken Egg: 2118
 Rotten Flesh: 2119
+Apple: 2120
+Banana: 2121
+Pear: 2122
+Bread: 2123
 Water Cup: 2131
 Coke: 2132
 Wine: 2133
@@ -182,6 +186,7 @@ Document: 2914
 Stapler: 2915
 Crumpled Paper: 2916
 Eraser: 2917
+Scissors: 2918
 Backpack: 2921
 Ben's Backpack: 2922
 Purse: 2923

@@ -279,7 +279,7 @@ class Feature extends MapObject {
       case 157:
       case 158:
         this.setStrings("Sign", "Sign", Constants.feature_signDescriptionDelimiter);
-        this.setSize(1, 1, 2);
+        this.setSize(1, 1, 0);
         break;
       case 161:
         this.setStrings("Water Fountain", "Furniture", "");

@@ -251,6 +251,25 @@ class Item extends MapObject {
         this.hunger = 10;
         this.thirst = 10;
         break;
+      case 2120:
+        this.setStrings("Apple", "Food", "");
+        this.hunger = 18;
+        this.thirst = 10;
+        break;
+      case 2121:
+        this.setStrings("Banana", "Food", "");
+        this.hunger = 16;
+        this.thirst = 6;
+        break;
+      case 2122:
+        this.setStrings("Pear", "Food", "");
+        this.hunger = 18;
+        this.thirst = 8;
+        break;
+      case 2123:
+        this.setStrings("Bread", "Food", "");
+        this.hunger = 25;
+        break;
       case 2131:
         this.setStrings("Water Cup", "Drink", "");
         this.thirst = 12;
@@ -1069,6 +1088,10 @@ class Item extends MapObject {
       case 2917:
         this.setStrings("Eraser", "Office", "");
         break;
+      case 2918:
+        this.setStrings("Scissors", "Office", "");
+        this.attack = 1.5;
+        break;
       case 2921:
         this.setStrings("Backpack", "Utility", "");
         this.attackRange = 0.04;
@@ -1481,6 +1504,18 @@ class Item extends MapObject {
         break;
       case 2119:
         path += "rotten_flesh.png";
+        break;
+      case 2120:
+        path += "apple.png";
+        break;
+      case 2121:
+        path += "banana.png";
+        break;
+      case 2122:
+        path += "pear.png";
+        break;
+      case 2123:
+        path += "bread.png";
         break;
       case 2131:
         path += "water_cup.png";
@@ -1977,6 +2012,9 @@ class Item extends MapObject {
         path += "crumpled_paper.png";
         break;
       case 2917:
+        path += "eraser.png";
+        break;
+      case 2918:
         path += "eraser.png";
         break;
       case 2921:
