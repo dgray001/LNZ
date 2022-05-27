@@ -3299,7 +3299,7 @@ class GameMapEditor extends GameMap {
             if (!global.holding_ctrl && Feature.class.isInstance(this.hovered_object)) {
               Feature hovered_object_feature = (Feature)this.hovered_object;
               if (hovered_object_feature.inventory != null) {
-                hovered_object_feature.inventory.stash(new Item(this.dropping_object.ID));
+                hovered_object_feature.inventory.stashInDrawers(new Item(this.dropping_object.ID));
                 break;
               }
             }

@@ -208,6 +208,20 @@ class Inventory {
   }
 
 
+  // stashes in closed drawers for specialized inventories
+  void stashInDrawers(Item i) {
+    this.stash(i);
+  }
+
+  void stash(Item i, int ... slots) {
+    for (int slot : slots) {
+      if (i == null) {
+        break;
+      }
+      i = this.placeAt(i, slot, false, true);
+    }
+  }
+
   Item stash(Item i) {
     if (i == null || i.remove) {
       return null;
@@ -250,7 +264,13 @@ class Inventory {
     return this.placeAt(i, index, false);
   }
   Item placeAt(Item i, int index, boolean replace) {
-    if (index < 0 || index >= this.slots.size() || this.slots.get(index).deactivated) {
+    return this.placeAt(i, index, replace, false);
+  }
+  Item placeAt(Item i, int index, boolean replace, boolean ignore_deactivate) {
+    if (index < 0 || index >= this.slots.size()) {
+      return i;
+    }
+    if (!ignore_deactivate && this.slots.get(index).deactivated) {
       return i;
     }
     if (i == null || i.remove) {
@@ -523,6 +543,12 @@ class DeskInventory extends Inventory {
     super(3, 3, true);
     this.deactivateSlots();
     this.setButtonSize(this.button_size);
+  }
+
+
+  // stashes in closed drawers for specialized inventories
+  void stashInDrawers(Item i) {
+    this.stash(i, 0, 1, 2, 5, 8);
   }
 
   void closeDrawers() {
