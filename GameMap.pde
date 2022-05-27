@@ -1600,13 +1600,13 @@ class GameMap {
       ellipse(ellipseX, ellipseY, ellipseDiameterX, ellipseDiameterY);
     }
     if (nameDisplayed != null) {
-      textSize(16);
+      textSize(18);
       float name_width = textWidth(nameDisplayed) + 2;
       float name_height = textAscent() + textDescent() + 2;
-      float name_xi = mouseX;
-      float name_yi = mouseY - name_height - 4;
+      float name_xi = mouseX + 2;
+      float name_yi = mouseY - name_height - global.configuration.cursor_size * 0.3;
       if (mouseX > 0.5 * width) {
-        name_xi -= name_width;
+        name_xi -= name_width + 4;
       }
       fill(global.color_nameDisplayed_background);
       rectMode(CORNER);

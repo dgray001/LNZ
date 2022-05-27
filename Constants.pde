@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\nAlpha v0.7.3i: 20220527" +
+  "\nAlpha v0.7.3j: 20220527" +
   "\nLines: 41589 (v0.7.3g)" +
   "\nImages: 1104 (v0.7.3)" +
   "\nSounds: 310 (v0.7.3)" +
@@ -305,6 +305,8 @@ static class Constants {
   static final float status_wilted_multiplier = 0.8;
   static final float status_withered_multiplier = 0.7;
   static final float status_running_multiplier = 1.35;
+  static final float status_relaxed_multiplier = 0.85;
+  static final float status_relaxed_healMultiplier = 0.01;
   static final float status_drenched_multiplier = 1.3;
   static final float status_drenched_tickTimer = 1200;
   static final float status_drenched_dot = 0.025;
@@ -431,6 +433,7 @@ static class Constants {
   static final float hero_treeForm_height = 340;
   static final float hero_manabarHeight = 0.05;
   static final float hero_experienceRespawnMultiplier = 0.3;
+  static final float hero_passiveHealPercent = 0.002;
 
   // Upgrade
   static final int upgrade_inventoryI = 2;

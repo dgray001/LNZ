@@ -4,7 +4,7 @@ enum StatusEffectCode {
   BLEEDING("Bleeding"), HEMORRHAGING("Hemorrhaging"), WILTED("Wilted"), WITHERED("Withered"),
   VISIBLE("Visible"), SUPPRESSED("Suppressed"), UNTARGETABLE("Untargetable"),
   STUNNED("Stunned"), INVISIBLE("Invisible"), UNCOLLIDABLE("Uncollidable"),
-  RUNNING("Running"), FERTILIZED("Fertilized"), SNEAKING("Sneaking"),
+  RUNNING("Running"), FERTILIZED("Fertilized"), SNEAKING("Sneaking"), RELAXED("Relaxed"),
 
   DRENCHED("Drenched"), DROWNING("Drowning"), BURNT("Burning"), CHARRED("Charred"),
   CHILLED("Chilled"), FROZEN("Frozen"), SICK("Sick"), DISEASED("Diseased"), ROTTING("Rotting"),
@@ -58,6 +58,7 @@ enum StatusEffectCode {
       case RUNNING:
       case FERTILIZED:
       case SNEAKING:
+      case RELAXED:
       case SENSELESS_GRIT:
       case SENSELESS_GRITII:
       case RAGE_OF_THE_BEN:
@@ -173,6 +174,9 @@ enum StatusEffectCode {
         break;
       case SNEAKING:
         image_path += "sneaking.png";
+        break;
+      case RELAXED:
+        image_path += "relaxed.png";
         break;
       case DRENCHED:
         image_path += "drenched.png";
@@ -304,6 +308,11 @@ enum StatusEffectCode {
           status_running_multiplier - 1.0)) + "% faster.";
       case FERTILIZED:
         return "This unit is fertilized.";
+      case RELAXED:
+        return "This unit is relaxed and has " + int(100.0 * Constants.
+          status_relaxed_multiplier) + "% combat stats (attack, defense, etc.), " +
+          " move speed, and tenacity, but " + int(1000.0 * Constants.
+          status_relaxed_healMultiplier) / 10.0 + "% increased passive healing.";
       case DRENCHED:
         return "This unit is drenched so will take more damage from blue sources." +
           "\nIf this unit is red it will also slowly take damage to " + int(100.0 *

@@ -4214,19 +4214,22 @@ class Hero extends Unit {
       this.money += i.money;
       switch(i.ID) {
         case 2116: // raw chicken
-          if (randomChance(0.5)) {
-            this.addStatusEffect(StatusEffectCode.SICK, 6000);
+          if (randomChance(0.6)) {
+            this.addStatusEffect(StatusEffectCode.SICK, 10000);
           }
           break;
         case 2118: // chicken egg
-          if (randomChance(0.25)) {
-            this.addStatusEffect(StatusEffectCode.SICK, 5000);
+          if (randomChance(0.3)) {
+            this.addStatusEffect(StatusEffectCode.SICK, 8000);
           }
           break;
         case 2119: // rotten flesh
-          if (randomChance(0.8)) {
-            this.addStatusEffect(StatusEffectCode.SICK, 8000);
-          }
+          this.addStatusEffect(StatusEffectCode.SICK, 12000);
+          break;
+        case 2133: // wine
+        case 2134: // beer
+          this.addStatusEffect(StatusEffectCode.RELAXED, 9000);
+          this.addStatusEffect(StatusEffectCode.WOOZY, 9000);
           break;
       }
       i.consumed();

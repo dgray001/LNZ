@@ -220,9 +220,11 @@ Dandelion: 2961
 Rose: 2962
 Stick: 2963
 Kindling: 2964
-Branch1: 2965
-Branch2: 2966
-Branch3: 2967
+Branch, maple: 2965
+Branch, unknown: 2966
+Branch, cedar: 2967
+Branch, pine: 2968
+Wooden Log: 2969
 Paintbrush: 2971
 Clamp: 2972
 Wrench: 2973

@@ -1241,6 +1241,13 @@ class Item extends MapObject {
         this.attack = 1;
         this.attackRange = 0.05;
         break;
+      case 2969:
+        this.setStrings("Wooden Log", "Nature", "");
+        this.size = 0.6;
+        this.attack = 1.8;
+        this.speed = -1.4;
+        this.tier = 2;
+        break;
       case 2971:
         this.setStrings("Paintbrush", "Tool", "");
         break;
@@ -2218,6 +2225,9 @@ class Item extends MapObject {
         break;
       case 2968:
         path += "branch_pine.png";
+        break;
+      case 2969:
+        path += "wooden_log.png";
         break;
       case 2971:
         path += "paintbrush.png";

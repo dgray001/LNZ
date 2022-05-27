@@ -3,23 +3,20 @@ v0.7.3: Francis Hall
  Add items:
    - More misc tools: metal pipe
    - More melee weapons: wooden handle, wooden sword, wooden spear, wooden knife, compound bow, crossbow
-   - Misc materials: wooden log, wooden plank, wooden piece
+   - Misc materials: wooden plank, wooden piece
    - Offhand items: quiver which reloads bow much faster and makes it shoot faster
    - Images: signed covenant, lords day paper
-   - Make lit cigar give "relaxed" status which slows, reduces stats, and increases healing of unit
  Add units:
    - Various named zombies for francis hall
    - Duggy for sitting and playing video games in room (zombie duggy just playing video games)
    - Mike schmiesing, molly schmiesing, schmielet (schmielet is hero that you can unlock in francis hall level)
    - First BOIZ units who have captured molly schmiesing
-   - Add param for passive healing (default 0)
 
 v0.7.4: Francis Hall triggers
 v0.7.5: Lev2 maps
 v0.7.6: Lev2 triggers
 v0.7.7: Lev3 maps
 v0.7.8: Lev3 triggers
--Remake Francis Hall maps (with terrain instead of features everywhere)
 -Each door has natural progression to a final battle or some shit
   End level when you find a vehicle / can fuel it / can start it
 -Each door has same level 2/maps but different start locations, and is difficult to reach other paths
@@ -73,9 +70,6 @@ v0.8: HomeBase and Campaign II
     - Each campaign you complete unlocks the auto-generated map for that location (each is a different biome)
   -World Map / Vehicle from Campaign I used to travel to new Campaigns
   -Campaign II is Daniel Gray Campaign at Hopedale (FROGS, BROWN, EARTH)
-  -Can always go back to old campaigns
-  -When going back to FrancisHall campaign won't start
-  -Can switch between Heroes (Ben doing one Campaign, Daniel at HomeBase, etc..)
 
 
 

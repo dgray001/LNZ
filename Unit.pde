@@ -823,6 +823,9 @@ class Unit extends MapObject {
     if (this.withered()) {
       attack *= Constants.status_withered_multiplier;
     }
+    if (this.relaxed()) {
+      attack *= Constants.status_relaxed_multiplier;
+    }
     if (this.nelsonGlare()) {
       attack *= Constants.ability_103_debuff;
     }
@@ -875,6 +878,9 @@ class Unit extends MapObject {
     if (this.withered()) {
       magic *= Constants.status_withered_multiplier;
     }
+    if (this.relaxed()) {
+      magic *= Constants.status_relaxed_multiplier;
+    }
     for (Ability a : this.abilities) {
       if (a == null) {
         continue;
@@ -913,6 +919,9 @@ class Unit extends MapObject {
     }
     if (this.withered()) {
       defense *= Constants.status_withered_multiplier;
+    }
+    if (this.relaxed()) {
+      defense *= Constants.status_relaxed_multiplier;
     }
     if (this.sick()) {
       defense *= Constants.status_sick_defenseMultiplier;
@@ -954,6 +963,9 @@ class Unit extends MapObject {
     }
     if (this.withered()) {
       resistance *= Constants.status_withered_multiplier;
+    }
+    if (this.relaxed()) {
+      resistance *= Constants.status_relaxed_multiplier;
     }
     if (this.sick()) {
       resistance *= Constants.status_sick_defenseMultiplier;
@@ -1001,6 +1013,9 @@ class Unit extends MapObject {
     if (this.withered()) {
       piercing *= Constants.status_withered_multiplier;
     }
+    if (this.relaxed()) {
+      piercing *= Constants.status_relaxed_multiplier;
+    }
     if (piercing > 1) {
       piercing = 1;
     }
@@ -1043,6 +1058,9 @@ class Unit extends MapObject {
     }
     if (this.withered()) {
       penetration *= Constants.status_withered_multiplier;
+    }
+    if (this.relaxed()) {
+      penetration *= Constants.status_relaxed_multiplier;
     }
     if (penetration > 1) {
       penetration = 1;
@@ -1269,6 +1287,9 @@ class Unit extends MapObject {
     if (this.running()) {
       speed *= Constants.status_running_multiplier;
     }
+    if (this.relaxed()) {
+      speed *= Constants.status_relaxed_multiplier;
+    }
     for (Ability a : this.abilities) {
       if (a == null) {
         continue;
@@ -1303,6 +1324,9 @@ class Unit extends MapObject {
     }
     if (this.withered()) {
       tenacity *= Constants.status_withered_multiplier;
+    }
+    if (this.relaxed()) {
+      tenacity *= Constants.status_relaxed_multiplier;
     }
     if (this.sick()) {
       tenacity *= Constants.status_sick_defenseMultiplier;
@@ -1420,6 +1444,17 @@ class Unit extends MapObject {
       swimNumber += 2;
     }
     return swimNumber;
+  }
+
+  float passiveHeal() {
+    float passive_heal = 0;
+    if (Hero.class.isInstance(this)) {
+      passive_heal += Constants.hero_passiveHealPercent;
+    }
+    if (this.relaxed()) {
+      passive_heal += Constants.status_relaxed_healMultiplier;
+    }
+    return passive_heal;
   }
 
 
@@ -1563,6 +1598,9 @@ class Unit extends MapObject {
   }
   boolean sneaking() {
     return this.hasStatusEffect(StatusEffectCode.SNEAKING);
+  }
+  boolean relaxed() {
+    return this.hasStatusEffect(StatusEffectCode.RELAXED);
   }
   boolean drenched() {
     return this.hasStatusEffect(StatusEffectCode.DRENCHED);
@@ -2327,6 +2365,31 @@ class Unit extends MapObject {
     if (this.timer_talk < 0) {
       this.timer_talk += Constants.unit_timer_talk + int(random(Constants.unit_timer_talk));
       this.talkSound();
+    }
+    this.healPercent(this.passiveHeal() * timeElapsed * 0.001, true);
+    this.updateItems();
+  }
+
+  void updateItems() {
+    for (Map.Entry<GearSlot, Item> entry : this.gear.entrySet()) {
+      if (entry.getValue() == null) {
+        continue;
+      }
+      switch(entry.getKey()) {
+        case WEAPON:
+          switch(entry.getValue().ID) {
+            case 2928: // cigar
+              if (entry.getValue().toggled) {
+                this.refreshStatusEffect(StatusEffectCode.RELAXED, 2500);
+              }
+              break;
+            default:
+              break;
+          }
+          break;
+        default:
+          break;
+      }
     }
   }
 
