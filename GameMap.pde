@@ -1361,6 +1361,11 @@ class GameMap {
   void addItem(Item i) {
     this.addItem(i, true);
   }
+  void addItemAsIs(Item i) {
+    int disappear_timer = i.disappear_timer;
+    this.addItem(i, i.disappearing);
+    i.disappear_timer = disappear_timer;
+  }
   void addItem(Item i, boolean auto_disappear) {
     this.addItem(i, this.nextItemKey, auto_disappear);
     this.nextItemKey++;
@@ -2773,7 +2778,7 @@ class GameMap {
                   if (this.nextItemKey > max_item_key) {
                     max_item_key = this.nextItemKey;
                   }
-                  this.addItem(curr_item);
+                  this.addItemAsIs(curr_item);
                   break;
                 case FEATURE:
                   if (parameters.length < 3 || !isInt(trim(parameters[2]))) {

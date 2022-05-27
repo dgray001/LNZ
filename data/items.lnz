@@ -38,6 +38,11 @@ Wad of 5s: 2156
 Wad of 10s: 2157
 Wad of 50s: 2158
 Wad of Zuccs: 2159
+Broken Candlestick: 2161
+Candlestick: 2162
+Candle: 2163
+Lord's Day Candle: 2164
+Lord's Day Papers: 2165
 
 Foam Sword: 2201
 Pan: 2202
@@ -149,6 +154,9 @@ Soapstone: 2804
 Broken Glass: 2805
 Wire: 2806
 Feather: 2807
+Ashes: 2808
+String: 2809
+Wax: 2810
 Gypsum Ore: 2811
 Gypsum Crystal: 2812
 Gypsum Powder: 2813
@@ -228,4 +236,11 @@ Drill: 2980
 Roundsaw: 2981
 Beltsander: 2982
 Chainsaw: 2983
+Woodglue: 2984
+Nails: 2985
+Screws: 2986
+Flint and Steel: 2987
+Lighter: 2988
+
 Rankin's Third Ball: 2991
+Soldier's Covenant: 2992

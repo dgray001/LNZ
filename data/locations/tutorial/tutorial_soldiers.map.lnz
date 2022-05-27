@@ -2112,15 +2112,6 @@ toggle: false
 end: Feature
 
 
-new: Feature: 340
-location: 62.0, 10.0, 0
-curr_height: 0
-remove: false
-number: 0
-toggle: false
-end: Feature
-
-
 new: Feature: 181
 location: 11.0, 16.0, 0
 curr_height: 0
@@ -2145,6 +2136,15 @@ curr_height: 0
 remove: false
 number: 0
 toggle: false
+end: Feature
+
+
+new: Feature: 360
+location: 62.0, 10.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
 end: Feature
 
 nextUnitKey: 6
@@ -2256,12 +2256,12 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Brown
+gearSlot: LEGS
+gearSlot: FEET
 gearSlot: HEAD
 gearSlot: WEAPON
 gearSlot: CHEST
-gearSlot: LEGS
 gearSlot: ERROR
-gearSlot: FEET
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0

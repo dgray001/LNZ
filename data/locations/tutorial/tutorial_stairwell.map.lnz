@@ -41,15 +41,6 @@ terrain: 6, 2: 201, 100, true
 terrain: 6, 3: 201, 100, true
 terrain: 6, 4: 201, 100, true
 
-new: Feature: 340
-location: 0.0, 3.0, 0
-curr_height: 0
-remove: false
-number: 0
-toggle: false
-end: Feature
-
-
 new: Feature: 194
 location: 2.0, 2.0, 0
 curr_height: 0
@@ -83,6 +74,15 @@ curr_height: 0
 remove: false
 number: 0
 toggle: false
+end: Feature
+
+
+new: Feature: 360
+location: 0.0, 3.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
 end: Feature
 
 nextUnitKey: 1

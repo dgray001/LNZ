@@ -356,6 +356,27 @@ class Item extends MapObject {
         this.money = 10100;
         this.size = 0.3;
         break;
+      case 2161:
+        this.setStrings("Broken Candlestick", "Household Item", "");
+        this.size = 0.4;
+        break;
+      case 2162:
+        this.setStrings("Candlestick", "Household Item", "");
+        this.size = 0.4;
+        break;
+      case 2163:
+        this.setStrings("Candle", "Household Item", "");
+        this.size = 0.21;
+        break;
+      case 2164:
+        this.setStrings("Lord's Day Candle", "Household Item", "");
+        this.size = 0.55;
+        this.tier = 2;
+        break;
+      case 2165:
+        this.setStrings("Lord's Day Papers", "Household Item", "");
+        this.tier = 2;
+        break;
 
       // Melee Weapons
       case 2201:
@@ -397,7 +418,7 @@ class Item extends MapObject {
         this.attack = 1;
         this.attackRange = 0.05;
         this.piercing = 8;
-        this.size = 0.3;
+        this.size = 0.33;
         break;
       case 2213:
         this.setStrings("Spear", "Melee Weapon", "");
@@ -406,7 +427,7 @@ class Item extends MapObject {
         this.attackRange = 0.3;
         this.piercing = 18;
         this.speed = -0.8;
-        this.size = 0.3;
+        this.size = 0.36;
         break;
 
       // Ranged Weapons
@@ -947,6 +968,15 @@ class Item extends MapObject {
       case 2807:
         this.setStrings("Feather", "Material", "");
         break;
+      case 2808:
+        this.setStrings("Ashes", "Material", "");
+        break;
+      case 2809:
+        this.setStrings("String", "Material", "");
+        break;
+      case 2810:
+        this.setStrings("Wax", "Material", "");
+        break;
       case 2811:
         this.setStrings("Gypsum Ore", "Material", "");
         this.tier = 2;
@@ -1288,9 +1318,33 @@ class Item extends MapObject {
         this.piercing = 0.2;
         this.size = 0.32;
         break;
+      case 2984:
+        this.setStrings("Woodglue", "Tool", "");
+        this.tier = 2;
+        break;
+      case 2985:
+        this.setStrings("Nails", "Tool", "");
+        break;
+      case 2986:
+        this.setStrings("Screws", "Tool", "");
+        break;
+      case 2987:
+        this.setStrings("Flint and Steel", "Tool", "");
+        this.attack = 0.5;
+        this.tier = 3;
+        break;
+      case 2988:
+        this.setStrings("Lighter", "Tool", "");
+        this.tier = 3;
+        break;
       case 2991:
         this.setStrings("Rankin's Third Ball", "Rare Object", "");
         this.tier = 1;
+        this.size = 0.22;
+        break;
+      case 2992:
+        this.setStrings("Soldier's Covenant", "Rare Object", "");
+        this.tier = 2;
         this.size = 0.22;
         break;
 
@@ -1575,6 +1629,21 @@ class Item extends MapObject {
         break;
       case 2159:
         path += "wad_of_zuccs.png";
+        break;
+      case 2161:
+        path += "broken_candlestick.png";
+        break;
+      case 2162:
+        path += "candlestick.png";
+        break;
+      case 2163:
+        path += "candle.png";
+        break;
+      case 2164:
+        path += "lords_day_candle.png";
+        break;
+      case 2165:
+        path += "lords_day_papers.png";
         break;
       // Melee Weapons
       case 2201:
@@ -1910,6 +1979,15 @@ class Item extends MapObject {
       case 2807:
         path += "feather.png";
         break;
+      case 2808:
+        path += "ashes.png";
+        break;
+      case 2809:
+        path += "string.png";
+        break;
+      case 2810:
+        path += "wax.png";
+        break;
       case 2811:
         path += "gypsum_ore.png";
         break;
@@ -2180,8 +2258,26 @@ class Item extends MapObject {
       case 2983:
         path += "chainsaw.png";
         break;
+      case 2984:
+        path += "woodglue.png";
+        break;
+      case 2985:
+        path += "nails.png";
+        break;
+      case 2986:
+        path += "screws.png";
+        break;
+      case 2987:
+        path += "flint_and_steel.png";
+        break;
+      case 2988:
+        path += "lighter.png";
+        break;
       case 2991:
         path += "rankins_third_ball.png";
+        break;
+      case 2992:
+        path += "soldiers_covenant.png";
         break;
       default:
         global.errorMessage("ERROR: Item ID " + ID + " not found.");
