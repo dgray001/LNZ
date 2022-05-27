@@ -142,6 +142,13 @@ class MapEditorInterface extends InterfaceLNZ {
     protected boolean active = false;
     protected RightClickListTextBox rightClickMenu;
     protected RenameInputBox renameInputBox;
+    protected MapEditorPage previous_page = MapEditorPage.LEVEL_INFO;
+    protected float scroll_maps = 0;
+    protected float scroll_levels = 0;
+    protected float scroll_terrain = 0;
+    protected float scroll_features = 0;
+    protected float scroll_units = 0;
+    protected float scroll_items = 0;
 
     MapEditorListTextBox() {
       super(width, Constants.mapEditor_listBoxGap, width, 0.9 * height - Constants.mapEditor_listBoxGap);
@@ -334,6 +341,32 @@ class MapEditorInterface extends InterfaceLNZ {
     }
 
     void setList(MapEditorPage page) {
+      if (page == null) {
+        return;
+      }
+      switch(this.previous_page) {
+        case MAPS:
+          this.scroll_maps = this.scrollbar.value;
+          break;
+        case LEVELS:
+          this.scroll_levels = this.scrollbar.value;
+          break;
+        case TERRAIN:
+          this.scroll_terrain = this.scrollbar.value;
+          break;
+        case FEATURES:
+          this.scroll_features = this.scrollbar.value;
+          break;
+        case UNITS:
+          this.scroll_units = this.scrollbar.value;
+          break;
+        case ITEMS:
+          this.scroll_items = this.scrollbar.value;
+          break;
+        default:
+          break;
+      }
+      this.previous_page = page;
       this.clearText();
       this.line_hovered = -1;
       this.line_clicked = -1;
@@ -361,6 +394,7 @@ class MapEditorInterface extends InterfaceLNZ {
           else {
             mkdir("data/maps");
           }
+          this.scrollbar.updateValue(this.scroll_maps);
           break;
         case LEVELS:
           this.setTitleText("Levels");
@@ -380,6 +414,7 @@ class MapEditorInterface extends InterfaceLNZ {
           else {
             mkdir("data/levels");
           }
+          this.scrollbar.updateValue(this.scroll_levels);
           break;
         case TERRAIN:
           this.setTitleText("Terrain");
@@ -395,6 +430,7 @@ class MapEditorInterface extends InterfaceLNZ {
               }
             }
           }
+          this.scrollbar.updateValue(this.scroll_terrain);
           break;
         case FEATURES:
           this.setTitleText("Features");
@@ -410,6 +446,7 @@ class MapEditorInterface extends InterfaceLNZ {
               }
             }
           }
+          this.scrollbar.updateValue(this.scroll_features);
           break;
         case UNITS:
           this.setTitleText("Units");
@@ -425,6 +462,7 @@ class MapEditorInterface extends InterfaceLNZ {
               }
             }
           }
+          this.scrollbar.updateValue(this.scroll_units);
           break;
         case ITEMS:
           this.setTitleText("Items");
@@ -440,6 +478,7 @@ class MapEditorInterface extends InterfaceLNZ {
               }
             }
           }
+          this.scrollbar.updateValue(this.scroll_items);
           break;
         case LEVEL_MAPS:
           this.setTitleText("Saved Maps");

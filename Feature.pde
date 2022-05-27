@@ -186,6 +186,11 @@ class Feature extends MapObject {
         this.setSize(1, 2, 4);
         this.number = Constants.feature_woodenTableHealth;
         break;
+      case 108:
+        this.setStrings("Ping Pong Table", "Furniture", "");
+        this.setSize(2, 2, 3);
+        this.number = Constants.feature_woodenTableHealth;
+        break;
       case 111:
       case 112:
       case 113:
@@ -728,6 +733,9 @@ class Feature extends MapObject {
       case 107:
         path += "table_small_left.png";
         break;
+      case 108:
+        path += "table_blue.png";
+        break;
       case 111:
         path += "chair_up.png";
         break;
@@ -1215,6 +1223,7 @@ class Feature extends MapObject {
       case 105:
       case 106: // small wooden table
       case 107:
+      case 108: // ping pong table
       case 111: // wooden chair
       case 112:
       case 113:
@@ -1402,6 +1411,9 @@ class Feature extends MapObject {
   float interactionTime() {
     switch(this.ID) {
       case 101: // wooden table
+      case 106: // small wooden table
+      case 107:
+      case 108: // ping pong table
       case 111: // wooden chair
       case 112:
       case 113:
@@ -1489,6 +1501,7 @@ class Feature extends MapObject {
       case 105:
       case 106: // small wooden table
       case 107:
+      case 108: // ping pong table
       case 111: // wooden chair
       case 112:
       case 113:
@@ -1635,6 +1648,7 @@ class Feature extends MapObject {
       case 105:
       case 106: // small wooden table
       case 107:
+      case 108: // ping pong table
       case 111: // wooden chair
       case 112:
       case 113:

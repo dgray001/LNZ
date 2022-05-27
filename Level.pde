@@ -548,6 +548,7 @@ class Level {
       case 101: // wooden table
       case 106: // small wooden table
       case 107:
+      case 108: // ping pong table
       case 111: // wooden chair
       case 112:
       case 113:
