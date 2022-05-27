@@ -476,6 +476,28 @@ class Feature extends MapObject {
         this.setStrings("Wooden Door", "Door", "");
         this.setSize(1, 1, 100);
         break;
+      case 351:
+      case 352:
+      case 353:
+      case 354:
+      case 355:
+      case 356:
+      case 357:
+      case 358:
+        this.setStrings("Steel Door", "Door", "");
+        this.setSize(1, 1, 0);
+        break;
+      case 359:
+      case 360:
+      case 361:
+      case 362:
+      case 363:
+      case 364:
+      case 365:
+      case 366:
+        this.setStrings("Steel Door", "Door", "");
+        this.setSize(1, 1, 100);
+        break;
 
       // Nature
       case 401:
@@ -1054,6 +1076,54 @@ class Feature extends MapObject {
       case 346:
         path += "door_locked_diagonalright.png";
         break;
+      case 351:
+        path += "steeldoor_open_up_lefthinges.png";
+        break;
+      case 352:
+        path += "steeldoor_open_up_righthinges.png";
+        break;
+      case 353:
+        path += "steeldoor_open_left_uphinges.png";
+        break;
+      case 354:
+        path += "steeldoor_open_left_downhinges.png";
+        break;
+      case 355:
+        path += "steeldoor_open_diagonalleft_uphinges.png";
+        break;
+      case 356:
+        path += "steeldoor_open_diagonalleft_downhinges.png";
+        break;
+      case 357:
+        path += "steeldoor_open_diagonalright_uphinges.png";
+        break;
+      case 358:
+        path += "steeldoor_open_diagonalright_downhinges.png";
+        break;
+      case 359:
+        path += "steeldoor_closed_up.png";
+        break;
+      case 360:
+        path += "steeldoor_closed_left.png";
+        break;
+      case 361:
+        path += "steeldoor_closed_diagonalleft.png";
+        break;
+      case 362:
+        path += "steeldoor_closed_diagonalright.png";
+        break;
+      case 363:
+        path += "steeldoor_locked_up.png";
+        break;
+      case 364:
+        path += "steeldoor_locked_left.png";
+        break;
+      case 365:
+        path += "steeldoor_locked_diagonalleft.png";
+        break;
+      case 366:
+        path += "steeldoor_locked_diagonalright.png";
+        break;
       case 401:
         path += "dandelion.png";
         break;
@@ -1223,6 +1293,22 @@ class Feature extends MapObject {
       case 344:
       case 345:
       case 346:
+      case 351: // steel door (open)
+      case 352:
+      case 353:
+      case 354:
+      case 355:
+      case 356:
+      case 357:
+      case 358:
+      case 359: // steel door (closed)
+      case 360:
+      case 361:
+      case 362:
+      case 363: // steel door (locked)
+      case 364:
+      case 365:
+      case 366:
       case 401: // dandelion
       case 411: // gravel
       case 412:
@@ -1469,6 +1555,22 @@ class Feature extends MapObject {
       case 344:
       case 345:
       case 346:
+      case 351: // steel door
+      case 352:
+      case 353:
+      case 354:
+      case 355:
+      case 356:
+      case 357:
+      case 358:
+      case 359:
+      case 360:
+      case 361:
+      case 362:
+      case 363:
+      case 364:
+      case 365:
+      case 366:
         // wooden board, maybe nails / screws / wooden "piece" (small piece)
         break;
       case 421: // tree
@@ -1858,6 +1960,153 @@ class Feature extends MapObject {
             this.remove = true;
             map.addFeature(new Feature(342, this.x, this.y, this.toggle));
             global.sounds.trigger_environment("features/wooden_door_unlock",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
+            break;
+        }
+        break;
+      case 351: // steel door (open)
+      case 352:
+      case 353:
+      case 354:
+      case 355:
+      case 356:
+      case 357:
+      case 358:
+      case 359: // steel door (closed)
+      case 360:
+      case 361:
+      case 362:
+      case 363: // steel door (locked)
+      case 364:
+      case 365:
+      case 366:
+        switch(this.ID) {
+          case 351: // door open (up)
+            this.remove = true;
+            map.addFeature(new Feature(359, this.x, this.y, false));
+            global.sounds.trigger_environment("features/steel_door_close",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
+            break;
+          case 352:
+            this.remove = true;
+            map.addFeature(new Feature(359, this.x, this.y, true));
+            global.sounds.trigger_environment("features/steel_door_close",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
+            break;
+          case 353: // door open (left)
+            this.remove = true;
+            map.addFeature(new Feature(360, this.x, this.y, false));
+            global.sounds.trigger_environment("features/steel_door_close",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
+            break;
+          case 354:
+            this.remove = true;
+            map.addFeature(new Feature(360, this.x, this.y, true));
+            global.sounds.trigger_environment("features/steel_door_close",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
+            break;
+          case 355: // door open (diagonal left)
+            this.remove = true;
+            map.addFeature(new Feature(361, this.x, this.y, false));
+            global.sounds.trigger_environment("features/steel_door_close",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
+            break;
+          case 356:
+            this.remove = true;
+            map.addFeature(new Feature(361, this.x, this.y, true));
+            global.sounds.trigger_environment("features/steel_door_close",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
+            break;
+          case 357: // door open (diagonal right)
+            this.remove = true;
+            map.addFeature(new Feature(362, this.x, this.y, false));
+            global.sounds.trigger_environment("features/steel_door_close",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
+            break;
+          case 358:
+            this.remove = true;
+            map.addFeature(new Feature(362, this.x, this.y, true));
+            global.sounds.trigger_environment("features/steel_door_close",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
+            break;
+          case 359: // door closed (up)
+            this.remove = true;
+            if (this.toggle) {
+              map.addFeature(new Feature(352, this.x, this.y));
+            }
+            else {
+              map.addFeature(new Feature(351, this.x, this.y));
+            }
+            global.sounds.trigger_environment("features/steel_door_open",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
+            break;
+          case 360: // door closed (left)
+            this.remove = true;
+            if (this.toggle) {
+              map.addFeature(new Feature(354, this.x, this.y));
+            }
+            else {
+              map.addFeature(new Feature(353, this.x, this.y));
+            }
+            global.sounds.trigger_environment("features/steel_door_open",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
+            break;
+          case 361: // door closed (diagonal left)
+            this.remove = true;
+            if (this.toggle) {
+              map.addFeature(new Feature(356, this.x, this.y));
+            }
+            else {
+              map.addFeature(new Feature(355, this.x, this.y));
+            }
+            global.sounds.trigger_environment("features/steel_door_open",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
+            break;
+          case 362: // door closed (diagonal right)
+            this.remove = true;
+            if (this.toggle) {
+              map.addFeature(new Feature(358, this.x, this.y));
+            }
+            else {
+              map.addFeature(new Feature(357, this.x, this.y));
+            }
+            global.sounds.trigger_environment("features/steel_door_open",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
+            break;
+          case 363: // door locked (up)
+            if (u.weapon() == null || !u.weapon().unlocks(this.number)) {
+              break;
+            }
+            this.remove = true;
+            map.addFeature(new Feature(359, this.x, this.y, this.toggle));
+            global.sounds.trigger_environment("features/steel_door_unlock",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
+            break;
+          case 364: // door locked (left)
+            if (u.weapon() == null || !u.weapon().unlocks(this.number)) {
+              break;
+            }
+            this.remove = true;
+            map.addFeature(new Feature(360, this.x, this.y, this.toggle));
+            global.sounds.trigger_environment("features/steel_door_unlock",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
+            break;
+          case 365: // door locked (diagonal left)
+            if (u.weapon() == null || !u.weapon().unlocks(this.number)) {
+              break;
+            }
+            this.remove = true;
+            map.addFeature(new Feature(361, this.x, this.y, this.toggle));
+            global.sounds.trigger_environment("features/steel_door_unlock",
+              this.xCenter() - map.viewX, this.yCenter() - map.viewY);
+            break;
+          case 366: // door locked (diagonal right)
+            if (u.weapon() == null || !u.weapon().unlocks(this.number)) {
+              break;
+            }
+            this.remove = true;
+            map.addFeature(new Feature(362, this.x, this.y, this.toggle));
+            global.sounds.trigger_environment("features/steel_door_unlock",
               this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
         }

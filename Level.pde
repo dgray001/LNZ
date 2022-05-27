@@ -1500,7 +1500,226 @@ class Level {
             this.currMap.addFeature(new_f);
             new_f.hovered = true;
             this.currMap.hovered_object = new_f;
-            global.sounds.trigger_environment("features/wooden_door_unlock",
+            global.sounds.trigger_environment("features/stee_door_unlock",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+            break;
+        }
+        break;
+      case 351: // steel door (open)
+      case 352:
+      case 353:
+      case 354:
+      case 355:
+      case 356:
+      case 357:
+      case 358:
+      case 359: // steel door (closed)
+      case 360:
+      case 361:
+      case 362:
+      case 363: // steel door (locked)
+      case 364:
+      case 365:
+      case 366:
+        switch(f.ID) {
+          case 351: // door open (up)
+            f.remove = true;
+            new_f = new Feature(359, f.x, f.y, false);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            global.sounds.trigger_environment("features/steel_door_close",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+            break;
+          case 352:
+            f.remove = true;
+            new_f = new Feature(359, f.x, f.y, true);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            global.sounds.trigger_environment("features/steel_door_close",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+            break;
+          case 353: // door open (left)
+            f.remove = true;
+            new_f = new Feature(360, f.x, f.y, false);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            global.sounds.trigger_environment("features/steel_door_close",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+            break;
+          case 354:
+            f.remove = true;
+            new_f = new Feature(360, f.x, f.y, true);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            global.sounds.trigger_environment("features/steel_door_close",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+            break;
+          case 355: // door open (diagonal left)
+            f.remove = true;
+            new_f = new Feature(361, f.x, f.y, false);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            global.sounds.trigger_environment("features/steel_door_close",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+            break;
+          case 356:
+            f.remove = true;
+            new_f = new Feature(361, f.x, f.y, true);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            global.sounds.trigger_environment("features/steel_door_close",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+            break;
+          case 357: // door open (diagonal right)
+            f.remove = true;
+            new_f = new Feature(362, f.x, f.y, false);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            global.sounds.trigger_environment("features/steel_door_close",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+            break;
+          case 358:
+            f.remove = true;
+            new_f = new Feature(362, f.x, f.y, true);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            global.sounds.trigger_environment("features/steel_door_close",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+            break;
+          case 359: // door closed (up)
+            f.remove = true;
+            if (f.toggle) {
+              new_f = new Feature(352, f.x, f.y);
+            }
+            else {
+              new_f = new Feature(351, f.x, f.y);
+            }
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            global.sounds.trigger_environment("features/steel_door_open",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+            break;
+          case 360: // door closed (left)
+            f.remove = true;
+            if (f.toggle) {
+              new_f = new Feature(354, f.x, f.y);
+            }
+            else {
+              new_f = new Feature(353, f.x, f.y);
+            }
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            global.sounds.trigger_environment("features/steel_door_open",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+            break;
+          case 361: // door closed (diagonal left)
+            f.remove = true;
+            if (f.toggle) {
+              new_f = new Feature(356, f.x, f.y);
+            }
+            else {
+              new_f = new Feature(355, f.x, f.y);
+            }
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            global.sounds.trigger_environment("features/steel_door_open",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+            break;
+          case 362: // door closed (diagonal right)
+            f.remove = true;
+            if (f.toggle) {
+              new_f = new Feature(358, f.x, f.y);
+            }
+            else {
+              new_f = new Feature(357, f.x, f.y);
+            }
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            global.sounds.trigger_environment("features/steel_door_open",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+            break;
+          case 363: // door locked (up)
+            if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
+              if (h.weapon() != null && h.weapon().type.equals("Key")) {
+                this.currMap.addHeaderMessage("The key doesn't unlock this door");
+              }
+              else {
+                this.currMap.addHeaderMessage("The door is locked");
+              }
+              break;
+            }
+            f.remove = true;
+            new_f = new Feature(359, f.x, f.y, f.toggle);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            global.sounds.trigger_environment("features/steel_door_unlock",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+            break;
+          case 364: // door locked (left)
+            if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
+              if (h.weapon() != null && h.weapon().type.equals("Key")) {
+                this.currMap.addHeaderMessage("The key doesn't unlock this door");
+              }
+              else {
+                this.currMap.addHeaderMessage("The door is locked");
+              }
+              break;
+            }
+            f.remove = true;
+            new_f = new Feature(360, f.x, f.y, f.toggle);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            global.sounds.trigger_environment("features/steel_door_unlock",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+            break;
+          case 365: // door locked (diagonal left)
+            if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
+              if (h.weapon() != null && h.weapon().type.equals("Key")) {
+                this.currMap.addHeaderMessage("The key doesn't unlock this door");
+              }
+              else {
+                this.currMap.addHeaderMessage("The door is locked");
+              }
+              break;
+            }
+            f.remove = true;
+            new_f = new Feature(361, f.x, f.y, f.toggle);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            global.sounds.trigger_environment("features/steel_door_unlock",
+              f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+            break;
+          case 366: // door locked (diagonal right)
+            if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
+              if (h.weapon() != null && h.weapon().type.equals("Key")) {
+                this.currMap.addHeaderMessage("The key doesn't unlock this door");
+              }
+              else {
+                this.currMap.addHeaderMessage("The door is locked");
+              }
+              break;
+            }
+            f.remove = true;
+            new_f = new Feature(362, f.x, f.y, f.toggle);
+            this.currMap.addFeature(new_f);
+            new_f.hovered = true;
+            this.currMap.hovered_object = new_f;
+            global.sounds.trigger_environment("features/steel_door_unlock",
               f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
         }

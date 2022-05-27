@@ -138,6 +138,22 @@ Door, locked, up: 343
 Door, locked, left: 344
 Door, locked, diagonal left: 345
 Door, locked, diagonal right: 346
+Steel Door, open, up, left hinges: 351
+Steel Door, open, up, right hinges: 352
+Steel Door, open, left, up hinges: 353
+Steel Door, open, left, down hinges: 354
+Steel Door, open, diagonal left, up hinges: 355
+Steel Door, open, diagonal left, down hinges: 356
+Steel Door, open, diagonal right, up hinges: 357
+Steel Door, open, diagonal right, down hinges: 358
+Steel Door, closed, up: 359
+Steel Door, closed, left: 360
+Steel Door, closed, diagonal left: 361
+Steel Door, closed, diagonal right: 362
+Steel Door, locked, up: 363
+Steel Door, locked, left: 364
+Steel Door, locked, diagonal left: 365
+Steel Door, locked, diagonal right: 366
 
 Dandelion: 401
 Gravel, pebbles: 411

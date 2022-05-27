@@ -1,7 +1,6 @@
 v0.7.3: Francis Hall
  - put mousemove calculation in thread if it will be so expensive (it seems more expensive than moving)
  Add features:
-   - Steel doors (cannot break)
    - Fix chair images
    - Countertop
    - Mirror
