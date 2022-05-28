@@ -377,6 +377,10 @@ class Item extends MapObject {
         this.setStrings("Lord's Day Papers", "Household Item", "");
         this.tier = 2;
         break;
+      case 2166:
+        this.setStrings("Wooden Horse", "Household Item", "");
+        this.tier = 3;
+        break;
 
       // Melee Weapons
       case 2201:
@@ -394,14 +398,14 @@ class Item extends MapObject {
         this.setStrings("Knife", "Melee Weapon", "");
         this.attack = 2;
         this.attackRange = 0.01;
-        this.piercing = 4;
+        this.piercing = 0.04;
         this.size = 0.3;
         break;
       case 2204:
         this.setStrings("Decoy", "Melee Weapon", "");
         this.attack = 3;
         this.attackRange = 0.08;
-        this.piercing = 6;
+        this.piercing = 0.06;
         this.size = 0.3;
         break;
       case 2211:
@@ -409,7 +413,7 @@ class Item extends MapObject {
         this.tier = 7;
         this.attack = 1;
         this.attackRange = 0.15;
-        this.piercing = 8;
+        this.piercing = 0.08;
         this.size = 0.32;
         break;
       case 2212:
@@ -417,7 +421,7 @@ class Item extends MapObject {
         this.tier = 4;
         this.attack = 1;
         this.attackRange = 0.05;
-        this.piercing = 8;
+        this.piercing = 0.08;
         this.size = 0.33;
         break;
       case 2213:
@@ -425,7 +429,7 @@ class Item extends MapObject {
         this.tier = 5;
         this.attack = 1;
         this.attackRange = 0.3;
-        this.piercing = 18;
+        this.piercing = 0.18;
         this.speed = -0.8;
         this.size = 0.36;
         break;
@@ -442,7 +446,7 @@ class Item extends MapObject {
         this.tier = 2;
         this.attack = 8;
         this.attackRange = 5;
-        this.piercing = 15;
+        this.piercing = 0.15;
         this.size = 0.3;
         break;
       case 2312:
@@ -997,6 +1001,21 @@ class Item extends MapObject {
         this.setStrings("Barbed Wire", "Material", "");
         this.tier = 2;
         break;
+      case 2816:
+        this.setStrings("Wooden Plank", "Material", "");
+        this.tier = 2;
+        this.attack = 2.4;
+        this.attackRange = 0.8;
+        this.speed = -0.8;
+        this.size = 0.48;
+        break;
+      case 2817:
+        this.setStrings("Wooden Handle", "Material", "");
+        this.tier = 2;
+        this.attack = 2.8;
+        this.attackRange = 0.5;
+        this.size = 0.3;
+        break;
       case 2821:
         this.setStrings("Calcite Ore", "Material", "");
         this.tier = 3;
@@ -1145,7 +1164,7 @@ class Item extends MapObject {
       case 2924:
         this.setStrings("Glass Bottle", "Utility", "");
         this.attack = 1;
-        this.piercing = 6;
+        this.piercing = 0.06;
         break;
       case 2925:
         this.setStrings("Water Bottle", "Utility", "");
@@ -1173,7 +1192,7 @@ class Item extends MapObject {
       case 2932:
         this.setStrings("Arrow", "Ammo", "");
         this.attack = 1;
-        this.piercing = 5;
+        this.piercing = 0.05;
         break;
       case 2933:
         this.setStrings("Pebble", "Ammo", "");
@@ -1352,7 +1371,10 @@ class Item extends MapObject {
       case 2992:
         this.setStrings("Soldier's Covenant", "Rare Object", "");
         this.tier = 2;
-        this.size = 0.22;
+        break;
+      case 2993:
+        this.setStrings("Jonah Plush Toy", "Rare Object", "");
+        this.tier = 3;
         break;
 
       default:
@@ -1651,6 +1673,9 @@ class Item extends MapObject {
         break;
       case 2165:
         path += "lords_day_papers.png";
+        break;
+      case 2166:
+        path += "wooden_horse.png";
         break;
       // Melee Weapons
       case 2201:
@@ -2010,6 +2035,12 @@ class Item extends MapObject {
       case 2815:
         path += "barbed_wire.png";
         break;
+      case 2816:
+        path += "wooden_plank.png";
+        break;
+      case 2817:
+        path += "wooden_handle.png";
+        break;
       case 2821:
         path += "calcite_ore.png";
         break;
@@ -2289,6 +2320,9 @@ class Item extends MapObject {
       case 2992:
         path += "soldiers_covenant.png";
         break;
+      case 2993:
+        path += "jonah_plush_toy.png";
+        break;
       default:
         global.errorMessage("ERROR: Item ID " + ID + " not found.");
         path += "default.png";
@@ -2450,6 +2484,8 @@ class Item extends MapObject {
       case 2891: // diamond ore
       case 2892: // diamond
         return 60;
+      case 2816: // wooden plank
+        return 4;
       case 2911: // pen
       case 2912: // pencil
       case 2913: // paper
