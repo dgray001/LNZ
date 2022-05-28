@@ -1580,21 +1580,35 @@ class WorkbenchInventory extends Inventory {
 
     void update(int timeElapsed) {
       super.update(timeElapsed);
-      if (this.hovered && WorkbenchInventory.this.crafting_recipe != null) {
-        String message_text = "Tools Needed:";
-        for (ToolCode code : WorkbenchInventory.this.crafting_recipe.tools) {
+      if (this.hovered) {
+        String message_text = "";
+        if (WorkbenchInventory.this.slots.get(4).item != null) {
+          message_text = WorkbenchInventory.this.slots.get(4).item.display_name() + " Will Add:";
+          for (ToolCode code : ToolCode.toolCodesFrom(WorkbenchInventory.this.slots.get(4).item)) {
+            message_text += "\n - " + code.displayName();
+          }
+          message_text += "\n\n";
+        }
+        if (WorkbenchInventory.this.crafting_recipe != null) {
+          message_text = "Tools Needed:";
+          for (ToolCode code : WorkbenchInventory.this.crafting_recipe.tools) {
+            message_text += "\n - " + code.displayName();
+          }
+          message_text += "\n\n";
+        }
+        message_text += "Tools Have:";
+        for (ToolCode code : WorkbenchInventory.this.tool_list) {
           message_text += "\n - " + code.displayName();
         }
-        message_text += "\n\nTools Have:";
-        for (ToolCode code : WorkbenchInventory.this.currentTools()) {
-          message_text += "\n - " + code.displayName();
+        String title_text = "Workbench";
+        if (WorkbenchInventory.this.craftable_item != null) {
+          title_text = WorkbenchInventory.this.craftable_item.display_name();
         }
         textSize(this.description.text_size);
-        float description_width = max(Constants.feature_workbenchMinimumToolsButtonWidth,
-          textWidth(WorkbenchInventory.this.craftable_item.display_name()) + 2);
+        float description_width = max(Constants.feature_workbenchMinimumToolsButtonWidth, textWidth(title_text) + 2);
         this.description.setXLocation(this.xf - description_width, this.xf);
         float description_height = textAscent() + textDescent() + 6;
-        this.description.setTitleText(WorkbenchInventory.this.craftable_item.display_name());
+        this.description.setTitleText(title_text);
         this.description.setText(message_text);
         description_height += (2 + this.description.text_lines.size()) *
           (textAscent() + textDescent() + this.description.text_leading);
@@ -1603,14 +1617,38 @@ class WorkbenchInventory extends Inventory {
       }
     }
 
-    void dehover() {}
-    void hover() {}
+    void dehover() {
+      this.message = "Tools";
+    }
+    void hover() {
+      if (WorkbenchInventory.this.slots.get(4).item != null) {
+        this.message = "Add\nTool";
+      }
+    }
     void click() {}
     void release() {
       if (!this.hovered) {
         return;
       }
-      // open crafting recipe form
+      Item i = WorkbenchInventory.this.slots.get(4).item;
+      if (i == null || i.remove) {
+        return;
+      }
+      ArrayList<ToolCode> codes = ToolCode.toolCodesFrom(i);
+      boolean has_all = true;
+      for (ToolCode code : codes) {
+        if (!WorkbenchInventory.this.tool_list.contains(code)) {
+          has_all = false;
+          WorkbenchInventory.this.tool_list.add(code);
+          break;
+        }
+      }
+      if (has_all) {
+        return;
+      }
+      WorkbenchInventory.this.setDescriptionFromTools();
+      WorkbenchInventory.this.slots.get(4).item = null;
+      i.remove = true;
     }
   }
 
@@ -1623,13 +1661,17 @@ class WorkbenchInventory extends Inventory {
   protected float last_mY = 0;
   private CraftButton craft = new CraftButton();
   private ToolsButton tools = new ToolsButton();
+  private ArrayList<ToolCode> tool_list = new ArrayList<ToolCode>();
+  private Feature f = null;
 
-  WorkbenchInventory() {
+  WorkbenchInventory(Feature f) {
     super(3, 6, true);
+    this.f = f;
     this.deactivateSlots();
     this.slots.get(0).deactivated = false;
     this.slots.get(1).deactivated = false;
     this.slots.get(2).deactivated = false;
+    this.slots.get(4).deactivated = false;
     this.slots.get(6).deactivated = false;
     this.slots.get(7).deactivated = false;
     this.slots.get(8).deactivated = false;
@@ -1639,8 +1681,29 @@ class WorkbenchInventory extends Inventory {
   }
 
 
-  ArrayList<ToolCode> currentTools() {
-    return ToolCode.toolCodesFrom();
+  void setToolsFromDescription(String description) {
+    this.tool_list.clear();
+    for (String s : split(description, ',')) {
+      ToolCode code = ToolCode.toolCodeFrom(trim(s));
+      if (code != null) {
+        this.tool_list.add(code);
+      }
+    }
+  }
+
+  void setDescriptionFromTools() {
+    String description = "Tools Available: ";
+    boolean first = true;
+    for (ToolCode code : this.tool_list) {
+      if (first) {
+        first = false;
+      }
+      else {
+        description += ", ";
+      }
+      description += code.displayName();
+    }
+    this.f.setDescription(description);
   }
 
 
@@ -1653,7 +1716,7 @@ class WorkbenchInventory extends Inventory {
       slots.get(11).item.stack < this.craftable_item.stack)) {
       return;
     }
-    if (!this.crafting_recipe.hasTools(this.currentTools())) {
+    if (!this.crafting_recipe.hasTools(this.tool_list)) {
       return;
     }
     this.slots.get(0).removeStack();
@@ -1682,8 +1745,7 @@ class WorkbenchInventory extends Inventory {
     this.craft.setLocation(2 + 3.5 * button_size, 2 + 2.1 * button_size,
       2 + 5 * button_size, 2 + 2.9 * button_size);
     this.craft.text_size = button_size * 0.35;
-    this.tools.setLocation(2 + 3.5 * button_size, 2 + 0.1 * button_size,
-      2 + 5 * button_size, 2 + 0.9 * button_size);
+    this.tools.setLocation(2 + 3 * button_size, 2, 2 + 4 * button_size, 2 + button_size);
     this.tools.text_size = button_size * 0.35;
   }
 
@@ -1697,11 +1759,15 @@ class WorkbenchInventory extends Inventory {
     super.update(timeElapsed);
     this.curr_crafting_hash_code = this.getCraftingHashCode();
     imageMode(CORNER);
+    if (this.slots.get(4).item == null) {
+      image(global.images.getImage("icons/tool.png"), 2 + 4 * this.button_size,
+        2, this.button_size, this.button_size);
+    }
     if (global.crafting_recipes.containsKey(this.curr_crafting_hash_code)) {
       this.crafting_recipe = global.crafting_recipes.get(this.curr_crafting_hash_code);
       this.craftable_item = new Item(this.crafting_recipe.output);
       this.craftable_item.stack = this.crafting_recipe.amount;
-      this.craft.disabled = !this.crafting_recipe.hasTools(this.currentTools());
+      this.craft.disabled = !this.crafting_recipe.hasTools(this.tool_list);
       if (this.craft.disabled) {
         image(global.images.getImage("icons/crafting_arrow_red.png"), 2 + 3.5 * this.button_size,
           2 + 1 * this.button_size, this.button_size, this.button_size);

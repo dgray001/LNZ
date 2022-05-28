@@ -1,6 +1,8 @@
 enum ToolCode {
   HAMMER, SAW, MECHANICAL_SAW;
 
+  private static final List<ToolCode> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+
   public String displayName() {
     return ToolCode.displayName(this);
   }
@@ -18,6 +20,15 @@ enum ToolCode {
       default:
         return "ERROR";
     }
+  }
+
+  public static ToolCode toolCodeFrom(String s) {
+    for (ToolCode code : ToolCode.VALUES) {
+      if (ToolCode.displayName(code).equals(s)) {
+        return code;
+      }
+    }
+    return null;
   }
 
   public static ArrayList<ToolCode> toolCodesFrom(Item i) {

@@ -137,9 +137,9 @@ class Feature extends MapObject {
         this.setSize(1, 1, 5);
         break;
       case 21:
-        this.setStrings("Workbench", "Tool", "Tools Available:\n");
+        this.setStrings("Workbench", "Tool", "Tools Available: ");
         this.setSize(1, 1, 3);
-        this.inventory = new WorkbenchInventory();
+        this.inventory = new WorkbenchInventory(this);
         break;
       case 22:
         this.setStrings("Ender Chest", "Tool", "");
@@ -605,6 +605,16 @@ class Feature extends MapObject {
   }
   String type() {
     return this.type;
+  }
+  void setDescription(String description) {
+    super.setDescription(description);
+    switch(this.ID) {
+      case 21: // workbench
+        try {
+          ((WorkbenchInventory)this.inventory).setToolsFromDescription(split(description, ':')[1]);
+        } catch(Exception e) {}
+        break;
+    }
   }
   String description() {
     switch(this.ID) {

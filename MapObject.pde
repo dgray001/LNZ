@@ -72,6 +72,9 @@ abstract class MapObject {
   abstract String display_name();
   abstract String type();
   abstract String description();
+  void setDescription(String description) {
+    this.description = description;
+  }
   abstract String selectedObjectTextboxText();
 
   abstract void setLocation(float x, float y);
@@ -196,7 +199,7 @@ abstract class MapObject {
         this.remove = toBoolean(data);
         return true;
       case "description":
-        this.description = data;
+        this.setDescription(data);
         return true;
     }
     return false;
