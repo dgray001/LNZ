@@ -2527,6 +2527,9 @@ class Unit extends MapObject {
     u.damage(this, u.calculateDamageFrom(this, power, DamageType.PHYSICAL, this.element));
     this.timer_attackCooldown = this.attackCooldown(true);
     this.attackSound();
+    if (this.weapon() != null) {
+      this.weapon().attacked();
+    }
   }
 
 

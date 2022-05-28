@@ -44,6 +44,12 @@ class Inventory {
       this.button = new InventoryButton(button_size);
     }
 
+    void removeStack() {
+      if (this.item != null) {
+        this.item.removeStack();
+      }
+    }
+
     float width() {
       return this.button.button_width();
     }

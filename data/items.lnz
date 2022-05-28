@@ -49,6 +49,10 @@ Foam Sword: 2201
 Pan: 2202
 Knife: 2203
 Decoy: 2204
+Wooden Sword: 2205
+Talc Sword: 2206
+Wooden Spear: 2207
+Talc Spear: 2208
 The Thing: 2211
 Machete: 2212
 Spear: 2213
@@ -165,6 +169,7 @@ Selenite Crystal: 2814
 Barbed Wire: 2815
 Wooden Plank: 2816
 Wooden Handle: 2817
+Wooden Piece: 2818
 Calcite Ore: 2821
 Calcite Crystal: 2822
 Chalk: 2823

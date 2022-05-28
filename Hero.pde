@@ -636,71 +636,157 @@ class Hero extends Unit {
   }
 
   class CraftingInventory extends Inventory {
+    class CraftButton extends RectangleButton {
+      CraftButton() {
+        super(0, 0, 0, 0);
+        this.disabled = true;
+        this.show_message = true;
+        this.message = "Craft";
+        this.noStroke();
+        this.setColors(color(170, 170), color(1, 0), color(200, 100), color(200,
+          200), color(0));
+      }
+
+      void dehover(){}
+      void hover() {}
+      void click() {}
+      void release() {
+        if (!this.hovered) {
+          return;
+        }
+        if (CraftingInventory.this.craftable_item == null) {
+          return;
+        }
+        CraftingInventory.this.craft();
+      }
+    }
+
     private int curr_crafting_hash_code = 0;
     private Item craftable_item = null;
+    private CraftButton craft = new CraftButton();
 
     CraftingInventory() {
-      super(5, 7, true);
+      super(3, 6, true);
       this.deactivateSlots();
+      this.slots.get(0).deactivated = false;
+      this.slots.get(1).deactivated = false;
+      this.slots.get(2).deactivated = false;
+      this.slots.get(6).deactivated = false;
+      this.slots.get(7).deactivated = false;
       this.slots.get(8).deactivated = false;
-      this.slots.get(9).deactivated = false;
+      this.slots.get(12).deactivated = false;
+      this.slots.get(13).deactivated = false;
+      this.slots.get(14).deactivated = false;
+    }
+
+
+    void craft() {
+      if (this.craftable_item == null) {
+        return;
+      }
+      if (this.slots.get(10).item != null && this.slots.get(10).item.ID != this.craftable_item.ID) {
+        return;
+      }
+      this.slots.get(0).removeStack();
+      this.slots.get(1).removeStack();
+      this.slots.get(2).removeStack();
+      this.slots.get(6).removeStack();
+      this.slots.get(7).removeStack();
+      this.slots.get(8).removeStack();
+      this.slots.get(12).removeStack();
+      this.slots.get(13).removeStack();
+      this.slots.get(14).removeStack();
+      if (this.slots.get(10).item == null) {
+        this.slots.get(10).item = this.craftable_item;
+      }
+      else {
+        this.slots.get(10).item.addStack(this.craftable_item.stack);
+      }
       this.slots.get(10).deactivated = false;
-      this.slots.get(15).deactivated = false;
-      this.slots.get(16).deactivated = false;
-      this.slots.get(17).deactivated = false;
-      this.slots.get(22).deactivated = false;
-      this.slots.get(23).deactivated = false;
-      this.slots.get(24).deactivated = false;
+      this.craftable_item = null;
+    }
+
+
+    @Override
+    void setButtonSize(float button_size) {
+      super.setButtonSize(button_size);
+      this.craft.setLocation(2 + 3.5 * button_size, 2 + 2.1 * button_size,
+        2 + 5 * button_size, 2 + 2.9 * button_size);
+      this.craft.text_size = button_size * 0.35;
     }
 
     @Override
     void update(int timeElapsed) {
+      if (!this.slots.get(10).deactivated && this.slots.get(10).item == null) {
+        this.slots.get(10).deactivated = true;
+      }
       super.update(timeElapsed);
       this.curr_crafting_hash_code = this.getCraftingHashCode();
       imageMode(CORNER);
       if (global.crafting_recipes.containsKey(this.curr_crafting_hash_code)) {
-        this.craftable_item = new Item(global.crafting_recipes.get(this.curr_crafting_hash_code).output);
-        image(global.images.getImage("icons/crafting_arrow_craftable.png"), 2 + 4.5 * this.button_size,
-          2 + 2 * this.button_size, this.button_size, this.button_size);
-        image(this.craftable_item.getImage(), 2 + 6 * this.button_size,
-          2 + 2 * this.button_size, this.button_size, this.button_size);
+        CraftingRecipe recipe = global.crafting_recipes.get(this.curr_crafting_hash_code);
+        this.craftable_item = new Item(recipe.output);
+        this.craftable_item.stack = recipe.amount;
+        image(global.images.getImage("icons/crafting_arrow_craftable.png"), 2 + 3.5 * this.button_size,
+          2 + 1 * this.button_size, this.button_size, this.button_size);
+        image(this.craftable_item.getImage(), 2 + 5 * this.button_size,
+          2 + 1 * this.button_size, this.button_size, this.button_size);
       }
       else {
         this.craftable_item = null;
-        image(global.images.getImage("icons/crafting_arrow.png"), 2 + 4.5 * this.button_size,
-          2 + 2 * this.button_size, this.button_size, this.button_size);
+        image(global.images.getImage("icons/crafting_arrow.png"), 2 + 3.5 * this.button_size,
+          2 + 1 * this.button_size, this.button_size, this.button_size);
       }
+      this.craft.update(timeElapsed);
+    }
+
+    @Override
+    void mouseMove(float mX, float mY) {
+      super.mouseMove(mX, mY);
+      this.craft.mouseMove(mX, mY);
+    }
+
+    @Override
+    void mousePress() {
+      super.mousePress();
+      this.craft.mousePress();
+    }
+
+    @Override
+    void mouseRelease(float mX, float mY) {
+      super.mouseRelease(mX, mY);
+      this.craft.mouseRelease(mX, mY);
     }
 
     @Override
     int getCraftingHashCode() {
       int[][] item_grid = new int[3][3];
+      if (this.slots.get(0).item != null) {
+        item_grid[0][0] = this.slots.get(0).item.ID;
+      }
+      if (this.slots.get(1).item != null) {
+        item_grid[0][1] = this.slots.get(1).item.ID;
+      }
+      if (this.slots.get(2).item != null) {
+        item_grid[0][2] = this.slots.get(2).item.ID;
+      }
+      if (this.slots.get(6).item != null) {
+        item_grid[1][0] = this.slots.get(6).item.ID;
+      }
+      if (this.slots.get(7).item != null) {
+        item_grid[1][1] = this.slots.get(7).item.ID;
+      }
       if (this.slots.get(8).item != null) {
-        item_grid[0][0] = this.slots.get(8).item.ID;
+        item_grid[1][2] = this.slots.get(8).item.ID;
       }
-      if (this.slots.get(9).item != null) {
-        item_grid[0][1] = this.slots.get(9).item.ID;
+      if (this.slots.get(12).item != null) {
+        item_grid[2][0] = this.slots.get(12).item.ID;
       }
-      if (this.slots.get(10).item != null) {
-        item_grid[0][2] = this.slots.get(10).item.ID;
+      if (this.slots.get(13).item != null) {
+        item_grid[2][1] = this.slots.get(13).item.ID;
       }
-      if (this.slots.get(15).item != null) {
-        item_grid[1][0] = this.slots.get(15).item.ID;
-      }
-      if (this.slots.get(16).item != null) {
-        item_grid[1][1] = this.slots.get(16).item.ID;
-      }
-      if (this.slots.get(17).item != null) {
-        item_grid[1][2] = this.slots.get(17).item.ID;
-      }
-      if (this.slots.get(22).item != null) {
-        item_grid[2][0] = this.slots.get(22).item.ID;
-      }
-      if (this.slots.get(23).item != null) {
-        item_grid[2][1] = this.slots.get(23).item.ID;
-      }
-      if (this.slots.get(24).item != null) {
-        item_grid[2][2] = this.slots.get(24).item.ID;
+      if (this.slots.get(14).item != null) {
+        item_grid[2][2] = this.slots.get(14).item.ID;
       }
       return Arrays.deepHashCode(reduceItemGrid(item_grid));
     }

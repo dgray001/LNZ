@@ -2,8 +2,7 @@ v0.7.3: Francis Hall
  - put mousemove calculation in thread if it will be so expensive (it seems more expensive than moving)
  Add items:
    - More misc tools: metal pipe
-   - More melee weapons: wooden sword, wooden spear, wooden knife, compound bow, crossbow
-   - Misc materials: wooden piece
+   - More melee weapons: compound bow, crossbow
    - Offhand items: quiver which reloads bow much faster and makes it shoot faster
  Add units:
    - Various named zombies for francis hall

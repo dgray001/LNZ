@@ -1,9 +1,18 @@
+enum ToolCode {
+  HAMMER, SAW, MECHANICAL_SAW;
+}
+
+
 class CraftingRecipe {
   private final int[][] ingredients;
   private final int output;
-  CraftingRecipe(int[][] ingredients, int output) {
+  private final int amount;
+  private final ToolCode[] tools;
+  CraftingRecipe(int[][] ingredients, int output, int amount, ToolCode[] tools) {
     this.ingredients = ingredients;
     this.output = output;
+    this.amount = amount;
+    this.tools = tools;
   }
 }
 
@@ -95,9 +104,39 @@ int[][] reduceItemGrid(int[][] item_grid) {
 HashMap<Integer, CraftingRecipe> getAllCraftingRecipes() {
   HashMap<Integer, CraftingRecipe> all_recipes = new HashMap<Integer, CraftingRecipe>();
   int[][] ingredients;
+
+  // paper => crumpled paper
   ingredients = new int[][]{{2913}};
-  all_recipes.put(Arrays.deepHashCode(ingredients), new CraftingRecipe(ingredients, 2916));
+  all_recipes.putIfAbsent(Arrays.deepHashCode(ingredients), new CraftingRecipe(
+    ingredients, 2916, 1, new ToolCode[]{}));
+  // lords day candle
   ingredients = new int[][]{{2163}, {2162}};
-  all_recipes.put(Arrays.deepHashCode(ingredients), new CraftingRecipe(ingredients, 2164));
+  all_recipes.putIfAbsent(Arrays.deepHashCode(ingredients), new CraftingRecipe(
+    ingredients, 2164, 1, new ToolCode[]{}));
+
+  // ### Materials
+  // wooden planks
+  ingredients = new int[][]{{2969}};
+  all_recipes.putIfAbsent(Arrays.deepHashCode(ingredients), new CraftingRecipe(
+    ingredients, 2816, 2, new ToolCode[]{}));
+  // wooden piece
+  ingredients = new int[][]{{2816}};
+  all_recipes.putIfAbsent(Arrays.deepHashCode(ingredients), new CraftingRecipe(
+    ingredients, 2818, 4, new ToolCode[]{}));
+  // wooden handle
+  ingredients = new int[][]{{2818}};
+  all_recipes.putIfAbsent(Arrays.deepHashCode(ingredients), new CraftingRecipe(
+    ingredients, 2817, 1, new ToolCode[]{}));
+
+  // ### Melee Weapons
+  // wooden sword
+  ingredients = new int[][]{{2818}, {2818}, {2817}};
+  all_recipes.putIfAbsent(Arrays.deepHashCode(ingredients), new CraftingRecipe(
+    ingredients, 2205, 1, new ToolCode[]{}));
+  // wooden spear
+  ingredients = new int[][]{{2818}, {2817}, {2817}};
+  all_recipes.putIfAbsent(Arrays.deepHashCode(ingredients), new CraftingRecipe(
+    ingredients, 2207, 1, new ToolCode[]{}));
+
   return all_recipes;
 }

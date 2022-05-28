@@ -386,48 +386,75 @@ class Item extends MapObject {
       case 2201:
         this.setStrings("Foam Sword", "Melee Weapon", "");
         this.attack = 1;
-        this.attackRange = 0.15;
+        this.attackRange = 0.12;
         this.size = 0.3;
         break;
       case 2202:
         this.setStrings("Pan", "Melee Weapon", "");
-        this.attack = 1;
+        this.attack = 1.5;
         this.attackRange = 0.02;
         break;
       case 2203:
         this.setStrings("Knife", "Melee Weapon", "");
-        this.attack = 2;
+        this.attack = 3;
         this.attackRange = 0.01;
         this.piercing = 0.04;
         this.size = 0.3;
         break;
       case 2204:
         this.setStrings("Decoy", "Melee Weapon", "");
-        this.attack = 3;
-        this.attackRange = 0.08;
+        this.attack = 5;
+        this.attackRange = 0.1;
         this.piercing = 0.06;
+        this.size = 0.3;
+        break;
+      case 2205:
+        this.setStrings("Wooden Sword", "Melee Weapon", "");
+        this.attack = 2.5;
+        this.attackRange = 0.15;
+        this.piercing = 0.01;
+        this.size = 0.3;
+        break;
+      case 2206:
+        this.setStrings("Talc Sword", "Melee Weapon", "");
+        this.attack = 2;
+        this.attackRange = 0.15;
+        this.size = 0.3;
+        break;
+      case 2207:
+        this.setStrings("Wooden Spear", "Melee Weapon", "");
+        this.attack = 2;
+        this.attackRange = 0.35;
+        this.piercing = 0.04;
+        this.size = 0.3;
+        break;
+      case 2208:
+        this.setStrings("Talc Spear", "Melee Weapon", "");
+        this.attack = 1.7;
+        this.attackRange = 0.35;
+        this.piercing = 0.03;
         this.size = 0.3;
         break;
       case 2211:
         this.setStrings("The Thing", "Melee Weapon", "");
+        this.attack = 2;
         this.tier = 7;
-        this.attack = 1;
         this.attackRange = 0.15;
         this.piercing = 0.08;
         this.size = 0.32;
         break;
       case 2212:
         this.setStrings("Machete", "Melee Weapon", "");
-        this.tier = 4;
-        this.attack = 1;
+        this.tier = 2;
+        this.attack = 4.5;
         this.attackRange = 0.05;
         this.piercing = 0.08;
         this.size = 0.33;
         break;
       case 2213:
         this.setStrings("Spear", "Melee Weapon", "");
-        this.tier = 5;
-        this.attack = 1;
+        this.tier = 2;
+        this.attack = 5;
         this.attackRange = 0.3;
         this.piercing = 0.18;
         this.speed = -0.8;
@@ -1005,7 +1032,7 @@ class Item extends MapObject {
         this.setStrings("Wooden Plank", "Material", "");
         this.tier = 2;
         this.attack = 2.4;
-        this.attackRange = 0.8;
+        this.attackRange = 0.6;
         this.speed = -0.8;
         this.size = 0.48;
         break;
@@ -1013,7 +1040,14 @@ class Item extends MapObject {
         this.setStrings("Wooden Handle", "Material", "");
         this.tier = 2;
         this.attack = 2.8;
-        this.attackRange = 0.5;
+        this.attackRange = 0.4;
+        this.size = 0.3;
+        break;
+      case 2818:
+        this.setStrings("Wooden Piece", "Material", "");
+        this.tier = 2;
+        this.attack = 0.5;
+        this.attackRange = 0.02;
         this.size = 0.3;
         break;
       case 2821:
@@ -1433,6 +1467,9 @@ class Item extends MapObject {
     if (this.health != 0) {
       text += "\nHealth: " + this.health;
     }
+    if (this.type.equals("Melee Weapon")) {
+      text += "\nDurability: " + this.ammo + "/" + this.maximumAmmo();
+    }
     if (this.type.equals("Ranged Weapon")) {
       text += "\nAmmo: " + this.ammo + "/" + this.maximumAmmo();
       if (this.shootAttack() != 0) {
@@ -1689,6 +1726,18 @@ class Item extends MapObject {
         break;
       case 2204:
         path += "decoy.png";
+        break;
+      case 2205:
+        path += "wooden_sword.png";
+        break;
+      case 2206:
+        path += "talc_sword.png";
+        break;
+      case 2207:
+        path += "wooden_spear.png";
+        break;
+      case 2208:
+        path += "talc_spear.png";
         break;
       case 2211:
         path += "the_thing.png";
@@ -2040,6 +2089,9 @@ class Item extends MapObject {
         break;
       case 2817:
         path += "wooden_handle.png";
+        break;
+      case 2818:
+        path += "wooden_piece.png";
         break;
       case 2821:
         path += "calcite_ore.png";
@@ -2745,6 +2797,9 @@ class Item extends MapObject {
     else {
       this.ammo--;
     }
+  }
+
+  void attacked() {
   }
 
 
