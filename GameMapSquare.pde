@@ -4,13 +4,36 @@ class GameMapSquare {
   private int terrain_id = 0;
   private boolean explored = false;
   private boolean visible = false;
-  private float light_level = 10; // unless otherwise stated
+  private float light_level = 10; // [0, 10]
+  private boolean light_source = false;
 
   GameMapSquare() {
     this.setTerrain(1);
   }
   GameMapSquare(int terrain_id) {
     this.setTerrain(terrain_id);
+  }
+
+  void updateLightLevel(GameMap map) {
+    float light = this.light_level - 1;
+    if (this.light_source) {
+      this.light_source = false;
+      light++;
+    }
+    if (map.base_light_level > light) {
+      light = map.base_light_level;
+    }
+    // from other squares
+    this.light_level = light;
+  }
+
+  color getColor(color fog_color) {
+    float light_factor = 0.1 * this.light_level; // [0, 1]
+    float r = (fog_color >> 16 & 0xFF) * light_factor;
+    float g = (fog_color >> 8 & 0xFF) * light_factor;
+    float b = (fog_color & 0xFF) * light_factor;
+    float a = alpha(fog_color) + (1 - light_factor) * (255 - alpha(fog_color));
+    return ccolor(r, g, b, a);
   }
 
   void setTerrain(int id) {

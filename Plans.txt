@@ -1,4 +1,10 @@
 v0.7.3: Francis Hall
+ w: level triggers light updates (200ms)
+ x: light sources
+ y: lamp feature, electric lights
+ z: light switches in francis hall
+
+v0.7.4: Francis Hall level
  - put mousemove calculation in thread if it will be so expensive (it seems more expensive than moving)
  Add items:
    - More misc tools: metal pipe
@@ -10,7 +16,6 @@ v0.7.3: Francis Hall
    - Mike schmiesing, molly schmiesing, schmielet (schmielet is hero that you can unlock in francis hall level)
    - First BOIZ units who have captured molly schmiesing
 
-v0.7.4: Francis Hall triggers
 v0.7.5: Lev2 maps
 v0.7.6: Lev2 triggers
 v0.7.7: Lev3 maps

@@ -1918,6 +1918,9 @@ class Level {
       return;
     }
     if (this.currMap != null) {
+      if (this.respawning) {
+        this.currMap.terrain_display.filter(GRAY);
+      }
       this.currMap.update(millis);
       for (Map.Entry<Integer, Trigger> entry : this.triggers.entrySet()) {
         entry.getValue().update(timeElapsed, this);
@@ -1997,15 +2000,11 @@ class Level {
       }
     }
     if (this.respawning) {
-      rectMode(CORNERS);
-      noStroke();
-      fill(color(100, 100));
-      rect(this.xi, this.yi, this.xf, this.yf);
       fill(255);
-      textSize(55);
+      textSize(90);
       textAlign(CENTER, BOTTOM);
       text("You Died", 0.5 * width, 0.5 * height);
-      textSize(35);
+      textSize(45);
       textAlign(CENTER, TOP);
       text("Respawning in " + int(ceil(this.respawn_timer * 0.001)) + " s", 0.5 * width, 0.5 * height + 5);
     }

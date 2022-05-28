@@ -1581,21 +1581,20 @@ class Unit extends MapObject {
   }
 
 
+  void refreshPlayerSight(GameMap map) {
+    for (IntegerCoordinate coordinate : this.curr_squares_sight) {
+      map.setTerrainVisible(false, coordinate.x, coordinate.y);
+    }
+    this.curr_squares_sight = this.getSquaresSight(map);
+    for (IntegerCoordinate coordinate : this.curr_squares_sight) {
+      map.exploreTerrainAndVisible(coordinate.x, coordinate.y);
+    }
+  }
+
+
   void update(int timeElapsed, GameMap map) {
     // timers
     this.update(timeElapsed);
-    // fog logic for player units
-    if (this.map_key == 0) {
-      if (map.refresh_fog) {
-        for (IntegerCoordinate coordinate : this.curr_squares_sight) {
-          map.setTerrainVisible(false, coordinate.x, coordinate.y);
-        }
-        this.curr_squares_sight = this.getSquaresSight(map);
-        for (IntegerCoordinate coordinate : this.curr_squares_sight) {
-          map.exploreTerrainAndVisible(coordinate.x, coordinate.y);
-        }
-      }
-    }
     // ai logic for ai units
     if (this.ai_controlled) {
       this.aiLogic(timeElapsed, map);

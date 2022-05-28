@@ -434,8 +434,8 @@ class GameMap {
   protected ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
   protected ArrayList<VisualEffect> visualEffects = new ArrayList<VisualEffect>();
 
-  protected float timer_refresh_fog = Constants.map_timer_refresh_fog;
-  protected boolean refresh_fog = false;
+  protected float timer_refresh_fog = 0;
+  protected float base_light_level = 10;
 
   GameMap() {}
   GameMap(GameMapCode code, String folderPath) {
@@ -681,11 +681,14 @@ class GameMap {
       }
       this.squares[x][y].explored = true;
       if (refreshFogImage) {
-        if (this.squares[x][y].visible || this.squares[x][y].mapEdge()) {
+        if (this.squares[x][y].mapEdge()) {
           this.fog_dimg.colorGrid(Constants.color_transparent, x, y);
         }
+        else if (this.squares[x][y].visible) {
+          this.fog_dimg.colorGrid(this.squares[x][y].getColor(Constants.color_transparent), x, y);
+        }
         else {
-          this.fog_dimg.colorGrid(this.fogColor, x, y);
+          this.fog_dimg.colorGrid(this.squares[x][y].getColor(this.fogColor), x, y);
         }
       }
     }
@@ -702,7 +705,12 @@ class GameMap {
       this.squares[x][y].explored = true;
       this.squares[x][y].visible = true;
       if (refreshFogImage) {
-        this.fog_dimg.colorGrid(Constants.color_transparent, x, y);
+        if (this.squares[x][y].mapEdge()) {
+          this.fog_dimg.colorGrid(Constants.color_transparent, x, y);
+        }
+        else {
+          this.fog_dimg.colorGrid(this.squares[x][y].getColor(Constants.color_transparent), x, y);
+        }
       }
     }
     catch(IndexOutOfBoundsException e) {}
@@ -719,11 +727,14 @@ class GameMap {
       if (refreshFogImage) {
         if (!this.squares[x][y].explored) {
         }
-        else if (this.squares[x][y].visible || this.squares[x][y].mapEdge()) {
+        else if (this.squares[x][y].mapEdge()) {
           this.fog_dimg.colorGrid(Constants.color_transparent, x, y);
         }
+        else if (this.squares[x][y].visible) {
+          this.fog_dimg.colorGrid(this.squares[x][y].getColor(Constants.color_transparent), x, y);
+        }
         else {
-          this.fog_dimg.colorGrid(this.fogColor, x, y);
+          this.fog_dimg.colorGrid(this.squares[x][y].getColor(this.fogColor), x, y);
         }
       }
     }
@@ -1555,6 +1566,11 @@ class GameMap {
         refreshView = true;
       }
     }
+    this.timer_refresh_fog -= timeElapsed;
+    if (this.timer_refresh_fog < 0) {
+      this.timer_refresh_fog += Constants.map_timer_refresh_fog;
+      this.refreshFog();
+    }
     if (refreshView) {
       this.refreshDisplayMapParameters();
     }
@@ -1574,10 +1590,31 @@ class GameMap {
         this.headerMessages.remove(i);
       }
     }
-    this.timer_refresh_fog -= timeElapsed;
-    if (this.timer_refresh_fog < 0) {
-      this.timer_refresh_fog += Constants.map_timer_refresh_fog;
-      this.refresh_fog = true;
+  }
+
+
+  void refreshFog() {
+    for (int i = int(floor(this.startSquareX)) - 1; i <= int(ceil(this.startSquareX + this.visSquareX)); i++) {
+      for (int j = int(floor(this.startSquareY)) - 1; j <= int(ceil(this.startSquareY + this.visSquareY)); j++) {
+        try {
+          this.squares[i][j].updateLightLevel(this);
+          if (this.squares[i][j].mapEdge()) {
+            this.fog_dimg.colorGrid(Constants.color_transparent, i, j);
+          }
+          else if (this.squares[i][j].visible) {
+            this.fog_dimg.colorGrid(this.squares[i][j].getColor(Constants.color_transparent), i, j);
+          }
+          else if (this.squares[i][j].explored) {
+            this.fog_dimg.colorGrid(this.squares[i][j].getColor(this.fogColor), i, j);
+          }
+          else {
+            this.fog_dimg.colorGrid(this.squares[i][j].getColor(Constants.color_black), i, j);
+          }
+        } catch(ArrayIndexOutOfBoundsException e) {}
+      }
+    }
+    if (this.units.containsKey(0)) {
+      this.units.get(0).refreshPlayerSight(this);
     }
   }
 
@@ -1767,7 +1804,7 @@ class GameMap {
   void update(int millis) {
     int timeElapsed = millis - this.lastUpdateTime;
     this.updateMap(timeElapsed); // map and mapObject logic
-    this.updateView(timeElapsed); // if moving or zooming (daylight changes?)
+    this.updateView(timeElapsed); // if moving or zooming, check refresh_fog
     this.drawMap(); // everything visual
     this.lastUpdateTime = millis;
   }
