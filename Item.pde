@@ -367,11 +367,13 @@ class Item extends MapObject {
       case 2163:
         this.setStrings("Candle", "Household Item", "");
         this.size = 0.21;
+        this.ammo = 1200000;
         break;
       case 2164:
         this.setStrings("Lord's Day Candle", "Household Item", "");
         this.size = 0.55;
         this.tier = 2;
+        this.ammo = 1200000;
         break;
       case 2165:
         this.setStrings("Lord's Day Papers", "Household Item", "");
@@ -3686,7 +3688,25 @@ class Item extends MapObject {
       }
     }
     switch(this.ID) {
-      case 2928: // Cigar
+      case 2163: // candle
+        if (this.toggled) { // lit
+          this.ammo -= timeElapsed;
+          if (this.ammo < 0) {
+            this.toggled = false;
+            //this.remove = true;
+          }
+        }
+        break;
+      case 2164: // lords day candle
+        if (this.toggled) { // lit
+          this.ammo -= timeElapsed;
+          if (this.ammo < 0) {
+            this.toggled = false;
+            //this.remove = true;
+          }
+        }
+        break;
+      case 2928: // cigar
         if (this.toggled) { // lit
           this.ammo -= timeElapsed;
           if (this.ammo < 0) {

@@ -62,7 +62,23 @@ enum DayCycle {
   }
 
   public static float lightFraction(float time) {
-    return 1.0;
+    if (time > 21) {
+      return Constants.level_nightLightLevel;
+    }
+    else if (time > 20.5) {
+      return Constants.level_nightLightLevel + 2.0 * (21 - time) *
+        (Constants.level_dayLightLevel - Constants.level_nightLightLevel);
+    }
+    else if (time > 6.5) {
+      return Constants.level_dayLightLevel;
+    }
+    else if (time > 6) {
+      return Constants.level_nightLightLevel + 2.0 * (time - 6) *
+        (Constants.level_dayLightLevel - Constants.level_nightLightLevel);
+    }
+    else {
+      return Constants.level_nightLightLevel;
+    }
   }
 }
 
@@ -1142,6 +1158,10 @@ class Level {
         h.inventory.featureInventory(f.inventory);
         h.inventory.viewing = true;
         break;
+      case 180: // lamp
+        f.toggle = !f.toggle;
+        f.refresh_map_image = true;
+        break;
       case 181: // garbage can
         if (h.inventory.viewing) {
           break;
@@ -1918,6 +1938,7 @@ class Level {
       return;
     }
     if (this.currMap != null) {
+      this.currMap.base_light_level = DayCycle.lightFraction(this.time.value);
       if (this.respawning) {
         this.currMap.terrain_display.filter(GRAY);
       }

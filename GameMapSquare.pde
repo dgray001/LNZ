@@ -14,7 +14,7 @@ class GameMapSquare {
     this.setTerrain(terrain_id);
   }
 
-  void updateLightLevel(GameMap map) {
+  void updateLightLevel(GameMap map, int x, int y) {
     float light = this.light_level - 1;
     if (this.light_source) {
       this.light_source = false;
@@ -23,7 +23,30 @@ class GameMapSquare {
     if (map.base_light_level > light) {
       light = map.base_light_level;
     }
-    // from other squares
+    try {
+      float light_left = map.squares[x-1][y].light_level - 1;
+      if (light_left > light) {
+        light = light_left;
+      }
+    } catch(ArrayIndexOutOfBoundsException e) {}
+    try {
+      float light_right = map.squares[x+1][y].light_level - 1;
+      if (light_right > light) {
+        light = light_right;
+      }
+    } catch(ArrayIndexOutOfBoundsException e) {}
+    try {
+      float light_up = map.squares[x][y-1].light_level - 1;
+      if (light_up > light) {
+        light = light_up;
+      }
+    } catch(ArrayIndexOutOfBoundsException e) {}
+    try {
+      float light_down = map.squares[x][y+1].light_level - 1;
+      if (light_down > light) {
+        light = light_down;
+      }
+    } catch(ArrayIndexOutOfBoundsException e) {}
     this.light_level = light;
   }
 

@@ -82,6 +82,8 @@ class Feature extends MapObject {
   protected boolean toggle = false;
   protected Inventory inventory = null;
 
+  protected boolean refresh_map_image = false;
+
   Feature(int ID) {
     super(ID);
     switch(ID) {
@@ -348,6 +350,10 @@ class Feature extends MapObject {
       case 179:
         this.setStrings("TV", "Appliance", "");
         this.setSize(1, 1, 2);
+        break;
+      case 180:
+        this.setStrings("Lamp", "Appliance", "");
+        this.setSize(1, 2, 0);
         break;
       case 181:
         this.setStrings("Garbage Can", "Furniture", "");
@@ -876,6 +882,14 @@ class Feature extends MapObject {
       case 179:
         path += "tv.png";
         break;
+      case 180:
+        if (this.toggle) {
+          path += "lamp_on.png";
+        }
+        else {
+          path += "lamp.png";
+        }
+        break;
       case 181:
         path += "garbage_can.png";
         break;
@@ -1369,6 +1383,7 @@ class Feature extends MapObject {
       case 176: // washer
       case 177: // dryer
       case 178: // microwave
+      case 180: // lamp
       case 181: // garbage can
       case 182: // recycle can
       case 183: // crate
@@ -2246,6 +2261,25 @@ class Feature extends MapObject {
     }
   }
 
+
+  void update(int timeElapsed, GameMap map) {
+    this.update(timeElapsed);
+    switch(this.ID) {
+      case 180: // lamp
+        if (!toggle) {
+          break;
+        }
+        try {
+          map.squares[int(this.x)][int(this.y)].light_level = 9;
+          map.squares[int(this.x)][int(this.y)].light_source = true;
+          map.squares[int(this.x)][int(this.y + 1)].light_level = 9;
+          map.squares[int(this.x)][int(this.y + 1)].light_source = true;
+        } catch(ArrayIndexOutOfBoundsException e) {}
+        break;
+      default:
+        break;
+    }
+  }
 
   void update(int timeElapsed) {
     switch(this.ID) {

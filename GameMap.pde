@@ -805,6 +805,42 @@ class GameMap {
     this.refreshTerrainImage();
     this.features.remove(index);
   }
+  // refresh feature image (remove then add)
+  void refreshFeature(int index) {
+    if (index < 0 || index >= this.features.size()) {
+      return;
+    }
+    Feature f = this.features.get(index);
+    f.refresh_map_image = false;
+    if (!f.inMap(this.mapWidth, this.mapHeight)) {
+      return;
+    }
+    this.terrain_dimg.colorGrid(color(1, 0), int(round(f.x)), int(round(f.y)), f.sizeX, f.sizeY);
+    for (int i = int(round(f.xi())); i < int(round(f.xf())); i++) {
+      for (int j = int(round(f.yi())); j < int(round(f.yf())); j++) {
+        this.terrain_dimg.addImageGrid(this.squares[i][j].terrainImage(), i, j);
+      }
+    }
+    for (int i = 0; i < this.features.size(); i++) {
+      if (i == index) {
+        continue;
+      }
+      Feature f2 = this.features.get(i);
+      if (f2.x < f.x + f.sizeX && f2.y < f.y + f.sizeY && f2.x + f2.sizeX > f.x && f2.y + f2.sizeY > f.y) {
+        DImg dimg = new DImg(f2.getImage());
+        dimg.setGrid(f2.sizeX, f2.sizeY);
+        int xi_overlap = int(round(max(f.x, f2.x)));
+        int yi_overlap = int(round(max(f.y, f2.y)));
+        int w_overlap = int(round(min(f.xf() - xi_overlap, f2.xf() - xi_overlap)));
+        int h_overlap = int(round(min(f.yf() - yi_overlap, f2.yf() - yi_overlap)));
+        PImage imagePiece = dimg.getImageGridPiece(xi_overlap - int(round(f2.x)),
+          yi_overlap - int(round(f2.y)), w_overlap, h_overlap);
+        this.terrain_dimg.addImageGrid(imagePiece, xi_overlap, yi_overlap, w_overlap, h_overlap);
+      }
+    }
+    this.terrain_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.sizeX, f.sizeY);
+    this.refreshTerrainImage();
+  }
 
   // add unit
   void addUnit(Unit u, float x, float y) {
@@ -1154,6 +1190,11 @@ class GameMap {
       y_stats += line_height;
       text("Height: (" + this.units.get(0).curr_height + ", " + this.units.get(0).floor_height +
         ", " + this.units.get(0).unit_height + ")", this.xi + 1, y_stats);
+      try {
+        GameMapSquare square = this.squares[int(floor(this.units.get(0).x))][int(floor(this.units.get(0).y))];
+        y_stats += line_height;
+        text("Terrain: (" + square.terrainName() + ", " + square.light_level + ")", this.xi + 1, y_stats);
+      } catch(ArrayIndexOutOfBoundsException e) {}
     }
   }
 
@@ -1594,10 +1635,12 @@ class GameMap {
 
 
   void refreshFog() {
-    for (int i = int(floor(this.startSquareX)) - 1; i <= int(ceil(this.startSquareX + this.visSquareX)); i++) {
-      for (int j = int(floor(this.startSquareY)) - 1; j <= int(ceil(this.startSquareY + this.visSquareY)); j++) {
+    for (int i = max(int(floor(this.startSquareX)) - 8, 0); i <= min(int(ceil(
+      this.startSquareX + this.visSquareX)) + 8, this.mapWidth); i++) {
+      for (int j = max(int(floor(this.startSquareY)) - 8, 0); j <= min(int(ceil(
+        this.startSquareY + this.visSquareY)) + 8, this.mapHeight); j++) {
         try {
-          this.squares[i][j].updateLightLevel(this);
+          this.squares[i][j].updateLightLevel(this, i, j);
           if (this.squares[i][j].mapEdge()) {
             this.fog_dimg.colorGrid(Constants.color_transparent, i, j);
           }
@@ -1627,7 +1670,10 @@ class GameMap {
         i--;
         continue;
       }
-      this.features.get(i).update(timeElapsed);
+      this.features.get(i).update(timeElapsed, this);
+      if (features.get(i).refresh_map_image) {
+        this.refreshFeature(i);
+      }
       if (this.features.get(i).remove) {
         this.removeFeature(i);
         i--;
