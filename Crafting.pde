@@ -1,5 +1,57 @@
 enum ToolCode {
   HAMMER, SAW, MECHANICAL_SAW;
+
+  public String displayName() {
+    return ToolCode.displayName(this);
+  }
+  public static String displayName(ToolCode code) {
+    if (code == null) {
+      return "Null";
+    }
+    switch(code) {
+      case HAMMER:
+        return "Hammer";
+      case SAW:
+        return "Saw";
+      case MECHANICAL_SAW:
+        return "Mechanical Saw";
+      default:
+        return "ERROR";
+    }
+  }
+
+  public static ArrayList<ToolCode> toolCodesFrom(Item i) {
+    ArrayList<ToolCode> codes = new ArrayList<ToolCode>();
+    if (i == null) {
+      return codes;
+    }
+    switch(i.ID) {
+      case 2979: // saw
+        codes.add(ToolCode.SAW);
+        break;
+      case 2981: // roundsaw
+        codes.add(ToolCode.SAW);
+        codes.add(ToolCode.MECHANICAL_SAW);
+        break;
+      case 2983: // chainsaw
+        codes.add(ToolCode.SAW);
+        codes.add(ToolCode.MECHANICAL_SAW);
+        break;
+      default:
+        break;
+    }
+    return codes;
+  }
+
+  public static ArrayList<ToolCode> toolCodesFrom(Item ... items) {
+    Set<ToolCode> codes = new HashSet<ToolCode>();
+    for (Item i : items) {
+      for (ToolCode code : ToolCode.toolCodesFrom(i)) {
+        codes.add(code);
+      }
+    }
+    return new ArrayList<ToolCode>(codes);
+  }
 }
 
 
@@ -13,6 +65,14 @@ class CraftingRecipe {
     this.output = output;
     this.amount = amount;
     this.tools = tools;
+  }
+  boolean hasTools(ArrayList<ToolCode> codes) {
+    for (ToolCode code : this.tools) {
+      if (!codes.contains(code)) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 
@@ -118,15 +178,15 @@ HashMap<Integer, CraftingRecipe> getAllCraftingRecipes() {
   // wooden planks
   ingredients = new int[][]{{2969}};
   all_recipes.putIfAbsent(Arrays.deepHashCode(ingredients), new CraftingRecipe(
-    ingredients, 2816, 2, new ToolCode[]{}));
+    ingredients, 2816, 2, new ToolCode[]{ToolCode.MECHANICAL_SAW}));
   // wooden piece
   ingredients = new int[][]{{2816}};
   all_recipes.putIfAbsent(Arrays.deepHashCode(ingredients), new CraftingRecipe(
-    ingredients, 2818, 4, new ToolCode[]{}));
+    ingredients, 2818, 4, new ToolCode[]{ToolCode.SAW}));
   // wooden handle
   ingredients = new int[][]{{2818}};
   all_recipes.putIfAbsent(Arrays.deepHashCode(ingredients), new CraftingRecipe(
-    ingredients, 2817, 1, new ToolCode[]{}));
+    ingredients, 2817, 1, new ToolCode[]{ToolCode.SAW}));
 
   // ### Melee Weapons
   // wooden sword

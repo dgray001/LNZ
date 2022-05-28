@@ -1390,6 +1390,18 @@ class GameMap {
       i.disappearing = false;
     }
     this.items.put(code, i);
+    if (i.x - i.size - Constants.small_number < 0) {
+      i.x = i.size + Constants.small_number;
+    }
+    else if (i.x + i.size + Constants.small_number > this.mapWidth) {
+      i.x = this.mapWidth - i.size - Constants.small_number;
+    }
+    if (i.y - i.size - Constants.small_number < 0) {
+      i.y = i.size + Constants.small_number;
+    }
+    else if (i.y + i.size + Constants.small_number > this.mapHeight) {
+      i.y = this.mapHeight - i.size - Constants.small_number;
+    }
     i.map_key = code;
   }
   // remove item

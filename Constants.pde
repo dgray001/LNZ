@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\nAlpha v0.7.3p: 20220528" +
+  "\nAlpha v0.7.3q: 20220528" +
   "\nLines: 42233 (v0.7.3o)" +
   "\nImages: 1104 (v0.7.3)" +
   "\nSounds: 310 (v0.7.3)" +
@@ -209,6 +209,7 @@ static class Constants {
   static final float feature_bushDropChance = 0.5;
   static final float feature_vendingEatMoneyChance = 0.3;
   static final int feature_bedSleepTimer = 5000;
+  static final float feature_workbenchMinimumToolsButtonWidth = 350;
 
   // Units
   static final float unit_defaultSize = 0.35;

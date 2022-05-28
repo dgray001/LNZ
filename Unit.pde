@@ -575,34 +575,6 @@ class Unit extends MapObject {
     return null;
   }
 
-  boolean canEquip(GearSlot slot) {
-    if (this.gear.containsKey(slot) && this.gear.get(slot) == null) {
-      return true;
-    }
-    return false;
-  }
-
-  boolean canPickup() {
-    return this.canEquip(GearSlot.WEAPON);
-  }
-
-  void pickup(Item i) {
-    this.gear.put(GearSlot.WEAPON, i);
-  }
-
-  // True if holding one of these items
-  boolean holding(int ... item_ids) {
-    if (this.weapon() == null) {
-      return false;
-    }
-    for (int item_id : item_ids) {
-      if (this.weapon().ID == item_id) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   Item headgear() {
     if (this.gear.containsKey(GearSlot.HEAD)) {
       return this.gear.get(GearSlot.HEAD);
@@ -629,6 +601,42 @@ class Unit extends MapObject {
       return this.gear.get(GearSlot.FEET);
     }
     return null;
+  }
+
+  Item offhand() {
+    if (this.gear.containsKey(GearSlot.OFFHAND)) {
+      return this.gear.get(GearSlot.OFFHAND);
+    }
+    return null;
+  }
+
+
+  boolean canEquip(GearSlot slot) {
+    if (this.gear.containsKey(slot) && this.gear.get(slot) == null) {
+      return true;
+    }
+    return false;
+  }
+
+  boolean canPickup() {
+    return this.canEquip(GearSlot.WEAPON);
+  }
+
+  void pickup(Item i) {
+    this.gear.put(GearSlot.WEAPON, i);
+  }
+
+  // True if holding one of these items
+  boolean holding(int ... item_ids) {
+    if (this.weapon() == null) {
+      return false;
+    }
+    for (int item_id : item_ids) {
+      if (this.weapon().ID == item_id) {
+        return true;
+      }
+    }
+    return false;
   }
 
 
