@@ -635,6 +635,22 @@ class Hero extends Unit {
     }
   }
 
+  class CraftingInventory extends Inventory {
+    CraftingInventory() {
+      super(5, 8, true);
+      this.deactivateSlots();
+      this.slots.get(10).deactivated = false;
+      this.slots.get(11).deactivated = false;
+      this.slots.get(12).deactivated = false;
+      this.slots.get(18).deactivated = false;
+      this.slots.get(19).deactivated = false;
+      this.slots.get(20).deactivated = false;
+      this.slots.get(26).deactivated = false;
+      this.slots.get(27).deactivated = false;
+      this.slots.get(28).deactivated = false;
+    }
+  }
+
   class InventoryKey {
     private InventoryLocation location;
     private int index;
@@ -651,7 +667,7 @@ class Hero extends Unit {
 
     protected GearInventory gear_inventory = new GearInventory();
     protected Inventory feature_inventory = null;
-    // protected CraftingInventory crafting_inventory = new CraftingInventory(1, 1); // unlock 1,1 first then 1,2 (or 2,1) then 2,2
+    protected CraftingInventory crafting_inventory = new CraftingInventory();
 
     protected float last_mX = 0;
     protected float last_mY = 0;
@@ -689,6 +705,7 @@ class Hero extends Unit {
             }
             break;
           case CRAFTING:
+            this.item_dropping = this.crafting_inventory.placeAt(this.item_holding, this.item_origin.index);
             break;
         }
       }
@@ -736,6 +753,12 @@ class Hero extends Unit {
           }
           break;
         case CRAFTING:
+          for (int i = 0; i < this.crafting_inventory.slots.size(); i++) {
+            if (this.crafting_inventory.slots.get(i).item != null &&
+              this.crafting_inventory.slots.get(i).item.ID == item_id) {
+              return new InventoryKey(InventoryLocation.CRAFTING, i);
+            }
+          }
           break;
       }
       return null;
@@ -764,7 +787,7 @@ class Hero extends Unit {
           break;
         case CRAFTING:
           try {
-            //return this.cafting_inventory.slots.get(inventory_key.index).item;
+            return this.crafting_inventory.slots.get(inventory_key.index).item;
           } catch(Exception e) {}
           break;
       }
@@ -800,7 +823,7 @@ class Hero extends Unit {
           break;
         case CRAFTING:
           try {
-            //return this.cafting_inventory.slots.get(inventory_key.index).item;
+            this.crafting_inventory.slots.get(inventory_key.index).item = i;
           } catch(Exception e) {}
           break;
       }
@@ -817,9 +840,8 @@ class Hero extends Unit {
     @Override
     void setButtonSize(float button_size) {
       super.setButtonSize(button_size);
-      if (this.gear_inventory != null) {
-        this.gear_inventory.setButtonSize(button_size);
-      }
+      this.gear_inventory.setButtonSize(button_size);
+      this.crafting_inventory.setButtonSize(button_size);
       if (this.feature_inventory != null) {
         this.feature_inventory.setButtonSize(button_size);
       }
@@ -863,6 +885,12 @@ class Hero extends Unit {
       translate(gearInventoryTranslateX, gearInventoryTranslateY);
       this.gear_inventory.update(timeElapsed);
       translate(-gearInventoryTranslateX, -gearInventoryTranslateY);
+      // crafting
+      float craftingInventoryTranslateX = this.display_width + 2;
+      float craftingInventoryTranslateY = 0.5 * (this.display_height - this.crafting_inventory.display_height);
+      translate(craftingInventoryTranslateX, craftingInventoryTranslateY);
+      this.crafting_inventory.update(timeElapsed);
+      translate(-craftingInventoryTranslateX, -craftingInventoryTranslateY);
       // feature
       if (this.feature_inventory != null) {
         float featureInventoryTranslateX = 0.5 * (this.display_width - this.feature_inventory.display_width);
@@ -906,6 +934,13 @@ class Hero extends Unit {
       float gearInventoryTranslateY = 0.5 * (this.display_height - this.gear_inventory.display_height);
       this.gear_inventory.mouseMove(mX - gearInventoryTranslateX, mY - gearInventoryTranslateY);
       if (this.gear_inventory.hovered) {
+        this.any_hovered = true;
+      }
+      // crafting
+      float craftingInventoryTranslateX = this.display_width + 2;
+      float craftingInventoryTranslateY = 0.5 * (this.display_height - this.crafting_inventory.display_height);
+      this.crafting_inventory.mouseMove(mX - craftingInventoryTranslateX, mY - craftingInventoryTranslateY);
+      if (this.crafting_inventory.hovered) {
         this.any_hovered = true;
       }
       // feature
@@ -983,6 +1018,33 @@ class Hero extends Unit {
           }
         }
       }
+      // crafting
+      if (!found_clicked) {
+        for (int x = 0; x < this.crafting_inventory.max_cols; x++) {
+          for (int y = 0; y < this.crafting_inventory.max_rows; y++) {
+            int i = y * this.crafting_inventory.max_cols + x;
+            if (i >= this.crafting_inventory.slots.size()) {
+              break;
+            }
+            this.crafting_inventory.slots.get(i).mousePress();
+            if (this.crafting_inventory.slots.get(i).button.clicked) {
+              source_item = this.crafting_inventory.slots.get(i).item;
+              if (this.item_holding == null || this.item_holding.remove) {
+                this.item_origin = new InventoryKey(InventoryLocation.CRAFTING, i);
+                item_holding_x = this.display_width + 4 + (x + 0.5) * this.button_size;
+                item_holding_y = 0.5 * (this.display_height - this.crafting_inventory.
+                  display_height) + 2 + (y + 0.5) * this.button_size;
+              }
+              else {
+                // drop parts of item holding
+                return;
+              }
+              found_clicked = true;
+              break;
+            }
+          }
+        }
+      }
       // feature
       if (!found_clicked) {
         if (this.feature_inventory != null) {
@@ -1044,8 +1106,6 @@ class Hero extends Unit {
             break;
         }
         if (this.item_holding != null) {
-          this.item_holding.x = item_holding_x;
-          this.item_holding.y = item_holding_y;
           if (global.holding_shift) {
             switch(this.item_origin.location) {
               case INVENTORY:
@@ -1066,8 +1126,13 @@ class Hero extends Unit {
                 }
                 break;
               case CRAFTING:
+                this.item_holding = this.stash(this.item_holding);
                 break;
             }
+          }
+          if (this.item_holding != null) {
+            this.item_holding.x = item_holding_x;
+            this.item_holding.y = item_holding_y;
           }
         }
       }
@@ -1080,6 +1145,9 @@ class Hero extends Unit {
       float gearInventoryTranslateX = - this.gear_inventory.display_width - 2;
       float gearInventoryTranslateY = 0.5 * (this.display_height - this.gear_inventory.display_height);
       this.gear_inventory.mouseRelease(mX - gearInventoryTranslateX, mY - gearInventoryTranslateY);
+      float craftingInventoryTranslateX = this.display_width + 2;
+      float craftingInventoryTranslateY = 0.5 * (this.display_height - this.crafting_inventory.display_height);
+      this.crafting_inventory.mouseRelease(mX - craftingInventoryTranslateX, mY - craftingInventoryTranslateY);
       if (this.feature_inventory != null) {
         float featureInventoryTranslateX = 0.5 * (this.display_width - this.feature_inventory.display_width);
         float featureInventoryTranslateY = - this.feature_inventory.display_height - 2;
@@ -1109,6 +1177,18 @@ class Hero extends Unit {
         }
         if (this.gear_inventory.slots.get(i).button.hovered) {
           this.item_holding = this.gear_inventory.placeAt(this.item_holding, i, true);
+          found_hovered = true;
+          this.dropItemHolding();
+          break;
+        }
+      }
+      // crafting
+      if (found_hovered) {
+        return;
+      }
+      for (int i = 0; i < this.crafting_inventory.slots.size(); i++) {
+        if (this.crafting_inventory.slots.get(i).button.hovered) {
+          this.item_holding = this.crafting_inventory.placeAt(this.item_holding, i, true);
           found_hovered = true;
           this.dropItemHolding();
           break;

@@ -5,7 +5,6 @@ v0.7.3: Francis Hall
    - More melee weapons: wooden sword, wooden spear, wooden knife, compound bow, crossbow
    - Misc materials: wooden piece
    - Offhand items: quiver which reloads bow much faster and makes it shoot faster
-   - Images: signed covenant, lords day paper
  Add units:
    - Various named zombies for francis hall
    - Duggy for sitting and playing video games in room (zombie duggy just playing video games)

@@ -25,6 +25,7 @@ class Global {
   private PrintWriter log;
   private boolean focused_last_frame = true;
   private boolean viewing_ender_chest = false;
+  private HashMap<Integer, CraftingRecipe> crafting_recipes = getAllCraftingRecipes();
   // FPS
   private int lastFrameTime = millis();
   private float lastFPS = Constants.maxFPS;

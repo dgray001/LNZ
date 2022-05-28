@@ -1568,31 +1568,20 @@ class Feature extends MapObject {
       case 344:
       case 345:
       case 346:
-      case 351: // steel door
-      case 352:
-      case 353:
-      case 354:
-      case 355:
-      case 356:
-      case 357:
-      case 358:
-      case 359:
-      case 360:
-      case 361:
-      case 362:
-      case 363:
-      case 364:
-      case 365:
-      case 366:
         // wooden board, maybe nails / screws / wooden "piece" (small piece)
         break;
       case 421: // tree
       case 422:
       case 423:
       case 424:
-      case 425:
       case 426:
-        // wooden logs
+        id_list.add(2969);
+        id_list.add(2969);
+        break;
+      case 425: // tree (large)
+        id_list.add(2969);
+        id_list.add(2969);
+        id_list.add(2969);
         break;
       default:
         break;
