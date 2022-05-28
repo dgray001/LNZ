@@ -636,18 +636,73 @@ class Hero extends Unit {
   }
 
   class CraftingInventory extends Inventory {
+    private int curr_crafting_hash_code = 0;
+    private Item craftable_item = null;
+
     CraftingInventory() {
-      super(5, 8, true);
+      super(5, 7, true);
       this.deactivateSlots();
+      this.slots.get(8).deactivated = false;
+      this.slots.get(9).deactivated = false;
       this.slots.get(10).deactivated = false;
-      this.slots.get(11).deactivated = false;
-      this.slots.get(12).deactivated = false;
-      this.slots.get(18).deactivated = false;
-      this.slots.get(19).deactivated = false;
-      this.slots.get(20).deactivated = false;
-      this.slots.get(26).deactivated = false;
-      this.slots.get(27).deactivated = false;
-      this.slots.get(28).deactivated = false;
+      this.slots.get(15).deactivated = false;
+      this.slots.get(16).deactivated = false;
+      this.slots.get(17).deactivated = false;
+      this.slots.get(22).deactivated = false;
+      this.slots.get(23).deactivated = false;
+      this.slots.get(24).deactivated = false;
+    }
+
+    @Override
+    void update(int timeElapsed) {
+      super.update(timeElapsed);
+      this.curr_crafting_hash_code = this.getCraftingHashCode();
+      imageMode(CORNER);
+      if (global.crafting_recipes.containsKey(this.curr_crafting_hash_code)) {
+        this.craftable_item = new Item(global.crafting_recipes.get(this.curr_crafting_hash_code).output);
+        image(global.images.getImage("icons/crafting_arrow_craftable.png"), 2 + 4.5 * this.button_size,
+          2 + 2 * this.button_size, this.button_size, this.button_size);
+        image(this.craftable_item.getImage(), 2 + 6 * this.button_size,
+          2 + 2 * this.button_size, this.button_size, this.button_size);
+      }
+      else {
+        this.craftable_item = null;
+        image(global.images.getImage("icons/crafting_arrow.png"), 2 + 4.5 * this.button_size,
+          2 + 2 * this.button_size, this.button_size, this.button_size);
+      }
+    }
+
+    @Override
+    int getCraftingHashCode() {
+      int[][] item_grid = new int[3][3];
+      if (this.slots.get(8).item != null) {
+        item_grid[0][0] = this.slots.get(8).item.ID;
+      }
+      if (this.slots.get(9).item != null) {
+        item_grid[0][1] = this.slots.get(9).item.ID;
+      }
+      if (this.slots.get(10).item != null) {
+        item_grid[0][2] = this.slots.get(10).item.ID;
+      }
+      if (this.slots.get(15).item != null) {
+        item_grid[1][0] = this.slots.get(15).item.ID;
+      }
+      if (this.slots.get(16).item != null) {
+        item_grid[1][1] = this.slots.get(16).item.ID;
+      }
+      if (this.slots.get(17).item != null) {
+        item_grid[1][2] = this.slots.get(17).item.ID;
+      }
+      if (this.slots.get(22).item != null) {
+        item_grid[2][0] = this.slots.get(22).item.ID;
+      }
+      if (this.slots.get(23).item != null) {
+        item_grid[2][1] = this.slots.get(23).item.ID;
+      }
+      if (this.slots.get(24).item != null) {
+        item_grid[2][2] = this.slots.get(24).item.ID;
+      }
+      return Arrays.deepHashCode(reduceItemGrid(item_grid));
     }
   }
 

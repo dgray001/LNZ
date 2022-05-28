@@ -319,6 +319,12 @@ class Inventory {
   }
 
 
+  // default 0 means default inventories can't craft anything
+  int getCraftingHashCode() {
+    return 0;
+  }
+
+
   void drawBackground() {
     rectMode(CORNER);
     fill(this.color_background);
