@@ -1583,14 +1583,14 @@ class WorkbenchInventory extends Inventory {
       if (this.hovered) {
         String message_text = "";
         if (WorkbenchInventory.this.slots.get(4).item != null) {
-          message_text = WorkbenchInventory.this.slots.get(4).item.display_name() + " Will Add:";
+          message_text += WorkbenchInventory.this.slots.get(4).item.display_name() + " Will Add:";
           for (ToolCode code : ToolCode.toolCodesFrom(WorkbenchInventory.this.slots.get(4).item)) {
             message_text += "\n - " + code.displayName();
           }
           message_text += "\n\n";
         }
         if (WorkbenchInventory.this.crafting_recipe != null) {
-          message_text = "Tools Needed:";
+          message_text += "Tools Needed:";
           for (ToolCode code : WorkbenchInventory.this.crafting_recipe.tools) {
             message_text += "\n - " + code.displayName();
           }
@@ -1742,10 +1742,11 @@ class WorkbenchInventory extends Inventory {
   @Override
   void setButtonSize(float button_size) {
     super.setButtonSize(button_size);
+    this.slots.get(4).button.moveButton(0.5 * button_size, 0);
     this.craft.setLocation(2 + 3.5 * button_size, 2 + 2.1 * button_size,
       2 + 5 * button_size, 2 + 2.9 * button_size);
     this.craft.text_size = button_size * 0.35;
-    this.tools.setLocation(2 + 3 * button_size, 2, 2 + 4 * button_size, 2 + button_size);
+    this.tools.setLocation(2 + 3.5 * button_size, 2, 2 + 4.5 * button_size, 2 + button_size);
     this.tools.text_size = button_size * 0.35;
   }
 
@@ -1760,7 +1761,7 @@ class WorkbenchInventory extends Inventory {
     this.curr_crafting_hash_code = this.getCraftingHashCode();
     imageMode(CORNER);
     if (this.slots.get(4).item == null) {
-      image(global.images.getImage("icons/tool.png"), 2 + 4 * this.button_size,
+      image(global.images.getImage("icons/tool.png"), 2 + 4.5 * this.button_size,
         2, this.button_size, this.button_size);
     }
     if (global.crafting_recipes.containsKey(this.curr_crafting_hash_code)) {

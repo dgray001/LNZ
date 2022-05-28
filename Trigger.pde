@@ -544,6 +544,11 @@ class Effect {
       case 53: // give unit status effect
       case 54: // give player status effect
       case 55: // give units in rectangle status effect
+      case 56: // explore rectangle
+      case 57: // decision form
+      case 58: // set background music
+      case 59: // trigger sleeping
+      case 60: // set background volume
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
@@ -719,6 +724,26 @@ class Effect {
       case 55: // give units in rectangle status effect
         this.display_name = "Give Units in Rectangle Status Effect " + this.message;
         break;
+      case 56: // explore rectangle
+        this.display_name = "Explore Rectangle: " + this.rectangle.fileString();
+        break;
+      case 57: // decision form
+        this.display_name = "Decision Form (" + this.number + ")";
+        break;
+      case 58: // set background music
+        this.display_name = "Play Background Music (" + this.message + ")";
+        break;
+      case 59: // trigger sleeping
+        this.display_name = "Trigger Sleeping";
+        break;
+      case 60: // set background volume
+        if (this.number > 0) {
+          this.display_name = "Set Background Volume (" + this.decimal1 + ")";
+        }
+        else {
+          this.display_name = "Mute Background Volume";
+        }
+        break;
       default:
         this.display_name = "Effect";
         break;
@@ -780,7 +805,12 @@ class Effect {
       case 14: // tint map
         if (level.currMap != null) {
           level.currMap.show_tint = true;
-          level.currMap.color_tint = this.number;
+          if (this.number == 0) { // default to brown with transparency 100
+            level.currMap.color_tint = 1681075482;
+          }
+          else {
+            level.currMap.color_tint = this.number;
+          }
         }
         break;
       case 15: // stop tinting map
@@ -1181,6 +1211,40 @@ class Effect {
             }
           }
         }
+        break;
+      case 56: // explore rectangle
+        if (level.currMap == null) {
+          break;
+        }
+        if (!level.currMapName.equals(this.rectangle.mapName)) {
+          break;
+        }
+        level.currMap.exploreRectangle(this.rectangle);
+        break;
+      case 57: // decision form
+        level.decisionForm(this.number);
+        break;
+      case 58: // set background music
+        global.sounds.play_background(this.message);
+        break;
+      case 59: // trigger sleeping
+        level.sleeping = true;
+        level.sleep_timer = Constants.feature_bedSleepTimer;
+        level.loseControl();
+        if (level.player != null) {
+          level.player.stopAction();
+        }
+        break;
+      case 60: // set background volume
+        if (this.number > 0) {
+          global.profile.options.volume_music = this.decimal1;
+          global.profile.options.volume_music_muted = false;
+        }
+        else {
+          global.profile.options.volume_music = this.decimal1;
+          global.profile.options.volume_music_muted = true;
+        }
+        global.profile.options.change();
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");

@@ -36,9 +36,13 @@ class Sounds {
       return;
     }
     this.stop_background();
+    this.album_name = album_name;
+    if (album_name == null || album_name.equals("none")) {
+      this.album_name = "none";
+      return;
+    }
     this.playing_background = true;
     this.loop_background = loop_background;
-    this.album_name = album_name;
     this.track_number = 0;
   }
 

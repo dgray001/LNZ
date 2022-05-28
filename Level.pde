@@ -166,6 +166,15 @@ class Level {
   }
 
 
+  void decisionForm(int i) {
+    if (this.level_form != null) {
+      global.log("WARNING: Decision form being created while level form " +
+        this.level_form.getClass().toString() + " exists.");
+    }
+    this.level_form = new DecisionForm(i);
+  }
+
+
   void gainControl() {
     this.in_control = true;
     global.player_blinks_left = 6;
@@ -2728,6 +2737,66 @@ class Level {
 
 
 
+  class DecisionForm extends LevelForm {
+    protected int ID = 0;
+
+    DecisionForm(int ID) {
+      super(0.5 * (width - Constants.level_decisionFormWidth), 0.5 * (height - Constants.level_decisionFormHeight),
+        0.5 * (width + Constants.level_decisionFormWidth), 0.5 * (height + Constants.level_decisionFormHeight));
+      this.ID = ID;
+      this.cancel = null;
+      this.setFieldCushion(0);
+      this.addField(new SpacerFormField(20));
+
+      switch(ID) {
+        case 1: // francis hall initial cut scene
+          this.addField(new MessageFormField("Ben puts in earbuds to drown out the stupid conversation."));
+          this.addField(new SpacerFormField(20));
+          RadiosFormField radios = new RadiosFormField("What music does he play?");
+          radios.addRadio("Thompson Twins");
+          radios.addRadio("Now 2");
+          this.addField(radios);
+          this.addField(new SpacerFormField(20));
+          this.addField(new SubmitFormField("Listen"));
+          break;
+        default:
+          global.errorMessage("ERROR: Decision form ID " + ID + " not recognized.");
+          break;
+      }
+    }
+
+    void cancel() {}
+
+    void submit() {
+      switch(ID) {
+        case 1: // francis hall initial cut scene
+          switch(this.fields.get(3).getValue()) {
+            case "0":
+              global.sounds.play_background("thompson");
+              break;
+            case "1":
+              global.sounds.play_background("now2");
+              break;
+            default:
+              global.sounds.play_background("starset");
+              break;
+          }
+          try {
+            global.profile.options.volume_music = 100;
+            global.profile.options.volume_music_muted = false;
+            global.profile.options.change();
+          } catch(Exception e) {}
+          break;
+        default:
+          global.errorMessage("ERROR: Decision form ID " + ID + " not recognized.");
+          break;
+      }
+      this.canceled = true;
+    }
+  }
+
+
+
   class VendingForm extends LevelForm {
     protected Feature vending_machine;
     protected Hero hero_looking;
@@ -3218,21 +3287,21 @@ class LevelEditor extends Level {
           if (this.currMap != null && GameMapLevelEditor.class.isInstance(this.currMap)) {
             this.last_rectangle = ((GameMapLevelEditor)this.currMap).rectangle_dropping;
             ((GameMapLevelEditor)this.currMap).rectangle_dropping = null;
+            this.currMap.addHeaderMessage("Rectangle saved");
           }
           break;
         case 'S':
           if (this.currMap != null && GameMapLevelEditor.class.isInstance(this.currMap)) {
             this.last_rectangle = ((GameMapLevelEditor)this.currMap).rectangle_dropping;
             ((GameMapLevelEditor)this.currMap).rectangle_dropping = null;
+            this.currMap.addHeaderMessage("Rectangle saved");
             if (this.last_rectangle != null) {
               if (global.holding_ctrl) {
                 this.player_spawn_location = this.last_rectangle;
-                this.currMap.headerMessages.clear();
                 this.currMap.addHeaderMessage("Player respawn location set");
               }
               else {
                 this.player_start_location = this.last_rectangle;
-                this.currMap.headerMessages.clear();
                 this.currMap.addHeaderMessage("Player start location set");
               }
               this.last_rectangle = null;

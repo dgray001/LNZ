@@ -1193,6 +1193,13 @@ class GameMap {
     }
     catch(IndexOutOfBoundsException e) {}
   }
+  void exploreRectangle(Rectangle rect) {
+    for (int i = int(rect.xi); i < int(rect.xf); i++) {
+      for (int j = int(rect.yi); j < int(rect.yf); j++) {
+        this.exploreTerrain(i, j, true);
+      }
+    }
+  }
   void exploreTerrain(int x, int y) {
     this.exploreTerrain(x, y, true);
   }

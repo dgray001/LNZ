@@ -290,21 +290,25 @@ class Unit extends MapObject {
       case 1103:
         this.setStrings("JIF", "Hero", "");
         this.baseStats(4, 1, 0, 0, 2);
+        this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
         this.alliance = Alliance.BEN;
         break;
       case 1104:
         this.setStrings("Mark Spinny", "Hero", "");
         this.baseStats(4, 1, 0, 0, 2);
+        this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
         this.alliance = Alliance.BEN;
         break;
       case 1105:
         this.setStrings("Mad Dog Mattus", "Hero", "");
         this.baseStats(4, 1, 0, 0, 2);
+        this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
         this.alliance = Alliance.BEN;
         break;
       case 1106:
         this.setStrings("Jeremiah", "Hero", "");
         this.baseStats(4, 1, 0, 0, 2);
+        this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
         this.alliance = Alliance.BEN;
         break;
 
@@ -2980,8 +2984,8 @@ class Unit extends MapObject {
   }
   void setFacing(float facingX, float facingY) {
     float normConstant = sqrt(facingX * facingX + facingY * facingY);
-    if (normConstant == 0) {
-      global.errorMessage("ERROR: cannot set facing to 0.");
+    if (normConstant == 0.0) {
+      return; // happens when exactly on target location
     }
     this.facingX = facingX / normConstant;
     this.facingY = facingY / normConstant;
