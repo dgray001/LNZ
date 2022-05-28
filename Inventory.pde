@@ -1498,6 +1498,224 @@ class CardboardBoxInventory extends Inventory {
 }
 
 
+class WorkbenchInventory extends Inventory {
+  class CraftButton extends RectangleButton {
+    protected int craft_timer = 0;
+
+    CraftButton() {
+      super(0, 0, 0, 0);
+      this.disabled = true;
+      this.show_message = true;
+      this.force_left_button = false;
+      this.message = "Craft";
+      this.use_time_elapsed = true;
+      this.noStroke();
+      this.setColors(color(170, 170), color(1, 0), color(200, 100), color(200,
+        200), color(0));
+    }
+
+    @Override
+    void update(int timeElapsed) {
+      super.update(timeElapsed);
+      if (this.clicked && mouseButton == RIGHT) {
+        this.craft_timer -= timeElapsed;
+        if (this.craft_timer < 0) {
+          this.craft_timer = Constants.hero_multicraftTimer;
+          this.release();
+        }
+      }
+    }
+
+    void dehover() {}
+    void hover() {}
+    void click() {
+      this.craft_timer = Constants.hero_multicraftTimer;
+    }
+    void release() {
+      if (!this.hovered) {
+        return;
+      }
+      if (WorkbenchInventory.this.craftable_item == null) {
+        return;
+      }
+      WorkbenchInventory.this.craft();
+    }
+  }
+
+  private int curr_crafting_hash_code = 0;
+  private Item craftable_item = null;
+  private boolean craftable_item_hovered = false;
+  protected float last_mX = 0;
+  protected float last_mY = 0;
+  private CraftButton craft = new CraftButton();
+
+  WorkbenchInventory() {
+    super(3, 6, true);
+    this.deactivateSlots();
+    this.slots.get(0).deactivated = false;
+    this.slots.get(1).deactivated = false;
+    this.slots.get(2).deactivated = false;
+    this.slots.get(6).deactivated = false;
+    this.slots.get(7).deactivated = false;
+    this.slots.get(8).deactivated = false;
+    this.slots.get(12).deactivated = false;
+    this.slots.get(13).deactivated = false;
+    this.slots.get(14).deactivated = false;
+  }
+
+
+  void craft() {
+    if (this.craftable_item == null) {
+      return;
+    }
+    if (this.slots.get(11).item != null && (this.slots.get(11).item.ID !=
+      this.craftable_item.ID || this.slots.get(11).item.maxStack() - this.
+      slots.get(11).item.stack < this.craftable_item.stack)) {
+      return;
+    }
+    this.slots.get(0).removeStack();
+    this.slots.get(1).removeStack();
+    this.slots.get(2).removeStack();
+    this.slots.get(6).removeStack();
+    this.slots.get(7).removeStack();
+    this.slots.get(8).removeStack();
+    this.slots.get(12).removeStack();
+    this.slots.get(13).removeStack();
+    this.slots.get(14).removeStack();
+    if (this.slots.get(11).item == null) {
+      this.slots.get(11).item = new Item(this.craftable_item);
+    }
+    else {
+      this.slots.get(11).item.addStack(this.craftable_item.stack);
+    }
+    this.slots.get(11).deactivated = false;
+    this.craftable_item = null;
+  }
+
+
+  @Override
+  void setButtonSize(float button_size) {
+    super.setButtonSize(button_size);
+    this.craft.setLocation(2 + 3.5 * button_size, 2 + 2.1 * button_size,
+      2 + 5 * button_size, 2 + 2.9 * button_size);
+    this.craft.text_size = button_size * 0.35;
+  }
+
+  @Override
+  void update(int timeElapsed) {
+    if (!this.slots.get(11).deactivated && this.slots.get(11).item == null) {
+      this.slots.get(11).deactivated = true;
+      this.slots.get(11).button.hovered = false;
+      this.slots.get(11).button.clicked = false;
+    }
+    super.update(timeElapsed);
+    this.curr_crafting_hash_code = this.getCraftingHashCode();
+    imageMode(CORNER);
+    if (global.crafting_recipes.containsKey(this.curr_crafting_hash_code)) {
+      CraftingRecipe recipe = global.crafting_recipes.get(this.curr_crafting_hash_code);
+      this.craftable_item = new Item(recipe.output);
+      this.craftable_item.stack = recipe.amount;
+      this.craft.disabled = false;
+      image(global.images.getImage("icons/crafting_arrow_craftable.png"), 2 + 3.5 * this.button_size,
+        2 + 1 * this.button_size, this.button_size, this.button_size);
+      image(this.craftable_item.getImage(), 2 + 5 * this.button_size,
+        2 + 1 * this.button_size, this.button_size, this.button_size);
+      if (this.craftable_item.stack > 1) {
+        fill(255);
+        textSize(14);
+        textAlign(RIGHT, BOTTOM);
+        text(this.craftable_item.stack, 6 * this.button_size, 2 * this.button_size);
+      }
+      if (this.craftable_item_hovered) {
+        textSize(20);
+        float rect_height = textAscent() + textDescent() + 2;
+        float rect_width = textWidth(this.craftable_item.display_name()) + 2;
+        rectMode(CORNER);
+        fill(global.color_nameDisplayed_background);
+        stroke(1, 0);
+        strokeWeight(0.1);
+        rect(this.last_mX - rect_width - 1, this.last_mY - rect_height - 1, rect_width, rect_height);
+        fill(255);
+        textAlign(LEFT, TOP);
+        text(this.craftable_item.display_name(), this.last_mX - rect_width - 1, this.last_mY - rect_height - 1);
+      }
+    }
+    else {
+      this.craftable_item = null;
+      this.craft.disable();
+      image(global.images.getImage("icons/crafting_arrow.png"), 2 + 3.5 * this.button_size,
+        2 + 1 * this.button_size, this.button_size, this.button_size);
+    }
+    this.craft.update(timeElapsed);
+  }
+
+  @Override
+  void mouseMove(float mX, float mY) {
+    this.last_mX = mX;
+    this.last_mY = mY;
+    super.mouseMove(mX, mY);
+    this.craft.mouseMove(mX, mY);
+    if (this.craftable_item == null) {
+      this.craftable_item_hovered = false;
+    }
+    else {
+      if (mX > 2 + 5 * this.button_size && mY > 2 + 1 * this.button_size &&
+        mX < 2 + 6 * this.button_size && mY < 2 + 2 * this.button_size) {
+        this.craftable_item_hovered = true;
+      }
+      else {
+        this.craftable_item_hovered = false;
+      }
+    }
+  }
+
+  @Override
+  void mousePress() {
+    super.mousePress();
+    this.craft.mousePress();
+  }
+
+  @Override
+  void mouseRelease(float mX, float mY) {
+    super.mouseRelease(mX, mY);
+    this.craft.mouseRelease(mX, mY);
+  }
+
+  @Override
+  int getCraftingHashCode() {
+    int[][] item_grid = new int[3][3];
+    if (this.slots.get(0).item != null) {
+      item_grid[0][0] = this.slots.get(0).item.ID;
+    }
+    if (this.slots.get(1).item != null) {
+      item_grid[0][1] = this.slots.get(1).item.ID;
+    }
+    if (this.slots.get(2).item != null) {
+      item_grid[0][2] = this.slots.get(2).item.ID;
+    }
+    if (this.slots.get(6).item != null) {
+      item_grid[1][0] = this.slots.get(6).item.ID;
+    }
+    if (this.slots.get(7).item != null) {
+      item_grid[1][1] = this.slots.get(7).item.ID;
+    }
+    if (this.slots.get(8).item != null) {
+      item_grid[1][2] = this.slots.get(8).item.ID;
+    }
+    if (this.slots.get(12).item != null) {
+      item_grid[2][0] = this.slots.get(12).item.ID;
+    }
+    if (this.slots.get(13).item != null) {
+      item_grid[2][1] = this.slots.get(13).item.ID;
+    }
+    if (this.slots.get(14).item != null) {
+      item_grid[2][2] = this.slots.get(14).item.ID;
+    }
+    return Arrays.deepHashCode(reduceItemGrid(item_grid));
+  }
+}
+
+
 class EnderChestInventory extends Inventory {
   EnderChestInventory() {
     super(3, 4, true);

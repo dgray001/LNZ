@@ -535,6 +535,13 @@ class Level {
           this.currMap.addVisualEffect(4009, f.x + 0.7, f.y - 0.4);
         }
         break;
+      case 21: // workbench
+        if (h.inventory.viewing) {
+          break;
+        }
+        h.inventory.featureInventory(f.inventory);
+        h.inventory.viewing = true;
+        break;
       case 22: // ender chest
         global.viewingEnderChest();
         if (global.state == ProgramState.MAPEDITOR_INTERFACE) {

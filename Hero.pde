@@ -220,7 +220,8 @@ enum HeroTreeCode {
     RESISTANCEI, PENETRATIONI, HEALTHII, ATTACKII, DEFENSEII, PIERCINGII, SPEEDII,
     SIGHTII, TENACITYII, AGILITYII, MAGICII, RESISTANCEII, PENETRATIONII, HEALTHIII,
   OFFHAND, BELTI, BELTII, INVENTORYII, INVENTORY_BARI, INVENTORY_BARII,
-  FOLLOWERI
+  CRAFTI, CRAFTII_ROW, CRAFTII_COL, CRAFTIII_ROW, CRAFTIII_COL,
+  FOLLOWERI,
   ;
   private static final List<HeroTreeCode> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 
@@ -306,6 +307,16 @@ enum HeroTreeCode {
         return "InventoryBar";
       case INVENTORY_BARII:
         return "InventoryBarII";
+      case CRAFTI:
+        return "CraftI";
+      case CRAFTII_ROW:
+        return "CraftII_row";
+      case CRAFTII_COL:
+        return "CraftII_col";
+      case CRAFTIII_ROW:
+        return "CraftIII_row";
+      case CRAFTIII_COL:
+        return "CraftIII_col";
       case FOLLOWERI:
         return "Follower";
       default:
@@ -397,6 +408,16 @@ enum HeroTreeCode {
         return HeroTreeCode.INVENTORY_BARII;
       case 40:
         return HeroTreeCode.FOLLOWERI;
+      case 41:
+        return HeroTreeCode.CRAFTI;
+      case 42:
+        return HeroTreeCode.CRAFTII_ROW;
+      case 43:
+        return HeroTreeCode.CRAFTII_COL;
+      case 44:
+        return HeroTreeCode.CRAFTIII_ROW;
+      case 45:
+        return HeroTreeCode.CRAFTIII_COL;
       default:
         return HeroTreeCode.INVENTORYI;
     }
@@ -681,20 +702,14 @@ class Hero extends Unit {
 
     private int curr_crafting_hash_code = 0;
     private Item craftable_item = null;
+    private boolean craftable_item_hovered = false;
+    protected float last_mX = 0;
+    protected float last_mY = 0;
     private CraftButton craft = new CraftButton();
 
     CraftingInventory() {
       super(3, 6, true);
       this.deactivateSlots();
-      this.slots.get(0).deactivated = false;
-      this.slots.get(1).deactivated = false;
-      this.slots.get(2).deactivated = false;
-      this.slots.get(6).deactivated = false;
-      this.slots.get(7).deactivated = false;
-      this.slots.get(8).deactivated = false;
-      this.slots.get(12).deactivated = false;
-      this.slots.get(13).deactivated = false;
-      this.slots.get(14).deactivated = false;
     }
 
 
@@ -737,8 +752,13 @@ class Hero extends Unit {
 
     @Override
     void update(int timeElapsed) {
+      if (this.slots.get(7).deactivated) {
+        return;
+      }
       if (!this.slots.get(11).deactivated && this.slots.get(11).item == null) {
         this.slots.get(11).deactivated = true;
+        this.slots.get(11).button.hovered = false;
+        this.slots.get(11).button.clicked = false;
       }
       super.update(timeElapsed);
       this.curr_crafting_hash_code = this.getCraftingHashCode();
@@ -752,6 +772,25 @@ class Hero extends Unit {
           2 + 1 * this.button_size, this.button_size, this.button_size);
         image(this.craftable_item.getImage(), 2 + 5 * this.button_size,
           2 + 1 * this.button_size, this.button_size, this.button_size);
+        if (this.craftable_item.stack > 1) {
+          fill(255);
+          textSize(14);
+          textAlign(RIGHT, BOTTOM);
+          text(this.craftable_item.stack, 6 * this.button_size, 2 * this.button_size);
+        }
+        if (this.craftable_item_hovered) {
+          textSize(20);
+          float rect_height = textAscent() + textDescent() + 2;
+          float rect_width = textWidth(this.craftable_item.display_name()) + 2;
+          rectMode(CORNER);
+          fill(global.color_nameDisplayed_background);
+          stroke(1, 0);
+          strokeWeight(0.1);
+          rect(this.last_mX - rect_width - 1, this.last_mY - rect_height - 1, rect_width, rect_height);
+          fill(255);
+          textAlign(LEFT, TOP);
+          text(this.craftable_item.display_name(), this.last_mX - rect_width - 1, this.last_mY - rect_height - 1);
+        }
       }
       else {
         this.craftable_item = null;
@@ -764,8 +803,22 @@ class Hero extends Unit {
 
     @Override
     void mouseMove(float mX, float mY) {
+      this.last_mX = mX;
+      this.last_mY = mY;
       super.mouseMove(mX, mY);
       this.craft.mouseMove(mX, mY);
+      if (this.craftable_item == null) {
+        this.craftable_item_hovered = false;
+      }
+      else {
+        if (mX > 2 + 5 * this.button_size && mY > 2 + 1 * this.button_size &&
+          mX < 2 + 6 * this.button_size && mY < 2 + 2 * this.button_size) {
+          this.craftable_item_hovered = true;
+        }
+        else {
+          this.craftable_item_hovered = false;
+        }
+      }
     }
 
     @Override
@@ -1194,8 +1247,6 @@ class Hero extends Unit {
                 this.item_origin = new InventoryKey(InventoryLocation.CRAFTING, i);
                 if (i == 11) {
                   item_origin = null;
-                  this.crafting_inventory.slots.get(i).button.hovered = false;
-                  this.crafting_inventory.slots.get(i).button.clicked = false;
                 }
                 item_holding_x = this.display_width + 4 + (x + 0.5) * this.button_size;
                 item_holding_y = 0.5 * (this.display_height - this.crafting_inventory.
@@ -2846,6 +2897,21 @@ class Hero extends Unit {
           case INVENTORY_BARII:
             this.dependencies.add(HeroTreeCode.INVENTORY_BARI);
             break;
+          case CRAFTI:
+            this.dependencies.add(HeroTreeCode.INVENTORYI);
+            break;
+          case CRAFTII_ROW:
+            this.dependencies.add(HeroTreeCode.CRAFTI);
+            break;
+          case CRAFTII_COL:
+            this.dependencies.add(HeroTreeCode.CRAFTI);
+            break;
+          case CRAFTIII_ROW:
+            this.dependencies.add(HeroTreeCode.CRAFTII_ROW);
+            break;
+          case CRAFTIII_COL:
+            this.dependencies.add(HeroTreeCode.CRAFTII_COL);
+            break;
           case FOLLOWERI:
             this.dependencies.add(HeroTreeCode.INVENTORYI);
             break;
@@ -3520,6 +3586,26 @@ class Hero extends Unit {
             xc = -1.15 * Constants.hero_treeButtonDefaultRadius;
             yc = 11 * Constants.hero_treeButtonDefaultRadius + Constants.hero_treeButtonCenterRadius;
             break;
+          case CRAFTI:
+            xc = -3 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
+            yc = 3 * Constants.hero_treeButtonDefaultRadius + Constants.hero_treeButtonCenterRadius;
+            break;
+          case CRAFTII_ROW:
+            xc = -3.45 * Constants.hero_treeButtonDefaultRadius;
+            yc = 7 * Constants.hero_treeButtonDefaultRadius + Constants.hero_treeButtonCenterRadius;
+            break;
+          case CRAFTII_COL:
+            xc = -5.75 * Constants.hero_treeButtonDefaultRadius;
+            yc = 7 * Constants.hero_treeButtonDefaultRadius + Constants.hero_treeButtonCenterRadius;
+            break;
+          case CRAFTIII_ROW:
+            xc = -3.45 * Constants.hero_treeButtonDefaultRadius;
+            yc = 11 * Constants.hero_treeButtonDefaultRadius + Constants.hero_treeButtonCenterRadius;
+            break;
+          case CRAFTIII_COL:
+            xc = -5.75 * Constants.hero_treeButtonDefaultRadius;
+            yc = 11 * Constants.hero_treeButtonDefaultRadius + Constants.hero_treeButtonCenterRadius;
+            break;
           case FOLLOWERI:
             xc = -3 * Constants.hero_treeButtonDefaultRadius - Constants.hero_treeButtonCenterRadius;
             yc = 0;
@@ -3630,6 +3716,16 @@ class Hero extends Unit {
           return "Inventory Bar";
         case INVENTORY_BARII:
           return "Inventory Bar II";
+        case CRAFTI:
+          return "Unlock Self-Crafting";
+        case CRAFTII_ROW:
+          return "Unlock Self-Crafting Second Row";
+        case CRAFTII_COL:
+          return "Unlock Self-Crafting Second Column";
+        case CRAFTIII_ROW:
+          return "Unlock Self-Crafting Third Row";
+        case CRAFTIII_COL:
+          return "Unlock Self-Crafting Third Column";
         case FOLLOWERI:
           return "Unlock Follower";
         default:
@@ -3719,6 +3815,16 @@ class Hero extends Unit {
           return "Inventory Bar";
         case INVENTORY_BARII:
           return "Inventory Bar II";
+        case CRAFTI:
+          return "Self-Crafting";
+        case CRAFTII_ROW:
+          return "2nd Row";
+        case CRAFTII_COL:
+          return "2nd Column";
+        case CRAFTIII_ROW:
+          return "3rd Row";
+        case CRAFTIII_COL:
+          return "3rd Column";
         case FOLLOWERI:
           return "Follower";
         default:
@@ -3808,6 +3914,16 @@ class Hero extends Unit {
           return "Unlock\nInventory Bar";
         case INVENTORY_BARII:
           return "Upgrade\nInventory Bar";
+        case CRAFTI:
+          return "Unlock\nSelf-Crafting";
+        case CRAFTII_ROW:
+          return "Unlock\n2nd Row\nSelf-Crafting";
+        case CRAFTII_COL:
+          return "Unlock\n2nd Column\nSelf-Crafting";
+        case CRAFTIII_ROW:
+          return "Unlock\n3rd Row\nSelf-Crafting";
+        case CRAFTIII_COL:
+          return "Unlock\n3rd Column\nSelf-Crafting";
         case FOLLOWERI:
           return "Unlock\nFollower";
         default:
@@ -3900,6 +4016,22 @@ class Hero extends Unit {
         case INVENTORY_BARII:
           return "Upgrade the inventory bar, doubling its capacity and allowing " +
             "direct use of items in it without first switching to them.";
+        case CRAFTI:
+          return "Unlock the ability to craft items directly in your inventory.\n" +
+            "This upgrade will unlock a 1x1 grid to craft items.\nNote to use " +
+            "a tool in self-crafting you must be holding it in your hand.";
+        case CRAFTII_ROW:
+          return "Unlock the second row in your self-crafting grid.\nIf you " +
+            "have already unlocked the second column this will give you a full " +
+            "2x2 grid, but if you have not you will have a 2x1 grid.";
+        case CRAFTII_COL:
+          return "Unlock the second column in your self-crafting grid.\nIf you " +
+            "have already unlocked the second row this will give you a full " +
+            "2x2 grid, but if you have not you will have a 1x2 grid.";
+        case CRAFTIII_ROW:
+          return "Unlock the third row in your self-crafting grid.";
+        case CRAFTIII_COL:
+          return "Unlock the third column in your self-crafting grid.";
         case FOLLOWERI:
           return "Unlock your follower (will be released in future update).";
         default:
@@ -3989,6 +4121,16 @@ class Hero extends Unit {
           return 40;
         case INVENTORY_BARII:
           return 75;
+        case CRAFTI:
+          return 5;
+        case CRAFTII_ROW:
+          return 20;
+        case CRAFTII_COL:
+          return 20;
+        case CRAFTIII_ROW:
+          return 85;
+        case CRAFTIII_COL:
+          return 85;
         case FOLLOWERI:
           return 25000;
         default:
@@ -4032,6 +4174,10 @@ class Hero extends Unit {
     this.addAbilities();
   }
 
+
+  boolean isUpgraded(HeroTreeCode code) {
+    return this.heroTree.nodes.get(code).unlocked;
+  }
 
   void upgrade(HeroTreeCode code) {
     switch(code) {
@@ -4157,6 +4303,45 @@ class Hero extends Unit {
       case INVENTORY_BARII:
         this.inventory.addSlots(Constants.upgrade_inventory_bar_slots);
         this.inventory_bar.unlocked_inventory_bar2 = true;
+        break;
+      case CRAFTI:
+        this.inventory.crafting_inventory.slots.get(7).deactivated = false;
+        break;
+      case CRAFTII_ROW:
+        this.inventory.crafting_inventory.slots.get(13).deactivated = false;
+        if (this.isUpgraded(HeroTreeCode.CRAFTII_COL)) {
+          this.inventory.crafting_inventory.slots.get(14).deactivated = false;
+        }
+        if (this.isUpgraded(HeroTreeCode.CRAFTIII_COL)) {
+          this.inventory.crafting_inventory.slots.get(12).deactivated = false;
+        }
+        break;
+      case CRAFTII_COL:
+        this.inventory.crafting_inventory.slots.get(8).deactivated = false;
+        if (this.isUpgraded(HeroTreeCode.CRAFTII_ROW)) {
+          this.inventory.crafting_inventory.slots.get(14).deactivated = false;
+        }
+        if (this.isUpgraded(HeroTreeCode.CRAFTIII_ROW)) {
+          this.inventory.crafting_inventory.slots.get(2).deactivated = false;
+        }
+        break;
+      case CRAFTIII_ROW:
+        this.inventory.crafting_inventory.slots.get(1).deactivated = false;
+        if (this.isUpgraded(HeroTreeCode.CRAFTII_COL)) {
+          this.inventory.crafting_inventory.slots.get(2).deactivated = false;
+        }
+        if (this.isUpgraded(HeroTreeCode.CRAFTIII_COL)) {
+          this.inventory.crafting_inventory.slots.get(0).deactivated = false;
+        }
+        break;
+      case CRAFTIII_COL:
+        this.inventory.crafting_inventory.slots.get(6).deactivated = false;
+        if (this.isUpgraded(HeroTreeCode.CRAFTII_ROW)) {
+          this.inventory.crafting_inventory.slots.get(12).deactivated = false;
+        }
+        if (this.isUpgraded(HeroTreeCode.CRAFTIII_ROW)) {
+          this.inventory.crafting_inventory.slots.get(0).deactivated = false;
+        }
         break;
       case FOLLOWERI:
         // follower

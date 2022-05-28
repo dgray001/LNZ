@@ -137,8 +137,9 @@ class Feature extends MapObject {
         this.setSize(1, 1, 5);
         break;
       case 21:
-        this.setStrings("Workbench", "Tool", "");
+        this.setStrings("Workbench", "Tool", "Tools Available:\n");
         this.setSize(1, 1, 3);
+        this.inventory = new WorkbenchInventory();
         break;
       case 22:
         this.setStrings("Ender Chest", "Tool", "");
@@ -1340,6 +1341,7 @@ class Feature extends MapObject {
     switch(this.ID) {
       case 11: // khalil
       case 12: // chuck quizmo
+      case 21: // workbench
       case 22: // ender chest
       case 151: // sign
       case 152:
@@ -2277,6 +2279,7 @@ class Feature extends MapObject {
       fileString += this.inventory.internalFileString();
     }
     switch(this.ID) {
+      case 21: // Workbench (store tools information)
       case 151: // Sign, green
       case 152:
       case 153:
