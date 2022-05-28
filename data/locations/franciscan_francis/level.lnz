@@ -1,5 +1,5 @@
 new: Level
-levelName: mock_campaign1_1
+levelName: franciscan_francis
 location: franciscan_francis
 completed: false
 completion_code: 0
@@ -9,32 +9,1166 @@ respawn_timer: 0
 sleeping: false
 sleep_timer: 0
 in_control: true
-currMapName: mock_campaign1_lev1_2
-mapNames: mock_campaign1_lev1_1, mock_campaign1_lev1_2
+currMapName: francishall_groundfloor
+mapNames: francishall_1stfloor, francishall_2ndfloor, francishall_groundfloor
 
 new: Linker
-rect1: mock_campaign1_lev1_1, 3.0, 0.0, 4.0, 2.0
-rect2: mock_campaign1_lev1_2, 0.0, 0.0, 1.0, 2.0
+rect1: francishall_2ndfloor, 3.0, 47.0, 4.0, 48.0
+rect2: francishall_1stfloor, 3.0, 47.0, 4.0, 48.0
+end: Linker
+
+
+new: Linker
+rect1: francishall_1stfloor, 3.0, 46.0, 4.0, 47.0
+rect2: francishall_2ndfloor, 3.0, 46.0, 4.0, 47.0
+end: Linker
+
+
+new: Linker
+rect1: francishall_2ndfloor, 46.0, 3.0, 47.0, 4.0
+rect2: francishall_1stfloor, 46.0, 3.0, 47.0, 4.0
+end: Linker
+
+
+new: Linker
+rect1: francishall_1stfloor, 47.0, 3.0, 48.0, 4.0
+rect2: francishall_2ndfloor, 47.0, 3.0, 48.0, 4.0
+end: Linker
+
+
+new: Linker
+rect1: francishall_2ndfloor, 88.0, 48.0, 89.0, 49.0
+rect2: francishall_1stfloor, 88.0, 48.0, 89.0, 49.0
+end: Linker
+
+
+new: Linker
+rect1: francishall_1stfloor, 89.0, 48.0, 90.0, 49.0
+rect2: francishall_2ndfloor, 89.0, 48.0, 90.0, 49.0
+end: Linker
+
+
+new: Linker
+rect1: francishall_2ndfloor, 45.0, 99.0, 46.0, 100.0
+rect2: francishall_1stfloor, 45.0, 99.0, 46.0, 100.0
+end: Linker
+
+
+new: Linker
+rect1: francishall_1stfloor, 45.0, 101.0, 46.0, 102.0
+rect2: francishall_2ndfloor, 45.0, 101.0, 46.0, 102.0
+end: Linker
+
+
+new: Linker
+rect1: francishall_2ndfloor, 61.0, 45.0, 63.0, 47.0
+rect2: francishall_1stfloor, 61.0, 45.0, 63.0, 47.0
+end: Linker
+
+
+new: Linker
+rect1: francishall_1stfloor, 61.0, 41.0, 63.0, 43.0
+rect2: francishall_2ndfloor, 61.0, 41.0, 63.0, 43.0
+end: Linker
+
+
+new: Linker
+rect1: francishall_groundfloor, 57.0, 41.0, 58.0, 43.0
+rect2: francishall_1stfloor, 58.0, 41.0, 59.0, 43.0
+end: Linker
+
+
+new: Linker
+rect1: francishall_1stfloor, 59.0, 41.0, 60.0, 43.0
+rect2: francishall_groundfloor, 58.0, 41.0, 59.0, 43.0
+end: Linker
+
+
+new: Linker
+rect1: francishall_groundfloor, 88.0, 50.0, 89.0, 51.0
+rect2: francishall_1stfloor, 88.0, 50.0, 89.0, 51.0
+end: Linker
+
+
+new: Linker
+rect1: francishall_1stfloor, 89.0, 50.0, 90.0, 51.0
+rect2: francishall_groundfloor, 89.0, 50.0, 90.0, 51.0
+end: Linker
+
+
+new: Linker
+rect1: francishall_groundfloor, 43.0, 99.0, 44.0, 100.0
+rect2: francishall_1stfloor, 43.0, 99.0, 44.0, 100.0
+end: Linker
+
+
+new: Linker
+rect1: francishall_1stfloor, 43.0, 101.0, 44.0, 102.0
+rect2: francishall_groundfloor, 43.0, 101.0, 44.0, 102.0
 end: Linker
 
 nextTriggerKey: 1
 
 new: Trigger
-triggerName: Trigger 1
+triggerName: ### Initial cutscene
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 2
+
+new: Trigger
+triggerName: lose control
 active: true
 looping: false
 amalgam: true
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 28
+message: 
+number: 0
+decimal1: 70.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 3
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 14
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 56
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 0.0, 93.0, 7.0, 102.0
+end: Effect
+
+new: Effect
+ID: 58
+message: none
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 3
+
+new: Trigger
+triggerName: explanation
+active: false
+looping: false
+amalgam: true
 new: Condition
-ID: 6
-number1: 0
-number2: 0
-rectangle: mock_campaign1_lev1_2, 2.0, 0.0, 3.0, 2.0
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
 not_condition: false
 end: Condition
 
 new: Effect
+ID: 4
+message: Ben woke up after sleep-walking into the common room
+number: 3
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 4
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 4
+
+new: Trigger
+triggerName: ben talks
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: (*wakes up) I hate all of you
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 5
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 5
+
+new: Trigger
+triggerName: move camera
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1400
+number2: 1400
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 13
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 3.0, 97.0, 4.0, 98.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 6
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 6
+
+new: Trigger
+triggerName: explanation2
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1200
+number2: 1200
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: His friends were watching the election-night news
+number: 3
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 3.0, 97.0, 4.0, 98.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 7
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 7
+
+new: Trigger
+triggerName: mike talks
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 7000
+number2: 7000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 13
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 2.0, 100.0, 3.0, 101.0
+end: Effect
+
+new: Effect
+ID: 20
+message: (*staring at phone) JF! Look at the news! Donald Trump is pulling ahead in several swing states!
+number: 8
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 2.0, 100.0, 3.0, 101.0
+end: Effect
+
+new: Effect
+ID: 15
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 10
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 10
+
+new: Trigger
+triggerName: jf responds
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 6500
+number2: 6500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: I declare if Trump wins I'm burning down the campus to celebrate.
+number: 5
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 2.0, 100.0, 3.0, 101.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 11
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 13
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 1.0, 99.0, 2.0, 100.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 11
+
+new: Trigger
+triggerName: spinny responds
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 5500
+number2: 5500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 13
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 5.0, 95.0, 6.0, 97.0
+end: Effect
+
+new: Effect
+ID: 20
+message: I just want Trump to win for the memes of funny.
+number: 9
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 5.0, 95.0, 6.0, 97.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 12
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 12
+
+new: Trigger
+triggerName: dan talks
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 5500
+number2: 5500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 13
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 1.0, 96.0, 2.0, 98.0
+end: Effect
+
+new: Effect
+ID: 20
+message: Hey guys I was just reading this interesting chemistry experiment...
+number: 6
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 1.0, 96.0, 2.0, 98.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 13
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 13
+
+new: Trigger
+triggerName: mike interjects
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1500
+number2: 1500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 13
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 2.0, 100.0, 4.0, 101.0
+end: Effect
+
+new: Effect
+ID: 20
+message: Shut up Dan I'm concentrating!
+number: 8
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 2.0, 100.0, 4.0, 101.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 14
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 14
+
+new: Trigger
+triggerName: patrick talks
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 13
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 5.0, 94.0, 6.0, 95.0
+end: Effect
+
+new: Effect
+ID: 20
+message: Well I must admit I've been predicting Trump winning all along.
+number: 7
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 5.0, 94.0, 6.0, 95.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 15
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 15
+
+new: Trigger
+triggerName: ben talks
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 5000
+number2: 5000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: (*to himself) A guy just can't get any peace or quiet around here.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 13
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 3.0, 94.0, 4.0, 95.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 16
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 16
+
+new: Trigger
+triggerName: spinny talks
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 5000
+number2: 5000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: Ben come sit next to me
+number: 9
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 27
+message: 
+number: 9
+decimal1: 220.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 17
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 13
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 5.0, 95.0, 6.0, 97.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 17
+
+new: Trigger
+triggerName: ben responds
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4500
+number2: 4500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 13
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 3.0, 94.0, 4.0, 95.0
+end: Effect
+
+new: Effect
+ID: 20
+message: Ok but I'm listening to music so don't speak to me.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 3.0, 94.0, 4.0, 95.0
+end: Effect
+
+new: Effect
+ID: 27
+message: 
+number: 0
+decimal1: 45.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 18
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 18
+
+new: Trigger
+triggerName: they start moving
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1500
+number2: 1500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 24
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 4.0, 95.0, 5.0, 96.0
+end: Effect
+
+new: Effect
+ID: 24
+message: 
+number: 9
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 5.0, 97.0, 6.0, 98.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 19
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 20
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 19
+
+new: Trigger
+triggerName: timer
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2500
+number2: 2500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 8
+message: 
+number: 20
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 21
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 20
+
+new: Trigger
+triggerName: units in spots
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 9
+number1: 9
+number2: 0
+rectangle: francishall_2ndfloor, 5.0, 97.0, 6.0, 98.0
+met: false
+not_condition: false
+end: Condition
+
+new: Condition
 ID: 6
+number1: 0
+number2: 0
+rectangle: francishall_2ndfloor, 4.0, 95.0, 5.0, 96.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 8
+message: 
+number: 19
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 21
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 21
+
+new: Trigger
+triggerName: ben goes on couch
+active: false
+looping: false
+amalgam: true
+new: Effect
+ID: 31
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 5.0, 95.0, 6.0, 97.0
+end: Effect
+
+new: Effect
+ID: 27
+message: 
+number: 0
+decimal1: 170.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 30
+message: 
+number: 9
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 5.0, 97.0, 6.0, 98.0
+end: Effect
+
+new: Effect
+ID: 27
+message: 
+number: 9
+decimal1: 190.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 21
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 21
+message: 
+number: 9
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 22
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 22
+
+new: Trigger
+triggerName: ben puts in headphones
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 3500
+number2: 3500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 57
+message: 
+number: 1
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 23
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 23
+
+new: Trigger
+triggerName: ben is sleepy
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 8000
+number2: 8000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: Gosh I'm tired...
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 24
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 24
+
+new: Trigger
+triggerName: header message
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2500
+number2: 2500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 13
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 0.0, 93.0, 7.0, 102.0
+end: Effect
+
+new: Effect
+ID: 4
+message: As his friends talked, Ben dozed off to sleep...
+number: 3
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 0.0, 93.0, 7.0, 102.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 25
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 25
+
+new: Trigger
+triggerName: ben sleeps
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1200
+number2: 1200
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 59
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 26
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 26
+
+new: Trigger
+triggerName: during sleep
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4500
+number2: 4500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 14
+message: 
+number: -16777216
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 27
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 28
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 27
+
+new: Trigger
+triggerName: loop lose control
+active: false
+looping: true
+amalgam: true
+new: Effect
+ID: 11
 message: 
 number: 0
 decimal1: 0.0
@@ -44,5 +1178,896 @@ end: Effect
 
 end: Trigger
 
-player_start_location: mock_campaign1_lev1_1, 0.0, 0.0, 1.0, 2.0
+nextTriggerKey: 28
+
+new: Trigger
+triggerName: asleep message
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1200
+number2: 1200
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: Ben slept for hours...
+number: 2
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 29
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 29
+
+new: Trigger
+triggerName: wake up
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 7000
+number2: 7000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 15
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: He woke up in the middle of the night
+number: 3
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 30
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 8
+message: 
+number: 27
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 30
+
+new: Trigger
+triggerName: removes earbud
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 3000
+number2: 3000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: (*removes earbud)
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 60
+message: 
+number: 1
+decimal1: 40.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 32
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 61
+message: player/election1
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 31
+
+new: Trigger
+triggerName: keep hunger/thirst 100
+active: true
+looping: true
+amalgam: true
+new: Condition
+ID: 1
+number1: 1000
+number2: 1000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 36
+message: 
+number: 100
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 37
+message: 
+number: 100
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 32
+
+new: Trigger
+triggerName: jf
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2500
+number2: 2500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: Sick nasty knives
+number: 5
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 1.0, 99.0, 2.0, 100.0
+end: Effect
+
+new: Effect
+ID: 13
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 1.0, 99.0, 2.0, 100.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 33
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 33
+
+new: Trigger
+triggerName: dan
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2500
+number2: 2500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 13
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 1.0, 96.0, 2.0, 98.0
+end: Effect
+
+new: Effect
+ID: 20
+message: Frogs chemistry yo-yos
+number: 6
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 34
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 34
+
+new: Trigger
+triggerName: mark
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2500
+number2: 2500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 13
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 5.0, 97.0, 6.0, 98.0
+end: Effect
+
+new: Effect
+ID: 20
+message: All the memes
+number: 9
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 35
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 35
+
+new: Trigger
+triggerName: patrick
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2500
+number2: 2500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 13
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 5.0, 94.0, 6.0, 95.0
+end: Effect
+
+new: Effect
+ID: 20
+message: DND or Maria...
+number: 7
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 5.0, 94.0, 6.0, 95.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 36
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 36
+
+new: Trigger
+triggerName: mattus
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2500
+number2: 2500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 13
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 2.0, 100.0, 4.0, 101.0
+end: Effect
+
+new: Effect
+ID: 20
+message: My Lord and Emperor Trump
+number: 8
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 2.0, 100.0, 4.0, 101.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 37
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 37
+
+new: Trigger
+triggerName: ben responds
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2500
+number2: 2500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 13
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 5.0, 95.0, 6.0, 97.0
+end: Effect
+
+new: Effect
+ID: 20
+message: When I wake up if you all are dead and I'm the only person on Earth...
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 5.0, 95.0, 6.0, 97.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 38
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 38
+
+new: Trigger
+triggerName: ben talks2
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 3500
+number2: 3500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: I'd be pretty happy with that.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 5.0, 95.0, 6.0, 97.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 39
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 39
+
+new: Trigger
+triggerName: earbud back in
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 3000
+number2: 3000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 5
+message: (*puts earbud back in)
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 5.0, 95.0, 6.0, 97.0
+end: Effect
+
+new: Effect
+ID: 60
+message: 
+number: 1
+decimal1: 100.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 40
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 62
+message: player/election1
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 40
+
+new: Trigger
+triggerName: trigger sleep again
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 3000
+number2: 3000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 59
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 41
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 41
+
+new: Trigger
+triggerName: black screen
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4500
+number2: 4500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 27
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 14
+message: 
+number: -16777216
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 42
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 42
+
+new: Trigger
+triggerName: message
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1000
+number2: 1000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: Ben dozed off again
+number: 3
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 31
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 33.0, 53.0, 34.0, 55.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 43
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 43
+
+new: Trigger
+triggerName: election2 sound
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 5000
+number2: 5000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 61
+message: player/election2
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 33.0, 53.0, 34.0, 55.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 44
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 59
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 44
+
+new: Trigger
+triggerName: message
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: Ben woke back up to a different world
+number: 3
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 33.0, 53.0, 34.0, 55.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 45
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 45
+
+new: Trigger
+triggerName: not dreaming
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 7000
+number2: 7000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: And this time, he wasn't dreaming
+number: 3
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 33.0, 53.0, 34.0, 55.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 46
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 46
+
+new: Trigger
+triggerName: wake up
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 5000
+number2: 5000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 15
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 12
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 13
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 33.0, 53.0, 34.0, 55.0
+end: Effect
+
+new: Effect
+ID: 8
+message: 
+number: 27
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 8
+message: 
+number: 31
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 60
+message: 
+number: 1
+decimal1: 40.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 47
+
+new: Trigger
+triggerName: Trigger 47
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 48
+
+new: Trigger
+triggerName: Trigger 48
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 49
+
+new: Trigger
+triggerName: Trigger 49
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 50
+
+new: Trigger
+triggerName: Trigger 50
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+player_start_location: francishall_2ndfloor, 3.0, 94.0, 4.0, 95.0
 end: Level

@@ -1194,6 +1194,9 @@ class MapEditorInterface extends InterfaceLNZ {
     }
 
     void updateFields() {
+      if (MapEditorInterface.this.curr_level == null) {
+        return;
+      }
       this.fields.get(1).setValue(MapEditorInterface.this.curr_level.getCurrMapNameDisplay());
       this.fields.get(3).setValue("Location: " + MapEditorInterface.this.curr_level.location.display_name());
       this.fields.get(5).setValue(MapEditorInterface.this.curr_level.getPlayerStartLocationDisplay());
@@ -1316,7 +1319,7 @@ class MapEditorInterface extends InterfaceLNZ {
       effect.setName();
       this.effect = effect;
       this.addField(new SpacerFormField(20));
-      this.addField(new IntegerFormField("ID: ", "enter an integer from 0-60", 0, 60));
+      this.addField(new IntegerFormField("ID: ", "enter an integer from 0-62", 0, 62));
       this.addField(new SpacerFormField(20));
       this.addField(new IntegerFormField("Number: ", "enter an integer", Integer.MIN_VALUE + 1, Integer.MAX_VALUE - 1));
       this.addField(new SpacerFormField(20));

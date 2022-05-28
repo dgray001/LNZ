@@ -900,17 +900,17 @@ class Item extends MapObject {
         break;
       case 2703:
         this.setStrings("Sandals", "Footgear", "");
-        this.speed = 1;
+        this.speed = 0.2;
         break;
       case 2704:
         this.setStrings("Shoes", "Footgear", "");
         this.defense = 1;
-        this.speed = 2;
+        this.speed = 0.4;
         break;
       case 2705:
         this.setStrings("Boots", "Footgear", "");
         this.defense = 2;
-        this.speed = 2;
+        this.speed = 0.4;
         break;
       case 2711:
         this.setStrings("Gypsum Boots", "Footgear", "");
@@ -921,20 +921,20 @@ class Item extends MapObject {
         this.setStrings("Sneakers", "Footgear", "");
         this.tier = 2;
         this.defense = 1;
-        this.speed = 3;
+        this.speed = 0.6;
         break;
       case 2713:
         this.setStrings("Steel-Toed Boots", "Footgear", "");
         this.tier = 2;
         this.attack = 1;
         this.defense = 3;
-        this.speed = 2;
+        this.speed = 0.4;
         break;
       case 2714:
         this.setStrings("Cowboy Boots", "Footgear", "");
         this.tier = 2;
         this.defense = 2;
-        this.speed = 3;
+        this.speed = 0.6;
         break;
       case 2721:
         this.setStrings("Calcite Boots", "Footgear", "");

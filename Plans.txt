@@ -159,26 +159,11 @@ Get number of image (png) files:
 
 v0.5.9: Advanced features (ETA 03-07)
 
-4. Workbench
- - has list of tools to add to make it better
- - list of crafting recipes
- - can have a mini one in Player inventory like in minecraft
-
 6. other:
- - Trigger upgrades (lots of effects / etc.)
- - color over screen variable in GameMap class (under HeaderMessages but over ellipse/namedispalyed so move header messages) controlled by triggers and some others (like health, some statuses)
  - add homing projectiles (is some units' autoattack)
  - add attachments for guns
- - core items to include all zambos weapons and core progression of armor items
  - core units to include a set of core units/1 hero for each alliance (Zombie/Frog/Mattus/Patrick/JF/Spinny)
 
-
-
-
-v0.6: UI Design (ETA 04-30)
-v0.6.1: MainMenuPage (ETA 03-19)
-
-v0.6.2: Options Page (ETA 03-26)
 
 v0.6.3: Achievements (ETA 04-05)
  - UnlockableTree class
@@ -193,12 +178,6 @@ can switch heroes more often
 traveling crafting bench (like the 2x2 in minecraft)
 wallet capacity
 other QoL features I come up with
-
-v0.6.4: Tutorial (ETA 04-15)
-
-v0.6.5-?: Other pages (ETA 04-30)
-
-
 
 
 v0.7: Campaign 1 (phase 1 of game) (ETA 06-30)

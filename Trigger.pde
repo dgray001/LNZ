@@ -549,6 +549,8 @@ class Effect {
       case 58: // set background music
       case 59: // trigger sleeping
       case 60: // set background volume
+      case 61: // trigger player sound
+      case 62: // silence player sound
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
@@ -744,6 +746,12 @@ class Effect {
           this.display_name = "Mute Background Volume";
         }
         break;
+      case 61: // trigger player sound
+        this.display_name = "Trigger Player Sound (" + this.message + ")";
+        break;
+      case 62: // silence player sound
+        this.display_name = "Silence Player Sound (" + this.message + ")";
+        break;
       default:
         this.display_name = "Effect";
         break;
@@ -937,6 +945,7 @@ class Effect {
         if (level.currMap.units.containsKey(this.number)) {
           level.chat(level.currMap.units.get(this.number).display_name() + ": " + this.message);
           level.currMap.addVisualEffect(4009, level.currMap.units.get(this.number).x + 0.6, level.currMap.units.get(this.number).y - 0.4);
+          level.currMap.selected_object = level.currMap.units.get(this.number);
         }
         break;
       case 21: // stop unit
@@ -1245,6 +1254,12 @@ class Effect {
           global.profile.options.volume_music_muted = true;
         }
         global.profile.options.change();
+        break;
+      case 61: // trigger player sound
+        global.sounds.trigger_player(this.message);
+        break;
+      case 62: // silence player sound
+        global.sounds.silence_player(this.message);
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
