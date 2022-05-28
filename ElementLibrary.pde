@@ -31,6 +31,13 @@ abstract class Button {
   Button() {
   }
 
+  void disable() {
+    this.disabled = true;
+    this.hovered = false;
+    this.clicked = false;
+    this.button_focused = false;
+  }
+
   void setColors(color c_dis, color c_def, color c_hov, color c_cli, color c_tex) {
     this.color_disabled = c_dis;
     this.color_default = c_def;

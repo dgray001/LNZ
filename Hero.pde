@@ -637,19 +637,37 @@ class Hero extends Unit {
 
   class CraftingInventory extends Inventory {
     class CraftButton extends RectangleButton {
+      protected int craft_timer = 0;
+
       CraftButton() {
         super(0, 0, 0, 0);
         this.disabled = true;
         this.show_message = true;
+        this.force_left_button = false;
         this.message = "Craft";
+        this.use_time_elapsed = true;
         this.noStroke();
         this.setColors(color(170, 170), color(1, 0), color(200, 100), color(200,
           200), color(0));
       }
 
-      void dehover(){}
+      @Override
+      void update(int timeElapsed) {
+        super.update(timeElapsed);
+        if (this.clicked && mouseButton == RIGHT) {
+          this.craft_timer -= timeElapsed;
+          if (this.craft_timer < 0) {
+            this.craft_timer = Constants.hero_multicraftTimer;
+            this.release();
+          }
+        }
+      }
+
+      void dehover() {}
       void hover() {}
-      void click() {}
+      void click() {
+        this.craft_timer = Constants.hero_multicraftTimer;
+      }
       void release() {
         if (!this.hovered) {
           return;
@@ -684,7 +702,9 @@ class Hero extends Unit {
       if (this.craftable_item == null) {
         return;
       }
-      if (this.slots.get(10).item != null && this.slots.get(10).item.ID != this.craftable_item.ID) {
+      if (this.slots.get(11).item != null && (this.slots.get(11).item.ID !=
+        this.craftable_item.ID || this.slots.get(11).item.maxStack() - this.
+        slots.get(11).item.stack < this.craftable_item.stack)) {
         return;
       }
       this.slots.get(0).removeStack();
@@ -696,13 +716,13 @@ class Hero extends Unit {
       this.slots.get(12).removeStack();
       this.slots.get(13).removeStack();
       this.slots.get(14).removeStack();
-      if (this.slots.get(10).item == null) {
-        this.slots.get(10).item = this.craftable_item;
+      if (this.slots.get(11).item == null) {
+        this.slots.get(11).item = new Item(this.craftable_item);
       }
       else {
-        this.slots.get(10).item.addStack(this.craftable_item.stack);
+        this.slots.get(11).item.addStack(this.craftable_item.stack);
       }
-      this.slots.get(10).deactivated = false;
+      this.slots.get(11).deactivated = false;
       this.craftable_item = null;
     }
 
@@ -717,8 +737,8 @@ class Hero extends Unit {
 
     @Override
     void update(int timeElapsed) {
-      if (!this.slots.get(10).deactivated && this.slots.get(10).item == null) {
-        this.slots.get(10).deactivated = true;
+      if (!this.slots.get(11).deactivated && this.slots.get(11).item == null) {
+        this.slots.get(11).deactivated = true;
       }
       super.update(timeElapsed);
       this.curr_crafting_hash_code = this.getCraftingHashCode();
@@ -727,6 +747,7 @@ class Hero extends Unit {
         CraftingRecipe recipe = global.crafting_recipes.get(this.curr_crafting_hash_code);
         this.craftable_item = new Item(recipe.output);
         this.craftable_item.stack = recipe.amount;
+        this.craft.disabled = false;
         image(global.images.getImage("icons/crafting_arrow_craftable.png"), 2 + 3.5 * this.button_size,
           2 + 1 * this.button_size, this.button_size, this.button_size);
         image(this.craftable_item.getImage(), 2 + 5 * this.button_size,
@@ -734,6 +755,7 @@ class Hero extends Unit {
       }
       else {
         this.craftable_item = null;
+        this.craft.disable();
         image(global.images.getImage("icons/crafting_arrow.png"), 2 + 3.5 * this.button_size,
           2 + 1 * this.button_size, this.button_size, this.button_size);
       }
@@ -744,12 +766,6 @@ class Hero extends Unit {
     void mouseMove(float mX, float mY) {
       super.mouseMove(mX, mY);
       this.craft.mouseMove(mX, mY);
-    }
-
-    @Override
-    void mousePress() {
-      super.mousePress();
-      this.craft.mousePress();
     }
 
     @Override
@@ -1157,9 +1173,13 @@ class Hero extends Unit {
               break;
             }
           }
+          if (found_clicked) {
+            break;
+          }
         }
       }
       // crafting
+      this.crafting_inventory.craft.mousePress();
       if (!found_clicked) {
         for (int x = 0; x < this.crafting_inventory.max_cols; x++) {
           for (int y = 0; y < this.crafting_inventory.max_rows; y++) {
@@ -1172,6 +1192,11 @@ class Hero extends Unit {
               source_item = this.crafting_inventory.slots.get(i).item;
               if (this.item_holding == null || this.item_holding.remove) {
                 this.item_origin = new InventoryKey(InventoryLocation.CRAFTING, i);
+                if (i == 11) {
+                  item_origin = null;
+                  this.crafting_inventory.slots.get(i).button.hovered = false;
+                  this.crafting_inventory.slots.get(i).button.clicked = false;
+                }
                 item_holding_x = this.display_width + 4 + (x + 0.5) * this.button_size;
                 item_holding_y = 0.5 * (this.display_height - this.crafting_inventory.
                   display_height) + 2 + (y + 0.5) * this.button_size;
@@ -1183,6 +1208,9 @@ class Hero extends Unit {
               found_clicked = true;
               break;
             }
+          }
+          if (found_clicked) {
+            break;
           }
         }
       }
@@ -1211,6 +1239,9 @@ class Hero extends Unit {
                 found_clicked = true;
                 break;
               }
+            }
+            if (found_clicked) {
+              break;
             }
           }
         }

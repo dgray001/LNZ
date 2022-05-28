@@ -1468,7 +1468,7 @@ class Item extends MapObject {
       text += "\nHealth: " + this.health;
     }
     if (this.type.equals("Melee Weapon")) {
-      text += "\nDurability: " + this.ammo + "/" + this.maximumAmmo();
+      //text += "\nDurability: " + this.ammo + "/" + this.maximumAmmo();
     }
     if (this.type.equals("Ranged Weapon")) {
       text += "\nAmmo: " + this.ammo + "/" + this.maximumAmmo();
@@ -2538,6 +2538,9 @@ class Item extends MapObject {
         return 60;
       case 2816: // wooden plank
         return 4;
+      case 2817: // wooden handle
+      case 2818: // wooden piece
+        return 16;
       case 2911: // pen
       case 2912: // pencil
       case 2913: // paper
