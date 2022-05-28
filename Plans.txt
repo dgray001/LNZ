@@ -40,6 +40,7 @@ v0.7.8: Lev3 triggers
 
 
 Parking Lot:
+ - Some way to either resave map with default unit/item/feature params or something...
  - Make terrain / fog resolution a parameter (low, medium, high?)
  - EASY COMPANY sound in tutorial
  - Mike Fischer steals Ben's eyes in tutorial when he crossing main area of 2nd floor
