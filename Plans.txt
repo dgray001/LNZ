@@ -46,8 +46,6 @@ Parking Lot:
  - Make terrain / fog resolution a parameter (low, medium, high?)
  - EASY COMPANY sound in tutorial
  - Mike Fischer steals Ben's eyes in tutorial when he crossing main area of 2nd floor
- - Make Features a hashmap since they can be removed and add Feature::map_key
- - Same with VisualEffects and Projectiles
  - StoveInventory door image / burner images / knob functionality
  - All Ben unit sounds
  - All Dan unit sounds

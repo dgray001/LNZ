@@ -72,14 +72,18 @@ Crate: 183
 Cardboard Box: 184
 Pickle Jar: 185
 Outside Light Source: 186
-Invisible Light Source: 187
-Invisible Light Source: 188
-Invisible Light Source: 189
-Invisible Light Source: 190
+Invisible Light Source, 1x1: 187
+Invisible Light Source, 2x1: 188
+Invisible Light Source, 1x2: 189
+Invisible Light Source, 2x2: 190
 Railing, green, up: 191
 Railing, green, left: 192
 Railing, red, up: 193
 Railing, red, left: 194
+Light Switch, up: 195
+Light Switch, down: 196
+Light Switch, left: 197
+Light Switch, right: 198
 Steel Cross: 201
 Mary Statue: 202
 Wire Fence, up: 211

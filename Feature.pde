@@ -82,6 +82,7 @@ class Feature extends MapObject {
   protected boolean toggle = false;
   protected Inventory inventory = null;
 
+  protected int map_key = -10;
   protected boolean refresh_map_image = false;
 
   Feature(int ID) {
@@ -405,6 +406,13 @@ class Feature extends MapObject {
       case 194:
         this.setStrings("Railing", "Furniture", "");
         this.setSize(1, 1, 5);
+        break;
+      case 195:
+      case 196:
+      case 197:
+      case 198:
+        this.setStrings("Light Switch", "Appliance", "");
+        this.setSize(1, 1, 0);
         break;
       case 201:
         this.setStrings("Steel Cross", "Statue", "");
@@ -943,6 +951,38 @@ class Feature extends MapObject {
         break;
       case 194:
         path += "railing_red_left.png";
+        break;
+      case 195:
+        if (this.toggle) {
+          path += "switch_up_on.png";
+        }
+        else {
+          path += "switch_up_off.png";
+        }
+        break;
+      case 196:
+        if (this.toggle) {
+          path += "switch_down_on.png";
+        }
+        else {
+          path += "switch_down_off.png";
+        }
+        break;
+      case 197:
+        if (this.toggle) {
+          path += "switch_left_on.png";
+        }
+        else {
+          path += "switch_left_off.png";
+        }
+        break;
+      case 198:
+        if (this.toggle) {
+          path += "switch_right_on.png";
+        }
+        else {
+          path += "switch_right_off.png";
+        }
         break;
       case 201:
         path += "steel_cross.png";
@@ -2324,6 +2364,12 @@ class Feature extends MapObject {
             }
           }
         } catch(ArrayIndexOutOfBoundsException e) {}
+        break;
+      case 195: // light switch
+      case 196:
+      case 197:
+      case 198:
+        //if (this.map_key
         break;
       default:
         break;

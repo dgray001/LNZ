@@ -180,7 +180,6 @@ class Unit extends MapObject {
 
   protected int map_key = -10;
   protected MapObject object_targeting = null;
-  protected int object_targeting_key = -1;
   protected MapObject last_damage_from = null;
   protected float last_damage_amount = 0;
   protected float last_move_distance = 0;
@@ -2310,15 +2309,14 @@ class Unit extends MapObject {
   }
 
 
-  void target(MapObject object, int object_key) {
-    this.target(object, object_key, false);
+  void target(MapObject object) {
+    this.target(object, false);
   }
-  void target(MapObject object, int object_key, boolean use_item) {
+  void target(MapObject object, boolean use_item) {
     if (this.object_targeting == object) {
       return;
     }
     this.object_targeting = object;
-    this.object_targeting_key = object_key;
     if (Feature.class.isInstance(this.object_targeting)) {
       if (this.weapon() != null && use_item) {
         this.curr_action = UnitAction.TARGETING_FEATURE_WITH_ITEM;
@@ -2344,7 +2342,6 @@ class Unit extends MapObject {
   void aim(float targetX, float targetY) {
     this.curr_action = UnitAction.AIMING;
     this.object_targeting = null;
-    this.object_targeting_key = -1;
     this.curr_action_x = targetX;
     this.curr_action_y = targetY;
   }
@@ -2686,7 +2683,7 @@ class Unit extends MapObject {
           break;
         case 1005: // Rooster
           if (source != null) {
-            this.target(source, source.map_key);
+            this.target(source);
             this.addStatusEffect(StatusEffectCode.RUNNING, 3000);
           }
           break;
@@ -2701,7 +2698,7 @@ class Unit extends MapObject {
         case 1209:
         case 1210:
           if (source != null && (this.curr_action == UnitAction.NONE || this.last_move_collision)) {
-            this.target(source, source.map_key);
+            this.target(source);
           }
           break;
         default:
@@ -3886,7 +3883,7 @@ class Unit extends MapObject {
                 continue;
               }
               try {
-                this.target(u.last_damage_from, ((Unit)u.last_damage_from).map_key);
+                this.target(u.last_damage_from);
                 random_walk = false;
               } catch(Exception e) {}
               break;
@@ -3934,10 +3931,10 @@ class Unit extends MapObject {
               }
               if (no_target) {
                 no_target = false;
-                this.target(u, u.map_key);
+                this.target(u);
               }
               else if (!u.ai_controlled) {
-                this.target(u, u.map_key);
+                this.target(u);
               }
             }
             if (no_target && randomChance(0.1)) {

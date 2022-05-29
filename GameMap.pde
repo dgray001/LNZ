@@ -419,14 +419,13 @@ class GameMap {
   protected float last_x = 0;
   protected float last_y = 0;
   protected MapObject hovered_object = null;
-  protected int hovered_object_key = -1;
 
   protected MapObject selected_object = null;
-  protected int selected_key = -10;
   protected SelectedObjectTextbox selected_object_textbox = null;
   protected ArrayList<HeaderMessage> headerMessages = new ArrayList<HeaderMessage>();
 
-  protected ArrayList<Feature> features = new ArrayList<Feature>();
+  protected HashMap<Integer, Feature> features = new HashMap<Integer, Feature>();
+  protected int nextFeatureKey = 1;
   protected HashMap<Integer, Unit> units = new HashMap<Integer, Unit>();
   protected int nextUnitKey = 1;
   protected boolean in_control = true;
@@ -475,7 +474,7 @@ class GameMap {
         this.terrain_dimg.addImageGrid(this.squares[i][j].terrainImage(), i, j);
       }
     }
-    for (Feature f : this.features) {
+    for (Feature f : this.features.values()) {
       this.terrain_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.sizeX, f.sizeY);
     }
     this.fog_dimg = new DImg(this.mapWidth * Constants.map_fogResolution, this.mapHeight * Constants.map_fogResolution);
@@ -751,6 +750,10 @@ class GameMap {
     this.addFeature(f, true);
   }
   void addFeature(Feature f, boolean refreshImage) {
+    this.addFeature(f, refreshImage, this.nextUnitKey);
+    this.nextUnitKey++;
+  }
+  void addFeature(Feature f, boolean refreshImage, int code) {
     if (!f.inMap(this.mapWidth, this.mapHeight)) {
       return;
     }
@@ -765,14 +768,16 @@ class GameMap {
     if (refreshImage) {
       this.refreshTerrainImage();
     }
-    this.features.add(f);
+    this.features.put(code, f);
+    f.map_key = code;
   }
   // remove feature
-  void removeFeature(int index) {
-    if (index < 0 || index >= this.features.size()) {
+  void removeFeature(int code) {
+    if (!this.features.containsKey(code)) {
       return;
     }
-    Feature f = this.features.get(index);
+    Feature f = this.features.get(code);
+    this.features.get(code).remove = true;
     if (!f.inMap(this.mapWidth, this.mapHeight)) {
       return;
     }
@@ -787,11 +792,11 @@ class GameMap {
         this.terrain_dimg.addImageGrid(this.squares[i][j].terrainImage(), i, j);
       }
     }
-    for (int i = 0; i < this.features.size(); i++) {
-      if (i == index) {
+    for (Map.Entry<Integer, Feature> entry : this.features.entrySet()) {
+      if (entry.getKey() == code) {
         continue;
       }
-      Feature f2 = this.features.get(i);
+      Feature f2 = entry.getValue();
       if (f2.x < f.x + f.sizeX && f2.y < f.y + f.sizeY && f2.x + f2.sizeX > f.x && f2.y + f2.sizeY > f.y) {
         DImg dimg = new DImg(f2.getImage());
         dimg.setGrid(f2.sizeX, f2.sizeY);
@@ -805,14 +810,13 @@ class GameMap {
       }
     }
     this.refreshTerrainImage();
-    this.features.remove(index);
   }
   // refresh feature image (remove then add)
-  void refreshFeature(int index) {
-    if (index < 0 || index >= this.features.size()) {
+  void refreshFeature(int code) {
+    if (!this.features.containsKey(code)) {
       return;
     }
-    Feature f = this.features.get(index);
+    Feature f = this.features.get(code);
     f.refresh_map_image = false;
     if (!f.inMap(this.mapWidth, this.mapHeight)) {
       return;
@@ -823,11 +827,11 @@ class GameMap {
         this.terrain_dimg.addImageGrid(this.squares[i][j].terrainImage(), i, j);
       }
     }
-    for (int i = 0; i < this.features.size(); i++) {
-      if (i == index) {
+    for (Map.Entry<Integer, Feature> entry : this.features.entrySet()) {
+      if (entry.getKey() == code) {
         continue;
       }
-      Feature f2 = this.features.get(i);
+      Feature f2 = entry.getValue();
       if (f2.x < f.x + f.sizeX && f2.y < f.y + f.sizeY && f2.x + f2.sizeX > f.x && f2.y + f2.sizeY > f.y) {
         DImg dimg = new DImg(f2.getImage());
         dimg.setGrid(f2.sizeX, f2.sizeY);
@@ -1028,7 +1032,6 @@ class GameMap {
     // hovered info
     if (this.hovered_object != null && this.hovered_object.remove) {
       this.hovered_object = null;
-      this.hovered_object_key = -1;
     }
     String nameDisplayed = null;
     color ellipseColor = color(255);
@@ -1670,19 +1673,22 @@ class GameMap {
 
   void updateMap(int timeElapsed) {
     // Update features
-    for (int i = 0; i < this.features.size(); i++) {
-      if (this.features.get(i).remove) {
-        this.removeFeature(i);
-        i--;
+    Iterator feature_iterator = this.features.entrySet().iterator();
+    while(feature_iterator.hasNext()) {
+      Map.Entry<Integer, Feature> entry = (Map.Entry<Integer, Feature>)feature_iterator.next();
+      Feature f = entry.getValue();
+      if (f.remove) {
+        this.removeFeature(entry.getKey());
+        feature_iterator.remove();
         continue;
       }
-      this.features.get(i).update(timeElapsed, this);
-      if (features.get(i).refresh_map_image) {
-        this.refreshFeature(i);
+      f.update(timeElapsed, this);
+      if (f.refresh_map_image) {
+        this.refreshFeature(entry.getKey());
       }
-      if (this.features.get(i).remove) {
-        this.removeFeature(i);
-        i--;
+      if (f.remove) {
+        this.removeFeature(entry.getKey());
+        feature_iterator.remove();
       }
     }
     // Update units
@@ -1812,10 +1818,12 @@ class GameMap {
 
   void updateMapCheckObjectRemovalOnly() {
     // Check features
-    for (int i = 0; i < this.features.size(); i++) {
-      if (this.features.get(i).remove) {
-        this.removeFeature(i);
-        i--;
+    Iterator feature_iterator = this.features.entrySet().iterator();
+    while(feature_iterator.hasNext()) {
+      Map.Entry<Integer, Feature> entry = (Map.Entry<Integer, Feature>)feature_iterator.next();
+      if (entry.getValue().remove) {
+        this.removeFeature(entry.getKey());
+        feature_iterator.remove();
       }
     }
     // Check units
@@ -1887,7 +1895,6 @@ class GameMap {
       this.hovered_border = false;
       // update hovered for map objects
       this.hovered_object = null;
-      this.hovered_object_key = -1;
       try {
         if (!this.draw_fog || this.squares[int(floor(this.mX))][int(floor(this.mY))].visible) {
           this.hovered_explored = true;
@@ -1897,8 +1904,8 @@ class GameMap {
           this.hovered_explored = true;
         }
       } catch(ArrayIndexOutOfBoundsException e) {}
-      for (int i = 0; i < this.features.size(); i++) {
-        Feature f = this.features.get(i);
+      for (Map.Entry<Integer, Feature> entry : this.features.entrySet()) {
+        Feature f = entry.getValue();
         f.mouseMove(this.mX, this.mY);
         if (f.hovered) {
           if (!this.force_all_hoverable) {
@@ -1917,7 +1924,6 @@ class GameMap {
             continue;
           }
           this.hovered_object = f;
-          this.hovered_object_key = i;
           global.setCursor("icons/cursor_interact.png");
           default_cursor = false;
         }
@@ -1939,7 +1945,6 @@ class GameMap {
             }
           }
           this.hovered_object = u;
-          this.hovered_object_key = entry.getKey();
           if (this.units.containsKey(0) && u.alliance != this.units.get(0).alliance) {
             global.setCursor("icons/cursor_attack.png");
             default_cursor = false;
@@ -1955,7 +1960,6 @@ class GameMap {
             continue;
           }
           this.hovered_object = i;
-          this.hovered_object_key = entry.getKey();
           if (this.units.containsKey(0) && this.units.get(0).tier() >= i.tier) {
             global.setCursor("icons/cursor_pickup.png");
             default_cursor = false;
@@ -1987,7 +1991,7 @@ class GameMap {
         this.hovered_border = false;
       }
       // dehover map objects
-      for (Feature f : this.features) {
+      for (Feature f : this.features.values()) {
         f.hovered = false;
       }
       for (Map.Entry<Integer, Unit> entry : this.units.entrySet()) {
@@ -2024,7 +2028,6 @@ class GameMap {
   void selectHoveredObject() {
     if (this.hovered_area && !this.hovered_border) {
       this.selected_object = this.hovered_object;
-      this.selected_key = this.hovered_object_key;
     }
   }
 
@@ -2060,7 +2063,7 @@ class GameMap {
             this.addVisualEffect(4001, this.mX, this.mY);
           }
           else {
-            player.target(this.hovered_object, this.hovered_object_key, global.holding_ctrl);
+            player.target(this.hovered_object, global.holding_ctrl);
           }
         }
         break;
@@ -2106,7 +2109,6 @@ class GameMap {
         case ' ':
           if (this.units.containsKey(0) && !global.holding_ctrl) {
             this.selected_object = this.units.get(0);
-            this.selected_key = 0;
           }
           break;
         case 'q':
@@ -2204,8 +2206,9 @@ class GameMap {
       }
     }
     // add feature data
-    for (Feature f : this.features) {
-      file.println(f.fileString());
+    for (Map.Entry<Integer, Feature> entry : this.features.entrySet()) {
+      file.println("nextFeatureKey: " + entry.getKey());
+      file.println(entry.getValue().fileString());
     }
     // add unit data
     for (Map.Entry<Integer, Unit> entry : this.units.entrySet()) {
@@ -2620,6 +2623,9 @@ class GameMap {
           this.exploreTerrain(terrain_x, terrain_y, false);
         }
         break;
+      case "nextFeatureKey":
+        this.nextFeatureKey  = toInt(data);
+        break;
       case "nextUnitKey":
         this.nextUnitKey = toInt(data);
         break;
@@ -2645,7 +2651,7 @@ class GameMapEditor extends GameMap {
     void submit() {
       if (GameMapEditor.this.rectangle_dropping != null) {
         // Delete features
-        for (Feature f : GameMapEditor.this.features) {
+        for (Feature f : GameMapEditor.this.features.values()) {
           if (GameMapEditor.this.rectangle_dropping.contains(f)) {
             f.remove = true;
           }
