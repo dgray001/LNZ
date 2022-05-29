@@ -1145,8 +1145,8 @@ class Unit extends MapObject {
       }
       speed += gear_entry.getValue().speed;
     }
-    if (this.weapon() != null && this.weapon().weapon()) {
-      speed += this.weapon().speed;
+    if (this.weapon() != null) {
+      speed += this.weapon().speedWhenHolding();
     }
     if (this.chilled()) {
       if (this.element == Element.CYAN) {

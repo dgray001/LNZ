@@ -446,21 +446,148 @@ class Item extends MapObject {
         this.size = 0.32;
         break;
       case 2212:
-        this.setStrings("Machete", "Melee Weapon", "");
+        this.setStrings("Gypsum Sword", "Melee Weapon", "");
         this.tier = 2;
-        this.attack = 4.5;
-        this.attackRange = 0.05;
-        this.piercing = 0.08;
-        this.size = 0.33;
+        this.attack = 6;
+        this.attackRange = 0.15;
+        this.piercing = 0.02;
+        this.size = 0.3;
         break;
       case 2213:
-        this.setStrings("Spear", "Melee Weapon", "");
+        this.setStrings("Gypsum Spear", "Melee Weapon", "");
         this.tier = 2;
-        this.attack = 5;
-        this.attackRange = 0.3;
+        this.attack = 5.5;
+        this.attackRange = 0.35;
+        this.piercing = 0.05;
+        this.size = 0.3;
+        break;
+      case 2221:
+        this.setStrings("Calcite Sword", "Melee Weapon", "");
+        this.tier = 3;
+        this.attack = 50;
+        this.attackRange = 0.15;
+        this.piercing = 0.03;
+        this.size = 0.3;
+        break;
+      case 2222:
+        this.setStrings("Calcite Spear", "Melee Weapon", "");
+        this.tier = 3;
+        this.attack = 45;
+        this.attackRange = 0.35;
+        this.piercing = 0.08;
+        this.size = 0.3;
+        break;
+      case 2231:
+        this.setStrings("Fluorite Sword", "Melee Weapon", "");
+        this.tier = 4;
+        this.attack = 120;
+        this.attackRange = 0.15;
+        this.piercing = 0.05;
+        this.size = 0.3;
+        break;
+      case 2232:
+        this.setStrings("Fluorite Spear", "Melee Weapon", "");
+        this.tier = 4;
+        this.attack = 108;
+        this.attackRange = 0.35;
+        this.piercing = 0.12;
+        this.size = 0.3;
+        break;
+      case 2241:
+        this.setStrings("Apatite Sword", "Melee Weapon", "");
+        this.tier = 5;
+        this.attack = 260;
+        this.attackRange = 0.15;
+        this.piercing = 0.06;
+        this.size = 0.3;
+        break;
+      case 2242:
+        this.setStrings("Apatite Spear", "Melee Weapon", "");
+        this.tier = 5;
+        this.attack = 235;
+        this.attackRange = 0.35;
+        this.piercing = 0.14;
+        this.size = 0.3;
+        break;
+      case 2251:
+        this.setStrings("Orthoclase Sword", "Melee Weapon", "");
+        this.tier = 6;
+        this.attack = 350;
+        this.attackRange = 0.15;
+        this.piercing = 0.07;
+        this.size = 0.3;
+        break;
+      case 2252:
+        this.setStrings("Orthoclase Spear", "Melee Weapon", "");
+        this.tier = 6;
+        this.attack = 315;
+        this.attackRange = 0.35;
+        this.piercing = 0.16;
+        this.size = 0.3;
+        break;
+      case 2261:
+        this.setStrings("Quartz Sword", "Melee Weapon", "");
+        this.tier = 7;
+        this.attack = 460;
+        this.attackRange = 0.15;
+        this.piercing = 0.08;
+        this.size = 0.3;
+        break;
+      case 2262:
+        this.setStrings("Quartz Spear", "Melee Weapon", "");
+        this.tier = 7;
+        this.attack = 415;
+        this.attackRange = 0.35;
         this.piercing = 0.18;
-        this.speed = -0.8;
-        this.size = 0.36;
+        this.size = 0.3;
+        break;
+      case 2271:
+        this.setStrings("Topaz Sword", "Melee Weapon", "");
+        this.tier = 8;
+        this.attack = 980;
+        this.attackRange = 0.15;
+        this.piercing = 0.09;
+        this.size = 0.3;
+        break;
+      case 2272:
+        this.setStrings("Topaz Spear", "Melee Weapon", "");
+        this.tier = 8;
+        this.attack = 890;
+        this.attackRange = 0.35;
+        this.piercing = 0.2;
+        this.size = 0.3;
+        break;
+      case 2281:
+        this.setStrings("Corundum Sword", "Melee Weapon", "");
+        this.tier = 9;
+        this.attack = 2000;
+        this.attackRange = 0.15;
+        this.piercing = 0.1;
+        this.size = 0.3;
+        break;
+      case 2282:
+        this.setStrings("Corundum Spear", "Melee Weapon", "");
+        this.tier = 9;
+        this.attack = 1750;
+        this.attackRange = 0.35;
+        this.piercing = 0.22;
+        this.size = 0.3;
+        break;
+      case 2291:
+        this.setStrings("Diamond Sword", "Melee Weapon", "");
+        this.tier = 10;
+        this.attack = 9100;
+        this.attackRange = 0.15;
+        this.piercing = 0.11;
+        this.size = 0.3;
+        break;
+      case 2292:
+        this.setStrings("Diamond Spear", "Melee Weapon", "");
+        this.tier = 10;
+        this.attack = 7400;
+        this.attackRange = 0.35;
+        this.piercing = 0.24;
+        this.size = 0.3;
         break;
 
       // Ranged Weapons
@@ -1080,6 +1207,14 @@ class Item extends MapObject {
         this.setStrings("Fluorite Crystal", "Material", "");
         this.tier = 4;
         break;
+      case 2833:
+        this.setStrings("Iron Crystal", "Material", "");
+        this.tier = 4;
+        break;
+      case 2834:
+        this.setStrings("Iron Crystal", "Material", "");
+        this.tier = 4;
+        break;
       case 2841:
         this.setStrings("Apatite Ore", "Material", "");
         this.tier = 5;
@@ -1087,6 +1222,13 @@ class Item extends MapObject {
       case 2842:
         this.setStrings("Apatite Crystal", "Material", "");
         this.tier = 5;
+        break;
+      case 2843:
+        this.setStrings("Iron Handle", "Material", "");
+        this.tier = 5;
+        this.attack = 12;
+        this.attackRange = 0.4;
+        this.size = 0.3;
         break;
       case 2851:
         this.setStrings("Orthoclase Ore", "Material", "");
@@ -1364,13 +1506,13 @@ class Item extends MapObject {
         this.tier = 4;
         this.attack = 1;
         this.piercing = 0.05;
-        this.size = 0.32;
+        this.size = 0.35;
         break;
       case 2982:
         this.setStrings("Beltsander", "Tool", "");
         this.tier = 4;
         this.attack = 1;
-        this.size = 0.32;
+        this.size = 0.35;
         break;
       case 2983:
         this.setStrings("Chainsaw", "Tool", "");
@@ -1378,7 +1520,7 @@ class Item extends MapObject {
         this.attack = 5;
         this.attackRange = 0.07;
         this.piercing = 0.2;
-        this.size = 0.32;
+        this.size = 0.38;
         break;
       case 2984:
         this.setStrings("Woodglue", "Tool", "");
@@ -1748,10 +1890,58 @@ class Item extends MapObject {
         path += "the_thing.png";
         break;
       case 2212:
-        path += "machete.png";
+        path += "gypsum_sword.png";
         break;
       case 2213:
-        path += "spear.png";
+        path += "gypsum_spear.png";
+        break;
+      case 2221:
+        path += "calcite_sword.png";
+        break;
+      case 2222:
+        path += "calcite_spear.png";
+        break;
+      case 2231:
+        path += "fluorite_sword.png";
+        break;
+      case 2232:
+        path += "fluorite_spear.png";
+        break;
+      case 2241:
+        path += "apatite_sword.png";
+        break;
+      case 2242:
+        path += "apatite_spear.png";
+        break;
+      case 2251:
+        path += "orthoclase_sword.png";
+        break;
+      case 2252:
+        path += "orthoclase_spear.png";
+        break;
+      case 2261:
+        path += "quartz_sword.png";
+        break;
+      case 2262:
+        path += "quartz_spear.png";
+        break;
+      case 2271:
+        path += "topaz_sword.png";
+        break;
+      case 2272:
+        path += "topaz_spear.png";
+        break;
+      case 2281:
+        path += "corundum_sword.png";
+        break;
+      case 2282:
+        path += "corundum_spear.png";
+        break;
+      case 2291:
+        path += "diamond_sword.png";
+        break;
+      case 2292:
+        path += "diamond_spear.png";
         break;
       // Ranged Weapons
       case 2301:
@@ -2122,11 +2312,20 @@ class Item extends MapObject {
       case 2832:
         path += "fluorite_crystal.png";
         break;
+      case 2833:
+        path += "iron_ore.png";
+        break;
+      case 2834:
+        path += "iron_chunk.png";
+        break;
       case 2841:
         path += "apatite_ore.png";
         break;
       case 2842:
         path += "apatite_crystal.png";
+        break;
+      case 2843:
+        path += "iron_handle.png";
         break;
       case 2851:
         path += "orthoclase_ore.png";
@@ -2438,6 +2637,19 @@ class Item extends MapObject {
     }
   }
 
+  float speedWhenHolding() {
+    if (this.weapon()) {
+      return this.speed;
+    }
+    switch(this.ID) {
+      case 2816: // woden plank
+      case 2969: // wooden log
+        return this.speed;
+      default:
+        return 0;
+    }
+  }
+
   boolean weapon() {
     if (this.type.contains("Weapon") || this.throwable()) {
       return true;
@@ -2523,6 +2735,8 @@ class Item extends MapObject {
       case 2825: // star piece
       case 2831: // fluorite ore
       case 2832: // fluorite crystal
+      case 2833: // iron ore
+      case 2834: // iron chunk
       case 2841: // apatite ore
       case 2842: // apatite crystal
       case 2851: // orthoclase ore
@@ -2545,6 +2759,7 @@ class Item extends MapObject {
         return 4;
       case 2817: // wooden handle
       case 2818: // wooden piece
+      case 2843: // iron handle
         return 16;
       case 2911: // pen
       case 2912: // pencil

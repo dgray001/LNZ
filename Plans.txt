@@ -1,14 +1,13 @@
 v0.7.4: Francis Hall level
  d-e: various named zombies for francis hall ~10
- f: update / rebalance all current items
- g: sword/spear for all 10 basic materials
- h: crafting recipes for sword/spear/armor for all 10 basic materialss
+ f: rebalance all current items
+ g: sword/spear images for all 10 basic materials
  i: plan out basics of francis hall, finish features
  j: add basic items in francis hall
  k: add basic units in francis hall
  l: basic triggers of francis hall
 
- - fix 3 black horizontal lines on francis hall => 36, 66, 71
+ - fix 3 black horizontal lines on francis hall => exactly 36, 66, 71
      => not connected to transparent images
      => in DImg all the way across
      => no problem for new 4x77 map

@@ -2023,6 +2023,10 @@ class Level {
             this.player.frontX(), this.player.frontY()));
           this.player.inventory.item_dropping = null;
         }
+        for (Item i : this.player.inventory.more_items_dropping) {
+          this.currMap.addItem(new Item(i, this.player.frontX(), this.player.frontY()));
+        }
+        this.player.inventory.more_items_dropping.clear();
         if (this.player.inventory.viewing) {
           if (this.player.inventory.item_holding != null) {
             this.currMap.selected_object = this.player.inventory.item_holding;

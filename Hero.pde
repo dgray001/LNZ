@@ -789,7 +789,10 @@ class Hero extends Unit {
 
 
     ArrayList<ToolCode> currentTools() {
-      return ToolCode.toolCodesFrom(Hero.this.weapon(), Hero.this.offhand());
+      ArrayList<Item> tool_items = Hero.this.inventory.items();
+      tool_items.add(Hero.this.weapon());
+      tool_items.add(Hero.this.offhand());
+      return ToolCode.toolCodesFrom(tool_items.toArray(new Item[0]));
     }
 
 
@@ -970,6 +973,7 @@ class Hero extends Unit {
     protected Item item_holding = null;
     protected InventoryKey item_origin = null;
     protected Item item_dropping = null;
+    protected ArrayList<Item> more_items_dropping = new ArrayList<Item>();
 
     protected GearInventory gear_inventory = new GearInventory();
     protected Inventory feature_inventory = null;
@@ -1011,12 +1015,32 @@ class Hero extends Unit {
             }
             break;
           case CRAFTING:
-            this.item_dropping = this.crafting_inventory.placeAt(this.item_holding, this.item_origin.index);
+            if (this.item_origin.index == 11) {
+              this.item_dropping = this.stash(this.item_holding);
+            }
+            else {
+              this.item_dropping = this.crafting_inventory.placeAt(this.item_holding, this.item_origin.index);
+            }
             break;
         }
       }
       this.item_holding = null;
       this.item_origin = null;
+    }
+
+
+    void clearCraftingInventory() {
+      for (InventorySlot slot : this.crafting_inventory.slots) {
+        if (slot.item == null || slot.item.remove) {
+          continue;
+        }
+        Item i = this.stash(slot.item);
+        slot.item = null;
+        if (i == null || i.remove) {
+          continue;
+        }
+        this.more_items_dropping.add(i);
+      }
     }
 
 
@@ -1342,9 +1366,6 @@ class Hero extends Unit {
               source_item = this.crafting_inventory.slots.get(i).item;
               if (this.item_holding == null || this.item_holding.remove) {
                 this.item_origin = new InventoryKey(InventoryLocation.CRAFTING, i);
-                if (i == 11) {
-                  item_origin = null;
-                }
                 item_holding_x = this.display_width + 4 + (x + 0.5) * this.button_size;
                 item_holding_y = 0.5 * (this.display_height - this.crafting_inventory.
                   display_height) + 2 + (y + 0.5) * this.button_size;
@@ -5091,6 +5112,7 @@ class Hero extends Unit {
             }
             this.inventory.feature_inventory = null;
             this.inventory.dropItemHolding();
+            this.inventory.clearCraftingInventory();
           }
           break;
         case 'r':

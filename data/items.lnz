@@ -54,8 +54,24 @@ Talc Sword: 2206
 Wooden Spear: 2207
 Talc Spear: 2208
 The Thing: 2211
-Machete: 2212
-Spear: 2213
+Gypsum Sword: 2212
+Gypsum Spear: 2213
+Calcite Sword: 2221
+Calcite Spear: 2222
+Fluorite Sword: 2231
+Fluorite Spear: 2232
+Apatite Sword: 2241
+Apatite Spear: 2242
+Orthoclase Sword: 2251
+Orthoclase Spear: 2252
+Quartz Sword: 2261
+Quartz Spear: 2262
+Topaz Sword: 2271
+Topaz Spear: 2272
+Corundum Sword: 2281
+Corundum Spear: 2282
+Diamond Sword: 2291
+Diamond Spear: 2292
 
 Slingshot: 2301
 Recurve Bow: 2311
@@ -177,8 +193,11 @@ Iceland Spar: 2824
 Star Piece: 2825
 Fluorite Ore: 2831
 Fluorite Crystal: 2832
+Iron Ore: 2833
+Iron Chunk: 2834
 Apatite Ore: 2841
 Apatite Crystal: 2842
+Iron Handle: 2843
 Orthoclase Ore: 2851
 Orthoclase Chunk: 2852
 Quartz Ore: 2861
