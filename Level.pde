@@ -90,6 +90,8 @@ class Level {
   protected Location location = Location.ERROR;
   protected boolean nullify = false;
   protected boolean completed = false;
+  protected boolean completing = false;
+  protected int completing_timer = 5000;
   protected int completion_code = 0;
 
   protected LevelForm level_form = null;
@@ -1921,9 +1923,13 @@ class Level {
     this.complete(0);
   }
   void complete(int completion_code) {
+    if (this.completing || this.completed) {
+      return;
+    }
     this.completion_code = completion_code;
-    this.completed = true;
+    this.completing = true;
     this.save();
+    global.sounds.play_background("victory");
   }
 
 
@@ -1944,7 +1950,31 @@ class Level {
       this.restartTimers(millis);
     }
     int timeElapsed = millis - this.last_update_time;
-    this.time.add(timeElapsed * Constants.level_timeConstants);
+    if (this.completing || this.completed) {
+      if (this.currMap != null) {
+        this.currMap.drawMap();
+      }
+      else {
+        rectMode(CORNERS);
+        noStroke();
+        fill(color(60));
+        rect(this.xi, this.yi, this.xf, this.yf);
+      }
+      this.completing_timer -= timeElapsed;
+      if (this.completing_timer < 0) {
+        this.completed = true;
+      }
+      rectMode(CORNERS);
+      fill(100, 100);
+      noStroke();
+      rect(this.xi, this.yi, this.xf, this.yf);
+      fill(255);
+      textSize(90);
+      textAlign(CENTER, CENTER);
+      text("You are Victorious!", 0.5 * width, 0.5 * height);
+      this.last_update_time = millis;
+      return;
+    }
     if (this.player != null && this.player.heroTree.curr_viewing) {
       if (this.player.heroTree.set_screen_location) {
         this.player.heroTree.set_screen_location = false;
@@ -1964,6 +1994,7 @@ class Level {
       this.last_update_time = millis;
       return;
     }
+    this.time.add(timeElapsed * Constants.level_timeConstants);
     if (this.currMap != null) {
       this.currMap.base_light_level = DayCycle.lightFraction(this.time.value);
       if (this.respawning) {
@@ -2081,6 +2112,9 @@ class Level {
   }
 
   void mouseMove(float mX, float mY) {
+    if (this.completing || this.completed) {
+      return;
+    }
     if (this.level_questbox != null) {
       this.level_questbox.mouseMove(mX, mY);
     }
@@ -2119,6 +2153,9 @@ class Level {
     if (this.level_chatbox != null) {
       this.level_chatbox.mousePress();
     }
+    if (this.completing || this.completed) {
+      return;
+    }
     if (this.player != null) {
       if (this.player.heroTree.curr_viewing) {
         this.player.heroTree.mousePress();
@@ -2147,6 +2184,9 @@ class Level {
     if (this.level_chatbox != null) {
       this.level_chatbox.mouseRelease(mX, mY);
     }
+    if (this.completing || this.completed) {
+      return;
+    }
     if (this.player != null) {
       if (this.player.heroTree.curr_viewing) {
         this.player.heroTree.mouseRelease(mX, mY);
@@ -2174,6 +2214,9 @@ class Level {
     }
     if (this.level_chatbox != null) {
       this.level_chatbox.scroll(amount);
+    }
+    if (this.completing || this.completed) {
+      return;
     }
     if (this.player != null) {
       if (this.player.heroTree.curr_viewing) {
@@ -2248,8 +2291,7 @@ class Level {
         case 'c':
         case 'C':
           if (global.holding_ctrl && this.player != null) {
-            this.completed = true;
-            this.completion_code = 0;
+            this.complete();
           }
           break;
       }
@@ -2314,6 +2356,7 @@ class Level {
     file.println("levelName: " + this.levelName);
     file.println("location: " + this.location.file_name());
     file.println("completed: " + this.completed);
+    file.println("completing: " + this.completing);
     file.println("completion_code: " + this.completion_code);
     file.println("time: " + this.time.value);
     file.println("respawning: " + this.respawning);
@@ -2537,6 +2580,9 @@ class Level {
         break;
       case "completed":
         this.completed = toBoolean(data);
+        break;
+      case "completing":
+        this.completing = toBoolean(data);
         break;
       case "completion_code":
         this.completion_code = toInt(data);

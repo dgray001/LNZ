@@ -1,5 +1,4 @@
 v0.7.4: Francis Hall level
- b: level completion message/sound/timer
  c: light switches in francis hall
  d-e: various named zombies for francis hall ~10
  f: update / rebalance all current items
@@ -10,7 +9,6 @@ v0.7.4: Francis Hall level
  k: add basic units in francis hall
  l: basic triggers of francis hall
 
- - lava consumes items
  - put mousemove calculation in thread if it will be so expensive (it seems more expensive than moving)
  Add items:
    - More misc tools: metal pipe

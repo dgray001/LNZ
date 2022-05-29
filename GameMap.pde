@@ -1730,6 +1730,12 @@ class GameMap {
         continue;
       }
       i.update(timeElapsed);
+      try {
+        if (this.squares[int(floor(i.x))][int(floor(i.y))].terrain_id == 191) {
+          i.remove = true;
+        }
+      } catch(ArrayIndexOutOfBoundsException e) {
+      }
       if (i.remove) {
         item_iterator.remove();
       }
