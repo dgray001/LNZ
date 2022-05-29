@@ -475,7 +475,9 @@ class GameMap {
       }
     }
     for (Feature f : this.features.values()) {
-      this.terrain_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.sizeX, f.sizeY);
+      if (f.displaysImage()) {
+        this.terrain_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.sizeX, f.sizeY);
+      }
     }
     this.fog_dimg = new DImg(this.mapWidth * Constants.map_fogResolution, this.mapHeight * Constants.map_fogResolution);
     this.fog_dimg.setGrid(this.mapWidth, this.mapHeight);
@@ -592,9 +594,9 @@ class GameMap {
     this.xi_fog = this.xi_map - this.zoom * (this.startSquareX - float(fog_xi) / Constants.map_fogResolution);
     int fog_yi = int(floor(this.startSquareY * Constants.map_fogResolution));
     this.yi_fog = this.yi_map - this.zoom * (this.startSquareY - float(fog_yi) / Constants.map_fogResolution);
-    int fog_w = int(ceil(this.visSquareX * Constants.map_fogResolution));
+    int fog_w = int(ceil(this.visSquareX * Constants.map_fogResolution)) + 1;
     this.xf_fog = this.xi_fog + this.zoom * (float(fog_w) / Constants.map_fogResolution);
-    int fog_h = int(ceil(this.visSquareY * Constants.map_fogResolution));
+    int fog_h = int(ceil(this.visSquareY * Constants.map_fogResolution)) + 1;
     this.yf_fog = this.yi_fog + this.zoom * (float(fog_h) / Constants.map_fogResolution);
     this.fog_display = this.fog_dimg.getImagePiece(fog_xi, fog_yi, fog_w, fog_h);
   }
@@ -762,7 +764,7 @@ class GameMap {
         this.squares[i][j].feature_elevation += f.sizeZ;
       }
     }
-    if (this.terrain_dimg != null) {
+    if (this.terrain_dimg != null && f.displaysImage()) {
       this.terrain_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.sizeX, f.sizeY);
     }
     if (refreshImage) {
@@ -770,6 +772,18 @@ class GameMap {
     }
     this.features.put(code, f);
     f.map_key = code;
+    switch(f.ID) {
+      case 195: // light switches
+      case 196:
+      case 197:
+      case 198:
+        if (f.number <= 0) {
+          f.number = f.map_key - 1;
+        }
+        break;
+      default:
+        break;
+    }
   }
   // remove feature
   void removeFeature(int code) {
@@ -785,6 +799,9 @@ class GameMap {
       for (int j = int(floor(f.y)); j < int(floor(f.y + f.sizeY)); j++) {
         this.squares[i][j].feature_elevation -= f.sizeZ;
       }
+    }
+    if (!f.displaysImage()) {
+      return;
     }
     this.terrain_dimg.colorGrid(color(1, 0), int(round(f.x)), int(round(f.y)), f.sizeX, f.sizeY);
     for (int i = int(round(f.xi())); i < int(round(f.xf())); i++) {
@@ -819,6 +836,9 @@ class GameMap {
     Feature f = this.features.get(code);
     f.refresh_map_image = false;
     if (!f.inMap(this.mapWidth, this.mapHeight)) {
+      return;
+    }
+    if (!f.displaysImage()) {
       return;
     }
     this.terrain_dimg.colorGrid(color(1, 0), int(round(f.x)), int(round(f.y)), f.sizeX, f.sizeY);

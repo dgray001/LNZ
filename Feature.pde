@@ -383,22 +383,27 @@ class Feature extends MapObject {
       case 186:
         this.setStrings("Outside Light Source", "Furniture", "");
         this.setSize(1, 1, 0);
+        this.toggle = true;
         break;
       case 187:
         this.setStrings("Invisible Light Source", "Furniture", "");
         this.setSize(1, 1, 0);
+        this.toggle = true;
         break;
       case 188:
         this.setStrings("Invisible Light Source", "Furniture", "");
         this.setSize(2, 1, 0);
+        this.toggle = true;
         break;
       case 189:
         this.setStrings("Invisible Light Source", "Furniture", "");
         this.setSize(1, 2, 0);
+        this.toggle = true;
         break;
       case 190:
         this.setStrings("Invisible Light Source", "Furniture", "");
         this.setSize(2, 2, 0);
+        this.toggle = true;
         break;
       case 191:
       case 192:
@@ -413,6 +418,7 @@ class Feature extends MapObject {
       case 198:
         this.setStrings("Light Switch", "Appliance", "");
         this.setSize(1, 1, 0);
+        this.toggle = true;
         break;
       case 201:
         this.setStrings("Steel Cross", "Statue", "");
@@ -713,6 +719,19 @@ class Feature extends MapObject {
   }
   float yRadius() {
     return 0.5 * this.sizeY;
+  }
+
+  boolean displaysImage() {
+    switch(this.ID) {
+      case 186:
+      case 187:
+      case 188:
+      case 189:
+      case 190:
+        return false;
+      default:
+        return true;
+    }
   }
 
   PImage getImage() {

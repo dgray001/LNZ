@@ -150,6 +150,12 @@ class DImg {
     if (w < 0 || h < 0) {
       return createImage(1, 1, ARGB);
     }
+    if (xi + w > this.img.width) {
+      w = this.img.width - xi;
+    }
+    if (yi + h > this.img.height) {
+      h = this.img.height - yi;
+    }
     PImage return_image = createImage(w, h, ARGB);
     return_image.loadPixels();
     for (int i = 0; i < h; i++) {
