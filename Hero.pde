@@ -4597,7 +4597,7 @@ class Hero extends Unit {
 
 
   boolean seesTime() {
-    return true;
+    return false;
   }
 
   void startUseItemTimer() {

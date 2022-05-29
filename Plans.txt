@@ -1,7 +1,10 @@
-v0.7.3: Francis Hall
- z: light switches in francis hall
-
 v0.7.4: Francis Hall level
+ - level completion sound / timer (you are victorious and aoe sound)
+ - Fix line in terrain image bug (from invisible light source)
+ - remove fall damage until:
+   1. can visualize height
+   2. can fix feature collision bug (like "falling" when closing door on yourself)
+ - light switches in francis hall
  - put mousemove calculation in thread if it will be so expensive (it seems more expensive than moving)
  Add items:
    - More misc tools: metal pipe
@@ -30,6 +33,7 @@ v0.7.8: Lev3 triggers
     => Also many other ClassCastExceptions
     => Happens often (~30%) in TutorialInterface
       -> remove something from a constructor somewhere ===> color() ??
+      -> mostly just in reloading saved game
     => Going to perk tree then back to level fixes it???
     => Now happens much more rarely (~5%) so maybe now a replicate of below but related to TutorialInterface
   -> java.lang.ClassCastException: class com.sun.javafx.font.PrismFont cannot be cast to class com.sun.prism.paint.Paint (com.sun.javafx.font.PrismFont and com.sun.prism.paint.Paint are in module javafx.graphics of loader 'app')

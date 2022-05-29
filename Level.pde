@@ -1220,6 +1220,21 @@ class Level {
           new_i.pickupSound();
         }
         break;
+      case 195: // light switch
+      case 196:
+      case 197:
+      case 198:
+        f.toggle = !f.toggle;
+        f.refresh_map_image = true;
+        if (f.toggle) {
+          global.sounds.trigger_environment("features/switch_on",
+            f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+        }
+        else {
+          global.sounds.trigger_environment("features/switch_off",
+            f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+        }
+        break;
       case 211: // wire fence
       case 212:
       case 213:

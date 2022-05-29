@@ -394,6 +394,9 @@ class Unit extends MapObject {
   String display_name() {
     return this.display_name;
   }
+  String display_name_editor() {
+    return this.display_name() + " (" + this.map_key + ")";
+  }
   String type() {
     return this.type;
   }

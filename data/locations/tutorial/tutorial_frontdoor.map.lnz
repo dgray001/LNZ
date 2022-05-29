@@ -3,6 +3,7 @@ code: FRANCIS_GROUND
 mapName: tutorial_frontdoor
 dimensions: 18, 30
 maxHeight: 10
+outside_map: true
 color_tint: 65793
 show_tint: false
 terrain: 0, 0: 1, 100, true
@@ -545,6 +546,7 @@ terrain: 17, 26: 1, 100, true
 terrain: 17, 27: 1, 100, true
 terrain: 17, 28: 1, 100, true
 terrain: 17, 29: 1, 100, true
+nextFeatureKey: 1
 
 new: Feature: 194
 location: 3.0, 25.0, 0
@@ -554,6 +556,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 2
 
 new: Feature: 194
 location: 4.0, 25.0, 0
@@ -563,6 +566,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 3
 
 new: Feature: 194
 location: 5.0, 25.0, 0
@@ -572,6 +576,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 4
 
 new: Feature: 323
 location: 7.0, 17.0, 0
@@ -581,6 +586,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 5
 
 new: Feature: 323
 location: 2.0, 15.0, 0
@@ -590,6 +596,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 6
 
 new: Feature: 323
 location: 3.0, 15.0, 0
@@ -599,6 +606,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 7
 
 new: Feature: 323
 location: 5.0, 15.0, 0
@@ -608,6 +616,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 8
 
 new: Feature: 323
 location: 6.0, 15.0, 0
@@ -617,6 +626,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 9
 
 new: Feature: 323
 location: 7.0, 16.0, 0
@@ -626,6 +636,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 10
 
 new: Feature: 130
 location: 7.0, 9.0, 0
@@ -635,6 +646,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 11
 
 new: Feature: 126
 location: 12.0, 9.0, 0
@@ -644,6 +656,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 12
 
 new: Feature: 181
 location: 12.0, 8.0, 0
@@ -653,6 +666,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 13
 
 new: Feature: 181
 location: 12.0, 17.0, 0
@@ -662,6 +676,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 14
 
 new: Feature: 441
 location: 14.0, 17.0, 0
@@ -671,6 +686,7 @@ number: 3
 toggle: false
 end: Feature
 
+nextFeatureKey: 15
 
 new: Feature: 441
 location: 13.0, 22.0, 0
@@ -680,6 +696,7 @@ number: 3
 toggle: false
 end: Feature
 
+nextFeatureKey: 16
 
 new: Feature: 401
 location: 7.0, 7.0, 0
@@ -689,6 +706,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 17
 
 new: Feature: 401
 location: 14.0, 11.0, 0
@@ -698,6 +716,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 18
 
 new: Feature: 401
 location: 6.0, 8.0, 0
@@ -707,6 +726,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 19
 
 new: Feature: 401
 location: 0.0, 12.0, 0
@@ -716,6 +736,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 20
 
 new: Feature: 425
 location: 15.0, 14.0, 0
@@ -725,6 +746,7 @@ number: 12
 toggle: true
 end: Feature
 
+nextFeatureKey: 21
 
 new: Feature: 425
 location: 13.0, 7.0, 0
@@ -734,6 +756,7 @@ number: 12
 toggle: true
 end: Feature
 
+nextFeatureKey: 22
 
 new: Feature: 421
 location: 12.0, 13.0, 0
@@ -743,6 +766,7 @@ number: 8
 toggle: true
 end: Feature
 
+nextFeatureKey: 23
 
 new: Feature: 422
 location: 16.0, 4.0, 0
@@ -752,6 +776,7 @@ number: 8
 toggle: true
 end: Feature
 
+nextFeatureKey: 24
 
 new: Feature: 441
 location: 12.0, 15.0, 0
@@ -761,6 +786,7 @@ number: 3
 toggle: false
 end: Feature
 
+nextFeatureKey: 25
 
 new: Feature: 442
 location: 16.0, 12.0, 0
@@ -770,6 +796,7 @@ number: 3
 toggle: false
 end: Feature
 
+nextFeatureKey: 26
 
 new: Feature: 442
 location: 15.0, 4.0, 0
@@ -779,6 +806,7 @@ number: 3
 toggle: false
 end: Feature
 
+nextFeatureKey: 27
 
 new: Feature: 441
 location: 16.0, 6.0, 0
@@ -788,6 +816,7 @@ number: 3
 toggle: false
 end: Feature
 
+nextFeatureKey: 28
 
 new: Feature: 157
 location: 12.0, 16.0, 0
@@ -798,6 +827,7 @@ toggle: false
 description: ***Francis Hall
 end: Feature
 
+nextFeatureKey: 29
 
 new: Feature: 360
 location: 7.0, 19.0, 0
@@ -807,6 +837,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 30
 
 new: Feature: 360
 location: 7.0, 20.0, 0
@@ -816,6 +847,7 @@ number: 0
 toggle: true
 end: Feature
 
+nextFeatureKey: 31
 
 new: Feature: 360
 location: 0.0, 20.0, 0
@@ -825,6 +857,7 @@ number: 0
 toggle: true
 end: Feature
 
+nextFeatureKey: 32
 
 new: Feature: 360
 location: 0.0, 19.0, 0
@@ -834,6 +867,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 33
 
 new: Feature: 359
 location: 2.0, 23.0, 0
@@ -841,6 +875,66 @@ curr_height: 0
 remove: false
 number: 0
 toggle: false
+end: Feature
+
+nextFeatureKey: 34
+
+new: Feature: 187
+location: 3.0, 24.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 35
+
+new: Feature: 187
+location: 3.0, 26.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 36
+
+new: Feature: 187
+location: 5.0, 26.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 37
+
+new: Feature: 187
+location: 5.0, 24.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 38
+
+new: Feature: 190
+location: 2.0, 19.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 39
+
+new: Feature: 190
+location: 4.0, 19.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
 end: Feature
 
 nextUnitKey: 1
@@ -853,6 +947,7 @@ size: 0.35
 level: 3
 alliance: Ben
 element: Gray
+gearSlot: ERROR
 gearSlot: WEAPON
 new: Item: 2928
 location: 0.0, 0.0, 0
@@ -884,7 +979,6 @@ lifesteal: 0.0
 ammo: 200000
 toggled: true
 end: Item: Weapon
-gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0

@@ -1446,6 +1446,9 @@ class Item extends MapObject {
         return this.display_name;
     }
   }
+  String display_name_editor() {
+    return this.display_name() + " (" + this.map_key + ")";
+  }
   String type() {
     return this.type;
   }

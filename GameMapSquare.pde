@@ -20,10 +20,12 @@ class GameMapSquare {
       this.light_level = 9;
       return;
     }
-    float light = this.light_level - 2;
+    float light = this.light_level;
     if (this.light_source) {
       this.light_source = false;
-      light++;
+    }
+    else {
+      light -= 2;
     }
     if (map.outside_map && map.base_light_level > light) {
       light = map.base_light_level;
@@ -228,6 +230,8 @@ class GameMapSquare {
       case 184:
       case 185:
         return "Water";
+      case 191:
+        return "Lava";
       case 201:
       case 202:
       case 203:

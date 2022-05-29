@@ -19,7 +19,7 @@ abstract class EditMapObjectForm extends FormLNZ {
   EditMapObjectForm(MapObject mapObject) {
     super(0.5 * (width - Constants.mapEditor_formWidth), 0.5 * (height - Constants.mapEditor_formHeight),
       0.5 * (width + Constants.mapEditor_formWidth), 0.5 * (height + Constants.mapEditor_formHeight));
-    this.setTitleText(mapObject.display_name());
+    this.setTitleText(mapObject.display_name_editor());
     this.setTitleSize(18);
     this.addField(new SpacerFormField(1));
     this.color_background = color(160, 220, 220);
@@ -70,6 +70,9 @@ abstract class MapObject {
   }
 
   abstract String display_name();
+  String display_name_editor() {
+    return this.display_name();
+  }
   abstract String type();
   abstract String description();
   void setDescription(String description) {

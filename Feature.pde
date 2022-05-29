@@ -637,6 +637,9 @@ class Feature extends MapObject {
   String display_name() {
     return this.display_name;
   }
+  String display_name_editor() {
+    return this.display_name() + " (" + this.map_key + ")";
+  }
   String type() {
     return this.type;
   }
@@ -1455,6 +1458,10 @@ class Feature extends MapObject {
       case 182: // recycle can
       case 183: // crate
       case 184: // cardboard box
+      case 195: // light switch
+      case 196:
+      case 197:
+      case 198:
       case 301: // movable brick wall
       case 302:
       case 303:
@@ -2329,6 +2336,21 @@ class Feature extends MapObject {
   }
 
 
+  boolean switchable() { // can be toggled with light switch
+    switch(this.ID) {
+      case 180: // lamp
+      case 186: // outside light source
+      case 187: // invisible light source
+      case 188:
+      case 189:
+      case 190:
+        return true;
+      default:
+        return false;
+    }
+  }
+
+
   void update(int timeElapsed, GameMap map) {
     this.update(timeElapsed);
     switch(this.ID) {
@@ -2369,7 +2391,18 @@ class Feature extends MapObject {
       case 196:
       case 197:
       case 198:
-        //if (this.map_key
+        Feature light = map.features.get(this.number);
+        if (light == null || light.remove || !light.switchable()) {
+          break;
+        }
+        if (this.toggle && !light.toggle) {
+          light.toggle = true;
+          light.refresh_map_image = true;
+        }
+        else if (!this.toggle && light.toggle) {
+          light.toggle = false;
+          light.refresh_map_image = true;
+        }
         break;
       default:
         break;

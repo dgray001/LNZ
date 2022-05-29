@@ -750,8 +750,8 @@ class GameMap {
     this.addFeature(f, true);
   }
   void addFeature(Feature f, boolean refreshImage) {
-    this.addFeature(f, refreshImage, this.nextUnitKey);
-    this.nextUnitKey++;
+    this.addFeature(f, refreshImage, this.nextFeatureKey);
+    this.nextFeatureKey++;
   }
   void addFeature(Feature f, boolean refreshImage, int code) {
     if (!f.inMap(this.mapWidth, this.mapHeight)) {
@@ -895,6 +895,11 @@ class GameMap {
   void addItemAsIs(Item i) {
     int disappear_timer = i.disappear_timer;
     this.addItem(i, i.disappearing);
+    i.disappear_timer = disappear_timer;
+  }
+  void addItemAsIs(Item i, int code) {
+    int disappear_timer = i.disappear_timer;
+    this.addItem(i, code, i.disappearing);
     i.disappear_timer = disappear_timer;
   }
   void addItem(Item i, boolean auto_disappear) {
@@ -2252,6 +2257,7 @@ class GameMap {
   void open2Data(String[] lines) {
     Stack<ReadFileObject> object_queue = new Stack<ReadFileObject>();
 
+    int max_feature_key = 0;
     Feature curr_feature = null;
     int max_unit_key = 0;
     Unit curr_unit = null;
@@ -2345,6 +2351,9 @@ class GameMap {
               if (object_queue.empty()) {
                 global.errorMessage("ERROR: Trying to end a feature not inside any other object.");
                 break;
+              }
+              if (this.nextFeatureKey > max_feature_key) {
+                max_feature_key = this.nextFeatureKey;
               }
               this.addFeature(curr_feature, false);
               curr_feature = null;
@@ -2556,6 +2565,7 @@ class GameMap {
     }
 
     // Refresh hashmap keys
+    this.nextFeatureKey = max_feature_key + 1;
     this.nextUnitKey = max_unit_key + 1;
     this.nextItemKey = max_item_key + 1;
   }

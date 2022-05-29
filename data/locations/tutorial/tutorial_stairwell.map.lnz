@@ -3,6 +3,7 @@ code: FRANCIS_FLOOR1
 mapName: tutorial_stairwell
 dimensions: 7, 5
 maxHeight: 10
+outside_map: false
 color_tint: 65793
 show_tint: false
 terrain: 0, 0: 205, 100, true
@@ -40,6 +41,17 @@ terrain: 6, 1: 201, 100, true
 terrain: 6, 2: 201, 100, true
 terrain: 6, 3: 201, 100, true
 terrain: 6, 4: 201, 100, true
+nextFeatureKey: 1
+
+new: Feature: 360
+location: 0.0, 3.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 2
 
 new: Feature: 194
 location: 2.0, 2.0, 0
@@ -49,6 +61,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 3
 
 new: Feature: 194
 location: 3.0, 2.0, 0
@@ -58,6 +71,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 4
 
 new: Feature: 194
 location: 4.0, 2.0, 0
@@ -67,6 +81,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 5
 
 new: Feature: 194
 location: 5.0, 2.0, 0
@@ -76,9 +91,40 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 6
 
-new: Feature: 360
-location: 0.0, 3.0, 0
+new: Feature: 187
+location: 2.0, 1.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 7
+
+new: Feature: 187
+location: 4.0, 1.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 8
+
+new: Feature: 187
+location: 4.0, 3.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 9
+
+new: Feature: 187
+location: 2.0, 3.0, 0
 curr_height: 0
 remove: false
 number: 0
