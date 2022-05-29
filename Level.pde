@@ -1164,10 +1164,12 @@ class Level {
         if (f.toggle) {
           global.sounds.trigger_environment("features/switch_on",
             f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+          this.currMap.timer_refresh_fog = 0;
         }
         else {
           global.sounds.trigger_environment("features/switch_off",
             f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+          this.currMap.timer_refresh_fog = 0;
         }
         break;
       case 181: // garbage can
@@ -1229,10 +1231,12 @@ class Level {
         if (f.toggle) {
           global.sounds.trigger_environment("features/switch_on",
             f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+          this.currMap.timer_refresh_fog = 0;
         }
         else {
           global.sounds.trigger_environment("features/switch_off",
             f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+          this.currMap.timer_refresh_fog = 0;
         }
         break;
       case 211: // wire fence

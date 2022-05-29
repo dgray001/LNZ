@@ -2191,9 +2191,9 @@ class Unit extends MapObject {
     else if (this.falling) {
       this.falling = false;
       int no_damage_fall_amount = Constants.unit_noDamageFallHeight + 2 * this.agility();
-      if (this.fall_amount > no_damage_fall_amount) {
-        this.calculateDotDamage(Constants.unit_fallDamageMultiplier * (this.fall_amount - no_damage_fall_amount), true);
-        global.sounds.trigger_units("player/fall", this.x - map.viewX, this.y - map.viewY);
+      if (this.fall_amount > no_damage_fall_amount) { // removed until 3rd dimension visible
+        //this.calculateDotDamage(Constants.unit_fallDamageMultiplier * (this.fall_amount - no_damage_fall_amount), true);
+        //global.sounds.trigger_units("player/fall", this.x - map.viewX, this.y - map.viewY);
       }
       this.fall_amount = 0;
     }

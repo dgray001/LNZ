@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\nAlpha v0.7.4: 20220528" +
+  "\nAlpha v0.7.4a: 20220528" +
   "\nLines: 43579 (v0.7.4)" +
   "\nImages: 1175 (v0.7.4)" +
   "\nSounds: 322 (v0.7.4)" +
@@ -175,9 +175,10 @@ static class Constants {
   static final float map_statusImageHeight = 30;
   static final int map_maxHeaderMessages = 5;
   static final float map_defaultMaxSoundDistance = 8;
-  static final float map_timer_refresh_fog = 100;
+  static final float map_timer_refresh_fog = 250;
   static final int map_maxHeight = 10;
   static final float map_lightDecay = 0.8; // per square
+  static final int map_lightUpdateIterations = 8; // per refresh
 
   // Features
   static final float feature_defaultInteractionDistance = 0.3;

@@ -6,6 +6,7 @@ class GameMapSquare {
   private boolean visible = false;
   private float light_level = 8; // [0, 10]
   private boolean light_source = false;
+  private float original_light = 0;
 
   GameMapSquare() {
     this.setTerrain(1);
@@ -21,11 +22,8 @@ class GameMapSquare {
       return;
     }
     float light = this.light_level;
-    if (this.light_source) {
-      this.light_source = false;
-    }
-    else {
-      light -= 2;
+    if (!this.light_source) {
+      light -= Constants.map_lightDecay;
     }
     if (map.outside_map && map.base_light_level > light) {
       light = map.base_light_level;

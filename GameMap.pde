@@ -1645,29 +1645,36 @@ class GameMap {
 
 
   void refreshFog() {
-    for (int i = max(int(floor(this.startSquareX)) - 8, 0); i <= min(int(ceil(
-      this.startSquareX + this.visSquareX)) + 8, this.mapWidth); i++) {
-      for (int j = max(int(floor(this.startSquareY)) - 8, 0); j <= min(int(ceil(
-        this.startSquareY + this.visSquareY)) + 8, this.mapHeight); j++) {
-        try {
-          float original_light = this.squares[i][j].light_level;
-          this.squares[i][j].updateLightLevel(this, i, j);
-          if (abs(this.squares[i][j].light_level - original_light) < Constants.small_number) {
-            continue;
-          }
-          if (this.squares[i][j].mapEdge()) {
-            this.fog_dimg.colorGrid(Constants.color_transparent, i, j);
-          }
-          else if (this.squares[i][j].visible) {
-            this.fog_dimg.colorGrid(this.squares[i][j].getColor(Constants.color_transparent), i, j);
-          }
-          else if (this.squares[i][j].explored) {
-            this.fog_dimg.colorGrid(this.squares[i][j].getColor(this.fogColor), i, j);
-          }
-          else {
-            this.fog_dimg.colorGrid(this.squares[i][j].getColor(Constants.color_black), i, j);
-          }
-        } catch(ArrayIndexOutOfBoundsException e) {}
+    for (int k = 0; k < Constants.map_lightUpdateIterations; k++) {
+      for (int i = max(int(floor(this.startSquareX)) - 8, 0); i <= min(int(ceil(
+        this.startSquareX + this.visSquareX)) + 8, this.mapWidth); i++) {
+        for (int j = max(int(floor(this.startSquareY)) - 8, 0); j <= min(int(ceil(
+          this.startSquareY + this.visSquareY)) + 8, this.mapHeight); j++) {
+          try {
+            if (k == 0) {
+              this.squares[i][j].original_light = this.squares[i][j].light_level;
+            }
+            this.squares[i][j].updateLightLevel(this, i, j);
+            if (k == Constants.map_lightUpdateIterations - 1) {
+              this.squares[i][j].light_source = false;
+              if (abs(this.squares[i][j].light_level - this.squares[i][j].original_light) < Constants.small_number) {
+                continue;
+              }
+              if (this.squares[i][j].mapEdge()) {
+                this.fog_dimg.colorGrid(Constants.color_transparent, i, j);
+              }
+              else if (this.squares[i][j].visible) {
+                this.fog_dimg.colorGrid(this.squares[i][j].getColor(Constants.color_transparent), i, j);
+              }
+              else if (this.squares[i][j].explored) {
+                this.fog_dimg.colorGrid(this.squares[i][j].getColor(this.fogColor), i, j);
+              }
+              else {
+                this.fog_dimg.colorGrid(this.squares[i][j].getColor(Constants.color_black), i, j);
+              }
+            }
+          } catch(ArrayIndexOutOfBoundsException e) {}
+        }
       }
     }
     if (this.units.containsKey(0)) {
