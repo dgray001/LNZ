@@ -379,6 +379,26 @@ class Feature extends MapObject {
         this.setStrings("Pickle Jar", "Furniture", "");
         this.setSize(1, 1, 1);
         break;
+      case 186:
+        this.setStrings("Outside Light Source", "Furniture", "");
+        this.setSize(1, 1, 0);
+        break;
+      case 187:
+        this.setStrings("Invisible Light Source", "Furniture", "");
+        this.setSize(1, 1, 0);
+        break;
+      case 188:
+        this.setStrings("Invisible Light Source", "Furniture", "");
+        this.setSize(2, 1, 0);
+        break;
+      case 189:
+        this.setStrings("Invisible Light Source", "Furniture", "");
+        this.setSize(1, 2, 0);
+        break;
+      case 190:
+        this.setStrings("Invisible Light Source", "Furniture", "");
+        this.setSize(2, 2, 0);
+        break;
       case 191:
       case 192:
       case 193:
@@ -904,6 +924,13 @@ class Feature extends MapObject {
         break;
       case 185:
         path += "pickle_jar.png";
+        break;
+      case 186:
+      case 187:
+      case 188:
+      case 189:
+      case 190:
+        path = "transparent.png";
         break;
       case 191:
         path += "railing_green_up.png";
@@ -2274,6 +2301,28 @@ class Feature extends MapObject {
           map.squares[int(this.x)][int(this.y)].light_source = true;
           map.squares[int(this.x)][int(this.y + 1)].light_level = 9;
           map.squares[int(this.x)][int(this.y + 1)].light_source = true;
+        } catch(ArrayIndexOutOfBoundsException e) {}
+        break;
+      case 186: // outside light source
+        try {
+          map.squares[int(this.x)][int(this.y + 1)].light_level = map.base_light_level;
+          map.squares[int(this.x)][int(this.y + 1)].light_source = true;
+        } catch(ArrayIndexOutOfBoundsException e) {}
+        break;
+      case 187: // invisible light source
+      case 188:
+      case 189:
+      case 190:
+        if (!toggle) {
+          break;
+        }
+        try {
+          for (int i = int(this.x); i < int(this.x + this.sizeX); i++) {
+            for (int j = int(this.y); j < int(this.y + this.sizeY); j++) {
+              map.squares[i][j].light_level = 10;
+              map.squares[i][j].light_source = true;
+            }
+          }
         } catch(ArrayIndexOutOfBoundsException e) {}
         break;
       default:

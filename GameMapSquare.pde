@@ -4,7 +4,7 @@ class GameMapSquare {
   private int terrain_id = 0;
   private boolean explored = false;
   private boolean visible = false;
-  private float light_level = 10; // [0, 10]
+  private float light_level = 8; // [0, 10]
   private boolean light_source = false;
 
   GameMapSquare() {
@@ -15,38 +15,58 @@ class GameMapSquare {
   }
 
   void updateLightLevel(GameMap map, int x, int y) {
-    float light = this.light_level - 1;
+    if (this.terrain_id == 191) { // lava
+      this.light_source = true;
+      this.light_level = 9;
+      return;
+    }
+    float light = this.light_level - 2;
     if (this.light_source) {
       this.light_source = false;
       light++;
     }
-    if (map.base_light_level > light) {
+    if (map.outside_map && map.base_light_level > light) {
       light = map.base_light_level;
     }
     try {
-      float light_left = map.squares[x-1][y].light_level - 1;
-      if (light_left > light) {
-        light = light_left;
+      GameMapSquare square = map.squares[x+1][y];
+      if (square.light_source || square.passesLight()) {
+        float light_right = square.light_level - Constants.map_lightDecay;
+        if (light_right > light) {
+          light = light_right;
+        }
       }
     } catch(ArrayIndexOutOfBoundsException e) {}
     try {
-      float light_right = map.squares[x+1][y].light_level - 1;
-      if (light_right > light) {
-        light = light_right;
+      GameMapSquare square = map.squares[x-1][y];
+      if (square.light_source || square.passesLight()) {
+        float light_left = square.light_level - Constants.map_lightDecay;
+        if (light_left > light) {
+          light = light_left;
+        }
       }
     } catch(ArrayIndexOutOfBoundsException e) {}
     try {
-      float light_up = map.squares[x][y-1].light_level - 1;
-      if (light_up > light) {
-        light = light_up;
+      GameMapSquare square = map.squares[x][y+1];
+      if (square.light_source || square.passesLight()) {
+        float light_down = square.light_level - Constants.map_lightDecay;
+        if (light_down > light) {
+          light = light_down;
+        }
       }
     } catch(ArrayIndexOutOfBoundsException e) {}
     try {
-      float light_down = map.squares[x][y+1].light_level - 1;
-      if (light_down > light) {
-        light = light_down;
+      GameMapSquare square = map.squares[x][y-1];
+      if (square.light_source || square.passesLight()) {
+        float light_up = square.light_level - Constants.map_lightDecay;
+        if (light_up > light) {
+          light = light_up;
+        }
       }
     } catch(ArrayIndexOutOfBoundsException e) {}
+    if (light < 0) {
+      light = 0;
+    }
     this.light_level = light;
   }
 
@@ -78,6 +98,24 @@ class GameMapSquare {
     }
     else {
       global.errorMessage("ERROR: Terrain ID " + id + " not found.");
+    }
+  }
+
+  boolean passesLight() {
+    switch(this.terrain_id) {
+      case 201:
+      case 202:
+      case 203:
+      case 204:
+      case 205:
+      case 206:
+      case 207:
+      case 211:
+      case 212:
+      case 213:
+        return false;
+      default:
+        return true;
     }
   }
 

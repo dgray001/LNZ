@@ -1,8 +1,5 @@
 v0.7.3: Francis Hall
- y: electric lights
  z: light switches in francis hall
-
- - Lamp sound
 
 v0.7.4: Francis Hall level
  - put mousemove calculation in thread if it will be so expensive (it seems more expensive than moving)

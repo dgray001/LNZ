@@ -1161,6 +1161,14 @@ class Level {
       case 180: // lamp
         f.toggle = !f.toggle;
         f.refresh_map_image = true;
+        if (f.toggle) {
+          global.sounds.trigger_environment("features/switch_on",
+            f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+        }
+        else {
+          global.sounds.trigger_environment("features/switch_off",
+            f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+        }
         break;
       case 181: // garbage can
         if (h.inventory.viewing) {

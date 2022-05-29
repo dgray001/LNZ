@@ -413,6 +413,7 @@ class GameMap {
   protected boolean hovered_border = false; // hover border
   protected boolean hovered_explored = false;
   protected boolean hovered_visible = false;
+  protected boolean force_all_hoverable = false;
   protected float mX = 0;
   protected float mY = 0;
   protected float last_x = 0;
@@ -436,6 +437,7 @@ class GameMap {
 
   protected float timer_refresh_fog = 0;
   protected float base_light_level = 10;
+  protected boolean outside_map = true;
 
   GameMap() {}
   GameMap(GameMapCode code, String folderPath) {
@@ -1193,7 +1195,7 @@ class GameMap {
       try {
         GameMapSquare square = this.squares[int(floor(this.units.get(0).x))][int(floor(this.units.get(0).y))];
         y_stats += line_height;
-        text("Terrain: (" + square.terrainName() + ", " + square.light_level + ")", this.xi + 1, y_stats);
+        text("Terrain: (" + square.terrainName() + ", " + int(10.0 * square.light_level)/10.0 + ")", this.xi + 1, y_stats);
       } catch(ArrayIndexOutOfBoundsException e) {}
     }
   }
@@ -1640,7 +1642,11 @@ class GameMap {
       for (int j = max(int(floor(this.startSquareY)) - 8, 0); j <= min(int(ceil(
         this.startSquareY + this.visSquareY)) + 8, this.mapHeight); j++) {
         try {
+          float original_light = this.squares[i][j].light_level;
           this.squares[i][j].updateLightLevel(this, i, j);
+          if (abs(this.squares[i][j].light_level - original_light) < Constants.small_number) {
+            continue;
+          }
           if (this.squares[i][j].mapEdge()) {
             this.fog_dimg.colorGrid(Constants.color_transparent, i, j);
           }
@@ -1895,6 +1901,17 @@ class GameMap {
         Feature f = this.features.get(i);
         f.mouseMove(this.mX, this.mY);
         if (f.hovered) {
+          if (!this.force_all_hoverable) {
+            switch(f.ID) {
+              case 186: // outside light source
+              case 187: // invisible light source
+              case 188:
+              case 189:
+              case 190:
+                f.hovered = false;
+                continue;
+            }
+          }
           if (!this.hovered_explored) {
             f.hovered = false;
             continue;
@@ -2128,6 +2145,12 @@ class GameMap {
             this.units.get(0).jump(this);
           }
           break;
+        case 'y':
+        case 'Y':
+          if (this.units.containsKey(0) && !global.holding_ctrl && this.in_control) {
+            this.units.get(0).stopAction();
+          }
+          break;
       }
     }
   }
@@ -2171,6 +2194,7 @@ class GameMap {
     file.println("mapName: " + this.mapName);
     file.println("dimensions: " + this.mapWidth + ", " + this.mapHeight);
     file.println("maxHeight: " + this.maxHeight);
+    file.println("outside_map: " + this.outside_map);
     file.println("color_tint: " + this.color_tint);
     file.println("show_tint: " + this.show_tint);
     for (int i = 0; i < this.mapWidth; i++) {
@@ -2551,6 +2575,9 @@ class GameMap {
       case "show_tint":
         this.show_tint = toBoolean(data);
         break;
+      case "outside_map":
+        this.outside_map = toBoolean(data);
+        break;
       case "dimensions":
         String[] dimensions = split(data, ',');
         if (dimensions.length < 2) {
@@ -2662,18 +2689,22 @@ class GameMapEditor extends GameMap {
   GameMapEditor() {
     super();
     this.draw_fog = false;
+    this.force_all_hoverable = true;
   }
   GameMapEditor(GameMapCode code, String folderPath) {
     super(code, folderPath);
     this.draw_fog = false;
+    this.force_all_hoverable = true;
   }
   GameMapEditor(String mapName, String folderPath) {
     super(mapName, folderPath);
     this.draw_fog = false;
+    this.force_all_hoverable = true;
   }
   GameMapEditor(String mapName, int mapWidth, int mapHeight) {
     super(mapName, mapWidth, mapHeight);
     this.draw_fog = false;
+    this.force_all_hoverable = true;
   }
 
 
