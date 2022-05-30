@@ -267,6 +267,19 @@ class Unit extends MapObject {
         this.gearSlots("Weapon");
         this.pickup(new Item(2928));
         break;
+      case 1007:
+        this.setStrings("Michael Schmiesing", "Human", "");
+        this.baseStats(15, 4, 3, 0, 1.5);
+        this.alliance = Alliance.BEN;
+        this.level = 7;
+        this.gearSlots("Weapon");
+        break;
+      case 1008:
+        this.setStrings("Molly Schmiesing", "Human", "");
+        this.baseStats(9, 4, 1, 0, 1.7);
+        this.alliance = Alliance.BEN;
+        this.level = 6;
+        break;
 
       // Heroes
       case 1101:
@@ -386,28 +399,52 @@ class Unit extends MapObject {
         break;
 
       // Named Zombies
-      case 1201:
+      case 1301:
         this.setStrings("Duggy", "Zombie", "");
         this.baseStats(1, 1, 0, 0, 0.5);
         this.level = 1;
         this.alliance = Alliance.ZOMBIE;
         break;
-      case 1202:
+      case 1302:
         this.setStrings("Jacob Sanchez", "Zombie", "");
         this.baseStats(1, 1, 0, 0, 0.5);
         this.level = 2;
         this.alliance = Alliance.ZOMBIE;
         break;
-      case 1203:
+      case 1303:
         this.setStrings("Mike Olenchuk", "Zombie", "");
         this.baseStats(1, 1, 0, 0, 0.5);
         this.level = 3;
         this.alliance = Alliance.ZOMBIE;
         break;
-      case 1204:
+      case 1304:
         this.setStrings("Grady Stuckman", "Zombie", "");
         this.baseStats(1, 1, 0, 0, 0.5);
         this.level = 4;
+        this.alliance = Alliance.ZOMBIE;
+        break;
+      case 1305:
+        this.setStrings("Ethan Pitney", "Zombie", "");
+        this.baseStats(1, 1, 0, 0, 0.5);
+        this.level = 5;
+        this.alliance = Alliance.ZOMBIE;
+        break;
+      case 1306:
+        this.setStrings("James Sarlo", "Zombie", "");
+        this.baseStats(1, 1, 0, 0, 0.5);
+        this.level = 6;
+        this.alliance = Alliance.ZOMBIE;
+        break;
+      case 1307:
+        this.setStrings("Matt Hair", "Zombie", "");
+        this.baseStats(1, 1, 0, 0, 0.5);
+        this.level = 7;
+        this.alliance = Alliance.ZOMBIE;
+        break;
+      case 1308:
+        this.setStrings("Nick Belt", "Zombie", "");
+        this.baseStats(1, 1, 0, 0, 0.5);
+        this.level = 8;
         this.alliance = Alliance.ZOMBIE;
         break;
 
@@ -553,6 +590,12 @@ class Unit extends MapObject {
       case 1006:
         path += "father_dom.png";
         break;
+      case 1007:
+        path += "mike_schmiesing.png";
+        break;
+      case 1008:
+        path += "molly_schmiesing.png";
+        break;
       case 1101:
         path += "ben.png";
         break;
@@ -582,6 +625,30 @@ class Unit extends MapObject {
       case 1209:
       case 1210:
         path += "zombie1.png";
+        break;
+      case 1301:
+        path += "duggy_zombie.png";
+        break;
+      case 1302:
+        path += "jacob_sanchez_zombie.png";
+        break;
+      case 1303:
+        path += "mike_olenchuk_zombie.png";
+        break;
+      case 1304:
+        path += "grady_stuckman_zombie.png";
+        break;
+      case 1305:
+        path += "ethan_pitney_zombie.png";
+        break;
+      case 1306:
+        path += "james_sarlo_zombie.png";
+        break;
+      case 1307:
+        path += "matt_hair_zombie.png";
+        break;
+      case 1308:
+        path += "nick_belt_zombie.png";
         break;
       default:
         global.errorMessage("ERROR: Unit ID " + ID + " not found.");
