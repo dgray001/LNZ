@@ -1308,6 +1308,14 @@ class Item extends MapObject {
         this.setStrings("Skeleton Key", "Key", "");
         this.tier = 3;
         break;
+      case 2904:
+        this.setStrings("Small Key Ring", "Utility", "");
+        this.tier = 2;
+        break;
+      case 2905:
+        this.setStrings("Large Key Ring", "Utility", "");
+        this.tier = 3;
+        break;
       case 2911:
         this.setStrings("Pen", "Office", "");
         this.attack = 1;
@@ -2390,6 +2398,12 @@ class Item extends MapObject {
         break;
       case 2903:
         path += "skeleton_key.png";
+        break;
+      case 2904:
+        path += "small_keyring.png";
+        break;
+      case 2905:
+        path += "large_keyring.png";
         break;
       case 2911:
         path += "pen.png";

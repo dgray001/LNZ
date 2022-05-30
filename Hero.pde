@@ -4830,6 +4830,10 @@ class Hero extends Unit {
     }
     if (i.utility()) {
       switch(i.ID) {
+        case 2904: // small key ring
+        case 2905: // large key ring
+          // open "feature" inventory with keyring contents, stored in description
+          break;
         case 2921: // backpack
           this.inventory.addSlots(2);
           i.remove = true;

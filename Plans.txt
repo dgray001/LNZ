@@ -1,9 +1,12 @@
 v0.7.4: Francis Hall level
- h: plan out basics of francis hall, finish features
+ h: finish features
  i: add basic items in francis hall
  j: add basic units in francis hall
  k: basic triggers of francis hall
 
+ - keyring item to hold keys (small keyring holds 8 keys, large keyring holds 24 keys)
+ - make units/items not save base stats unless flagged to do so (flag when manually changing it)
+ - can edit base stats of a unit/item and it changes in already-built maps when they open
 
  - put mousemove calculation in thread if it will be so expensive (it seems more expensive than moving)
  Add items:
@@ -63,6 +66,7 @@ Parking Lot:
  - PlayingTrack option in OptionsForm (effects to play / silence sounds, so 10 effects total)
  - Save music track/location in level (although can overwrite with OptionsForm)
  - Chuck quizmo covers question, put him above it with you on left
+     => Also can't harvest him by redoing level => he will give you experience and nothing else at that point
 
 
 v0.8: HomeBase and Campaign II
