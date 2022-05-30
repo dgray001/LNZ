@@ -428,14 +428,14 @@ class Item extends MapObject {
         this.attack = 2;
         this.attackRange = 0.35;
         this.piercing = 0.04;
-        this.size = 0.3;
+        this.size = 0.4;
         break;
       case 2208:
         this.setStrings("Talc Spear", "Melee Weapon", "");
         this.attack = 1.7;
         this.attackRange = 0.35;
         this.piercing = 0.03;
-        this.size = 0.3;
+        this.size = 0.4;
         break;
       case 2211:
         this.setStrings("The Thing", "Melee Weapon", "");
@@ -459,7 +459,16 @@ class Item extends MapObject {
         this.attack = 5.5;
         this.attackRange = 0.35;
         this.piercing = 0.05;
-        this.size = 0.3;
+        this.size = 0.4;
+        break;
+      case 2214:
+        this.setStrings("Board with Nails", "Melee Weapon", "");
+        this.tier = 2;
+        this.attack = 6;
+        this.attackRange = 0.2;
+        this.piercing = 0.02;
+        this.size = 0.4;
+        this.speed = -0.2;
         break;
       case 2221:
         this.setStrings("Calcite Sword", "Melee Weapon", "");
@@ -475,7 +484,7 @@ class Item extends MapObject {
         this.attack = 45;
         this.attackRange = 0.35;
         this.piercing = 0.08;
-        this.size = 0.3;
+        this.size = 0.4;
         break;
       case 2231:
         this.setStrings("Fluorite Sword", "Melee Weapon", "");
@@ -491,7 +500,7 @@ class Item extends MapObject {
         this.attack = 108;
         this.attackRange = 0.35;
         this.piercing = 0.12;
-        this.size = 0.3;
+        this.size = 0.4;
         break;
       case 2241:
         this.setStrings("Apatite Sword", "Melee Weapon", "");
@@ -507,7 +516,7 @@ class Item extends MapObject {
         this.attack = 235;
         this.attackRange = 0.35;
         this.piercing = 0.14;
-        this.size = 0.3;
+        this.size = 0.4;
         break;
       case 2251:
         this.setStrings("Orthoclase Sword", "Melee Weapon", "");
@@ -523,7 +532,7 @@ class Item extends MapObject {
         this.attack = 315;
         this.attackRange = 0.35;
         this.piercing = 0.16;
-        this.size = 0.3;
+        this.size = 0.4;
         break;
       case 2261:
         this.setStrings("Quartz Sword", "Melee Weapon", "");
@@ -539,7 +548,7 @@ class Item extends MapObject {
         this.attack = 415;
         this.attackRange = 0.35;
         this.piercing = 0.18;
-        this.size = 0.3;
+        this.size = 0.4;
         break;
       case 2271:
         this.setStrings("Topaz Sword", "Melee Weapon", "");
@@ -555,7 +564,7 @@ class Item extends MapObject {
         this.attack = 890;
         this.attackRange = 0.35;
         this.piercing = 0.2;
-        this.size = 0.3;
+        this.size = 0.4;
         break;
       case 2281:
         this.setStrings("Corundum Sword", "Melee Weapon", "");
@@ -571,7 +580,7 @@ class Item extends MapObject {
         this.attack = 1750;
         this.attackRange = 0.35;
         this.piercing = 0.22;
-        this.size = 0.3;
+        this.size = 0.4;
         break;
       case 2291:
         this.setStrings("Diamond Sword", "Melee Weapon", "");
@@ -587,7 +596,7 @@ class Item extends MapObject {
         this.attack = 7400;
         this.attackRange = 0.35;
         this.piercing = 0.24;
-        this.size = 0.3;
+        this.size = 0.4;
         break;
 
       // Ranged Weapons
@@ -1894,6 +1903,9 @@ class Item extends MapObject {
         break;
       case 2213:
         path += "gypsum_spear.png";
+        break;
+      case 2214:
+        path += "board_with_nails.png";
         break;
       case 2221:
         path += "calcite_sword.png";
@@ -3854,31 +3866,49 @@ class Item extends MapObject {
   void attackSound() {
     String sound_name = "items/melee/";
     switch(this.ID) {
-      case 2203: // Knife
-      case 2353: // Ballistic Knife
-      case 2374: // The Krauss Refibrillator
+      case 2203: // knife
+      case 2353: // ballistic knife
+      case 2374: // the krauss refibrillator
         sound_name += "knife";
         break;
-      case 2204: // Decoy
-      case 2211: // The Thing
+      case 2204: // decoy
+      case 2211: // the thing
+        sound_name += "sword_swing";
+        break;
+      case 2206: // talc sword
+      case 2212: // gypsum sword
+      case 2221: // calcite sword
+      case 2231: // fluorite sword
+      case 2241: // apatite sword
+      case 2251: // orthoclase sword
+      case 2261: // quartz sword
+      case 2271: // topaz sword
+      case 2281: // corundum sword
+      case 2291: // diamond sword
         sound_name += "sword";
         break;
-      case 2212: // Machete
-        sound_name += "machete";
-        break;
-      case 2213: // Spear
+      case 2208: // talc spear
+      case 2213: // gypsum spear
+      case 2222: // calcite spear
+      case 2232: // fluorite spear
+      case 2242: // apatite spear
+      case 2252: // orthoclase spear
+      case 2262: // quartz spear
+      case 2272: // topaz spear
+      case 2282: // corundum spear
+      case 2292: // diamond spear
         sound_name += "spear";
         break;
-      case 2977: // Ax
+      case 2977: // ax
         sound_name += "ax";
         break;
-      case 2979: // Saw
+      case 2979: // saw
         sound_name += "saw";
         break;
-      case 2980: // Drill
+      case 2980: // drill
         sound_name += "drill" + randomInt(1, 3);
         break;
-      case 2983: // Chainsaw
+      case 2983: // chainsaw
         sound_name += "chainsaw";
         break;
       default:
