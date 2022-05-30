@@ -385,6 +385,32 @@ class Unit extends MapObject {
         this.alliance = Alliance.ZOMBIE;
         break;
 
+      // Named Zombies
+      case 1201:
+        this.setStrings("Duggy", "Zombie", "");
+        this.baseStats(1, 1, 0, 0, 0.5);
+        this.level = 1;
+        this.alliance = Alliance.ZOMBIE;
+        break;
+      case 1202:
+        this.setStrings("Jacob Sanchez", "Zombie", "");
+        this.baseStats(1, 1, 0, 0, 0.5);
+        this.level = 2;
+        this.alliance = Alliance.ZOMBIE;
+        break;
+      case 1203:
+        this.setStrings("Mike Olenchuk", "Zombie", "");
+        this.baseStats(1, 1, 0, 0, 0.5);
+        this.level = 3;
+        this.alliance = Alliance.ZOMBIE;
+        break;
+      case 1204:
+        this.setStrings("Grady Stuckman", "Zombie", "");
+        this.baseStats(1, 1, 0, 0, 0.5);
+        this.level = 4;
+        this.alliance = Alliance.ZOMBIE;
+        break;
+
       default:
         global.errorMessage("ERROR: Unit ID " + ID + " not found.");
         break;

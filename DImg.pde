@@ -74,9 +74,9 @@ class DImg {
       return;
     }
     this.img.blend(newImg, 0, 0, newImg.width, newImg.height,
-      int(this.img.width * (float(x) / this.gridX)),
-      int(this.img.height * (float(y) / this.gridY)),
-      int(w * (float(this.img.width) / this.gridX)), int(h * (float(this.img.height) / this.gridY)), BLEND);
+      round(this.img.width * (float(x) / this.gridX)),
+      round(this.img.height * (float(y) / this.gridY)),
+      round(w * (float(this.img.width) / this.gridX)), round(h * (float(this.img.height) / this.gridY)), BLEND);
     /*this.copyImage(newImg,
       this.img.width * (float(x) / this.gridX),
       this.img.height * (float(y) / this.gridY),
@@ -257,7 +257,7 @@ class DImg {
         float r = constrain((c >> 16 & 0xFF) * curr_factor, 0, 255);
         float g = constrain((c >> 8 & 0xFF) * curr_factor, 0, 255);
         float b = constrain((c & 0xFF) * curr_factor, 0, 255);
-        int col = ccolor(int(r), int(g), int(b), 255);
+        int col = ccolor(round(r), round(g), round(b), 255);
         this.img.pixels[index] = col;
       }
     }
@@ -279,7 +279,7 @@ class DImg {
         float r = this.img.pixels[index] >> 16 & 0xFF;
         float g = this.img.pixels[index] >> 8 & 0xFF;
         float b = this.img.pixels[index] & 0xFF;
-        this.img.pixels[index] = ccolor(int(r), int(g), int(b), alpha);
+        this.img.pixels[index] = ccolor(round(r), round(g), round(b), alpha);
       }
     }
     this.img.updatePixels();
@@ -347,7 +347,7 @@ int ccolor(int r, int g, int b) {
   return ccolor(r, g, b, 255);
 }
 int ccolor(float r, float g, float b, float a) {
-  return ccolor(int(round(r)), int(round(g)), int(round(b)), int(round(a)));
+  return ccolor(round(r), round(g), round(b), round(a));
 }
 int ccolor(int r, int g, int b, int a) {
   int max = 256;
