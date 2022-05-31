@@ -947,7 +947,6 @@ size: 0.35
 level: 3
 alliance: Ben
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
 new: Item: 2928
 location: 0.0, 0.0, 0
@@ -956,47 +955,13 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
-size: 0.25
-curr_health: 0.0
-hunger: 0
-thirst: 0
-money: 0.0
-health: 0.0
-attack: 0.0
-magic: 0.0
-defense: 0.0
-resistance: 0.0
-piercing: 0.0
-penetration: 0.0
-attackRange: 0.0
-attackCooldown: 0.0
-attackTime: 0.0
-sight: 0.0
-speed: 0.0
-tenacity: 0.0
-agility: 0
-lifesteal: 0.0
 ammo: 200000
 toggled: true
 end: Item: Weapon
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-base_health: 3.5
-base_attack: 2.0
-base_magic: 2.0
-base_defense: 0.0
-base_resistance: 4.0
-base_piercing: 0.0
-base_penetration: 0.05
-base_attackRange: 0.2
-base_attackCooldown: 1200.0
-base_attackTime: 300.0
-base_sight: 5.5
-base_speed: 2.0
-base_tenacity: 0.0
-base_agility: 1
-base_lifesteal: 0.0
 curr_health: 3.5
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0

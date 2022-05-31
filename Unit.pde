@@ -4082,6 +4082,7 @@ class Unit extends MapObject {
     fileString += "\nfacingY: " + this.facingY;
     fileString += "\nfacingA: " + this.facingA;
     if (this.save_base_stats) {
+      fileString += "\nsave_base_stats: " + this.save_base_stats;
       fileString += "\nbase_health: " + this.base_health;
       fileString += "\nbase_attack: " + this.base_attack;
       fileString += "\nbase_magic: " + this.base_magic;
@@ -4138,6 +4139,9 @@ class Unit extends MapObject {
         break;
       case "addNullAbility":
         this.abilities.add(null);
+        break;
+      case "save_base_stats":
+        this.save_base_stats = toBoolean(data);
         break;
       case "base_health":
         this.base_health = toFloat(data);

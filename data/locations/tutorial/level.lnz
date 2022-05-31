@@ -2,6 +2,7 @@ new: Level
 levelName: tutorial
 location: tutorial
 completed: false
+completing: false
 completion_code: 0
 time: 6.5
 respawning: false

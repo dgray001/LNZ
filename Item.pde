@@ -109,6 +109,7 @@ class Item extends MapObject {
   protected float lifesteal = 0; // percentage
   protected boolean save_base_stats = false; // toggle true if manually changing stats
 
+  protected int durability = 1; // when hits 0 item breaks
   protected int ammo = 0; // also used for other things (like key code)
   protected boolean toggled = false; // various uses
   protected Inventory inventory = null; // keyrings, item attachments, etc
@@ -1647,9 +1648,7 @@ class Item extends MapObject {
     if (this.health != 0) {
       text += "\nHealth: " + this.health;
     }
-    if (this.type.equals("Melee Weapon")) {
-      //text += "\nDurability: " + this.ammo + "/" + this.maximumAmmo();
-    }
+    text += "\nDurability: " + this.durability;
     if (this.type.equals("Ranged Weapon")) {
       text += "\nAmmo: " + this.ammo + "/" + this.maximumAmmo();
       if (this.shootAttack() != 0) {
@@ -3671,6 +3670,14 @@ class Item extends MapObject {
   }
 
 
+  void lowerDurability() {
+    this.durability--;
+    if (this.durability < 1) {
+      this.remove = true;
+    }
+  }
+
+
   void changeAmmo(int amount) {
     this.ammo += amount;
     if (this.ammo < 0) {
@@ -4025,6 +4032,7 @@ class Item extends MapObject {
     fileString += "\ndisappear_timer: " + this.disappear_timer;
     fileString += "\nstack: " + this.stack;
     if (this.save_base_stats) {
+      fileString += "\nsave_base_stats: " + this.save_base_stats;
       fileString += "\nsize: " + this.size;
       fileString += "\ncurr_health: " + this.curr_health;
       fileString += "\nhunger: " + this.hunger;
@@ -4046,6 +4054,7 @@ class Item extends MapObject {
       fileString += "\nagility: " + this.agility;
       fileString += "\nlifesteal: " + this.lifesteal;
     }
+    fileString += "\ndurability: " + this.durability;
     fileString += "\nammo: " + this.ammo;
     fileString += "\ntoggled: " + this.toggled;
     if (this.inventory != null) {
@@ -4074,6 +4083,9 @@ class Item extends MapObject {
         break;
       case "size":
         this.size = toFloat(data);
+        break;
+      case "save_base_stats":
+        this.save_base_stats = toBoolean(data);
         break;
       case "curr_health":
         this.curr_health = toFloat(data);
@@ -4131,6 +4143,9 @@ class Item extends MapObject {
         break;
       case "lifesteal":
         this.lifesteal = toFloat(data);
+        break;
+      case "durability":
+        this.durability = toInt(data);
         break;
       case "ammo":
         this.ammo = toInt(data);
