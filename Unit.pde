@@ -165,6 +165,7 @@ class Unit extends MapObject {
   protected float base_tenacity = 0; // percentage from 0 - 1
   protected int base_agility = 1;
   protected float base_lifesteal = 0; // percentage
+  protected boolean save_base_stats = false; // toggle on if base stats manually changed
 
   protected float curr_health = 1;
   protected float timer_attackCooldown = 0;
@@ -440,6 +441,7 @@ class Unit extends MapObject {
         this.baseStats(1, 1, 0, 0, 0.5);
         this.level = 7;
         this.alliance = Alliance.ZOMBIE;
+        this.gearSlots("Weapon");
         break;
       case 1308:
         this.setStrings("Nick Belt", "Zombie", "");
@@ -4079,21 +4081,23 @@ class Unit extends MapObject {
     fileString += "\nfacingX: " + this.facingX;
     fileString += "\nfacingY: " + this.facingY;
     fileString += "\nfacingA: " + this.facingA;
-    fileString += "\nbase_health: " + this.base_health;
-    fileString += "\nbase_attack: " + this.base_attack;
-    fileString += "\nbase_magic: " + this.base_magic;
-    fileString += "\nbase_defense: " + this.base_defense;
-    fileString += "\nbase_resistance: " + this.base_resistance;
-    fileString += "\nbase_piercing: " + this.base_piercing;
-    fileString += "\nbase_penetration: " + this.base_penetration;
-    fileString += "\nbase_attackRange: " + this.base_attackRange;
-    fileString += "\nbase_attackCooldown: " + this.base_attackCooldown;
-    fileString += "\nbase_attackTime: " + this.base_attackTime;
-    fileString += "\nbase_sight: " + this.base_sight;
-    fileString += "\nbase_speed: " + this.base_speed;
-    fileString += "\nbase_tenacity: " + this.base_tenacity;
-    fileString += "\nbase_agility: " + this.base_agility;
-    fileString += "\nbase_lifesteal: " + this.base_lifesteal;
+    if (this.save_base_stats) {
+      fileString += "\nbase_health: " + this.base_health;
+      fileString += "\nbase_attack: " + this.base_attack;
+      fileString += "\nbase_magic: " + this.base_magic;
+      fileString += "\nbase_defense: " + this.base_defense;
+      fileString += "\nbase_resistance: " + this.base_resistance;
+      fileString += "\nbase_piercing: " + this.base_piercing;
+      fileString += "\nbase_penetration: " + this.base_penetration;
+      fileString += "\nbase_attackRange: " + this.base_attackRange;
+      fileString += "\nbase_attackCooldown: " + this.base_attackCooldown;
+      fileString += "\nbase_attackTime: " + this.base_attackTime;
+      fileString += "\nbase_sight: " + this.base_sight;
+      fileString += "\nbase_speed: " + this.base_speed;
+      fileString += "\nbase_tenacity: " + this.base_tenacity;
+      fileString += "\nbase_agility: " + this.base_agility;
+      fileString += "\nbase_lifesteal: " + this.base_lifesteal;
+    }
     fileString += "\ncurr_health: " + this.curr_health;
     fileString += "\ntimer_attackCooldown: " + this.timer_attackCooldown;
     fileString += "\ntimer_actionTime: " + this.timer_actionTime;

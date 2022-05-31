@@ -3,6 +3,7 @@ code: FRANCIS_GROUND
 mapName: francishall_groundfloor
 dimensions: 91, 103
 maxHeight: 10
+outside_map: false
 color_tint: 65793
 show_tint: false
 terrain: 0, 0: 1, 100, false
@@ -5195,7 +5196,7 @@ terrain: 50, 36: 161, 0, false
 terrain: 50, 37: 161, 0, false
 terrain: 50, 38: 207, 100, false
 terrain: 50, 39: 207, 100, false
-terrain: 50, 40: 207, 100, false
+terrain: 50, 40: 162, 0, false
 terrain: 50, 41: 207, 100, false
 terrain: 50, 42: 207, 100, false
 terrain: 50, 43: 121, 0, false
@@ -9378,6 +9379,7 @@ terrain: 90, 99: 1, 100, false
 terrain: 90, 100: 1, 100, false
 terrain: 90, 101: 1, 100, false
 terrain: 90, 102: 1, 100, false
+nextFeatureKey: 1
 
 new: Feature: 193
 location: 44.0, 99.0, 0
@@ -9387,6 +9389,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 2
 
 new: Feature: 193
 location: 44.0, 100.0, 0
@@ -9396,6 +9399,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 3
 
 new: Feature: 193
 location: 44.0, 98.0, 0
@@ -9405,6 +9409,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 4
 
 new: Feature: 176
 location: 35.0, 70.0, 0
@@ -9414,6 +9419,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 5
 
 new: Feature: 176
 location: 37.0, 70.0, 0
@@ -9423,6 +9429,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 6
 
 new: Feature: 176
 location: 39.0, 70.0, 0
@@ -9432,6 +9439,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 7
 
 new: Feature: 177
 location: 35.0, 66.0, 0
@@ -9441,6 +9449,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 8
 
 new: Feature: 177
 location: 37.0, 66.0, 0
@@ -9450,6 +9459,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 9
 
 new: Feature: 177
 location: 39.0, 66.0, 0
@@ -9459,6 +9469,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 10
 
 new: Feature: 194
 location: 86.0, 49.0, 0
@@ -9468,6 +9479,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 11
 
 new: Feature: 194
 location: 87.0, 49.0, 0
@@ -9477,6 +9489,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 12
 
 new: Feature: 194
 location: 88.0, 49.0, 0
@@ -9486,6 +9499,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 13
 
 new: Feature: 323
 location: 76.0, 40.0, 0
@@ -9495,6 +9509,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 14
 
 new: Feature: 323
 location: 77.0, 40.0, 0
@@ -9504,6 +9519,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 15
 
 new: Feature: 323
 location: 78.0, 40.0, 0
@@ -9513,6 +9529,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 16
 
 new: Feature: 323
 location: 80.0, 40.0, 0
@@ -9522,6 +9539,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 17
 
 new: Feature: 323
 location: 81.0, 40.0, 0
@@ -9531,6 +9549,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 18
 
 new: Feature: 323
 location: 82.0, 40.0, 0
@@ -9540,6 +9559,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 19
 
 new: Feature: 323
 location: 85.0, 40.0, 0
@@ -9549,6 +9569,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 20
 
 new: Feature: 323
 location: 86.0, 40.0, 0
@@ -9558,6 +9579,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 21
 
 new: Feature: 323
 location: 88.0, 40.0, 0
@@ -9567,6 +9589,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 22
 
 new: Feature: 323
 location: 89.0, 40.0, 0
@@ -9576,6 +9599,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 23
 
 new: Feature: 323
 location: 90.0, 41.0, 0
@@ -9585,6 +9609,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 24
 
 new: Feature: 323
 location: 76.0, 59.0, 0
@@ -9594,6 +9619,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 25
 
 new: Feature: 323
 location: 77.0, 59.0, 0
@@ -9603,6 +9629,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 26
 
 new: Feature: 323
 location: 78.0, 59.0, 0
@@ -9612,6 +9639,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 27
 
 new: Feature: 323
 location: 80.0, 59.0, 0
@@ -9621,6 +9649,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 28
 
 new: Feature: 323
 location: 81.0, 59.0, 0
@@ -9630,6 +9659,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 29
 
 new: Feature: 323
 location: 82.0, 59.0, 0
@@ -9639,6 +9669,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 30
 
 new: Feature: 323
 location: 73.0, 59.0, 0
@@ -9648,6 +9679,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 31
 
 new: Feature: 323
 location: 74.0, 59.0, 0
@@ -9657,6 +9689,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 32
 
 new: Feature: 323
 location: 69.0, 59.0, 0
@@ -9666,6 +9699,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 33
 
 new: Feature: 323
 location: 70.0, 59.0, 0
@@ -9675,6 +9709,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 34
 
 new: Feature: 323
 location: 70.0, 59.0, 0
@@ -9684,6 +9719,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 35
 
 new: Feature: 323
 location: 62.0, 59.0, 0
@@ -9693,6 +9729,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 36
 
 new: Feature: 323
 location: 63.0, 59.0, 0
@@ -9702,6 +9739,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 37
 
 new: Feature: 323
 location: 64.0, 59.0, 0
@@ -9711,6 +9749,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 38
 
 new: Feature: 323
 location: 65.0, 59.0, 0
@@ -9720,6 +9759,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 39
 
 new: Feature: 323
 location: 66.0, 59.0, 0
@@ -9729,6 +9769,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 40
 
 new: Feature: 323
 location: 67.0, 59.0, 0
@@ -9738,6 +9779,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 41
 
 new: Feature: 323
 location: 54.0, 59.0, 0
@@ -9747,6 +9789,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 42
 
 new: Feature: 323
 location: 55.0, 59.0, 0
@@ -9756,6 +9799,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 43
 
 new: Feature: 323
 location: 56.0, 59.0, 0
@@ -9765,6 +9809,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 44
 
 new: Feature: 323
 location: 58.0, 59.0, 0
@@ -9774,6 +9819,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 45
 
 new: Feature: 323
 location: 59.0, 59.0, 0
@@ -9783,6 +9829,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 46
 
 new: Feature: 323
 location: 60.0, 59.0, 0
@@ -9792,6 +9839,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 47
 
 new: Feature: 323
 location: 53.0, 62.0, 0
@@ -9801,6 +9849,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 48
 
 new: Feature: 323
 location: 53.0, 68.0, 0
@@ -9810,6 +9859,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 49
 
 new: Feature: 323
 location: 53.0, 74.0, 0
@@ -9819,6 +9869,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 50
 
 new: Feature: 323
 location: 53.0, 80.0, 0
@@ -9828,6 +9879,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 51
 
 new: Feature: 323
 location: 53.0, 86.0, 0
@@ -9837,6 +9889,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 52
 
 new: Feature: 323
 location: 53.0, 92.0, 0
@@ -9846,6 +9899,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 53
 
 new: Feature: 323
 location: 34.0, 92.0, 0
@@ -9855,6 +9909,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 54
 
 new: Feature: 323
 location: 34.0, 86.0, 0
@@ -9864,6 +9919,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 55
 
 new: Feature: 323
 location: 34.0, 80.0, 0
@@ -9873,6 +9929,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 56
 
 new: Feature: 323
 location: 34.0, 62.0, 0
@@ -9882,6 +9939,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 57
 
 new: Feature: 323
 location: 54.0, 40.0, 0
@@ -9891,6 +9949,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 58
 
 new: Feature: 323
 location: 55.0, 40.0, 0
@@ -9900,6 +9959,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 59
 
 new: Feature: 323
 location: 56.0, 40.0, 0
@@ -9909,6 +9969,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 60
 
 new: Feature: 323
 location: 58.0, 40.0, 0
@@ -9918,6 +9979,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 61
 
 new: Feature: 323
 location: 59.0, 40.0, 0
@@ -9927,6 +9989,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 62
 
 new: Feature: 323
 location: 60.0, 40.0, 0
@@ -9936,6 +9999,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 63
 
 new: Feature: 323
 location: 62.0, 40.0, 0
@@ -9945,6 +10009,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 64
 
 new: Feature: 323
 location: 63.0, 40.0, 0
@@ -9954,6 +10019,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 65
 
 new: Feature: 323
 location: 64.0, 40.0, 0
@@ -9963,6 +10029,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 66
 
 new: Feature: 323
 location: 65.0, 40.0, 0
@@ -9972,6 +10039,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 67
 
 new: Feature: 323
 location: 66.0, 40.0, 0
@@ -9981,6 +10049,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 68
 
 new: Feature: 323
 location: 67.0, 40.0, 0
@@ -9990,6 +10059,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 69
 
 new: Feature: 323
 location: 69.0, 40.0, 0
@@ -9999,6 +10069,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 70
 
 new: Feature: 323
 location: 70.0, 40.0, 0
@@ -10008,6 +10079,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 71
 
 new: Feature: 323
 location: 73.0, 40.0, 0
@@ -10017,6 +10089,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 72
 
 new: Feature: 323
 location: 74.0, 40.0, 0
@@ -10026,6 +10099,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 73
 
 new: Feature: 401
 location: 87.0, 39.0, 0
@@ -10035,6 +10109,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 74
 
 new: Feature: 401
 location: 73.0, 39.0, 0
@@ -10044,6 +10119,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 75
 
 new: Feature: 411
 location: 55.0, 60.0, 0
@@ -10053,6 +10129,7 @@ number: 1
 toggle: false
 end: Feature
 
+nextFeatureKey: 76
 
 new: Feature: 412
 location: 54.0, 60.0, 0
@@ -10062,6 +10139,7 @@ number: 3
 toggle: false
 end: Feature
 
+nextFeatureKey: 77
 
 new: Feature: 101
 location: 62.0, 57.0, 0
@@ -10071,6 +10149,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 78
 
 new: Feature: 124
 location: 62.0, 54.0, 0
@@ -10080,6 +10159,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 79
 
 new: Feature: 121
 location: 64.0, 58.0, 0
@@ -10089,6 +10169,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 80
 
 new: Feature: 107
 location: 67.0, 57.0, 0
@@ -10098,6 +10179,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 81
 
 new: Feature: 122
 location: 64.0, 53.0, 0
@@ -10107,6 +10189,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 82
 
 new: Feature: 113
 location: 67.0, 56.0, 0
@@ -10116,6 +10199,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 83
 
 new: Feature: 113
 location: 68.0, 54.0, 0
@@ -10125,6 +10209,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 84
 
 new: Feature: 115
 location: 67.0, 53.0, 0
@@ -10134,6 +10219,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 85
 
 new: Feature: 107
 location: 72.0, 57.0, 0
@@ -10143,6 +10229,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 86
 
 new: Feature: 113
 location: 73.0, 57.0, 0
@@ -10152,6 +10239,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 87
 
 new: Feature: 112
 location: 72.0, 56.0, 0
@@ -10161,6 +10249,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 88
 
 new: Feature: 114
 location: 71.0, 58.0, 0
@@ -10170,6 +10259,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 89
 
 new: Feature: 106
 location: 76.0, 58.0, 0
@@ -10179,6 +10269,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 90
 
 new: Feature: 106
 location: 78.0, 58.0, 0
@@ -10188,6 +10279,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 91
 
 new: Feature: 106
 location: 80.0, 58.0, 0
@@ -10197,6 +10289,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 92
 
 new: Feature: 106
 location: 76.0, 41.0, 0
@@ -10206,6 +10299,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 93
 
 new: Feature: 106
 location: 78.0, 41.0, 0
@@ -10215,6 +10309,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 94
 
 new: Feature: 106
 location: 80.0, 41.0, 0
@@ -10224,6 +10319,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 95
 
 new: Feature: 106
 location: 62.0, 41.0, 0
@@ -10233,6 +10329,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 96
 
 new: Feature: 106
 location: 66.0, 41.0, 0
@@ -10242,6 +10339,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 97
 
 new: Feature: 11
 location: 64.0, 41.0, 0
@@ -10251,6 +10349,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 98
 
 new: Feature: 113
 location: 73.0, 41.0, 0
@@ -10260,6 +10359,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 99
 
 new: Feature: 106
 location: 71.0, 41.0, 0
@@ -10269,6 +10369,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 100
 
 new: Feature: 114
 location: 71.0, 42.0, 0
@@ -10278,6 +10379,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 101
 
 new: Feature: 114
 location: 70.0, 41.0, 0
@@ -10287,6 +10389,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 102
 
 new: Feature: 163
 location: 35.0, 47.0, 0
@@ -10296,6 +10399,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 103
 
 new: Feature: 360
 location: 46.0, 97.0, 0
@@ -10305,6 +10409,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 104
 
 new: Feature: 359
 location: 43.0, 96.0, 0
@@ -10314,6 +10419,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 105
 
 new: Feature: 163
 location: 35.0, 64.0, 0
@@ -10323,6 +10429,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 106
 
 new: Feature: 162
 location: 37.0, 64.0, 0
@@ -10332,6 +10439,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 107
 
 new: Feature: 162
 location: 39.0, 64.0, 0
@@ -10341,6 +10449,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 108
 
 new: Feature: 162
 location: 41.0, 64.0, 0
@@ -10350,6 +10459,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 109
 
 new: Feature: 162
 location: 38.0, 61.0, 0
@@ -10359,6 +10469,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 110
 
 new: Feature: 162
 location: 40.0, 61.0, 0
@@ -10368,6 +10479,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 111
 
 new: Feature: 181
 location: 35.0, 59.0, 0
@@ -10377,6 +10489,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 112
 
 new: Feature: 164
 location: 35.0, 57.0, 0
@@ -10386,6 +10499,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 113
 
 new: Feature: 164
 location: 35.0, 55.0, 0
@@ -10395,6 +10509,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 114
 
 new: Feature: 164
 location: 35.0, 53.0, 0
@@ -10404,6 +10519,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 115
 
 new: Feature: 165
 location: 41.0, 59.0, 0
@@ -10413,6 +10529,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 116
 
 new: Feature: 165
 location: 41.0, 57.0, 0
@@ -10422,6 +10539,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 117
 
 new: Feature: 165
 location: 41.0, 55.0, 0
@@ -10431,6 +10549,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 118
 
 new: Feature: 165
 location: 41.0, 52.0, 0
@@ -10440,6 +10559,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 119
 
 new: Feature: 107
 location: 35.0, 60.0, 0
@@ -10449,6 +10569,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 120
 
 new: Feature: 340
 location: 40.0, 59.0, 0
@@ -10458,6 +10579,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 121
 
 new: Feature: 340
 location: 40.0, 55.0, 0
@@ -10467,6 +10589,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 122
 
 new: Feature: 341
 location: 39.0, 53.0, 0
@@ -10476,6 +10599,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 123
 
 new: Feature: 333
 location: 40.0, 57.0, 0
@@ -10485,6 +10609,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 124
 
 new: Feature: 175
 location: 52.0, 53.0, 0
@@ -10494,6 +10619,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 125
 
 new: Feature: 171
 location: 51.0, 53.0, 0
@@ -10501,8 +10627,69 @@ curr_height: 0
 remove: false
 number: 0
 toggle: false
+new: Item: 2116
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 20
+thirst: 10
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 1
+new: Item: 2101
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 2
+size: 0.25
+curr_health: 0.0
+hunger: 1
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 3
 end: Feature
 
+nextFeatureKey: 126
 
 new: Feature: 106
 location: 49.0, 53.0, 0
@@ -10512,6 +10699,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 127
 
 new: Feature: 106
 location: 47.0, 53.0, 0
@@ -10521,6 +10709,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 128
 
 new: Feature: 106
 location: 46.0, 53.0, 0
@@ -10530,6 +10719,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 129
 
 new: Feature: 106
 location: 48.0, 53.0, 0
@@ -10539,6 +10729,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 130
 
 new: Feature: 106
 location: 77.0, 58.0, 0
@@ -10548,6 +10739,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 131
 
 new: Feature: 106
 location: 79.0, 58.0, 0
@@ -10557,6 +10749,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 132
 
 new: Feature: 106
 location: 77.0, 41.0, 0
@@ -10566,6 +10759,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 133
 
 new: Feature: 106
 location: 79.0, 41.0, 0
@@ -10575,6 +10769,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 134
 
 new: Feature: 106
 location: 81.0, 41.0, 0
@@ -10584,6 +10779,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 135
 
 new: Feature: 106
 location: 81.0, 58.0, 0
@@ -10593,6 +10789,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 136
 
 new: Feature: 162
 location: 47.0, 53.0, 0
@@ -10602,6 +10799,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 137
 
 new: Feature: 162
 location: 52.0, 56.0, 0
@@ -10611,6 +10809,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 138
 
 new: Feature: 165
 location: 52.0, 58.0, 0
@@ -10620,6 +10819,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 139
 
 new: Feature: 106
 location: 51.0, 55.0, 0
@@ -10629,6 +10829,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 140
 
 new: Feature: 181
 location: 46.0, 58.0, 0
@@ -10638,6 +10839,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 141
 
 new: Feature: 340
 location: 45.0, 57.0, 0
@@ -10647,6 +10849,7 @@ number: 0
 toggle: true
 end: Feature
 
+nextFeatureKey: 142
 
 new: Feature: 340
 location: 42.0, 62.0, 0
@@ -10656,6 +10859,7 @@ number: 0
 toggle: true
 end: Feature
 
+nextFeatureKey: 143
 
 new: Feature: 181
 location: 41.0, 66.0, 0
@@ -10665,6 +10869,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 144
 
 new: Feature: 106
 location: 40.0, 70.0, 0
@@ -10674,6 +10879,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 145
 
 new: Feature: 322
 location: 34.0, 74.0, 0
@@ -10683,6 +10889,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 146
 
 new: Feature: 322
 location: 34.0, 68.0, 0
@@ -10692,6 +10899,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 147
 
 new: Feature: 121
 location: 35.0, 76.0, 0
@@ -10701,6 +10909,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 148
 
 new: Feature: 121
 location: 39.0, 76.0, 0
@@ -10710,6 +10919,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 149
 
 new: Feature: 122
 location: 35.0, 72.0, 0
@@ -10719,6 +10929,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 150
 
 new: Feature: 122
 location: 39.0, 72.0, 0
@@ -10728,6 +10939,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 151
 
 new: Feature: 115
 location: 38.0, 72.0, 0
@@ -10737,6 +10949,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 152
 
 new: Feature: 121
 location: 37.0, 76.0, 0
@@ -10746,6 +10959,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 153
 
 new: Feature: 174
 location: 35.0, 73.0, 0
@@ -10755,6 +10969,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 154
 
 new: Feature: 107
 location: 35.0, 74.0, 0
@@ -10764,6 +10979,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 155
 
 new: Feature: 106
 location: 38.0, 74.0, 0
@@ -10773,6 +10989,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 156
 
 new: Feature: 344
 location: 45.0, 62.0, 0
@@ -10782,6 +10999,7 @@ number: 20
 toggle: true
 end: Feature
 
+nextFeatureKey: 157
 
 new: Feature: 343
 location: 59.0, 54.0, 0
@@ -10791,6 +11009,7 @@ number: 29
 toggle: true
 end: Feature
 
+nextFeatureKey: 158
 
 new: Feature: 178
 location: 49.0, 53.0, 0
@@ -10800,6 +11019,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 159
 
 new: Feature: 105
 location: 54.0, 52.0, 0
@@ -10809,6 +11029,7 @@ number: 10
 toggle: false
 end: Feature
 
+nextFeatureKey: 160
 
 new: Feature: 106
 location: 57.0, 53.0, 0
@@ -10818,6 +11039,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 161
 
 new: Feature: 106
 location: 56.0, 53.0, 0
@@ -10827,6 +11049,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 162
 
 new: Feature: 181
 location: 51.0, 47.0, 0
@@ -10836,6 +11059,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 163
 
 new: Feature: 181
 location: 52.0, 47.0, 0
@@ -10845,6 +11069,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 164
 
 new: Feature: 182
 location: 50.0, 47.0, 0
@@ -10854,6 +11079,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 165
 
 new: Feature: 172
 location: 48.0, 47.0, 0
@@ -10863,6 +11089,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 166
 
 new: Feature: 173
 location: 47.0, 47.0, 0
@@ -10872,6 +11099,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 167
 
 new: Feature: 193
 location: 57.0, 43.0, 0
@@ -10881,6 +11109,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 168
 
 new: Feature: 193
 location: 57.0, 44.0, 0
@@ -10890,6 +11119,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 169
 
 new: Feature: 193
 location: 57.0, 45.0, 0
@@ -10899,6 +11129,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 170
 
 new: Feature: 193
 location: 60.0, 41.0, 0
@@ -10908,6 +11139,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 171
 
 new: Feature: 193
 location: 60.0, 43.0, 0
@@ -10917,6 +11149,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 172
 
 new: Feature: 193
 location: 60.0, 42.0, 0
@@ -10926,6 +11159,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 173
 
 new: Feature: 193
 location: 60.0, 44.0, 0
@@ -10935,6 +11169,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 174
 
 new: Feature: 193
 location: 60.0, 45.0, 0
@@ -10944,6 +11179,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 175
 
 new: Feature: 111
 location: 54.0, 43.0, 0
@@ -10953,6 +11189,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 176
 
 new: Feature: 113
 location: 55.0, 43.0, 0
@@ -10962,6 +11199,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 177
 
 new: Feature: 106
 location: 54.0, 44.0, 0
@@ -10971,6 +11209,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 178
 
 new: Feature: 111
 location: 55.0, 45.0, 0
@@ -10980,6 +11219,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 179
 
 new: Feature: 107
 location: 54.0, 45.0, 0
@@ -10989,6 +11229,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 180
 
 new: Feature: 101
 location: 54.0, 41.0, 0
@@ -10998,6 +11239,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 181
 
 new: Feature: 114
 location: 55.0, 42.0, 0
@@ -11007,6 +11249,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 182
 
 new: Feature: 312
 location: 61.0, 53.0, 0
@@ -11016,6 +11259,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 183
 
 new: Feature: 312
 location: 61.0, 47.0, 0
@@ -11025,6 +11269,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 184
 
 new: Feature: 312
 location: 68.0, 47.0, 0
@@ -11034,6 +11279,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 185
 
 new: Feature: 312
 location: 75.0, 47.0, 0
@@ -11043,6 +11289,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 186
 
 new: Feature: 312
 location: 68.0, 53.0, 0
@@ -11052,6 +11299,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 187
 
 new: Feature: 312
 location: 75.0, 53.0, 0
@@ -11061,6 +11309,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 188
 
 new: Feature: 108
 location: 72.0, 48.0, 0
@@ -11070,6 +11319,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 189
 
 new: Feature: 108
 location: 73.0, 48.0, 0
@@ -11079,6 +11329,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 190
 
 new: Feature: 108
 location: 74.0, 48.0, 0
@@ -11088,6 +11339,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 191
 
 new: Feature: 108
 location: 73.0, 51.0, 0
@@ -11097,6 +11349,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 192
 
 new: Feature: 108
 location: 74.0, 51.0, 0
@@ -11106,6 +11359,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 193
 
 new: Feature: 108
 location: 75.0, 51.0, 0
@@ -11115,6 +11369,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 194
 
 new: Feature: 340
 location: 42.0, 68.0, 0
@@ -11124,6 +11379,7 @@ number: 0
 toggle: true
 end: Feature
 
+nextFeatureKey: 195
 
 new: Feature: 340
 location: 45.0, 68.0, 0
@@ -11133,6 +11389,7 @@ number: 0
 toggle: true
 end: Feature
 
+nextFeatureKey: 196
 
 new: Feature: 344
 location: 42.0, 74.0, 0
@@ -11142,6 +11399,7 @@ number: 21
 toggle: true
 end: Feature
 
+nextFeatureKey: 197
 
 new: Feature: 344
 location: 45.0, 80.0, 0
@@ -11151,6 +11409,7 @@ number: 22
 toggle: true
 end: Feature
 
+nextFeatureKey: 198
 
 new: Feature: 344
 location: 42.0, 92.0, 0
@@ -11160,6 +11419,7 @@ number: 23
 toggle: true
 end: Feature
 
+nextFeatureKey: 199
 
 new: Feature: 340
 location: 45.0, 92.0, 0
@@ -11169,6 +11429,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 200
 
 new: Feature: 340
 location: 42.0, 86.0, 0
@@ -11178,6 +11439,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 201
 
 new: Feature: 340
 location: 45.0, 86.0, 0
@@ -11187,6 +11449,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 202
 
 new: Feature: 340
 location: 45.0, 74.0, 0
@@ -11196,6 +11459,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 203
 
 new: Feature: 340
 location: 42.0, 80.0, 0
@@ -11205,6 +11469,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 204
 
 new: Feature: 133
 location: 35.0, 90.0, 0
@@ -11214,6 +11479,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 205
 
 new: Feature: 133
 location: 35.0, 93.0, 0
@@ -11223,6 +11489,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 206
 
 new: Feature: 133
 location: 35.0, 84.0, 0
@@ -11232,6 +11499,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 207
 
 new: Feature: 133
 location: 35.0, 87.0, 0
@@ -11241,6 +11509,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 208
 
 new: Feature: 133
 location: 35.0, 78.0, 0
@@ -11250,6 +11519,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 209
 
 new: Feature: 133
 location: 35.0, 81.0, 0
@@ -11259,6 +11529,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 210
 
 new: Feature: 134
 location: 50.0, 60.0, 0
@@ -11268,6 +11539,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 211
 
 new: Feature: 134
 location: 50.0, 63.0, 0
@@ -11277,6 +11549,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 212
 
 new: Feature: 134
 location: 50.0, 66.0, 0
@@ -11286,6 +11559,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 213
 
 new: Feature: 134
 location: 50.0, 69.0, 0
@@ -11295,6 +11569,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 214
 
 new: Feature: 134
 location: 50.0, 72.0, 0
@@ -11304,6 +11579,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 215
 
 new: Feature: 134
 location: 50.0, 75.0, 0
@@ -11313,6 +11589,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 216
 
 new: Feature: 134
 location: 50.0, 78.0, 0
@@ -11322,6 +11599,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 217
 
 new: Feature: 134
 location: 50.0, 81.0, 0
@@ -11331,6 +11609,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 218
 
 new: Feature: 134
 location: 50.0, 84.0, 0
@@ -11340,6 +11619,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 219
 
 new: Feature: 134
 location: 50.0, 87.0, 0
@@ -11349,6 +11629,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 220
 
 new: Feature: 134
 location: 50.0, 90.0, 0
@@ -11358,6 +11639,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 221
 
 new: Feature: 134
 location: 49.0, 90.0, 0
@@ -11367,6 +11649,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 222
 
 new: Feature: 121
 location: 46.0, 94.0, 0
@@ -11376,6 +11659,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 223
 
 new: Feature: 141
 location: 47.0, 90.0, 0
@@ -11385,6 +11669,7 @@ number: 10
 toggle: true
 end: Feature
 
+nextFeatureKey: 224
 
 new: Feature: 142
 location: 46.0, 90.0, 0
@@ -11394,6 +11679,7 @@ number: 10
 toggle: true
 end: Feature
 
+nextFeatureKey: 225
 
 new: Feature: 102
 location: 49.0, 94.0, 0
@@ -11401,8 +11687,39 @@ curr_height: 0
 remove: false
 number: 10
 toggle: false
+new: Item: 2123
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 25
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 0
 end: Feature
 
+nextFeatureKey: 226
 
 new: Feature: 102
 location: 51.0, 94.0, 0
@@ -11412,6 +11729,7 @@ number: 10
 toggle: false
 end: Feature
 
+nextFeatureKey: 227
 
 new: Feature: 113
 location: 52.0, 93.0, 0
@@ -11421,6 +11739,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 228
 
 new: Feature: 113
 location: 50.0, 93.0, 0
@@ -11430,6 +11749,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 229
 
 new: Feature: 141
 location: 40.0, 90.0, 0
@@ -11439,6 +11759,7 @@ number: 10
 toggle: true
 end: Feature
 
+nextFeatureKey: 230
 
 new: Feature: 141
 location: 40.0, 94.0, 0
@@ -11448,6 +11769,7 @@ number: 10
 toggle: true
 end: Feature
 
+nextFeatureKey: 231
 
 new: Feature: 141
 location: 40.0, 88.0, 0
@@ -11457,6 +11779,7 @@ number: 10
 toggle: true
 end: Feature
 
+nextFeatureKey: 232
 
 new: Feature: 141
 location: 40.0, 84.0, 0
@@ -11466,6 +11789,7 @@ number: 10
 toggle: true
 end: Feature
 
+nextFeatureKey: 233
 
 new: Feature: 141
 location: 40.0, 82.0, 0
@@ -11475,6 +11799,7 @@ number: 10
 toggle: true
 end: Feature
 
+nextFeatureKey: 234
 
 new: Feature: 141
 location: 40.0, 78.0, 0
@@ -11484,6 +11809,7 @@ number: 10
 toggle: true
 end: Feature
 
+nextFeatureKey: 235
 
 new: Feature: 141
 location: 46.0, 78.0, 0
@@ -11493,6 +11819,7 @@ number: 10
 toggle: true
 end: Feature
 
+nextFeatureKey: 236
 
 new: Feature: 141
 location: 46.0, 82.0, 0
@@ -11502,6 +11829,7 @@ number: 10
 toggle: true
 end: Feature
 
+nextFeatureKey: 237
 
 new: Feature: 141
 location: 46.0, 72.0, 0
@@ -11511,6 +11839,7 @@ number: 10
 toggle: true
 end: Feature
 
+nextFeatureKey: 238
 
 new: Feature: 141
 location: 46.0, 76.0, 0
@@ -11520,6 +11849,7 @@ number: 10
 toggle: true
 end: Feature
 
+nextFeatureKey: 239
 
 new: Feature: 141
 location: 46.0, 70.0, 0
@@ -11529,6 +11859,7 @@ number: 10
 toggle: true
 end: Feature
 
+nextFeatureKey: 240
 
 new: Feature: 141
 location: 48.0, 70.0, 0
@@ -11538,6 +11869,7 @@ number: 10
 toggle: true
 end: Feature
 
+nextFeatureKey: 241
 
 new: Feature: 141
 location: 46.0, 64.0, 0
@@ -11547,6 +11879,7 @@ number: 10
 toggle: true
 end: Feature
 
+nextFeatureKey: 242
 
 new: Feature: 141
 location: 46.0, 60.0, 0
@@ -11556,6 +11889,7 @@ number: 10
 toggle: true
 end: Feature
 
+nextFeatureKey: 243
 
 new: Feature: 102
 location: 48.0, 64.0, 0
@@ -11565,6 +11899,7 @@ number: 10
 toggle: false
 end: Feature
 
+nextFeatureKey: 244
 
 new: Feature: 102
 location: 48.0, 76.0, 0
@@ -11574,6 +11909,7 @@ number: 10
 toggle: false
 end: Feature
 
+nextFeatureKey: 245
 
 new: Feature: 102
 location: 48.0, 82.0, 0
@@ -11583,6 +11919,7 @@ number: 10
 toggle: false
 end: Feature
 
+nextFeatureKey: 246
 
 new: Feature: 102
 location: 48.0, 88.0, 0
@@ -11592,6 +11929,7 @@ number: 10
 toggle: false
 end: Feature
 
+nextFeatureKey: 247
 
 new: Feature: 102
 location: 38.0, 94.0, 0
@@ -11601,6 +11939,7 @@ number: 10
 toggle: false
 end: Feature
 
+nextFeatureKey: 248
 
 new: Feature: 102
 location: 38.0, 88.0, 0
@@ -11608,8 +11947,69 @@ curr_height: 0
 remove: false
 number: 10
 toggle: false
+new: Item: 2917
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 0
+new: Item: 2912
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 1.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 1
 end: Feature
 
+nextFeatureKey: 249
 
 new: Feature: 102
 location: 38.0, 82.0, 0
@@ -11619,6 +12019,7 @@ number: 10
 toggle: false
 end: Feature
 
+nextFeatureKey: 250
 
 new: Feature: 104
 location: 48.0, 78.0, 0
@@ -11628,6 +12029,7 @@ number: 10
 toggle: false
 end: Feature
 
+nextFeatureKey: 251
 
 new: Feature: 104
 location: 48.0, 72.0, 0
@@ -11637,6 +12039,7 @@ number: 10
 toggle: false
 end: Feature
 
+nextFeatureKey: 252
 
 new: Feature: 104
 location: 38.0, 78.0, 0
@@ -11646,6 +12049,7 @@ number: 10
 toggle: false
 end: Feature
 
+nextFeatureKey: 253
 
 new: Feature: 104
 location: 48.0, 66.0, 0
@@ -11655,6 +12059,7 @@ number: 10
 toggle: false
 end: Feature
 
+nextFeatureKey: 254
 
 new: Feature: 104
 location: 46.0, 66.0, 0
@@ -11664,6 +12069,7 @@ number: 10
 toggle: false
 end: Feature
 
+nextFeatureKey: 255
 
 new: Feature: 104
 location: 48.0, 60.0, 0
@@ -11673,6 +12079,7 @@ number: 10
 toggle: false
 end: Feature
 
+nextFeatureKey: 256
 
 new: Feature: 104
 location: 48.0, 84.0, 0
@@ -11680,8 +12087,39 @@ curr_height: 0
 remove: false
 number: 10
 toggle: false
+new: Item: 2925
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 0
 end: Feature
 
+nextFeatureKey: 257
 
 new: Feature: 141
 location: 46.0, 84.0, 0
@@ -11691,6 +12129,7 @@ number: 10
 toggle: true
 end: Feature
 
+nextFeatureKey: 258
 
 new: Feature: 141
 location: 46.0, 88.0, 0
@@ -11700,6 +12139,7 @@ number: 10
 toggle: true
 end: Feature
 
+nextFeatureKey: 259
 
 new: Feature: 104
 location: 38.0, 84.0, 0
@@ -11707,8 +12147,39 @@ curr_height: 0
 remove: false
 number: 10
 toggle: false
+new: Item: 2928
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 200000
+toggled: false
+end: Item: 0
 end: Feature
 
+nextFeatureKey: 260
 
 new: Feature: 104
 location: 38.0, 90.0, 0
@@ -11716,8 +12187,39 @@ curr_height: 0
 remove: false
 number: 10
 toggle: false
+new: Item: 2978
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.32
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 2.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.1
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 0
 end: Feature
 
+nextFeatureKey: 261
 
 new: Feature: 111
 location: 38.0, 91.0, 0
@@ -11727,6 +12229,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 262
 
 new: Feature: 111
 location: 39.0, 91.0, 0
@@ -11736,6 +12239,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 263
 
 new: Feature: 111
 location: 38.0, 85.0, 0
@@ -11745,6 +12249,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 264
 
 new: Feature: 112
 location: 38.0, 87.0, 0
@@ -11754,6 +12259,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 265
 
 new: Feature: 114
 location: 48.0, 85.0, 0
@@ -11763,6 +12269,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 266
 
 new: Feature: 113
 location: 49.0, 87.0, 0
@@ -11772,6 +12279,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 267
 
 new: Feature: 113
 location: 49.0, 81.0, 0
@@ -11781,6 +12289,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 268
 
 new: Feature: 111
 location: 49.0, 79.0, 0
@@ -11790,6 +12299,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 269
 
 new: Feature: 111
 location: 38.0, 79.0, 0
@@ -11799,6 +12309,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 270
 
 new: Feature: 112
 location: 39.0, 81.0, 0
@@ -11808,6 +12319,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 271
 
 new: Feature: 113
 location: 49.0, 75.0, 0
@@ -11817,6 +12329,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 272
 
 new: Feature: 114
 location: 48.0, 73.0, 0
@@ -11826,6 +12339,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 273
 
 new: Feature: 113
 location: 49.0, 67.0, 0
@@ -11835,6 +12349,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 274
 
 new: Feature: 111
 location: 46.0, 67.0, 0
@@ -11844,6 +12359,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 275
 
 new: Feature: 111
 location: 52.0, 62.0, 0
@@ -11853,6 +12369,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 276
 
 new: Feature: 111
 location: 44.0, 61.0, 0
@@ -11862,6 +12379,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 277
 
 new: Feature: 178
 location: 35.0, 75.0, 0
@@ -11871,6 +12389,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 278
 
 new: Feature: 343
 location: 44.0, 46.0, 0
@@ -11880,6 +12399,7 @@ number: 24
 toggle: true
 end: Feature
 
+nextFeatureKey: 279
 
 new: Feature: 183
 location: 51.0, 45.0, 0
@@ -11887,8 +12407,99 @@ curr_height: 0
 remove: false
 number: 0
 toggle: false
+new: Item: 2810
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 0
+new: Item: 2810
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 1
+new: Item: 2810
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 2
 end: Feature
 
+nextFeatureKey: 280
 
 new: Feature: 183
 location: 52.0, 45.0, 0
@@ -11896,8 +12507,99 @@ curr_height: 0
 remove: false
 number: 0
 toggle: false
+new: Item: 2805
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 0
+new: Item: 2818
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.3
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.5
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.02
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 1
+new: Item: 2817
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 2
+size: 0.3
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 2.8
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.4
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 2
 end: Feature
 
+nextFeatureKey: 281
 
 new: Feature: 183
 location: 52.0, 44.0, 0
@@ -11905,8 +12607,39 @@ curr_height: 0
 remove: false
 number: 0
 toggle: false
+new: Item: 2843
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 2
+size: 0.3
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 12.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.4
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 0
 end: Feature
 
+nextFeatureKey: 282
 
 new: Feature: 183
 location: 50.0, 45.0, 0
@@ -11914,8 +12647,129 @@ curr_height: 0
 remove: false
 number: 0
 toggle: false
+new: Item: 2512
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 3.0
+attack: 0.0
+magic: 0.0
+defense: 2.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.05
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 0
+new: Item: 2809
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 1
+new: Item: 2809
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 2
+new: Item: 2806
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 3
 end: Feature
 
+nextFeatureKey: 283
 
 new: Feature: 113
 location: 52.0, 43.0, 0
@@ -11925,6 +12779,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 284
 
 new: Feature: 113
 location: 51.0, 43.0, 0
@@ -11934,6 +12789,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 285
 
 new: Feature: 113
 location: 51.0, 44.0, 0
@@ -11943,6 +12799,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 286
 
 new: Feature: 111
 location: 50.0, 43.0, 0
@@ -11952,6 +12809,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 287
 
 new: Feature: 111
 location: 50.0, 44.0, 0
@@ -11961,6 +12819,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 288
 
 new: Feature: 111
 location: 43.0, 43.0, 0
@@ -11970,6 +12829,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 289
 
 new: Feature: 111
 location: 43.0, 43.0, 0
@@ -11979,6 +12839,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 290
 
 new: Feature: 111
 location: 43.0, 44.0, 0
@@ -11988,6 +12849,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 291
 
 new: Feature: 111
 location: 43.0, 45.0, 0
@@ -11997,6 +12859,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 292
 
 new: Feature: 111
 location: 44.0, 43.0, 0
@@ -12006,6 +12869,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 293
 
 new: Feature: 111
 location: 45.0, 43.0, 0
@@ -12015,6 +12879,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 294
 
 new: Feature: 111
 location: 44.0, 43.0, 0
@@ -12024,6 +12889,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 295
 
 new: Feature: 111
 location: 45.0, 43.0, 0
@@ -12033,6 +12899,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 296
 
 new: Feature: 112
 location: 46.0, 43.0, 0
@@ -12042,6 +12909,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 297
 
 new: Feature: 112
 location: 47.0, 43.0, 0
@@ -12051,6 +12919,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 298
 
 new: Feature: 112
 location: 48.0, 43.0, 0
@@ -12060,6 +12929,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 299
 
 new: Feature: 112
 location: 49.0, 43.0, 0
@@ -12069,6 +12939,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 300
 
 new: Feature: 112
 location: 49.0, 44.0, 0
@@ -12078,6 +12949,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 301
 
 new: Feature: 112
 location: 48.0, 44.0, 0
@@ -12087,6 +12959,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 302
 
 new: Feature: 112
 location: 47.0, 44.0, 0
@@ -12096,6 +12969,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 303
 
 new: Feature: 112
 location: 47.0, 43.0, 0
@@ -12105,6 +12979,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 304
 
 new: Feature: 112
 location: 48.0, 43.0, 0
@@ -12114,6 +12989,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 305
 
 new: Feature: 112
 location: 49.0, 43.0, 0
@@ -12123,6 +12999,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 306
 
 new: Feature: 112
 location: 46.0, 44.0, 0
@@ -12132,6 +13009,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 307
 
 new: Feature: 344
 location: 42.0, 49.0, 0
@@ -12141,6 +13019,7 @@ number: 36
 toggle: false
 end: Feature
 
+nextFeatureKey: 308
 
 new: Feature: 344
 location: 34.0, 49.0, 0
@@ -12150,6 +13029,7 @@ number: 38
 toggle: false
 end: Feature
 
+nextFeatureKey: 309
 
 new: Feature: 343
 location: 41.0, 48.0, 0
@@ -12159,6 +13039,7 @@ number: 37
 toggle: true
 end: Feature
 
+nextFeatureKey: 310
 
 new: Feature: 344
 location: 31.0, 46.0, 0
@@ -12168,6 +13049,7 @@ number: 39
 toggle: false
 end: Feature
 
+nextFeatureKey: 311
 
 new: Feature: 359
 location: 32.0, 59.0, 0
@@ -12177,6 +13059,7 @@ number: 0
 toggle: true
 end: Feature
 
+nextFeatureKey: 312
 
 new: Feature: 106
 location: 36.0, 50.0, 0
@@ -12186,6 +13069,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 313
 
 new: Feature: 106
 location: 37.0, 50.0, 0
@@ -12195,6 +13079,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 314
 
 new: Feature: 106
 location: 38.0, 50.0, 0
@@ -12204,6 +13089,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 315
 
 new: Feature: 106
 location: 39.0, 50.0, 0
@@ -12213,6 +13099,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 316
 
 new: Feature: 106
 location: 40.0, 50.0, 0
@@ -12222,6 +13109,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 317
 
 new: Feature: 183
 location: 35.0, 50.0, 0
@@ -12229,8 +13117,129 @@ curr_height: 0
 remove: false
 number: 0
 toggle: false
+new: Item: 2985
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 0
+new: Item: 2985
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 1
+new: Item: 2985
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 2
+new: Item: 2986
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 3
 end: Feature
 
+nextFeatureKey: 318
 
 new: Feature: 183
 location: 38.0, 47.0, 0
@@ -12238,8 +13247,39 @@ curr_height: 0
 remove: false
 number: 0
 toggle: false
+new: Item: 2927
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 1.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.02
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 0
 end: Feature
 
+nextFeatureKey: 319
 
 new: Feature: 340
 location: 26.0, 41.0, 0
@@ -12249,6 +13289,7 @@ number: 0
 toggle: false
 end: Feature
 
+nextFeatureKey: 320
 
 new: Feature: 104
 location: 54.0, 55.0, 0
@@ -12258,6 +13299,7 @@ number: 10
 toggle: false
 end: Feature
 
+nextFeatureKey: 321
 
 new: Feature: 104
 location: 56.0, 55.0, 0
@@ -12267,6 +13309,7 @@ number: 10
 toggle: false
 end: Feature
 
+nextFeatureKey: 322
 
 new: Feature: 114
 location: 54.0, 56.0, 0
@@ -12276,6 +13319,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 323
 
 new: Feature: 114
 location: 56.0, 56.0, 0
@@ -12285,6 +13329,7 @@ number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 324
 
 new: Feature: 107
 location: 54.0, 57.0, 0
@@ -12294,6 +13339,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 325
 
 new: Feature: 106
 location: 56.0, 58.0, 0
@@ -12303,6 +13349,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 326
 
 new: Feature: 106
 location: 55.0, 58.0, 0
@@ -12312,6 +13359,7 @@ number: 4
 toggle: false
 end: Feature
 
+nextFeatureKey: 327
 
 new: Feature: 123
 location: 60.0, 56.0, 0
@@ -12321,6 +13369,7 @@ number: 4
 toggle: true
 end: Feature
 
+nextFeatureKey: 328
 
 new: Feature: 183
 location: 60.0, 55.0, 0
@@ -12328,6 +13377,4001 @@ curr_height: 0
 remove: false
 number: 0
 toggle: false
+new: Item: 2119
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 10
+thirst: 10
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 0
 end: Feature
 
+nextFeatureKey: 329
+
+new: Feature: 186
+location: 32.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 330
+
+new: Feature: 186
+location: 33.0, 62.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 331
+
+new: Feature: 186
+location: 33.0, 68.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 332
+
+new: Feature: 186
+location: 33.0, 74.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 333
+
+new: Feature: 186
+location: 33.0, 80.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 334
+
+new: Feature: 186
+location: 33.0, 86.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 335
+
+new: Feature: 186
+location: 33.0, 92.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 336
+
+new: Feature: 186
+location: 54.0, 92.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 337
+
+new: Feature: 186
+location: 54.0, 86.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 338
+
+new: Feature: 186
+location: 54.0, 80.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 339
+
+new: Feature: 186
+location: 54.0, 74.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 340
+
+new: Feature: 186
+location: 54.0, 68.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 341
+
+new: Feature: 186
+location: 54.0, 62.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 342
+
+new: Feature: 186
+location: 54.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 343
+
+new: Feature: 186
+location: 55.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 344
+
+new: Feature: 186
+location: 56.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 345
+
+new: Feature: 186
+location: 58.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 346
+
+new: Feature: 186
+location: 59.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 347
+
+new: Feature: 186
+location: 60.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 348
+
+new: Feature: 186
+location: 62.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 349
+
+new: Feature: 186
+location: 63.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 350
+
+new: Feature: 186
+location: 64.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 351
+
+new: Feature: 186
+location: 65.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 352
+
+new: Feature: 186
+location: 66.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 353
+
+new: Feature: 186
+location: 67.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 354
+
+new: Feature: 186
+location: 69.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 355
+
+new: Feature: 186
+location: 70.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 356
+
+new: Feature: 186
+location: 73.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 357
+
+new: Feature: 186
+location: 74.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 358
+
+new: Feature: 186
+location: 76.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 359
+
+new: Feature: 186
+location: 77.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 360
+
+new: Feature: 186
+location: 78.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 361
+
+new: Feature: 186
+location: 80.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 362
+
+new: Feature: 186
+location: 81.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 363
+
+new: Feature: 186
+location: 82.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 364
+
+new: Feature: 186
+location: 90.0, 43.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 365
+
+new: Feature: 186
+location: 90.0, 44.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 366
+
+new: Feature: 186
+location: 90.0, 41.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 367
+
+new: Feature: 186
+location: 88.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 368
+
+new: Feature: 186
+location: 89.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 369
+
+new: Feature: 186
+location: 85.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 370
+
+new: Feature: 186
+location: 86.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 371
+
+new: Feature: 186
+location: 84.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 372
+
+new: Feature: 186
+location: 87.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 373
+
+new: Feature: 186
+location: 90.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 374
+
+new: Feature: 186
+location: 76.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 375
+
+new: Feature: 186
+location: 77.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 376
+
+new: Feature: 186
+location: 78.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 377
+
+new: Feature: 186
+location: 79.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 378
+
+new: Feature: 186
+location: 80.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 379
+
+new: Feature: 186
+location: 81.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 380
+
+new: Feature: 186
+location: 82.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 381
+
+new: Feature: 186
+location: 69.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 382
+
+new: Feature: 186
+location: 70.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 383
+
+new: Feature: 186
+location: 73.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 384
+
+new: Feature: 186
+location: 74.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 385
+
+new: Feature: 186
+location: 63.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 386
+
+new: Feature: 186
+location: 62.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 387
+
+new: Feature: 186
+location: 64.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 388
+
+new: Feature: 186
+location: 65.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 389
+
+new: Feature: 186
+location: 66.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 390
+
+new: Feature: 186
+location: 67.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 391
+
+new: Feature: 186
+location: 54.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 392
+
+new: Feature: 186
+location: 55.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 393
+
+new: Feature: 186
+location: 56.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 394
+
+new: Feature: 186
+location: 57.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 395
+
+new: Feature: 186
+location: 58.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 396
+
+new: Feature: 186
+location: 59.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 397
+
+new: Feature: 186
+location: 60.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 398
+
+new: Feature: 187
+location: 86.0, 48.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 399
+
+new: Feature: 187
+location: 88.0, 48.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 400
+
+new: Feature: 187
+location: 88.0, 50.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 401
+
+new: Feature: 187
+location: 86.0, 50.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 402
+
+new: Feature: 190
+location: 85.0, 43.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 403
+
+new: Feature: 190
+location: 87.0, 43.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 404
+
+new: Feature: 359
+location: 85.0, 47.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 405
+
+new: Feature: 360
+location: 90.0, 44.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 406
+
+new: Feature: 360
+location: 90.0, 43.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 408
+
+new: Feature: 360
+location: 83.0, 44.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 409
+
+new: Feature: 353
+location: 83.0, 43.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 410
+
+new: Feature: 187
+location: 43.0, 98.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 411
+
+new: Feature: 187
+location: 43.0, 100.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 412
+
+new: Feature: 187
+location: 45.0, 100.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 413
+
+new: Feature: 187
+location: 45.0, 98.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 415
+
+new: Feature: 186
+location: 47.0, 97.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 416
+
+new: Feature: 188
+location: 43.0, 95.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 417
+
+new: Feature: 188
+location: 43.0, 89.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 418
+
+new: Feature: 188
+location: 43.0, 83.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 419
+
+new: Feature: 188
+location: 43.0, 77.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 420
+
+new: Feature: 188
+location: 43.0, 71.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 421
+
+new: Feature: 188
+location: 43.0, 65.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 422
+
+new: Feature: 188
+location: 43.0, 59.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 423
+
+new: Feature: 188
+location: 43.0, 54.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 424
+
+new: Feature: 188
+location: 43.0, 50.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 425
+
+new: Feature: 188
+location: 47.0, 50.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 426
+
+new: Feature: 188
+location: 51.0, 50.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 427
+
+new: Feature: 190
+location: 58.0, 41.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 428
+
+new: Feature: 190
+location: 58.0, 45.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 429
+
+new: Feature: 190
+location: 58.0, 49.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 430
+
+new: Feature: 190
+location: 62.0, 49.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 431
+
+new: Feature: 190
+location: 62.0, 45.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 432
+
+new: Feature: 190
+location: 66.0, 45.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 433
+
+new: Feature: 190
+location: 70.0, 45.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 434
+
+new: Feature: 190
+location: 74.0, 45.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 435
+
+new: Feature: 190
+location: 78.0, 45.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 436
+
+new: Feature: 190
+location: 66.0, 49.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 437
+
+new: Feature: 190
+location: 70.0, 49.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 438
+
+new: Feature: 190
+location: 74.0, 49.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 439
+
+new: Feature: 190
+location: 78.0, 49.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 440
+
+new: Feature: 190
+location: 62.0, 53.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 441
+
+new: Feature: 190
+location: 66.0, 53.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 442
+
+new: Feature: 190
+location: 70.0, 53.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 443
+
+new: Feature: 190
+location: 74.0, 53.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 444
+
+new: Feature: 190
+location: 78.0, 53.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 445
+
+new: Feature: 190
+location: 56.0, 56.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 446
+
+new: Feature: 196
+location: 58.0, 55.0, 0
+curr_height: 0
+remove: false
+number: 445
+toggle: false
+end: Feature
+
+nextFeatureKey: 447
+
+new: Feature: 188
+location: 48.0, 92.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 448
+
+new: Feature: 198
+location: 46.0, 91.0, 0
+curr_height: 0
+remove: false
+number: 447
+toggle: true
+end: Feature
+
+nextFeatureKey: 449
+
+new: Feature: 188
+location: 48.0, 86.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 450
+
+new: Feature: 198
+location: 46.0, 85.0, 0
+curr_height: 0
+remove: false
+number: 449
+toggle: false
+end: Feature
+
+nextFeatureKey: 451
+
+new: Feature: 188
+location: 48.0, 80.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 452
+
+new: Feature: 198
+location: 46.0, 79.0, 0
+curr_height: 0
+remove: false
+number: 451
+toggle: false
+end: Feature
+
+nextFeatureKey: 453
+
+new: Feature: 188
+location: 48.0, 74.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 454
+
+new: Feature: 198
+location: 46.0, 73.0, 0
+curr_height: 0
+remove: false
+number: 453
+toggle: true
+end: Feature
+
+nextFeatureKey: 455
+
+new: Feature: 188
+location: 48.0, 68.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 456
+
+new: Feature: 198
+location: 46.0, 67.0, 0
+curr_height: 0
+remove: false
+number: 455
+toggle: true
+end: Feature
+
+nextFeatureKey: 457
+
+new: Feature: 188
+location: 48.0, 62.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 458
+
+new: Feature: 198
+location: 46.0, 61.0, 0
+curr_height: 0
+remove: false
+number: 457
+toggle: false
+end: Feature
+
+nextFeatureKey: 459
+
+new: Feature: 188
+location: 48.0, 57.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 460
+
+new: Feature: 198
+location: 46.0, 56.0, 0
+curr_height: 0
+remove: false
+number: 459
+toggle: false
+end: Feature
+
+nextFeatureKey: 463
+
+new: Feature: 188
+location: 38.0, 68.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 464
+
+new: Feature: 197
+location: 41.0, 69.0, 0
+curr_height: 0
+remove: false
+number: 463
+toggle: false
+end: Feature
+
+nextFeatureKey: 465
+
+new: Feature: 188
+location: 38.0, 74.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 466
+
+new: Feature: 197
+location: 41.0, 75.0, 0
+curr_height: 0
+remove: false
+number: 465
+toggle: false
+end: Feature
+
+nextFeatureKey: 467
+
+new: Feature: 188
+location: 38.0, 80.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 468
+
+new: Feature: 197
+location: 41.0, 81.0, 0
+curr_height: 0
+remove: false
+number: 467
+toggle: true
+end: Feature
+
+nextFeatureKey: 469
+
+new: Feature: 188
+location: 38.0, 86.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 470
+
+new: Feature: 197
+location: 41.0, 87.0, 0
+curr_height: 0
+remove: false
+number: 469
+toggle: false
+end: Feature
+
+nextFeatureKey: 471
+
+new: Feature: 188
+location: 38.0, 92.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 472
+
+new: Feature: 197
+location: 41.0, 93.0, 0
+curr_height: 0
+remove: false
+number: 471
+toggle: true
+end: Feature
+
+nextFeatureKey: 473
+
+new: Feature: 190
+location: 38.0, 62.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 474
+
+new: Feature: 187
+location: 35.0, 63.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 475
+
+new: Feature: 187
+location: 36.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 476
+
+new: Feature: 188
+location: 37.0, 58.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 477
+
+new: Feature: 188
+location: 37.0, 56.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 478
+
+new: Feature: 188
+location: 37.0, 54.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 479
+
+new: Feature: 188
+location: 37.0, 52.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 480
+
+new: Feature: 188
+location: 47.0, 44.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 481
+
+new: Feature: 195
+location: 43.0, 45.0, 0
+curr_height: 0
+remove: false
+number: 480
+toggle: false
+end: Feature
+
+nextFeatureKey: 482
+
+new: Feature: 106
+location: 32.0, 47.0, 0
+curr_height: 0
+remove: false
+number: 4
+toggle: false
+end: Feature
+
+nextFeatureKey: 483
+
+new: Feature: 183
+location: 33.0, 45.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+new: Item: 2941
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.22
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 0
+end: Feature
+
+nextFeatureKey: 484
+
+new: Feature: 107
+location: 33.0, 51.0, 0
+curr_height: 0
+remove: false
+number: 4
+toggle: false
+end: Feature
+
+nextFeatureKey: 485
+
+new: Feature: 107
+location: 33.0, 52.0, 0
+curr_height: 0
+remove: false
+number: 4
+toggle: false
+end: Feature
+
+nextFeatureKey: 486
+
+new: Feature: 107
+location: 33.0, 57.0, 0
+curr_height: 0
+remove: false
+number: 4
+toggle: false
+end: Feature
+
+nextFeatureKey: 487
+
+new: Feature: 107
+location: 33.0, 56.0, 0
+curr_height: 0
+remove: false
+number: 4
+toggle: false
+end: Feature
+
+nextFeatureKey: 488
+
+new: Feature: 114
+location: 32.0, 52.0, 0
+curr_height: 0
+remove: false
+number: 2
+toggle: false
+end: Feature
+
+nextFeatureKey: 489
+
+new: Feature: 113
+location: 29.0, 52.0, 0
+curr_height: 0
+remove: false
+number: 2
+toggle: false
+end: Feature
+
+nextFeatureKey: 490
+
+new: Feature: 112
+location: 32.0, 56.0, 0
+curr_height: 0
+remove: false
+number: 2
+toggle: false
+end: Feature
+
+nextFeatureKey: 491
+
+new: Feature: 111
+location: 29.0, 55.0, 0
+curr_height: 0
+remove: false
+number: 2
+toggle: false
+end: Feature
+
+nextFeatureKey: 492
+
+new: Feature: 183
+location: 33.0, 55.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+new: Item: 2986
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 0
+new: Item: 2986
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 1
+new: Item: 2986
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 2
+end: Feature
+
+nextFeatureKey: 493
+
+new: Feature: 184
+location: 33.0, 54.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+new: Item: 2985
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 0
+new: Item: 2984
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 1
+new: Item: 2987
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.5
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 2
+end: Feature
+
+nextFeatureKey: 494
+
+new: Feature: 21
+location: 33.0, 50.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+description: Tools Available: 
+end: Feature
+
+nextFeatureKey: 497
+
+new: Feature: 101
+location: 35.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 4
+toggle: false
+end: Feature
+
+nextFeatureKey: 498
+
+new: Feature: 107
+location: 41.0, 43.0, 0
+curr_height: 0
+remove: false
+number: 4
+toggle: false
+end: Feature
+
+nextFeatureKey: 499
+
+new: Feature: 107
+location: 41.0, 42.0, 0
+curr_height: 0
+remove: false
+number: 4
+toggle: false
+end: Feature
+
+nextFeatureKey: 503
+
+new: Feature: 179
+location: 41.0, 42.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 504
+
+new: Feature: 174
+location: 35.0, 44.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 505
+
+new: Feature: 181
+location: 37.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+new: Item: 2131
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 12
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 0
+new: Item: 2119
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 10
+thirst: 10
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 1
+new: Item: 2103
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 4
+size: 0.25
+curr_health: 0.0
+hunger: 3
+thirst: 1
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: 2
+end: Feature
+
+nextFeatureKey: 506
+
+new: Feature: 114
+location: 39.0, 43.0, 0
+curr_height: 0
+remove: false
+number: 2
+toggle: false
+end: Feature
+
+nextFeatureKey: 507
+
+new: Feature: 114
+location: 38.0, 44.0, 0
+curr_height: 0
+remove: false
+number: 2
+toggle: false
+end: Feature
+
+nextFeatureKey: 508
+
+new: Feature: 307
+location: 50.0, 40.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextUnitKey: 1
+
+new: Unit: 1210
+location: 74.41782, 45.659744, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 10
+alliance: Zombie
+element: Gray
+gearSlot: WEAPON
+new: Item: 2204
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.3
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 5.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.06
+penetration: 0.0
+attackRange: 0.1
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item: Weapon
+gearSlot: ERROR
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+base_health: 8.0
+base_attack: 3.0
+base_magic: 0.0
+base_defense: 1.0
+base_resistance: 0.0
+base_piercing: 0.0
+base_penetration: 0.0
+base_attackRange: 0.2
+base_attackCooldown: 1200.0
+base_attackTime: 300.0
+base_sight: 6.5
+base_speed: 1.2
+base_tenacity: 0.0
+base_agility: 1
+base_lifesteal: 0.0
+curr_health: 8.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 2
+
+new: Unit: 1308
+location: 65.20334, 50.100513, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 8
+alliance: Zombie
+element: Gray
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+base_health: 1.0
+base_attack: 1.0
+base_magic: 0.0
+base_defense: 0.0
+base_resistance: 0.0
+base_piercing: 0.0
+base_penetration: 0.0
+base_attackRange: 0.2
+base_attackCooldown: 1200.0
+base_attackTime: 300.0
+base_sight: 6.5
+base_speed: 0.5
+base_tenacity: 0.0
+base_agility: 1
+base_lifesteal: 0.0
+curr_health: 1.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextItemKey: 1
+
+new: Item: 2202
+location: 48.555515, 53.41052, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 1.5
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.02
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 2
+
+new: Item: 2404
+location: 50.48551, 53.24052, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 2.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: -0.5
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 3
+
+new: Item: 2941
+location: 32.17244, 45.26539, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.22
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 4
+
+new: Item: 2941
+location: 32.36244, 45.30539, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.22
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 5
+
+new: Item: 2941
+location: 32.412437, 45.495388, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.22
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 6
+
+new: Item: 2941
+location: 32.842438, 45.315388, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.22
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 7
+
+new: Item: 2312
+location: 32.502438, 47.315388, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.3
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 2.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 8
+
+new: Item: 2713
+location: 48.885536, 79.22764, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 1.0
+magic: 0.0
+defense: 3.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.4
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 9
+
+new: Item: 2164
+location: 39.403664, 73.955086, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.55
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 1200000
+toggled: false
+end: Item
+nextItemKey: 10
+
+new: Item: 2817
+location: 52.001854, 45.08834, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.3
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 2.8
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.4
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 11
+
+new: Item: 2810
+location: 43.31733, 43.988342, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 12
+
+new: Item: 2902
+location: 54.78516, 57.440155, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 2
+toggled: false
+end: Item
+nextItemKey: 13
+
+new: Item: 2901
+location: 55.325157, 58.180153, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 32
+toggled: false
+end: Item
+nextItemKey: 14
+
+new: Item: 2901
+location: 55.85516, 58.160156, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 36
+toggled: false
+end: Item
+nextItemKey: 15
+
+new: Item: 2921
+location: 55.74516, 56.190155, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.04
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 16
+
+new: Item: 2141
+location: 58.54516, 53.180153, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 10.0
+hunger: 0
+thirst: 50
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 18
+
+new: Item: 2901
+location: 52.513073, 60.583817, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 6
+toggled: false
+end: Item
+nextItemKey: 19
+
+new: Item: 2901
+location: 52.233074, 61.20382, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 18
+toggled: false
+end: Item
+nextItemKey: 20
+
+new: Item: 2972
+location: 36.55146, 50.25329, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 1.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.02
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 21
+
+new: Item: 2971
+location: 37.671463, 50.31329, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 22
+
+new: Item: 2974
+location: 38.87146, 50.28329, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 23
+
+new: Item: 2979
+location: 40.03146, 50.23329, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.32
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 2.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.05
+penetration: 0.0
+attackRange: 0.05
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 24
+
+new: Item: 2984
+location: 41.166332, 50.380142, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 25
+
+new: Item: 2926
+location: 33.526333, 47.23014, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 1.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.02
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 26
+
+new: Item: 2983
+location: 40.764877, 47.70014, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.38
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 5.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.2
+penetration: 0.0
+attackRange: 0.07
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 27
+
+new: Item: 2981
+location: 33.587185, 58.556988, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.35
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 1.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.05
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 28
+
+new: Item: 2982
+location: 33.567184, 57.766987, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.35
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 1.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 29
+
+new: Item: 2980
+location: 33.587185, 56.926987, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 1.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 30
+
+new: Item: 2918
+location: 39.504017, 50.249672, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 1.5
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 31
+
+new: Item: 2901
+location: 52.465015, 91.74267, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 5
+toggled: false
+end: Item
+nextItemKey: 32
+
+new: Item: 2901
+location: 40.844143, 66.35933, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 21
+toggled: false
+end: Item
+nextItemKey: 33
+
+new: Item: 2901
+location: 85.038284, 41.45915, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 23
+toggled: false
+end: Item
+nextItemKey: 34
+
+new: Item: 2901
+location: 72.64533, 41.37915, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 16
+toggled: false
+end: Item
+nextItemKey: 35
+
+new: Item: 2901
+location: 66.51642, 58.507946, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 19
+toggled: false
+end: Item
+nextItemKey: 36
+
+new: Item: 2901
+location: 55.575405, 41.37268, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 13
+toggled: false
+end: Item
+nextItemKey: 37
+
+new: Item: 2901
+location: 41.079765, 55.39465, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 12
+toggled: false
+end: Item
+nextItemKey: 38
+
+new: Item: 2901
+location: 52.199417, 55.423195, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 10
+toggled: false
+end: Item
+nextItemKey: 39
+
+new: Item: 2123
+location: 36.554184, 39.794235, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 25
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 40
+
+new: Item: 2115
+location: 35.35681, 39.675816, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 15
+thirst: -5
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 41
+
+new: Item: 2101
+location: 41.417168, 44.64649, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 1
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 42
+
+new: Item: 2101
+location: 35.32506, 40.725437, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 1
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 43
+
+new: Item: 2985
+location: 86.223274, 50.60574, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 44
+
+new: Item: 2941
+location: 79.51192, 39.68243, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 12
+size: 0.22
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 45
+
+new: Item: 2803
+location: 52.305668, 57.16327, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 46
+
+new: Item: 2809
+location: 49.725666, 61.113262, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 47
+
+new: Item: 2810
+location: 38.715553, 70.756325, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 48
+
+new: Item: 2704
+location: 35.685555, 63.076324, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 1.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.4
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 49
+
+new: Item: 2931
+location: 31.439817, 58.726795, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 1.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 50
+
+new: Item: 2113
+location: 38.69922, 74.29851, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 15
+thirst: -5
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 51
+
+new: Item: 2123
+location: 35.34922, 76.038506, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 25
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 52
+
+new: Item: 2142
+location: 57.448406, 60.47921, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 30.0
+hunger: 35
+thirst: 10
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 53
+
+new: Item: 2214
+location: 89.53981, 46.538574, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.4
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 6.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.02
+penetration: 0.0
+attackRange: 0.2
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: -0.2
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 54
+
+new: Item: 2203
+location: 82.062836, 58.26555, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.3
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 3.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.04
+penetration: 0.0
+attackRange: 0.01
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 55
+
+new: Item: 2119
+location: 60.885727, 50.10615, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 10
+thirst: 10
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 56
+
+new: Item: 2111
+location: 57.486935, 53.304565, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 20
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 57
+
+new: Item: 2134
+location: 46.673737, 53.104565, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 8
+thirst: 20
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 58
+
+new: Item: 2134
+location: 56.453846, 58.19848, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 8
+thirst: 20
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 59
+
+new: Item: 2904
+location: 57.268963, 58.208477, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+size: 0.25
+curr_health: 0.0
+hunger: 0
+thirst: 0
+money: 0.0
+health: 0.0
+attack: 0.0
+magic: 0.0
+defense: 0.0
+resistance: 0.0
+piercing: 0.0
+penetration: 0.0
+attackRange: 0.0
+attackCooldown: 0.0
+attackTime: 0.0
+sight: 0.0
+speed: 0.0
+tenacity: 0.0
+agility: 0
+lifesteal: 0.0
+ammo: 0
+toggled: false
+end: Item
 end: Map

@@ -107,6 +107,7 @@ class Item extends MapObject {
   protected float tenacity = 0; // percentage from 0 - 1
   protected int agility = 0;
   protected float lifesteal = 0; // percentage
+  protected boolean save_base_stats = false; // toggle true if manually changing stats
 
   protected int ammo = 0; // also used for other things (like key code)
   protected boolean toggled = false; // various uses
@@ -486,6 +487,13 @@ class Item extends MapObject {
         this.attack = 45;
         this.attackRange = 0.35;
         this.piercing = 0.08;
+        this.size = 0.4;
+        break;
+      case 2223:
+        this.setStrings("Metal Pipe", "Melee Weapon", "");
+        this.tier = 3;
+        this.attack = 13;
+        this.attackRange = 0.25;
         this.size = 0.4;
         break;
       case 2231:
@@ -1928,6 +1936,9 @@ class Item extends MapObject {
         break;
       case 2222:
         path += "calcite_spear.png";
+        break;
+      case 2223:
+        path += "metal_pipe.png";
         break;
       case 2231:
         path += "fluorite_sword.png";
@@ -4013,34 +4024,36 @@ class Item extends MapObject {
     fileString += "\ndisappearing: " + this.disappearing;
     fileString += "\ndisappear_timer: " + this.disappear_timer;
     fileString += "\nstack: " + this.stack;
-    fileString += "\nsize: " + this.size;
-    fileString += "\ncurr_health: " + this.curr_health;
-    fileString += "\nhunger: " + this.hunger;
-    fileString += "\nthirst: " + this.thirst;
-    fileString += "\nmoney: " + this.money;
-    fileString += "\nhealth: " + this.health;
-    fileString += "\nattack: " + this.attack;
-    fileString += "\nmagic: " + this.magic;
-    fileString += "\ndefense: " + this.defense;
-    fileString += "\nresistance: " + this.resistance;
-    fileString += "\npiercing: " + this.piercing;
-    fileString += "\npenetration: " + this.penetration;
-    fileString += "\nattackRange: " + this.attackRange;
-    fileString += "\nattackCooldown: " + this.attackCooldown;
-    fileString += "\nattackTime: " + this.attackTime;
-    fileString += "\nsight: " + this.sight;
-    fileString += "\nspeed: " + this.speed;
-    fileString += "\ntenacity: " + this.tenacity;
-    fileString += "\nagility: " + this.agility;
-    fileString += "\nlifesteal: " + this.lifesteal;
+    if (this.save_base_stats) {
+      fileString += "\nsize: " + this.size;
+      fileString += "\ncurr_health: " + this.curr_health;
+      fileString += "\nhunger: " + this.hunger;
+      fileString += "\nthirst: " + this.thirst;
+      fileString += "\nmoney: " + this.money;
+      fileString += "\nhealth: " + this.health;
+      fileString += "\nattack: " + this.attack;
+      fileString += "\nmagic: " + this.magic;
+      fileString += "\ndefense: " + this.defense;
+      fileString += "\nresistance: " + this.resistance;
+      fileString += "\npiercing: " + this.piercing;
+      fileString += "\npenetration: " + this.penetration;
+      fileString += "\nattackRange: " + this.attackRange;
+      fileString += "\nattackCooldown: " + this.attackCooldown;
+      fileString += "\nattackTime: " + this.attackTime;
+      fileString += "\nsight: " + this.sight;
+      fileString += "\nspeed: " + this.speed;
+      fileString += "\ntenacity: " + this.tenacity;
+      fileString += "\nagility: " + this.agility;
+      fileString += "\nlifesteal: " + this.lifesteal;
+    }
     fileString += "\nammo: " + this.ammo;
     fileString += "\ntoggled: " + this.toggled;
+    if (this.inventory != null) {
+      fileString += this.inventory.internalFileString();
+    }
     fileString += "\nend: Item";
     if (slot != null) {
       fileString += ": " + slot.slot_name();
-    }
-    if (this.inventory != null) {
-      fileString += this.inventory.internalFileString();
     }
     return fileString;
   }

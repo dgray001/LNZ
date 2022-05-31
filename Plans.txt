@@ -1,21 +1,8 @@
 v0.7.4: Francis Hall level
- h: finish features
- i: add basic items in francis hall
  j: add basic units in francis hall
  k: basic triggers of francis hall
 
- - make units/items not save base stats unless flagged to do so (flag when manually changing it)
- - can edit base stats of a unit/item and it changes in already-built maps when they open
-
  - put mousemove calculation in thread if it will be so expensive (it seems more expensive than moving)
- Add items:
-   - More misc tools: metal pipe
-   - More melee weapons: compound bow, crossbow
-   - Offhand items: quiver which reloads bow much faster and makes it shoot faster
- Add units:
-   - Duggy for sitting and playing video games in room (zombie duggy just playing video games)
-   - Mike schmiesing, molly schmiesing, schmielet (schmielet is hero that you can unlock in francis hall level)
-   - First BOIZ units who have captured molly schmiesing
 
 v0.7.5: Lev2 maps
 v0.7.6: Lev2 triggers
@@ -47,6 +34,7 @@ v0.7.8: Lev3 triggers
 
 
 Parking Lot:
+ - Item durability (new int value for all* items, goes down 1 for each use)
  - Some way to either resave map with default unit/item/feature params or something...
  - Make terrain / fog resolution a parameter (low, medium, high?)
  - EASY COMPANY sound in tutorial
@@ -66,6 +54,9 @@ Parking Lot:
  - Save music track/location in level (although can overwrite with OptionsForm)
  - Chuck quizmo covers question, put him above it with you on left
      => Also can't harvest him by redoing level => he will give you experience and nothing else at that point
+ - Future items:
+   => quiver, longbow, compound bow, crossbow, crossbow with explosives
+   => magic wands and magic resist armor
 
 
 v0.8: HomeBase and Campaign II
