@@ -1502,6 +1502,9 @@ class Level {
               if (h.weapon() != null && h.weapon().type.equals("Key")) {
                 this.currMap.addHeaderMessage("The key doesn't unlock this door");
               }
+              else if (h.holding(2904, 2905)) {
+                this.currMap.addHeaderMessage("No key on this ring unlocks the door");
+              }
               else {
                 this.currMap.addHeaderMessage("The door is locked");
               }
@@ -1519,6 +1522,9 @@ class Level {
             if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
               if (h.weapon() != null && h.weapon().type.equals("Key")) {
                 this.currMap.addHeaderMessage("The key doesn't unlock this door");
+              }
+              else if (h.holding(2904, 2905)) {
+                this.currMap.addHeaderMessage("No key on this ring unlocks the door");
               }
               else {
                 this.currMap.addHeaderMessage("The door is locked");
@@ -1538,6 +1544,9 @@ class Level {
               if (h.weapon() != null && h.weapon().type.equals("Key")) {
                 this.currMap.addHeaderMessage("The key doesn't unlock this door");
               }
+              else if (h.holding(2904, 2905)) {
+                this.currMap.addHeaderMessage("No key on this ring unlocks the door");
+              }
               else {
                 this.currMap.addHeaderMessage("The door is locked");
               }
@@ -1555,6 +1564,9 @@ class Level {
             if (h.weapon() == null || !h.weapon().unlocks(f.number)) {
               if (h.weapon() != null && h.weapon().type.equals("Key")) {
                 this.currMap.addHeaderMessage("The key doesn't unlock this door");
+              }
+              else if (h.holding(2904, 2905)) {
+                this.currMap.addHeaderMessage("No key on this ring unlocks the door");
               }
               else {
                 this.currMap.addHeaderMessage("The door is locked");

@@ -1162,6 +1162,9 @@ class Hero extends Unit {
 
 
     void featureInventory(Inventory feature_inventory) {
+      if (feature_inventory == null) {
+        return;
+      }
       this.feature_inventory = feature_inventory;
       this.setButtonSize(this.button_size);
     }
@@ -4832,7 +4835,10 @@ class Hero extends Unit {
       switch(i.ID) {
         case 2904: // small key ring
         case 2905: // large key ring
-          // open "feature" inventory with keyring contents, stored in description
+          this.inventory.featureInventory(i.inventory);
+          this.inventory.viewing = true;
+          global.sounds.trigger_environment("items/keychain" + randomInt(1, 3),
+            i.xCenter() - map.viewX, i.yCenter() - map.viewY);
           break;
         case 2921: // backpack
           this.inventory.addSlots(2);

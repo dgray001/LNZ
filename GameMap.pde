@@ -2296,6 +2296,7 @@ class GameMap {
     Unit curr_unit = null;
     int max_item_key = 0;
     Item curr_item = null;
+    Item curr_item_internal = null; // for item inventories
     Projectile curr_projectile = null;
     StatusEffectCode curr_status_code = StatusEffectCode.ERROR;
     StatusEffect curr_status = null;
@@ -2340,7 +2341,21 @@ class GameMap {
               break;
             }
             object_queue.push(type);
-            curr_item = new Item(toInt(trim(parameters[2])));
+            if (curr_item == null) {
+              curr_item = new Item(toInt(trim(parameters[2])));
+            }
+            else {
+              if (curr_item_internal != null) {
+                global.errorMessage("ERROR: Can't create an internal item inside an internal item.");
+                break;
+              }
+              if (curr_item.inventory == null) {
+                global.errorMessage("ERROR: Can't create an internal item " +
+                  "inside an item with no inventory.");
+                break;
+              }
+              curr_item_internal = new Item(toInt(trim(parameters[2])));
+            }
             break;
           case PROJECTILE:
             if (parameters.length < 3) {
@@ -2458,13 +2473,42 @@ class GameMap {
                   curr_unit.gear.put(code, curr_item);
                   break;
                 case ITEM:
-                  // item attachments
+                  if (curr_item_internal == null) {
+                    global.errorMessage("ERROR: Trying to end a null internal item.");
+                    break;
+                  }
+                  if (parameters.length < 3 || !isInt(trim(parameters[2]))) {
+                    global.errorMessage("ERROR: Ending item in item inventory " +
+                      "but no slot number given.");
+                    break;
+                  }
+                  if (curr_item == null) {
+                    global.errorMessage("ERROR: Trying to add item to null item.");
+                    break;
+                  }
+                  if (curr_item.inventory == null) {
+                    global.errorMessage("ERROR: Trying to add item to item " +
+                      "inventory but curr_item has no inventory.");
+                    break;
+                  }
+                  int item_slot_number = toInt(trim(parameters[2]));
+                  if (item_slot_number < 0 || item_slot_number >= curr_item.inventory.slots.size()) {
+                    global.errorMessage("ERROR: Trying to add item to feature " +
+                      "inventory but slot number " + item_slot_number + " out of range.");
+                    break;
+                  }
+                  curr_item.inventory.slots.get(item_slot_number).item = curr_item_internal;
                   break;
                 default:
                   global.errorMessage("ERROR: Trying to end an item inside a " + object_queue.peek().name + ".");
                   break;
               }
-              curr_item = null;
+              if (curr_item_internal == null) {
+                curr_item = null;
+              }
+              else {
+                curr_item_internal = null;
+              }
               break;
             case PROJECTILE:
               if (curr_projectile == null) {
@@ -2556,7 +2600,12 @@ class GameMap {
               global.errorMessage("ERROR: Trying to add item data to a null item.");
               break;
             }
-            curr_item.addData(dataname, data);
+            if (curr_item_internal != null) {
+              curr_item_internal.addData(dataname, data);
+            }
+            else {
+              curr_item.addData(dataname, data);
+            }
             break;
           case PROJECTILE:
             if (curr_projectile == null) {

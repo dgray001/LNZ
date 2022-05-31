@@ -110,6 +110,7 @@ class Item extends MapObject {
 
   protected int ammo = 0; // also used for other things (like key code)
   protected boolean toggled = false; // various uses
+  protected Inventory inventory = null; // keyrings, item attachments, etc
 
   // graphics
   protected BounceInt bounce = new BounceInt(Constants.item_bounceConstant);
@@ -155,6 +156,7 @@ class Item extends MapObject {
     this.lifesteal = i.lifesteal;
     this.ammo = i.ammo;
     this.toggled = i.toggled;
+    this.inventory = i.inventory; // not a deep copy just a reference copy
   }
   Item(int ID) {
     super(ID);
@@ -1309,12 +1311,18 @@ class Item extends MapObject {
         this.tier = 3;
         break;
       case 2904:
-        this.setStrings("Small Key Ring", "Utility", "");
+        this.setStrings("Small Key Ring", "Utility", "A small ring used to " +
+          "hold keys. Holds up to 8 keys which can be used directly from the " +
+          "keyring.");
         this.tier = 2;
+        this.inventory = new SmallKeyringInventory();
         break;
       case 2905:
-        this.setStrings("Large Key Ring", "Utility", "");
+        this.setStrings("Large Key Ring", "Utility", "A large ring used to " +
+          "hold keys. Holds up to 24 keys which can be used directly from the " +
+          "keyring.");
         this.tier = 3;
+        this.inventory = new LargeKeyringInventory();
         break;
       case 2911:
         this.setStrings("Pen", "Office", "");
@@ -2857,6 +2865,10 @@ class Item extends MapObject {
     return this.type.equals("Utility");
   }
 
+  boolean key() {
+    return this.type.equals("Key");
+  }
+
   boolean money() {
     return this.type.equals("Money");
   }
@@ -2877,6 +2889,17 @@ class Item extends MapObject {
         return this.ammo == lock_code / 10;
       case 2903: // skeleton key
         return this.ammo == lock_code / 100;
+      case 2904: // small keyring
+      case 2905: // large keyring
+        for (Item i : this.inventory.items()) {
+          if (i == null || i.remove) {
+            continue;
+          }
+          if (i.unlocks(lock_code)) {
+            return true;
+          }
+        }
+        return false;
       default:
         return false;
     }
@@ -4015,6 +4038,9 @@ class Item extends MapObject {
     fileString += "\nend: Item";
     if (slot != null) {
       fileString += ": " + slot.slot_name();
+    }
+    if (this.inventory != null) {
+      fileString += this.inventory.internalFileString();
     }
     return fileString;
   }

@@ -214,7 +214,7 @@ class Inventory {
   }
 
 
-  // stashes in closed drawers for specialized inventories
+  // stashes in open drawers for specialized inventories
   void stashInDrawers(Item i) {
     this.stash(i);
   }
@@ -1883,6 +1883,79 @@ class WorkbenchInventory extends Inventory {
 class EnderChestInventory extends Inventory {
   EnderChestInventory() {
     super(3, 4, true);
+  }
+}
+
+
+class SmallKeyringInventory extends Inventory {
+  SmallKeyringInventory() {
+    super(3, 3, true);
+    this.slots.get(4).deactivated = true;
+  }
+
+  @Override
+  Item stash(Item i) {
+    if (!i.key()) {
+      return i;
+    }
+    return super.stash(i);
+  }
+
+  @Override
+  Item placeAt(Item i, int index, boolean replace, boolean ignore_deactivate) {
+    if (!i.key()) {
+      return i;
+    }
+    return super.placeAt(i, index, replace, ignore_deactivate);
+  }
+
+  @Override
+  void drawBackground() {
+    super.drawBackground();
+    imageMode(CORNER);
+    image(global.images.getImage("items/small_keyring.png"), 2, 2, 3 * this.button_size, 3 * this.button_size);
+  }
+}
+
+
+class LargeKeyringInventory extends Inventory {
+  LargeKeyringInventory() {
+    super(6, 6, true);
+    this.slots.get(0).deactivated = true;
+    this.slots.get(5).deactivated = true;
+    this.slots.get(9).deactivated = true;
+    this.slots.get(10).deactivated = true;
+    this.slots.get(14).deactivated = true;
+    this.slots.get(15).deactivated = true;
+    this.slots.get(16).deactivated = true;
+    this.slots.get(20).deactivated = true;
+    this.slots.get(21).deactivated = true;
+    this.slots.get(22).deactivated = true;
+    this.slots.get(30).deactivated = true;
+    this.slots.get(35).deactivated = true;
+  }
+
+  @Override
+  Item stash(Item i) {
+    if (!i.key()) {
+      return i;
+    }
+    return super.stash(i);
+  }
+
+  @Override
+  Item placeAt(Item i, int index, boolean replace, boolean ignore_deactivate) {
+    if (!i.key()) {
+      return i;
+    }
+    return super.placeAt(i, index, replace, ignore_deactivate);
+  }
+
+  @Override
+  void drawBackground() {
+    super.drawBackground();
+    imageMode(CORNER);
+    image(global.images.getImage("items/large_keyring.png"), 2, 2, 6 * this.button_size, 6 * this.button_size);
   }
 }
 
