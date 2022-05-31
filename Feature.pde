@@ -1807,6 +1807,7 @@ class Feature extends MapObject {
               this.xCenter() - map.viewX, this.yCenter() - map.viewY);
             break;
         }
+        u.weapon().lowerDurability();
         if (this.number < 1) {
           this.destroy(map);
         }
@@ -1866,6 +1867,7 @@ class Feature extends MapObject {
       case 226:
         if (use_item && u.holding(2978)) {
           this.destroy(map);
+          u.weapon().lowerDurability();
           global.sounds.trigger_environment("items/wire_clipper",
             this.xCenter() - map.viewX, this.yCenter() - map.viewY);
           break;
@@ -1907,6 +1909,7 @@ class Feature extends MapObject {
       case 321: // window (open)
         if (use_item && u.holding(2976)) {
           this.destroy(map);
+          u.weapon().lowerDurability();
           global.sounds.trigger_environment("items/window_break",
             this.xCenter() - map.viewX, this.yCenter() - map.viewY);
           break;
@@ -1919,6 +1922,7 @@ class Feature extends MapObject {
       case 322: // window (closed)
         if (use_item && u.holding(2976)) {
           this.destroy(map);
+          u.weapon().lowerDurability();
           global.sounds.trigger_environment("items/window_break",
             this.xCenter() - map.viewX, this.yCenter() - map.viewY);
           break;
@@ -1933,6 +1937,7 @@ class Feature extends MapObject {
           break;
         }
         this.destroy(map);
+        u.weapon().lowerDurability();
         global.sounds.trigger_environment("items/window_break",
             this.xCenter() - map.viewX, this.yCenter() - map.viewY);
         break;
@@ -1954,6 +1959,7 @@ class Feature extends MapObject {
       case 346:
         if (use_item && u.holding(2977, 2979, 2983)) {
           this.destroy(map);
+          u.weapon().lowerDurability();
           break;
         }
         switch(this.ID) {
@@ -2324,6 +2330,7 @@ class Feature extends MapObject {
                 this.xCenter() - map.viewX, this.yCenter() - map.viewY);
               break;
           }
+          u.weapon().lowerDurability();
           if (randomChance(Constants.feature_treeDropChance)) {
             map.addItem(new Item(branch_id, u.frontX(), u.frontY()));
           }
@@ -2340,6 +2347,7 @@ class Feature extends MapObject {
           if (randomChance(Constants.feature_bushDropChance)) {
             map.addItem(new Item(2964, this.x + 0.2 + random(0.6), this.y + 0.2 + random(0.6)));
           }
+          u.weapon().lowerDurability();
           if (this.number < 1) {
             this.remove = true;
           }

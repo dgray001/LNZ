@@ -187,6 +187,7 @@ class Unit extends MapObject {
   protected int buffer_cast = -1;
   protected boolean last_move_collision = false;
   protected boolean last_move_any_collision = false;
+  protected float footgear_durability_distance = Constants.unit_footgearDurabilityDistance;
 
   protected ArrayList<IntegerCoordinate> curr_squares_on = new ArrayList<IntegerCoordinate>(); // squares unit is on
   protected ArrayList<IntegerCoordinate> curr_squares_sight = new ArrayList<IntegerCoordinate>(); // squares unit can see
@@ -320,6 +321,12 @@ class Unit extends MapObject {
         break;
       case 1106:
         this.setStrings("Jeremiah", "Hero", "");
+        this.baseStats(4, 1, 0, 0, 2);
+        this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
+        this.alliance = Alliance.BEN;
+        break;
+      case 1131:
+        this.setStrings("Michael Fischer", "Hero", "");
         this.baseStats(4, 1, 0, 0, 2);
         this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
         this.alliance = Alliance.BEN;
@@ -615,6 +622,9 @@ class Unit extends MapObject {
         break;
       case 1106:
         path += "patrick.png";
+        break;
+      case 1131:
+        path += "michael_fischer.png";
         break;
       case 1201:
       case 1202:
@@ -2723,6 +2733,18 @@ class Unit extends MapObject {
         source.killed(this);
       }
     }
+    if (this.headgear() != null) {
+      this.headgear().lowerDurability();
+    }
+    if (this.chestgear() != null) {
+      this.chestgear().lowerDurability();
+    }
+    if (this.leggear() != null) {
+      this.leggear().lowerDurability();
+    }
+    if (this.footgear() != null) {
+      this.footgear().lowerDurability();
+    }
     for (Ability a : this.abilities) {
       if (a == null) {
         continue;
@@ -3465,6 +3487,13 @@ class Unit extends MapObject {
     float moveX = this.x - startX;
     float moveY = this.y - startY;
     this.last_move_distance = sqrt(moveX * moveX + moveY * moveY);
+    this.footgear_durability_distance -= this.last_move_distance;
+    if (this.footgear_durability_distance < 0) {
+      this.footgear_durability_distance += Constants.unit_footgearDurabilityDistance;
+      if (this.footgear() != null) {
+        this.footgear().lowerDurability();
+      }
+    }
   }
 
   void moveX(float tryMoveX, float tryMoveY, GameMap map) {
@@ -4100,6 +4129,7 @@ class Unit extends MapObject {
       fileString += "\nbase_lifesteal: " + this.base_lifesteal;
     }
     fileString += "\ncurr_health: " + this.curr_health;
+    fileString += "\nfootgear_durability_distance: " + this.footgear_durability_distance;
     fileString += "\ntimer_attackCooldown: " + this.timer_attackCooldown;
     fileString += "\ntimer_actionTime: " + this.timer_actionTime;
     if (include_headers) {
@@ -4190,6 +4220,9 @@ class Unit extends MapObject {
         break;
       case "curr_health":
         this.curr_health = toFloat(data);
+        break;
+      case "footgear_durability_distance":
+        this.footgear_durability_distance = toFloat(data);
         break;
       case "timer_attackCooldown":
         this.timer_attackCooldown = toFloat(data);

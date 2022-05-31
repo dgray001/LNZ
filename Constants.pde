@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\nAlpha v0.7.4l: 20220530" +
+  "\nAlpha v0.7.4m: 20220531" +
   "\nLines: 44536 (v0.7.4j)" +
   "\nImages: 1175 (v0.7.4)" +
   "\nSounds: 322 (v0.7.4)" +
@@ -256,6 +256,7 @@ static class Constants {
   static final float unit_fallDamageMultiplier = 0.015;
   static final int unit_timer_talk = 9000;
   static final int unit_timer_walk = 380;
+  static final float unit_footgearDurabilityDistance = 100;
 
   // Resistances
   static final float resistance_default = 1;
@@ -602,7 +603,8 @@ static class Constants {
   static final int level_questBlinkTime = 500;
   static final int level_questBlinks = 3;
   static final float level_timeConstants = 0.00002; // 20 minute day / night cycles
-  static final float level_dayLightLevel = 10;
-  static final float level_nightLightLevel = 4;
+  static final float level_dayLightLevel = 9.5;
+  static final float level_nightLightLevel = 3.5;
+  static final float level_zombieSpawnLightThreshhold = 5;
   static final int level_defaultRespawnTimer = 5000;
 }

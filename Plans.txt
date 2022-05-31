@@ -1,22 +1,47 @@
 v0.7.4: Francis Hall level
- l: add basic units in francis hall
- m: basic triggers of francis hall
+tuesday:
+ n: add basic units in francis hall
+ o: basic triggers of francis hall
+    -> level completion warnings/completions
+    -> force to go to room with small cutscene
+    -> talk to mike schmiesing (missing wife)
+wednesday:
+ p: mike fischer steals bens eyes in tutorial when walking across lobby
+   -> new status effect "ghosting" which allows movement through units/walls
+ q: chuck quizmo in francis hall level
+ r: khalil inventory for francis hall level
+ s: update khalilform
+thursday:
+ t: update quizmoform and save correct questions in profile
+ - Chuck quizmo covers question, put him above it with you on left
+     => Also can't harvest him by redoing level => he will give you experience and nothing else at that point
+ u: save album / track / location in level and restart playing at same place
+ v: "CastWhenInRange" unit state
+friday:
+ w: outline inventory squares in white that are in inventory bar
+   -> and fix display bug where items get shuffled when scrolling through
+ x: side room in mechanical room that has key (33)
+ y: powerful zombie on 1st or 2nd floor with key (39)
+ z: molly schmiesing kidnapped by BOIZ so can rescue her (no schmielet hero yet)
 
- - put mousemove calculation in thread if it will be so expensive (it seems more expensive than moving)
+ - need crafting durability, durability bar for each item
+ - guns don't break they just need cleaning (can't craft guns)
 
 v0.7.5: Lev2 maps
-v0.7.6: Lev2 triggers
+v0.7.6: Lev2 levels
 v0.7.7: Lev3 maps
 v0.7.8: Lev3 triggers
--Each door has natural progression to a final battle or some shit
+v0.7.9: Zambos minigame (MinigameInterface) unlocked (new notification for minigame unlocks, hero unlocks, area unlocks)
+v0.8.0: Beta prep => if have time maybe start making more heroes (or outlines of) or start automated map generation class
+- Each door has natural progression to a final battle or some shit
   End level when you find a vehicle / can fuel it / can start it
--Each door has same level 2/maps but different start locations, and is difficult to reach other paths
--Level 3 has forest/golf course and that whole western part of Franciscan, includes a town minigame if you wander into town
+- Each door has same level 2/maps but different start locations, and is difficult to reach other paths
+- Level 3 has forest/golf course and that whole western part of Franciscan, includes a town minigame if you wander into town
   Town minigame isn't same as CoD town yet, that will be a future one I think
+- Finish all parking lot items
 
 
  Fatal Bugs:
-  -> Upgrading hero base stats then saving/reading will increase base stats
   -> java.lang.InternalError: Unrecognized PGCanvas token: 68
     => Also many other ClassCastExceptions
     => Happens often (~30%) in TutorialInterface
@@ -34,34 +59,27 @@ v0.7.8: Lev3 triggers
 
 
 Parking Lot:
- - Item durability (new int value for all* items, goes down 1 for each use)
+ - Zombies spawn at night in area / any level where it is flagged as such
+    => Zombie level associated with player level / level level ?
  - EASY COMPANY sound in tutorial
- - Mike Fischer steals Ben's eyes in tutorial when he crossing main area of 2nd floor
  - StoveInventory door image / burner images / knob functionality
  - All Ben unit sounds
  - All Dan unit sounds
  - Constants to speed up trigger times / header message times (for testing purposes, maybe for in-game options too)
- - Make inventory bar place items back where there were when scrolling through (some bugs in it apparently, seems mostly a display bug)
- - Outline inventory squares that are part of inventory bar
  - AchievementFormField, if not unlocked have flag (hidden) to determine if it will show (Have achievement groups)
  - Trigger editor has dropdownlist for effect id / condition id with name mappings
     => Also only show relevant fields and name them properly
  - Overhaul of DropDownList
- - "CastWhenInRange" unit state
  - PlayingTrack option in OptionsForm (effects to play / silence sounds, so 10 effects total)
- - Save music track/location in level (although can overwrite with OptionsForm)
- - Chuck quizmo covers question, put him above it with you on left
-     => Also can't harvest him by redoing level => he will give you experience and nothing else at that point
  - Future items:
    => quiver, longbow, compound bow, crossbow, crossbow with explosives
    => magic wands and magic resist armor
+ - put mousemove calculation in thread if it will be so expensive (it seems more expensive than moving)
 
 
 v0.8: HomeBase and Campaign II
   -HomeBase is a 1-map Level that Ben starts in now (in Ohio)
-    - At first have it small
     - In future have it auto-generated and much larger
-    - Biome depends on location
     - Each campaign you complete unlocks the auto-generated map for that location (each is a different biome)
   -World Map / Vehicle from Campaign I used to travel to new Campaigns
   -Campaign II is Daniel Gray Campaign at Hopedale (FROGS, BROWN, EARTH)
@@ -142,7 +160,7 @@ Get number of image (png) files:
     - Crafting Update, workbench, gray
     - Geology Update, ores, can dig, brown
     - Chemistry Update, extensive chemistry, magenta
-    - Nether Update, nether (one for each homebase?), red
+    - Nether Update, nether (same for each area? large autogenerated with some spawn for each area), red
     - Ocean Update, boat vehicles, swimming, blue
     - Business Update, economics, control towns/cities
     - Narnia Update, wardrobe, cyan
@@ -162,24 +180,18 @@ v0.5.9: Advanced features (ETA 03-07)
 
 
 v0.6.3: Achievements (ETA 04-05)
- - UnlockableTree class
  - As player accumulates heroes that alliance sides with player
  - Stats for player class
- - Achievements class
- - Achievements can unlock its own tree object:
 healthbars above units (with name / level)
 magnetic hands
 magnetic wallet
 can switch heroes more often
-traveling crafting bench (like the 2x2 in minecraft)
 wallet capacity
 other QoL features I come up with
 
 
 v0.7: Campaign 1 (phase 1 of game) (ETA 06-30)
 v0.7.1: Level 1 : Francis Hall (ETA 05-07)
- - Add campaign class
- - Redesign maps / level / quests / cut scenes
 v0.7.2: Lev2-1 (ETA 05-14)
 v0.7.3: Lev2-2 (ETA 05-21)
 v0.7.4: Lev2-3 (ETA 05-28)

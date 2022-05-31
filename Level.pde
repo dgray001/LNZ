@@ -623,6 +623,7 @@ class Level {
               this.currMap.viewX, f.yCenter() - this.currMap.viewY);
             break;
         }
+        h.weapon().lowerDurability();
         if (f.number < 1) {
           f.destroy(this.currMap);
         }
@@ -659,6 +660,7 @@ class Level {
                 this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
           }
+          h.weapon().lowerDurability();
           if (f.number < 1) {
             f.destroy(this.currMap);
           }
@@ -703,6 +705,7 @@ class Level {
                 this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
           }
+          h.weapon().lowerDurability();
           if (f.number < 1) {
             f.destroy(this.currMap);
           }
@@ -851,6 +854,7 @@ class Level {
                 this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
           }
+          h.weapon().lowerDurability();
           if (f.number < 1) {
             f.destroy(this.currMap);
           }
@@ -896,6 +900,7 @@ class Level {
                 this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
           }
+          h.weapon().lowerDurability();
           if (f.number < 1) {
             f.destroy(this.currMap);
           }
@@ -1259,6 +1264,7 @@ class Level {
       case 226:
         if (use_item && h.holding(2978)) {
           f.destroy(this.currMap);
+          h.weapon().lowerDurability();
           global.sounds.trigger_environment("items/wire_clipper",
             f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
           break;
@@ -1312,6 +1318,7 @@ class Level {
       case 321: // window (open)
         if (use_item && h.holding(2976)) {
           f.destroy(this.currMap);
+          h.weapon().lowerDurability();
           global.sounds.trigger_environment("items/window_break",
             f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
           break;
@@ -1327,6 +1334,7 @@ class Level {
       case 322: // window (closed)
         if (use_item && h.holding(2976)) {
           f.destroy(this.currMap);
+          h.weapon().lowerDurability();
           global.sounds.trigger_environment("items/window_break",
             f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
           break;
@@ -1345,6 +1353,7 @@ class Level {
           break;
         }
         f.destroy(this.currMap);
+        h.weapon().lowerDurability();
         global.sounds.trigger_environment("items/window_break",
           f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         break;
@@ -1366,6 +1375,7 @@ class Level {
       case 346:
         if (use_item && h.holding(2977, 2979, 2983)) {
           f.destroy(this.currMap);
+          h.weapon().lowerDurability();
           break;
         }
         switch(f.ID) {
@@ -1900,6 +1910,7 @@ class Level {
                 this.currMap.viewX, f.yCenter() - this.currMap.viewY);
               break;
           }
+          h.weapon().lowerDurability();
           if (randomChance(Constants.feature_treeDropChance)) {
             this.currMap.addItem(new Item(branch_id, h.frontX(), h.frontY()));
           }
@@ -1916,6 +1927,7 @@ class Level {
           if (randomChance(Constants.feature_bushDropChance)) {
             this.currMap.addItem(new Item(2964, f.x + 0.2 + random(0.6), f.y + 0.2 + random(0.6)));
           }
+          h.weapon().lowerDurability();
           if (f.number < 1) {
             f.remove = true;
           }
