@@ -1,8 +1,6 @@
 v0.7.4: Francis Hall level
 tuesday:
- n: add basic units in francis hall
  o: basic triggers of francis hall
-    -> level completion warnings/completions
     -> force to go to room with small cutscene
     -> talk to mike schmiesing (missing wife)
 wednesday:
@@ -26,8 +24,14 @@ friday:
 
  - need crafting durability, durability bar for each item
  - guns don't break they just need cleaning (can't craft guns)
+ - quizmo / quests can give experience
 
 v0.7.5: Lev2 maps
+ - Lev2-1: Frontdoor
+ - Lev2-2: Ahimdoor
+ - Lev2-3: Chapeldoor
+ - Lev2-4: Brothersdoor
+ - Lev2-5: Custodialdoor
 v0.7.6: Lev2 levels
 v0.7.7: Lev3 maps
 v0.7.8: Lev3 triggers

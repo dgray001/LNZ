@@ -5,6 +5,7 @@ enum StatusEffectCode {
   VISIBLE("Visible"), SUPPRESSED("Suppressed"), UNTARGETABLE("Untargetable"),
   STUNNED("Stunned"), INVISIBLE("Invisible"), UNCOLLIDABLE("Uncollidable"),
   RUNNING("Running"), FERTILIZED("Fertilized"), SNEAKING("Sneaking"), RELAXED("Relaxed"),
+  GHOSTING("Ghosting"),
 
   DRENCHED("Drenched"), DROWNING("Drowning"), BURNT("Burning"), CHARRED("Charred"),
   CHILLED("Chilled"), FROZEN("Frozen"), SICK("Sick"), DISEASED("Diseased"), ROTTING("Rotting"),
@@ -59,6 +60,7 @@ enum StatusEffectCode {
       case FERTILIZED:
       case SNEAKING:
       case RELAXED:
+      case GHOSTING:
       case SENSELESS_GRIT:
       case SENSELESS_GRITII:
       case RAGE_OF_THE_BEN:
@@ -177,6 +179,9 @@ enum StatusEffectCode {
         break;
       case RELAXED:
         image_path += "relaxed.png";
+        break;
+      case GHOSTING:
+        image_path += "ghosting.png";
         break;
       case DRENCHED:
         image_path += "drenched.png";
@@ -313,6 +318,8 @@ enum StatusEffectCode {
           status_relaxed_multiplier) + "% combat stats (attack, defense, etc.), " +
           " move speed, and tenacity, but " + int(1000.0 * Constants.
           status_relaxed_healMultiplier) / 10.0 + "% increased passive healing.";
+      case GHOSTING:
+        return "This unit is ghosting and can move through walls and other units.";
       case DRENCHED:
         return "This unit is drenched so will take more damage from blue sources." +
           "\nIf this unit is red it will also slowly take damage to " + int(100.0 *

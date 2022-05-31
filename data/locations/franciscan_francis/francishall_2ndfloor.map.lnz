@@ -10544,6 +10544,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -10554,6 +10555,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 6
 ammo: 0
 toggled: false
 end: Item: 1
@@ -10564,6 +10566,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 2
@@ -10614,6 +10617,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -10624,6 +10628,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 2
 ammo: 0
 toggled: false
 end: Item: 1
@@ -10634,6 +10639,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 2
@@ -10754,6 +10760,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -10764,6 +10771,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 6
 ammo: 0
 toggled: false
 end: Item: 1
@@ -10804,6 +10812,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 2
 ammo: 0
 toggled: false
 end: Item: 0
@@ -10814,6 +10823,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 2
 ammo: 0
 toggled: false
 end: Item: 1
@@ -10824,6 +10834,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 2
 ammo: 0
 toggled: false
 end: Item: 2
@@ -10834,6 +10845,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 2
 ammo: 0
 toggled: false
 end: Item: 3
@@ -10854,6 +10866,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 2
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -10864,6 +10877,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -10874,6 +10888,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 2
@@ -10894,6 +10909,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 2
 ammo: 0
 toggled: false
 end: Item: 0
@@ -10904,6 +10920,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 2
 ammo: 0
 toggled: false
 end: Item: 1
@@ -10914,6 +10931,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 2
@@ -10954,6 +10972,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -10964,6 +10983,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -10974,6 +10994,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 6
 ammo: 0
 toggled: false
 end: Item: 2
@@ -10984,6 +11005,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 3
@@ -11114,6 +11136,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -11124,6 +11147,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -11144,6 +11168,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -11454,6 +11479,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -11464,6 +11490,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -11484,6 +11511,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -11494,6 +11522,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -12284,6 +12313,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -12314,6 +12344,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -12324,6 +12355,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -12344,6 +12376,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -12364,6 +12397,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -12374,6 +12408,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -12394,6 +12429,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 10
 ammo: 0
 toggled: false
 end: Item: 0
@@ -12404,6 +12440,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -12464,6 +12501,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -12474,6 +12512,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 100
 ammo: 0
 toggled: false
 end: Item: 1
@@ -12484,6 +12523,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 2
@@ -12494,6 +12534,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 3
@@ -12644,6 +12685,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 3
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -12834,6 +12876,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -13074,6 +13117,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 2
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -13094,6 +13138,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -13104,6 +13149,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -13114,6 +13160,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 2
@@ -13124,6 +13171,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 15
 ammo: 0
 toggled: false
 end: Item: 5
@@ -13154,6 +13202,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -13164,6 +13213,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -13184,6 +13234,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -13194,6 +13245,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 2
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -13424,6 +13476,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 12
 ammo: 0
 toggled: false
 end: Item: 0
@@ -13624,6 +13677,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -13634,6 +13688,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -13774,6 +13829,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -13784,6 +13840,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -13904,6 +13961,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -14294,6 +14352,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -14304,6 +14363,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -14314,6 +14374,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 2
@@ -14324,6 +14385,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 3
@@ -14344,6 +14406,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 1200000
 toggled: false
 end: Item: 0
@@ -14354,6 +14417,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -14364,6 +14428,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 2
@@ -14374,6 +14439,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 3
@@ -14484,6 +14550,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -14494,6 +14561,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -14514,6 +14582,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -14524,6 +14593,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 6
 ammo: 0
 toggled: false
 end: Item: 1
@@ -14544,6 +14614,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -14564,6 +14635,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -14584,6 +14656,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -14654,6 +14727,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -14664,6 +14738,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -14694,6 +14769,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -14704,6 +14780,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -14714,6 +14791,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 6
 ammo: 0
 toggled: false
 end: Item: 2
@@ -14724,6 +14802,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 6
 ammo: 0
 toggled: false
 end: Item: 5
@@ -14734,6 +14813,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 2
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 8
@@ -14754,6 +14834,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -14764,6 +14845,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -14784,6 +14866,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 6
 ammo: 0
 toggled: false
 end: Item: 0
@@ -14804,6 +14887,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -14814,6 +14898,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -14824,6 +14909,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 3
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 2
@@ -14834,6 +14920,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 5
@@ -14854,6 +14941,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -14874,6 +14962,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -14904,6 +14993,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -14914,6 +15004,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -14924,6 +15015,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 6
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 2
@@ -14944,6 +15036,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -14954,6 +15047,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 2
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -14964,6 +15058,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 6
 ammo: 0
 toggled: false
 end: Item: 2
@@ -14984,6 +15079,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 2
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -15004,6 +15100,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -15034,6 +15131,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -15064,6 +15162,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -15074,6 +15173,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -15574,6 +15674,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -15594,6 +15695,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 6
 ammo: 0
 toggled: false
 end: Item: 0
@@ -15624,6 +15726,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 2
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -15644,6 +15747,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 2
+durability: 6
 ammo: 0
 toggled: false
 end: Item: 0
@@ -15664,6 +15768,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -15694,6 +15799,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 15
 ammo: 0
 toggled: false
 end: Item: 0
@@ -15704,6 +15810,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -15724,6 +15831,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -15864,6 +15972,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -15874,6 +15983,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 10
 ammo: 0
 toggled: false
 end: Item: 1
@@ -18129,8 +18239,8 @@ size: 0.35
 level: 3
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 next_status_code: Sick
 new: StatusEffect
 permanent: true
@@ -18142,6 +18252,7 @@ facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 curr_health: 2.0
+footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
 end: Unit
@@ -18156,6 +18267,7 @@ size: 0.35
 level: 7
 alliance: Zombie
 element: Gray
+gearSlot: ERROR
 gearSlot: WEAPON
 new: Item: 2904
 location: 0.0, 0.0, 0
@@ -18164,10 +18276,10 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: Weapon
-gearSlot: ERROR
 next_status_code: Confused
 new: StatusEffect
 permanent: true
@@ -18179,6 +18291,7 @@ facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 curr_health: 5.0
+footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
 end: Unit
@@ -18193,8 +18306,8 @@ size: 0.35
 level: 3
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 next_status_code: Sick
 new: StatusEffect
 permanent: true
@@ -18206,6 +18319,7 @@ facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 curr_health: 2.0
+footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
 end: Unit
@@ -18220,16 +18334,17 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Gray
+gearSlot: FEET
 gearSlot: LEGS
 gearSlot: HEAD
-gearSlot: CHEST
-gearSlot: WEAPON
 gearSlot: ERROR
-gearSlot: FEET
+gearSlot: WEAPON
+gearSlot: CHEST
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 curr_health: 4.0
+footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
 end: Unit
@@ -18244,16 +18359,17 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Brown
+gearSlot: FEET
 gearSlot: LEGS
 gearSlot: HEAD
-gearSlot: CHEST
-gearSlot: WEAPON
 gearSlot: ERROR
-gearSlot: FEET
+gearSlot: WEAPON
+gearSlot: CHEST
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 curr_health: 4.0
+footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
 end: Unit
@@ -18268,16 +18384,17 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Gray
+gearSlot: FEET
 gearSlot: LEGS
 gearSlot: HEAD
-gearSlot: CHEST
-gearSlot: WEAPON
 gearSlot: ERROR
-gearSlot: FEET
+gearSlot: WEAPON
+gearSlot: CHEST
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 curr_health: 4.0
+footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
 end: Unit
@@ -18292,16 +18409,17 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Gray
+gearSlot: FEET
 gearSlot: LEGS
 gearSlot: HEAD
-gearSlot: CHEST
-gearSlot: WEAPON
 gearSlot: ERROR
-gearSlot: FEET
+gearSlot: WEAPON
+gearSlot: CHEST
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 curr_health: 4.0
+footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
 end: Unit
@@ -18316,16 +18434,17 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Gray
+gearSlot: FEET
 gearSlot: LEGS
 gearSlot: HEAD
-gearSlot: CHEST
-gearSlot: WEAPON
 gearSlot: ERROR
-gearSlot: FEET
+gearSlot: WEAPON
+gearSlot: CHEST
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 curr_health: 4.0
+footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
 end: Unit
@@ -18343,7 +18462,8 @@ element: Gray
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 1.0
+curr_health: 10.0
+footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
 end: Unit
@@ -18361,7 +18481,8 @@ element: Gray
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 1.0
+curr_health: 6.0
+footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
 end: Unit
@@ -18379,7 +18500,726 @@ element: Gray
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
+curr_health: 5.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 13
+
+new: Unit: 1201
+location: 29.387894, 50.010967, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 1
+alliance: Zombie
+element: Gray
+next_status_code: Sick
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 0.0
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
 curr_health: 1.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 14
+
+new: Unit: 1201
+location: 42.425922, 50.033695, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 1
+alliance: Zombie
+element: Gray
+next_status_code: Sick
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 0.0
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 1.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 15
+
+new: Unit: 1201
+location: 19.845964, 45.951527, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 1
+alliance: Zombie
+element: Gray
+next_status_code: Sick
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 0.0
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 1.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 16
+
+new: Unit: 1201
+location: 5.1610436, 49.79768, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 1
+alliance: Zombie
+element: Gray
+next_status_code: Sick
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 0.0
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 1.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 17
+
+new: Unit: 1201
+location: 50.33963, 55.201527, 3
+curr_height: 3
+remove: false
+size: 0.35
+level: 1
+alliance: Zombie
+element: Gray
+next_status_code: Sick
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 0.0
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 1.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 18
+
+new: Unit: 1201
+location: 43.998962, 35.835377, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 1
+alliance: Zombie
+element: Gray
+next_status_code: Sick
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 0.0
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 1.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 19
+
+new: Unit: 1202
+location: 1.9703228, 50.012623, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 2
+alliance: Zombie
+element: Gray
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 2.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 20
+
+new: Unit: 1202
+location: 22.752913, 49.974163, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 2
+alliance: Zombie
+element: Gray
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 2.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 21
+
+new: Unit: 1202
+location: 51.811195, 48.628006, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 2
+alliance: Zombie
+element: Gray
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 2.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 22
+
+new: Unit: 1202
+location: 37.83043, 68.80592, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 2
+alliance: Zombie
+element: Gray
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 2.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 23
+
+new: Unit: 1202
+location: 40.5612, 86.48707, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 2
+alliance: Zombie
+element: Gray
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 2.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 24
+
+new: Unit: 1202
+location: 43.945812, 93.852455, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 2
+alliance: Zombie
+element: Gray
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 2.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 25
+
+new: Unit: 1202
+location: 74.265205, 53.493034, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 2
+alliance: Zombie
+element: Gray
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 2.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 26
+
+new: Unit: 1202
+location: 74.015205, 50.14688, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 2
+alliance: Zombie
+element: Gray
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 2.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 27
+
+new: Unit: 1202
+location: 55.97645, 42.243034, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 2
+alliance: Zombie
+element: Gray
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 2.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 28
+
+new: Unit: 1203
+location: 46.295113, 57.364204, 2
+curr_height: 2
+remove: false
+size: 0.35
+level: 3
+alliance: Zombie
+element: Gray
+gearSlot: ERROR
+gearSlot: WEAPON
+next_status_code: Sick
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 0.0
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 2.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 30
+
+new: Unit: 1203
+location: 43.968185, 22.113897, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 3
+alliance: Zombie
+element: Gray
+gearSlot: ERROR
+gearSlot: WEAPON
+next_status_code: Sick
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 0.0
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 2.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 31
+
+new: Unit: 1206
+location: 30.0252, 43.247295, 3
+curr_height: 3
+remove: false
+size: 0.35
+level: 6
+alliance: Zombie
+element: Gray
+gearSlot: ERROR
+gearSlot: WEAPON
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 4.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 32
+
+new: Unit: 1208
+location: 36.46751, 47.58502, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 8
+alliance: Zombie
+element: Gray
+gearSlot: ERROR
+gearSlot: WEAPON
+next_status_code: Confused
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 10000.0
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 6.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 33
+
+new: Unit: 1204
+location: 40.92309, 52.590332, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 4
+alliance: Zombie
+element: Gray
+next_status_code: Hungry
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 1400.0
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 3.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 34
+
+new: Unit: 1205
+location: 44.59787, 101.58289, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 5
+alliance: Zombie
+element: Gray
+next_status_code: Hungry
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 1400.0
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 3.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 35
+
+new: Unit: 1205
+location: 80.34052, 46.43137, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 5
+alliance: Zombie
+element: Gray
+next_status_code: Hungry
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 1400.0
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 3.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 36
+
+new: Unit: 1209
+location: 70.1827, 53.62368, 2
+curr_height: 2
+remove: false
+size: 0.35
+level: 9
+alliance: Zombie
+element: Gray
+gearSlot: ERROR
+gearSlot: WEAPON
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 7.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 37
+
+new: Unit: 1207
+location: 69.49039, 56.604446, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 7
+alliance: Zombie
+element: Gray
+gearSlot: ERROR
+gearSlot: WEAPON
+next_status_code: Confused
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 10000.0
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 5.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 38
+
+new: Unit: 1209
+location: 50.38889, 19.04588, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 9
+alliance: Zombie
+element: Gray
+gearSlot: ERROR
+gearSlot: WEAPON
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 7.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 39
+
+new: Unit: 1209
+location: 36.927353, 6.8920326, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 9
+alliance: Zombie
+element: Gray
+gearSlot: ERROR
+gearSlot: WEAPON
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 7.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 40
+
+new: Unit: 1209
+location: 37.754272, 8.103571, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 9
+alliance: Zombie
+element: Gray
+gearSlot: ERROR
+gearSlot: WEAPON
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 7.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 41
+
+new: Unit: 1209
+location: 40.811966, 6.8920326, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 9
+alliance: Zombie
+element: Gray
+gearSlot: ERROR
+gearSlot: WEAPON
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 7.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 42
+
+new: Unit: 1204
+location: 60.74521, 58.049133, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 4
+alliance: Zombie
+element: Gray
+next_status_code: Hungry
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 1400.0
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 3.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 43
+
+new: Unit: 1206
+location: 63.26444, 57.049133, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 6
+alliance: Zombie
+element: Gray
+gearSlot: ERROR
+gearSlot: WEAPON
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 4.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 44
+
+new: Unit: 1207
+location: 58.95675, 55.95298, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 7
+alliance: Zombie
+element: Gray
+gearSlot: ERROR
+gearSlot: WEAPON
+next_status_code: Confused
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 10000.0
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 5.0
+footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
 end: Unit
@@ -18393,6 +19233,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18405,6 +19246,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18417,6 +19259,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18429,6 +19272,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 1200000
 toggled: false
 end: Item
@@ -18441,6 +19285,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 1200000
 toggled: false
 end: Item
@@ -18453,6 +19298,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18465,6 +19311,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18477,6 +19324,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 100
 ammo: 0
 toggled: false
 end: Item
@@ -18489,6 +19337,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 10
 ammo: 0
 toggled: false
 end: Item
@@ -18501,6 +19350,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 10
 ammo: 0
 toggled: false
 end: Item
@@ -18513,6 +19363,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18525,6 +19376,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18537,6 +19389,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18549,6 +19402,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18561,6 +19415,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18573,6 +19428,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18585,6 +19441,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18597,6 +19454,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18609,6 +19467,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18621,6 +19480,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18633,6 +19493,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18645,6 +19506,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 6
 ammo: 0
 toggled: false
 end: Item
@@ -18657,6 +19519,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 6
 ammo: 0
 toggled: false
 end: Item
@@ -18669,6 +19532,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 6
 ammo: 0
 toggled: false
 end: Item
@@ -18681,6 +19545,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 6
 ammo: 0
 toggled: false
 end: Item
@@ -18693,6 +19558,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18705,6 +19571,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 14
 toggled: false
 end: Item
@@ -18717,6 +19584,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 31
 toggled: false
 end: Item
@@ -18729,6 +19597,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18741,6 +19610,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18753,6 +19623,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 1
 toggled: false
 end: Item
@@ -18765,6 +19636,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 3
 toggled: false
 end: Item
@@ -18777,6 +19649,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 7
 toggled: false
 end: Item
@@ -18789,6 +19662,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 11
 toggled: false
 end: Item
@@ -18801,6 +19675,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 17
 toggled: false
 end: Item
@@ -18813,6 +19688,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 22
 toggled: false
 end: Item
@@ -18825,6 +19701,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 15
 toggled: false
 end: Item
@@ -18837,6 +19714,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18849,6 +19727,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18861,6 +19740,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18873,6 +19753,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18885,6 +19766,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18897,6 +19779,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18909,6 +19792,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18921,6 +19805,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -18933,6 +19818,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 10
 ammo: 0
 toggled: false
 end: Item
@@ -18945,6 +19831,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 10
 ammo: 0
 toggled: false
 end: Item
@@ -18957,6 +19844,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 10
 ammo: 0
 toggled: false
 end: Item
@@ -18969,6 +19857,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 10
 ammo: 0
 toggled: false
 end: Item
@@ -18981,6 +19870,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 15
 ammo: 0
 toggled: false
 end: Item
@@ -18993,6 +19883,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 8
 ammo: 0
 toggled: false
 end: Item
@@ -19005,6 +19896,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 8
 ammo: 0
 toggled: false
 end: Item
@@ -19017,6 +19909,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 12
 ammo: 0
 toggled: false
 end: Item
@@ -19029,6 +19922,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 12
 ammo: 0
 toggled: false
 end: Item
@@ -19041,6 +19935,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 12
 ammo: 0
 toggled: false
 end: Item
@@ -19053,6 +19948,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -19065,6 +19961,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 6
 ammo: 0
 toggled: false
 end: Item
@@ -19077,6 +19974,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -19089,6 +19987,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item
@@ -19101,6 +20000,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 2
 ammo: 0
 toggled: false
 end: Item
@@ -19113,6 +20013,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 8
 ammo: 0
 toggled: false
 end: Item

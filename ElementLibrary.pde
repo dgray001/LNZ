@@ -2315,7 +2315,7 @@ class InputBox extends RectangleButton {
       }
       this.display_text += this.text.charAt(i);
     }
-    if (decreaseDisplayLocation) {
+    if (decreaseDisplayLocation && this.location_display <= this.text.length()) {
       while(this.location_display > 0 && textWidth(this.text.charAt(
         this.location_display - 1) + this.display_text) <= maxWidth) {
         this.location_display--;

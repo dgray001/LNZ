@@ -10,7 +10,7 @@ respawn_timer: 0
 sleeping: false
 sleep_timer: 0
 in_control: true
-currMapName: francishall_groundfloor
+currMapName: francishall_1stfloor
 mapNames: francishall_1stfloor, francishall_2ndfloor, francishall_groundfloor
 
 new: Linker
@@ -121,7 +121,7 @@ nextTriggerKey: 2
 
 new: Trigger
 triggerName: lose control
-active: true
+active: false
 looping: false
 amalgam: true
 new: Effect
@@ -1804,7 +1804,7 @@ nextTriggerKey: 42
 
 new: Trigger
 triggerName: message
-active: false
+active: true
 looping: false
 amalgam: true
 new: Condition
@@ -2037,7 +2037,7 @@ end: Trigger
 nextTriggerKey: 47
 
 new: Trigger
-triggerName: Trigger 47
+triggerName: 
 active: false
 looping: false
 amalgam: true
@@ -2046,7 +2046,7 @@ end: Trigger
 nextTriggerKey: 48
 
 new: Trigger
-triggerName: Trigger 48
+triggerName: ### Level completions
 active: false
 looping: false
 amalgam: true
@@ -2055,16 +2055,853 @@ end: Trigger
 nextTriggerKey: 49
 
 new: Trigger
-triggerName: Trigger 49
-active: false
-looping: false
+triggerName: chapel door 1
+active: true
+looping: true
 amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: francishall_1stfloor, 1.0, 45.0, 2.0, 46.0
+met: false
+not_condition: false
+end: Condition
+
+new: Condition
+ID: 1
+number1: 10000
+number2: 10000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 22
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: If I walk out the door I won't be able to go back
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_1stfloor, 1.0, 45.0, 2.0, 46.0
+end: Effect
+
 end: Trigger
 
 nextTriggerKey: 50
 
 new: Trigger
-triggerName: Trigger 50
+triggerName: 2
+active: true
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: francishall_1stfloor, 1.0, 44.0, 2.0, 45.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 22
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 51
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 51
+
+new: Trigger
+triggerName: 3
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: The door shut and locked behind him
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_1stfloor, 1.0, 44.0, 2.0, 45.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 52
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 51
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_1stfloor, 1.0, 45.0, 2.0, 46.0
+end: Effect
+
+new: Effect
+ID: 50
+message: 
+number: 359
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_1stfloor, 1.0, 45.0, 2.0, 46.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 52
+
+new: Trigger
+triggerName: 4
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 6
+message: 
+number: 3
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 53
+
+new: Trigger
+triggerName: brothers door 1
+active: true
+looping: true
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: francishall_1stfloor, 42.0, 1.0, 43.0, 2.0
+met: false
+not_condition: false
+end: Condition
+
+new: Condition
+ID: 1
+number1: 10000
+number2: 10000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 22
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: If I walk out the door I won't be able to go back
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_1stfloor, 42.0, 1.0, 43.0, 2.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 54
+
+new: Trigger
+triggerName: 2
+active: true
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: francishall_1stfloor, 41.0, 1.0, 42.0, 2.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 22
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 55
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 55
+
+new: Trigger
+triggerName: 3
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 51
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_1stfloor, 42.0, 1.0, 43.0, 2.0
+end: Effect
+
+new: Effect
+ID: 50
+message: 
+number: 360
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: The door shut and locked behind him
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_1stfloor, 42.0, 1.0, 43.0, 2.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 56
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 56
+
+new: Trigger
+triggerName: 4
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 6
+message: 
+number: 4
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 57
+
+new: Trigger
+triggerName: front door 1
+active: true
+looping: true
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: francishall_groundfloor, 89.0, 43.0, 91.0, 45.0
+met: false
+not_condition: false
+end: Condition
+
+new: Condition
+ID: 1
+number1: 10000
+number2: 10000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 22
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: If I leave I won't be able to go back
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_groundfloor, 89.0, 43.0, 91.0, 45.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 58
+
+new: Trigger
+triggerName: 2
+active: true
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: francishall_groundfloor, 90.0, 43.0, 91.0, 45.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 22
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 59
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 59
+
+new: Trigger
+triggerName: 3
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: Ben left and doors shut behind him
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_groundfloor, 90.0, 43.0, 91.0, 45.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 60
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 60
+
+new: Trigger
+triggerName: 4
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 6
+message: 
+number: 1
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 61
+
+new: Trigger
+triggerName: ahim door 1
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: francishall_groundfloor, 46.0, 97.0, 47.0, 98.0
+met: false
+not_condition: false
+end: Condition
+
+new: Condition
+ID: 1
+number1: 10000
+number2: 10000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 22
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: If I leave I won't be able to go back
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_groundfloor, 46.0, 97.0, 47.0, 98.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 62
+
+new: Trigger
+triggerName: 2
+active: true
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: francishall_groundfloor, 47.0, 97.0, 48.0, 98.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 22
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 63
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 63
+
+new: Trigger
+triggerName: 3
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 64
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: The door shut and locked behind him
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_groundfloor, 90.0, 43.0, 91.0, 45.0
+end: Effect
+
+new: Effect
+ID: 51
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_groundfloor, 46.0, 97.0, 47.0, 98.0
+end: Effect
+
+new: Effect
+ID: 50
+message: 
+number: 460
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_groundfloor, 46.0, 97.0, 47.0, 98.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 64
+
+new: Trigger
+triggerName: 4
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 6
+message: 
+number: 2
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 65
+
+new: Trigger
+triggerName: custodial door 1
+active: true
+looping: true
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: francishall_groundfloor, 32.0, 59.0, 33.0, 60.0
+met: false
+not_condition: false
+end: Condition
+
+new: Condition
+ID: 1
+number1: 10000
+number2: 10000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 22
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: If I leave I won't be able to go back
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_groundfloor, 32.0, 59.0, 33.0, 60.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 66
+
+new: Trigger
+triggerName: 2
+active: true
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: francishall_groundfloor, 32.0, 60.0, 33.0, 61.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 22
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 67
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 67
+
+new: Trigger
+triggerName: 3
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 4
+message: The door shut and locked behind him
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_groundfloor, 90.0, 43.0, 91.0, 45.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 68
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 51
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 50
+message: 
+number: 459
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 68
+
+new: Trigger
+triggerName: 4
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 6
+message: 
+number: 5
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 69
+
+new: Trigger
+triggerName: 
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 70
+
+new: Trigger
+triggerName: Trigger 70
 active: false
 looping: false
 amalgam: true

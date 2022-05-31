@@ -1861,6 +1861,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 45
 ammo: 0
 toggled: false
 end: Item: 1
@@ -1952,6 +1953,7 @@ speed: 0.0
 tenacity: 0.0
 agility: 0
 lifesteal: 0.0
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 0
@@ -1962,6 +1964,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 1
@@ -1972,6 +1975,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 2
@@ -1982,6 +1986,7 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 0
 toggled: false
 end: Item: 3
@@ -2407,16 +2412,17 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Gray
+gearSlot: FEET
 gearSlot: LEGS
 gearSlot: HEAD
-gearSlot: CHEST
-gearSlot: WEAPON
 gearSlot: ERROR
-gearSlot: FEET
+gearSlot: WEAPON
+gearSlot: CHEST
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 curr_health: 4.0
+footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
 end: Unit
@@ -2431,16 +2437,17 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Gray
+gearSlot: FEET
 gearSlot: LEGS
 gearSlot: HEAD
-gearSlot: CHEST
-gearSlot: WEAPON
 gearSlot: ERROR
-gearSlot: FEET
+gearSlot: WEAPON
+gearSlot: CHEST
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 curr_health: 4.0
+footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
 end: Unit
@@ -2455,16 +2462,17 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Gray
+gearSlot: FEET
 gearSlot: LEGS
 gearSlot: HEAD
-gearSlot: CHEST
-gearSlot: WEAPON
 gearSlot: ERROR
-gearSlot: FEET
+gearSlot: WEAPON
+gearSlot: CHEST
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 curr_health: 4.0
+footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
 end: Unit
@@ -2479,16 +2487,17 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Brown
+gearSlot: FEET
 gearSlot: LEGS
 gearSlot: HEAD
-gearSlot: CHEST
-gearSlot: WEAPON
 gearSlot: ERROR
-gearSlot: FEET
+gearSlot: WEAPON
+gearSlot: CHEST
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 curr_health: 4.0
+footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
 end: Unit
@@ -2503,16 +2512,17 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Gray
+gearSlot: FEET
 gearSlot: LEGS
 gearSlot: HEAD
-gearSlot: CHEST
-gearSlot: WEAPON
 gearSlot: ERROR
-gearSlot: FEET
+gearSlot: WEAPON
+gearSlot: CHEST
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 curr_health: 4.0
+footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
 end: Unit

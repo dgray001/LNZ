@@ -286,7 +286,7 @@ class Unit extends MapObject {
       // Heroes
       case 1101:
         this.setStrings("Ben Nelson", "Hero", "");
-        this.baseStats(4, 1, 0, 0, 2);
+        this.baseStats(4, 1, 0, 0, 1.7);
         this.base_agility = 1;
         this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
         this.alliance = Alliance.BEN;
@@ -294,7 +294,7 @@ class Unit extends MapObject {
         break;
       case 1102:
         this.setStrings("Dan Gray", "Hero", "");
-        this.baseStats(4, 1, 0, 0, 2);
+        this.baseStats(4, 1, 0, 0, 1.8);
         this.base_agility = 2;
         this.base_magic = 3;
         this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
@@ -356,28 +356,28 @@ class Unit extends MapObject {
         break;
       case 1204:
         this.setStrings("Lazy Hungry Zombie", "Zombie", "");
-        this.baseStats(3, 3, 0, 0, 0.7);
+        this.baseStats(3, 3, 0.3, 0, 0.7);
         this.level = 4;
         this.alliance = Alliance.ZOMBIE;
         this.addStatusEffect(StatusEffectCode.HUNGRY);
         break;
       case 1205:
         this.setStrings("Hungry Zombie", "Zombie", "");
-        this.baseStats(3, 3, 0, 0, 1);
+        this.baseStats(3, 3, 0.3, 0, 1);
         this.level = 5;
         this.alliance = Alliance.ZOMBIE;
         this.addStatusEffect(StatusEffectCode.HUNGRY);
         break;
       case 1206:
         this.setStrings("Lazy Zombie", "Zombie", "");
-        this.baseStats(4, 3, 0, 0, 0.8);
+        this.baseStats(4, 3, 0.3, 0, 0.8);
         this.level = 6;
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1207:
         this.setStrings("Confused Franny Zombie", "Zombie", "");
-        this.baseStats(5, 3, 0, 0, 1.2);
+        this.baseStats(5, 3, 0.6, 0, 1.2);
         this.level = 7;
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
@@ -385,7 +385,7 @@ class Unit extends MapObject {
         break;
       case 1208:
         this.setStrings("Confused Zombie", "Zombie", "");
-        this.baseStats(6, 3, 0, 0, 1.2);
+        this.baseStats(6, 3, 0.6, 0, 1.2);
         this.level = 8;
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
@@ -393,14 +393,14 @@ class Unit extends MapObject {
         break;
       case 1209:
         this.setStrings("Franny Zombie", "Zombie", "");
-        this.baseStats(7, 3, 0, 0, 1.2);
+        this.baseStats(7, 3, 0.6, 0, 1.2);
         this.level = 9;
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1210:
         this.setStrings("Intellectual Zombie", "Zombie", "");
-        this.baseStats(8, 3, 1, 0, 1.2);
+        this.baseStats(9, 4, 1, 0, 1.2);
         this.level = 10;
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
@@ -409,52 +409,53 @@ class Unit extends MapObject {
       // Named Zombies
       case 1301:
         this.setStrings("Duggy", "Zombie", "");
-        this.baseStats(1, 1, 0, 0, 0.5);
+        this.baseStats(6, 2.5, 0.2, 0, 1);
         this.level = 1;
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1302:
         this.setStrings("Jacob Sanchez", "Zombie", "");
-        this.baseStats(1, 1, 0, 0, 0.5);
+        this.baseStats(5, 4, 0, 0, 1.5);
         this.level = 2;
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1303:
         this.setStrings("Mike Olenchuk", "Zombie", "");
-        this.baseStats(1, 1, 0, 0, 0.5);
+        this.baseStats(12, 3.5, 1, 0, 0.9);
         this.level = 3;
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1304:
         this.setStrings("Grady Stuckman", "Zombie", "");
-        this.baseStats(1, 1, 0, 0, 0.5);
+        this.baseStats(10, 5, 0.4, 0.05, 1.7);
         this.level = 4;
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1305:
         this.setStrings("Ethan Pitney", "Zombie", "");
-        this.baseStats(1, 1, 0, 0, 0.5);
+        this.baseStats(9, 7, 0.4, 0, 1.3);
         this.level = 5;
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1306:
         this.setStrings("James Sarlo", "Zombie", "");
-        this.baseStats(1, 1, 0, 0, 0.5);
+        this.baseStats(15, 8, 0.4, 0.12, 1.4);
         this.level = 6;
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1307:
         this.setStrings("Matt Hair", "Zombie", "");
-        this.baseStats(1, 1, 0, 0, 0.5);
+        this.baseStats(25, 6, 2.2, 0.03, 1.1);
         this.level = 7;
         this.alliance = Alliance.ZOMBIE;
         this.gearSlots("Weapon");
         break;
       case 1308:
         this.setStrings("Nick Belt", "Zombie", "");
-        this.baseStats(1, 1, 0, 0, 0.5);
+        this.baseStats(18, 10, 0.8, 0.15, 1.4);
         this.level = 8;
         this.alliance = Alliance.ZOMBIE;
+        this.base_attackRange = 1.2 * Constants.unit_defaultBaseAttackRange;
         break;
 
       default:
@@ -1600,6 +1601,9 @@ class Unit extends MapObject {
   }
   boolean relaxed() {
     return this.hasStatusEffect(StatusEffectCode.RELAXED);
+  }
+  boolean ghosting() {
+    return this.hasStatusEffect(StatusEffectCode.GHOSTING);
   }
   boolean drenched() {
     return this.hasStatusEffect(StatusEffectCode.DRENCHED);
@@ -2817,6 +2821,13 @@ class Unit extends MapObject {
         case 1208:
         case 1209:
         case 1210:
+        case 1301: // Tier I named zombies
+        case 1302:
+        case 1303:
+        case 1304:
+        case 1305:
+        case 1306:
+        case 1307:
           if (source != null && (this.curr_action == UnitAction.NONE || this.last_move_collision)) {
             this.target(source);
           }
@@ -3264,6 +3275,14 @@ class Unit extends MapObject {
       case 1208:
       case 1209:
       case 1210:
+      case 1301:
+      case 1302:
+      case 1303:
+      case 1304:
+      case 1305:
+      case 1306:
+      case 1307:
+      case 1308:
         sound_name += "zombie" + randomInt(0, 5);
         break;
       default:
@@ -3288,6 +3307,14 @@ class Unit extends MapObject {
       case 1208:
       case 1209:
       case 1210:
+      case 1301:
+      case 1302:
+      case 1303:
+      case 1304:
+      case 1305:
+      case 1306:
+      case 1307:
+      case 1308:
         sound_name += "zombie" + randomInt(0, 8);
         break;
       default:
@@ -3316,6 +3343,14 @@ class Unit extends MapObject {
       case 1208:
       case 1209:
       case 1210:
+      case 1301:
+      case 1302:
+      case 1303:
+      case 1304:
+      case 1305:
+      case 1306:
+      case 1307:
+      case 1308:
         sound_name += "zombie" + randomInt(0, 15);
         break;
       default:
@@ -3346,6 +3381,14 @@ class Unit extends MapObject {
       case 1208:
       case 1209:
       case 1210:
+      case 1301:
+      case 1302:
+      case 1303:
+      case 1304:
+      case 1305:
+      case 1306:
+      case 1307:
+      case 1308:
         sound_name += "zombie" + randomInt(0, 11);
         break;
       default:
@@ -3375,6 +3418,14 @@ class Unit extends MapObject {
       case 1208:
       case 1209:
       case 1210:
+      case 1301:
+      case 1302:
+      case 1303:
+      case 1304:
+      case 1305:
+      case 1306:
+      case 1307:
+      case 1308:
         sound_name += "zombie" + randomInt(0, 10);
         break;
       default:
@@ -3399,6 +3450,14 @@ class Unit extends MapObject {
       case 1208:
       case 1209:
       case 1210:
+      case 1301:
+      case 1302:
+      case 1303:
+      case 1304:
+      case 1305:
+      case 1306:
+      case 1307:
+      case 1308:
         sound_name += "zombie" + randomInt(0, 6);
         break;
       default:
@@ -3577,6 +3636,9 @@ class Unit extends MapObject {
       this.x = startX;
       return true;
     }
+    if (this.ghosting()) {
+      return false;
+    }
     // terrain collisions
     ArrayList<IntegerCoordinate> squares_moving_on = this.getSquaresOn();
     int max_height = this.curr_height + this.walkHeight();
@@ -3635,9 +3697,13 @@ class Unit extends MapObject {
   boolean collisionLogicY(float tryMoveY, float equivalentMoveX, GameMap map) {
     float startY = this.y;
     this.y += tryMoveY;
+    // map collisions
     if (!this.inMapY(map.mapHeight)) {
       this.y = startY;
       return true;
+    }
+    if (this.ghosting()) {
+      return false;
     }
     // terrain collisions
     ArrayList<IntegerCoordinate> squares_moving_on = this.getSquaresOn();
@@ -4039,6 +4105,13 @@ class Unit extends MapObject {
       case 1208:
       case 1209:
       case 1210:
+      case 1302: // Tier I Named Zombies
+      case 1303:
+      case 1304:
+      case 1305:
+      case 1306:
+      case 1307:
+      case 1308:
         if (this.curr_action == UnitAction.NONE || this.last_move_collision) {
           this.timer_ai_action1 -= timeElapsed;
           if (this.timer_ai_action1 < 0) {

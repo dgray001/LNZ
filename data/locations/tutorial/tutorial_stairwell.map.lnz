@@ -145,6 +145,7 @@ facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 curr_health: 2.5
+footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
 end: Unit

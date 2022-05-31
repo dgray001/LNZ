@@ -947,6 +947,7 @@ size: 0.35
 level: 3
 alliance: Ben
 element: Gray
+gearSlot: ERROR
 gearSlot: WEAPON
 new: Item: 2928
 location: 0.0, 0.0, 0
@@ -955,14 +956,15 @@ remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
+durability: 1
 ammo: 200000
 toggled: true
 end: Item: Weapon
-gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 curr_health: 3.5
+footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
 end: Unit

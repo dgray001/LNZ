@@ -161,6 +161,7 @@ class Item extends MapObject {
     this.lifesteal = i.lifesteal;
     this.ammo = i.ammo;
     this.toggled = i.toggled;
+    this.durability = i.durability;
     this.inventory = i.inventory; // not a deep copy just a reference copy
   }
   Item(int ID) {
@@ -1458,10 +1459,12 @@ class Item extends MapObject {
       case 2911:
         this.setStrings("Pen", "Office", "");
         this.attack = 1;
+        this.durability = 6;
         break;
       case 2912:
         this.setStrings("Pencil", "Office", "");
         this.attack = 1;
+        this.durability = 6;
         break;
       case 2913:
         this.setStrings("Paper", "Office", "");
@@ -1472,6 +1475,7 @@ class Item extends MapObject {
       case 2915:
         this.setStrings("Stapler", "Office", "");
         this.attack = 1;
+        this.durability = 15;
         break;
       case 2916:
         this.setStrings("Crumpled Paper", "Office", "");
@@ -1482,6 +1486,7 @@ class Item extends MapObject {
       case 2918:
         this.setStrings("Scissors", "Office", "");
         this.attack = 1.5;
+        this.durability = 12;
         break;
       case 2921:
         this.setStrings("Backpack", "Utility", "");
@@ -1499,6 +1504,7 @@ class Item extends MapObject {
         this.setStrings("Glass Bottle", "Utility", "");
         this.attack = 1;
         this.piercing = 0.06;
+        this.durability = 2;
         break;
       case 2925:
         this.setStrings("Water Bottle", "Utility", "");
@@ -1581,6 +1587,7 @@ class Item extends MapObject {
         this.setStrings("Stick", "Nature", "");
         this.attack = 1;
         this.attackRange = 0.05;
+        this.durability = 8;
         break;
       case 2964:
         this.setStrings("Kindling", "Nature", "");
@@ -1593,6 +1600,7 @@ class Item extends MapObject {
         this.setStrings("Branch", "Nature", "");
         this.attack = 1;
         this.attackRange = 0.05;
+        this.durability = 8;
         break;
       case 2969:
         this.setStrings("Wooden Log", "Nature", "");
@@ -1600,34 +1608,41 @@ class Item extends MapObject {
         this.attack = 1.8;
         this.speed = -1.4;
         this.tier = 2;
+        this.durability = 18;
         break;
       case 2971:
         this.setStrings("Paintbrush", "Tool", "");
+        this.durability = 100;
         break;
       case 2972:
         this.setStrings("Clamp", "Tool", "");
         this.attack = 1;
         this.attackRange = 0.02;
+        this.durability = 100;
         break;
       case 2973:
         this.setStrings("Wrench", "Tool", "");
         this.attack = 1;
         this.attackRange = 0.02;
+        this.durability = 100;
         break;
       case 2974:
         this.setStrings("Rope", "Tool", "");
         this.tier = 2;
+        this.durability = 100;
         break;
       case 2975:
         this.setStrings("Hammer", "Tool", "");
         this.tier = 2;
         this.attack = 2;
         this.attackRange = 0.02;
+        this.durability = 100;
         break;
       case 2976:
         this.setStrings("Window Breaker", "Tool", "");
         this.tier = 2;
         this.attack = 1;
+        this.durability = 100;
         break;
       case 2977:
         this.setStrings("Ax", "Tool", "");
@@ -1636,6 +1651,7 @@ class Item extends MapObject {
         this.attackRange = 0.08;
         this.piercing = 0.15;
         this.size = 0.32;
+        this.durability = 100;
         break;
       case 2978:
         this.setStrings("Wire Clippers", "Tool", "");
@@ -1643,6 +1659,7 @@ class Item extends MapObject {
         this.attack = 2;
         this.attackRange = 0.1;
         this.size = 0.32;
+        this.durability = 100;
         break;
       case 2979:
         this.setStrings("Saw", "Tool", "");
@@ -1651,11 +1668,13 @@ class Item extends MapObject {
         this.attackRange = 0.05;
         this.piercing = 0.05;
         this.size = 0.32;
+        this.durability = 100;
         break;
       case 2980:
         this.setStrings("Drill", "Tool", "");
         this.tier = 4;
         this.attack = 1;
+        this.durability = 100;
         break;
       case 2981:
         this.setStrings("Roundsaw", "Tool", "");
@@ -1663,12 +1682,14 @@ class Item extends MapObject {
         this.attack = 1;
         this.piercing = 0.05;
         this.size = 0.35;
+        this.durability = 100;
         break;
       case 2982:
         this.setStrings("Beltsander", "Tool", "");
         this.tier = 4;
         this.attack = 1;
         this.size = 0.35;
+        this.durability = 100;
         break;
       case 2983:
         this.setStrings("Chainsaw", "Tool", "");
@@ -1677,6 +1698,7 @@ class Item extends MapObject {
         this.attackRange = 0.07;
         this.piercing = 0.2;
         this.size = 0.38;
+        this.durability = 100;
         break;
       case 2984:
         this.setStrings("Woodglue", "Tool", "");
@@ -3800,6 +3822,9 @@ class Item extends MapObject {
     this.lowerDurability(1);
   }
   void lowerDurability(int amount) {
+    if (!this.breakable()) {
+      return;
+    }
     this.durability -= amount;
     if (this.durability < 1) {
       this.remove = true;
@@ -3809,7 +3834,35 @@ class Item extends MapObject {
     if (this.ID > 2200 && this.ID < 2801) {
       return true;
     }
-    return false;
+    switch(this.ID) {
+      case 2911: // pen
+      case 2912: // pencil
+      case 2915: // stapler
+      case 2918: // scissors
+      case 2924: // glass bottle
+      case 2963: // stick
+      case 2965: // branch
+      case 2966: // branch
+      case 2967: // branch
+      case 2968: // branch
+      case 2969: // wooden log
+      case 2971: // paintbrush
+      case 2972: // clamp
+      case 2973: // wrench
+      case 2974: // rope
+      case 2975: // hammer
+      case 2976: // window breaker
+      case 2977: // ax
+      case 2978: // wire clippers
+      case 2979: // saw
+      case 2980: // drill
+      case 2981: // roundsaw
+      case 2982: // beltsander
+      case 2983: // chainsaw
+        return true;
+      default:
+        return false;
+    }
   }
 
 
