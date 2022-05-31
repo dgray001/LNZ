@@ -578,7 +578,11 @@ abstract class InterfaceLNZ {
       SliderFormField inventory_bar_size = new SliderFormField("Inventory Bar Size: ", 80, 180);
       inventory_bar_size.threshhold = Constants.optionsForm_threshhold_other;
       inventory_bar_size.addCheckbox("hide: ");
-      map_move_speed.threshhold = Constants.optionsForm_threshhold_other;
+      SliderFormField map_resolution = new SliderFormField("Terrain Resolution: ", 10, 120, 10);
+      map_resolution.threshhold = Constants.optionsForm_threshhold_other;
+      SliderFormField fog_update_time = new SliderFormField("Fog Update Time: ",
+        Constants.map_timer_refresh_fog_min, Constants.map_timer_refresh_fog_max, 50);
+      fog_update_time.threshhold = Constants.optionsForm_threshhold_other;
       SubmitFormField apply = new ButtonFormField("Apply");
       apply.button.setColors(color(220), color(240, 240, 190),
         color(190, 190, 140), color(140, 140, 90), color(0));
@@ -592,6 +596,8 @@ abstract class InterfaceLNZ {
       cancel.button.setColors(color(220), color(240, 240, 190),
         color(190, 190, 140), color(140, 140, 90), color(0));
 
+      this.addField(new SpacerFormField(15));
+      this.addField(new MessageFormField("Volume", CENTER));
       this.addField(volume_master);
       this.addField(volume_music);
       this.addField(volume_interface);
@@ -599,9 +605,11 @@ abstract class InterfaceLNZ {
       this.addField(volume_units);
       this.addField(volume_player);
       this.addField(new SpacerFormField(10));
+      this.addField(new MessageFormField("Display", CENTER));
       this.addField(map_move_speed);
-      this.addField(new SpacerFormField(10));
       this.addField(inventory_bar_size);
+      this.addField(map_resolution);
+      this.addField(fog_update_time);
       this.addField(new SpacerFormField(10));
       this.addField(apply);
       this.addField(new SpacerFormField(10));
@@ -615,63 +623,67 @@ abstract class InterfaceLNZ {
     }
 
     void setFormFieldValues() {
-      this.fields.get(0).setValue(global.profile.options.volume_master);
+      this.fields.get(2).setValue(global.profile.options.volume_master);
       if (global.profile.options.volume_master_muted) {
-        this.fields.get(0).disable();
-      }
-      else {
-        this.fields.get(0).enable();
-      }
-
-      this.fields.get(1).setValue(global.profile.options.volume_music);
-      if (global.profile.options.volume_music_muted) {
-        this.fields.get(1).disable();
-      }
-      else {
-        this.fields.get(1).enable();
-      }
-
-      this.fields.get(2).setValue(global.profile.options.volume_interface);
-      if (global.profile.options.volume_interface_muted) {
         this.fields.get(2).disable();
       }
       else {
         this.fields.get(2).enable();
       }
 
-      this.fields.get(3).setValue(global.profile.options.volume_environment);
-      if (global.profile.options.volume_environment_muted) {
+      this.fields.get(3).setValue(global.profile.options.volume_music);
+      if (global.profile.options.volume_music_muted) {
         this.fields.get(3).disable();
       }
       else {
         this.fields.get(3).enable();
       }
 
-      this.fields.get(4).setValue(global.profile.options.volume_units);
-      if (global.profile.options.volume_units_muted) {
+      this.fields.get(4).setValue(global.profile.options.volume_interface);
+      if (global.profile.options.volume_interface_muted) {
         this.fields.get(4).disable();
       }
       else {
         this.fields.get(4).enable();
       }
 
-      this.fields.get(5).setValue(global.profile.options.volume_player);
-      if (global.profile.options.volume_player_muted) {
+      this.fields.get(5).setValue(global.profile.options.volume_environment);
+      if (global.profile.options.volume_environment_muted) {
         this.fields.get(5).disable();
       }
       else {
         this.fields.get(5).enable();
       }
 
-      this.fields.get(7).setValue(global.profile.options.map_viewMoveSpeedFactor);
-
-      this.fields.get(9).setValue(global.profile.options.inventory_bar_size);
-      if (global.profile.options.inventory_bar_hidden) {
-        this.fields.get(9).disable();
+      this.fields.get(6).setValue(global.profile.options.volume_units);
+      if (global.profile.options.volume_units_muted) {
+        this.fields.get(6).disable();
       }
       else {
-        this.fields.get(9).enable();
+        this.fields.get(6).enable();
       }
+
+      this.fields.get(7).setValue(global.profile.options.volume_player);
+      if (global.profile.options.volume_player_muted) {
+        this.fields.get(7).disable();
+      }
+      else {
+        this.fields.get(7).enable();
+      }
+
+      this.fields.get(10).setValue(global.profile.options.map_viewMoveSpeedFactor);
+
+      this.fields.get(11).setValue(global.profile.options.inventory_bar_size);
+      if (global.profile.options.inventory_bar_hidden) {
+        this.fields.get(11).disable();
+      }
+      else {
+        this.fields.get(11).enable();
+      }
+
+      this.fields.get(12).setValue(global.profile.options.terrain_resolution);
+
+      this.fields.get(13).setValue(global.profile.options.fog_update_time);
     }
 
     void submit() {
@@ -681,7 +693,7 @@ abstract class InterfaceLNZ {
     }
 
     void apply() {
-      String vol_master = this.fields.get(0).getValue();
+      String vol_master = this.fields.get(2).getValue();
       if (vol_master.contains("disabled")) {
         global.profile.options.volume_master_muted = true;
       }
@@ -690,7 +702,7 @@ abstract class InterfaceLNZ {
       }
       global.profile.options.volume_master = toFloat(split(vol_master, ':')[0]);
 
-      String vol_music = this.fields.get(1).getValue();
+      String vol_music = this.fields.get(3).getValue();
       if (vol_music.contains("disabled")) {
         global.profile.options.volume_music_muted = true;
       }
@@ -699,7 +711,7 @@ abstract class InterfaceLNZ {
       }
       global.profile.options.volume_music = toFloat(split(vol_music, ':')[0]);
 
-      String vol_interface = this.fields.get(2).getValue();
+      String vol_interface = this.fields.get(4).getValue();
       if (vol_interface.contains("disabled")) {
         global.profile.options.volume_interface_muted = true;
       }
@@ -708,7 +720,7 @@ abstract class InterfaceLNZ {
       }
       global.profile.options.volume_interface = toFloat(split(vol_interface, ':')[0]);
 
-      String vol_environment = this.fields.get(3).getValue();
+      String vol_environment = this.fields.get(5).getValue();
       if (vol_environment.contains("disabled")) {
         global.profile.options.volume_environment_muted = true;
       }
@@ -717,7 +729,7 @@ abstract class InterfaceLNZ {
       }
       global.profile.options.volume_environment = toFloat(split(vol_environment, ':')[0]);
 
-      String vol_units = this.fields.get(4).getValue();
+      String vol_units = this.fields.get(6).getValue();
       if (vol_units.contains("disabled")) {
         global.profile.options.volume_units_muted = true;
       }
@@ -726,7 +738,7 @@ abstract class InterfaceLNZ {
       }
       global.profile.options.volume_units = toFloat(split(vol_units, ':')[0]);
 
-      String vol_player = this.fields.get(5).getValue();
+      String vol_player = this.fields.get(7).getValue();
       if (vol_player.contains("disabled")) {
         global.profile.options.volume_player_muted = true;
       }
@@ -735,10 +747,10 @@ abstract class InterfaceLNZ {
       }
       global.profile.options.volume_player = toFloat(split(vol_player, ':')[0]);
 
-      String camera_speed = this.fields.get(7).getValue();
+      String camera_speed = this.fields.get(10).getValue();
       global.profile.options.map_viewMoveSpeedFactor = toFloat(split(camera_speed, ':')[0]);
 
-      String hud_size = this.fields.get(9).getValue();
+      String hud_size = this.fields.get(11).getValue();
       if (hud_size.contains("disabled")) {
         global.profile.options.inventory_bar_hidden = true;
       }
@@ -747,15 +759,21 @@ abstract class InterfaceLNZ {
       }
       global.profile.options.inventory_bar_size = toFloat(split(hud_size, ':')[0]);
 
+      String terrain_resolution = this.fields.get(12).getValue();
+      global.profile.options.terrain_resolution = round(toFloat(split(terrain_resolution, ':')[0]));
+
+      String fog_update_time = this.fields.get(13).getValue();
+      global.profile.options.fog_update_time = toFloat(split(fog_update_time, ':')[0]);
+
       global.profile.options.change();
     }
 
     void buttonPress(int index) {
       switch(index) {
-        case 11: // apply
+        case 15: // apply
           this.apply();
           break;
-        case 15: // defaults
+        case 19: // defaults
           global.profile.options.defaults();
           this.setFormFieldValues();
           break;

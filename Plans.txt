@@ -1,6 +1,6 @@
 v0.7.4: Francis Hall level
- j: add basic units in francis hall
- k: basic triggers of francis hall
+ l: add basic units in francis hall
+ m: basic triggers of francis hall
 
  - put mousemove calculation in thread if it will be so expensive (it seems more expensive than moving)
 
@@ -35,8 +35,6 @@ v0.7.8: Lev3 triggers
 
 Parking Lot:
  - Item durability (new int value for all* items, goes down 1 for each use)
- - Some way to either resave map with default unit/item/feature params or something...
- - Make terrain / fog resolution a parameter (low, medium, high?)
  - EASY COMPANY sound in tutorial
  - Mike Fischer steals Ben's eyes in tutorial when he crossing main area of 2nd floor
  - StoveInventory door image / burner images / knob functionality

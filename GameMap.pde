@@ -366,6 +366,7 @@ class GameMap {
   protected GameMapSquare[][] squares;
   protected int maxHeight = Constants.map_maxHeight;
 
+  protected int terrain_resolution = Constants.map_terrainResolutionDefault;
   protected DImg terrain_dimg;
   protected DImg fog_dimg;
   protected MapFogHandling fogHandling = MapFogHandling.DEFAULT;
@@ -467,7 +468,8 @@ class GameMap {
 
 
   void initializeTerrain() {
-    this.terrain_dimg = new DImg(this.mapWidth * Constants.map_terrainResolution, this.mapHeight * Constants.map_terrainResolution);
+    this.terrain_resolution = global.profile.options.terrain_resolution;
+    this.terrain_dimg = new DImg(this.mapWidth * this.terrain_resolution, this.mapHeight * this.terrain_resolution);
     this.terrain_dimg.setGrid(this.mapWidth, this.mapHeight);
     for (int i = 0; i < this.mapWidth; i++) {
       for (int j = 0; j < this.mapHeight; j++) {
@@ -583,9 +585,9 @@ class GameMap {
     this.refreshFogImage();
   }
   void refreshTerrainImage() {
-    PImage new_terrain_display = this.terrain_dimg.getImagePiece(int(this.startSquareX * Constants.map_terrainResolution),
-      int(this.startSquareY * Constants.map_terrainResolution), int(this.visSquareX * Constants.map_terrainResolution),
-      int(this.visSquareY * Constants.map_terrainResolution));
+    PImage new_terrain_display = this.terrain_dimg.getImagePiece(int(this.startSquareX * this.terrain_resolution),
+      int(this.startSquareY * this.terrain_resolution), int(this.visSquareX * this.terrain_resolution),
+      int(this.visSquareY * this.terrain_resolution));
     this.terrain_display = resizeImage(new_terrain_display, int(this.xf_map -
       this.xi_map), int(this.yf_map - this.yi_map));
   }
@@ -1639,7 +1641,7 @@ class GameMap {
     }
     this.timer_refresh_fog -= timeElapsed;
     if (this.timer_refresh_fog < 0) {
-      this.timer_refresh_fog += Constants.map_timer_refresh_fog;
+      this.timer_refresh_fog += global.profile.options.fog_update_time;
       this.refreshFog();
     }
     if (refreshView) {

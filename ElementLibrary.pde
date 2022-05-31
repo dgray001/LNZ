@@ -2912,8 +2912,12 @@ class MessageFormField extends FormField {
   protected int text_align = LEFT;
 
   MessageFormField(String message) {
+    this(message, LEFT);
+  }
+  MessageFormField(String message, int text_align) {
     super(message);
     this.display_message = message;
+    this.text_align = text_align;
   }
 
   void setTextSize(float new_text_size) {
@@ -3503,7 +3507,7 @@ class SliderFormField extends MessageFormField {
   }
 
   protected Slider slider = new Slider();
-  protected CheckBox checkbox;
+  protected CheckBox checkbox = null;
   protected float max_slider_height = 30;
   protected float threshhold = 0.2;
 
@@ -3529,12 +3533,16 @@ class SliderFormField extends MessageFormField {
   @Override
   void disable() {
     this.slider.disable();
-    this.checkbox.checked = true;
+    if (this.checkbox != null) {
+      this.checkbox.checked = true;
+    }
   }
   @Override
   void enable() {
     this.slider.enable();
-    this.checkbox.checked = false;
+    if (this.checkbox != null) {
+      this.checkbox.checked = false;
+    }
   }
 
   @Override

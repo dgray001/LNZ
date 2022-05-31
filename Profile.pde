@@ -76,9 +76,10 @@ class Profile {
     private boolean volume_player_muted;
 
     private float map_viewMoveSpeedFactor;
-
     private float inventory_bar_size;
     private boolean inventory_bar_hidden;
+    private int terrain_resolution;
+    private float fog_update_time;
 
     Options() {
       this.profileUpdated();
@@ -106,6 +107,8 @@ class Profile {
       this.map_viewMoveSpeedFactor = Constants.map_defaultCameraSpeed;
       this.inventory_bar_size = Constants.hero_defaultInventoryBarHeight;
       this.inventory_bar_hidden = false;
+      this.terrain_resolution = Constants.map_terrainResolutionDefault;
+      this.fog_update_time = Constants.map_timer_refresh_fog_default;
     }
 
     void change() {
