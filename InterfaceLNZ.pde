@@ -165,7 +165,7 @@ abstract class InterfaceLNZ {
         protected HeroCode code;
         protected Hero hero = null;
         HeroButton(float xi, float yi, float xf, float yf, HeroCode code) {
-          super(xi, yi, xf, yf, global.images.getImage(code.getImagePath()));
+          super(xi, yi, xf, yf, global.images.getImage(code.getImagePath(global.profile.ben_has_eyes)));
           this.roundness = 4;
           this.adjust_for_text_descent = true;
           this.code = code;
@@ -466,7 +466,7 @@ abstract class InterfaceLNZ {
     void update(int millis) {
       super.update(millis);
       imageMode(CENTER);
-      image(global.images.getImage(this.hero.code.getImagePath()), this.xCenter(), this.yStart + 40, 75, 75);
+      image(global.images.getImage(this.hero.code.getImagePath(global.profile.ben_has_eyes)), this.xCenter(), this.yStart + 40, 75, 75);
     }
 
     void submit() {
@@ -578,7 +578,7 @@ abstract class InterfaceLNZ {
       SliderFormField inventory_bar_size = new SliderFormField("Inventory Bar Size: ", 80, 180);
       inventory_bar_size.threshhold = Constants.optionsForm_threshhold_other;
       inventory_bar_size.addCheckbox("hide: ");
-      SliderFormField map_resolution = new SliderFormField("Terrain Resolution: ", 10, 120, 10);
+      SliderFormField map_resolution = new SliderFormField("Terrain Resolution: ", 10, 110, 20);
       map_resolution.threshhold = Constants.optionsForm_threshhold_other;
       SliderFormField fog_update_time = new SliderFormField("Fog Update Time: ",
         Constants.map_timer_refresh_fog_min, Constants.map_timer_refresh_fog_max, 50);

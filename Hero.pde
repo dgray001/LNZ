@@ -138,11 +138,22 @@ enum HeroCode {
   public String getImagePath() {
     return HeroCode.getImagePath(this);
   }
+  public String getImagePath(boolean ben_has_eyes) {
+    return HeroCode.getImagePath(this, ben_has_eyes);
+  }
   static public String getImagePath(HeroCode code) {
+    return HeroCode.getImagePath(code, true);
+  }
+  static public String getImagePath(HeroCode code, boolean ben_has_eyes) {
     String file_path = "units/";
     switch(code) {
       case BEN:
-        file_path += "ben_circle.png";
+        if (ben_has_eyes) {
+          file_path += "ben_circle.png";
+        }
+        else {
+          file_path += "ben_circle_noeyes.png";
+        }
         break;
       case DAN:
         file_path += "dan_circle.png";
@@ -1832,7 +1843,12 @@ class Hero extends Unit {
       String imageName = "units/";
       switch(Hero.this.code) {
         case BEN:
-          imageName += "ben_circle.png";
+          if (global.profile.ben_has_eyes) {
+            imageName += "ben_circle.png";
+          }
+          else {
+            imageName += "ben_circle_noeyes.png";
+          }
           break;
         case DAN:
           imageName += "dan_circle.png";

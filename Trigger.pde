@@ -551,6 +551,8 @@ class Effect {
       case 60: // set background volume
       case 61: // trigger player sound
       case 62: // silence player sound
+      case 63: // take bens eyes
+      case 64: // equip item to unit
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
@@ -751,6 +753,12 @@ class Effect {
         break;
       case 62: // silence player sound
         this.display_name = "Silence Player Sound (" + this.message + ")";
+        break;
+      case 63: // take bens eyes
+        this.display_name = "Remove Ben's Eyes";
+        break;
+      case 64: // equip item to unit
+        this.display_name = "Equip Item (" + round(this.decimal1) + ") to unit (" + this.number + ")";
         break;
       default:
         this.display_name = "Effect";
@@ -1260,6 +1268,21 @@ class Effect {
         break;
       case 62: // silence player sound
         global.sounds.silence_player(this.message);
+        break;
+      case 63: // take bens eyes
+        global.profile.ben_has_eyes = false;
+        break;
+      case 64: // equip item to unit
+        if (level.currMap == null) {
+          break;
+        }
+        Item i = new Item(round(this.decimal1));
+        if (i == null || i.remove) {
+          break;
+        }
+        if (level.currMap.units.containsKey(this.number)) {
+          level.currMap.units.get(this.number).pickup(i);
+        }
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");

@@ -11,7 +11,7 @@ sleeping: false
 sleep_timer: 0
 in_control: true
 currMapName: tutorial_soldiers
-mapNames: tutorial_frontdoor, tutorial_soldiers, tutorial_stairwell
+mapNames: tutorial_frontdoor, tutorial_stairwell, tutorial_soldiers
 
 new: Linker
 rect1: tutorial_frontdoor, 5.0, 26.0, 6.0, 27.0
@@ -6860,6 +6860,159 @@ new: Effect
 ID: 52
 message: 
 number: 1
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 187
+
+new: Trigger
+triggerName: mike fischer statuses
+active: true
+looping: false
+amalgam: true
+new: Effect
+ID: 53
+message: running
+number: 13
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 188
+
+new: Trigger
+triggerName: trigger lose eyes
+active: true
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: tutorial_soldiers, 28.0, 5.0, 29.0, 14.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 22
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 14
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 189
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 24
+message: 
+number: 13
+decimal1: 0.0
+decimal2: 0.0
+rectangle: tutorial_soldiers, 28.0, 14.0, 29.0, 15.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 189
+
+new: Trigger
+triggerName: fischer takes eyes
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 500
+number2: 500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 63
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 4
+message: AAAAHHHHH MY EYES
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 64
+message: 
+number: 13
+decimal1: 2999.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 191
+
+new: Trigger
+triggerName: fischer disappears
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 9
+number1: 13
+number2: 0
+rectangle: tutorial_soldiers, 27.0, 14.0, 30.0, 15.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 53
+message: invisible
+number: 13
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0

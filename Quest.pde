@@ -18,6 +18,19 @@ class Quest {
     this.blink_time_left = Constants.level_questBlinkTime;
     this.blinks_left = Constants.level_questBlinks;
     this.blinking = false;
+    switch(this.ID) {
+      // Francis Hall
+      case 21: // find molly
+        break;
+      case 22: // find the thing
+        break;
+      case 23: // find bens coat
+        break;
+      case 24: // find bens backpack
+        break;
+      default:
+        break;
+    }
   }
 
   void update(Level level, int timeElapsed) {
@@ -39,6 +52,7 @@ class Quest {
       return;
     }
     switch(this.ID) {
+      // Tutorial
       case 1: // select ben
         break;
       case 2: // move toward arrow
@@ -66,6 +80,15 @@ class Quest {
         break;
       case 12: // enter common room
         break;
+      // Francis Hall
+      case 21: // find molly
+        break;
+      case 22: // find the thing
+        break;
+      case 23: // find bens coat
+        break;
+      case 24: // find bens backpack
+        break;
       default:
         global.errorMessage("ERROR: Quest ID " + this.ID + " not recognized.");
         break;
@@ -74,6 +97,7 @@ class Quest {
 
   String name() {
     switch(this.ID) {
+      // Tutorial
       case 1: // select ben
         return "Select Ben Nelson";
       case 2: // move toward arrow
@@ -98,6 +122,15 @@ class Quest {
         return "Die";
       case 12: // enter common room
         return "Enter the common room";
+      // Francis Hall
+      case 21: // find molly
+        return "Find Molly";
+      case 22: // find the thing
+        return "Find The Thing";
+      case 23: // find bens coat
+        return "Find Ben's Coat";
+      case 24: // find bens backpack
+        return "Find Ben's Backpack";
       default:
         return "";
     }
@@ -105,6 +138,7 @@ class Quest {
 
   String shortDescription() {
     switch(this.ID) {
+      // Tutorial
       case 1: // select ben
         return "Select Ben Nelson by left-clicking him.";
       case 2: // move toward arrow
@@ -129,6 +163,15 @@ class Quest {
         return "Die by walking in lava; you will respawn at your bed.";
       case 12: // enter common room
         return "The lava won't damage you while your ultimate is activated.";
+      // Francis Hall
+      case 21: // find molly
+        return "Find Molly and bring her back to Mike Schmiesing.";
+      case 22: // find the thing
+        return "Find The Thing before Connor Smith finds out you lost it.";
+      case 23: // find bens coat
+        return "Find Ben's Coat; it's got to be somewhere on Soldier's wing...";
+      case 24: // find bens backpack
+        return "Find Ben's Backpack; he remembers putting it in storage somewhere.";
       default:
         return "";
     }

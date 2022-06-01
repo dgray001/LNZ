@@ -1,11 +1,5 @@
 v0.7.4: Francis Hall level
-tuesday:
- o: basic triggers of francis hall
-    -> force to go to room with small cutscene
-    -> talk to mike schmiesing (missing wife)
 wednesday:
- p: mike fischer steals bens eyes in tutorial when walking across lobby
-   -> new status effect "ghosting" which allows movement through units/walls
  q: chuck quizmo in francis hall level
  r: khalil inventory for francis hall level
  s: update khalilform

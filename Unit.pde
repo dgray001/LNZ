@@ -270,11 +270,12 @@ class Unit extends MapObject {
         this.pickup(new Item(2928));
         break;
       case 1007:
-        this.setStrings("Michael Schmiesing", "Human", "");
+        this.setStrings("Michael Schmiesing", "Human", "The fat man himself!");
         this.baseStats(15, 4, 3, 0, 1.5);
         this.alliance = Alliance.BEN;
         this.level = 7;
         this.gearSlots("Weapon");
+        this.size = 0.55;
         break;
       case 1008:
         this.setStrings("Molly Schmiesing", "Human", "");
@@ -607,7 +608,12 @@ class Unit extends MapObject {
         path += "molly_schmiesing.png";
         break;
       case 1101:
-        path += "ben.png";
+        if (global.profile.ben_has_eyes) {
+          path += "ben.png";
+        }
+        else {
+          path += "ben_noeyes.png";
+        }
         break;
       case 1102:
         path += "dan.png";
@@ -3027,8 +3033,9 @@ class Unit extends MapObject {
   }
   void setHealth(float amount) {
     this.curr_health = amount;
-    if (this.curr_health < 0) {
+    if (this.curr_health <= 0) {
       this.curr_health = 0;
+      this.remove = true;
     }
     if (this.curr_health > this.health()) {
       this.curr_health = this.health();

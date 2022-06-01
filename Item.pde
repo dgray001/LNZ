@@ -1732,6 +1732,10 @@ class Item extends MapObject {
         this.setStrings("Jonah Plush Toy", "Rare Object", "");
         this.tier = 3;
         break;
+      case 2999:
+        this.setStrings("Bens Eyes", "Rare Object", "");
+        this.tier = 9;
+        break;
 
       default:
         global.errorMessage("ERROR: Item ID " + ID + " not found.");
@@ -2768,6 +2772,9 @@ class Item extends MapObject {
         break;
       case 2993:
         path += "jonah_plush_toy.png";
+        break;
+      case 2999:
+        path += "bens_eyes.png";
         break;
       default:
         global.errorMessage("ERROR: Item ID " + ID + " not found.");

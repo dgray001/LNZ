@@ -894,6 +894,7 @@ class Profile {
 
   private HashMap<AchievementCode, Boolean> achievements = new HashMap<AchievementCode, Boolean>();
   private int achievement_tokens = 0;
+  private boolean ben_has_eyes = true;
   private PlayerTree player_tree = new PlayerTree();
   private Options options;
 
@@ -939,9 +940,6 @@ class Profile {
     hero.location = Location.FRANCISCAN_FRANCIS;
     this.heroes.put(HeroCode.BEN, hero);
     this.curr_hero = HeroCode.BEN;
-    Hero hero2 = new Hero(HeroCode.DAN);
-    hero2.location = Location.FRANCISCAN_FRANCIS;
-    this.heroes.put(HeroCode.DAN, hero2);
     this.saveHeroesFile();
   }
 
@@ -1007,6 +1005,7 @@ class Profile {
     }
     PrintWriter file = createWriter(sketchPath("data/profiles/" + this.display_name.toLowerCase() + "/profile.lnz"));
     file.println("display_name: " + this.display_name);
+    file.println("ben_has_eyes: " + this.ben_has_eyes);
     for (AchievementCode code : AchievementCode.VALUES) {
       if (this.achievements.get(code).equals(Boolean.TRUE)) {
         file.println("achievement: " + code.file_name());
@@ -1087,6 +1086,9 @@ Profile readProfile(String folder_path) {
         else {
           global.errorMessage("ERROR: Unknown location " + location.display_name() + " in profile data.");
         }
+        break;
+      case "ben_has_eyes":
+        p.ben_has_eyes = toBoolean(trim(data[1]));
         break;
       case "perk":
         PlayerTreeCode tree_code = PlayerTreeCode.code(trim(data[1]));
