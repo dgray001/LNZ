@@ -1962,13 +1962,42 @@ class LargeKeyringInventory extends Inventory {
 
 Inventory getKhalilInventory(int khalil_code) {
   Inventory inv = null;
+  Item i;
   switch(khalil_code) {
     case 0:
-      inv = new Inventory(1, 2, true);
-      Item i = new Item(2106);
+      break;
+    case 1: // Francis Hall
+      inv = new Inventory(1, 10, true);
+      i = new Item(2118);
       i.stack = 4;
       inv.stash(i);
-      inv.stash(new Item(2461));
+      i = new Item(2203);
+      i.stack = 1;
+      inv.stash(i);
+      i = new Item(2301);
+      i.stack = 1;
+      inv.stash(i);
+      i = new Item(2401);
+      i.stack = 1;
+      inv.stash(i);
+      i = new Item(2501);
+      i.stack = 1;
+      inv.stash(i);
+      i = new Item(2601);
+      i.stack = 1;
+      inv.stash(i);
+      i = new Item(2701);
+      i.stack = 1;
+      inv.stash(i);
+      i = new Item(2802);
+      i.stack = 12;
+      inv.stash(i);
+      i = new Item(2809);
+      i.stack = 3;
+      inv.stash(i);
+      i = new Item(2925);
+      i.stack = 1;
+      inv.stash(i);
       break;
     default:
       global.errorMessage("ERROR: Khalil code " + khalil_code + " not found.");
@@ -1981,7 +2010,17 @@ ArrayList<Float> getKhalilInventoryCosts(int khalil_code) {
   ArrayList<Float> costs = new ArrayList<Float>();
   switch(khalil_code) {
     case 0:
+      break;
+    case 1: // Francis Hall
       costs.add(1.0);
+      costs.add(2.12);
+      costs.add(2.12);
+      costs.add(2.12);
+      costs.add(2.12);
+      costs.add(2.12);
+      costs.add(2.12);
+      costs.add(2.12);
+      costs.add(2.12);
       costs.add(2.12);
       break;
     default:

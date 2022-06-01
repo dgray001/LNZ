@@ -2845,6 +2845,7 @@ class Level {
   abstract class LevelForm extends FormLNZ {
     LevelForm(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
+      this.scrollbar_max_width = 35;
       this.setTitleSize(18);
       this.color_background = color(211, 188, 141);
       this.color_header = color(220, 200, 150);
@@ -2930,7 +2931,12 @@ class Level {
       this.setTitleText(this.vending_machine.display_name());
 
       this.addField(new SpacerFormField(20));
-      this.addField(new ButtonsFormField("Insert $1", "Insert $5"));
+      ButtonsFormField insert_money = new ButtonsFormField("Insert $1", "Insert $5");
+      insert_money.button1.setColors(color(170), color(236, 213, 166), color(211,
+        188, 141), color(190, 165, 120), color(0));
+      insert_money.button2.setColors(color(170), color(236, 213, 166), color(211,
+        188, 141), color(190, 165, 120), color(0));
+      this.addField(insert_money);
       this.addField(new MessageFormField("$" + this.vending_machine.number));
       this.addField(new MessageFormField(""));
       RadiosFormField choices = new RadiosFormField("Choices");
@@ -2956,7 +2962,10 @@ class Level {
           break;
       }
       this.addField(choices);
-      this.addField(new SubmitFormField(" Vend "));
+      SubmitFormField vend = new SubmitFormField(" Vend ");
+      vend.button.setColors(color(170), color(236, 213, 166), color(211,
+        188, 141), color(190, 165, 120), color(0));
+      this.addField(vend);
     }
 
     @Override
@@ -3215,7 +3224,7 @@ class Level {
       }
 
       MessageFormField khalilMessageField = new MessageFormField("Please take a look at my inventory of goods.");
-      khalilMessageField.setTextSize(20, true);
+      khalilMessageField.setTextSize(18, true);
       RadiosFormField radiosField = new RadiosFormField("Inventory");
       for (int i = 0; i < this.original_stock.slots.size(); i++) {
         String item_name = this.original_stock.slots.get(i).item.display_name();

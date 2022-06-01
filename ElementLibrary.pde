@@ -4059,7 +4059,7 @@ abstract class Form {
   protected CancelButton cancel;
 
   protected ScrollBar scrollbar = new ScrollBar(0, 0, 0, 0, true);
-  protected float scrollbar_max_width = 60;
+  protected float scrollbar_max_width = 50;
   protected float scrollbar_min_width = 30;
   protected float scrollbar_width_multiplier = 0.08;
 

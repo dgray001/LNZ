@@ -2689,6 +2689,7 @@ class Hero extends Unit {
     protected float yi;
     protected float image_yi;
     protected float image_size;
+    protected MoneyButton money;
     protected LevelTokensButton level_tokens;
     protected LevelButton level;
     protected ExperienceButton experience;
