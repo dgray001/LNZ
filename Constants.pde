@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\nAlpha v0.7.4s: 20220601" +
+  "\nAlpha v0.7.4t: 20220601" +
   "\n\nLines: 45310 (v0.7.4s)" +
   "\nImages: 1175 (v0.7.4)" +
   "\nSounds: 322 (v0.7.4)" +
@@ -424,8 +424,8 @@ static class Constants {
   static final float hero_abilityDescriptionMinWidth = 250;
   static final int hero_maxHunger = 100;
   static final int hero_maxThirst = 100;
-  static final int hero_hungerTimer = 4500;
-  static final int hero_thirstTimer = 2000;
+  static final int hero_hungerTimer = 5000;
+  static final int hero_thirstTimer = 2800;
   static final int hero_abilityNumber = 5;
   static final int hero_hungerThreshhold = 20;
   static final int hero_thirstThreshhold = 20;

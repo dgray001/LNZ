@@ -2271,25 +2271,25 @@ class GameMap {
         case 'a':
         case 'A':
           if (this.units.containsKey(0) && !global.holding_ctrl && this.in_control) {
-            this.units.get(0).cast(1, this);
+            this.units.get(0).cast(1, this, this.hovered_object, true);
           }
           break;
         case 's':
         case 'S':
           if (this.units.containsKey(0) && !global.holding_ctrl && this.in_control) {
-            this.units.get(0).cast(2, this);
+            this.units.get(0).cast(2, this, this.hovered_object, true);
           }
           break;
         case 'd':
         case 'D':
           if (this.units.containsKey(0) && !global.holding_ctrl && this.in_control) {
-            this.units.get(0).cast(3, this);
+            this.units.get(0).cast(3, this, this.hovered_object, true);
           }
           break;
         case 'f':
         case 'F':
           if (this.units.containsKey(0) && !global.holding_ctrl && this.in_control) {
-            this.units.get(0).cast(4, this);
+            this.units.get(0).cast(4, this, this.hovered_object, true);
           }
           break;
         case 'v':

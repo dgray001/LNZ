@@ -9,7 +9,7 @@ class Quest {
     this.ID = id;
   }
 
-  void meet() {
+  void meet(Hero h) {
     if (this.met) {
       return;
     }
@@ -65,7 +65,7 @@ class Quest {
         break;
       case 6: // use backpack
         if (level.player != null && level.player.inventory.slots.size() > 2) {
-          this.meet();
+          this.meet(level.player);
         }
         break;
       case 7: // damage john rankin
@@ -84,10 +84,19 @@ class Quest {
       case 21: // find molly
         break;
       case 22: // find the thing
+        if (level.player != null && level.player.holding(2211)) {
+          this.meet(level.player);
+        }
         break;
       case 23: // find bens coat
+        if (level.player != null && level.player.holding(2512)) {
+          this.meet(level.player);
+        }
         break;
       case 24: // find bens backpack
+        if (level.player != null && level.player.holding(2922)) {
+          this.meet(level.player);
+        }
         break;
       default:
         global.errorMessage("ERROR: Quest ID " + this.ID + " not recognized.");

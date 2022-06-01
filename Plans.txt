@@ -1,7 +1,6 @@
 v0.7.4: Francis Hall level
 thursday:
  u: save album / track / location in level and restart playing at same place
- v: "CastWhenInRange" unit state
 friday:
  w: outline inventory squares in white that are in inventory bar
    -> and fix display bug where items get shuffled when scrolling through
@@ -11,7 +10,6 @@ friday:
 
  - need crafting durability, durability bar for each item
  - guns don't break they just need cleaning (can't craft guns)
- - quizmo / quests can give experience
 
 v0.7.5: Lev2 maps
  - Lev2-1: Frontdoor

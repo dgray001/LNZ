@@ -929,9 +929,12 @@ class Effect {
             break;
         }
         break;
-      case 17: // remove quest
+      case 17: // complete quest
+        if (level.player == null) {
+          break;
+        }
         if (level.quests.containsKey(this.number)) {
-          level.quests.get(this.number).meet();
+          level.quests.get(this.number).meet(level.player);
         }
         break;
       case 18: // add visual effect

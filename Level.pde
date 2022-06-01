@@ -115,6 +115,7 @@ class Level {
   protected Rectangle player_start_location = null;
   protected Rectangle player_spawn_location = null;
   protected Hero player;
+  protected boolean was_viewing_hero_tree = false;
   protected boolean respawning = false;
   protected int respawn_timer = 0;
   protected boolean sleeping = false;
@@ -1999,15 +2000,23 @@ class Level {
       this.last_update_time = millis;
       return;
     }
-    if (this.player != null && this.player.heroTree.curr_viewing) {
-      if (this.player.heroTree.set_screen_location) {
-        this.player.heroTree.set_screen_location = false;
-        global.defaultCursor();
-        this.player.heroTree.setLocation(this.xi, this.yi, this.xf, this.yf);
+    if (this.player != null) {
+      if (this.player.heroTree.curr_viewing) {
+        this.was_viewing_hero_tree = true;
+        if (this.player.heroTree.set_screen_location) {
+          this.player.heroTree.set_screen_location = false;
+          global.defaultCursor();
+          this.player.heroTree.setLocation(this.xi, this.yi, this.xf, this.yf);
+        }
+        this.player.heroTree.update(timeElapsed);
+        this.last_update_time = millis;
+        return;
       }
-      this.player.heroTree.update(timeElapsed);
-      this.last_update_time = millis;
-      return;
+      else if (this.was_viewing_hero_tree) {
+        this.was_viewing_hero_tree = false;
+        this.restartTimers();
+        global.defaultCursor();
+      }
     }
     if (this.level_form != null) {
       this.level_form.update(millis);
@@ -2221,6 +2230,11 @@ class Level {
         if (this.player.left_panel_menu != null) {
           this.player.left_panel_menu.mouseRelease(mX, mY);
         }
+        if (!this.player.heroTree.curr_viewing) {
+          this.was_viewing_hero_tree = false;
+          this.restartTimers();
+          global.defaultCursor();
+        }
         return;
       }
       else {
@@ -2288,6 +2302,11 @@ class Level {
               }
               break;
           }
+        }
+        if (!this.player.heroTree.curr_viewing) {
+          this.was_viewing_hero_tree = false;
+          this.restartTimers();
+          global.defaultCursor();
         }
         return;
       }
@@ -3108,8 +3127,8 @@ class Level {
           question.setMessage("Which of these were options for Ben to listen to?");
           question.addRadio("Kalin Twins");
           question.addRadio("Now3");
-          question.addRadio("Thompson Twins")
-          question.addRadio("Joe Fagin");;
+          question.addRadio("Thompson Twins");
+          question.addRadio("Joe Fagin");
           break;
         default:
           global.errorMessage("ERROR: Chuck Quizmo ID " + this.chuck_quizmo.number +

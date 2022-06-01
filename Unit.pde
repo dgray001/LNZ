@@ -3,6 +3,7 @@ enum UnitAction {
   SHOOTING, AIMING, USING_ITEM, FEATURE_INTERACTION, FEATURE_INTERACTION_WITH_ITEM,
   HERO_INTERACTING_WITH_FEATURE, TARGETING_FEATURE_WITH_ITEM,
   HERO_INTERACTING_WITH_FEATURE_WITH_ITEM, MOVING_AND_USING_ITEM, CASTING,
+  CAST_WHEN_IN_RANGE,
   ;
 }
 
@@ -1709,6 +1710,45 @@ class Unit extends MapObject {
   }
 
 
+  // If unit choosing to move somewhere
+  void moveLogic(int timeElapsed, GameMap map) {
+    boolean collision_last_move = this.last_move_collision;
+    if (this.sneaking()) {
+      this.move(timeElapsed, map, MoveModifier.SNEAK);
+    }
+    else {
+      this.move(timeElapsed, map, MoveModifier.NONE);
+    }
+    if (this.last_move_collision) {
+      if (collision_last_move) {
+        this.timer_actionTime -= timeElapsed;
+      }
+      else {
+        this.timer_actionTime = Constants.unit_moveCollisionStopActionTime;
+      }
+      switch(this.ID) {
+        case 1002: // Chicken
+        case 1003: // Chick
+        case 1005: // Rooster
+          if (!this.falling) {
+            this.jump(map);
+          }
+          break;
+        default:
+          break;
+      }
+      if (this.timer_actionTime < 0) { // colliding over and over
+        this.stopAction(true);
+      }
+    }
+    this.timer_walk -= timeElapsed;
+    if (this.timer_walk < 0) {
+      this.timer_walk += Constants.unit_timer_walk;
+      this.walkSound(map.squares[int(floor(this.x))][int(floor(this.y))].terrain_id);
+    }
+  }
+
+
   void update(int timeElapsed, GameMap map) {
     // timers
     this.update(timeElapsed);
@@ -1722,67 +1762,69 @@ class Unit extends MapObject {
     // unit action
     switch(this.curr_action) {
       case MOVING:
-        boolean collision_last_move = this.last_move_collision;
         switch(this.curr_action_id) {
           case 1: // Anuran Appetite regurgitate
             this.move(timeElapsed, map, MoveModifier.ANURAN_APPETITE);
-            if (this.last_move_collision) {
+            if (this.last_move_any_collision) {
               this.stopAction(true);
             }
             break;
           default:
             this.face(this.curr_action_x, this.curr_action_y); // pathfinding
-            if (this.sneaking()) {
-              this.move(timeElapsed, map, MoveModifier.SNEAK);
-            }
-            else {
-              this.move(timeElapsed, map, MoveModifier.NONE);
-            }
-            if (this.last_move_collision) {
-              if (collision_last_move) {
-                this.timer_actionTime -= timeElapsed;
-              }
-              else {
-                this.timer_actionTime = Constants.unit_moveCollisionStopActionTime;
-              }
-              switch(this.ID) {
-                case 1002: // Chicken
-                case 1003: // Chick
-                case 1005: // Rooster
-                  if (!this.falling) {
-                    this.jump(map);
-                  }
-                  break;
-                default:
-                  break;
-              }
-              if (this.timer_actionTime < 0) { // colliding over and over
-                this.stopAction(true);
-              }
-            }
+            this.moveLogic(timeElapsed, map);
             break;
         }
         if (this.distanceFromPoint(this.curr_action_x, this.curr_action_y)
           < this.last_move_distance) {
           this.stopAction(true);
         }
-        this.timer_walk -= timeElapsed;
-        if (this.timer_walk < 0) {
-          this.timer_walk += Constants.unit_timer_walk;
-          this.walkSound(map.squares[int(floor(this.x))][int(floor(this.y))].terrain_id);
+        break;
+      case CAST_WHEN_IN_RANGE:
+        if (this.curr_action_id < 0 || this.curr_action_id >= this.abilities.size()) {
+          this.stopAction();
+          break;
+        }
+        Ability a = this.abilities.get(this.curr_action_id);
+        if (a == null) {
+          this.stopAction();
+          break;
+        }
+        if (this.object_targeting == null || this.object_targeting.remove) {
+          this.stopAction();
+          break;
+        }
+        Unit target_unit = (Unit)this.object_targeting;
+        if (target_unit.untargetable()) {
+          this.stopAction();
+        }
+        if (!target_unit.targetable(this)) {
+          this.stopAction();
+          break;
+        }
+        if (this.distance(target_unit) > a.castsOnTargetRange()) {
+          this.face(target_unit);
+          this.moveLogic(timeElapsed, map);
+        }
+        else {
+          a.activate(this, map, target_unit);
         }
         break;
       case CASTING:
         if (this.curr_action_id < 0 || this.curr_action_id >= this.abilities.size()) {
+          this.stopAction();
           break;
         }
-        Ability a = this.abilities.get(this.curr_action_id);
-        switch(a.ID) {
+        Ability a_casting = this.abilities.get(this.curr_action_id);
+        if (a_casting == null) {
+          this.stopAction();
+          break;
+        }
+        switch(a_casting.ID) {
           case 113: // Amphibious Leap
           case 118: // Amphibious Leap II
             this.move(timeElapsed, map, MoveModifier.AMPHIBIOUS_LEAP);
             if (this.last_move_any_collision) {
-              a.timer_other = 0;
+              a_casting.timer_other = 0;
             }
             break;
           default:
@@ -1802,17 +1844,7 @@ class Unit extends MapObject {
         }
         this.face(f);
         if (this.distance(f) > f.interactionDistance()) {
-          if (this.sneaking()) {
-            this.move(timeElapsed, map, MoveModifier.SNEAK);
-          }
-          else {
-            this.move(timeElapsed, map, MoveModifier.NONE);
-          }
-          this.timer_walk -= timeElapsed;
-          if (this.timer_walk < 0) {
-            this.timer_walk += Constants.unit_timer_walk;
-            this.walkSound(map.squares[int(floor(this.x))][int(floor(this.y))].terrain_id);
-          }
+          this.moveLogic(timeElapsed, map);
           break;
         }
         if (f.onInteractionCooldown()) {
@@ -1865,30 +1897,7 @@ class Unit extends MapObject {
         this.face(u);
         float distance = this.distance(u);
         if (distance > this.attackRange()) {
-          if (this.sneaking()) {
-            this.move(timeElapsed, map, MoveModifier.SNEAK);
-          }
-          else {
-            this.move(timeElapsed, map, MoveModifier.NONE);
-          }
-          if (this.last_move_collision) {
-            switch(this.ID) {
-              case 1002: // Chicken
-              case 1003: // Chick
-              case 1005: // Rooster
-                if (!this.falling) {
-                  this.jump(map);
-                }
-                break;
-              default:
-                break;
-            }
-          }
-          this.timer_walk -= timeElapsed;
-          if (this.timer_walk < 0) {
-            this.timer_walk += Constants.unit_timer_walk;
-            this.walkSound(map.squares[int(floor(this.x))][int(floor(this.y))].terrain_id);
-          }
+          this.moveLogic(timeElapsed, map);
         }
         else if (this.timer_attackCooldown <= 0) {
           if (this.weapon() != null && this.weapon().shootable()) {
@@ -1930,17 +1939,7 @@ class Unit extends MapObject {
         }
         this.face(i);
         if (this.distance(i) > i.interactionDistance()) {
-          if (this.sneaking()) {
-            this.move(timeElapsed, map, MoveModifier.SNEAK);
-          }
-          else {
-            this.move(timeElapsed, map, MoveModifier.NONE);
-          }
-          this.timer_walk -= timeElapsed;
-          if (this.timer_walk < 0) {
-            this.timer_walk += Constants.unit_timer_walk;
-            this.walkSound(map.squares[int(floor(this.x))][int(floor(this.y))].terrain_id);
-          }
+          this.moveLogic(timeElapsed, map);
         }
         else {
           if (this.gear.containsKey(GearSlot.WEAPON)) {
@@ -2044,24 +2043,7 @@ class Unit extends MapObject {
           this.curr_action = UnitAction.MOVING;
         }
         this.face(this.curr_action_x, this.curr_action_y); // pathfinding
-        if (this.sneaking()) {
-          this.move(timeElapsed, map, MoveModifier.SNEAK);
-        }
-        else {
-          this.move(timeElapsed, map, MoveModifier.NONE);
-        }
-        if (this.last_move_collision) {
-          this.curr_action = UnitAction.USING_ITEM;
-        }
-        else if (this.distanceFromPoint(this.curr_action_x, this.curr_action_y)
-          < this.last_move_distance) {
-          this.curr_action = UnitAction.USING_ITEM;
-        }
-        this.timer_walk -= timeElapsed;
-        if (this.timer_walk < 0) {
-          this.timer_walk += Constants.unit_timer_walk;
-          this.walkSound(map.squares[int(floor(this.x))][int(floor(this.y))].terrain_id);
-        }
+        this.moveLogic(timeElapsed, map);
         break;
       case NONE:
         break;
@@ -2486,6 +2468,12 @@ class Unit extends MapObject {
   }
 
   void cast(int index, GameMap map) {
+    this.cast(index, map, null);
+  }
+  void cast(int index , GameMap map, MapObject secondary_target) {
+    this.cast(index, map, secondary_target, false);
+  }
+  void cast(int index , GameMap map, MapObject secondary_target, boolean player_casting) {
     if (this.suppressed() || this.stunned()) {
       return;
     }
@@ -2501,24 +2489,39 @@ class Unit extends MapObject {
     }
     if (a.checkMana()) {
       if (a.manaCost() > this.currMana()) {
+        if (player_casting) {
+          map.addHeaderMessage("Not enough mana");
+        }
         return;
       }
     }
     if (a.castsOnTarget()) {
       if (this.object_targeting == null) {
+        if (secondary_target == null) {
+          return;
+        }
+        else {
+          this.object_targeting = secondary_target;
+        }
+      }
+      if (!Unit.class.isInstance(this.object_targeting)) {
         return;
       }
-      if (Unit.class.isInstance(this.object_targeting)) {
+      Unit u = (Unit)this.object_targeting;
+      if (this.distance(u) > a.castsOnTargetRange()) {
+        this.curr_action = UnitAction.CAST_WHEN_IN_RANGE;
         this.curr_action_id = index;
-        if (this.map_key == 0) {
-          this.curr_action_x = map.mX;
-          this.curr_action_y = map.mY;
-        }
-        if (a.turnsCaster()) {
-          this.face(this.object_targeting);
-        }
-        a.activate(this, map, (Unit)this.object_targeting);
+        return;
       }
+      this.curr_action_id = index;
+      if (this.map_key == 0) {
+        this.curr_action_x = map.mX;
+        this.curr_action_y = map.mY;
+      }
+      if (a.turnsCaster()) {
+        this.face(this.object_targeting);
+      }
+      a.activate(this, map, u);
     }
     else {
       this.curr_action_id = index;
