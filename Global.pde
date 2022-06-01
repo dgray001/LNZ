@@ -20,6 +20,10 @@ class Global {
   private boolean holding_ctrl = false;
   private boolean holding_alt = false;
   private boolean holding_space = false;
+  private boolean holding_left = false;
+  private boolean holding_right = false;
+  private boolean holding_up = false;
+  private boolean holding_down = false;
   private boolean holding_rightclick = false;
   private Deque<String> error_messages = new ArrayDeque<String>();
   private PrintWriter log;
@@ -154,6 +158,18 @@ class Global {
         case SHIFT:
           this.holding_shift = true;
           break;
+        case LEFT:
+          this.holding_left = true;
+          break;
+        case RIGHT:
+          this.holding_right = true;
+          break;
+        case UP:
+          this.holding_up = true;
+          break;
+        case DOWN:
+          this.holding_down = true;
+          break;
       }
     }
     else {
@@ -174,6 +190,18 @@ class Global {
           break;
         case SHIFT:
           this.holding_shift = false;
+          break;
+        case LEFT:
+          this.holding_left = false;
+          break;
+        case RIGHT:
+          this.holding_right = false;
+          break;
+        case UP:
+          this.holding_up = false;
+          break;
+        case DOWN:
+          this.holding_down = false;
           break;
       }
     }

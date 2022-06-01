@@ -356,6 +356,46 @@ class GameMap {
   }
 
 
+  class TerrainDimgThread extends Thread {
+    TerrainDimgThread() {
+      super("TerrainDimgThread");
+    }
+
+    @Override
+    void run() {
+      float startSquareX = GameMap.this.startSquareX;
+      float startSquareY = GameMap.this.startSquareY;
+      float visSquareX = GameMap.this.visSquareX;
+      float visSquareY = GameMap.this.visSquareY;
+      float terrain_resolution = GameMap.this.terrain_resolution;
+      float xi_map = GameMap.this.xi_map;
+      float xf_map = GameMap.this.xf_map;
+      float yi_map = GameMap.this.yi_map;
+      float yf_map = GameMap.this.yf_map;
+      float zoom = GameMap.this.zoom;
+      PImage new_terrain_display = GameMap.this.terrain_dimg.getImagePiece(
+        round(startSquareX * terrain_resolution), round(startSquareY * terrain_resolution),
+        round(visSquareX * terrain_resolution), round(visSquareY * terrain_resolution));
+      new_terrain_display = resizeImage(new_terrain_display,
+        round(xf_map - xi_map), round(yf_map - yi_map));
+      GameMap.this.terrain_display = new_terrain_display;
+      GameMap.this.startSquareX_old = startSquareX;
+      GameMap.this.startSquareY_old = startSquareY;
+      GameMap.this.visSquareX_old = visSquareX;
+      GameMap.this.visSquareY_old = visSquareY;
+      GameMap.this.xi_map_old = xi_map;
+      GameMap.this.xf_map_old = xf_map;
+      GameMap.this.yi_map_old = yi_map;
+      GameMap.this.yf_map_old = yf_map;
+      GameMap.this.xi_map_dif = 0;
+      GameMap.this.xf_map_dif = 0;
+      GameMap.this.yi_map_dif = 0;
+      GameMap.this.yf_map_dif = 0;
+      GameMap.this.zoom_old = zoom;
+    }
+  }
+
+
 
   protected GameMapCode code = GameMapCode.ERROR;
   protected String mapName = "";
@@ -373,11 +413,15 @@ class GameMap {
   protected color fogColor = Constants.color_fog;
   protected boolean draw_fog = true;
   protected PImage terrain_display = createImage(0, 0, RGB);
+  protected boolean update_terrain_display = false;
+  protected boolean update_terrain_display_from_thread = false;
+  protected TerrainDimgThread terrain_dimg_thread = new TerrainDimgThread();
   protected PImage fog_display = createImage(0, 0, ARGB);
 
   protected float viewX = 0;
   protected float viewY = 0;
   protected float zoom = Constants.map_defaultZoom;
+  protected float zoom_old = Constants.map_defaultZoom;
   protected boolean view_moving_left = false;
   protected boolean view_moving_right = false;
   protected boolean view_moving_up = false;
@@ -396,6 +440,14 @@ class GameMap {
   protected float yi_map = 0;
   protected float xf_map = 0;
   protected float yf_map = 0;
+  protected float xi_map_old = 0;
+  protected float yi_map_old = 0;
+  protected float xf_map_old = 0;
+  protected float yf_map_old = 0;
+  protected float xi_map_dif = 0;
+  protected float yi_map_dif = 0;
+  protected float xf_map_dif = 0;
+  protected float yf_map_dif = 0;
 
   protected float xi_fog = 0;
   protected float yi_fog = 0;
@@ -406,6 +458,10 @@ class GameMap {
   protected float startSquareY = 0;
   protected float visSquareX = 0;
   protected float visSquareY = 0;
+  protected float startSquareX_old = 0;
+  protected float startSquareY_old = 0;
+  protected float visSquareX_old = 0;
+  protected float visSquareY_old = 0;
 
   protected int lastUpdateTime = millis();
 
@@ -577,6 +633,10 @@ class GameMap {
     this.visSquareY = min(this.mapHeight - this.startSquareY, (this.yf - this.yi_map - Constants.map_borderSize) / this.zoom);
     this.xf_map = this.xi_map + this.visSquareX * this.zoom;
     this.yf_map = this.yi_map + this.visSquareY * this.zoom;
+    this.xi_map_dif = this.startSquareX - this.startSquareX_old;
+    this.yi_map_dif = this.startSquareY - this.startSquareY_old;
+    this.xf_map_dif = xi_map_dif + this.visSquareX - this.visSquareX_old;
+    this.yf_map_dif = yi_map_dif + this.visSquareY - this.visSquareY_old;
     this.refreshDisplayImages();
   }
 
@@ -585,21 +645,24 @@ class GameMap {
     this.refreshFogImage();
   }
   void refreshTerrainImage() {
-    PImage new_terrain_display = this.terrain_dimg.getImagePiece(int(this.startSquareX * this.terrain_resolution),
-      int(this.startSquareY * this.terrain_resolution), int(this.visSquareX * this.terrain_resolution),
-      int(this.visSquareY * this.terrain_resolution));
-    this.terrain_display = resizeImage(new_terrain_display, int(this.xf_map -
-      this.xi_map), int(this.yf_map - this.yi_map));
+    if (this.terrain_dimg_thread.isAlive()) {
+      this.update_terrain_display = true;
+    }
+    else {
+      this.update_terrain_display = false;
+      this.terrain_dimg_thread = new TerrainDimgThread();
+      this.terrain_dimg_thread.start();
+    }
   }
   void refreshFogImage() {
-    int fog_xi = int(floor(this.startSquareX * Constants.map_fogResolution));
-    this.xi_fog = this.xi_map - this.zoom * (this.startSquareX - float(fog_xi) / Constants.map_fogResolution);
-    int fog_yi = int(floor(this.startSquareY * Constants.map_fogResolution));
-    this.yi_fog = this.yi_map - this.zoom * (this.startSquareY - float(fog_yi) / Constants.map_fogResolution);
-    int fog_w = int(ceil(this.visSquareX * Constants.map_fogResolution)) + 1;
-    this.xf_fog = this.xi_fog + this.zoom * (float(fog_w) / Constants.map_fogResolution);
-    int fog_h = int(ceil(this.visSquareY * Constants.map_fogResolution)) + 1;
-    this.yf_fog = this.yi_fog + this.zoom * (float(fog_h) / Constants.map_fogResolution);
+    int fog_xi = int(floor(this.startSquareX_old * Constants.map_fogResolution));
+    this.xi_fog = this.xi_map_old - this.zoom_old * (this.startSquareX_old - float(fog_xi) / Constants.map_fogResolution);
+    int fog_yi = int(floor(this.startSquareY_old * Constants.map_fogResolution));
+    this.yi_fog = this.yi_map_old - this.zoom_old * (this.startSquareY_old - float(fog_yi) / Constants.map_fogResolution);
+    int fog_w = int(ceil(this.visSquareX_old * Constants.map_fogResolution)) + 1;
+    this.xf_fog = this.xi_fog + this.zoom_old * (float(fog_w) / Constants.map_fogResolution);
+    int fog_h = int(ceil(this.visSquareY_old * Constants.map_fogResolution)) + 1;
+    this.yf_fog = this.yi_fog + this.zoom_old * (float(fog_h) / Constants.map_fogResolution);
     this.fog_display = this.fog_dimg.getImagePiece(fog_xi, fog_yi, fog_w, fog_h);
   }
 
@@ -1049,6 +1112,10 @@ class GameMap {
 
 
   void drawMap() {
+    if (this.update_terrain_display) {
+      this.update_terrain_display = false;
+      this.refreshTerrainImage();
+    }
     rectMode(CORNERS);
     noStroke();
     fill(this.color_border);
@@ -1065,18 +1132,19 @@ class GameMap {
     float ellipseWeight = 0.8;
     // display terrain
     imageMode(CORNERS);
-    image(this.terrain_display, this.xi_map, this.yi_map, this.xf_map, this.yf_map);
+    image(this.terrain_display, this.xi_map_old + this.xi_map_dif, this.yi_map_old +
+      this.yi_map_dif, this.xf_map_old + this.xf_map_dif, this.yf_map_old + this.yf_map_dif);
     if (this.hovered && this.hovered_explored) {
       try {
         nameDisplayed = this.squares[int(floor(this.mX))][int(floor(this.mY))].terrainName();
       } catch(ArrayIndexOutOfBoundsException e) {}
     }
     imageMode(CORNER);
-    for (int i = int(ceil(this.startSquareX)); i < int(floor(this.startSquareX + this.visSquareX)); i++) {
-      for (int j = int(ceil(this.startSquareY)); j < int(floor(this.startSquareY + this.visSquareY)); j++) {
+    for (int i = int(ceil(this.startSquareX_old)); i < int(floor(this.startSquareX_old + this.visSquareX_old)); i++) {
+      for (int j = int(ceil(this.startSquareY_old)); j < int(floor(this.startSquareY_old + this.visSquareY_old)); j++) {
         if (this.squares[i][j].terrain_id == 191) {
-          image(this.squares[i][j].terrainImage(), this.xi_map + (i - this.startSquareX) *
-            this.zoom, this.yi_map + (j - this.startSquareY) * this.zoom, this.zoom, this.zoom);
+          image(this.squares[i][j].terrainImage(), this.xi_map_old + (i - this.startSquareX_old) *
+            this.zoom_old, this.yi_map_old + (j - this.startSquareY_old) * this.zoom_old, this.zoom_old, this.zoom_old);
         }
       }
     }
@@ -1087,7 +1155,8 @@ class GameMap {
     while(unit_iterator.hasNext()) {
       Map.Entry<Integer, Unit> entry = (Map.Entry<Integer, Unit>)unit_iterator.next();
       Unit u = entry.getValue();
-      if (!u.inView(this.startSquareX, this.startSquareY, this.startSquareX + this.visSquareX, this.startSquareY + this.visSquareY)) {
+      if (!u.inView(this.startSquareX_old, this.startSquareY_old, this.startSquareX_old +
+        this.visSquareX_old, this.startSquareY_old + this.visSquareY_old)) {
         continue;
       }
       if (entry.getKey() == 0) {
@@ -1110,58 +1179,60 @@ class GameMap {
     while(item_iterator.hasNext()) {
       Map.Entry<Integer, Item> entry = (Map.Entry<Integer, Item>)item_iterator.next();
       Item i = entry.getValue();
-      if (!i.inView(this.startSquareX, this.startSquareY, this.startSquareX + this.visSquareX, this.startSquareY + this.visSquareY)) {
+      if (!i.inView(this.startSquareX_old, this.startSquareY_old, this.startSquareX_old +
+        this.visSquareX_old, this.startSquareY_old + this.visSquareY_old)) {
         continue;
       }
       if (this.draw_fog && !this.squares[int(floor(i.x))][int(floor(i.y))].visible) {
         continue;
       }
-      float translateX = this.xi_map + (i.x - this.startSquareX) * this.zoom;
-      float translateY = this.yi_map + (i.y - this.startSquareY - Constants.item_bounceOffset *
-        i.bounce.value / float(Constants.item_bounceConstant)) * this.zoom;
+      float translateX = this.xi_map_old + (i.x - this.startSquareX_old) * this.zoom_old;
+      float translateY = this.yi_map_old + (i.y - this.startSquareY_old - Constants.item_bounceOffset *
+        i.bounce.value / float(Constants.item_bounceConstant)) * this.zoom_old;
       translate(translateX, translateY);
-      image(i.getImage(), 0, 0, i.width() * this.zoom, i.height() * this.zoom);
+      image(i.getImage(), 0, 0, i.width() * this.zoom_old, i.height() * this.zoom_old);
       if (i.stack > 1) {
         fill(255);
         textSize(14);
         textAlign(RIGHT, BOTTOM);
-        text(i.stack, i.size * this.zoom - 2, i.size * this.zoom - 2);
+        text(i.stack, i.size * this.zoom_old - 2, i.size * this.zoom_old - 2);
       }
       translate(-translateX, -translateY);
     }
     // display projectiles
     imageMode(CENTER);
     for (Projectile p : this.projectiles) {
-      if (!p.inView(this.startSquareX, this.startSquareY, this.startSquareX + this.visSquareX, this.startSquareY + this.visSquareY)) {
+      if (!p.inView(this.startSquareX_old, this.startSquareY_old, this.startSquareX_old +
+        this.visSquareX_old, this.startSquareY_old + this.visSquareY_old)) {
         continue;
       }
       if (this.draw_fog && !this.squares[int(floor(p.x))][int(floor(p.y))].visible) {
         continue;
       }
-      float translateX = this.xi_map + (p.x - this.startSquareX) * this.zoom;
-      float translateY = this.yi_map + (p.y - this.startSquareY) * this.zoom;
+      float translateX = this.xi_map_old + (p.x - this.startSquareX_old) * this.zoom_old;
+      float translateY = this.yi_map_old + (p.y - this.startSquareY_old) * this.zoom_old;
       translate(translateX, translateY);
       rotate(p.facingA);
-      image(p.getImage(), 0, 0, p.width() * this.zoom, p.height() * this.zoom);
+      image(p.getImage(), 0, 0, p.width() * this.zoom_old, p.height() * this.zoom_old);
       rotate(-p.facingA);
       translate(-translateX, -translateY);
     }
     // display visual effects
     imageMode(CENTER);
     for (VisualEffect v : this.visualEffects) {
-      float translateX = this.xi_map + (v.x - this.startSquareX) * this.zoom;
-      float translateY = this.yi_map + (v.y - this.startSquareY) * this.zoom;
+      float translateX = this.xi_map_old + (v.x - this.startSquareX_old) * this.zoom_old;
+      float translateY = this.yi_map_old + (v.y - this.startSquareY_old) * this.zoom_old;
       translate(translateX, translateY);
-      v.display(this.zoom);
+      v.display(this.zoom_old);
       translate(-translateX, -translateY);
     }
     // name displayed
     if (this.hovered_object != null) {
       nameDisplayed = this.hovered_object.display_name();
-      float ellipseX = this.xi_map + this.zoom * (this.hovered_object.xCenter() - this.startSquareX);
-      float ellipseY = this.yi_map + this.zoom * (this.hovered_object.yCenter() - this.startSquareY);
-      float ellipseDiameterX = this.zoom * this.hovered_object.width();
-      float ellipseDiameterY = this.zoom * this.hovered_object.height();
+      float ellipseX = this.xi_map_old + this.zoom_old * (this.hovered_object.xCenter() - this.startSquareX_old);
+      float ellipseY = this.yi_map_old + this.zoom_old * (this.hovered_object.yCenter() - this.startSquareY_old);
+      float ellipseDiameterX = this.zoom_old * this.hovered_object.width();
+      float ellipseDiameterY = this.zoom_old * this.hovered_object.height();
       ellipseMode(CENTER);
       noFill();
       stroke(ellipseColor);
@@ -1238,8 +1309,8 @@ class GameMap {
     if (u.invisible()) {
       return;
     }
-    float translateX = this.xi_map + (u.x - this.startSquareX) * this.zoom;
-    float translateY = this.yi_map + (u.y - this.startSquareY) * this.zoom;
+    float translateX = this.xi_map_old + (u.x - this.startSquareX_old) * this.zoom_old;
+    float translateY = this.yi_map_old + (u.y - this.startSquareY_old) * this.zoom_old;
     boolean removeCache = false;
     translate(translateX, translateY);
     float net_rotation = 0;
@@ -1293,32 +1364,32 @@ class GameMap {
       ellipseMode(CENTER);
       fill(128, 82, 48, 100);
       noStroke();
-      ellipse(0, 0, 2 * Constants.ability_114_range * this.zoom, 2 * Constants.ability_114_range * this.zoom);
+      ellipse(0, 0, 2 * Constants.ability_114_range * this.zoom_old, 2 * Constants.ability_114_range * this.zoom_old);
     }
     if (u.alkaloidSecretionII()) {
       ellipseMode(CENTER);
       fill(128, 82, 48, 100);
       noStroke();
-      ellipse(0, 0, 2 * Constants.ability_119_range * this.zoom, 2 * Constants.ability_119_range * this.zoom);
+      ellipse(0, 0, 2 * Constants.ability_119_range * this.zoom_old, 2 * Constants.ability_119_range * this.zoom_old);
     }
     translate(extra_translate_x, extra_translate_y);
     if (removeCache) {
       g.removeCache(u.getImage());
     }
-    image(u.getImage(), 0, 0, u.width() * this.zoom, u.height() * this.zoom);
+    image(u.getImage(), 0, 0, u.width() * this.zoom_old, u.height() * this.zoom_old);
     if (player_unit && global.player_blinking) {
       ellipseMode(CENTER);
       noFill();
       stroke(255);
       strokeWeight(0.5);
-      ellipse(0, 0, u.width() * this.zoom, u.height() * this.zoom);
+      ellipse(0, 0, u.width() * this.zoom_old, u.height() * this.zoom_old);
     }
     if (u.weapon() != null) {
-      float translateItemX = 0.9 * (u.xRadius() + Constants.unit_weaponDisplayScaleFactor * Constants.item_defaultSize) * this.zoom;
-      float translateItemY = 0.4 * (u.yRadius() + Constants.unit_weaponDisplayScaleFactor * Constants.item_defaultSize) * this.zoom;
+      float translateItemX = 0.9 * (u.xRadius() + Constants.unit_weaponDisplayScaleFactor * Constants.item_defaultSize) * this.zoom_old;
+      float translateItemY = 0.4 * (u.yRadius() + Constants.unit_weaponDisplayScaleFactor * Constants.item_defaultSize) * this.zoom_old;
       translate(translateItemX, translateItemY);
-      float weapon_adjust_x = Constants.unit_weaponDisplayScaleFactor * u.weapon().width() * this.zoom;
-      float weapon_adjust_y = Constants.unit_weaponDisplayScaleFactor * u.weapon().height() * this.zoom;
+      float weapon_adjust_x = Constants.unit_weaponDisplayScaleFactor * u.weapon().width() * this.zoom_old;
+      float weapon_adjust_y = Constants.unit_weaponDisplayScaleFactor * u.weapon().height() * this.zoom_old;
       image(u.weapon().getImage(), 0, 0, weapon_adjust_x, weapon_adjust_y);
       if (u.weapon().stack > 1) {
         fill(255);
@@ -1329,12 +1400,12 @@ class GameMap {
       translate(-translateItemX, -translateItemY);
     }
     else if (player_unit) {
-      float translateItemX = 0.9 * (u.xRadius() + Constants.unit_weaponDisplayScaleFactor * Constants.item_defaultSize) * this.zoom;
-      float translateItemY = 0.4 * (u.yRadius() + Constants.unit_weaponDisplayScaleFactor * Constants.item_defaultSize) * this.zoom;
+      float translateItemX = 0.9 * (u.xRadius() + Constants.unit_weaponDisplayScaleFactor * Constants.item_defaultSize) * this.zoom_old;
+      float translateItemY = 0.4 * (u.yRadius() + Constants.unit_weaponDisplayScaleFactor * Constants.item_defaultSize) * this.zoom_old;
       translate(translateItemX, translateItemY);
       image(global.images.getImage("icons/hand.png"), 0, 0, Constants.unit_weaponDisplayScaleFactor *
-        2 * Constants.item_defaultSize * this.zoom, Constants.unit_weaponDisplayScaleFactor *
-        2 * Constants.item_defaultSize * this.zoom);
+        2 * Constants.item_defaultSize * this.zoom_old, Constants.unit_weaponDisplayScaleFactor *
+        2 * Constants.item_defaultSize * this.zoom_old);
       translate(-translateItemX, -translateItemY);
     }
     if (u.charred()) {
@@ -1342,7 +1413,7 @@ class GameMap {
         millis()) % Constants.gif_fire_time) / Constants.gif_fire_time));
       PImage fire_img = global.images.getImage("gifs/fire/" + flame_frame + ".png");
       tint(255, 220);
-      image(fire_img, 0, 0, u.width() * this.zoom, u.height() * this.zoom);
+      image(fire_img, 0, 0, u.width() * this.zoom_old, u.height() * this.zoom_old);
       g.removeCache(fire_img);
       noTint();
       g.removeCache(fire_img);
@@ -1352,7 +1423,7 @@ class GameMap {
         millis()) % Constants.gif_fire_time) / Constants.gif_fire_time));
       PImage fire_img = global.images.getImage("gifs/fire/" + flame_frame + ".png");
       tint(255, 160);
-      image(fire_img, 0, 0, u.width() * this.zoom, u.height() * this.zoom);
+      image(fire_img, 0, 0, u.width() * this.zoom_old, u.height() * this.zoom_old);
       g.removeCache(fire_img);
       noTint();
       g.removeCache(fire_img);
@@ -1360,7 +1431,7 @@ class GameMap {
     if (u.drenched()) {
       int drenched_frame = int(floor(Constants.gif_drenched_frames * ((u.random_number +
         millis()) % Constants.gif_drenched_time) / Constants.gif_drenched_time));
-      image(global.images.getImage("gifs/drenched/" + drenched_frame + ".png"), 0, 0, u.width() * this.zoom, u.height() * this.zoom);
+      image(global.images.getImage("gifs/drenched/" + drenched_frame + ".png"), 0, 0, u.width() * this.zoom_old, u.height() * this.zoom_old);
     }
     if (u.curr_action == UnitAction.CASTING) {
       try {
@@ -1373,7 +1444,7 @@ class GameMap {
             fill(170, 200);
             noStroke();
             img_width = Constants.ability_103_range * (1 - a.timer_other / Constants.ability_103_castTime);
-            arc(0, 0, img_width * this.zoom, img_width * this.zoom, -Constants.
+            arc(0, 0, img_width * this.zoom_old, img_width * this.zoom_old, -Constants.
               ability_103_coneAngle, Constants.ability_103_coneAngle, PIE);
             break;
           case 108: // Nelson Glare II
@@ -1381,20 +1452,20 @@ class GameMap {
             fill(170, 200);
             noStroke();
             img_width = Constants.ability_108_range * (1 - a.timer_other / Constants.ability_108_castTime);
-            arc(0, 0, img_width * this.zoom, img_width * this.zoom, -Constants.
+            arc(0, 0, img_width * this.zoom_old, img_width * this.zoom_old, -Constants.
               ability_103_coneAngle, Constants.ability_103_coneAngle, PIE);
             break;
           case 112: // Tongue Lash
             img_width = Constants.ability_112_distance * (1 - a.timer_other / Constants.ability_112_castTime);
             img_height = u.size;
-            image(global.images.getImage("abilities/tongue.png"), 0.5 * img_width * this.zoom,
-              0.5 * img_height * this.zoom, img_width * this.zoom, img_height * this.zoom);
+            image(global.images.getImage("abilities/tongue.png"), 0.5 * img_width * this.zoom_old,
+              0.5 * img_height * this.zoom_old, img_width * this.zoom_old, img_height * this.zoom_old);
             break;
           case 117: // Tongue Lash II
             img_width = Constants.ability_117_distance * (1 - a.timer_other / Constants.ability_112_castTime);
             img_height = u.size;
-            image(global.images.getImage("abilities/tongue.png"), 0.5 * img_width * this.zoom,
-              0.5 * img_height * this.zoom, img_width * this.zoom, img_height * this.zoom);
+            image(global.images.getImage("abilities/tongue.png"), 0.5 * img_width * this.zoom_old,
+              0.5 * img_height * this.zoom_old, img_width * this.zoom_old, img_height * this.zoom_old);
             break;
           default:
             break;
@@ -1412,15 +1483,15 @@ class GameMap {
       scale(-1, 1);
     }
     // if (player unlocked it in AchievementTree) {
-      float healthbarWidth = Constants.unit_healthbarWidth * this.zoom;
-      float healthbarHeight = Constants.unit_healthbarHeight * this.zoom;
+      float healthbarWidth = Constants.unit_healthbarWidth * this.zoom_old;
+      float healthbarHeight = Constants.unit_healthbarHeight * this.zoom_old;
       float manaBarHeight = 0;
       if (Hero.class.isInstance(u)) {
         manaBarHeight += Constants.hero_manabarHeight * this.zoom;
       }
       float totalHeight = healthbarHeight + manaBarHeight;
       float translateHealthBarX = -0.5 * healthbarWidth;
-      float translateHealthBarY = -1.2 * u.size * this.zoom - totalHeight;
+      float translateHealthBarY = -1.2 * u.size * this.zoom_old - totalHeight;
       textSize(totalHeight - 0.5);
       translate(translateHealthBarX, translateHealthBarY);
       stroke(200);
@@ -1616,7 +1687,7 @@ class GameMap {
   void updateView(int timeElapsed) {
     boolean refreshView = false;
     // lockscreen
-    if ((true || global.holding_space) && this.in_control && this.units.containsKey(0)) {
+    if ((global.profile.options.lock_screen || global.holding_space) && this.in_control && this.units.containsKey(0)) {
       this.setViewLocation(this.units.get(0).x, this.units.get(0).y);
       refreshView = true;
     }
@@ -1912,6 +1983,46 @@ class GameMap {
   void mouseMove(float mX, float mY) {
     this.last_x = mX;
     this.last_y = mY;
+    if (mX < Constants.small_number) {
+      this.view_moving_left = true;
+      if (!global.holding_right) {
+        this.view_moving_right = false;
+      }
+    }
+    else if (mX > width - 1 - Constants.small_number) {
+      this.view_moving_right = true;
+      if (!global.holding_left) {
+        this.view_moving_left = false;
+      }
+    }
+    else {
+      if (!global.holding_right) {
+        this.view_moving_right = false;
+      }
+      if (!global.holding_left) {
+        this.view_moving_left = false;
+      }
+    }
+    if (mY < Constants.small_number) {
+      this.view_moving_up = true;
+      if (!global.holding_down) {
+        this.view_moving_down = false;
+      }
+    }
+    else if (mY > height - 1 - Constants.small_number) {
+      this.view_moving_down = true;
+      if (!global.holding_up) {
+        this.view_moving_up = false;
+      }
+    }
+    else {
+      if (!global.holding_down) {
+        this.view_moving_down = false;
+      }
+      if (!global.holding_up) {
+        this.view_moving_up = false;
+      }
+    }
     this.updateCursorPosition();
     if (this.selected_object != null && this.selected_object_textbox != null) {
       this.selected_object_textbox.mouseMove(mX, mY);

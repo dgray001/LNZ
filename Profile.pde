@@ -80,6 +80,7 @@ class Profile {
     private boolean inventory_bar_hidden;
     private int terrain_resolution;
     private float fog_update_time;
+    private boolean lock_screen;
 
     Options() {
       this.profileUpdated();
@@ -109,6 +110,7 @@ class Profile {
       this.inventory_bar_hidden = false;
       this.terrain_resolution = Constants.map_terrainResolutionDefault;
       this.fog_update_time = Constants.map_timer_refresh_fog_default;
+      this.lock_screen = true;
     }
 
     void change() {
@@ -228,6 +230,9 @@ class Profile {
           case "inventory_bar_hidden":
             this.inventory_bar_hidden = toBoolean(trim(data[1]));
             break;
+          case "lock_screen":
+            this.lock_screen = toBoolean(trim(data[1]));
+            break;
           default:
             break;
         }
@@ -254,6 +259,7 @@ class Profile {
       file.println("map_viewMoveSpeedFactor: " + this.map_viewMoveSpeedFactor);
       file.println("inventory_bar_size: " + this.inventory_bar_size);
       file.println("inventory_bar_hidden: " + this.inventory_bar_hidden);
+      file.println("lock_screen: " + this.lock_screen);
       file.flush();
       file.close();
     }

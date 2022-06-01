@@ -583,6 +583,7 @@ abstract class InterfaceLNZ {
       SliderFormField fog_update_time = new SliderFormField("Fog Update Time: ",
         Constants.map_timer_refresh_fog_min, Constants.map_timer_refresh_fog_max, 50);
       fog_update_time.threshhold = Constants.optionsForm_threshhold_other;
+      CheckboxFormField lock_screen = new CheckboxFormField("Lock Screen:  ");
       SubmitFormField apply = new ButtonFormField("Apply");
       apply.button.setColors(color(220), color(240, 240, 190),
         color(190, 190, 140), color(140, 140, 90), color(0));
@@ -610,6 +611,7 @@ abstract class InterfaceLNZ {
       this.addField(inventory_bar_size);
       this.addField(map_resolution);
       this.addField(fog_update_time);
+      this.addField(lock_screen);
       this.addField(new SpacerFormField(10));
       this.addField(apply);
       this.addField(new SpacerFormField(10));
@@ -684,6 +686,8 @@ abstract class InterfaceLNZ {
       this.fields.get(12).setValue(global.profile.options.terrain_resolution);
 
       this.fields.get(13).setValue(global.profile.options.fog_update_time);
+
+      this.fields.get(14).setValue(global.profile.options.lock_screen);
     }
 
     void submit() {
@@ -765,15 +769,18 @@ abstract class InterfaceLNZ {
       String fog_update_time = this.fields.get(13).getValue();
       global.profile.options.fog_update_time = toFloat(split(fog_update_time, ':')[0]);
 
+      String lock_screen = this.fields.get(14).getValue();
+      global.profile.options.lock_screen = toBoolean(lock_screen);
+
       global.profile.options.change();
     }
 
     void buttonPress(int index) {
       switch(index) {
-        case 15: // apply
+        case 16: // apply
           this.apply();
           break;
-        case 19: // defaults
+        case 20: // defaults
           global.profile.options.defaults();
           this.setFormFieldValues();
           break;
