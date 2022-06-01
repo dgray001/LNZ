@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\nAlpha v0.7.4q: 20220601" +
+  "\nAlpha v0.7.4r: 20220601" +
   "\n\nLines: 44536 (v0.7.4j)" +
   "\nImages: 1175 (v0.7.4)" +
   "\nSounds: 322 (v0.7.4)" +
@@ -596,7 +596,7 @@ static class Constants {
   static final float level_vendingFormWidth = 300;
   static final float level_vendingFormHeight = 600;
   static final float level_quizmoFormWidth = 400;
-  static final float level_quizmoFormHeight = 500;
+  static final float level_quizmoFormHeight = 650;
   static final float level_quizmoTimeDelay = 900;
   static final float level_khalilFormWidth = 550;
   static final float level_khalilFormHeight = 750;

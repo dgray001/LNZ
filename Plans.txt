@@ -1,7 +1,6 @@
 v0.7.4: Francis Hall level
 thursday:
  t: update quizmoform and save correct questions in profile
- - Chuck quizmo covers question, put him above it with you on left
      => Also can't harvest him by redoing level => he will give you experience and nothing else at that point
  u: save album / track / location in level and restart playing at same place
  v: "CastWhenInRange" unit state

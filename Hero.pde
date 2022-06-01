@@ -2178,6 +2178,7 @@ class Hero extends Unit {
     Hero hero() {
       return Hero.this;
     }
+    abstract void deposited(float money);
     abstract void drawPanel(int timeElapsed, float panel_width);
     abstract void mouseMove(float mX, float mY);
     abstract void mousePress();
@@ -2243,6 +2244,66 @@ class Hero extends Unit {
     }
 
 
+    class MoneyButton extends LeftPanelButton {
+      protected int blinks = 0;
+      protected float blink_timer = 300;
+      protected boolean blinking = false;
+
+      MoneyButton(float yi, float yf) {
+        super(0, yi, 0, yf);
+        this.setColors(color(100, 100), color(1, 0), color(1, 0), color(1, 0), color(0));
+        this.text_size = 18;
+        this.show_message = true;
+        this.roundness = 2;
+        this.noStroke();
+      }
+
+      @Override
+      void update(int millis) {
+        int time_elapsed = millis - this.lastUpdateTime;
+        if (this.blinks > 0) {
+          this.blink_timer -= time_elapsed;
+          if (this.blink_timer < 0) {
+            this.blink_timer += 300;
+            this.blinking = !this.blinking;
+            if (this.blinking) {
+              this.blinks--;
+            }
+          }
+          if (this.blinking) {
+            this.color_text = color(1, 0);
+          }
+          else {
+            this.color_text = color(255, 255, 0);
+          }
+        }
+        else {
+          this.color_text = color(0);
+        }
+        super.update(millis);
+      }
+
+      @Override
+      void writeText() {
+        if (this.show_message) {
+          fill(this.color_text);
+          textAlign(LEFT, CENTER);
+          textSize(this.text_size);
+          if (this.adjust_for_text_descent) {
+            text(this.message, this.xi + 2, this.yCenter() - textDescent());
+          }
+          else {
+            text(this.message, this.xi + 2, this.yCenter());
+          }
+        }
+      }
+
+      void updateHoverMessage() {
+        this.hover_message = "$" + round(PlayerLeftPanelMenu.this.hero().money * 100.0) / 100.0 + " deposited";
+      }
+    }
+
+
     class LevelTokensButton extends LeftPanelButton {
       LevelTokensButton(float yi, float yf) {
         super(0, yi, 0, yf);
@@ -2251,6 +2312,21 @@ class Hero extends Unit {
         this.show_message = true;
         this.roundness = 2;
         this.noStroke();
+      }
+
+      @Override
+      void writeText() {
+        if (this.show_message) {
+          fill(this.color_text);
+          textAlign(LEFT, CENTER);
+          textSize(this.text_size);
+          if (this.adjust_for_text_descent) {
+            text(this.message, this.xi + 2, this.yCenter() - textDescent());
+          }
+          else {
+            text(this.message, this.xi + 2, this.yCenter());
+          }
+        }
       }
 
       @Override
@@ -2716,7 +2792,10 @@ class Hero extends Unit {
       this.image_size = 0.1 * height;
       textSize(18);
       float button_text_height = textAscent() + textDescent() + Constants.map_selectedObjectPanelGap;
-      this.level_tokens = new LevelTokensButton(currY + this.image_size - button_text_height, currY + this.image_size - Constants.map_selectedObjectPanelGap);
+      this.money = new MoneyButton(currY + this.image_size - 2 * button_text_height - Constants.map_selectedObjectPanelGap,
+        currY + this.image_size - button_text_height - Constants.map_selectedObjectPanelGap);
+      this.level_tokens = new LevelTokensButton(currY + this.image_size - button_text_height,
+        currY + this.image_size - Constants.map_selectedObjectPanelGap);
       currY += image_size + Constants.map_selectedObjectPanelGap;
       this.level = new LevelButton(currY, currY + textAscent() + textDescent() + Constants.map_selectedObjectPanelGap);
       currY += textAscent() + textDescent() + Constants.map_selectedObjectPanelGap + 2;
@@ -2749,6 +2828,12 @@ class Hero extends Unit {
       currY += stat_button_height + Constants.map_selectedObjectPanelGap;
     }
 
+    void deposited(float money) {
+      this.money.blinks = max(this.money.blinks, min(int(ceil(money * 0.4)), 5));
+      this.money.blink_timer = 300;
+      this.money.blinking = false;
+    }
+
     void drawPanel(int millis, float panel_width) {
       float half_panel_width = 0.5 * panel_width;
       // name
@@ -2759,6 +2844,10 @@ class Hero extends Unit {
       // picture
       imageMode(CORNER);
       image(Hero.this.getImage(), 1, this.image_yi, this.image_size, this.image_size);
+      // money
+      this.money.message = "Money: $" + round(100.0 * Hero.this.money) / 100.0;
+      this.money.setXLocation(half_panel_width + 2, panel_width - 2);
+      this.money.update(millis);
       // level tokens
       this.level_tokens.message = "Tokens: " + Hero.this.level_tokens;
       this.level_tokens.setXLocation(half_panel_width + 2, panel_width - 2);
@@ -2806,6 +2895,7 @@ class Hero extends Unit {
     }
 
     void mouseMove(float mX, float mY) {
+      this.money.mouseMove(mX, mY);
       this.level_tokens.mouseMove(mX, mY);
       this.level.mouseMove(mX, mY);
       this.experience.mouseMove(mX, mY);
@@ -2826,6 +2916,7 @@ class Hero extends Unit {
     }
 
     void mousePress() {
+      this.money.mousePress();
       this.level_tokens.mousePress();
       this.level.mousePress();
       this.experience.mousePress();
@@ -2846,6 +2937,7 @@ class Hero extends Unit {
     }
 
     void mouseRelease(float mX, float mY) {
+      this.money.mouseRelease(mX, mY);
       this.level_tokens.mouseRelease(mX, mY);
       this.level.mouseRelease(mX, mY);
       this.experience.mouseRelease(mX, mY);
@@ -2870,6 +2962,8 @@ class Hero extends Unit {
   class XpLeftPanelMenu extends LeftPanelMenu {
     XpLeftPanelMenu() {
     }
+
+    void deposited(float money) {}
 
     void drawPanel(int timeElapsed, float panel_width) {
     }
@@ -4845,7 +4939,10 @@ class Hero extends Unit {
       return;
     }
     if (i.money()) {
-      // deposit if can
+      this.money += i.money;
+      i.remove = true;
+      global.sounds.trigger_player("player/money");
+      this.left_panel_menu.deposited(i.money);
       return;
     }
     if (i.utility()) {
