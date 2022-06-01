@@ -11,7 +11,7 @@ sleeping: false
 sleep_timer: 0
 in_control: true
 currMapName: francishall_1stfloor
-mapNames: francishall_1stfloor, francishall_2ndfloor, francishall_groundfloor
+mapNames: francishall_groundfloor, francishall_2ndfloor, francishall_1stfloor
 
 new: Linker
 rect1: francishall_2ndfloor, 3.0, 47.0, 4.0, 48.0
@@ -2901,7 +2901,466 @@ end: Trigger
 nextTriggerKey: 70
 
 new: Trigger
-triggerName: Trigger 70
+triggerName: ### talk to schmiesing cut scene
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 71
+
+new: Trigger
+triggerName: initializer
+active: true
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: francishall_2ndfloor, 12.0, 52.0, 15.0, 54.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 22
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 26
+message: 
+number: 0
+decimal1: 13.0
+decimal2: 49.0
+rectangle: francishall_2ndfloor, 12.0, 51.0, 15.0, 52.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 72
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 14
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 72
+
+new: Trigger
+triggerName: ben says hi
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 500
+number2: 500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 25
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 13.0, 52.0, 14.0, 54.0
+end: Effect
+
+new: Effect
+ID: 20
+message: Hey Mike how are you? Are you not a zombie?
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 13.0, 52.0, 14.0, 54.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 73
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 73
+
+new: Trigger
+triggerName: mike turns
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 800
+number2: 800
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 27
+message: 
+number: 45
+decimal1: -120.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 74
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 74
+
+new: Trigger
+triggerName: mike responds
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2500
+number2: 2500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: Oh hey Ben. It seems I'm so fat the zombies couldn't reach my brain.
+number: 45
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 13.0, 52.0, 14.0, 54.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 75
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 75
+
+new: Trigger
+triggerName: speaks again
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: So here I am still eating so I can maintain my weight.
+number: 45
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 13.0, 52.0, 14.0, 54.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 76
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 76
+
+new: Trigger
+triggerName: ben responds
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 3500
+number2: 3500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: Um, ok then.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 77
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 77
+
+new: Trigger
+triggerName: mike responds
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2500
+number2: 2500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 78
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: If you see Molly tell her where I am. I'm really worried about her!
+number: 45
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 13.0, 52.0, 14.0, 54.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 78
+
+new: Trigger
+triggerName: ben says goodbye
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 3000
+number2: 3000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: Well sure, I'll keep an eye out for her.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 13.0, 52.0, 14.0, 54.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 79
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 79
+
+new: Trigger
+triggerName: add quest (21)
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 9
+message: 
+number: 21
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 80
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 15
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 12
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 80
+
+new: Trigger
+triggerName: mike reminds of quest 21
+active: false
+looping: true
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: francishall_2ndfloor, 12.0, 52.0, 15.0, 56.0
+met: false
+not_condition: false
+end: Condition
+
+new: Condition
+ID: 1
+number1: 30000
+number2: 30000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: I miss Molly...
+number: 45
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 81
+
+new: Trigger
+triggerName: chuck quizmo found
+active: true
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: francishall_1stfloor, 13.0, 60.0, 14.0, 61.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 50
+message: 
+number: 12
+decimal1: 2.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 82
+
+new: Trigger
+triggerName: 
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 83
+
+new: Trigger
+triggerName: ### Go to room quest
 active: false
 looping: false
 amalgam: true

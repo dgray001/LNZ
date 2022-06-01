@@ -3097,12 +3097,19 @@ class Level {
           question.addRadio("Answer 3");
           question.addRadio("Answer 4");
           break;
-        case 1: // tutorial
+        case 1: // Tutorial
           question.setMessage("Which of these is not part of Ben's penance?");
           question.addRadio("The Golden Rule");
           question.addRadio("Praying to Mary");
           question.addRadio("Telling everyone how much he hates them");
           question.addRadio("Being kinder to those around him");
+          break;
+        case 2: // Francis Hall
+          question.setMessage("Which of these were options for Ben to listen to?");
+          question.addRadio("Kalin Twins");
+          question.addRadio("Now3");
+          question.addRadio("Thompson Twins")
+          question.addRadio("Joe Fagin");;
           break;
         default:
           global.errorMessage("ERROR: Chuck Quizmo ID " + this.chuck_quizmo.number +
@@ -3135,9 +3142,14 @@ class Level {
           image(global.images.getImage("gifs/quizmo_correct/" + frame + ".png"),
             this.xi + 140, this.yi + 80, 60, 60);
         }
-        else {
+        else if (this.guessed) {
           image(global.images.getImage("features/vanna_t.png"), this.xi + 300, this.yi + 60, 80, 80);
           image(global.images.getImage("gifs/quizmo_wrong/" + frame + ".png"),
+            this.xi + 140, this.yi + 80, 60, 60);
+        }
+        else {
+          image(global.images.getImage("features/vanna_t.png"), this.xi + 300, this.yi + 60, 80, 80);
+          image(global.images.getImage("gifs/quizmo_question/" + frame + ".png"),
             this.xi + 140, this.yi + 80, 60, 60);
         }
       }
@@ -3173,8 +3185,11 @@ class Level {
         case 0:
           correct_answer = 1;
           break;
-        case 1:
+        case 1: // Tutorial
           correct_answer = 3;
+          break;
+        case 2: // Francis Hall
+          correct_answer = 2;
           break;
         default:
           global.errorMessage("ERROR: Chuck Quizmo ID " + this.chuck_quizmo.number +
@@ -3182,13 +3197,19 @@ class Level {
           break;
       }
       if (guess == correct_answer) {
-        if (hero.canPickup()) {
-          hero.pickup(new Item(2825));
+        if (global.profile.answeredChuckQuizmo(this.chuck_quizmo.number)) {
+          if (hero.canPickup()) {
+            hero.pickup(new Item(2825));
+          }
+          else {
+            Level.this.currMap.addItem(new Item(2825, this.hero.frontX(), this.hero.frontY()));
+          }
+          Level.this.chat("Chuck Quizmo: Congratulations! Here's your Star Piece!");
         }
         else {
-          Level.this.currMap.addItem(new Item(2825, this.hero.frontX(), this.hero.frontY()));
+          Level.this.chat("Chuck Quizmo: You've already won this Star Piece!");
         }
-        Level.this.chat("Chuck Quizmo: Congratulations! Here's your Star Piece!");
+        hero.addExperience(5 + pow(min(this.chuck_quizmo.number, 10), 8));
         Level.this.currMap.addVisualEffect(4009, this.chuck_quizmo.x + 0.7, this.chuck_quizmo.y - 0.4);
         this.correct_guess = true;
       }

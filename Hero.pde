@@ -4701,7 +4701,7 @@ class Hero extends Unit {
   }
 
 
-  void addExperience(int amount) {
+  void addExperience(float amount) {
     if (this.level == Constants.hero_maxLevel) {
       return;
     }

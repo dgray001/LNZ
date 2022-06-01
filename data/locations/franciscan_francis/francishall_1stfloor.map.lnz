@@ -1405,7 +1405,7 @@ terrain: 13, 56: 101, 0, false
 terrain: 13, 57: 101, 0, false
 terrain: 13, 58: 101, 0, false
 terrain: 13, 59: 162, 0, false
-terrain: 13, 60: 1, 100, false
+terrain: 13, 60: 2, 0, false
 terrain: 13, 61: 1, 100, false
 terrain: 13, 62: 1, 100, false
 terrain: 13, 63: 1, 100, false
@@ -1508,7 +1508,7 @@ terrain: 14, 56: 101, 0, false
 terrain: 14, 57: 101, 0, false
 terrain: 14, 58: 101, 0, false
 terrain: 14, 59: 207, 100, false
-terrain: 14, 60: 1, 100, false
+terrain: 14, 60: 2, 0, false
 terrain: 14, 61: 1, 100, false
 terrain: 14, 62: 1, 100, false
 terrain: 14, 63: 1, 100, false
@@ -17513,8 +17513,8 @@ size: 0.35
 level: 8
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 next_status_code: Confused
 new: StatusEffect
 permanent: true
@@ -17598,7 +17598,6 @@ size: 0.35
 level: 7
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
 new: Item: 2904
 location: 0.0, 0.0, 0
@@ -17633,6 +17632,7 @@ ammo: 29
 toggled: false
 end: Item: 5
 end: Item: Weapon
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -17761,8 +17761,8 @@ size: 0.35
 level: 3
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 next_status_code: Sick
 new: StatusEffect
 permanent: true
@@ -17789,8 +17789,8 @@ size: 0.35
 level: 3
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 next_status_code: Sick
 new: StatusEffect
 permanent: true
@@ -17817,8 +17817,8 @@ size: 0.35
 level: 3
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 next_status_code: Sick
 new: StatusEffect
 permanent: true
@@ -17845,8 +17845,8 @@ size: 0.35
 level: 3
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 next_status_code: Sick
 new: StatusEffect
 permanent: true
@@ -17899,8 +17899,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -17920,8 +17920,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -17941,8 +17941,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -17962,8 +17962,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -17983,8 +17983,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18004,8 +18004,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18025,8 +18025,8 @@ size: 0.35
 level: 7
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 next_status_code: Confused
 new: StatusEffect
 permanent: true
@@ -18053,8 +18053,8 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18074,8 +18074,8 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18095,8 +18095,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18116,8 +18116,8 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18137,8 +18137,8 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18158,8 +18158,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18179,8 +18179,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18200,8 +18200,8 @@ size: 0.35
 level: 6
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18221,8 +18221,8 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18242,8 +18242,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18263,8 +18263,8 @@ size: 0.35
 level: 7
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 next_status_code: Confused
 new: StatusEffect
 permanent: true
@@ -18291,8 +18291,8 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18416,8 +18416,8 @@ size: 0.35
 level: 3
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 next_status_code: Sick
 new: StatusEffect
 permanent: true
@@ -18482,8 +18482,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18503,8 +18503,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18524,8 +18524,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18545,8 +18545,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18566,8 +18566,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18587,8 +18587,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0

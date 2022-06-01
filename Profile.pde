@@ -909,6 +909,7 @@ class Profile {
   private HashMap<Location, Boolean> areas = new HashMap<Location, Boolean>();
 
   private EnderChestInventory ender_chest = new EnderChestInventory();
+  private Set<Integer> chuck_quizmo_answers = new HashSet<Integer>();
   private float money = 0;
 
   Profile() {
@@ -970,6 +971,10 @@ class Profile {
     }
   }
 
+  boolean answeredChuckQuizmo(int code) {
+    return this.chuck_quizmo_answers.add(code);
+  }
+
   boolean achievementUnlocked(AchievementCode code) {
     if (code == null || !this.achievements.containsKey(code)) {
       return false;
@@ -1025,6 +1030,9 @@ class Profile {
     file.println("achievement_tokens: " + this.achievement_tokens);
     for (PlayerTreeCode code : this.player_tree.unlockedCodes()) {
       file.println("perk: " + code.file_name());
+    }
+    for (Integer i : this.chuck_quizmo_answers) {
+      file.println("chuck_quizmo_answer: " + i);
     }
     file.println("curr_hero: " + this.curr_hero.file_name());
     file.println("money: " + this.money);
@@ -1095,6 +1103,9 @@ Profile readProfile(String folder_path) {
         break;
       case "ben_has_eyes":
         p.ben_has_eyes = toBoolean(trim(data[1]));
+        break;
+      case "chuck_quizmo_answer":
+        p.answeredChuckQuizmo(toInt(trim(data[1])));
         break;
       case "perk":
         PlayerTreeCode tree_code = PlayerTreeCode.code(trim(data[1]));

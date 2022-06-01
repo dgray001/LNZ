@@ -6867,24 +6867,6 @@ end: Effect
 
 end: Trigger
 
-nextTriggerKey: 187
-
-new: Trigger
-triggerName: mike fischer statuses
-active: true
-looping: false
-amalgam: true
-new: Effect
-ID: 53
-message: running
-number: 13
-decimal1: 0.0
-decimal2: 0.0
-rectangle: , 0.0, 0.0, 0.0, 0.0
-end: Effect
-
-end: Trigger
-
 nextTriggerKey: 188
 
 new: Trigger
@@ -6946,6 +6928,24 @@ decimal2: 0.0
 rectangle: tutorial_soldiers, 28.0, 14.0, 29.0, 15.0
 end: Effect
 
+new: Effect
+ID: 53
+message: Running
+number: 13
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 53
+message: Ghosting
+number: 13
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
 end: Trigger
 
 nextTriggerKey: 189
@@ -6957,8 +6957,8 @@ looping: false
 amalgam: true
 new: Condition
 ID: 1
-number1: 500
-number2: 500
+number1: 600
+number2: 600
 rectangle: , 0.0, 0.0, 0.0, 0.0
 met: false
 not_condition: false
@@ -6997,7 +6997,7 @@ nextTriggerKey: 191
 
 new: Trigger
 triggerName: fischer disappears
-active: false
+active: true
 looping: false
 amalgam: true
 new: Condition
@@ -7011,7 +7011,34 @@ end: Condition
 
 new: Effect
 ID: 53
-message: invisible
+message: Invisible
+number: 13
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 12
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 15
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 40
+message: 
 number: 13
 decimal1: 0.0
 decimal2: 0.0
@@ -7020,5 +7047,5 @@ end: Effect
 
 end: Trigger
 
-player_start_location: tutorial_frontdoor, 10.0, 0.0, 11.0, 1.0
+player_start_location: tutorial_soldiers, 33.0, 10.0, 35.0, 12.0
 end: Level
