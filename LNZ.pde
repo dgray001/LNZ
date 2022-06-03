@@ -17,6 +17,8 @@ void setup() {
     int(0.5 * (displayHeight - Constants.initialInterface_size)));
   frameRate(Constants.maxFPS);
   global = new Global(this);
+  Profile p = new Profile();
+  p.options.setVolumes(); // sets default volumes for initial interface
   background(global.color_background);
   global.menu = new InitialInterface();
   noCursor();

@@ -10,7 +10,7 @@ respawn_timer: 0
 sleeping: false
 sleep_timer: 0
 in_control: true
-currMapName: tutorial_soldiers
+currMapName: tutorial_frontdoor
 mapNames: tutorial_frontdoor, tutorial_stairwell, tutorial_soldiers
 
 new: Linker
@@ -7047,5 +7047,5 @@ end: Effect
 
 end: Trigger
 
-player_start_location: tutorial_soldiers, 33.0, 10.0, 35.0, 12.0
+player_start_location: tutorial_frontdoor, 10.0, 0.0, 11.0, 1.0
 end: Level

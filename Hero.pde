@@ -1223,6 +1223,16 @@ class Hero extends Unit {
     void update(int timeElapsed) {
       // main inventory
       super.update(timeElapsed);
+      noFill();
+      stroke(255);
+      strokeWeight(2);
+      rectMode(CORNER);
+      if (Hero.this.inventory_bar.unlocked_inventory_bar2) {
+        rect(2, 2, 9 * this.button_size, this.button_size);
+      }
+      else if (Hero.this.inventory_bar.unlocked_inventory_bar1) {
+        rect(2, 2, 4 * this.button_size, this.button_size);
+      }
       // gear
       float gearInventoryTranslateX = - this.gear_inventory.display_width - 2;
       float gearInventoryTranslateY = 0.5 * (this.display_height - this.gear_inventory.display_height);
@@ -1880,28 +1890,25 @@ class Hero extends Unit {
       if (new_index == last_index) {
         return;
       }
-      Item prev_weapon = new Item(Hero.this.weapon());
-      if (prev_weapon.remove) {
-        prev_weapon = null;
+      Item curr_item = new Item(Hero.this.weapon());
+      if (curr_item.remove) {
+        curr_item = null;
       }
-      if (last_index == 0) {
-        Hero.this.pickup(Hero.this.inventory.placeAt(prev_weapon, new_index-1, true));
-      }
-      else if (new_index == 0) {
-        Hero.this.pickup(Hero.this.inventory.placeAt(prev_weapon, last_index-1, true));
+      if (new_index > last_index) {
+        for (int i = last_index; i < new_index; i++) {
+          Item next_item = new Item(Hero.this.inventory.slots.get(i).item);
+          Hero.this.inventory.slots.get(i).item = curr_item;
+          curr_item = next_item;
+        }
+        Hero.this.pickup(curr_item);
       }
       else {
-        Item new_weapon = new Item(Hero.this.inventory.slots.get(new_index-1).item);
-        Item intermediary = new Item(Hero.this.inventory.slots.get(last_index-1).item);
-        if (new_weapon.remove) {
-          new_weapon = null;
+        for (int i = last_index-1; i >= new_index; i--) {
+          Item next_item = new Item(Hero.this.inventory.slots.get(i).item);
+          Hero.this.inventory.slots.get(i).item = curr_item;
+          curr_item = next_item;
         }
-        if (intermediary.remove) {
-          intermediary = null;
-        }
-        Hero.this.pickup(new_weapon);
-        Hero.this.inventory.slots.get(new_index-1).item = intermediary;
-        Hero.this.inventory.slots.get(last_index-1).item = prev_weapon;
+        Hero.this.pickup(curr_item);
       }
     }
 
@@ -1984,9 +1991,9 @@ class Hero extends Unit {
         inventory_slots_to_show = 4;
       }
       for (int i = 0; i < inventory_slots_to_show; i++) {
-        int translate_index = i + 1;
-        if (translate_index == this.equipped_index) {
-          translate_index = 0;
+        int translate_index = i;
+        if (translate_index >= this.equipped_index) {
+          translate_index++;
         }
         translate_x = translate_index * (this.slot_width + 2);
         translate(translate_x, 0);
@@ -2053,9 +2060,9 @@ class Hero extends Unit {
           inventory_slots_to_show = 4;
         }
         for (int i = 0; i < inventory_slots_to_show; i++) {
-          int translate_index = i + 1;
-          if (translate_index == this.equipped_index) {
-            translate_index = 0;
+          int translate_index = i;
+          if (translate_index >= this.equipped_index) {
+            translate_index++;
           }
           translate_x = translate_index * (this.slot_width + 2);
           Hero.this.inventory.slots.get(i).setWidth(this.slot_width);
@@ -2107,9 +2114,9 @@ class Hero extends Unit {
           inventory_slots_to_show = 4;
         }
         for (int i = 0; i < inventory_slots_to_show; i++) {
-          int translate_index = i + 1;
-          if (translate_index == this.equipped_index) {
-            translate_index = 0;
+          int translate_index = i;
+          if (translate_index >= this.equipped_index) {
+            translate_index++;
           }
           if (Hero.this.inventory.slots.get(i).button.hovered) {
             Hero.this.inventory.slots.get(i).button.hovered = false;
@@ -3390,9 +3397,9 @@ class Hero extends Unit {
     }
 
     void unlockNode(HeroTreeCode code) {
-      this.unlockNode(code, false);
+      this.unlockNode(code, false, true);
     }
-    void unlockNode(HeroTreeCode code, boolean force_unlock) {
+    void unlockNode(HeroTreeCode code, boolean force_unlock, boolean play_sound) {
       if (!this.nodes.containsKey(code)) {
         return;
       }
@@ -3408,7 +3415,9 @@ class Hero extends Unit {
       this.nodes.get(code).unlock();
       this.updateDependencies();
       Hero.this.upgrade(code);
-      global.sounds.trigger_player("player/unlock_node");
+      if (play_sound) {
+        global.sounds.trigger_player("player/unlock_node");
+      }
     }
 
     ArrayList<HeroTreeCode> unlockedCodes() {
@@ -5316,7 +5325,7 @@ class Hero extends Unit {
       case "perk":
         HeroTreeCode tree_code = HeroTreeCode.code(data);
         if (tree_code != null) {
-          this.heroTree.unlockNode(tree_code, true);
+          this.heroTree.unlockNode(tree_code, true, false);
         }
         break;
       case "level_tokens":

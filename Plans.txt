@@ -1,10 +1,10 @@
 v0.7.4: Francis Hall level
 friday:
- w: outline inventory squares in white that are in inventory bar
-   -> and fix display bug where items get shuffled when scrolling through
  x: need crafting durability, durability bar for each item
  y: guns don't break they just need cleaning (can't craft guns)
- z: final QA on tutorial and francis hall level, mock lev2's into mock area
+ z: mock lev2's into mock area
+
+  - Fog on edge of map bug
 
 v0.7.5: Lev2 maps
  - Lev2-1: Frontdoor
@@ -14,7 +14,7 @@ v0.7.5: Lev2 maps
  - Lev2-5: Custodialdoor
 v0.7.6: Lev2 levels
 v0.7.7: Lev3 maps
-v0.7.8: Lev3 triggers
+v0.7.8: Lev3 levels
 v0.7.9: Zambos minigame (MinigameInterface) unlocked (new notification for minigame unlocks, hero unlocks, area unlocks)
 v0.8.0: Beta prep => if have time maybe start making more heroes (or outlines of) or start automated map generation class
 - Each door has natural progression to a final battle or some shit

@@ -113,10 +113,7 @@ class Profile {
       this.lock_screen = true;
     }
 
-    void change() {
-      if (Profile.this.invalidProfile()) {
-        return;
-      }
+    void setVolumes() {
       float master_volume_multiplier = this.volume_master / (Constants.options_volumeMax - Constants.options_volumeMin);
 
       global.sounds.setBackgroundVolume(Constants.options_volumeGainMultiplier *
@@ -163,6 +160,14 @@ class Profile {
       global.sounds.out_player.setGain(Constants.options_volumeGainMultiplier *
         log(master_volume_multiplier * this.volume_player / (Constants.
         options_volumeMax - Constants.options_volumeMin)));
+    }
+
+    void change() {
+      if (Profile.this.invalidProfile()) {
+        return;
+      }
+
+      this.setVolumes();
 
       Hero h = global.menu.getCurrentHeroIfExists();
       if (h != null) {
