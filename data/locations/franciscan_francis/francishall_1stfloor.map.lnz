@@ -18598,6 +18598,54 @@ timer_attackCooldown: 0.0
 timer_actionTime: 0.0
 end: Unit
 
+nextUnitKey: 48
+
+new: Unit: 1210
+location: 56.960014, 54.022377, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 10
+alliance: Zombie
+element: Gray
+gearSlot: WEAPON
+new: Item: 2901
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+durability: 1
+ammo: 39
+toggled: false
+end: Item: Weapon
+gearSlot: ERROR
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+save_base_stats: true
+base_health: 26.0
+base_attack: 4.0
+base_magic: 0.0
+base_defense: 3.0
+base_resistance: 0.0
+base_piercing: 0.0
+base_penetration: 0.0
+base_attackRange: 0.2
+base_attackCooldown: 1200.0
+base_attackTime: 300.0
+base_sight: 6.5
+base_speed: 1.3
+base_tenacity: 0.0
+base_agility: 1
+base_lifesteal: 0.0
+curr_health: 26.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
 nextItemKey: 1
 
 new: Item: 2162
@@ -19015,19 +19063,6 @@ ammo: 18
 toggled: false
 end: Item
 nextItemKey: 33
-
-new: Item: 2901
-location: 39.539505, 32.401913, 0
-curr_height: 0
-remove: false
-disappearing: false
-disappear_timer: 0
-stack: 1
-durability: 1
-ammo: 39
-toggled: false
-end: Item
-nextItemKey: 34
 
 new: Item: 2105
 location: 49.930367, 6.141115, 0

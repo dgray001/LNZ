@@ -15643,6 +15643,288 @@ timer_attackCooldown: 0.0
 timer_actionTime: 0.0
 end: Unit
 
+nextUnitKey: 40
+
+new: Unit: 1208
+location: 23.643883, 42.289593, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 8
+alliance: Zombie
+element: Gray
+gearSlot: WEAPON
+next_status_code: Confused
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 10000.0
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 6.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 41
+
+new: Unit: 1208
+location: 24.873882, 42.359592, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 8
+alliance: Zombie
+element: Gray
+gearSlot: WEAPON
+next_status_code: Confused
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 10000.0
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 6.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 42
+
+new: Unit: 1208
+location: 25.093884, 43.99959, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 8
+alliance: Zombie
+element: Gray
+gearSlot: WEAPON
+next_status_code: Confused
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 10000.0
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 6.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 43
+
+new: Unit: 1208
+location: 23.693882, 54.07283, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 8
+alliance: Zombie
+element: Gray
+gearSlot: WEAPON
+next_status_code: Confused
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 10000.0
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 6.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 44
+
+new: Unit: 1208
+location: 25.093884, 54.04283, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 8
+alliance: Zombie
+element: Gray
+gearSlot: WEAPON
+next_status_code: Confused
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 10000.0
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 6.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 45
+
+new: Unit: 1208
+location: 24.603882, 55.652832, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 8
+alliance: Zombie
+element: Gray
+gearSlot: WEAPON
+next_status_code: Confused
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 10000.0
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 6.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 46
+
+new: Unit: 1209
+location: 23.073883, 50.38283, 10
+curr_height: 10
+remove: false
+size: 0.35
+level: 9
+alliance: Zombie
+element: Gray
+gearSlot: WEAPON
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 7.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 47
+
+new: Unit: 1209
+location: 24.633883, 50.23283, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 9
+alliance: Zombie
+element: Gray
+gearSlot: WEAPON
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 7.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 48
+
+new: Unit: 1209
+location: 24.463882, 48.31283, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 9
+alliance: Zombie
+element: Gray
+gearSlot: WEAPON
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 7.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 49
+
+new: Unit: 1209
+location: 23.683884, 45.06014, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 9
+alliance: Zombie
+element: Gray
+gearSlot: WEAPON
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 7.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 50
+
+new: Unit: 1209
+location: 24.783882, 45.950138, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 9
+alliance: Zombie
+element: Gray
+gearSlot: WEAPON
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 7.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
+nextUnitKey: 51
+
+new: Unit: 1209
+location: 24.103882, 56.842163, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 9
+alliance: Zombie
+element: Gray
+gearSlot: WEAPON
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+curr_health: 7.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+end: Unit
+
 nextItemKey: 1
 
 new: Item: 2202
@@ -16395,6 +16677,19 @@ disappear_timer: 0
 stack: 1
 durability: 1
 ammo: 0
+toggled: false
+end: Item
+nextItemKey: 60
+
+new: Item: 2901
+location: 24.45744, 57.458267, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+durability: 1
+ammo: 33
 toggled: false
 end: Item
 end: Map

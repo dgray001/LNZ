@@ -18239,8 +18239,8 @@ size: 0.35
 level: 3
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 next_status_code: Sick
 new: StatusEffect
 permanent: true
@@ -18267,6 +18267,7 @@ size: 0.35
 level: 7
 alliance: Zombie
 element: Gray
+gearSlot: ERROR
 gearSlot: WEAPON
 new: Item: 2904
 location: 0.0, 0.0, 0
@@ -18279,7 +18280,6 @@ durability: 1
 ammo: 0
 toggled: false
 end: Item: Weapon
-gearSlot: ERROR
 next_status_code: Confused
 new: StatusEffect
 permanent: true
@@ -18306,8 +18306,8 @@ size: 0.35
 level: 3
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 next_status_code: Sick
 new: StatusEffect
 permanent: true
@@ -18334,12 +18334,12 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Gray
-gearSlot: WEAPON
+gearSlot: HEAD
 gearSlot: ERROR
 gearSlot: FEET
 gearSlot: CHEST
 gearSlot: LEGS
-gearSlot: HEAD
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18359,12 +18359,12 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Brown
-gearSlot: WEAPON
+gearSlot: HEAD
 gearSlot: ERROR
 gearSlot: FEET
 gearSlot: CHEST
 gearSlot: LEGS
-gearSlot: HEAD
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18384,12 +18384,12 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Gray
-gearSlot: WEAPON
+gearSlot: HEAD
 gearSlot: ERROR
 gearSlot: FEET
 gearSlot: CHEST
 gearSlot: LEGS
-gearSlot: HEAD
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18409,12 +18409,12 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Gray
-gearSlot: WEAPON
+gearSlot: HEAD
 gearSlot: ERROR
 gearSlot: FEET
 gearSlot: CHEST
 gearSlot: LEGS
-gearSlot: HEAD
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18434,12 +18434,12 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Gray
-gearSlot: WEAPON
+gearSlot: HEAD
 gearSlot: ERROR
 gearSlot: FEET
 gearSlot: CHEST
 gearSlot: LEGS
-gearSlot: HEAD
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18843,8 +18843,8 @@ size: 0.35
 level: 3
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 next_status_code: Sick
 new: StatusEffect
 permanent: true
@@ -18871,8 +18871,8 @@ size: 0.35
 level: 3
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 next_status_code: Sick
 new: StatusEffect
 permanent: true
@@ -18899,8 +18899,8 @@ size: 0.35
 level: 6
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -18920,8 +18920,8 @@ size: 0.35
 level: 8
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 next_status_code: Confused
 new: StatusEffect
 permanent: true
@@ -19026,8 +19026,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -19047,8 +19047,8 @@ size: 0.35
 level: 7
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 next_status_code: Confused
 new: StatusEffect
 permanent: true
@@ -19075,8 +19075,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -19096,8 +19096,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -19117,8 +19117,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -19138,8 +19138,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -19185,8 +19185,8 @@ size: 0.35
 level: 6
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -19206,8 +19206,8 @@ size: 0.35
 level: 7
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 next_status_code: Confused
 new: StatusEffect
 permanent: true
@@ -19234,8 +19234,8 @@ size: 0.55
 level: 7
 alliance: Ben
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0

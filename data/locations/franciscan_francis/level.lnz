@@ -10,8 +10,8 @@ respawn_timer: 0
 sleeping: false
 sleep_timer: 0
 in_control: true
-currMapName: francishall_1stfloor
-mapNames: francishall_groundfloor, francishall_2ndfloor, francishall_1stfloor
+currMapName: francishall_2ndfloor
+mapNames: francishall_1stfloor, francishall_2ndfloor, francishall_groundfloor
 
 new: Linker
 rect1: francishall_2ndfloor, 3.0, 47.0, 4.0, 48.0
@@ -121,7 +121,7 @@ nextTriggerKey: 2
 
 new: Trigger
 triggerName: lose control
-active: false
+active: true
 looping: false
 amalgam: true
 new: Effect
@@ -1804,7 +1804,7 @@ nextTriggerKey: 42
 
 new: Trigger
 triggerName: message
-active: true
+active: false
 looping: false
 amalgam: true
 new: Condition
@@ -2028,6 +2028,15 @@ ID: 60
 message: 
 number: 1
 decimal1: 40.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 88
+decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
@@ -3364,6 +3373,654 @@ triggerName: ### Go to room quest
 active: false
 looping: false
 amalgam: true
+end: Trigger
+
+nextTriggerKey: 84
+
+new: Trigger
+triggerName: no hallway right 1
+active: true
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: francishall_2ndfloor, 41.0, 49.0, 43.0, 51.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: I want to go to my room first.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 38.0, 49.0, 40.0, 51.0
+end: Effect
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 22
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 25
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 38.0, 49.0, 40.0, 51.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 85
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 85
+
+new: Trigger
+triggerName: no hallway right 2
+active: false
+looping: false
+amalgam: false
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: francishall_2ndfloor, 38.0, 49.0, 40.0, 51.0
+met: false
+not_condition: false
+end: Condition
+
+new: Condition
+ID: 1
+number1: 3000
+number2: 3000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 12
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 84
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 86
+
+new: Trigger
+triggerName: no hallway left 1
+active: true
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: francishall_2ndfloor, 20.0, 49.0, 22.0, 51.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 22
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 25
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 23.0, 49.0, 25.0, 51.0
+end: Effect
+
+new: Effect
+ID: 20
+message: I should go to my room first.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 87
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 87
+
+new: Trigger
+triggerName: no hallway left 2
+active: false
+looping: false
+amalgam: false
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: francishall_2ndfloor, 23.0, 49.0, 25.0, 51.0
+met: false
+not_condition: false
+end: Condition
+
+new: Condition
+ID: 1
+number1: 3000
+number2: 3000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 7
+message: 
+number: 86
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 12
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 88
+
+new: Trigger
+triggerName: trigger go to room
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 4000
+number2: 4000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: I should go to my room.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 89
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 89
+
+new: Trigger
+triggerName: activate quest
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2500
+number2: 2500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 9
+message: 
+number: 25
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 90
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 90
+
+new: Trigger
+triggerName: enter room
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: francishall_2ndfloor, 24.0, 52.0, 27.0, 54.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 22
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 14
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 91
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 25
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 25.0, 54.0, 26.0, 55.0
+end: Effect
+
+new: Effect
+ID: 17
+message: 
+number: 25
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 8
+message: 
+number: 84
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 85
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 8
+message: 
+number: 86
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 8
+message: 
+number: 87
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 91
+
+new: Trigger
+triggerName: where's my stuff
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: Where's all my stuff??
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 25.0, 54.0, 26.0, 55.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 92
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 28
+message: 
+number: 45
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 92
+
+new: Trigger
+triggerName: move again
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1500
+number2: 1500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 25
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 25.0, 57.0, 26.0, 58.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 93
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 93
+
+new: Trigger
+triggerName: everything missing
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1500
+number2: 1500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 28
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: Everything is missing!
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 94
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 94
+
+new: Trigger
+triggerName: move up a little
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1000
+number2: 1000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 25
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 25.0, 56.0, 26.0, 58.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 95
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 95
+
+new: Trigger
+triggerName: activate quests
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1200
+number2: 1200
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 15
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 12
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 9
+message: 
+number: 22
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 9
+message: 
+number: 23
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 9
+message: 
+number: 24
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 96
+
+new: Trigger
+triggerName: open door of common room
+active: true
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: francishall_2ndfloor, 31.0, 51.0, 32.0, 52.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: Oh look my dreams came true!
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: francishall_2ndfloor, 31.0, 51.0, 32.0, 52.0
+end: Effect
+
 end: Trigger
 
 player_start_location: francishall_2ndfloor, 3.0, 94.0, 4.0, 95.0

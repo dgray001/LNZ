@@ -98,6 +98,8 @@ class Quest {
           this.meet(level.player);
         }
         break;
+      case 25: // go to room
+        break;
       default:
         global.errorMessage("ERROR: Quest ID " + this.ID + " not recognized.");
         break;
@@ -140,6 +142,8 @@ class Quest {
         return "Find Ben's Coat";
       case 24: // find bens backpack
         return "Find Ben's Backpack";
+      case 25: // go to room
+        return "Go to your room";
       default:
         return "";
     }
@@ -181,6 +185,8 @@ class Quest {
         return "Find Ben's Coat; it's got to be somewhere on Soldier's wing...";
       case 24: // find bens backpack
         return "Find Ben's Backpack; he remembers putting it in storage somewhere.";
+      case 25: // go to room
+        return "Somehow the door is locked again";
       default:
         return "";
     }
