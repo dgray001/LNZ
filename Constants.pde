@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\nAlpha v0.7.4t: 20220601" +
+  "\nAlpha v0.7.4u: 20220601" +
   "\n\nLines: 45310 (v0.7.4s)" +
   "\nImages: 1175 (v0.7.4)" +
   "\nSounds: 322 (v0.7.4)" +
@@ -439,7 +439,7 @@ static class Constants {
   static final float hero_treeForm_height = 340;
   static final float hero_manabarHeight = 0.05;
   static final float hero_experienceRespawnMultiplier = 0.3;
-  static final float hero_passiveHealPercent = 0.002;
+  static final float hero_passiveHealPercent = 0.005;
   static final int hero_multicraftTimer = 50;
 
   // Upgrade

@@ -1246,6 +1246,7 @@ class Effect {
         break;
       case 58: // set background music
         global.sounds.play_background(this.message);
+        level.album_name = this.message;
         break;
       case 59: // trigger sleeping
         level.sleeping = true;

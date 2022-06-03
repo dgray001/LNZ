@@ -1082,6 +1082,9 @@ class PlayingInterface extends InterfaceLNZ {
             this.level = this.newLevelThread.level;
             this.level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
             this.level.restartTimers();
+            if (this.level.album_name != null) {
+              global.sounds.play_background(this.level.album_name);
+            }
             this.status = PlayingStatus.PLAYING;
             if (this.level.location.isArea()) {
               this.buttons[0].message = "Launch\nCampaign";
@@ -1123,6 +1126,9 @@ class PlayingInterface extends InterfaceLNZ {
             this.level = this.savedLevelThread.level;
             this.level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
             this.level.restartTimers();
+            if (this.level.album_name != null) {
+              global.sounds.play_background(this.level.album_name);
+            }
             this.level.currMap.addHeaderMessage(GameMapCode.display_name(this.level.currMap.code));
             this.status = PlayingStatus.PLAYING;
             if (this.level.location.isArea()) {

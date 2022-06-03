@@ -1,15 +1,14 @@
 v0.7.4: Francis Hall level
 thursday:
- u: save album / track / location in level and restart playing at same place
+ v: bens room cut scene
 friday:
  w: outline inventory squares in white that are in inventory bar
    -> and fix display bug where items get shuffled when scrolling through
- x: side room in mechanical room that has key (33)
- y: powerful zombie on 1st or 2nd floor with key (39)
  z: molly schmiesing kidnapped by BOIZ so can rescue her (no schmielet hero yet)
 
  - need crafting durability, durability bar for each item
  - guns don't break they just need cleaning (can't craft guns)
+ - final QA on tutorial and francis hall level, mock lev2's into mock area
 
 v0.7.5: Lev2 maps
  - Lev2-1: Frontdoor

@@ -100,6 +100,7 @@ class Level {
   protected GameMap currMap;
   protected String currMapName = null;
   protected ArrayList<String> mapNames = new ArrayList<String>();
+  protected String album_name = null;
 
   protected float xi = 0;
   protected float yi = 0;
@@ -2429,6 +2430,9 @@ class Level {
       file.println("nextTriggerKey: " + entry.getKey());
       file.println(entry.getValue().fileString());
     }
+    if (this.album_name != null) {
+      file.println("album_name: " + this.album_name);
+    }
     if (this.player_start_location != null) {
       file.println("player_start_location: " + this.player_start_location.fileString());
     }
@@ -2659,6 +2663,9 @@ class Level {
         break;
       case "currMapName":
         this.currMapName = data;
+        break;
+      case "album_name":
+        this.album_name = data;
         break;
       case "mapNames":
         String[] map_names = split(data, ',');
