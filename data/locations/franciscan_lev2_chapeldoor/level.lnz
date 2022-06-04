@@ -1,0 +1,43 @@
+new: Level
+levelName: franciscan_lev2_chapeldoor
+location: ERROR
+completed: false
+completing: false
+completion_code: 0
+time: 6.5
+respawning: false
+respawn_timer: 0
+sleeping: false
+sleep_timer: 0
+in_control: true
+currMapName: mock
+mapNames: mock
+nextTriggerKey: 1
+
+new: Trigger
+triggerName: Trigger 1
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: mock, 3.0, 0.0, 4.0, 2.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 6
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+player_start_location: mock, 0.0, 0.0, 1.0, 2.0
+end: Level

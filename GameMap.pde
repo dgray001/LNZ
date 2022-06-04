@@ -655,14 +655,22 @@ class GameMap {
     }
   }
   void refreshFogImage() {
-    int fog_xi = int(floor(this.startSquareX_old * Constants.map_fogResolution));
+    int fog_xi = round(floor(this.startSquareX_old * Constants.map_fogResolution));
     this.xi_fog = this.xi_map_old - this.zoom_old * (this.startSquareX_old - float(fog_xi) / Constants.map_fogResolution);
-    int fog_yi = int(floor(this.startSquareY_old * Constants.map_fogResolution));
+    int fog_yi = round(floor(this.startSquareY_old * Constants.map_fogResolution));
     this.yi_fog = this.yi_map_old - this.zoom_old * (this.startSquareY_old - float(fog_yi) / Constants.map_fogResolution);
-    int fog_w = int(ceil(this.visSquareX_old * Constants.map_fogResolution)) + 1;
+    int fog_w = round(ceil(this.visSquareX_old * Constants.map_fogResolution));
     this.xf_fog = this.xi_fog + this.zoom_old * (float(fog_w) / Constants.map_fogResolution);
-    int fog_h = int(ceil(this.visSquareY_old * Constants.map_fogResolution)) + 1;
+    if (this.xf_fog + Constants.small_number < this.xf_map_old) {
+      fog_w++;
+      this.xf_fog += this.zoom_old / Constants.map_fogResolution;
+    }
+    int fog_h = round(ceil(this.visSquareY_old * Constants.map_fogResolution));
     this.yf_fog = this.yi_fog + this.zoom_old * (float(fog_h) / Constants.map_fogResolution);
+    if (this.yf_fog + Constants.small_number < this.yf_map_old) {
+      fog_h++;
+      this.yf_fog += this.zoom_old / Constants.map_fogResolution;
+    }
     this.fog_display = this.fog_dimg.getImagePiece(fog_xi, fog_yi, fog_w, fog_h);
   }
 
