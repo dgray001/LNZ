@@ -2551,9 +2551,9 @@ class GameMap {
                   this.addItemAsIs(curr_item);
                   break;
                 case FEATURE:
-                  if (parameters.length < 3 || !isInt(trim(parameters[2]))) {
+                  if (parameters.length < 3) {
                     global.errorMessage("ERROR: Ending item in feature inventory " +
-                      "but no slot number given.");
+                      "but no slot information given.");
                     break;
                   }
                   if (curr_feature == null) {
@@ -2563,6 +2563,20 @@ class GameMap {
                   if (curr_feature.inventory == null) {
                     global.errorMessage("ERROR: Trying to add item to feature " +
                       "inventory but curr_feature has no inventory.");
+                    break;
+                  }
+                  if (trim(parameters[1]).equals("item_array")) {
+                    if (curr_feature.items == null) {
+                      global.errorMessage("ERROR: Trying to add item to feature " +
+                        "item array but curr_feature has no item array.");
+                      break;
+                    }
+                    curr_feature.items.add(curr_item);
+                    break;
+                  }
+                  if (!isInt(trim(parameters[2]))) {
+                    global.errorMessage("ERROR: Ending item in feature inventory " +
+                      "but no slot information given.");
                     break;
                   }
                   int slot_number = toInt(trim(parameters[2]));

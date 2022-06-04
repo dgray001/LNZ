@@ -81,6 +81,7 @@ class Feature extends MapObject {
   protected int number = 0;
   protected boolean toggle = false;
   protected Inventory inventory = null;
+  protected ArrayList<Item> items = null;
 
   protected int map_key = -10;
   protected boolean refresh_map_image = false;
@@ -140,9 +141,10 @@ class Feature extends MapObject {
         this.setSize(1, 1, 5);
         break;
       case 21:
-        this.setStrings("Workbench", "Tool", "Tools Available: ");
+        this.setStrings("Workbench", "Tool", "");
         this.setSize(1, 1, 3);
         this.inventory = new WorkbenchInventory(this);
+        this.items = new ArrayList<Item>();
         break;
       case 22:
         this.setStrings("Ender Chest", "Tool", "");
@@ -649,18 +651,17 @@ class Feature extends MapObject {
   String type() {
     return this.type;
   }
-  void setDescription(String description) {
-    super.setDescription(description);
-    switch(this.ID) {
-      case 21: // workbench
-        try {
-          ((WorkbenchInventory)this.inventory).setToolsFromDescription(split(description, ':')[1]);
-        } catch(Exception e) {}
-        break;
-    }
-  }
   String description() {
     switch(this.ID) {
+      case 21: // workbench
+        String workbench_description = "Tools Available:";
+        for (Item i : this.items) {
+          if (i == null || i.remove) {
+            continue;
+          }
+          workbench_description += "\n" + i.display_name() + " (" + i.durability + ")";
+        }
+        return workbench_description;
       case 151: // sign
       case 152:
       case 153:
@@ -2381,6 +2382,14 @@ class Feature extends MapObject {
   void update(int timeElapsed, GameMap map) {
     this.update(timeElapsed);
     switch(this.ID) {
+      case 21: // workbench
+        for (int i = 0; i < this.items.size(); i++) {
+          if (this.items.get(i) == null || this.items.get(i).remove) {
+            this.items.remove(i);
+            i--;
+          }
+        }
+        break;
       case 180: // lamp
         if (!toggle) {
           break;
@@ -2477,8 +2486,12 @@ class Feature extends MapObject {
     if (this.inventory != null && this.ID != 22) {
       fileString += this.inventory.internalFileString();
     }
+    if (this.items != null) {
+      for (Item i : this.items) {
+        fileString += i.fileString() + ": item_array";
+      }
+    }
     switch(this.ID) {
-      case 21: // Workbench (store tools information)
       case 151: // Sign, green
       case 152:
       case 153:

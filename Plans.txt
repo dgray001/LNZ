@@ -1,10 +1,9 @@
 v0.7.4: Francis Hall level
 friday:
- x: need crafting durability, durability bar for each item
- y: guns don't break they just need cleaning (can't craft guns)
  z: mock lev2's into mock area
 
   - Fog on edge of map bug
+  - Can drag drop items if holding second mousebutton (playerinventory)
 
 v0.7.5: Lev2 maps
  - Lev2-1: Frontdoor
@@ -43,6 +42,8 @@ v0.8.0: Beta prep => if have time maybe start making more heroes (or outlines of
 
 
 Parking Lot:
+ - Items have durability bars
+ - Can clean guns mechanic
  - Zombies spawn at night in area / any level where it is flagged as such
     => Zombie level associated with player level / level level ?
  - EASY COMPANY sound in tutorial

@@ -1597,7 +1597,7 @@ class WorkbenchInventory extends Inventory {
           message_text += "\n\n";
         }
         message_text += "Tools Have:";
-        for (ToolCode code : WorkbenchInventory.this.tool_list) {
+        for (ToolCode code : WorkbenchInventory.this.currentTools()) {
           message_text += "\n - " + code.displayName();
         }
         String title_text = "Workbench";
@@ -1636,17 +1636,17 @@ class WorkbenchInventory extends Inventory {
       }
       ArrayList<ToolCode> codes = ToolCode.toolCodesFrom(i);
       boolean has_all = true;
+      ArrayList<ToolCode> tool_list = WorkbenchInventory.this.currentTools();
       for (ToolCode code : codes) {
-        if (!WorkbenchInventory.this.tool_list.contains(code)) {
+        if (!tool_list.contains(code)) {
           has_all = false;
-          WorkbenchInventory.this.tool_list.add(code);
           break;
         }
       }
       if (has_all) {
         return;
       }
-      WorkbenchInventory.this.setDescriptionFromTools();
+      WorkbenchInventory.this.f.items.add(new Item(i));
       WorkbenchInventory.this.slots.get(4).item = null;
       i.remove = true;
     }
@@ -1661,8 +1661,7 @@ class WorkbenchInventory extends Inventory {
   protected float last_mY = 0;
   private CraftButton craft = new CraftButton();
   private ToolsButton tools = new ToolsButton();
-  private ArrayList<ToolCode> tool_list = new ArrayList<ToolCode>();
-  private Feature f = null;
+  private Feature f;
 
   WorkbenchInventory(Feature f) {
     super(3, 6, true);
@@ -1681,29 +1680,15 @@ class WorkbenchInventory extends Inventory {
   }
 
 
-  void setToolsFromDescription(String description) {
-    this.tool_list.clear();
-    for (String s : split(description, ',')) {
-      ToolCode code = ToolCode.toolCodeFrom(trim(s));
-      if (code != null) {
-        this.tool_list.add(code);
-      }
-    }
+  ArrayList<ToolCode> currentTools() {
+    return ToolCode.toolCodesFrom(this.currentToolItems().toArray(new Item[0]));
   }
 
-  void setDescriptionFromTools() {
-    String description = "Tools Available: ";
-    boolean first = true;
-    for (ToolCode code : this.tool_list) {
-      if (first) {
-        first = false;
-      }
-      else {
-        description += ", ";
-      }
-      description += code.displayName();
+  ArrayList<Item> currentToolItems() {
+    if (this.f.items == null) {
+      return new ArrayList<Item>();
     }
-    this.f.setDescription(description);
+    return this.f.items;
   }
 
 
@@ -1716,9 +1701,10 @@ class WorkbenchInventory extends Inventory {
       slots.get(11).item.stack < this.craftable_item.stack)) {
       return;
     }
-    if (!this.crafting_recipe.hasTools(this.tool_list)) {
+    if (!this.crafting_recipe.hasTools(this.currentTools())) {
       return;
     }
+    this.crafting_recipe.useTools(this.currentToolItems());
     this.slots.get(0).removeStack();
     this.slots.get(1).removeStack();
     this.slots.get(2).removeStack();
@@ -1768,7 +1754,7 @@ class WorkbenchInventory extends Inventory {
       this.crafting_recipe = global.crafting_recipes.get(this.curr_crafting_hash_code);
       this.craftable_item = new Item(this.crafting_recipe.output);
       this.craftable_item.stack = this.crafting_recipe.amount;
-      this.craft.disabled = !this.crafting_recipe.hasTools(this.tool_list);
+      this.craft.disabled = !this.crafting_recipe.hasTools(this.currentTools());
       if (this.craft.disabled) {
         image(global.images.getImage("icons/crafting_arrow_red.png"), 2 + 3.5 * this.button_size,
           2 + 1 * this.button_size, this.button_size, this.button_size);

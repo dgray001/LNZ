@@ -46,7 +46,7 @@ enum ToolCode {
 
   public static ArrayList<ToolCode> toolCodesFrom(Item i) {
     ArrayList<ToolCode> codes = new ArrayList<ToolCode>();
-    if (i == null) {
+    if (i == null || i.remove) {
       return codes;
     }
     switch(i.ID) {
@@ -132,6 +132,24 @@ class CraftingRecipe {
       }
     }
     return true;
+  }
+  void useTools(ArrayList<Item> tools_available) {
+    for (ToolCode code : this.tools) {
+      boolean no_tool = true;
+      for (Item i : tools_available) {
+        if (i == null || i.remove) {
+          continue;
+        }
+        if (ToolCode.toolCodesFrom(i).contains(code)) {
+          i.lowerDurability();
+          no_tool = false;
+          break;
+        }
+      }
+      if (no_tool) {
+        global.log("WARNING: No tool contained ToolCode " + code + " when crafting " + this.output + ".");
+      }
+    }
   }
 }
 

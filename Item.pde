@@ -1703,12 +1703,16 @@ class Item extends MapObject {
       case 2984:
         this.setStrings("Woodglue", "Tool", "");
         this.tier = 2;
+        this.durability = 16;
         break;
       case 2985:
         this.setStrings("Nails", "Tool", "");
+        this.durability = 8;
         break;
       case 2986:
         this.setStrings("Screws", "Tool", "");
+        this.durability = 8;
+        this.tier = 2;
         break;
       case 2987:
         this.setStrings("Flint and Steel", "Tool", "");
@@ -1797,7 +1801,16 @@ class Item extends MapObject {
       text += "\nHealth: " + this.health;
     }
     if (this.breakable()) {
-      text += "\nDurability: " + this.durability;
+      switch(this.ID) {
+        case 2984: // woodglue
+        case 2985: // nails
+        case 2986: // screws
+          text += "\nAmount Left: " + this.durability;
+          break;
+        default:
+          text += "\nDurability: " + this.durability;
+          break;
+      }
     }
     if (this.type.equals("Ranged Weapon")) {
       text += "\nAmmo: " + this.ammo + "/" + this.maximumAmmo();
@@ -3186,7 +3199,7 @@ class Item extends MapObject {
     if (this.throwable()) {
       return true;
     }
-    else if (this.type.equals("Ranged Weapon") && this.availableAmmo() > 0) {
+    else if (this.type.equals("Ranged Weapon") && this.availableAmmo() > 0 && !this.toggled) {
       return true;
     }
     return false;
@@ -3834,7 +3847,43 @@ class Item extends MapObject {
     }
     this.durability -= amount;
     if (this.durability < 1) {
-      this.remove = true;
+      switch(this.ID) {
+        case 2312: // M1911
+        case 2321: // War Machine
+        case 2322: // Five-Seven
+        case 2323: // Type25
+        case 2331: // Mustang and Sally
+        case 2332: // FAL
+        case 2333: // Python
+        case 2341: // RPG
+        case 2342: // Dystopic Demolisher
+        case 2343: // Ultra
+        case 2344: // Strain25
+        case 2345: // Executioner
+        case 2351: // Galil
+        case 2352: // WN
+        case 2353: // Ballistic Knife
+        case 2354: // Cobra
+        case 2355: // MTAR
+        case 2361: // RPD
+        case 2362: // Rocket-Propelled Grievance
+        case 2363: // DSR-50
+        case 2364: // Voice of Justice
+        case 2371: // HAMR
+        case 2372: // Ray Gun
+        case 2373: // Lamentation
+        case 2374: // The Krauss Refibrillator
+        case 2375: // Malevolent Taxonomic Anodized Redeemer
+        case 2381: // Relativistic Punishment Device
+        case 2382: // Dead Specimen Reactor 5000
+        case 2391: // SLDG HAMR
+        case 2392: // Porter's X2 Ray Gun
+          //this.toggled = true; // needs cleaned
+          break;
+        default:
+          this.remove = true;
+          break;
+      }
     }
   }
   boolean breakable() { // if item uses durability
@@ -3866,6 +3915,9 @@ class Item extends MapObject {
       case 2981: // roundsaw
       case 2982: // beltsander
       case 2983: // chainsaw
+      case 2984: // woodglue
+      case 2985: // nails
+      case 2986: // screws
         return true;
       default:
         return false;
@@ -4070,7 +4122,7 @@ class Item extends MapObject {
         sound_name += "sword";
         break;
       case 2980: // Drill
-        sound_name += "drill" + randomInt(1, 3);
+        sound_name = "items/melee/drill" + randomInt(1, 3);
         break;
       case 2981: // Roundsaw
         sound_name += "roundsaw";

@@ -800,10 +800,14 @@ class Hero extends Unit {
 
 
     ArrayList<ToolCode> currentTools() {
+      return ToolCode.toolCodesFrom(this.currentToolItems().toArray(new Item[0]));
+    }
+
+    ArrayList<Item> currentToolItems() {
       ArrayList<Item> tool_items = Hero.this.inventory.items();
       tool_items.add(Hero.this.weapon());
       tool_items.add(Hero.this.offhand());
-      return ToolCode.toolCodesFrom(tool_items.toArray(new Item[0]));
+      return tool_items;
     }
 
 
@@ -819,6 +823,7 @@ class Hero extends Unit {
       if (!this.crafting_recipe.hasTools(this.currentTools())) {
         return;
       }
+      this.crafting_recipe.useTools(this.currentToolItems());
       this.slots.get(0).removeStack();
       this.slots.get(1).removeStack();
       this.slots.get(2).removeStack();
@@ -1334,7 +1339,6 @@ class Hero extends Unit {
               item_holding_y = 2 + (y + 0.5) * this.button_size;
             }
             else {
-              // drop parts of item holding
               return;
             }
             found_clicked = true;
@@ -1363,7 +1367,6 @@ class Hero extends Unit {
                   display_height) + 2 + (y + 0.5) * this.button_size;
               }
               else {
-                // drop parts of item holding
                 return;
               }
               found_clicked = true;
@@ -1390,12 +1393,12 @@ class Hero extends Unit {
               source_item = this.crafting_inventory.slots.get(i).item;
               if (this.item_holding == null || this.item_holding.remove) {
                 this.item_origin = new InventoryKey(InventoryLocation.CRAFTING, i);
-                item_holding_x = this.display_width + 4 + (x + 0.5) * this.button_size;
+                item_holding_x = this.display_width + 4 + (x + 0.5) * this.button_size +
+                  this.crafting_inventory.slots.get(i).button.xi;
                 item_holding_y = 0.5 * (this.display_height - this.crafting_inventory.
-                  display_height) + 2 + (y + 0.5) * this.button_size;
+                  display_height) + 2 + (y + 0.5) * this.button_size + this.crafting_inventory.slots.get(i).button.yi;
               }
               else {
-                // drop parts of item holding
                 return;
               }
               found_clicked = true;
@@ -1422,11 +1425,12 @@ class Hero extends Unit {
                 if (this.item_holding == null || this.item_holding.remove) {
                   this.item_origin = new InventoryKey(InventoryLocation.FEATURE, i);
                   item_holding_x = 0.5 * (this.display_width - this.
-                    feature_inventory.display_width) + 2 + (x + 0.5) * this.button_size;
-                  item_holding_y = (y + 0.5) * this.button_size - this.feature_inventory.display_height;
+                    feature_inventory.display_width) + 2 + (x + 0.5) * this.button_size +
+                    this.feature_inventory.slots.get(i).button.xi;
+                  item_holding_y = (y + 0.5) * this.button_size - this.feature_inventory.
+                    display_height + this.crafting_inventory.slots.get(i).button.yi;
                 }
                 else {
-                  // drop parts of item holding
                   return;
                 }
                 found_clicked = true;
@@ -4260,7 +4264,7 @@ class Hero extends Unit {
         case CRAFTI:
           return "Unlock the ability to craft items directly in your inventory.\n" +
             "This upgrade will unlock a 1x1 grid to craft items.\nNote to use " +
-            "a tool in self-crafting you must be holding it in your hand.";
+            "a tool in self-crafting you must have it in your inventory or hand.";
         case CRAFTII_ROW:
           return "Unlock the second row in your self-crafting grid.\nIf you " +
             "have already unlocked the second column this will give you a full " +
