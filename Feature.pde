@@ -562,6 +562,7 @@ class Feature extends MapObject {
       case 422:
       case 423:
       case 424:
+      case 426:
         this.setStrings("Tree", "Nature", "");
         this.setSize(2, 2, 20);
         this.toggle = true;
@@ -569,15 +570,9 @@ class Feature extends MapObject {
         break;
       case 425:
         this.setStrings("Tree", "Nature", "");
-        this.setSize(3, 3, 35);
+        this.setSize(3, 3, 30);
         this.toggle = true;
         this.number = Constants.feature_treeBigHealth;
-        break;
-      case 426:
-        this.setStrings("Tree", "Nature", "");
-        this.setSize(2, 2, 20);
-        this.toggle = true;
-        this.number = Constants.feature_treeHealth;
         break;
       case 431:
         this.setStrings("Rock", "Nature", "");
@@ -589,6 +584,22 @@ class Feature extends MapObject {
         this.setStrings("Bush", "Nature", "");
         this.setSize(1, 1, 5);
         this.number = Constants.feature_bushHealth;
+        break;
+      case 444:
+      case 445:
+      case 446:
+      case 447:
+      case 449:
+        this.setStrings("Tree", "Nature", "");
+        this.setSize(3, 3, 30);
+        this.toggle = true;
+        this.number = Constants.feature_treeBigHealth;
+        break;
+      case 448:
+        this.setStrings("Tree", "Nature", "");
+        this.setSize(4, 4, 40);
+        this.toggle = true;
+        this.number = round(1.4 * Constants.feature_treeBigHealth);
         break;
 
       // Vehicles
@@ -1257,21 +1268,27 @@ class Feature extends MapObject {
         path += "gravel_rocks.jpg";
         break;
       case 421:
+      case 444:
         path += "tree_maple.png";
         break;
       case 422:
+      case 445:
         path += "tree_unknown.png";
         break;
       case 423:
+      case 446:
         path += "tree_cedar.png";
         break;
       case 424:
+      case 447:
         path += "tree_dead.png";
         break;
       case 425:
+      case 448:
         path += "tree_large.png";
         break;
       case 426:
+      case 449:
         path += "tree_pine.png";
         break;
       case 431:
@@ -1445,6 +1462,12 @@ class Feature extends MapObject {
       case 441: // bush
       case 442:
       case 443:
+      case 444: // large trees
+      case 445:
+      case 446:
+      case 447:
+      case 448:
+      case 449:
         return true;
       default:
         return false;
@@ -1601,6 +1624,12 @@ class Feature extends MapObject {
       case 424:
       case 425:
       case 426:
+      case 444: // large trees
+      case 445:
+      case 446:
+      case 447:
+      case 448:
+      case 449:
         return Constants.feature_treeInteractionTime;
       case 441: // bush
       case 442:
@@ -1700,6 +1729,17 @@ class Feature extends MapObject {
         id_list.add(2969);
         break;
       case 425: // tree (large)
+      case 444: // large trees
+      case 445:
+      case 446:
+      case 447:
+      case 449:
+        id_list.add(2969);
+        id_list.add(2969);
+        id_list.add(2969);
+        break;
+      case 448: // large tree (large)
+        id_list.add(2969);
         id_list.add(2969);
         id_list.add(2969);
         id_list.add(2969);
@@ -2279,24 +2319,36 @@ class Feature extends MapObject {
       case 424: // Tree (dead)
       case 425: // Tree (large)
       case 426: // Tree (pine)
+      case 444: // large trees
+      case 445:
+      case 446:
+      case 447:
+      case 448:
+      case 449:
         int branch_id = 0;
         switch(this.ID) {
           case 421:
+          case 444:
             branch_id = 2965;
             break;
           case 422:
+          case 445:
             branch_id = 2966;
             break;
           case 423:
+          case 446:
             branch_id = 2967;
             break;
           case 424:
+          case 447:
             branch_id = 2963;
             break;
           case 425:
+          case 448:
             branch_id = 2965;
             break;
           case 426:
+          case 449:
             branch_id = 2968;
             break;
         }

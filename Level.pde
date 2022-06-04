@@ -1858,24 +1858,36 @@ class Level {
       case 424: // Tree (dead)
       case 425: // Tree (large)
       case 426: // Tree (pine)
+      case 444: // large trees
+      case 445:
+      case 446:
+      case 447:
+      case 448:
+      case 449:
         int branch_id = 0;
         switch(f.ID) {
           case 421:
+          case 444:
             branch_id = 2965;
             break;
           case 422:
+          case 445:
             branch_id = 2966;
             break;
           case 423:
+          case 446:
             branch_id = 2967;
             break;
           case 424:
+          case 447:
             branch_id = 2963;
             break;
           case 425:
+          case 448:
             branch_id = 2965;
             break;
           case 426:
+          case 449:
             branch_id = 2968;
             break;
         }

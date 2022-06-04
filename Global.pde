@@ -76,6 +76,10 @@ class Global {
     this.holding_ctrl = false;
     this.holding_alt = false;
     this.holding_space = false;
+    this.holding_left = false;
+    this.holding_right = false;
+    this.holding_up = false;
+    this.holding_down = false;
     this.holding_rightclick = false;
     if (this.menu != null) {
       this.menu.loseFocus();
