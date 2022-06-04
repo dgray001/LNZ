@@ -1458,12 +1458,12 @@ class Item extends MapObject {
         break;
       case 2911:
         this.setStrings("Pen", "Office", "");
-        this.attack = 1;
+        this.attack = 0.6;
         this.durability = 6;
         break;
       case 2912:
         this.setStrings("Pencil", "Office", "");
-        this.attack = 1;
+        this.attack = 0.6;
         this.durability = 6;
         break;
       case 2913:
@@ -1474,7 +1474,7 @@ class Item extends MapObject {
         break;
       case 2915:
         this.setStrings("Stapler", "Office", "");
-        this.attack = 1;
+        this.attack = 0.6;
         this.durability = 15;
         break;
       case 2916:
@@ -1502,7 +1502,7 @@ class Item extends MapObject {
         break;
       case 2924:
         this.setStrings("Glass Bottle", "Utility", "");
-        this.attack = 1;
+        this.attack = 0.8;
         this.piercing = 0.06;
         this.durability = 2;
         break;
@@ -1811,6 +1811,9 @@ class Item extends MapObject {
           text += "\nDurability: " + this.durability;
           break;
       }
+    }
+    if (this.waterBottle()) {
+      text += "\nWater: " + this.ammo + "/" + this.maximumAmmo();
     }
     if (this.type.equals("Ranged Weapon")) {
       text += "\nAmmo: " + this.ammo + "/" + this.maximumAmmo();
@@ -3035,6 +3038,18 @@ class Item extends MapObject {
 
   boolean openable() {
     return this.type.equals("Package");
+  }
+
+  boolean waterBottle() {
+    switch(this.ID) {
+      case 2924: // glass bottle
+      case 2925: // water bottle
+      case 2926: // canteen
+      case 2927: // water jug
+        return true;
+      default:
+        return false;
+    }
   }
 
   boolean utility() {

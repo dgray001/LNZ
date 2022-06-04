@@ -1071,7 +1071,7 @@ class Level {
       case 161: // water fountain
         global.sounds.trigger_environment("features/water_fountain",
           f.xCenter() - this.currMap.viewX, f.yCenter() - this.currMap.viewY);
-        if (use_item && h.holding(2924, 2925, 2926, 2927)) {
+        if (h.holding(2924, 2925, 2926, 2927) && (h.weapon().maximumAmmo() - h.weapon().availableAmmo() > 0)) {
           h.weapon().changeAmmo(3);
         }
         // if holding a dirty item clean it (?)

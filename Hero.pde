@@ -999,6 +999,7 @@ class Hero extends Unit {
     protected float last_mY = 0;
     protected boolean viewing = false;
     protected boolean any_hovered = false;
+    protected int grab_mouse_button = LEFT;
 
     HeroInventory() {
       super(Constants.hero_inventoryMaxRows, Constants.hero_inventoryMaxCols, false);
@@ -1008,7 +1009,7 @@ class Hero extends Unit {
 
 
     void dropItemHolding() {
-      if (this.item_holding == null) {
+      if (this.item_holding == null || this.item_holding.remove) {
         return;
       }
       if (this.item_origin == null || !this.any_hovered) {
@@ -1319,11 +1320,11 @@ class Hero extends Unit {
       if (this.feature_inventory != null) {
         this.feature_inventory.mousePress();
       }
-      // main inventory
       boolean found_clicked = false;
       Item source_item = null;
       float item_holding_x = 0;
       float item_holding_y = 0;
+      // main inventory
       for (int x = 0; x < this.max_cols; x++) {
         for (int y = 0; y < this.max_rows; y++) {
           int i = y * this.max_cols + x;
@@ -1337,8 +1338,21 @@ class Hero extends Unit {
               this.item_origin = new InventoryKey(InventoryLocation.INVENTORY, i);
               item_holding_x = 2 + (x + 0.5) * this.button_size;
               item_holding_y = 2 + (y + 0.5) * this.button_size;
+              this.grab_mouse_button = mouseButton;
             }
             else {
+              if (mouseButton != this.grab_mouse_button) {
+                if (source_item == null || source_item.remove) {
+                  this.slots.get(i).item = new Item(this.item_holding);
+                  this.slots.get(i).item.stack = 1;
+                  this.item_holding.removeStack();
+                }
+                else if (source_item.ID == this.item_holding.ID &&
+                  source_item.maxStack() > source_item.stack) {
+                  source_item.addStack();
+                  this.item_holding.removeStack();
+                }
+              }
               return;
             }
             found_clicked = true;
@@ -1358,15 +1372,28 @@ class Hero extends Unit {
               continue;
             }
             this.gear_inventory.slots.get(i).mousePress();
-            if (this.gear_inventory.slots.get(i).button.clicked) {
+            if (this.gear_inventory.slots.get(i).button.hovered) {
               source_item = this.gear_inventory.getItem(i);
               if (this.item_holding == null || this.item_holding.remove) {
                 this.item_origin = new InventoryKey(InventoryLocation.GEAR, i);
                 item_holding_x = (x + 0.5) * this.button_size - this.gear_inventory.display_width;
                 item_holding_y = 0.5 * (this.display_height - this.gear_inventory.
                   display_height) + 2 + (y + 0.5) * this.button_size;
+                this.grab_mouse_button = mouseButton;
               }
               else {
+                if (mouseButton != this.grab_mouse_button) {
+                  if (source_item == null || source_item.remove) {
+                    this.gear_inventory.slots.get(i).item = new Item(this.item_holding);
+                    this.gear_inventory.slots.get(i).item.stack = 1;
+                    this.item_holding.removeStack();
+                  }
+                  else if (source_item.ID == this.item_holding.ID &&
+                    source_item.maxStack() > source_item.stack) {
+                    source_item.addStack();
+                    this.item_holding.removeStack();
+                  }
+                }
                 return;
               }
               found_clicked = true;
@@ -1389,7 +1416,7 @@ class Hero extends Unit {
               break;
             }
             this.crafting_inventory.slots.get(i).mousePress();
-            if (this.crafting_inventory.slots.get(i).button.clicked) {
+            if (this.crafting_inventory.slots.get(i).button.hovered) {
               source_item = this.crafting_inventory.slots.get(i).item;
               if (this.item_holding == null || this.item_holding.remove) {
                 this.item_origin = new InventoryKey(InventoryLocation.CRAFTING, i);
@@ -1397,8 +1424,21 @@ class Hero extends Unit {
                   this.crafting_inventory.slots.get(i).button.xi;
                 item_holding_y = 0.5 * (this.display_height - this.crafting_inventory.
                   display_height) + 2 + (y + 0.5) * this.button_size + this.crafting_inventory.slots.get(i).button.yi;
+                this.grab_mouse_button = mouseButton;
               }
               else {
+                if (mouseButton != this.grab_mouse_button) {
+                  if (source_item == null || source_item.remove) {
+                    this.crafting_inventory.slots.get(i).item = new Item(this.item_holding);
+                    this.crafting_inventory.slots.get(i).item.stack = 1;
+                    this.item_holding.removeStack();
+                  }
+                  else if (source_item.ID == this.item_holding.ID &&
+                    source_item.maxStack() > source_item.stack) {
+                    source_item.addStack();
+                    this.item_holding.removeStack();
+                  }
+                }
                 return;
               }
               found_clicked = true;
@@ -1420,7 +1460,7 @@ class Hero extends Unit {
                 break;
               }
               this.feature_inventory.slots.get(i).mousePress();
-              if (this.feature_inventory.slots.get(i).button.clicked) {
+              if (this.feature_inventory.slots.get(i).button.hovered) {
                 source_item = this.feature_inventory.slots.get(i).item;
                 if (this.item_holding == null || this.item_holding.remove) {
                   this.item_origin = new InventoryKey(InventoryLocation.FEATURE, i);
@@ -1429,8 +1469,21 @@ class Hero extends Unit {
                     this.feature_inventory.slots.get(i).button.xi;
                   item_holding_y = (y + 0.5) * this.button_size - this.feature_inventory.
                     display_height + this.crafting_inventory.slots.get(i).button.yi;
+                  this.grab_mouse_button = mouseButton;
                 }
                 else {
+                  if (mouseButton != this.grab_mouse_button) {
+                    if (source_item == null || source_item.remove) {
+                      this.feature_inventory.slots.get(i).item = new Item(this.item_holding);
+                      this.feature_inventory.slots.get(i).item.stack = 1;
+                      this.item_holding.removeStack();
+                    }
+                    else if (source_item.ID == this.item_holding.ID &&
+                      source_item.maxStack() > source_item.stack) {
+                      source_item.addStack();
+                      this.item_holding.removeStack();
+                    }
+                  }
                   return;
                 }
                 found_clicked = true;
@@ -1523,7 +1576,7 @@ class Hero extends Unit {
         this.feature_inventory.mouseRelease(mX - featureInventoryTranslateX, mY - featureInventoryTranslateY);
       }
       // process item holding
-      if (this.item_holding == null) {
+      if (this.item_holding == null || this.item_holding.remove || mouseButton != this.grab_mouse_button) {
         return;
       }
       // main inventory
@@ -4983,7 +5036,7 @@ class Hero extends Unit {
         case 2925:
         case 2926:
         case 2927:
-          int thirst_quenched = min(100 - this.thirst, i.ammo);
+          int thirst_quenched = min(Constants.hero_thirstThreshhold - this.thirst, i.ammo);
           i.ammo -= thirst_quenched;
           this.increaseThirst(thirst_quenched);
           break;

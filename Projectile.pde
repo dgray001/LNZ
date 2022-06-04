@@ -779,6 +779,9 @@ class Projectile extends MapObject {
       case 3118: // Chicken Egg
         global.sounds.trigger_units("items/egg_crack", this.x - map.viewX, this.y - map.viewY);
         break;
+      case 3924: // Glass Bottle
+        global.sounds.trigger_units("items/glass_bottle_hit", this.x - map.viewX, this.y - map.viewY);
+        break;
       default:
       // default drop sound
         break;
