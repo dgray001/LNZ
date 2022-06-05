@@ -755,7 +755,7 @@ class GameMap {
     }
     for (int i = int(floor(f.x)); i < int(floor(f.x + f.sizeX)); i++) {
       for (int j = int(floor(f.y)); j < int(floor(f.y + f.sizeY)); j++) {
-        this.squares[i][j].feature_elevation += f.sizeZ;
+        this.squares[i][j].addedFeature(f);
       }
     }
     if (this.terrain_dimg != null && f.displaysImage()) {
@@ -791,7 +791,7 @@ class GameMap {
     }
     for (int i = int(floor(f.x)); i < int(floor(f.x + f.sizeX)); i++) {
       for (int j = int(floor(f.y)); j < int(floor(f.y + f.sizeY)); j++) {
-        this.squares[i][j].feature_elevation -= f.sizeZ;
+        this.squares[i][j].removedFeature(f);
       }
     }
     if (!f.displaysImage()) {

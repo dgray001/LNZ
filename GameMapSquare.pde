@@ -7,6 +7,7 @@ class GameMapSquare {
   private float light_level = 8; // [0, 10]
   private boolean light_source = false;
   private float original_light = 0;
+  private float light_blocked_by_feature = 0;
 
   GameMapSquare() {
     this.setTerrain(1);
@@ -15,10 +16,20 @@ class GameMapSquare {
     this.setTerrain(terrain_id);
   }
 
+  void addedFeature(Feature f) {
+    this.feature_elevation += f.sizeZ;
+    this.light_blocked_by_feature += f.lightPercentageBlocked();
+  }
+
+  void removedFeature(Feature f) {
+    this.feature_elevation -= f.sizeZ;
+    this.light_blocked_by_feature -= f.lightPercentageBlocked();
+  }
+
   void updateLightLevel(GameMap map, int x, int y) {
     if (this.terrain_id == 191) { // lava
       this.light_source = true;
-      this.light_level = 9;
+      this.light_level = 9.2;
       return;
     }
     float light = this.light_level;
@@ -32,6 +43,7 @@ class GameMapSquare {
       GameMapSquare square = map.squares[x+1][y];
       if (square.light_source || square.passesLight()) {
         float light_right = square.light_level - Constants.map_lightDecay;
+        light_right *= 1 - square.light_blocked_by_feature;
         if (light_right > light) {
           light = light_right;
         }
@@ -41,6 +53,7 @@ class GameMapSquare {
       GameMapSquare square = map.squares[x-1][y];
       if (square.light_source || square.passesLight()) {
         float light_left = square.light_level - Constants.map_lightDecay;
+        light_left *= 1 - square.light_blocked_by_feature;
         if (light_left > light) {
           light = light_left;
         }
@@ -50,6 +63,7 @@ class GameMapSquare {
       GameMapSquare square = map.squares[x][y+1];
       if (square.light_source || square.passesLight()) {
         float light_down = square.light_level - Constants.map_lightDecay;
+        light_down *= 1 - square.light_blocked_by_feature;
         if (light_down > light) {
           light = light_down;
         }
@@ -59,6 +73,7 @@ class GameMapSquare {
       GameMapSquare square = map.squares[x][y-1];
       if (square.light_source || square.passesLight()) {
         float light_up = square.light_level - Constants.map_lightDecay;
+        light_up *= 1 - square.light_blocked_by_feature;
         if (light_up > light) {
           light = light_up;
         }
@@ -72,6 +87,12 @@ class GameMapSquare {
 
   color getColor(color fog_color) {
     float light_factor = 0.1 * this.light_level; // [0, 1]
+    if (light_factor > 1) {
+      light_factor = 1;
+    }
+    else if (light_factor < 0) {
+      light_factor = 0;
+    }
     float r = (fog_color >> 16 & 0xFF) * light_factor;
     float g = (fog_color >> 8 & 0xFF) * light_factor;
     float b = (fog_color & 0xFF) * light_factor;
@@ -115,7 +136,12 @@ class GameMapSquare {
       case 213:
         return false;
       default:
-        return true;
+        if (this.light_blocked_by_feature < 1) {
+          return true;
+        }
+        else {
+          return false;
+        }
     }
   }
 

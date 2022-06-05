@@ -3842,7 +3842,7 @@ class Unit extends MapObject {
                 continue;
               }
               try {
-                if (!map.squares[a][b].isWall()) {
+                if (map.squares[a][b].passesLight()) {
                   continue;
                 }
                 float p_x = a + 0.5;

@@ -1,6 +1,4 @@
 v0.7.5: Lev2 maps
- a: Lev2-1: Frontdoor map outlines
- b: Lev2-2: Ahimdoor map outlines
  c: Lev2-3: Chapeldoor map outlines
  d: Lev2-4: Brothersdoor map outlines
  e: Lev2-5: Custodialdoor map outlines
@@ -12,7 +10,6 @@ v0.7.5: Lev2 maps
  k: Replace mocks with appropriately-named levels/maps
  l: Victory conditions for all levels
  m: Generic Zombies spawn at night based on player level (11 - 100) => single ID unit
- n: Light can travel through windows
  o: MinigameInterface outline
  p: Can access Minigames
  q: Can unlock mock minigame

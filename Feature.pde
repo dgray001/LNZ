@@ -476,6 +476,10 @@ class Feature extends MapObject {
         this.setStrings("Parking Bumper", "Outdoors", "");
         this.setSize(1, 3, 1);
         break;
+      case 253:
+        this.setStrings("Gazebo", "Outdoors", "");
+        this.setSize(4, 4, 7);
+        break;
 
       // Walls
       case 301:
@@ -1126,6 +1130,9 @@ class Feature extends MapObject {
       case 252:
         path += "parking_bumper_left.png";
         break;
+      case 253:
+        path += "gazebo.png";
+        break;
       case 301:
         path = "terrain/brickWall_blue.jpg";
         break;
@@ -1748,6 +1755,61 @@ class Feature extends MapObject {
         break;
     }
     return id_list;
+  }
+
+
+  float lightPercentageBlocked() {
+    switch(this.ID) {
+      case 172: // vending machine
+      case 173: // vending machine
+      case 175: // fridge
+      case 201: // steel cross
+      case 301: // movable brick wall
+      case 302:
+      case 303:
+      case 304:
+      case 305:
+      case 306:
+      case 307:
+      case 311: // pillar
+      case 312: // pillar
+      case 339: // wooden door (closed)
+      case 340:
+      case 341:
+      case 342:
+      case 343: // wooden door (locked)
+      case 344:
+      case 345:
+      case 346:
+      case 359: // steel door (closed)
+      case 360:
+      case 361:
+      case 362:
+      case 363: // steel door (locked)
+      case 364:
+      case 365:
+      case 366:
+        return 1;
+      case 321: // window
+      case 322:
+      case 323:
+        return 0.05;
+      case 421: // tree
+      case 422:
+      case 423:
+      case 424:
+      case 425:
+      case 426:
+      case 444:
+      case 445:
+      case 446:
+      case 447:
+      case 448:
+      case 449:
+        return 0.7;
+      default:
+        return 0;
+    }
   }
 
 
