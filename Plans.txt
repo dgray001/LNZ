@@ -1,6 +1,4 @@
 v0.7.5: Lev2 maps
- c: Lev2-3: Chapeldoor map outlines
- d: Lev2-4: Brothersdoor map outlines
  e: Lev2-5: Custodialdoor map outlines
  f: All linkers
  g: Cars have gas / key to turn on => victory based on car
