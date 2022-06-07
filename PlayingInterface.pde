@@ -1217,11 +1217,6 @@ class PlayingInterface extends InterfaceLNZ {
           this.leftPanel.hovered = false;
         }
       }
-      else if (this.level != null) {
-        if (this.level.leftPanelElementsHovered()) {
-          this.leftPanel.hovered = false;
-        }
-      }
     }
     // right panel mouse move
     this.rightPanel.mouseMove(mX, mY);

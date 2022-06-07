@@ -100,6 +100,21 @@ class Quest {
         break;
       case 25: // go to room
         break;
+      // Frontdoor
+      case 31: // get off campus
+        break;
+      // Ahimdoor
+      case 41:
+        break;
+      // Brothersdoor
+      case 51:
+        break;
+      // Chapeldoor
+      case 61:
+        break;
+      // Custodialdoor
+      case 71:
+        break;
       default:
         global.errorMessage("ERROR: Quest ID " + this.ID + " not recognized.");
         break;
@@ -144,6 +159,21 @@ class Quest {
         return "Find Ben's Backpack";
       case 25: // go to room
         return "Go to your room";
+      // Frontdoor
+      case 31: // get off campus
+        return "Get off campus";
+      // Ahimdoor
+      case 41:
+        return "";
+      // Brothersdoor
+      case 51:
+        return "";
+      // Chapeldoor
+      case 61:
+        return "";
+      // Custodialdoor
+      case 71:
+        return "";
       default:
         return "";
     }
@@ -187,6 +217,21 @@ class Quest {
         return "Find Ben's Backpack; he remembers putting it in storage somewhere.";
       case 25: // go to room
         return "Somehow the door is locked again";
+      // Frontdoor
+      case 31: // get off campus
+        return "Find a place more remote, preferrably before night-fall";
+      // Ahimdoor
+      case 41:
+        return "";
+      // Brothersdoor
+      case 51:
+        return "";
+      // Chapeldoor
+      case 61:
+        return "";
+      // Custodialdoor
+      case 71:
+        return "";
       default:
         return "";
     }

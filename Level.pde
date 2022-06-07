@@ -1830,10 +1830,6 @@ class Level {
           f.number--;
           if (f.number < 1) {
             f.remove = true;
-            new_f = new Feature(134, f.x, f.y);
-            this.currMap.addFeature(new_f);
-            new_f.hovered = true;
-            this.currMap.hovered_object = new_f;
           }
         }
         break;
