@@ -508,7 +508,7 @@ class GameMap {
             GameMap.this.units.get(0).aim(GameMap.this.mX, GameMap.this.mY);
             break;
           case MOVING:
-            GameMap.this.units.get(0).moveTo(GameMap.this.mX, GameMap.this.mY);
+            GameMap.this.units.get(0).moveTo(GameMap.this.mX, GameMap.this.mY, GameMap.this);
             break;
           case NONE:
             GameMap.this.units.get(0).face(GameMap.this.mX, GameMap.this.mY);
@@ -2200,7 +2200,7 @@ class GameMap {
             player.aim(this.mX, this.mY);
           }
           else if (this.hovered_object == null || !this.hovered_object.targetable(player)) {
-            player.moveTo(this.mX, this.mY);
+            player.moveTo(this.mX, this.mY, this);
             this.addVisualEffect(4001, this.mX, this.mY);
           }
           else {

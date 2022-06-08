@@ -136,6 +136,30 @@ class EditUnitForm extends EditMapObjectForm {
 
 
 class Unit extends MapObject {
+  class PathFindingThread extends Thread {
+    private float goal_x = 0;
+    private float goal_y = 0;
+    private GameMap map = null;
+    private Stack<FloatCoordinate> move_stack = new Stack<FloatCoordinate>();
+
+    PathFindingThread(float goal_x, float goal_y, GameMap map) {
+      super("PathFindingThread");
+      this.goal_x = goal_x;
+      this.goal_y = goal_y;
+      this.map = map;
+    }
+
+    @Override
+    void run() {
+      this.move_stack.push(new FloatCoordinate(this.goal_x, this.goal_y));
+      if (this.map == null) {
+        return;
+      }
+      // pathfinding logic
+    }
+  }
+
+
   protected float size = Constants.unit_defaultSize; // radius
   protected int sizeZ = Constants.unit_defaultHeight;
 
@@ -179,6 +203,10 @@ class Unit extends MapObject {
   protected boolean curr_action_unstoppable = false;
   protected float curr_action_x = 0;
   protected float curr_action_y = 0;
+  protected Stack<FloatCoordinate> move_stack = new Stack<FloatCoordinate>();
+  protected boolean using_current_move_stack = false;
+  protected boolean waiting_for_pathfinding_thread = false;
+  protected PathFindingThread pathfinding_thread = null;
 
   protected int map_key = -10;
   protected MapObject object_targeting = null;
@@ -1712,12 +1740,39 @@ class Unit extends MapObject {
 
   // If unit choosing to move somewhere
   void moveLogic(int timeElapsed, GameMap map) {
+    if (this.waiting_for_pathfinding_thread) {
+      if (this.pathfinding_thread == null) {
+        this.waiting_for_pathfinding_thread = false;
+      }
+      else if (this.pathfinding_thread.isAlive()) {
+        if (this.last_move_collision) { // only wait for thead when you actually collide
+          return;
+        }
+      }
+      else {
+        this.move_stack = this.pathfinding_thread.move_stack;
+        if (!this.move_stack.empty()) {
+          this.using_current_move_stack = true;
+        }
+        this.pathfinding_thread = null;
+        this.waiting_for_pathfinding_thread = false;
+        return; // have to return so next thread the unit faces properly
+      }
+    }
     boolean collision_last_move = this.last_move_collision;
     if (this.sneaking()) {
       this.move(timeElapsed, map, MoveModifier.SNEAK);
     }
     else {
       this.move(timeElapsed, map, MoveModifier.NONE);
+    }
+    if (this.using_current_move_stack) {
+      if (this.move_stack.empty()) {
+        this.using_current_move_stack = false;
+      }
+      else if (this.distance(this.move_stack.peek().x, this.move_stack.peek().y) < this.last_move_distance) {
+        this.move_stack.pop();
+      }
     }
     if (this.last_move_collision) {
       if (collision_last_move) {
@@ -1770,7 +1825,18 @@ class Unit extends MapObject {
             }
             break;
           default:
-            this.face(this.curr_action_x, this.curr_action_y); // pathfinding
+            if (this.using_current_move_stack) {
+              if (this.move_stack.empty()) {
+                this.using_current_move_stack = false;
+                this.face(this.curr_action_x, this.curr_action_y);
+              }
+              else {
+                this.face(this.move_stack.peek().x, this.move_stack.peek().y);
+              }
+            }
+            else {
+              this.face(this.curr_action_x, this.curr_action_y);
+            }
             this.moveLogic(timeElapsed, map);
             break;
         }
@@ -1842,11 +1908,23 @@ class Unit extends MapObject {
           this.stopAction();
           break;
         }
-        this.face(f);
         if (this.distance(f) > f.interactionDistance()) {
+          if (this.using_current_move_stack) {
+            if (this.move_stack.empty()) {
+              this.using_current_move_stack = false;
+              this.face(f);
+            }
+            else {
+              this.face(this.move_stack.peek().x, this.move_stack.peek().y);
+            }
+          }
+          else {
+            this.face(f);
+          }
           this.moveLogic(timeElapsed, map);
           break;
         }
+        this.face(f);
         if (f.onInteractionCooldown()) {
           break;
         }
@@ -1894,12 +1972,24 @@ class Unit extends MapObject {
           this.stopAction();
           break;
         }
-        this.face(u);
         float distance = this.distance(u);
         if (distance > this.attackRange()) {
+          if (this.using_current_move_stack) {
+            if (this.move_stack.empty()) {
+              this.using_current_move_stack = false;
+              this.face(u);
+            }
+            else {
+              this.face(this.move_stack.peek().x, this.move_stack.peek().y);
+            }
+          }
+          else {
+            this.face(u);
+          }
           this.moveLogic(timeElapsed, map);
         }
         else if (this.timer_attackCooldown <= 0) {
+          this.face(u);
           if (this.weapon() != null && this.weapon().shootable()) {
             if (this.weapon().meleeAttackable() && distance < this.attackRange(true)) {
               this.curr_action = UnitAction.ATTACKING;
@@ -1937,11 +2027,23 @@ class Unit extends MapObject {
           this.stopAction();
           break;
         }
-        this.face(i);
         if (this.distance(i) > i.interactionDistance()) {
+          if (this.using_current_move_stack) {
+            if (this.move_stack.empty()) {
+              this.using_current_move_stack = false;
+              this.face(i);
+            }
+            else {
+              this.face(this.move_stack.peek().x, this.move_stack.peek().y);
+            }
+          }
+          else {
+            this.face(i);
+          }
           this.moveLogic(timeElapsed, map);
         }
         else {
+          this.face(i);
           if (this.gear.containsKey(GearSlot.WEAPON)) {
             if (this.weapon() == null) {
               this.gear.put(GearSlot.WEAPON, new Item(i));
@@ -2042,7 +2144,18 @@ class Unit extends MapObject {
           this.useItem(map);
           this.curr_action = UnitAction.MOVING;
         }
-        this.face(this.curr_action_x, this.curr_action_y); // pathfinding
+        if (this.using_current_move_stack) {
+          if (this.move_stack.empty()) {
+            this.using_current_move_stack = false;
+            this.face(this.curr_action_x, this.curr_action_y);
+          }
+          else {
+            this.face(this.move_stack.peek().x, this.move_stack.peek().y);
+          }
+        }
+        else {
+          this.face(this.curr_action_x, this.curr_action_y);
+        }
         this.moveLogic(timeElapsed, map);
         break;
       case NONE:
@@ -2105,7 +2218,7 @@ class Unit extends MapObject {
             se.number += random(Constants.status_confused_tickMaxTimer);
             this.moveTo(this.x + Constants.status_confused_maxAmount -
               2 * random(Constants.status_confused_maxAmount), this.y +
-              Constants.status_confused_maxAmount - 2 * random(Constants.status_confused_maxAmount));
+              Constants.status_confused_maxAmount - 2 * random(Constants.status_confused_maxAmount), null);
           }
           break;
         case BLEEDING:
@@ -2810,7 +2923,7 @@ class Unit extends MapObject {
             this.faceAway(source);
           }
           this.addStatusEffect(StatusEffectCode.RUNNING, 3000);
-          this.moveForward(4);
+          this.moveForward(4, null);
           this.ai_toggle = true;
           this.timer_ai_action3 = 300;
           break;
@@ -3493,16 +3606,20 @@ class Unit extends MapObject {
   }
 
 
-  void moveForward(float distance) {
-    this.moveTo(this.x + this.facingX * distance, this.y + this.facingY * distance);
+  void moveForward(float distance, GameMap map) {
+    this.moveTo(this.x + this.facingX * distance, this.y + this.facingY * distance, map);
   }
 
-  void moveTo(float targetX, float targetY) {
+  void moveTo(float targetX, float targetY, GameMap map) {
     if (this.curr_action == UnitAction.USING_ITEM || this.curr_action == UnitAction.MOVING_AND_USING_ITEM) {
       this.curr_action = UnitAction.MOVING_AND_USING_ITEM;
     }
     else {
       this.curr_action = UnitAction.MOVING;
+    }
+    if (map != null) {
+      this.waiting_for_pathfinding_thread = true;
+      this.pathfinding_thread = new PathFindingThread(targetX, targetY, map);
     }
     this.object_targeting = null;
     this.curr_action_x = targetX;
@@ -3970,11 +4087,11 @@ class Unit extends MapObject {
               this.refreshStatusEffect(StatusEffectCode.RUNNING, 0.8 * Constants.ai_chickenTimer1);
               this.moveTo(this.x + other_chicken_face_x * Constants.ai_chickenMoveDistance +
                 randomFloat(-1, 1), other_chicken_face_y * Constants.ai_chickenMoveDistance +
-                randomFloat(-1, 1));
+                randomFloat(-1, 1), map);
             }
             else {
               this.moveTo(this.x + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance),
-                this.y + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance));
+                this.y + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance), map);
             }
           }
           if (this.timer_ai_action2 < 0) {
@@ -4037,11 +4154,11 @@ class Unit extends MapObject {
               this.refreshStatusEffect(StatusEffectCode.RUNNING, 0.8 * Constants.ai_chickenTimer1);
               this.moveTo(this.x + other_chicken_face_x * Constants.ai_chickenMoveDistance +
                 randomFloat(-1, 1), other_chicken_face_y * Constants.ai_chickenMoveDistance +
-                randomFloat(-1, 1));
+                randomFloat(-1, 1), map);
             }
             else {
               this.moveTo(this.x + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance),
-                this.y + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance));
+                this.y + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance), map);
             }
           }
           if (this.timer_ai_action2 < 0) {
@@ -4094,7 +4211,7 @@ class Unit extends MapObject {
             if (random_walk) {
               this.timer_ai_action1 = int(Constants.ai_chickenTimer1 + random(Constants.ai_chickenTimer1));
               this.moveTo(this.x + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance),
-                this.y + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance));
+                this.y + Constants.ai_chickenMoveDistance - 2 * random(Constants.ai_chickenMoveDistance), map);
             }
           }
           if (this.timer_ai_action2 < 0) {
@@ -4148,7 +4265,7 @@ class Unit extends MapObject {
               }
             }
             if (no_target && randomChance(0.1)) {
-              this.moveTo(this.x + 3 - random(6), this.y + 3 - random(6));
+              this.moveTo(this.x + 3 - random(6), this.y + 3 - random(6), map);
             }
           }
         }

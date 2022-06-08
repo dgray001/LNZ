@@ -4058,7 +4058,7 @@ class Item extends MapObject {
       case 2123: // bread
       case 2125: // hot pocket
       case 2142: // golden apple
-        return 1450;
+        return 1300;
       case 2131: // water cup
       case 2132: // coke
       case 2133: // wine
@@ -4068,7 +4068,7 @@ class Item extends MapObject {
       case 2925: // Water Bottle
       case 2926: // Canteen
       case 2927: // Water Jug
-        return 1800;
+        return 1650;
       case 2124: // hot pocket package
         return 1400;
       case 2301: // Slingshot

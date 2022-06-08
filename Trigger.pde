@@ -987,12 +987,15 @@ class Effect {
           break;
         }
         if (level.currMap.units.containsKey(this.number)) {
-          level.currMap.units.get(this.number).moveTo(this.rectangle.centerX(), this.rectangle.centerY());
+          level.currMap.units.get(this.number).moveTo(this.rectangle.centerX(), this.rectangle.centerY(), level.currMap);
         }
         break;
       case 25: // move player
+        if (level.currMap == null) {
+          break;
+        }
         if (level.player != null) {
-          level.player.moveTo(this.rectangle.centerX(), this.rectangle.centerY());
+          level.player.moveTo(this.rectangle.centerX(), this.rectangle.centerY(), level.currMap);
         }
         break;
       case 26: // move units in rectangle
@@ -1001,7 +1004,7 @@ class Effect {
         }
         for (Map.Entry<Integer, Unit> entry : level.currMap.units.entrySet()) {
           if (this.rectangle.contains(entry.getValue())) {
-            entry.getValue().moveTo(this.decimal1, this.decimal2);
+            entry.getValue().moveTo(this.decimal1, this.decimal2, level.currMap);
           }
         }
         break;

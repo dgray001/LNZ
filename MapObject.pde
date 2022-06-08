@@ -13,6 +13,21 @@ class IntegerCoordinate {
   }
 }
 
+class FloatCoordinate {
+  private float x;
+  private float y;
+  FloatCoordinate(float x, float y) {
+    this.x = x;
+    this.y = y;
+  }
+  boolean equals(FloatCoordinate coordinate) {
+    if (abs(this.x - coordinate.x) < Constants.small_number && abs(this.y - coordinate.y) < Constants.small_number) {
+      return true;
+    }
+    return false;
+  }
+}
+
 
 
 abstract class EditMapObjectForm extends FormLNZ {
