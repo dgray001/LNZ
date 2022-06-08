@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\nAlpha v0.7.5d: 20220606" +
+  "\nAlpha v0.7.5e: 20220608" +
   "\n\nLines: 45592 (v0.7.5)" +
   "\nImages: 1226 (v0.7.5)" +
   "\nSounds: 327 (v0.7.5)" +
@@ -181,6 +181,7 @@ static class Constants {
   static final int map_maxHeight = 10;
   static final float map_lightDecay = 0.8; // per square
   static final int map_lightUpdateIterations = 8; // per refresh
+  static final int map_chunkWidth = 3;
 
   // Features
   static final float feature_defaultInteractionDistance = 0.3;
@@ -448,7 +449,7 @@ static class Constants {
   static final int upgrade_inventory_bar_slots = 3;
   static final float upgrade_healthI = 2.5;
   static final float upgrade_attackI = 1.5;
-  static final float upgrade_defenseI = 2;
+  static final float upgrade_defenseI = 0.8;
   static final float upgrade_piercingI = 0.05;
   static final float upgrade_speedI = 0.3;
   static final float upgrade_sightI = 1.5;
@@ -458,8 +459,8 @@ static class Constants {
   static final float upgrade_resistanceI = 3;
   static final float upgrade_penetrationI = 0.05;
   static final float upgrade_healthII = 25;
-  static final float upgrade_attackII = 10;
-  static final float upgrade_defenseII = 5;
+  static final float upgrade_attackII = 12;
+  static final float upgrade_defenseII = 6.2;
   static final float upgrade_piercingII = 0.07;
   static final float upgrade_speedII = 0.5;
   static final float upgrade_sightII = 2;

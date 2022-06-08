@@ -317,6 +317,215 @@ class GameMap {
   }
 
 
+  class MouseMoveThread extends Thread {
+    private float mX = 0;
+    private float mY = 0;
+
+    MouseMoveThread(float mX, float mY) {
+      super("MouseMoveThread");
+      this.mX = mX;
+      this.mY = mY;
+    }
+
+    @Override
+    void run() {
+      if (this.mX < Constants.small_number) {
+        GameMap.this.view_moving_left = true;
+        if (!global.holding_right) {
+          GameMap.this.view_moving_right = false;
+        }
+      }
+      else if (this.mX > width - 1 - Constants.small_number) {
+        GameMap.this.view_moving_right = true;
+        if (!global.holding_left) {
+          GameMap.this.view_moving_left = false;
+        }
+      }
+      else {
+        if (!global.holding_right) {
+          GameMap.this.view_moving_right = false;
+        }
+        if (!global.holding_left) {
+          GameMap.this.view_moving_left = false;
+        }
+      }
+      if (this.mY < Constants.small_number) {
+        GameMap.this.view_moving_up = true;
+        if (!global.holding_down) {
+          GameMap.this.view_moving_down = false;
+        }
+      }
+      else if (this.mY > height - 1 - Constants.small_number) {
+        GameMap.this.view_moving_down = true;
+        if (!global.holding_up) {
+          GameMap.this.view_moving_up = false;
+        }
+      }
+      else {
+        if (!global.holding_down) {
+          GameMap.this.view_moving_down = false;
+        }
+        if (!global.holding_up) {
+          GameMap.this.view_moving_up = false;
+        }
+      }
+      GameMap.this.updateCursorPosition(this.mX, this.mY);
+      if (GameMap.this.selected_object != null && GameMap.this.selected_object_textbox != null) {
+        GameMap.this.selected_object_textbox.mouseMove(this.mX, this.mY);
+      }
+      if (GameMap.this.draw_fog) {
+        GameMap.this.hovered_explored = false;
+        GameMap.this.hovered_visible = false;
+      }
+      else {
+        GameMap.this.hovered_explored = true;
+        GameMap.this.hovered_visible = true;
+      }
+      boolean default_cursor = true;
+      boolean viewing_inventory = false;
+      if (GameMap.this.units.containsKey(0) && Hero.class.isInstance(GameMap.this.units.get(0))) {
+        viewing_inventory = ((Hero)GameMap.this.units.get(0)).inventory.viewing;
+      }
+      if (mX > GameMap.this.xi_map && mY > GameMap.this.yi_map && mX < GameMap.
+        this.xf_map && mY < GameMap.this.yf_map && !viewing_inventory) {
+        GameMap.this.hovered = true;
+        GameMap.this.hovered_area = true;
+        GameMap.this.hovered_border = false;
+        // update hovered for map objects
+        GameMap.this.hovered_object = null;
+        try {
+          if (!GameMap.this.draw_fog || GameMap.this.squares[int(floor(
+            GameMap.this.mX))][int(floor(GameMap.this.mY))].visible) {
+            GameMap.this.hovered_explored = true;
+            GameMap.this.hovered_visible = true;
+          }
+          else if (!GameMap.this.draw_fog || GameMap.this.squares[int(floor(
+            GameMap.this.mX))][int(floor(GameMap.this.mY))].explored) {
+            GameMap.this.hovered_explored = true;
+          }
+        } catch(ArrayIndexOutOfBoundsException e) {}
+        for (Map.Entry<Integer, Feature> entry : GameMap.this.features.entrySet()) {
+          Feature f = entry.getValue();
+          f.mouseMove(GameMap.this.mX, GameMap.this.mY);
+          if (f.hovered) {
+            if (!GameMap.this.force_all_hoverable) {
+              switch(f.ID) {
+                case 186: // outside light source
+                case 187: // invisible light source
+                case 188:
+                case 189:
+                case 190:
+                  f.hovered = false;
+                  continue;
+              }
+            }
+            if (!GameMap.this.hovered_explored) {
+              f.hovered = false;
+              continue;
+            }
+            GameMap.this.hovered_object = f;
+            global.setCursor("icons/cursor_interact.png");
+            default_cursor = false;
+          }
+        }
+        for (Map.Entry<Integer, Unit> entry : GameMap.this.units.entrySet()) {
+          Unit u = entry.getValue();
+          u.mouseMove(GameMap.this.mX, GameMap.this.mY);
+          if (u.hovered) {
+            if (!GameMap.this.hovered_visible) {
+              if (GameMap.this.units.containsKey(0)) {
+                if (!GameMap.this.hovered_explored || GameMap.this.units.get(0).alliance != u.alliance) {
+                  u.hovered = false;
+                  continue;
+                }
+              }
+              else {
+                u.hovered = false;
+                continue;
+              }
+            }
+            GameMap.this.hovered_object = u;
+            if (GameMap.this.units.containsKey(0) && u.alliance != GameMap.this.units.get(0).alliance) {
+              global.setCursor("icons/cursor_attack.png");
+              default_cursor = false;
+            }
+          }
+        }
+        for (Map.Entry<Integer, Item> entry : GameMap.this.items.entrySet()) {
+          Item i = entry.getValue();
+          i.mouseMove(GameMap.this.mX, GameMap.this.mY);
+          if (i.hovered) {
+            if (!GameMap.this.hovered_visible) {
+              i.hovered = false;
+              continue;
+            }
+            GameMap.this.hovered_object = i;
+            if (GameMap.this.units.containsKey(0) && GameMap.this.units.get(0).tier() >= i.tier) {
+              global.setCursor("icons/cursor_pickup.png");
+              default_cursor = false;
+            }
+          }
+        }
+        // hovered for header message
+        for (HeaderMessage message : GameMap.this.headerMessages) {
+          message.mouseMove(mX, mY);
+        }
+      }
+      else {
+        GameMap.this.hovered = false;
+        GameMap.this.hovered_object = null;
+        GameMap.this.hovered_explored = false;
+        GameMap.this.hovered_visible = false;
+        if (mX > GameMap.this.xi && mY > GameMap.this.yi && mX < GameMap.this.xf && mY < GameMap.this.yf) {
+          GameMap.this.hovered_area = true;
+          if (mX < GameMap.this.xi + Constants.map_borderSize || mX > GameMap.this.xf - Constants.map_borderSize ||
+            mY < GameMap.this.yi + Constants.map_borderSize || mY > GameMap.this.yf - Constants.map_borderSize) {
+            GameMap.this.hovered_border = true;
+          }
+          else {
+            GameMap.this.hovered_border = false;
+          }
+        }
+        else {
+          GameMap.this.hovered_area = false;
+          GameMap.this.hovered_border = false;
+        }
+        // dehover map objects
+        for (Feature f : GameMap.this.features.values()) {
+          f.hovered = false;
+        }
+        for (Map.Entry<Integer, Unit> entry : GameMap.this.units.entrySet()) {
+          entry.getValue().hovered = false;
+        }
+        for (Map.Entry<Integer, Item> entry : GameMap.this.items.entrySet()) {
+          entry.getValue().hovered = false;
+        }
+      }
+      // aiming for player
+      if (GameMap.this.units.containsKey(0) && global.holding_ctrl && !viewing_inventory && GameMap.this.in_control) {
+        switch(GameMap.this.units.get(0).curr_action) {
+          case AIMING:
+            GameMap.this.units.get(0).aim(GameMap.this.mX, GameMap.this.mY);
+            break;
+          case MOVING:
+            GameMap.this.units.get(0).moveTo(GameMap.this.mX, GameMap.this.mY);
+            break;
+          case NONE:
+            GameMap.this.units.get(0).face(GameMap.this.mX, GameMap.this.mY);
+            break;
+        }
+      }
+      if (default_cursor) {
+        global.defaultCursor("icons/cursor_interact.png", "icons/cursor_attack.png", "icons/cursor_pickup.png");
+      }
+      if (GameMap.this.restart_mouseMoveThread) {
+        GameMap.this.startMouseMoveThread();
+        GameMap.this.restart_mouseMoveThread = false;
+      }
+    }
+  }
+
+
 
   protected GameMapCode code = GameMapCode.ERROR;
   protected String mapName = "";
@@ -396,6 +605,8 @@ class GameMap {
   protected float mY = 0;
   protected float last_x = 0;
   protected float last_y = 0;
+  protected MouseMoveThread mouse_move_thread = null;
+  protected boolean restart_mouseMoveThread = false;
   protected MapObject hovered_object = null;
 
   protected MapObject selected_object = null;
@@ -433,6 +644,28 @@ class GameMap {
     this.initializeSquares();
   }
 
+
+  int mapXI() {
+    return 0;
+  }
+  int mapYI() {
+    return 0;
+  }
+  int mapXF() {
+    return this.mapWidth;
+  }
+  int mapYF() {
+    return this.mapHeight;
+  }
+
+
+  GameMapSquare mapSquare(int i, int j) {
+    try {
+      return this.squares[i][j];
+    } catch(ArrayIndexOutOfBoundsException e) {
+      return null;
+    }
+  }
 
   void initializeSquares() {
     this.squares = new GameMapSquare[this.mapWidth][this.mapHeight];
@@ -483,13 +716,13 @@ class GameMap {
       case DEFAULT:
         for (int i = 0; i < this.mapWidth; i++) {
           for (int j = 0; j < this.mapHeight; j++) {
-            if (this.squares[i][j].mapEdge()) {
+            if (this.mapSquare(i, j).mapEdge()) {
               this.fog_dimg.colorGrid(Constants.color_transparent, i, j);
             }
-            else if (!this.squares[i][j].explored) {
+            else if (!this.mapSquare(i, j).explored) {
               this.fog_dimg.colorGrid(Constants.color_black, i, j);
             }
-            else if (!this.squares[i][j].visible) {
+            else if (!this.mapSquare(i, j).visible) {
               this.fog_dimg.colorGrid(this.fogColor, i, j);
             }
             else {
@@ -510,10 +743,10 @@ class GameMap {
         for (int i = 0; i < this.mapWidth; i++) {
           for (int j = 0; j < this.mapHeight; j++) {
             this.setTerrainVisible(true, i, j, false);
-            if (this.squares[i][j].mapEdge()) {
+            if (this.mapSquare(i, j).mapEdge()) {
               this.fog_dimg.colorGrid(Constants.color_transparent, i, j);
             }
-            else if (!this.squares[i][j].explored) {
+            else if (!mapSquare(i, j).explored) {
               this.fog_dimg.colorGrid(Constants.color_black, i, j);
             }
             else {
@@ -526,10 +759,10 @@ class GameMap {
         for (int i = 0; i < this.mapWidth; i++) {
           for (int j = 0; j < this.mapHeight; j++) {
             this.exploreTerrain(i, j, false);
-            if (this.squares[i][j].mapEdge()) {
+            if (this.mapSquare(i, j).mapEdge()) {
               this.fog_dimg.colorGrid(Constants.color_transparent, i, j);
             }
-            else if (!this.squares[i][j].visible) {
+            else if (!this.mapSquare(i, j).visible) {
               this.fog_dimg.colorGrid(this.fogColor, i, j);
             }
             else {
@@ -613,17 +846,17 @@ class GameMap {
     this.setViewLocation(viewX, viewY, true);
   }
   void setViewLocation(float viewX, float viewY, boolean refreshImage) {
-    if (viewX < 0) {
-      viewX = 0;
+    if (viewX < this.mapXI()) {
+      viewX = this.mapXI();
     }
-    else if (viewX > this.mapWidth) {
-      viewX = this.mapWidth;
+    else if (viewX > this.mapXF()) {
+      viewX = this.mapXF();
     }
-    if (viewY < 0) {
-      viewY = 0;
+    if (viewY < this.mapYI()) {
+      viewY = mapYI();
     }
-    else if (viewY > this.mapHeight) {
-      viewY = this.mapHeight;
+    else if (viewY > this.mapYF()) {
+      viewY = this.mapYF();
     }
     this.viewX = viewX;
     this.viewY = viewY;
@@ -1912,195 +2145,23 @@ class GameMap {
   void mouseMove(float mX, float mY) {
     this.last_x = mX;
     this.last_y = mY;
-    if (mX < Constants.small_number) {
-      this.view_moving_left = true;
-      if (!global.holding_right) {
-        this.view_moving_right = false;
-      }
-    }
-    else if (mX > width - 1 - Constants.small_number) {
-      this.view_moving_right = true;
-      if (!global.holding_left) {
-        this.view_moving_left = false;
-      }
+    if (this.mouse_move_thread != null && this.mouse_move_thread.isAlive()) {
+      this.restart_mouseMoveThread = true;
     }
     else {
-      if (!global.holding_right) {
-        this.view_moving_right = false;
-      }
-      if (!global.holding_left) {
-        this.view_moving_left = false;
-      }
-    }
-    if (mY < Constants.small_number) {
-      this.view_moving_up = true;
-      if (!global.holding_down) {
-        this.view_moving_down = false;
-      }
-    }
-    else if (mY > height - 1 - Constants.small_number) {
-      this.view_moving_down = true;
-      if (!global.holding_up) {
-        this.view_moving_up = false;
-      }
-    }
-    else {
-      if (!global.holding_down) {
-        this.view_moving_down = false;
-      }
-      if (!global.holding_up) {
-        this.view_moving_up = false;
-      }
-    }
-    this.updateCursorPosition();
-    if (this.selected_object != null && this.selected_object_textbox != null) {
-      this.selected_object_textbox.mouseMove(mX, mY);
-    }
-    if (this.draw_fog) {
-      this.hovered_explored = false;
-      this.hovered_visible = false;
-    }
-    else {
-      this.hovered_explored = true;
-      this.hovered_visible = true;
-    }
-    boolean default_cursor = true;
-    boolean viewing_inventory = false;
-    if (this.units.containsKey(0) && Hero.class.isInstance(this.units.get(0))) {
-      viewing_inventory = ((Hero)this.units.get(0)).inventory.viewing;
-    }
-    if (mX > this.xi_map && mY > this.yi_map && mX < this.xf_map && mY < this.yf_map && !viewing_inventory) {
-      this.hovered = true;
-      this.hovered_area = true;
-      this.hovered_border = false;
-      // update hovered for map objects
-      this.hovered_object = null;
-      try {
-        if (!this.draw_fog || this.squares[int(floor(this.mX))][int(floor(this.mY))].visible) {
-          this.hovered_explored = true;
-          this.hovered_visible = true;
-        }
-        else if (!this.draw_fog || this.squares[int(floor(this.mX))][int(floor(this.mY))].explored) {
-          this.hovered_explored = true;
-        }
-      } catch(ArrayIndexOutOfBoundsException e) {}
-      for (Map.Entry<Integer, Feature> entry : this.features.entrySet()) {
-        Feature f = entry.getValue();
-        f.mouseMove(this.mX, this.mY);
-        if (f.hovered) {
-          if (!this.force_all_hoverable) {
-            switch(f.ID) {
-              case 186: // outside light source
-              case 187: // invisible light source
-              case 188:
-              case 189:
-              case 190:
-                f.hovered = false;
-                continue;
-            }
-          }
-          if (!this.hovered_explored) {
-            f.hovered = false;
-            continue;
-          }
-          this.hovered_object = f;
-          global.setCursor("icons/cursor_interact.png");
-          default_cursor = false;
-        }
-      }
-      for (Map.Entry<Integer, Unit> entry : this.units.entrySet()) {
-        Unit u = entry.getValue();
-        u.mouseMove(this.mX, this.mY);
-        if (u.hovered) {
-          if (!this.hovered_visible) {
-            if (this.units.containsKey(0)) {
-              if (!this.hovered_explored || this.units.get(0).alliance != u.alliance) {
-                u.hovered = false;
-                continue;
-              }
-            }
-            else {
-              u.hovered = false;
-              continue;
-            }
-          }
-          this.hovered_object = u;
-          if (this.units.containsKey(0) && u.alliance != this.units.get(0).alliance) {
-            global.setCursor("icons/cursor_attack.png");
-            default_cursor = false;
-          }
-        }
-      }
-      for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
-        Item i = entry.getValue();
-        i.mouseMove(this.mX, this.mY);
-        if (i.hovered) {
-          if (!this.hovered_visible) {
-            i.hovered = false;
-            continue;
-          }
-          this.hovered_object = i;
-          if (this.units.containsKey(0) && this.units.get(0).tier() >= i.tier) {
-            global.setCursor("icons/cursor_pickup.png");
-            default_cursor = false;
-          }
-        }
-      }
-      // hovered for header message
-      for (HeaderMessage message : this.headerMessages) {
-        message.mouseMove(mX, mY);
-      }
-    }
-    else {
-      this.hovered = false;
-      this.hovered_object = null;
-      this.hovered_explored = false;
-      this.hovered_visible = false;
-      if (mX > this.xi && mY > this.yi && mX < this.xf && mY < this.yf) {
-        this.hovered_area = true;
-        if (mX < this.xi + Constants.map_borderSize || mX > this.xf - Constants.map_borderSize ||
-          mY < this.yi + Constants.map_borderSize || mY > this.yf - Constants.map_borderSize) {
-          this.hovered_border = true;
-        }
-        else {
-          this.hovered_border = false;
-        }
-      }
-      else {
-        this.hovered_area = false;
-        this.hovered_border = false;
-      }
-      // dehover map objects
-      for (Feature f : this.features.values()) {
-        f.hovered = false;
-      }
-      for (Map.Entry<Integer, Unit> entry : this.units.entrySet()) {
-        entry.getValue().hovered = false;
-      }
-      for (Map.Entry<Integer, Item> entry : this.items.entrySet()) {
-        entry.getValue().hovered = false;
-      }
-    }
-    // aiming for player
-    if (this.units.containsKey(0) && global.holding_ctrl && !viewing_inventory && this.in_control) {
-      switch(this.units.get(0).curr_action) {
-        case AIMING:
-          this.units.get(0).aim(this.mX, this.mY);
-          break;
-        case MOVING:
-          this.units.get(0).moveTo(this.mX, this.mY);
-          break;
-        case NONE:
-          this.units.get(0).face(this.mX, this.mY);
-          break;
-      }
-    }
-    if (default_cursor) {
-      global.defaultCursor("icons/cursor_interact.png", "icons/cursor_attack.png", "icons/cursor_pickup.png");
+      this.startMouseMoveThread();
     }
   }
 
+  void startMouseMoveThread() {
+    this.mouse_move_thread = new MouseMoveThread(this.last_x, this.last_y);
+    this.mouse_move_thread.start();
+  }
+
   void updateCursorPosition() {
+    this.updateCursorPosition(this.last_x, this.last_y);
+  }
+  void updateCursorPosition(float mouse_x, float mouse_y) {
     this.mX = this.startSquareX + (this.last_x - this.xi_map) / this.zoom;
     this.mY = this.startSquareY + (this.last_y - this.yi_map) / this.zoom;
   }
