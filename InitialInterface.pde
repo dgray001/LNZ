@@ -178,12 +178,7 @@ class InitialInterface extends InterfaceLNZ {
   }
 
   void showNerdStats() {
-    fill(0);
-    textSize(14);
-    textAlign(LEFT, TOP);
-    float y_stats = 1;
-    float line_height = textAscent() + textDescent() + 2;
-    text("FPS: " + int(global.lastFPS), 1, y_stats);
+    this.showDefaultNerdStats();
   }
 
   void mouseMove(float mX, float mY) {

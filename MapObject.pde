@@ -1,15 +1,37 @@
 class IntegerCoordinate {
   private int x;
   private int y;
+  private int hashCode;
   IntegerCoordinate(int x, int y) {
     this.x = x;
     this.y = y;
+    this.hashCode = Objects.hash(x, y);
   }
-  boolean equals(IntegerCoordinate coordinate) {
+  @Override
+  public boolean equals(Object coordinate_object) {
+    if (this == coordinate_object) {
+      return true;
+    }
+    if (coordinate_object == null || this.getClass() != coordinate_object.getClass()) {
+      return false;
+    }
+    IntegerCoordinate coordinate = (IntegerCoordinate)coordinate_object;
     if (this.x == coordinate.x && this.y == coordinate.y) {
       return true;
     }
     return false;
+  }
+  @Override
+  public int hashCode() {
+    return this.hashCode;
+  }
+  IntegerCoordinate[] adjacentCoordinates() {
+    IntegerCoordinate[] adjacent_coordinates = new IntegerCoordinate[4];
+    adjacent_coordinates[0] = new IntegerCoordinate(this.x + 1, this.y);
+    adjacent_coordinates[1] = new IntegerCoordinate(this.x - 1, this.y);
+    adjacent_coordinates[2] = new IntegerCoordinate(this.x, this.y + 1);
+    adjacent_coordinates[3] = new IntegerCoordinate(this.x, this.y - 1);
+    return adjacent_coordinates;
   }
 }
 

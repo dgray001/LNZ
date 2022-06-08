@@ -1102,6 +1102,20 @@ abstract class InterfaceLNZ {
   abstract void restartTimers();
   abstract void update(int millis);
   abstract void showNerdStats();
+  void showDefaultNerdStats() {
+    this.showDefaultNerdStats(color(0));
+  }
+  void showDefaultNerdStats(color c) {
+    fill(c);
+    textSize(14);
+    textAlign(LEFT, TOP);
+    float y_stats = 1;
+    float line_height = textAscent() + textDescent() + 2;
+    text("FPS: " + int(global.lastFPS), 1, y_stats);
+    y_stats += line_height;
+    text("Active Threads: " + Thread.getAllStackTraces().size(), 1, y_stats);
+    println("");
+  }
   abstract void mouseMove(float mX, float mY);
   abstract void mousePress();
   abstract void mouseRelease(float mX, float mY);

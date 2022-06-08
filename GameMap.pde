@@ -1445,6 +1445,24 @@ class GameMap {
     text("Map Location: " + this.code.display_name(), this.xi + 1, y_stats);
     y_stats += line_height;
     text("FPS: " + int(global.lastFPS), this.xi + 1, y_stats);
+    y_stats += line_height;
+    Map<Thread, StackTraceElement[]> all_threads = Thread.getAllStackTraces();
+    text("Active Threads: " + all_threads.size(), this.xi + 1, y_stats);
+    y_stats += line_height;
+    int gamemap_threads = 0;
+    int unit_threads = 0;
+    for (Thread thread : all_threads.keySet()) {
+      String thread_name = thread.getName();
+      if (thread_name.equals("TerrainDimgThread") || thread_name.equals("MouseMoveThread")) {
+        gamemap_threads++;
+      }
+      else if (thread_name.equals("PathFindingThread")) {
+        unit_threads++;
+      }
+    }
+    text("GameMap Threads: " + gamemap_threads, this.xi + 1, y_stats);
+    y_stats += line_height;
+    text("Unit Threads: " + unit_threads, this.xi + 1, y_stats);
     if (this.units.containsKey(0)) {
       y_stats += line_height;
       text("Location: (" + this.units.get(0).x + ", " + this.units.get(0).y +
@@ -2054,7 +2072,7 @@ class GameMap {
     int max_height = -100;
     for (IntegerCoordinate coordinate : coordinates) {
       try {
-        int square_elevation = this.squares[coordinate.x][coordinate.y].elevation(moving_onto);
+        int square_elevation = this.mapSquare(coordinate.x, coordinate.y).elevation(moving_onto);
         if (square_elevation > max_height) {
           max_height = square_elevation;
         }
@@ -2066,9 +2084,16 @@ class GameMap {
   int heightOfSquare(IntegerCoordinate coordinate, boolean moving_onto) {
     int square_height = -100;
     try {
-      square_height = this.squares[coordinate.x][coordinate.y].elevation(moving_onto);
-    } catch(ArrayIndexOutOfBoundsException e) {}
+      square_height = this.mapSquare(coordinate.x, coordinate.y).elevation(moving_onto);
+    } catch(NullPointerException e) {}
     return square_height;
+  }
+
+  boolean containsMapSquare(IntegerCoordinate coordinate) {
+    if (this.mapSquare(coordinate.x, coordinate.y) != null) {
+      return true;
+    }
+    return false;
   }
 
 

@@ -141,6 +141,7 @@ class Unit extends MapObject {
     private float goal_y = 0;
     private GameMap map = null;
     private Stack<FloatCoordinate> move_stack = new Stack<FloatCoordinate>();
+    private boolean stop_thread = false;
 
     PathFindingThread(float goal_x, float goal_y, GameMap map) {
       super("PathFindingThread");
@@ -149,13 +150,105 @@ class Unit extends MapObject {
       this.map = map;
     }
 
+    HashMap<IntegerCoordinate, Integer> next_coordinates(ArrayList<IntegerCoordinate> last_coordinates, GameMap map) {
+      HashMap<IntegerCoordinate, Integer> next_coordinates = new HashMap<IntegerCoordinate, Integer>();
+      for (IntegerCoordinate coordinate : last_coordinates) {
+        int source_height = map.heightOfSquare(coordinate, true);
+        for (IntegerCoordinate adjacent : coordinate.adjacentCoordinates()) {
+          next_coordinates.put(adjacent, source_height);
+        }
+      }
+      return next_coordinates;
+    }
+
     @Override
     void run() {
       this.move_stack.push(new FloatCoordinate(this.goal_x, this.goal_y));
       if (this.map == null) {
         return;
       }
-      // pathfinding logic
+      HashMap<IntegerCoordinate, Integer> coordinates = new HashMap<IntegerCoordinate, Integer>(); // value is distance
+      IntegerCoordinate goal = new IntegerCoordinate(int(this.goal_x), int(this.goal_y));
+      int current_distance = 0;
+      IntegerCoordinate current = new IntegerCoordinate(int(Unit.this.x), int(Unit.this.y));
+      if (current.equals(goal)) {
+        return;
+      }
+      coordinates.put(current, current_distance);
+      ArrayList<IntegerCoordinate> last_coordinates = new ArrayList<IntegerCoordinate>();
+      last_coordinates.add(current);
+      int last_distance = 0;
+      maploop:
+      while(true) {
+        if (this.stop_thread) {
+          return;
+        }
+        current_distance++;
+        HashMap<IntegerCoordinate, Integer> current_coordinates = this.next_coordinates(last_coordinates, map); // value is source height
+        last_coordinates.clear();
+        boolean all_dead_ends = true;
+        for (Map.Entry<IntegerCoordinate, Integer> entry : current_coordinates.entrySet()) {
+          if (!map.containsMapSquare(entry.getKey())) {
+            continue;
+          }
+          if (coordinates.containsKey(entry.getKey())) {
+            continue;
+          }
+          int max_height = entry.getValue() + Unit.this.walkHeight();
+          int coordinate_height = map.heightOfSquare(entry.getKey(), true);
+          if (coordinate_height > max_height) {
+            continue;
+          }
+          if (entry.getKey().equals(goal)) {
+            last_distance = current_distance + 1;
+            break maploop;
+          }
+          last_coordinates.add(entry.getKey());
+          coordinates.put(entry.getKey(), current_distance);
+          all_dead_ends = false;
+        }
+        if (all_dead_ends) {
+          return;
+        }
+      }
+      boolean x_changed = false;
+      boolean y_changed = false;
+      pathloop:
+      while(true) {
+        if (this.stop_thread) {
+          return;
+        }
+        IntegerCoordinate next_goal = null;
+        for (IntegerCoordinate adjacent : goal.adjacentCoordinates()) {
+          if (!coordinates.containsKey(adjacent)) {
+            continue;
+          }
+          if (coordinates.get(adjacent) >= last_distance) {
+            continue;
+          }
+          next_goal = adjacent;
+          last_distance = coordinates.get(adjacent);
+        }
+        if (next_goal == null) {
+          global.errorMessage("ERROR: Found path but can't map it.");
+          return;
+        }
+        if (next_goal.x != goal.x) {
+          x_changed = true;
+        }
+        else if (next_goal.y != goal.y) {
+          y_changed = true;
+        }
+        if (x_changed && y_changed) {
+          x_changed = false;
+          y_changed = false;
+          this.move_stack.push(new FloatCoordinate(goal.x + 0.5, goal.y + 0.5));
+        }
+        if (next_goal.equals(current)) {
+          break pathloop;
+        }
+        goal = next_goal;
+      }
     }
   }
 
@@ -1745,7 +1838,7 @@ class Unit extends MapObject {
         this.waiting_for_pathfinding_thread = false;
       }
       else if (this.pathfinding_thread.isAlive()) {
-        if (this.last_move_collision) { // only wait for thead when you actually collide
+        if (this.last_move_any_collision) { // only wait for thead when you actually collide
           return;
         }
       }
@@ -1756,7 +1849,7 @@ class Unit extends MapObject {
         }
         this.pathfinding_thread = null;
         this.waiting_for_pathfinding_thread = false;
-        return; // have to return so next thread the unit faces properly
+        return; // have to return so next loop the unit faces properly
       }
     }
     boolean collision_last_move = this.last_move_collision;
@@ -1770,7 +1863,7 @@ class Unit extends MapObject {
       if (this.move_stack.empty()) {
         this.using_current_move_stack = false;
       }
-      else if (this.distance(this.move_stack.peek().x, this.move_stack.peek().y) < this.last_move_distance) {
+      else if (this.distanceFromPoint(this.move_stack.peek().x, this.move_stack.peek().y) < this.last_move_distance) {
         this.move_stack.pop();
       }
     }
@@ -2157,6 +2250,10 @@ class Unit extends MapObject {
           this.face(this.curr_action_x, this.curr_action_y);
         }
         this.moveLogic(timeElapsed, map);
+        if (this.distanceFromPoint(this.curr_action_x, this.curr_action_y)
+          < this.last_move_distance) {
+            this.curr_action = UnitAction.USING_ITEM;
+        }
         break;
       case NONE:
         break;
@@ -3170,8 +3267,10 @@ class Unit extends MapObject {
     this.curr_action_x = this.x;
     this.curr_action_y = this.y;
     this.object_targeting = null;
+    this.last_move_collision = false;
+    this.last_move_any_collision = false;
     this.curr_action_unhaltable = false;
-    this.curr_action_unhaltable = false;
+    this.curr_action_unstoppable = false;
     this.curr_action_id = 0;
   }
 
@@ -3619,9 +3718,15 @@ class Unit extends MapObject {
     }
     if (map != null) {
       this.waiting_for_pathfinding_thread = true;
+      if (this.pathfinding_thread != null && this.pathfinding_thread.isAlive()) {
+        this.pathfinding_thread.stop_thread = true;
+      }
       this.pathfinding_thread = new PathFindingThread(targetX, targetY, map);
+      this.pathfinding_thread.start();
     }
     this.object_targeting = null;
+    this.last_move_collision = false;
+    this.last_move_any_collision = false;
     this.curr_action_x = targetX;
     this.curr_action_y = targetY;
     this.curr_action_id = 0;

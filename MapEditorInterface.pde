@@ -2627,12 +2627,7 @@ class MapEditorInterface extends InterfaceLNZ {
       this.curr_map.displayNerdStats();
     }
     else {
-      fill(255);
-      textSize(14);
-      textAlign(LEFT, TOP);
-      float y_stats = 1;
-      float line_height = textAscent() + textDescent() + 2;
-      text("FPS: " + int(global.lastFPS), 1, y_stats);
+      this.showDefaultNerdStats(color(255));
     }
   }
 

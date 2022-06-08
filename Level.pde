@@ -2154,6 +2154,8 @@ class Level {
       float y_stats = 1;
       float line_height = textAscent() + textDescent() + 2;
       text("FPS: " + int(global.lastFPS), this.xi + 1, y_stats);
+      y_stats += line_height;
+      text("Active Threads: " + Thread.getAllStackTraces().size(), this.xi + 1, y_stats);
     }
   }
 
