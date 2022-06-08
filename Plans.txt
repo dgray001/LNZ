@@ -1,4 +1,6 @@
 v0.7.5: Lev2 maps
+ - add random choosing if multiple correct paths
+ - if colliding need to move to center of current square (maybe predict if collision will happen from start square, shouldn't be too hard)
  e: Frontdoor boss fight triggers
  f: brothersdoor initial and boss fight triggers
  g: ahimdoor initial and boss fight triggers

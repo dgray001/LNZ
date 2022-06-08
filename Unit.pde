@@ -137,6 +137,24 @@ class EditUnitForm extends EditMapObjectForm {
 
 class Unit extends MapObject {
   class PathFindingThread extends Thread {
+    class CoordinateValues {
+      private int square_height = 0;
+      private boolean corner_square = false;
+      private int source_x = 0;
+      private int source_y = 0;
+      private float distance = 0;
+      CoordinateValues(int square_height, boolean corner_square, IntegerCoordinate coordinate) {
+        this.square_height = square_height;
+        this.corner_square = corner_square;
+        this.source_x = coordinate.x;
+        this.source_y = coordinate.y;
+      }
+      CoordinateValues(boolean corner_square, float distance) {
+        this.corner_square = corner_square;
+        this.distance = distance;
+      }
+    }
+
     private float goal_x = 0;
     private float goal_y = 0;
     private GameMap map = null;
@@ -150,12 +168,15 @@ class Unit extends MapObject {
       this.map = map;
     }
 
-    HashMap<IntegerCoordinate, Integer> next_coordinates(ArrayList<IntegerCoordinate> last_coordinates, GameMap map) {
-      HashMap<IntegerCoordinate, Integer> next_coordinates = new HashMap<IntegerCoordinate, Integer>();
+    HashMap<IntegerCoordinate, CoordinateValues> next_coordinates(ArrayList<IntegerCoordinate> last_coordinates, GameMap map) {
+      HashMap<IntegerCoordinate, CoordinateValues> next_coordinates = new HashMap<IntegerCoordinate, CoordinateValues>();
       for (IntegerCoordinate coordinate : last_coordinates) {
         int source_height = map.heightOfSquare(coordinate, true);
         for (IntegerCoordinate adjacent : coordinate.adjacentCoordinates()) {
-          next_coordinates.put(adjacent, source_height);
+          next_coordinates.put(adjacent, new CoordinateValues(source_height, false, coordinate));
+        }
+        for (IntegerCoordinate corner : coordinate.cornerCoordinates()) {
+          next_coordinates.put(corner, new CoordinateValues(source_height, true, coordinate));
         }
       }
       return next_coordinates;
@@ -167,82 +188,110 @@ class Unit extends MapObject {
       if (this.map == null) {
         return;
       }
-      HashMap<IntegerCoordinate, Integer> coordinates = new HashMap<IntegerCoordinate, Integer>(); // value is distance
+      HashMap<IntegerCoordinate, CoordinateValues> coordinates = new HashMap<IntegerCoordinate, CoordinateValues>(); // value is distance
       IntegerCoordinate goal = new IntegerCoordinate(int(this.goal_x), int(this.goal_y));
-      int current_distance = 0;
+      float current_distance = 0;
       IntegerCoordinate current = new IntegerCoordinate(int(Unit.this.x), int(Unit.this.y));
       if (current.equals(goal)) {
         return;
       }
-      coordinates.put(current, current_distance);
+      coordinates.put(current, new CoordinateValues(true, current_distance));
       ArrayList<IntegerCoordinate> last_coordinates = new ArrayList<IntegerCoordinate>();
       last_coordinates.add(current);
-      int last_distance = 0;
+      float last_distance = 0;
       maploop:
       while(true) {
         if (this.stop_thread) {
           return;
         }
-        current_distance++;
-        HashMap<IntegerCoordinate, Integer> current_coordinates = this.next_coordinates(last_coordinates, map); // value is source height
+        HashMap<IntegerCoordinate, CoordinateValues> current_coordinates = this.next_coordinates(last_coordinates, map);
         last_coordinates.clear();
         boolean all_dead_ends = true;
-        for (Map.Entry<IntegerCoordinate, Integer> entry : current_coordinates.entrySet()) {
+        for (Map.Entry<IntegerCoordinate, CoordinateValues> entry : current_coordinates.entrySet()) {
           if (!map.containsMapSquare(entry.getKey())) {
             continue;
           }
           if (coordinates.containsKey(entry.getKey())) {
             continue;
           }
-          int max_height = entry.getValue() + Unit.this.walkHeight();
+          int max_height = entry.getValue().square_height + Unit.this.walkHeight();
           int coordinate_height = map.heightOfSquare(entry.getKey(), true);
           if (coordinate_height > max_height) {
             continue;
           }
+          float distance_to_square = 1;
+          if (entry.getValue().corner_square) {
+            distance_to_square = Constants.root_two;
+            coordinate_height = map.heightOfSquare(new IntegerCoordinate(
+              entry.getValue().source_x, entry.getKey().y), true);
+            if (coordinate_height > max_height) {
+              continue;
+            }
+            coordinate_height = map.heightOfSquare(new IntegerCoordinate(
+              entry.getKey().x, entry.getValue().source_y), true);
+            if (coordinate_height > max_height) {
+              continue;
+            }
+          }
+          coordinates.put(entry.getKey(), new CoordinateValues(entry.getValue().
+            corner_square, current_distance + distance_to_square));
           if (entry.getKey().equals(goal)) {
-            last_distance = current_distance + 1;
+            last_distance = current_distance + distance_to_square + 1;
             break maploop;
           }
           last_coordinates.add(entry.getKey());
-          coordinates.put(entry.getKey(), current_distance);
           all_dead_ends = false;
         }
         if (all_dead_ends) {
           return;
         }
+        current_distance++;
       }
       boolean x_changed = false;
       boolean y_changed = false;
+      if (!coordinates.containsKey(goal)) {
+        global.errorMessage("ERROR: Coordinates missing original goal.");
+        return;
+      }
       pathloop:
       while(true) {
         if (this.stop_thread) {
           return;
         }
         IntegerCoordinate next_goal = null;
-        for (IntegerCoordinate adjacent : goal.adjacentCoordinates()) {
+        IntegerCoordinate[] adjacents;
+        if (coordinates.get(goal).corner_square) {
+          adjacents = goal.adjacentAndCornerCoordinates();
+        }
+        else {
+          adjacents = goal.adjacentCoordinates();
+        }
+        for (IntegerCoordinate adjacent : adjacents) {
           if (!coordinates.containsKey(adjacent)) {
             continue;
           }
-          if (coordinates.get(adjacent) >= last_distance) {
+          if (coordinates.get(adjacent).distance >= last_distance) {
             continue;
           }
           next_goal = adjacent;
-          last_distance = coordinates.get(adjacent);
+          last_distance = coordinates.get(adjacent).distance;
         }
         if (next_goal == null) {
           global.errorMessage("ERROR: Found path but can't map it.");
           return;
         }
-        if (next_goal.x != goal.x) {
-          x_changed = true;
-        }
-        else if (next_goal.y != goal.y) {
-          y_changed = true;
-        }
-        if (x_changed && y_changed) {
-          x_changed = false;
-          y_changed = false;
-          this.move_stack.push(new FloatCoordinate(goal.x + 0.5, goal.y + 0.5));
+        if (!coordinates.get(goal).corner_square) {
+          if (next_goal.x != goal.x) {
+            x_changed = true;
+          }
+          if (next_goal.y != goal.y) {
+            y_changed = true;
+          }
+          if (x_changed && y_changed) {
+            x_changed = false;
+            y_changed = false;
+            this.move_stack.push(new FloatCoordinate(goal.x + 0.5, goal.y + 0.5));
+          }
         }
         if (next_goal.equals(current)) {
           break pathloop;

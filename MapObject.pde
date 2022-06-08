@@ -33,6 +33,26 @@ class IntegerCoordinate {
     adjacent_coordinates[3] = new IntegerCoordinate(this.x, this.y - 1);
     return adjacent_coordinates;
   }
+  IntegerCoordinate[] cornerCoordinates() {
+    IntegerCoordinate[] corner_coordinates = new IntegerCoordinate[4];
+    corner_coordinates[0] = new IntegerCoordinate(this.x + 1, this.y + 1);
+    corner_coordinates[1] = new IntegerCoordinate(this.x - 1, this.y + 1);
+    corner_coordinates[2] = new IntegerCoordinate(this.x + 1, this.y - 1);
+    corner_coordinates[3] = new IntegerCoordinate(this.x - 1, this.y - 1);
+    return corner_coordinates;
+  }
+  IntegerCoordinate[] adjacentAndCornerCoordinates() {
+    IntegerCoordinate[] adjacent_and_corner_coordinates = new IntegerCoordinate[8];
+    adjacent_and_corner_coordinates[0] = new IntegerCoordinate(this.x + 1, this.y);
+    adjacent_and_corner_coordinates[1] = new IntegerCoordinate(this.x - 1, this.y);
+    adjacent_and_corner_coordinates[2] = new IntegerCoordinate(this.x, this.y + 1);
+    adjacent_and_corner_coordinates[3] = new IntegerCoordinate(this.x, this.y - 1);
+    adjacent_and_corner_coordinates[4] = new IntegerCoordinate(this.x + 1, this.y + 1);
+    adjacent_and_corner_coordinates[5] = new IntegerCoordinate(this.x - 1, this.y + 1);
+    adjacent_and_corner_coordinates[6] = new IntegerCoordinate(this.x + 1, this.y - 1);
+    adjacent_and_corner_coordinates[7] = new IntegerCoordinate(this.x - 1, this.y - 1);
+    return adjacent_and_corner_coordinates;
+  }
 }
 
 class FloatCoordinate {

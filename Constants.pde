@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\nAlpha v0.7.5g: 20220608" +
+  "\nAlpha v0.7.5h: 20220608" +
   "\n\nLines: 45592 (v0.7.5)" +
   "\nImages: 1226 (v0.7.5)" +
   "\nSounds: 327 (v0.7.5)" +
@@ -25,6 +25,7 @@ static class Constants {
   static final float default_cursor_size = 35;
   static final float small_number = 0.001; // for float miscalculations
   static final float inverse_root_two = 0.70710678;
+  static final float root_two = 1.41421356;
   static final float errorForm_width = 400;
   static final float errorForm_height = 400;
   static final color color_black = -16777216;
