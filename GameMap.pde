@@ -1389,12 +1389,13 @@ class GameMap {
       translate(-translateX, -translateY);
     }
     // name displayed
-    if (this.hovered_object != null) {
-      nameDisplayed = this.hovered_object.display_name();
-      float ellipseX = this.xi_map_old + this.zoom_old * (this.hovered_object.xCenter() - this.startSquareX_old);
-      float ellipseY = this.yi_map_old + this.zoom_old * (this.hovered_object.yCenter() - this.startSquareY_old);
-      float ellipseDiameterX = this.zoom_old * this.hovered_object.width();
-      float ellipseDiameterY = this.zoom_old * this.hovered_object.height();
+    MapObject this_hovered_object = this.hovered_object;
+    if (this_hovered_object != null) {
+      nameDisplayed = this_hovered_object.display_name();
+      float ellipseX = this.xi_map_old + this.zoom_old * (this_hovered_object.xCenter() - this.startSquareX_old);
+      float ellipseY = this.yi_map_old + this.zoom_old * (this_hovered_object.yCenter() - this.startSquareY_old);
+      float ellipseDiameterX = this.zoom_old * this_hovered_object.width();
+      float ellipseDiameterY = this.zoom_old * this_hovered_object.height();
       ellipseMode(CENTER);
       noFill();
       stroke(ellipseColor);
@@ -1645,6 +1646,12 @@ class GameMap {
             img_width = Constants.ability_117_distance * (1 - a.timer_other / Constants.ability_112_castTime);
             img_height = u.size;
             image(global.images.getImage("abilities/tongue.png"), 0.5 * img_width * this.zoom_old,
+              0.5 * img_height * this.zoom_old, img_width * this.zoom_old, img_height * this.zoom_old);
+            break;
+          case 1001: // Blow Smoke
+            img_width = Constants.ability_1001_range * (1 - a.timer_other / Constants.ability_1001_castTime);
+            img_height = 2 * img_width * tan(0.5 * Constants.ability_1001_coneAngle);
+            image(global.images.getImage("abilities/smoke.png"), 0.5 * img_width * this.zoom_old,
               0.5 * img_height * this.zoom_old, img_width * this.zoom_old, img_height * this.zoom_old);
             break;
           default:
@@ -2229,7 +2236,7 @@ class GameMap {
             this.addVisualEffect(4001, this.mX, this.mY);
           }
           else {
-            player.target(this.hovered_object, global.holding_ctrl);
+            player.target(this.hovered_object, this, global.holding_ctrl);
           }
         }
         break;

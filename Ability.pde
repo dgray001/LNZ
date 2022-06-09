@@ -34,6 +34,11 @@ class Ability {
       case 119:
       case 120:
         break;
+      // Cathy Heck, zombie
+      case 1001:
+      case 1002:
+      case 1003:
+        break;
       default:
         global.errorMessage("ERROR: Ability ID " + this.ID + " not found.");
         break;
@@ -84,6 +89,13 @@ class Ability {
         return "Alkaloid Secretion II";
       case 120:
         return "Anuran Appetite II";
+      // Cathy Heck, zombie
+      case 1001:
+        return "Blow Smoke";
+      case 1002:
+        return "Condom Slap";
+      case 1003:
+        return "";
       default:
         return "ERROR";
     }
@@ -281,6 +293,18 @@ class Ability {
           ability_120_magicalRatio) + "% magic power) magic damage.\nIf this ability " +
           "is not recast within " + (Constants.ability_120_maxTime/1000.0) + "s " +
           "it will be automatically recast.";
+      // Cathy Heck, zombie
+      case 1001:
+        return "Getting 2nd-hand smoke from Cathy Heck is particularly harmful" +
+          ".\nBlow cigarette smoke in target direction in a cone " + Constants.
+          ability_1001_range + "m long, dealing " + Constants.ability_1001_basePower +
+          " + (0% attack power + " + round(100*Constants.ability_1001_magicRatio) +
+          "% magic power) magic damage and making any enemies hit woozy for " +
+          (Constants.ability_1001_woozyTime/1000.0) + "s.";
+      case 1002:
+        return "Condom Slap";
+      case 1003:
+        return "";
       default:
         return "-- error -- ";
     }
@@ -382,6 +406,7 @@ class Ability {
       case 113:
       case 117:
       case 118:
+      case 1001:
         return true;
       case 115:
       case 120:
@@ -438,6 +463,10 @@ class Ability {
         else {
           return true;
         }
+      case 1001:
+      case 1002:
+      case 1003:
+        return false;
       default:
         return true;
     }
@@ -451,35 +480,46 @@ class Ability {
       case 101:
       case 106:
         image_id = 101;
+        break;
       case 102:
       case 107:
         image_id = 102;
+        break;
       case 103:
       case 108:
         image_id = 103;
+        break;
       case 104:
       case 109:
         image_id = 104;
+        break;
       case 105:
       case 110:
         image_id = 105;
+        break;
+      // Daniel Gray
       case 111:
       case 116:
         image_id = 111;
+        break;
       case 112:
       case 117:
         image_id = 112;
+        break;
       case 113:
       case 118:
         image_id = 113;
+        break;
       case 114:
       case 119:
         image_id = 114;
+        break;
       case 115:
       case 120:
         image_id = 115;
-      default:
         break;
+      default:
+        return global.images.getImage("transparent.png");
     }
     return global.images.getImage("abilities/" + this.ID + ".png");
   }
@@ -663,6 +703,13 @@ class Ability {
           this.target_unit.addStatusEffect(StatusEffectCode.DECAYED, Constants.ability_120_maxTime);
           global.sounds.trigger_units("units/ability/115", u.x - map.viewX, u.y - map.viewY);
         }
+        break;
+      case 1001: // Blow Smoke
+        this.timer_other = Constants.ability_1001_castTime;
+        this.toggle = true;
+        u.curr_action = UnitAction.CASTING;
+        u.curr_action_id = ability_index;
+        global.sounds.trigger_units("units/ability/1001", u.x - map.viewX, u.y - map.viewY);
         break;
       default:
         global.errorMessage("ERROR: Can't activate ability with ID " + this.ID + ".");
@@ -1099,6 +1146,43 @@ class Ability {
             DamageType.MAGICAL, Element.BROWN, u.piercing(), u.penetration()));
           global.sounds.trigger_units("units/ability/115_spit", u.x - map.viewX, u.y - map.viewY);
           global.sounds.silence_units("units/ability/115");
+        }
+        break;
+      case 1001: // Blow Smoke
+        if (!this.toggle) {
+          break;
+        }
+        if (u.curr_action != UnitAction.CASTING) {
+          this.toggle = false;
+          break;
+        }
+        max_distance = Constants.ability_1001_range * (1 - this.timer_other
+          / Constants.ability_1001_castTime);
+        for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
+          Unit target = entry.getValue();
+          if (target.alliance == u.alliance) {
+            continue;
+          }
+          // already hit
+          if (target.woozy()) {
+            continue;
+          }
+          float distance = u.centerDistance(target);
+          if (distance > max_distance + target.size) {
+            continue;
+          }
+          if (distance > 0) {
+            float angle = abs((float)Math.atan2(target.y - u.y, target.x - u.x) - u.facingA);
+            float unit_angle = 2 * asin(0.5 * target.size / distance);
+            if (angle > unit_angle + Constants.ability_1001_coneAngle) {
+              continue;
+            }
+          }
+          target.addStatusEffect(StatusEffectCode.WOOZY, Constants.ability_1001_woozyTime);
+        }
+        if (this.timer_other <= 0) {
+          this.toggle = false;
+          u.stopAction();
         }
         break;
 

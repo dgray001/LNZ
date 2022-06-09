@@ -395,20 +395,20 @@ class Item extends MapObject {
       // Melee Weapons
       case 2201:
         this.setStrings("Foam Sword", "Melee Weapon", "");
-        this.attack = 1;
+        this.attack = 0.8;
         this.attackRange = 0.12;
         this.size = 0.3;
         this.durability = 10;
         break;
       case 2202:
         this.setStrings("Pan", "Melee Weapon", "");
-        this.attack = 1.5;
+        this.attack = 1.6;
         this.attackRange = 0.02;
         this.durability = 30;
         break;
       case 2203:
         this.setStrings("Knife", "Melee Weapon", "");
-        this.attack = 3;
+        this.attack = 2.5;
         this.attackRange = 0.01;
         this.piercing = 0.04;
         this.size = 0.3;
@@ -424,7 +424,7 @@ class Item extends MapObject {
         break;
       case 2205:
         this.setStrings("Wooden Sword", "Melee Weapon", "");
-        this.attack = 2.5;
+        this.attack = 2.2;
         this.attackRange = 0.15;
         this.piercing = 0.01;
         this.size = 0.3;
@@ -439,7 +439,7 @@ class Item extends MapObject {
         break;
       case 2207:
         this.setStrings("Wooden Spear", "Melee Weapon", "");
-        this.attack = 2;
+        this.attack = 1.9;
         this.attackRange = 0.35;
         this.piercing = 0.04;
         this.size = 0.4;
@@ -1585,7 +1585,7 @@ class Item extends MapObject {
         break;
       case 2963:
         this.setStrings("Stick", "Nature", "");
-        this.attack = 1;
+        this.attack = 0.8;
         this.attackRange = 0.05;
         this.durability = 8;
         break;
@@ -1598,7 +1598,7 @@ class Item extends MapObject {
       case 2967:
       case 2968:
         this.setStrings("Branch", "Nature", "");
-        this.attack = 1;
+        this.attack = 0.7;
         this.attackRange = 0.05;
         this.durability = 8;
         break;

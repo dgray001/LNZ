@@ -553,6 +553,7 @@ class Effect {
       case 62: // silence player sound
       case 63: // take bens eyes
       case 64: // equip item to unit
+      case 65: // toggle unit ai_toggle
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
@@ -759,6 +760,17 @@ class Effect {
         break;
       case 64: // equip item to unit
         this.display_name = "Equip Item (" + round(this.decimal1) + ") to unit (" + this.number + ")";
+        break;
+      case 65: // toggle ai toggle
+        if (this.decimal1 > 0) {
+          this.display_name = "AI Toggle (true) to unit (" + this.number + ")";
+        }
+        else if (this.decimal1 < 0) {
+          this.display_name = "AI Toggle (false) to unit (" + this.number + ")";
+        }
+        else {
+          this.display_name = "AI Toggle (toggle) to unit (" + this.number + ")";
+        }
         break;
       default:
         this.display_name = "Effect";
@@ -1289,6 +1301,23 @@ class Effect {
         }
         if (level.currMap.units.containsKey(this.number)) {
           level.currMap.units.get(this.number).pickup(i);
+        }
+        break;
+      case 65: // toggle ai toggle
+        if (level.currMap == null) {
+          break;
+        }
+        if (!level.currMap.units.containsKey(this.number)) {
+          break;
+        }
+        if (this.decimal1 > 0) {
+          level.currMap.units.get(this.number).ai_toggle = true;
+        }
+        else if (this.decimal1 < 0) {
+          level.currMap.units.get(this.number).ai_toggle = false;
+        }
+        else {
+          level.currMap.units.get(this.number).ai_toggle = !level.currMap.units.get(this.number).ai_toggle;
         }
         break;
       default:

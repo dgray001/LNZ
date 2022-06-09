@@ -298,6 +298,7 @@ class Unit extends MapObject {
         }
         goal = next_goal;
       }
+      // check if collision will occur from start square and if so push center of start square to move_stack
     }
   }
 
@@ -629,6 +630,18 @@ class Unit extends MapObject {
         this.alliance = Alliance.ZOMBIE;
         this.base_attackRange = 1.2 * Constants.unit_defaultBaseAttackRange;
         break;
+      case 1311:
+        this.setStrings("Cathy Heck", "Zombie", "");
+        this.baseStats(40, 6, 1.8, 0.1, 0.6);
+        this.magicStats(10, 1.2, 0.05);
+        this.base_lifesteal = 0.08;
+        this.abilities.add(new Ability(1001));
+        this.abilities.add(new Ability(1002));
+        this.abilities.add(new Ability(1003));
+        this.level = 11;
+        this.alliance = Alliance.ZOMBIE;
+        this.timer_ai_action1 = round(5000 + random(5000));
+        break;
 
       default:
         global.errorMessage("ERROR: Unit ID " + ID + " not found.");
@@ -653,35 +666,35 @@ class Unit extends MapObject {
     if (this.statuses.size() > 0) {
       text += "\n";
     }
-    text += "\n\nHealth: " + int(ceil(this.curr_health)) + "/" + int(ceil(this.health()));
+    text += "\n\nHealth: " + round(ceil(this.curr_health)) + "/" + round(ceil(this.health()));
     float attack = this.attack();
     if (attack > 0) {
-      text += "\nAttack: " + int(attack * 10.0) / 10.0;
+      text += "\nAttack: " + round(attack * 10.0) / 10.0;
     }
     float magic = this.magic();
     if (magic > 0) {
-      text += "\nMagic: " + int(magic * 10.0) / 10.0;
+      text += "\nMagic: " + round(magic * 10.0) / 10.0;
     }
     float defense = this.defense();
     if (defense > 0) {
-      text += "\nDefense: " + int(defense * 10.0) / 10.0;
+      text += "\nDefense: " + round(defense * 10.0) / 10.0;
     }
     float resistance = this.resistance();
     if (resistance > 0) {
-      text += "\nResistance: " + int(resistance * 10.0) / 10.0;
+      text += "\nResistance: " + round(resistance * 10.0) / 10.0;
     }
     float piercing = this.piercing();
     if (piercing > 0) {
-      text += "\nPiercing: " + int(round(piercing * 100)) + "%";
+      text += "\nPiercing: " + round(piercing * 100) + "%";
     }
     float penetration = this.penetration();
     if (penetration > 0) {
-      text += "\nPenetration: " + int(round(penetration * 100)) + "%";
+      text += "\nPenetration: " + round(penetration * 100) + "%";
     }
-    text += "\nSpeed: " + int(this.speed() * 10.0) / 10.0;
+    text += "\nSpeed: " + round(this.speed() * 10.0) / 10.0;
     float tenacity = this.tenacity();
     if (tenacity > 0) {
-      text += "\nTenacity: " + int(round(tenacity * 100)) + "%";
+      text += "\nTenacity: " + round(tenacity * 100) + "%";
     }
     int agility = this.agility();
     if (attack > 0) {
@@ -689,7 +702,7 @@ class Unit extends MapObject {
     }
     float lifesteal = this.lifesteal();
     if (lifesteal > 0) {
-      text += "\nLifesteal: " + int(round(lifesteal * 100)) + "%";
+      text += "\nLifesteal: " + round(lifesteal * 100) + "%";
     }
     return text + "\n\n" + this.description();
   }
@@ -839,6 +852,9 @@ class Unit extends MapObject {
         break;
       case 1308:
         path += "nick_belt_zombie.png";
+        break;
+      case 1311:
+        path += "cathy_heck_zombie.png";
         break;
       default:
         global.errorMessage("ERROR: Unit ID " + ID + " not found.");
@@ -2668,10 +2684,13 @@ class Unit extends MapObject {
   }
 
 
-  void target(MapObject object) {
-    this.target(object, false);
+  void target(MapObject object, GameMap map) {
+    this.target(object, map, false);
   }
-  void target(MapObject object, boolean use_item) {
+  void target(MapObject object, GameMap map, boolean use_item) {
+    if (object == null) {
+      return;
+    }
     if (this.object_targeting == object) {
       return;
     }
@@ -2693,6 +2712,15 @@ class Unit extends MapObject {
     }
     else {
       this.curr_action = UnitAction.NONE;
+      return;
+    }
+    if (map != null) {
+      this.waiting_for_pathfinding_thread = true;
+      if (this.pathfinding_thread != null && this.pathfinding_thread.isAlive()) {
+        this.pathfinding_thread.stop_thread = true;
+      }
+      this.pathfinding_thread = new PathFindingThread(object.xCenter(), object.yCenter(), map);
+      this.pathfinding_thread.start();
     }
   }
 
@@ -3075,7 +3103,7 @@ class Unit extends MapObject {
           break;
         case 1005: // Rooster
           if (source != null) {
-            this.target(source);
+            this.target(source, null);
             this.addStatusEffect(StatusEffectCode.RUNNING, 3000);
           }
           break;
@@ -3097,7 +3125,7 @@ class Unit extends MapObject {
         case 1306:
         case 1307:
           if (source != null && (this.curr_action == UnitAction.NONE || this.last_move_collision)) {
-            this.target(source);
+            this.target(source, null);
           }
           break;
         default:
@@ -4096,10 +4124,10 @@ class Unit extends MapObject {
             continue;
           }
           boolean add_square = true;
-          int xi = int(min(floor(this.xi() + Constants.small_number), i));
-          int yi = int(min(floor(this.yi() + Constants.small_number), j));
-          int xf = int(max(floor(this.xf() - Constants.small_number), i));
-          int yf = int(max(floor(this.yf() - Constants.small_number), j));
+          int xi = round(min(floor(this.xi() + Constants.small_number), i));
+          int yi = round(min(floor(this.yi() + Constants.small_number), j));
+          int xf = round(max(floor(this.xf() - Constants.small_number), i));
+          int yf = round(max(floor(this.yf() - Constants.small_number), j));
           int my_x = int(floor(this.x));
           int my_y = int(floor(this.y));
           float left_blocked = 2 * Constants.inverse_root_two;
@@ -4161,6 +4189,19 @@ class Unit extends MapObject {
       }
     }
     return squares_sight;
+  }
+
+  // Only checks terrain collisions, used in pathfinding at end to patch initial collision artifact
+  boolean willCollideMovingTo(float target_x, float target_y, GameMap map) {
+    int xi = round(min(floor(this.xi() + Constants.small_number), target_x));
+    int yi = round(min(floor(this.yi() + Constants.small_number), target_y));
+    int xf = round(max(floor(this.xf() - Constants.small_number), target_x));
+    int yf = round(max(floor(this.yf() - Constants.small_number), target_y));
+    for (int a = xi; a <= xf; a++) {
+      for (int b = yi; b <= yf; b++) {
+      }
+    }
+    return false;
   }
 
 
@@ -4357,7 +4398,7 @@ class Unit extends MapObject {
                 continue;
               }
               try {
-                this.target(u.last_damage_from);
+                this.target(u.last_damage_from, map);
                 random_walk = false;
               } catch(Exception e) {}
               break;
@@ -4412,16 +4453,36 @@ class Unit extends MapObject {
               }
               if (no_target) {
                 no_target = false;
-                this.target(u);
+                this.target(u, map);
               }
               else if (!u.ai_controlled) {
-                this.target(u);
+                this.target(u, map);
               }
             }
             if (no_target && randomChance(0.1)) {
               this.moveTo(this.x + 3 - random(6), this.y + 3 - random(6), map);
             }
           }
+        }
+        break;
+      case 1311: // Cathy Heck
+        if (!this.ai_toggle) {
+          break;
+        }
+        this.timer_ai_action1 -= timeElapsed;
+        this.timer_ai_action2 -= timeElapsed;
+        switch(this.curr_action) {
+          case NONE:
+            if (map.units.containsKey(0)) {
+              this.target(map.units.get(0), map);
+            }
+            break;
+          case TARGETING_UNIT:
+            if (this.timer_ai_action1 < 0) {
+              this.timer_ai_action1 = round(5000 + random(5000));
+              this.cast(0, map);
+            }
+            break;
         }
         break;
       default:
@@ -4449,14 +4510,6 @@ class Unit extends MapObject {
         fileString += slot.getValue().fileString(slot.getKey());
       }
     }
-    for (Ability a : this.abilities) {
-      if (a == null) {
-        fileString += "\naddNullAbility:";
-      }
-      else {
-        fileString += a.fileString();
-      }
-    }
     for (Map.Entry<StatusEffectCode, StatusEffect> entry : this.statuses.entrySet()) {
       fileString += "\nnext_status_code: " + entry.getKey().code_name();
       fileString += entry.getValue().fileString();
@@ -4482,7 +4535,9 @@ class Unit extends MapObject {
       fileString += "\nbase_agility: " + this.base_agility;
       fileString += "\nbase_lifesteal: " + this.base_lifesteal;
     }
-    fileString += "\ncurr_health: " + this.curr_health;
+    if (this.save_base_stats || abs(this.curr_health - this.health()) > Constants.small_number) {
+      fileString += "\ncurr_health: " + this.curr_health;
+    }
     fileString += "\nfootgear_durability_distance: " + this.footgear_durability_distance;
     fileString += "\ntimer_attackCooldown: " + this.timer_attackCooldown;
     fileString += "\ntimer_actionTime: " + this.timer_actionTime;

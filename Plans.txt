@@ -1,31 +1,43 @@
 v0.7.5: Lev2 maps
- - add random choosing if multiple correct paths
- - if colliding need to move to center of current square (maybe predict if collision will happen from start square, shouldn't be too hard)
- e: Frontdoor boss fight triggers
- f: brothersdoor initial and boss fight triggers
- g: ahimdoor initial and boss fight triggers
- h: cars triggers (key, door locked, gas)
- i: Replace mocks with appropriately-named levels/maps
- j: Chapeldoor initial and boss fight triggers
- k: Victory conditions for all levels
+ - Cathy Heck other abilities
+ - triggers to reset boss fight if you die
+ i: Frontdoor boss fight triggers
+ j: Cars triggers (key, door locked, gas)
+ k: Replace mocks with appropriately-named levels/maps
+ l: Victory conditions for all levels
  m: Can access Minigames
  n: Can unlock mock minigame
  o: Notification for minigame unlock
  p: Notifications for hero/area unlocks
  q: Mock car broke down zombies minigame
  r: Generic Zombies spawn at night based on player level (11 - 100) => single ID unit
- s: various zombie types (magic, ranged, etc.. have 10 for each and have series
+ s: Various zombie types (magic, ranged, etc.. have 10 for each and have series
    => so 21, 31, 41, etc. are all basic zombies but getting stronger)
- t: Lev2-5: Custodialdoor map outlines
- u: Triggers for Custodialdoor level
- v: Finish all maps for all levels
- w: Finish all triggers for all levels
- x: QA all levels
+ t: QA all levels
 
  - Design maps for Lev3s
  - Map outlines for Lev3s
  - Linkers for Lev3s
  - More crafting recipes (axes, tools for metalworking, hoe?, knife, bow, arrow, sling)
+ - brothersdoor initial and boss fight triggers
+ - ahimdoor initial and boss fight triggers
+ - chapeldoor initial and boss fight triggers
+ - Lev2-5: Custodialdoor map outlines
+ - Triggers for Custodialdoor level
+ - Finish all maps for all levels
+ - Finish all triggers for all levels
+
+ Pathfinding issues:
+  - add random choose if multiple correct paths
+  - if colliding need to move to center of current square
+     => (maybe predict if collision will happen from start square, shouldn't be too hard)
+  - sometimes unit will clip edge of wall when using diagonal movement then straight movement
+     => because a diagonal then straights (in a single direction) will all get skipped and give no goal
+     => solving this will likely solve above issue? since this seems like a more general issue
+  - features above the walk height ignore pathfinding because is treated like you want to move to a wall
+  - update pathfinding whenever you have an any collision and it currently isn't running
+     => need boolean that says using current pathfinding but waiting for next one?
+  - when targeting units specifically update pathfinding often (200ms?) no matter what
 
 v0.7.6: Lev2/3 Levels
  - All triggers for Lev2/3 levels
@@ -58,10 +70,9 @@ v0.7.9: Beta prep => if have time maybe start making more heroes (or outlines of
 
 
 Parking Lot:
+ - Abilities need an arraylist of unit keys they've already hit for abilities like (103/108/1001)
  - Items have durability bars
  - Can clean guns mechanic
- - Zombies spawn at night in area / any level where it is flagged as such
-    => Zombie level associated with player level / level level ?
  - EASY COMPANY sound in tutorial
  - Constants to speed up trigger times / header message times (for testing purposes, maybe for in-game options too)
  - AchievementFormField, if not unlocked have flag (hidden) to determine if it will show (Have achievement groups)
@@ -73,6 +84,7 @@ Parking Lot:
    => quiver, longbow, compound bow, crossbow, crossbow with explosives (from CoD)
    => magic wands and magic resist armor
  - molly schmiesing kidnapped by BOIZ so can rescue her (insert when making schmielet hero)
+ - test/QA all guns, ray gun ammo / reload
 
 
 v0.8: HomeBase and Campaign II
@@ -108,6 +120,9 @@ v0.8: HomeBase and Campaign II
   - Stove/fire makes items hot
   - All Ben unit sounds
   - All Dan unit sounds
+  - Weapon attachments (use item inventory)
+  - Terrain/features have absorption/transmittance/reflectance of light
+    => reflectance relevant for lasers/ray gun
 
 
 

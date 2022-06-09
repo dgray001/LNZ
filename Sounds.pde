@@ -38,7 +38,6 @@ class Sounds {
     this.stop_background();
     this.album_name = album_name;
     if (album_name == null || album_name.equals("none")) {
-      this.album_name = "none";
       return;
     }
     this.playing_background = true;

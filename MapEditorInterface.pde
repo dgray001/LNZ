@@ -1323,7 +1323,7 @@ class MapEditorInterface extends InterfaceLNZ {
       effect.setName();
       this.effect = effect;
       this.addField(new SpacerFormField(20));
-      this.addField(new IntegerFormField("ID: ", "enter an integer from 0-64", 0, 64));
+      this.addField(new IntegerFormField("ID: ", "enter an integer from 0-65", 0, 65));
       this.addField(new SpacerFormField(20));
       this.addField(new IntegerFormField("Number: ", "enter an integer", Integer.MIN_VALUE + 1, Integer.MAX_VALUE - 1));
       this.addField(new SpacerFormField(20));

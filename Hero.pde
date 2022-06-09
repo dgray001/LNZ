@@ -5354,6 +5354,14 @@ class Hero extends Unit {
   String fileString() {
     String fileString = "\nnew: Hero: " + this.ID;
     fileString += super.fileString(false);
+    for (Ability a : this.abilities) {
+      if (a == null) {
+        fileString += "\naddNullAbility:";
+      }
+      else {
+        fileString += a.fileString();
+      }
+    }
     fileString += "\nlevel_location: " + this.location.file_name();
     fileString += "\nlevel_tokens: " + this.level_tokens;
     fileString += "\nexperience: " + this.experience;
