@@ -129,6 +129,7 @@ class Condition {
       case 13: // player thirst
       case 14: // player mana
       case 15: // time after
+      case 16: // player respawning
         break;
       default:
         global.errorMessage("ERROR: Condition ID " + ID + " not recognized.");
@@ -189,9 +190,15 @@ class Condition {
       case 15: // time after
         this.display_name = "Time after (" + this.number1 + ")";
         break;
+      case 16: // player respawning
+        this.display_name = "Player Respawning";
+        break;
       default:
         this.display_name = "Condition";
         break;
+    }
+    if (this.not_condition) {
+      this.display_name = "NOT " + this.display_name;
     }
   }
 
@@ -265,6 +272,9 @@ class Condition {
         break;
       case 6: // player in rectangle
         if (this.met) {
+          break;
+        }
+        if (level.respawning) {
           break;
         }
         if (level.player == null) {
@@ -342,6 +352,9 @@ class Condition {
         if (this.met) {
           break;
         }
+        if (level.respawning) {
+          break;
+        }
         if (level.player == null) {
           break;
         }
@@ -353,6 +366,9 @@ class Condition {
         if (this.met) {
           break;
         }
+        if (level.respawning) {
+          break;
+        }
         if (level.player == null) {
           break;
         }
@@ -362,6 +378,9 @@ class Condition {
         break;
       case 14: // player mana
         if (this.met) {
+          break;
+        }
+        if (level.respawning) {
           break;
         }
         if (level.player == null) {
@@ -378,6 +397,12 @@ class Condition {
         if (level.time.value >= this.number1) {
           this.met = true;
         }
+        break;
+      case 16: // player respawning
+        if (this.met) {
+          break;
+        }
+        this.met = level.respawning;
         break;
       default:
         global.errorMessage("ERROR: Condition ID " + ID + " not recognized.");
@@ -424,6 +449,8 @@ class Condition {
       case 14: // player mana
         break;
       case 15: // time after
+        break;
+      case 16: // player respawning
         break;
       default:
         global.errorMessage("ERROR: Condition ID " + ID + " not recognized.");
@@ -554,6 +581,7 @@ class Effect {
       case 63: // take bens eyes
       case 64: // equip item to unit
       case 65: // toggle unit ai_toggle
+      case 66: // reset unit
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");
@@ -759,18 +787,21 @@ class Effect {
         this.display_name = "Remove Ben's Eyes";
         break;
       case 64: // equip item to unit
-        this.display_name = "Equip Item (" + round(this.decimal1) + ") to unit (" + this.number + ")";
+        this.display_name = "Equip Item (" + round(this.decimal1) + ") to Unit (" + this.number + ")";
         break;
       case 65: // toggle ai toggle
         if (this.decimal1 > 0) {
-          this.display_name = "AI Toggle (true) to unit (" + this.number + ")";
+          this.display_name = "AI Toggle (true) to Unit (" + this.number + ")";
         }
         else if (this.decimal1 < 0) {
-          this.display_name = "AI Toggle (false) to unit (" + this.number + ")";
+          this.display_name = "AI Toggle (false) to Unit (" + this.number + ")";
         }
         else {
-          this.display_name = "AI Toggle (toggle) to unit (" + this.number + ")";
+          this.display_name = "AI Toggle (toggle) to Unit (" + this.number + ")";
         }
+        break;
+      case 66: // reset unit
+        this.display_name = "Reset Unit (" + this.number + ")";
         break;
       default:
         this.display_name = "Effect";
@@ -1319,6 +1350,18 @@ class Effect {
         else {
           level.currMap.units.get(this.number).ai_toggle = !level.currMap.units.get(this.number).ai_toggle;
         }
+        break;
+      case 66: // reset unit
+        if (level.currMap == null) {
+          break;
+        }
+        if (!level.currMap.units.containsKey(this.number)) {
+          break;
+        }
+        Unit u = level.currMap.units.get(this.number);
+        u.statuses.clear();
+        u.curr_health = u.health();
+        u.stopAction();
         break;
       default:
         global.errorMessage("ERROR: Effect ID " + ID + " not recognized.");

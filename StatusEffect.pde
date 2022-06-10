@@ -438,22 +438,22 @@ class StatusEffect {
     this.permanent = permanent;
     switch(code) {
       case HUNGRY:
-        this.number = Constants.status_hunger_tickTimer;
+        this.number = random(Constants.status_hunger_tickTimer);
         break;
       case THIRSTY:
-        this.number = Constants.status_thirst_tickTimer;
+        this.number = random(Constants.status_thirst_tickTimer);
         break;
       case WOOZY:
-        this.number = Constants.status_woozy_tickMaxTimer;
+        this.number = random(Constants.status_woozy_tickMaxTimer);
         break;
       case CONFUSED:
-        this.number = Constants.status_confused_tickMaxTimer;
+        this.number = random(Constants.status_confused_tickMaxTimer);
         break;
       case BLEEDING:
-        this.number = Constants.status_bleed_tickTimer;
+        this.number = random(Constants.status_bleed_tickTimer);
         break;
       case HEMORRHAGING:
-        this.number = Constants.status_hemorrhage_tickTimer;
+        this.number = random(Constants.status_hemorrhage_tickTimer);
         break;
       case UNKILLABLE:
         this.number = 1;

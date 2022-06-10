@@ -3471,11 +3471,11 @@ class Item extends MapObject {
   float shootRange() {
     switch(this.ID) {
       case 2118: // Chicken Egg (thrown)
-        return 2.5;
+        return 3;
       case 2301: // Slingshot
-        return 3.5;
+        return 5.5;
       case 2311: // Recurve Bow
-        return 5;
+        return 6.5;
       case 2312: // M1911
         return 6;
       case 2321: // War Machine
@@ -3537,15 +3537,15 @@ class Item extends MapObject {
       case 2392: // Porter's X2 Ray Gun
         return 9;
       case 2924: // Glass Bottle (thrown)
-        return 3;
+        return 4;
       case 2931: // Rock (thrown)
-        return 3;
+        return 4.5;
       case 2932: // Arrow (thrown)
-        return 2.5;
+        return 3;
       case 2933: // Pebble (thrown)
-        return 2.5;
-      case 2944: // Grenade (thrown)
         return 3.5;
+      case 2944: // Grenade (thrown)
+        return 5.5;
       default:
         return 0;
     }

@@ -64,6 +64,10 @@ class Projectile extends MapObject {
           }
           this.damageType = DamageType.MIXED;
           break;
+        case 3003: // Condom Throw
+          this.power = Constants.ability_1002_basePower + u.power(0, Constants.ability_1002_magicRatio);
+          this.damageType = DamageType.MAGICAL;
+          break;
         case 3118: // Chicken Egg (thrown)
           if (u.holding(2118)) {
             this.toggled = u.weapon().toggled;
@@ -98,6 +102,9 @@ class Projectile extends MapObject {
         case 3002: // Mighty Pen II
           this.range_left = Constants.ability_107_distance;
           break;
+        case 3003: // Condom Throw
+          this.range_left = Constants.ability_1002_range;
+          break;
         default:
           this.range_left = 1.1 * u.attackRange();
           break;
@@ -114,6 +121,10 @@ class Projectile extends MapObject {
         break;
       case 3002: // Mighty Pen II
         this.speed = 9;
+        this.decay = 0;
+        break;
+      case 3003: // Condom Throw
+        this.speed = 5;
         this.decay = 0;
         break;
       // Items
@@ -372,6 +383,9 @@ class Projectile extends MapObject {
       case 3001:
       case 3002:
         path += "pen.png";
+        break;
+      case 3003:
+        path += "condom.png";
         break;
       case 3118:
         path += "chicken_egg.png";

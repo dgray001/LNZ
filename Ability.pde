@@ -98,9 +98,9 @@ class Ability {
       case 1001:
         return "Blow Smoke";
       case 1002:
-        return "Condom Slap";
+        return "Condom Throw";
       case 1003:
-        return "";
+        return "Title IX Charge";
       default:
         return "ERROR";
     }
@@ -307,9 +307,16 @@ class Ability {
           "% magic power) magic damage and making any enemies hit woozy for " +
           (Constants.ability_1001_woozyTime/1000.0) + "s.";
       case 1002:
-        return "Condom Slap";
+        return "Cathy Heck's primary goal is to prevent Franciscan men from " +
+          "passing on their genes.\nThrow 8 condoms in every direction around " +
+          "you after a brief wind up period, each dealing " + Constants.
+          ability_1002_basePower + " + (0% attack power + " + round(100*
+          Constants.ability_1002_magicRatio) + "% magic power) magic damage.";
       case 1003:
-        return "";
+        return "Cathy's ultimatum is to hunt down unsuspecting men using all " +
+          "power at her disposal, usually just a Title IX charge.\nSlap a Title " +
+          "IX charge on target enemy within ... m, dealing ... damage (missing health as well) and making " +
+          "them confused and wilted for ... s";
       default:
         return "-- error -- ";
     }
@@ -719,6 +726,15 @@ class Ability {
         u.curr_action_id = ability_index;
         this.currently_hit.clear();
         global.sounds.trigger_units("units/ability/1001", u.x - map.viewX, u.y - map.viewY);
+        break;
+      case 1002: // Condom Throw
+        this.timer_other = Constants.ability_1002_castTime;
+        this.toggle = true;
+        u.curr_action = UnitAction.CASTING;
+        u.curr_action_id = ability_index;
+        global.sounds.trigger_units("units/ability/1002", u.x - map.viewX, u.y - map.viewY);
+        break;
+      case 1003: // Title IX Charge
         break;
       default:
         global.errorMessage("ERROR: Can't activate ability with ID " + this.ID + ".");
@@ -1199,6 +1215,44 @@ class Ability {
           this.toggle = false;
           u.stopAction();
         }
+        break;
+      case 1002: // Condom Throw
+        if (!this.toggle) {
+          break;
+        }
+        if (u.curr_action != UnitAction.CASTING) {
+          this.toggle = false;
+          break;
+        }
+        if (this.timer_other <= 0) {
+          this.toggle = false;
+          u.stopAction();
+          Projectile p = new Projectile(3003, u);
+          map.addProjectile(p);
+          p = new Projectile(3003, u);
+          p.turn(0.25 * PI);
+          map.addProjectile(p);
+          p = new Projectile(3003, u);
+          p.turn(0.5 * PI);
+          map.addProjectile(p);
+          p = new Projectile(3003, u);
+          p.turn(0.75 * PI);
+          map.addProjectile(p);
+          p = new Projectile(3003, u);
+          p.turn(PI);
+          map.addProjectile(p);
+          p = new Projectile(3003, u);
+          p.turn(-0.25 * PI);
+          map.addProjectile(p);
+          p = new Projectile(3003, u);
+          p.turn(-0.5 * PI);
+          map.addProjectile(p);
+          p = new Projectile(3003, u);
+          p.turn(-0.75 * PI);
+          map.addProjectile(p);
+        }
+        break;
+      case 1003: // Title IX Charge
         break;
 
       default:

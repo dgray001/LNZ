@@ -388,7 +388,28 @@ class Unit extends MapObject {
           this.move_stack.push(new FloatCoordinate(goal.x + 0.5, goal.y + 0.5));
         }
       }
-      // check for collisions based on unit current position in square
+      /*
+      FloatCoordinate initial_goal;
+      if (this.move_stack.empty()) {
+        initial_goal = new FloatCoordinate(this.goal_x, this.goal_y);
+      }
+      else {
+        initial_goal = this.move_stack.peek();
+      }
+      HashSet<IntegerCoordinate> initial_intersected_squares = squaresIntersectedByLine(
+        new FloatCoordinate(Unit.this.x, Unit.this.y), initial_goal);
+      int max_height = coordinates.get(current).source_height + Unit.this.walkHeight();
+      for (IntegerCoordinate coordinate : initial_intersected_squares) {
+        if (coordinates.containsKey(coordinate)) {
+          continue;
+        }
+        int coordinate_height = map.heightOfSquare(coordinate, true);
+        if (coordinate_height > max_height) {
+          this.move_stack.push(new FloatCoordinate(current.x + 0.5, current.y + 0.5));
+          break;
+        }
+      }
+      */
     }
   }
 
@@ -723,7 +744,7 @@ class Unit extends MapObject {
         break;
       case 1311:
         this.setStrings("Cathy Heck", "Zombie", "");
-        this.baseStats(40, 6, 1.8, 0.1, 0.6);
+        this.baseStats(35, 6, 1.6, 0.1, 0.6);
         this.magicStats(10, 1.2, 0.05);
         this.base_lifesteal = 0.08;
         this.abilities.add(new Ability(1001));
@@ -732,6 +753,8 @@ class Unit extends MapObject {
         this.level = 11;
         this.alliance = Alliance.ZOMBIE;
         this.timer_ai_action1 = round(5000 + random(5000));
+        this.timer_ai_action2 = round(9000 + random(9000));
+        this.timer_ai_action3 = round(21000 + random(21000));
         break;
 
       default:
@@ -3545,8 +3568,26 @@ class Unit extends MapObject {
   }
 
   float facingAngleModifier() {
-    if (this.curr_action == UnitAction.ATTACKING) {
-      return Constants.unit_attackAnimationAngle(1 - this.timer_actionTime / this.attackTime(true));
+    switch(this.curr_action) {
+      case ATTACKING:
+        return Constants.unit_attackAnimationAngle(1 - this.timer_actionTime / this.attackTime(true));
+      case CASTING:
+        if (this.curr_action_id < 0 || this.curr_action_id >= this.abilities.size()) {
+          break;
+        }
+        Ability a_casting = this.abilities.get(this.curr_action_id);
+        if (a_casting == null) {
+          break;
+        }
+        switch(a_casting.ID) {
+          case 1002: // Condom Throw
+            return 2 * PI * (1.0 - a_casting.timer_other / Constants.ability_1002_castTime);
+          default:
+            break;
+        }
+        break;
+      default:
+        return 0;
     }
     return 0;
   }
@@ -3777,6 +3818,9 @@ class Unit extends MapObject {
       case 1307:
       case 1308:
         sound_name += "zombie" + randomInt(0, 15);
+        break;
+      case 1311:
+        sound_name += "heck" + randomInt(1, 5);
         break;
       default:
         sound_name += "default";
@@ -4592,6 +4636,7 @@ class Unit extends MapObject {
         }
         this.timer_ai_action1 -= timeElapsed;
         this.timer_ai_action2 -= timeElapsed;
+        this.timer_ai_action3 -= timeElapsed;
         switch(this.curr_action) {
           case NONE:
             if (map.units.containsKey(0)) {
@@ -4599,9 +4644,23 @@ class Unit extends MapObject {
             }
             break;
           case TARGETING_UNIT:
-            if (this.timer_ai_action1 < 0) {
-              this.timer_ai_action1 = round(5000 + random(5000));
+            if (this.timer_ai_action3 < 0) {
+              this.timer_ai_action3 = 3500;
+              this.cast(2, map);
+            }
+            else if (this.timer_ai_action2 < 0) {
+              this.timer_ai_action2 = round(9000 + random(9000));
+              this.cast(1, map);
+            }
+            else if (this.timer_ai_action1 < 0) {
+              this.timer_ai_action1 = round(6000 + random(6000));
               this.cast(0, map);
+            }
+            break;
+          case CAST_WHEN_IN_RANGE:
+            if (this.timer_ai_action3 < 0) {
+              this.timer_ai_action3 = round(21000 + random(21000));
+              this.curr_action = UnitAction.NONE;
             }
             break;
         }

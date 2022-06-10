@@ -55,6 +55,67 @@ class IntegerCoordinate {
   }
 }
 
+// This function not fully tested, especially when error == 0
+HashSet<IntegerCoordinate> squaresIntersectedByLine(FloatCoordinate p1, FloatCoordinate p2) {
+  HashSet<IntegerCoordinate> intersections = new HashSet<IntegerCoordinate>();
+  // declare parameters
+  float dx = abs(p1.x - p2.x);
+  float dy = abs(p1.y - p2.y);
+  int x = round(floor(p1.x));
+  int y = round(floor(p1.y));
+  int n = 1;
+  int x_increase = 0;
+  int y_increase = 0;
+  float error = 0;
+  boolean infinite_error = false;
+  boolean negative_infinite_error = false;
+  // count intersections with grid lines
+  if (dx == 0) {
+    infinite_error = true;
+  }
+  else if (p2.x > p1.x) {
+    x_increase = 1;
+    n += round(floor(p2.x));
+    error = (floor(p1.x) + 1 - p1.x) * dy;
+  }
+  else {
+    x_increase = -1;
+    n += x - round(floor(p2.x));
+    error = (p1.x - floor(p1.x)) * dy;
+  }
+  if (dy == 0) {
+    if (infinite_error) {
+      infinite_error = false;
+    }
+    else {
+      negative_infinite_error = true;
+    }
+  }
+  else if (p2.y > p1.y) {
+    y_increase = 1;
+    n += round(floor(p2.y)) - y;
+    error -= (floor(p1.y) + 1 - p1.y) * dx;
+  }
+  else {
+    y_increase = -1;
+    n += y - round(floor(p2.y));
+    error -= (p1.y - floor(p1.y)) * dx;
+  }
+  // traverse line
+  for (; n > 0; n--) {
+    intersections.add(new IntegerCoordinate(x, y));
+    if (infinite_error || (error > 0 && !negative_infinite_error)) {
+      y += y_increase;
+      error -= dx;
+    }
+    else {
+      x += x_increase;
+      error += dy;
+    }
+  }
+  return intersections;
+}
+
 class FloatCoordinate {
   private float x;
   private float y;

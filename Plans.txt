@@ -1,7 +1,5 @@
 v0.7.5: Lev2 maps
- - Cathy Heck other abilities
- - triggers to reset boss fight if you die
- i: Frontdoor boss fight triggers
+ - Cathy Heck last ability
  j: Cars triggers (key, door locked, gas)
  k: Replace mocks with appropriately-named levels/maps
  l: Victory conditions for all levels
@@ -32,7 +30,14 @@ v0.7.5: Lev2 maps
   - if colliding need to move to center of current square
      => (maybe predict if collision will happen from start square, shouldn't be too hard)
   - targeted features above the walk height ignore pathfinding because is treated like you want to move to a wall
+     => need to calculate pathfinding for every possibility (all sides and maybe corners) then return shortest
+  - various other issues I can see when trying basic checks in map tester
   - update pathfinding whenever you have an any collision and it currently isn't running
+
+  Options issues:
+  - flag to turn off pathfinding for player unit
+  - separate into sections on same form
+  - make a TabbedForm extends Form element which is a form that displays a form based on tab selected
 
 v0.7.6: Lev2/3 Levels
  - All triggers for Lev2/3 levels
