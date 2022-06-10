@@ -83,6 +83,97 @@ enum DayCycle {
 }
 
 
+class ZombieSpawnParams {
+  private float max_zombies_per_square = 0.05;
+  private int max_zombies = 100;
+  private int min_level = 0;
+  private int max_level = 100;
+  private int del_level = 3;
+  private int group_size = 3;
+  private int del_group_size = 2;
+  private float group_radius = 2.5;
+  private float min_distance = 5;
+  private float max_distance = 25;
+  private boolean save_params = false;
+  private int try_spawn_timer = 20;
+
+  ZombieSpawnParams() {
+  }
+
+  int getLevel(int player_level) {
+    int level = int(player_level - this.del_level + random(1 + 2 * this.del_level));
+    if (level < this.min_level) {
+      level = this.min_level;
+    }
+    if (level > this.max_level) {
+      level = this.max_level;
+    }
+    return level;
+  }
+
+  boolean badSpawnSpace(float x, float y, GameMap map) {
+    if (int(x) < map.mapXI() || int(x) >= map.mapXF() || int(y) < map.mapYI() || int(y) >= map.mapYF()) {
+      return true;
+    }
+    GameMapSquare square = map.mapSquare(int(x), int(y));
+    if (square == null || square.isWall() || square.feature_elevation > 4 || square.light_level > 5) {
+      return true;
+    }
+    return false;
+  }
+
+  void update(int time_elapsed, Level level) {
+    if (level.currMap == null || level.player == null) {
+      return;
+    }
+    this.try_spawn_timer -= time_elapsed;
+    if (this.try_spawn_timer > 0) {
+      return;
+    }
+    this.try_spawn_timer = 20;
+    if (level.currMap.zombie_counter > this.max_zombies) {
+      return;
+    }
+    if (level.currMap.zombie_counter > this.max_zombies_per_square * level.currMap.mapWidth() * level.currMap.mapHeight()) {
+      return;
+    }
+    float x_facing = random(-1.0, 1.0);
+    float y_facing = 1.0 - abs(x_facing);
+    if (randomChance(0.5)) {
+      y_facing = -y_facing;
+    }
+    float distance = random(5, 25);
+    float x = level.player.x + x_facing * distance;
+    float y = level.player.y + y_facing * distance;
+    if (this.badSpawnSpace(x, y, level.currMap)) {
+      return;
+    }
+    // successful 'group spawn'
+    this.try_spawn_timer = 1200;
+    Unit zambo = new Unit(1291);
+    zambo.setLevel(this.getLevel(level.player.level));
+    level.currMap.addUnit(zambo, x, y);
+    int group_size = int(this.group_size - this.del_group_size + random(1 + 2 * this.del_group_size));
+    for (int i = 0; i < group_size; i++) {
+      x_facing = random(-1.0, 1.0);
+      y_facing = 1.0 - abs(x_facing);
+      if (randomChance(0.5)) {
+        y_facing = -y_facing;
+      }
+      distance = random(this.group_radius);
+      float x_group = x + x_facing * distance;
+      float y_group = y + y_facing * distance;
+      if (this.badSpawnSpace(x_group, y_group, level.currMap)) {
+        continue;
+      }
+      zambo = new Unit(1291);
+      zambo.setLevel(this.getLevel(level.player.level));
+      level.currMap.addUnit(zambo, x_group, y_group);
+    }
+  }
+}
+
+
 
 class Level {
   protected String folderPath; // to level folder
@@ -112,6 +203,7 @@ class Level {
   protected HashMap<Integer, Trigger> triggers = new HashMap<Integer, Trigger>();
   protected HashMap<Integer, Quest> quests = new HashMap<Integer, Quest>();
   protected ClockFloat time = new ClockFloat(24, 6.5); // day cycle
+  protected ZombieSpawnParams zombie_spawn_params = new ZombieSpawnParams();
 
   protected Rectangle player_start_location = null;
   protected Rectangle player_spawn_location = null;
@@ -1983,7 +2075,7 @@ class Level {
       this.restart_timers = false;
       this.restartTimers(millis);
     }
-    int timeElapsed = millis - this.last_update_time;
+    int time_elapsed = millis - this.last_update_time;
     if (this.completing || this.completed) {
       if (this.currMap != null) {
         this.currMap.drawMap();
@@ -1994,7 +2086,7 @@ class Level {
         fill(color(60));
         rect(this.xi, this.yi, this.xf, this.yf);
       }
-      this.completing_timer -= timeElapsed;
+      this.completing_timer -= time_elapsed;
       if (this.completing_timer < 0) {
         this.completed = true;
       }
@@ -2017,7 +2109,7 @@ class Level {
           global.defaultCursor();
           this.player.heroTree.setLocation(this.xi, this.yi, this.xf, this.yf);
         }
-        this.player.heroTree.update(timeElapsed);
+        this.player.heroTree.update(time_elapsed);
         this.last_update_time = millis;
         return;
       }
@@ -2036,15 +2128,16 @@ class Level {
       this.last_update_time = millis;
       return;
     }
-    this.time.add(timeElapsed * Constants.level_timeConstants);
+    this.time.add(time_elapsed * Constants.level_timeConstants);
     if (this.currMap != null) {
       this.currMap.base_light_level = DayCycle.lightFraction(this.time.value);
       if (this.respawning) {
         this.currMap.terrain_display.filter(GRAY);
       }
       this.currMap.update(millis);
+      this.zombie_spawn_params.update(time_elapsed, this);
       for (Map.Entry<Integer, Trigger> entry : this.triggers.entrySet()) {
-        entry.getValue().update(timeElapsed, this);
+        entry.getValue().update(time_elapsed, this);
       }
       if (this.player != null) {
         if (this.player.curr_action == UnitAction.HERO_INTERACTING_WITH_FEATURE) {
@@ -2087,14 +2180,14 @@ class Level {
     }
     if (this.player != null) {
       if (this.respawning) {
-        this.respawn_timer -= timeElapsed;
+        this.respawn_timer -= time_elapsed;
         if (this.respawn_timer < 0) {
           this.respawnPlayer();
           this.respawning = false;
         }
       }
       else if (this.sleeping) {
-        this.sleep_timer -= timeElapsed;
+        this.sleep_timer -= time_elapsed;
         if (this.sleep_timer < 0) {
           this.gainControl();
           this.sleeping = false;
@@ -2106,9 +2199,9 @@ class Level {
         }
       }
       else {
-        this.player.update_hero(timeElapsed);
+        this.player.update_hero(time_elapsed);
         for (Map.Entry<Integer, Quest> entry : this.quests.entrySet()) {
-          entry.getValue().update(this, timeElapsed);
+          entry.getValue().update(this, time_elapsed);
         }
         if (this.player.seesTime()) {
           fill(255);
@@ -2422,6 +2515,18 @@ class Level {
     file.println("sleeping: " + this.sleeping);
     file.println("sleep_timer: " + this.sleep_timer);
     file.println("in_control: " + this.in_control);
+    if (this.zombie_spawn_params.save_params) {
+      file.println("max_zombies_per_square: " + this.zombie_spawn_params.max_zombies_per_square);
+      file.println("max_zombies: " + this.zombie_spawn_params.max_zombies);
+      file.println("min_level: " + this.zombie_spawn_params.min_level);
+      file.println("max_level: " + this.zombie_spawn_params.max_level);
+      file.println("del_level: " + this.zombie_spawn_params.del_level);
+      file.println("group_size: " + this.zombie_spawn_params.group_size);
+      file.println("del_group_size: " + this.zombie_spawn_params.del_group_size);
+      file.println("group_radius: " + this.zombie_spawn_params.group_radius);
+      file.println("min_distance: " + this.zombie_spawn_params.min_distance);
+      file.println("max_distance: " + this.zombie_spawn_params.max_distance);
+    }
     if (this.currMapName != null) {
       file.println("currMapName: " + this.currMapName);
     }
@@ -2662,6 +2767,36 @@ class Level {
         break;
       case "sleep_timer":
         this.sleep_timer = toInt(data);
+        break;
+      case "max_zombies_per_square":
+        this.zombie_spawn_params.max_zombies_per_square = toFloat(data);
+        break;
+      case "max_zombies":
+        this.zombie_spawn_params.max_zombies = toInt(data);
+        break;
+      case "min_level":
+        this.zombie_spawn_params.min_level = toInt(data);
+        break;
+      case "max_level":
+        this.zombie_spawn_params.max_level = toInt(data);
+        break;
+      case "del_level":
+        this.zombie_spawn_params.del_level = toInt(data);
+        break;
+      case "group_size":
+        this.zombie_spawn_params.group_size = toInt(data);
+        break;
+      case "del_group_size":
+        this.zombie_spawn_params.del_group_size = toInt(data);
+        break;
+      case "group_radius":
+        this.zombie_spawn_params.group_radius = toFloat(data);
+        break;
+      case "min_distance":
+        this.zombie_spawn_params.min_distance = toFloat(data);
+        break;
+      case "max_distance":
+        this.zombie_spawn_params.max_distance = toFloat(data);
         break;
       case "in_control":
         if (toBoolean(data)) {

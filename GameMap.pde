@@ -617,6 +617,7 @@ class GameMap {
   protected int nextFeatureKey = 1;
   protected HashMap<Integer, Unit> units = new HashMap<Integer, Unit>();
   protected int nextUnitKey = 1;
+  protected int zombie_counter = 0;
   protected boolean in_control = true;
   protected HashMap<Integer, Item> items = new HashMap<Integer, Item>();
   protected int nextItemKey = 1;
@@ -655,6 +656,12 @@ class GameMap {
     return this.mapWidth;
   }
   int mapYF() {
+    return this.mapHeight;
+  }
+  int mapWidth() {
+    return this.mapWidth;
+  }
+  int mapHeight() {
     return this.mapHeight;
   }
 
@@ -1121,6 +1128,9 @@ class GameMap {
     }
     u.curr_squares_on = u.getSquaresOn();
     u.resolveFloorHeight(this);
+    if (u.type.equals("Zombie")) {
+      this.zombie_counter++;
+    }
   }
   // remove unit
   void removeUnit(int code) {
@@ -1992,12 +2002,18 @@ class GameMap {
       if (u.remove) {
         u.destroy(this);
         unit_iterator.remove();
+        if (u.type.equals("Zombie")) {
+          this.zombie_counter--;
+        }
         continue;
       }
       u.update(timeElapsed, this);
       if (u.remove) {
         u.destroy(this);
         unit_iterator.remove();
+        if (u.type.equals("Zombie")) {
+          this.zombie_counter--;
+        }
       }
     }
     this.updatePlayerUnit(timeElapsed);
@@ -2142,6 +2158,9 @@ class GameMap {
       if (entry.getValue().remove) {
         entry.getValue().destroy(this);
         unit_iterator.remove();
+        if (entry.getValue().type.equals("Zombie")) {
+          this.zombie_counter--;
+        }
       }
     }
     // Check items

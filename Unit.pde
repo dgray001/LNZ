@@ -626,73 +626,79 @@ class Unit extends MapObject {
       // Zombies
       case 1201:
         this.setStrings("Broken Sick Zombie", "Zombie", "");
-        this.baseStats(1, 1, 0, 0, 0.5);
-        this.level = 1;
+        this.baseStats(1, 1, 0, 0, 0.3);
+        this.setLevel(1);
         this.alliance = Alliance.ZOMBIE;
         this.addStatusEffect(StatusEffectCode.SICK);
         break;
       case 1202:
         this.setStrings("Broken Zombie", "Zombie", "");
-        this.baseStats(2, 1, 0, 0, 0.5);
-        this.level = 2;
+        this.baseStats(2, 1, 0, 0, 0.3);
+        this.setLevel(2);
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1203:
         this.setStrings("Sick Zombie", "Zombie", "");
-        this.baseStats(2, 2, 0, 0, 0.7);
-        this.level = 3;
+        this.baseStats(2, 2, 0, 0, 0.4);
+        this.setLevel(3);
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
         this.addStatusEffect(StatusEffectCode.SICK);
         break;
       case 1204:
         this.setStrings("Lazy Hungry Zombie", "Zombie", "");
-        this.baseStats(3, 3, 0.3, 0, 0.7);
-        this.level = 4;
+        this.baseStats(3, 3, 0.3, 0, 0.5);
+        this.setLevel(4);
         this.alliance = Alliance.ZOMBIE;
         this.addStatusEffect(StatusEffectCode.HUNGRY);
         break;
       case 1205:
         this.setStrings("Hungry Zombie", "Zombie", "");
-        this.baseStats(3, 3, 0.3, 0, 1);
-        this.level = 5;
+        this.baseStats(3, 3, 0.3, 0, 0.8);
+        this.setLevel(5);
         this.alliance = Alliance.ZOMBIE;
         this.addStatusEffect(StatusEffectCode.HUNGRY);
         break;
       case 1206:
         this.setStrings("Lazy Zombie", "Zombie", "");
-        this.baseStats(4, 3, 0.3, 0, 0.8);
-        this.level = 6;
+        this.baseStats(4, 3, 0.3, 0, 0.6);
+        this.setLevel(6);
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1207:
         this.setStrings("Confused Franny Zombie", "Zombie", "");
-        this.baseStats(5, 3, 0.6, 0, 1.2);
-        this.level = 7;
+        this.baseStats(5, 3, 0.6, 0, 0.9);
+        this.setLevel(7);
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
         this.addStatusEffect(StatusEffectCode.CONFUSED);
         break;
       case 1208:
         this.setStrings("Confused Zombie", "Zombie", "");
-        this.baseStats(6, 3, 0.6, 0, 1.2);
-        this.level = 8;
+        this.baseStats(6, 3, 0.6, 0, 1);
+        this.setLevel(8);
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
         this.addStatusEffect(StatusEffectCode.CONFUSED);
         break;
       case 1209:
         this.setStrings("Franny Zombie", "Zombie", "");
-        this.baseStats(7, 3, 0.6, 0, 1.2);
-        this.level = 9;
+        this.baseStats(7, 3, 0.6, 0, 1.1);
+        this.setLevel(9);
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1210:
         this.setStrings("Intellectual Zombie", "Zombie", "");
         this.baseStats(9, 4, 1, 0, 1.2);
-        this.level = 10;
+        this.setLevel(10);
+        this.gearSlots("Weapon");
+        this.alliance = Alliance.ZOMBIE;
+        break;
+      case 1291:
+        this.setStrings("Zombie", "Zombie", "");
+        this.baseStats(3, 1, 0, 0, 0.8);
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
         break;
@@ -701,50 +707,50 @@ class Unit extends MapObject {
       case 1301:
         this.setStrings("Duggy", "Zombie", "");
         this.baseStats(6, 2.5, 0.2, 0, 1);
-        this.level = 1;
+        this.setLevel(1);
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1302:
         this.setStrings("Jacob Sanchez", "Zombie", "");
         this.baseStats(5, 4, 0, 0, 1.5);
-        this.level = 2;
+        this.setLevel(2);
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1303:
         this.setStrings("Mike Olenchuk", "Zombie", "");
         this.baseStats(12, 3.5, 1, 0, 0.9);
-        this.level = 3;
+        this.setLevel(3);
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1304:
         this.setStrings("Grady Stuckman", "Zombie", "");
         this.baseStats(10, 5, 0.4, 0.05, 1.7);
-        this.level = 4;
+        this.setLevel(4);
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1305:
         this.setStrings("Ethan Pitney", "Zombie", "");
         this.baseStats(9, 7, 0.4, 0, 1.3);
-        this.level = 5;
+        this.setLevel(5);
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1306:
         this.setStrings("James Sarlo", "Zombie", "");
         this.baseStats(15, 8, 0.4, 0.12, 1.4);
-        this.level = 6;
+        this.setLevel(6);
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1307:
         this.setStrings("Matt Hair", "Zombie", "");
         this.baseStats(25, 6, 2.2, 0.03, 1.1);
-        this.level = 7;
+        this.setLevel(7);
         this.alliance = Alliance.ZOMBIE;
         this.gearSlots("Weapon");
         break;
       case 1308:
         this.setStrings("Nick Belt", "Zombie", "");
         this.baseStats(18, 10, 0.8, 0.15, 1.4);
-        this.level = 8;
+        this.setLevel(8);
         this.alliance = Alliance.ZOMBIE;
         this.base_attackRange = 1.2 * Constants.unit_defaultBaseAttackRange;
         break;
@@ -756,7 +762,7 @@ class Unit extends MapObject {
         this.abilities.add(new Ability(1001));
         this.abilities.add(new Ability(1002));
         this.abilities.add(new Ability(1003));
-        this.level = 11;
+        this.setLevel(11);
         this.alliance = Alliance.ZOMBIE;
         this.timer_ai_action1 = round(5000 + random(5000));
         this.timer_ai_action2 = round(9000 + random(9000));
@@ -947,6 +953,7 @@ class Unit extends MapObject {
       case 1208:
       case 1209:
       case 1210:
+      case 1291:
         path += "zombie1.png";
         break;
       case 1301:
@@ -995,6 +1002,17 @@ class Unit extends MapObject {
 
   void setLevel(int level) {
     this.level = level;
+    float level_constant = 0.5 * level * (level + 1);
+    switch(this.ID) {
+      case 1291: // Zombie
+        this.base_health = 3 + 0.4 * level_constant;
+        this.curr_health = this.health();
+        this.base_attack = 1 + 0.1 * level_constant;
+        this.base_defense = 0.01 * level_constant;
+        break;
+      default:
+        break;
+    }
   }
 
 
@@ -3270,6 +3288,7 @@ class Unit extends MapObject {
         case 1208:
         case 1209:
         case 1210:
+        case 1291: // Auto-spawned Zombies
         case 1301: // Tier I named zombies
         case 1302:
         case 1303:
@@ -3423,6 +3442,7 @@ class Unit extends MapObject {
       case 1207:
       case 1208:
       case 1209:
+      case 1291: // Auto-spawned Zombies
         if (randomChance(0.2)) {
           drops.add(new Item(2119));
         }
@@ -3745,7 +3765,8 @@ class Unit extends MapObject {
       case 1208:
       case 1209:
       case 1210:
-      case 1301:
+      case 1291: // Auto-spawned Zombies
+      case 1301: // Named Zombies
       case 1302:
       case 1303:
       case 1304:
@@ -3777,7 +3798,8 @@ class Unit extends MapObject {
       case 1208:
       case 1209:
       case 1210:
-      case 1301:
+      case 1291: // Auto-spawned Zombies
+      case 1301: // Named Zombies
       case 1302:
       case 1303:
       case 1304:
@@ -3813,7 +3835,8 @@ class Unit extends MapObject {
       case 1208:
       case 1209:
       case 1210:
-      case 1301:
+      case 1291: // Auto-spawned Zombies
+      case 1301: // Named Zombies
       case 1302:
       case 1303:
       case 1304:
@@ -3854,7 +3877,8 @@ class Unit extends MapObject {
       case 1208:
       case 1209:
       case 1210:
-      case 1301:
+      case 1291: // Auto-spawned Zombies
+      case 1301: // Named Zombies
       case 1302:
       case 1303:
       case 1304:
@@ -3891,7 +3915,8 @@ class Unit extends MapObject {
       case 1208:
       case 1209:
       case 1210:
-      case 1301:
+      case 1291: // Auto-spawned Zombies
+      case 1301: // Named Zombies
       case 1302:
       case 1303:
       case 1304:
@@ -3923,7 +3948,8 @@ class Unit extends MapObject {
       case 1208:
       case 1209:
       case 1210:
-      case 1301:
+      case 1291: // Auto-spawned Zombies
+      case 1301: // Named Zombies
       case 1302:
       case 1303:
       case 1304:
@@ -4596,6 +4622,7 @@ class Unit extends MapObject {
       case 1208:
       case 1209:
       case 1210:
+      case 1291: // Auto-spawned Zombies
       case 1302: // Tier I Named Zombies
       case 1303:
       case 1304:

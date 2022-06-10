@@ -1,6 +1,4 @@
 v0.7.5: Lev2 maps (06/18)
- n: Spawn generic zombies at night based on player level (0 - 100) and a level param
-      => level zombie spawn object which has params like min level, max level, delta level
  o: Add magic zombie, ranged zombie, runner zombie
  p: Cathy Heck last ability (Title IX Charge), has a good item drop
  q: Car feature mechanics
