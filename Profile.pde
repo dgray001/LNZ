@@ -1424,7 +1424,7 @@ Profile readProfile(String folder_path) {
             global.errorMessage("ERROR: Trying to add ability data to a null ability.");
             break;
           }
-          curr_status.addData(dataname, data);
+          curr_ability.addData(dataname, data);
           break;
         default:
           break;

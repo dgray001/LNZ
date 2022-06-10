@@ -633,13 +633,13 @@ class Unit extends MapObject {
         break;
       case 1202:
         this.setStrings("Broken Zombie", "Zombie", "");
-        this.baseStats(2, 1, 0, 0, 0.3);
+        this.baseStats(2.2, 1.3, 0, 0, 0.3);
         this.setLevel(2);
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1203:
         this.setStrings("Sick Zombie", "Zombie", "");
-        this.baseStats(2, 2, 0, 0, 0.4);
+        this.baseStats(3.5, 2, 0, 0, 0.4);
         this.setLevel(3);
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
@@ -647,28 +647,28 @@ class Unit extends MapObject {
         break;
       case 1204:
         this.setStrings("Lazy Hungry Zombie", "Zombie", "");
-        this.baseStats(3, 3, 0.3, 0, 0.5);
+        this.baseStats(5, 3, 0.3, 0, 0.5);
         this.setLevel(4);
         this.alliance = Alliance.ZOMBIE;
         this.addStatusEffect(StatusEffectCode.HUNGRY);
         break;
       case 1205:
         this.setStrings("Hungry Zombie", "Zombie", "");
-        this.baseStats(3, 3, 0.3, 0, 0.8);
+        this.baseStats(7, 3.2, 0.3, 0, 0.8);
         this.setLevel(5);
         this.alliance = Alliance.ZOMBIE;
         this.addStatusEffect(StatusEffectCode.HUNGRY);
         break;
       case 1206:
         this.setStrings("Lazy Zombie", "Zombie", "");
-        this.baseStats(4, 3, 0.3, 0, 0.6);
+        this.baseStats(9, 3.5, 0.3, 0, 0.6);
         this.setLevel(6);
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1207:
         this.setStrings("Confused Franny Zombie", "Zombie", "");
-        this.baseStats(5, 3, 0.6, 0, 0.9);
+        this.baseStats(11, 4, 0.6, 0, 0.9);
         this.setLevel(7);
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
@@ -676,7 +676,7 @@ class Unit extends MapObject {
         break;
       case 1208:
         this.setStrings("Confused Zombie", "Zombie", "");
-        this.baseStats(6, 3, 0.6, 0, 1);
+        this.baseStats(14, 4.3, 0.6, 0, 1);
         this.setLevel(8);
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
@@ -684,14 +684,14 @@ class Unit extends MapObject {
         break;
       case 1209:
         this.setStrings("Franny Zombie", "Zombie", "");
-        this.baseStats(7, 3, 0.6, 0, 1.1);
+        this.baseStats(17, 4.7, 0.6, 0, 1.1);
         this.setLevel(9);
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1210:
         this.setStrings("Intellectual Zombie", "Zombie", "");
-        this.baseStats(9, 4, 1, 0, 1.2);
+        this.baseStats(20, 5, 1, 0, 1.2);
         this.setLevel(10);
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
@@ -725,51 +725,51 @@ class Unit extends MapObject {
         break;
       case 1302:
         this.setStrings("Jacob Sanchez", "Zombie", "");
-        this.baseStats(5, 4, 0, 0, 1.5);
+        this.baseStats(8, 5, 0, 0, 1.5);
         this.setLevel(2);
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1303:
         this.setStrings("Mike Olenchuk", "Zombie", "");
-        this.baseStats(12, 3.5, 1, 0, 0.9);
+        this.baseStats(15, 4, 1, 0, 0.9);
         this.setLevel(3);
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1304:
         this.setStrings("Grady Stuckman", "Zombie", "");
-        this.baseStats(10, 5, 0.4, 0.05, 1.7);
+        this.baseStats(12, 5.5, 0.4, 0.05, 1.7);
         this.setLevel(4);
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1305:
         this.setStrings("Ethan Pitney", "Zombie", "");
-        this.baseStats(9, 7, 0.4, 0, 1.3);
+        this.baseStats(15, 7, 0.4, 0, 1.3);
         this.setLevel(5);
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1306:
         this.setStrings("James Sarlo", "Zombie", "");
-        this.baseStats(15, 8, 0.4, 0.12, 1.4);
+        this.baseStats(20, 8, 0.4, 0.12, 1.4);
         this.setLevel(6);
         this.alliance = Alliance.ZOMBIE;
         break;
       case 1307:
         this.setStrings("Matt Hair", "Zombie", "");
-        this.baseStats(25, 6, 2.2, 0.03, 1.1);
+        this.baseStats(25, 6.5, 2.2, 0.03, 1.1);
         this.setLevel(7);
         this.alliance = Alliance.ZOMBIE;
         this.gearSlots("Weapon");
         break;
       case 1308:
         this.setStrings("Nick Belt", "Zombie", "");
-        this.baseStats(18, 10, 0.8, 0.15, 1.4);
+        this.baseStats(22, 10, 0.8, 0.15, 1.4);
         this.setLevel(8);
         this.alliance = Alliance.ZOMBIE;
         this.base_attackRange = 1.2 * Constants.unit_defaultBaseAttackRange;
         break;
       case 1311:
         this.setStrings("Cathy Heck", "Zombie", "");
-        this.baseStats(35, 6, 1.6, 0.1, 0.6);
+        this.baseStats(50, 7.5, 1.6, 0.1, 0.6);
         this.magicStats(10, 1.2, 0.05);
         this.base_lifesteal = 0.08;
         this.abilities.add(new Ability(1001));
@@ -1832,39 +1832,6 @@ class Unit extends MapObject {
     if (code.negative()) {
       timer *= this.element.resistanceFactorTo(code.element());
       timer *= 1 - this.tenacity();
-      for (Ability a : this.abilities) {
-        if (a == null) {
-          continue;
-        }
-        switch(a.ID) {
-          case 101: // Fearless Leader I
-            if (this.rageOfTheBenII()) {
-              this.increaseMana(int(Constants.ability_101_rageGain * Constants.ability_110_rageGainBonus));
-            }
-            else if (this.rageOfTheBen()) {
-              this.increaseMana(int(Constants.ability_101_rageGain * Constants.ability_105_rageGainBonus));
-            }
-            else {
-              this.increaseMana(Constants.ability_101_rageGain);
-            }
-            a.timer_other = Constants.ability_101_cooldownTimer;
-            break;
-          case 106: // Fearless Leader II
-            if (this.rageOfTheBenII()) {
-              this.increaseMana(int(Constants.ability_106_rageGain * Constants.ability_110_rageGainBonus));
-            }
-            else if (this.rageOfTheBen()) {
-              this.increaseMana(int(Constants.ability_106_rageGain * Constants.ability_105_rageGainBonus));
-            }
-            else {
-              this.increaseMana(Constants.ability_106_rageGain);
-            }
-            a.timer_other = Constants.ability_106_cooldownTimer;
-            break;
-          default:
-            break;
-        }
-      }
     }
     return timer;
   }
@@ -1877,6 +1844,7 @@ class Unit extends MapObject {
     }
     else {
       this.statuses.put(code, new StatusEffect(code, timer));
+      this.effectFromNewNegativeStatusEffect();
     }
   }
   void refreshStatusEffect(StatusEffectCode code, float timer) {
@@ -1888,6 +1856,42 @@ class Unit extends MapObject {
     }
     else {
       this.statuses.put(code, new StatusEffect(code, timer));
+      this.effectFromNewNegativeStatusEffect();
+    }
+  }
+  void effectFromNewNegativeStatusEffect() {
+    for (Ability a : this.abilities) {
+      if (a == null) {
+        continue;
+      }
+      switch(a.ID) {
+        case 101: // Fearless Leader I
+          if (this.rageOfTheBenII()) {
+            this.increaseMana(int(Constants.ability_101_rageGain * Constants.ability_110_rageGainBonus));
+          }
+          else if (this.rageOfTheBen()) {
+            this.increaseMana(int(Constants.ability_101_rageGain * Constants.ability_105_rageGainBonus));
+          }
+          else {
+            this.increaseMana(Constants.ability_101_rageGain);
+          }
+          a.timer_other = Constants.ability_101_cooldownTimer;
+          break;
+        case 106: // Fearless Leader II
+          if (this.rageOfTheBenII()) {
+            this.increaseMana(int(Constants.ability_106_rageGain * Constants.ability_110_rageGainBonus));
+          }
+          else if (this.rageOfTheBen()) {
+            this.increaseMana(int(Constants.ability_106_rageGain * Constants.ability_105_rageGainBonus));
+          }
+          else {
+            this.increaseMana(Constants.ability_106_rageGain);
+          }
+          a.timer_other = Constants.ability_106_cooldownTimer;
+          break;
+        default:
+          break;
+      }
     }
   }
 
@@ -2196,7 +2200,7 @@ class Unit extends MapObject {
             break;
         }
         if (this.distanceFromPoint(this.curr_action_x, this.curr_action_y)
-          < this.last_move_distance) {
+          < this.last_move_distance + Constants.small_number) {
           this.stopAction(true);
         }
         break;
@@ -2513,7 +2517,7 @@ class Unit extends MapObject {
         }
         this.moveLogic(timeElapsed, map);
         if (this.distanceFromPoint(this.curr_action_x, this.curr_action_y)
-          < this.last_move_distance) {
+          < this.last_move_distance + Constants.small_number) {
             this.curr_action = UnitAction.USING_ITEM;
         }
         break;
@@ -4482,6 +4486,7 @@ class Unit extends MapObject {
     switch(this.ID) {
       case 1002: // Chicken
         if (this.curr_action == UnitAction.NONE || this.last_move_collision) {
+          this.curr_action = UnitAction.NONE;
           this.timer_ai_action1 -= timeElapsed;
           this.timer_ai_action2 -= timeElapsed;
           if (this.timer_ai_action3 > 0) {

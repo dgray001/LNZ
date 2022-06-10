@@ -135,7 +135,7 @@ class ZombieSpawnParams {
   }
 
   void update(int time_elapsed, Level level) {
-    if (level.currMap == null || level.player == null) {
+    if (level.currMap == null || !level.currMap.outside_map || level.player == null) {
       return;
     }
     this.try_spawn_timer -= time_elapsed;
@@ -3427,6 +3427,10 @@ class Level {
       this.color_header = color(72, 120, 170);
       this.original_stock = getKhalilInventory(f.number);
       this.costs = getKhalilInventoryCosts(f.number);
+      if (this.original_stock == null || this.costs == null) {
+        this.canceled = true;
+        return;
+      }
       this.khalil = f;
       this.hero = h;
       this.setTitleText(this.khalil.display_name());

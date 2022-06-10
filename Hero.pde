@@ -5065,7 +5065,7 @@ class Hero extends Unit {
         case 2925:
         case 2926:
         case 2927:
-          int thirst_quenched = min(Constants.hero_thirstThreshhold - this.thirst, i.ammo);
+          int thirst_quenched = min(Constants.hero_maxThirst - this.thirst, i.ammo);
           i.ammo -= thirst_quenched;
           this.increaseThirst(thirst_quenched);
           break;
@@ -5569,10 +5569,6 @@ Hero readHeroFile(String filePath) {
               global.errorMessage("ERROR: Trying to end an item not inside any other object.");
               break;
             }
-            if (object_queue.peek() != ReadFileObject.HERO) {
-              global.errorMessage("ERROR: Trying to end an ability not inside a hero.");
-              break;
-            }
             switch(object_queue.peek()) {
               case HERO:
                 if (parameters.length < 3) {
@@ -5638,7 +5634,7 @@ Hero readHeroFile(String filePath) {
               break;
             }
             if (object_queue.peek() != ReadFileObject.HERO) {
-              global.errorMessage("ERROR: Trying to end an ability not inside a hero.");
+              global.errorMessage("ERROR: Trying to end an ability inside a " + object_queue.peek().name + ".");
               break;
             }
             if (hero == null) {

@@ -1080,7 +1080,7 @@ end: Condition
 
 new: Effect
 ID: 4
-message: Now right-click to move Ben Nelson to toward the arrow
+message: Now right-click to move Ben Nelson toward the arrow
 number: 0
 decimal1: 0.0
 decimal2: 0.0
@@ -2536,6 +2536,15 @@ decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
+new: Effect
+ID: 7
+message: 
+number: 192
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
 end: Trigger
 
 nextTriggerKey: 74
@@ -2642,6 +2651,15 @@ number: 0
 decimal1: 0.0
 decimal2: 0.0
 rectangle: tutorial_stairwell, 1.0, 3.0, 2.0, 4.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 192
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
 end: Trigger
@@ -7040,6 +7058,33 @@ new: Effect
 ID: 40
 message: 
 number: 13
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 192
+
+new: Trigger
+triggerName: reactivate control
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1000
+number2: 1000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 12
+message: 
+number: 0
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0

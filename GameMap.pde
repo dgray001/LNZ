@@ -2704,8 +2704,8 @@ class GameMap {
                 global.errorMessage("ERROR: Trying to end a status effect not inside any other object.");
                 break;
               }
-              if (object_queue.peek() != ReadFileObject.UNIT) {
-                global.errorMessage("ERROR: Trying to end a status effect not inside a unit.");
+              if (object_queue.peek() != ReadFileObject.UNIT && object_queue.peek() != ReadFileObject.HERO) {
+                global.errorMessage("ERROR: Trying to end a status effect inside a " + object_queue.peek().name + ".");
                 break;
               }
               if (curr_unit == null) {
@@ -2724,8 +2724,8 @@ class GameMap {
                 global.errorMessage("ERROR: Trying to end an ability not inside any other object.");
                 break;
               }
-              if (object_queue.peek() != ReadFileObject.UNIT) {
-                global.errorMessage("ERROR: Trying to end an ability not inside a unit.");
+              if (object_queue.peek() != ReadFileObject.UNIT && object_queue.peek() != ReadFileObject.HERO) {
+                global.errorMessage("ERROR: Trying to end an ability inside a " + object_queue.peek().name + ".");
                 break;
               }
               if (curr_unit == null) {
