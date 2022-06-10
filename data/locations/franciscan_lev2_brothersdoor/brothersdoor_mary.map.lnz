@@ -1,0 +1,185 @@
+new: Map
+code: ERROR
+mapName: brothersdoor_mary
+dimensions: 6, 6
+maxHeight: 10
+outside_map: true
+color_tint: 65793
+show_tint: false
+terrain: 0, 0: 1, 100, false
+terrain: 0, 1: 163, 0, false
+terrain: 0, 2: 163, 0, false
+terrain: 0, 3: 163, 0, false
+terrain: 0, 4: 1, 100, false
+terrain: 0, 5: 1, 100, false
+terrain: 1, 0: 163, 0, false
+terrain: 1, 1: 163, 0, false
+terrain: 1, 2: 163, 0, false
+terrain: 1, 3: 163, 0, false
+terrain: 1, 4: 163, 0, false
+terrain: 1, 5: 1, 100, false
+terrain: 2, 0: 163, 0, false
+terrain: 2, 1: 163, 0, false
+terrain: 2, 2: 163, 0, false
+terrain: 2, 3: 163, 0, false
+terrain: 2, 4: 163, 0, false
+terrain: 2, 5: 1, 100, false
+terrain: 3, 0: 163, 0, false
+terrain: 3, 1: 163, 0, false
+terrain: 3, 2: 163, 0, false
+terrain: 3, 3: 163, 0, false
+terrain: 3, 4: 163, 0, false
+terrain: 3, 5: 1, 100, false
+terrain: 4, 0: 1, 100, false
+terrain: 4, 1: 163, 0, false
+terrain: 4, 2: 163, 0, false
+terrain: 4, 3: 163, 0, false
+terrain: 4, 4: 163, 0, false
+terrain: 4, 5: 163, 0, false
+terrain: 5, 0: 1, 100, false
+terrain: 5, 1: 1, 100, false
+terrain: 5, 2: 1, 100, false
+terrain: 5, 3: 1, 100, false
+terrain: 5, 4: 163, 0, false
+terrain: 5, 5: 163, 0, false
+nextFeatureKey: 32
+
+new: Feature: 111
+location: 3.0, 2.0, 0
+curr_height: 0
+remove: false
+number: 2
+toggle: false
+end: Feature
+
+nextFeatureKey: 19
+
+new: Feature: 202
+location: 1.0, 1.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 20
+
+new: Feature: 441
+location: 1.0, 0.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 21
+
+new: Feature: 441
+location: 2.0, 0.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 22
+
+new: Feature: 441
+location: 3.0, 0.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 23
+
+new: Feature: 441
+location: 3.0, 1.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 24
+
+new: Feature: 441
+location: 4.0, 1.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 25
+
+new: Feature: 441
+location: 4.0, 2.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 26
+
+new: Feature: 441
+location: 0.0, 1.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 27
+
+new: Feature: 441
+location: 0.0, 2.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 28
+
+new: Feature: 441
+location: 0.0, 3.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 29
+
+new: Feature: 441
+location: 1.0, 3.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 30
+
+new: Feature: 441
+location: 1.0, 4.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 31
+
+new: Feature: 441
+location: 2.0, 4.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+end: Map

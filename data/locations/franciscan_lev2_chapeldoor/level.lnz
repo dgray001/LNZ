@@ -10,8 +10,74 @@ respawn_timer: 0
 sleeping: false
 sleep_timer: 0
 in_control: true
-currMapName: mock
-mapNames: mock
+currMapName: chapeldoor_courtyard
+mapNames: chapeldoor_behindCaf, chapeldoor_chapeldoor, chapeldoor_courtyard, chapeldoor_road, chapeldoor_parkinglot, chapeldoor_steelcross
+
+new: Linker
+rect1: chapeldoor_chapeldoor, 74.0, 90.0, 75.0, 91.0
+rect2: chapeldoor_behindCaf, 0.0, 53.0, 1.0, 54.0
+end: Linker
+
+
+new: Linker
+rect1: chapeldoor_behindCaf, 0.0, 54.0, 1.0, 55.0
+rect2: chapeldoor_chapeldoor, 73.0, 90.0, 74.0, 91.0
+end: Linker
+
+
+new: Linker
+rect1: chapeldoor_chapeldoor, 0.0, 59.0, 1.0, 61.0
+rect2: chapeldoor_road, 78.0, 21.0, 79.0, 23.0
+end: Linker
+
+
+new: Linker
+rect1: chapeldoor_road, 79.0, 21.0, 80.0, 23.0
+rect2: chapeldoor_chapeldoor, 1.0, 59.0, 2.0, 61.0
+end: Linker
+
+
+new: Linker
+rect1: chapeldoor_chapeldoor, 0.0, 49.0, 1.0, 51.0
+rect2: chapeldoor_road, 78.0, 11.0, 79.0, 13.0
+end: Linker
+
+
+new: Linker
+rect1: chapeldoor_road, 79.0, 11.0, 80.0, 13.0
+rect2: chapeldoor_chapeldoor, 1.0, 49.0, 2.0, 51.0
+end: Linker
+
+
+new: Linker
+rect1: chapeldoor_chapeldoor, 0.0, 31.0, 1.0, 33.0
+rect2: chapeldoor_parkinglot, 48.0, 15.0, 49.0, 17.0
+end: Linker
+
+
+new: Linker
+rect1: chapeldoor_parkinglot, 49.0, 15.0, 50.0, 17.0
+rect2: chapeldoor_chapeldoor, 1.0, 31.0, 2.0, 33.0
+end: Linker
+
+
+new: Linker
+rect1: chapeldoor_parkinglot, 49.0, 15.0, 50.0, 17.0
+rect2: chapeldoor_chapeldoor, 1.0, 31.0, 2.0, 33.0
+end: Linker
+
+
+new: Linker
+rect1: chapeldoor_parkinglot, 0.0, 1.0, 1.0, 3.0
+rect2: chapeldoor_steelcross, 24.0, 13.0, 25.0, 15.0
+end: Linker
+
+
+new: Linker
+rect1: chapeldoor_road, 10.0, 0.0, 11.0, 1.0
+rect2: chapeldoor_courtyard, 19.0, 8.0, 20.0, 9.0
+end: Linker
+
 nextTriggerKey: 1
 
 new: Trigger

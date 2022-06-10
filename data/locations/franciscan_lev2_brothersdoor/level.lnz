@@ -10,8 +10,92 @@ respawn_timer: 0
 sleeping: false
 sleep_timer: 0
 in_control: true
-currMapName: mock
-mapNames: mock
+currMapName: brothersdoor_lot
+mapNames: brothersdoor_abandoned, brothersdoor_behindCaf, brothersdoor_brothersdoor, brothersdoor_gazebo, brothersdoor_hill, brothersdoor_lot, brothersdoor_mary, brothersdoor_parkinglot
+
+new: Linker
+rect1: brothersdoor_brothersdoor, 0.0, 12.0, 1.0, 13.0
+rect2: brothersdoor_behindCaf, 29.0, 0.0, 30.0, 1.0
+end: Linker
+
+
+new: Linker
+rect1: brothersdoor_behindCaf, 30.0, 0.0, 31.0, 1.0
+rect2: brothersdoor_brothersdoor, 1.0, 12.0, 2.0, 13.0
+end: Linker
+
+
+new: Linker
+rect1: brothersdoor_brothersdoor, 16.0, 1.0, 17.0, 2.0
+rect2: brothersdoor_mary, 4.0, 4.0, 5.0, 5.0
+end: Linker
+
+
+new: Linker
+rect1: brothersdoor_mary, 5.0, 5.0, 6.0, 6.0
+rect2: brothersdoor_brothersdoor, 17.0, 2.0, 18.0, 3.0
+end: Linker
+
+
+new: Linker
+rect1: brothersdoor_brothersdoor, 22.0, 0.0, 24.0, 1.0
+rect2: brothersdoor_parkinglot, 7.0, 70.0, 9.0, 71.0
+end: Linker
+
+
+new: Linker
+rect1: brothersdoor_parkinglot, 7.0, 71.0, 9.0, 72.0
+rect2: brothersdoor_brothersdoor, 22.0, 1.0, 24.0, 2.0
+end: Linker
+
+
+new: Linker
+rect1: brothersdoor_parkinglot, 19.0, 41.0, 20.0, 42.0
+rect2: brothersdoor_gazebo, 2.0, 5.0, 3.0, 6.0
+end: Linker
+
+
+new: Linker
+rect1: brothersdoor_gazebo, 1.0, 6.0, 2.0, 7.0
+rect2: brothersdoor_parkinglot, 18.0, 42.0, 19.0, 43.0
+end: Linker
+
+
+new: Linker
+rect1: brothersdoor_parkinglot, 24.0, 64.0, 25.0, 65.0
+rect2: brothersdoor_hill, 1.0, 18.0, 2.0, 19.0
+end: Linker
+
+
+new: Linker
+rect1: brothersdoor_hill, 0.0, 18.0, 1.0, 19.0
+rect2: brothersdoor_parkinglot, 23.0, 64.0, 24.0, 65.0
+end: Linker
+
+
+new: Linker
+rect1: brothersdoor_hill, 15.0, 20.0, 17.0, 21.0
+rect2: brothersdoor_abandoned, 18.0, 1.0, 20.0, 2.0
+end: Linker
+
+
+new: Linker
+rect1: brothersdoor_abandoned, 18.0, 0.0, 20.0, 1.0
+rect2: brothersdoor_hill, 15.0, 19.0, 17.0, 20.0
+end: Linker
+
+
+new: Linker
+rect1: brothersdoor_hill, 36.0, 19.0, 37.0, 20.0
+rect2: brothersdoor_lot, 0.0, 28.0, 1.0, 29.0
+end: Linker
+
+
+new: Linker
+rect1: brothersdoor_abandoned, 39.0, 0.0, 40.0, 1.0
+rect2: brothersdoor_lot, 0.0, 28.0, 1.0, 29.0
+end: Linker
+
 nextTriggerKey: 1
 
 new: Trigger

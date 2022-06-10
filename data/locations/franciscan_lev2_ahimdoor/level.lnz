@@ -11,7 +11,7 @@ sleeping: false
 sleep_timer: 0
 in_control: true
 currMapName: mock
-mapNames: mock
+mapNames: ahimdoor_ahimdoor
 nextTriggerKey: 1
 
 new: Trigger

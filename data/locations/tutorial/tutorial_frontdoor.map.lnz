@@ -21,7 +21,7 @@ terrain: 0, 11: 1, 100, true
 terrain: 0, 12: 152, 0, true
 terrain: 0, 13: 154, 0, true
 terrain: 0, 14: 207, 100, true
-terrain: 0, 15: 207, 100, true
+terrain: 0, 15: 1, 100, true
 terrain: 0, 16: 207, 100, true
 terrain: 0, 17: 207, 100, true
 terrain: 0, 18: 207, 100, true
@@ -29,11 +29,11 @@ terrain: 0, 19: 121, 0, true
 terrain: 0, 20: 121, 0, true
 terrain: 0, 21: 207, 100, true
 terrain: 0, 22: 207, 100, true
-terrain: 0, 23: 207, 100, true
-terrain: 0, 24: 207, 100, true
-terrain: 0, 25: 207, 100, true
-terrain: 0, 26: 207, 100, true
-terrain: 0, 27: 207, 100, true
+terrain: 0, 23: 1, 100, true
+terrain: 0, 24: 1, 100, true
+terrain: 0, 25: 1, 100, true
+terrain: 0, 26: 1, 100, true
+terrain: 0, 27: 1, 100, true
 terrain: 0, 28: 1, 100, true
 terrain: 0, 29: 1, 100, true
 terrain: 1, 0: 1, 100, true
@@ -63,7 +63,7 @@ terrain: 1, 23: 205, 100, true
 terrain: 1, 24: 205, 100, true
 terrain: 1, 25: 205, 100, true
 terrain: 1, 26: 205, 100, true
-terrain: 1, 27: 205, 100, true
+terrain: 1, 27: 1, 100, true
 terrain: 1, 28: 1, 100, true
 terrain: 1, 29: 1, 100, true
 terrain: 2, 0: 1, 100, true
@@ -153,7 +153,7 @@ terrain: 4, 23: 205, 100, true
 terrain: 4, 24: 312, 3, true
 terrain: 4, 25: 121, 0, true
 terrain: 4, 26: 205, 100, true
-terrain: 4, 27: 205, 100, true
+terrain: 4, 27: 1, 100, true
 terrain: 4, 28: 1, 100, true
 terrain: 4, 29: 1, 100, true
 terrain: 5, 0: 1, 100, true
@@ -239,11 +239,11 @@ terrain: 7, 19: 121, 0, true
 terrain: 7, 20: 121, 0, true
 terrain: 7, 21: 207, 100, true
 terrain: 7, 22: 207, 100, true
-terrain: 7, 23: 201, 100, true
-terrain: 7, 24: 201, 100, true
-terrain: 7, 25: 201, 100, true
-terrain: 7, 26: 201, 100, true
-terrain: 7, 27: 201, 100, true
+terrain: 7, 23: 1, 100, true
+terrain: 7, 24: 207, 100, true
+terrain: 7, 25: 207, 100, true
+terrain: 7, 26: 207, 100, true
+terrain: 7, 27: 1, 100, true
 terrain: 7, 28: 1, 100, true
 terrain: 7, 29: 1, 100, true
 terrain: 8, 0: 133, 0, true
@@ -947,7 +947,6 @@ size: 0.35
 level: 3
 alliance: Ben
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
 new: Item: 2928
 location: 0.0, 0.0, 0
@@ -960,10 +959,10 @@ durability: 1
 ammo: 200000
 toggled: true
 end: Item: Weapon
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 3.5
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0

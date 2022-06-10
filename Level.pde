@@ -95,7 +95,7 @@ class ZombieSpawnParams {
   private float min_distance = 5;
   private float max_distance = 25;
   private boolean save_params = false;
-  private int try_spawn_timer = 20;
+  private int try_spawn_timer = 50;
 
   ZombieSpawnParams() {
   }
@@ -122,6 +122,18 @@ class ZombieSpawnParams {
     return false;
   }
 
+  int getZombieID() {
+    if (randomChance(0.8)) {
+      return 1291;
+    }
+    if (randomChance(0.5)) {
+      return 1292;
+    }
+    else {
+      return 1293;
+    }
+  }
+
   void update(int time_elapsed, Level level) {
     if (level.currMap == null || level.player == null) {
       return;
@@ -130,7 +142,7 @@ class ZombieSpawnParams {
     if (this.try_spawn_timer > 0) {
       return;
     }
-    this.try_spawn_timer = 20;
+    this.try_spawn_timer = 50;
     if (level.currMap.zombie_counter > this.max_zombies) {
       return;
     }
@@ -149,8 +161,9 @@ class ZombieSpawnParams {
       return;
     }
     // successful 'group spawn'
-    this.try_spawn_timer = 1200;
-    Unit zambo = new Unit(1291);
+    this.try_spawn_timer = 5000;
+    int source_id = this.getZombieID();
+    Unit zambo = new Unit(source_id);
     zambo.setLevel(this.getLevel(level.player.level));
     level.currMap.addUnit(zambo, x, y);
     int group_size = int(this.group_size - this.del_group_size + random(1 + 2 * this.del_group_size));
@@ -166,7 +179,12 @@ class ZombieSpawnParams {
       if (this.badSpawnSpace(x_group, y_group, level.currMap)) {
         continue;
       }
-      zambo = new Unit(1291);
+      if (randomChance(0.5)) {
+        zambo = new Unit(source_id);
+      }
+      else {
+        zambo = new Unit(this.getZombieID());
+      }
       zambo.setLevel(this.getLevel(level.player.level));
       level.currMap.addUnit(zambo, x_group, y_group);
     }

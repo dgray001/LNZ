@@ -57,7 +57,7 @@ terrain: 0, 47: 207, 100, false
 terrain: 0, 48: 207, 100, false
 terrain: 0, 49: 207, 100, false
 terrain: 0, 50: 207, 100, false
-terrain: 0, 51: 203, 100, false
+terrain: 0, 51: 1, 100, false
 terrain: 0, 52: 1, 100, false
 terrain: 0, 53: 1, 100, false
 terrain: 0, 54: 1, 100, false
@@ -366,7 +366,7 @@ terrain: 3, 47: 310, 3, false
 terrain: 3, 48: 310, 3, false
 terrain: 3, 49: 121, 0, false
 terrain: 3, 50: 203, 100, false
-terrain: 3, 51: 203, 100, false
+terrain: 3, 51: 1, 100, false
 terrain: 3, 52: 1, 100, false
 terrain: 3, 53: 1, 100, false
 terrain: 3, 54: 1, 100, false
@@ -458,7 +458,7 @@ terrain: 4, 36: 1, 100, false
 terrain: 4, 37: 1, 100, false
 terrain: 4, 38: 1, 100, false
 terrain: 4, 39: 1, 100, false
-terrain: 4, 40: 207, 100, false
+terrain: 4, 40: 1, 100, false
 terrain: 4, 41: 207, 100, false
 terrain: 4, 42: 207, 100, false
 terrain: 4, 43: 207, 100, false
@@ -477,7 +477,7 @@ terrain: 4, 55: 207, 100, false
 terrain: 4, 56: 207, 100, false
 terrain: 4, 57: 207, 100, false
 terrain: 4, 58: 207, 100, false
-terrain: 4, 59: 207, 100, false
+terrain: 4, 59: 1, 100, false
 terrain: 4, 60: 1, 100, false
 terrain: 4, 61: 1, 100, false
 terrain: 4, 62: 1, 100, false
@@ -1076,7 +1076,7 @@ terrain: 10, 36: 1, 100, false
 terrain: 10, 37: 1, 100, false
 terrain: 10, 38: 1, 100, false
 terrain: 10, 39: 1, 100, false
-terrain: 10, 40: 207, 100, false
+terrain: 10, 40: 1, 100, false
 terrain: 10, 41: 207, 100, false
 terrain: 10, 42: 207, 100, false
 terrain: 10, 43: 207, 100, false
@@ -1694,7 +1694,7 @@ terrain: 16, 36: 1, 100, false
 terrain: 16, 37: 1, 100, false
 terrain: 16, 38: 1, 100, false
 terrain: 16, 39: 1, 100, false
-terrain: 16, 40: 207, 100, false
+terrain: 16, 40: 1, 100, false
 terrain: 16, 41: 207, 100, false
 terrain: 16, 42: 207, 100, false
 terrain: 16, 43: 207, 100, false
@@ -1713,7 +1713,7 @@ terrain: 16, 55: 207, 100, false
 terrain: 16, 56: 207, 100, false
 terrain: 16, 57: 207, 100, false
 terrain: 16, 58: 207, 100, false
-terrain: 16, 59: 207, 100, false
+terrain: 16, 59: 1, 100, false
 terrain: 16, 60: 1, 100, false
 terrain: 16, 61: 1, 100, false
 terrain: 16, 62: 1, 100, false
@@ -2312,7 +2312,7 @@ terrain: 22, 36: 1, 100, false
 terrain: 22, 37: 1, 100, false
 terrain: 22, 38: 1, 100, false
 terrain: 22, 39: 1, 100, false
-terrain: 22, 40: 207, 100, false
+terrain: 22, 40: 1, 100, false
 terrain: 22, 41: 207, 100, false
 terrain: 22, 42: 207, 100, false
 terrain: 22, 43: 207, 100, false
@@ -2331,7 +2331,7 @@ terrain: 22, 55: 207, 100, false
 terrain: 22, 56: 207, 100, false
 terrain: 22, 57: 207, 100, false
 terrain: 22, 58: 207, 100, false
-terrain: 22, 59: 207, 100, false
+terrain: 22, 59: 1, 100, false
 terrain: 22, 60: 1, 100, false
 terrain: 22, 61: 1, 100, false
 terrain: 22, 62: 1, 100, false
@@ -2930,7 +2930,7 @@ terrain: 28, 36: 1, 100, false
 terrain: 28, 37: 1, 100, false
 terrain: 28, 38: 1, 100, false
 terrain: 28, 39: 1, 100, false
-terrain: 28, 40: 207, 100, false
+terrain: 28, 40: 1, 100, false
 terrain: 28, 41: 207, 100, false
 terrain: 28, 42: 207, 100, false
 terrain: 28, 43: 207, 100, false
@@ -2949,7 +2949,7 @@ terrain: 28, 55: 207, 100, false
 terrain: 28, 56: 207, 100, false
 terrain: 28, 57: 207, 100, false
 terrain: 28, 58: 207, 100, false
-terrain: 28, 59: 207, 100, false
+terrain: 28, 59: 1, 100, false
 terrain: 28, 60: 1, 100, false
 terrain: 28, 61: 1, 100, false
 terrain: 28, 62: 1, 100, false
@@ -3512,43 +3512,43 @@ terrain: 34, 0: 1, 100, false
 terrain: 34, 1: 1, 100, false
 terrain: 34, 2: 1, 100, false
 terrain: 34, 3: 1, 100, false
-terrain: 34, 4: 207, 100, false
+terrain: 34, 4: 1, 100, false
 terrain: 34, 5: 207, 100, false
 terrain: 34, 6: 207, 100, false
 terrain: 34, 7: 162, 0, false
 terrain: 34, 8: 207, 100, false
 terrain: 34, 9: 207, 100, false
-terrain: 34, 10: 207, 100, false
+terrain: 34, 10: 1, 100, false
 terrain: 34, 11: 207, 100, false
 terrain: 34, 12: 207, 100, false
 terrain: 34, 13: 162, 0, false
 terrain: 34, 14: 207, 100, false
 terrain: 34, 15: 207, 100, false
-terrain: 34, 16: 207, 100, false
+terrain: 34, 16: 1, 100, false
 terrain: 34, 17: 207, 100, false
 terrain: 34, 18: 207, 100, false
 terrain: 34, 19: 162, 0, false
 terrain: 34, 20: 207, 100, false
 terrain: 34, 21: 207, 100, false
-terrain: 34, 22: 207, 100, false
+terrain: 34, 22: 1, 100, false
 terrain: 34, 23: 207, 100, false
 terrain: 34, 24: 207, 100, false
 terrain: 34, 25: 162, 0, false
 terrain: 34, 26: 207, 100, false
 terrain: 34, 27: 207, 100, false
-terrain: 34, 28: 207, 100, false
+terrain: 34, 28: 1, 100, false
 terrain: 34, 29: 207, 100, false
 terrain: 34, 30: 207, 100, false
 terrain: 34, 31: 162, 0, false
 terrain: 34, 32: 207, 100, false
 terrain: 34, 33: 207, 100, false
-terrain: 34, 34: 207, 100, false
+terrain: 34, 34: 1, 100, false
 terrain: 34, 35: 207, 100, false
 terrain: 34, 36: 207, 100, false
 terrain: 34, 37: 162, 0, false
 terrain: 34, 38: 207, 100, false
 terrain: 34, 39: 207, 100, false
-terrain: 34, 40: 207, 100, false
+terrain: 34, 40: 1, 100, false
 terrain: 34, 41: 207, 100, false
 terrain: 34, 42: 207, 100, false
 terrain: 34, 43: 207, 100, false
@@ -3579,31 +3579,31 @@ terrain: 34, 67: 207, 100, false
 terrain: 34, 68: 207, 100, false
 terrain: 34, 69: 162, 0, false
 terrain: 34, 70: 207, 100, false
-terrain: 34, 71: 207, 100, false
+terrain: 34, 71: 1, 100, false
 terrain: 34, 72: 207, 100, false
 terrain: 34, 73: 207, 100, false
 terrain: 34, 74: 162, 0, false
 terrain: 34, 75: 207, 100, false
 terrain: 34, 76: 207, 100, false
-terrain: 34, 77: 207, 100, false
+terrain: 34, 77: 1, 100, false
 terrain: 34, 78: 207, 100, false
 terrain: 34, 79: 207, 100, false
 terrain: 34, 80: 162, 0, false
 terrain: 34, 81: 207, 100, false
 terrain: 34, 82: 207, 100, false
-terrain: 34, 83: 207, 100, false
+terrain: 34, 83: 1, 100, false
 terrain: 34, 84: 207, 100, false
 terrain: 34, 85: 207, 100, false
 terrain: 34, 86: 162, 0, false
 terrain: 34, 87: 207, 100, false
 terrain: 34, 88: 207, 100, false
-terrain: 34, 89: 207, 100, false
+terrain: 34, 89: 1, 100, false
 terrain: 34, 90: 207, 100, false
 terrain: 34, 91: 207, 100, false
 terrain: 34, 92: 162, 0, false
 terrain: 34, 93: 207, 100, false
 terrain: 34, 94: 207, 100, false
-terrain: 34, 95: 207, 100, false
+terrain: 34, 95: 1, 100, false
 terrain: 34, 96: 1, 100, false
 terrain: 34, 97: 1, 100, false
 terrain: 34, 98: 1, 100, false
@@ -4335,7 +4335,7 @@ terrain: 41, 102: 1, 100, false
 terrain: 42, 0: 203, 100, false
 terrain: 42, 1: 121, 0, false
 terrain: 42, 2: 203, 100, false
-terrain: 42, 3: 203, 100, false
+terrain: 42, 3: 1, 100, false
 terrain: 42, 4: 207, 100, false
 terrain: 42, 5: 207, 100, false
 terrain: 42, 6: 207, 100, false
@@ -4434,7 +4434,7 @@ terrain: 42, 98: 205, 100, false
 terrain: 42, 99: 205, 100, false
 terrain: 42, 100: 205, 100, false
 terrain: 42, 101: 205, 100, false
-terrain: 42, 102: 201, 100, false
+terrain: 42, 102: 1, 100, false
 terrain: 43, 0: 207, 100, false
 terrain: 43, 1: 121, 0, false
 terrain: 43, 2: 121, 0, false
@@ -4840,13 +4840,13 @@ terrain: 46, 92: 121, 0, false
 terrain: 46, 93: 121, 0, false
 terrain: 46, 94: 121, 0, false
 terrain: 46, 95: 207, 100, false
-terrain: 46, 96: 205, 100, false
+terrain: 46, 96: 1, 100, false
 terrain: 46, 97: 205, 100, false
 terrain: 46, 98: 205, 100, false
 terrain: 46, 99: 205, 100, false
 terrain: 46, 100: 205, 100, false
 terrain: 46, 101: 205, 100, false
-terrain: 46, 102: 201, 100, false
+terrain: 46, 102: 1, 100, false
 terrain: 47, 0: 207, 100, false
 terrain: 47, 1: 121, 0, false
 terrain: 47, 2: 121, 0, false
@@ -4950,7 +4950,7 @@ terrain: 47, 99: 1, 100, false
 terrain: 47, 100: 1, 100, false
 terrain: 47, 101: 1, 100, false
 terrain: 47, 102: 1, 100, false
-terrain: 48, 0: 203, 100, false
+terrain: 48, 0: 1, 100, false
 terrain: 48, 1: 203, 100, false
 terrain: 48, 2: 203, 100, false
 terrain: 48, 3: 203, 100, false
@@ -5469,43 +5469,43 @@ terrain: 53, 0: 1, 100, false
 terrain: 53, 1: 1, 100, false
 terrain: 53, 2: 1, 100, false
 terrain: 53, 3: 1, 100, false
-terrain: 53, 4: 207, 100, false
+terrain: 53, 4: 1, 100, false
 terrain: 53, 5: 207, 100, false
 terrain: 53, 6: 207, 100, false
 terrain: 53, 7: 162, 0, false
 terrain: 53, 8: 207, 100, false
 terrain: 53, 9: 207, 100, false
-terrain: 53, 10: 207, 100, false
+terrain: 53, 10: 1, 100, false
 terrain: 53, 11: 207, 100, false
 terrain: 53, 12: 207, 100, false
 terrain: 53, 13: 162, 0, false
 terrain: 53, 14: 207, 100, false
 terrain: 53, 15: 207, 100, false
-terrain: 53, 16: 207, 100, false
+terrain: 53, 16: 1, 100, false
 terrain: 53, 17: 207, 100, false
 terrain: 53, 18: 207, 100, false
 terrain: 53, 19: 162, 0, false
 terrain: 53, 20: 207, 100, false
 terrain: 53, 21: 207, 100, false
-terrain: 53, 22: 207, 100, false
+terrain: 53, 22: 1, 100, false
 terrain: 53, 23: 207, 100, false
 terrain: 53, 24: 207, 100, false
 terrain: 53, 25: 162, 0, false
 terrain: 53, 26: 207, 100, false
 terrain: 53, 27: 207, 100, false
-terrain: 53, 28: 207, 100, false
+terrain: 53, 28: 1, 100, false
 terrain: 53, 29: 207, 100, false
 terrain: 53, 30: 207, 100, false
 terrain: 53, 31: 162, 0, false
 terrain: 53, 32: 207, 100, false
 terrain: 53, 33: 207, 100, false
-terrain: 53, 34: 207, 100, false
+terrain: 53, 34: 1, 100, false
 terrain: 53, 35: 207, 100, false
 terrain: 53, 36: 207, 100, false
 terrain: 53, 37: 162, 0, false
 terrain: 53, 38: 207, 100, false
 terrain: 53, 39: 207, 100, false
-terrain: 53, 40: 207, 100, false
+terrain: 53, 40: 1, 100, false
 terrain: 53, 41: 207, 100, false
 terrain: 53, 42: 207, 100, false
 terrain: 53, 43: 207, 100, false
@@ -5530,37 +5530,37 @@ terrain: 53, 61: 207, 100, false
 terrain: 53, 62: 162, 0, false
 terrain: 53, 63: 207, 100, false
 terrain: 53, 64: 207, 100, false
-terrain: 53, 65: 207, 100, false
+terrain: 53, 65: 1, 100, false
 terrain: 53, 66: 207, 100, false
 terrain: 53, 67: 207, 100, false
 terrain: 53, 68: 162, 0, false
 terrain: 53, 69: 207, 100, false
 terrain: 53, 70: 207, 100, false
-terrain: 53, 71: 207, 100, false
+terrain: 53, 71: 1, 100, false
 terrain: 53, 72: 207, 100, false
 terrain: 53, 73: 207, 100, false
 terrain: 53, 74: 162, 0, false
 terrain: 53, 75: 207, 100, false
 terrain: 53, 76: 207, 100, false
-terrain: 53, 77: 207, 100, false
+terrain: 53, 77: 1, 100, false
 terrain: 53, 78: 207, 100, false
 terrain: 53, 79: 207, 100, false
 terrain: 53, 80: 162, 0, false
 terrain: 53, 81: 207, 100, false
 terrain: 53, 82: 207, 100, false
-terrain: 53, 83: 207, 100, false
+terrain: 53, 83: 1, 100, false
 terrain: 53, 84: 207, 100, false
 terrain: 53, 85: 207, 100, false
 terrain: 53, 86: 162, 0, false
 terrain: 53, 87: 207, 100, false
 terrain: 53, 88: 207, 100, false
-terrain: 53, 89: 207, 100, false
+terrain: 53, 89: 1, 100, false
 terrain: 53, 90: 207, 100, false
 terrain: 53, 91: 207, 100, false
 terrain: 53, 92: 162, 0, false
 terrain: 53, 93: 207, 100, false
 terrain: 53, 94: 207, 100, false
-terrain: 53, 95: 207, 100, false
+terrain: 53, 95: 1, 100, false
 terrain: 53, 96: 1, 100, false
 terrain: 53, 97: 1, 100, false
 terrain: 53, 98: 1, 100, false
@@ -6741,7 +6741,7 @@ terrain: 65, 36: 1, 100, false
 terrain: 65, 37: 1, 100, false
 terrain: 65, 38: 1, 100, false
 terrain: 65, 39: 1, 100, false
-terrain: 65, 40: 207, 100, false
+terrain: 65, 40: 1, 100, false
 terrain: 65, 41: 207, 100, false
 terrain: 65, 42: 207, 100, false
 terrain: 65, 43: 207, 100, false
@@ -7359,7 +7359,7 @@ terrain: 71, 36: 1, 100, false
 terrain: 71, 37: 1, 100, false
 terrain: 71, 38: 1, 100, false
 terrain: 71, 39: 1, 100, false
-terrain: 71, 40: 207, 100, false
+terrain: 71, 40: 1, 100, false
 terrain: 71, 41: 207, 100, false
 terrain: 71, 42: 207, 100, false
 terrain: 71, 43: 207, 100, false
@@ -7378,7 +7378,7 @@ terrain: 71, 55: 207, 100, false
 terrain: 71, 56: 207, 100, false
 terrain: 71, 57: 207, 100, false
 terrain: 71, 58: 207, 100, false
-terrain: 71, 59: 207, 100, false
+terrain: 71, 59: 1, 100, false
 terrain: 71, 60: 1, 100, false
 terrain: 71, 61: 1, 100, false
 terrain: 71, 62: 1, 100, false
@@ -7977,7 +7977,7 @@ terrain: 77, 36: 1, 100, false
 terrain: 77, 37: 1, 100, false
 terrain: 77, 38: 1, 100, false
 terrain: 77, 39: 1, 100, false
-terrain: 77, 40: 207, 100, false
+terrain: 77, 40: 1, 100, false
 terrain: 77, 41: 207, 100, false
 terrain: 77, 42: 207, 100, false
 terrain: 77, 43: 207, 100, false
@@ -7996,7 +7996,7 @@ terrain: 77, 55: 207, 100, false
 terrain: 77, 56: 207, 100, false
 terrain: 77, 57: 207, 100, false
 terrain: 77, 58: 207, 100, false
-terrain: 77, 59: 207, 100, false
+terrain: 77, 59: 1, 100, false
 terrain: 77, 60: 1, 100, false
 terrain: 77, 61: 1, 100, false
 terrain: 77, 62: 1, 100, false
@@ -8595,7 +8595,7 @@ terrain: 83, 36: 1, 100, false
 terrain: 83, 37: 1, 100, false
 terrain: 83, 38: 1, 100, false
 terrain: 83, 39: 1, 100, false
-terrain: 83, 40: 207, 100, false
+terrain: 83, 40: 1, 100, false
 terrain: 83, 41: 207, 100, false
 terrain: 83, 42: 207, 100, false
 terrain: 83, 43: 207, 100, false
@@ -8614,7 +8614,7 @@ terrain: 83, 55: 207, 100, false
 terrain: 83, 56: 207, 100, false
 terrain: 83, 57: 207, 100, false
 terrain: 83, 58: 207, 100, false
-terrain: 83, 59: 207, 100, false
+terrain: 83, 59: 1, 100, false
 terrain: 83, 60: 1, 100, false
 terrain: 83, 61: 1, 100, false
 terrain: 83, 62: 1, 100, false
@@ -8705,7 +8705,7 @@ terrain: 84, 43: 1, 100, false
 terrain: 84, 44: 1, 100, false
 terrain: 84, 45: 1, 100, false
 terrain: 84, 46: 1, 100, false
-terrain: 84, 47: 205, 100, false
+terrain: 84, 47: 1, 100, false
 terrain: 84, 48: 205, 100, false
 terrain: 84, 49: 205, 100, false
 terrain: 84, 50: 121, 0, false
@@ -9323,11 +9323,11 @@ terrain: 90, 43: 1, 100, false
 terrain: 90, 44: 1, 100, false
 terrain: 90, 45: 1, 100, false
 terrain: 90, 46: 1, 100, false
-terrain: 90, 47: 201, 100, false
+terrain: 90, 47: 1, 100, false
 terrain: 90, 48: 201, 100, false
 terrain: 90, 49: 201, 100, false
 terrain: 90, 50: 201, 100, false
-terrain: 90, 51: 201, 100, false
+terrain: 90, 51: 1, 100, false
 terrain: 90, 52: 1, 100, false
 terrain: 90, 53: 1, 100, false
 terrain: 90, 54: 1, 100, false
@@ -17513,8 +17513,8 @@ size: 0.35
 level: 8
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 next_status_code: Confused
 new: StatusEffect
 permanent: true
@@ -17525,7 +17525,6 @@ end: StatusEffect
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 6.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -17544,7 +17543,6 @@ element: Gray
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 12.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -17563,7 +17561,6 @@ element: Gray
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 9.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -17582,7 +17579,6 @@ element: Gray
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 15.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -17598,6 +17594,7 @@ size: 0.35
 level: 7
 alliance: Zombie
 element: Gray
+gearSlot: ERROR
 gearSlot: WEAPON
 new: Item: 2904
 location: 0.0, 0.0, 0
@@ -17632,11 +17629,9 @@ ammo: 29
 toggled: false
 end: Item: 5
 end: Item: Weapon
-gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 25.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -17662,7 +17657,6 @@ end: StatusEffect
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 1.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -17688,7 +17682,6 @@ end: StatusEffect
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 1.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -17707,7 +17700,6 @@ element: Gray
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 2.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -17726,7 +17718,6 @@ element: Gray
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 2.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -17745,7 +17736,6 @@ element: Gray
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 2.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -17761,8 +17751,8 @@ size: 0.35
 level: 3
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 next_status_code: Sick
 new: StatusEffect
 permanent: true
@@ -17773,7 +17763,6 @@ end: StatusEffect
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 2.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -17789,8 +17778,8 @@ size: 0.35
 level: 3
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 next_status_code: Sick
 new: StatusEffect
 permanent: true
@@ -17801,7 +17790,6 @@ end: StatusEffect
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 2.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -17817,8 +17805,8 @@ size: 0.35
 level: 3
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 next_status_code: Sick
 new: StatusEffect
 permanent: true
@@ -17829,7 +17817,6 @@ end: StatusEffect
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 2.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -17845,8 +17832,8 @@ size: 0.35
 level: 3
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 next_status_code: Sick
 new: StatusEffect
 permanent: true
@@ -17857,7 +17844,6 @@ end: StatusEffect
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 2.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -17883,7 +17869,6 @@ end: StatusEffect
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 3.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -17899,12 +17884,11 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 7.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -17920,12 +17904,11 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 7.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -17941,12 +17924,11 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 7.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -17962,12 +17944,11 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 7.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -17983,12 +17964,11 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 7.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18004,12 +17984,11 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 7.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18025,8 +18004,8 @@ size: 0.35
 level: 7
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 next_status_code: Confused
 new: StatusEffect
 permanent: true
@@ -18037,7 +18016,6 @@ end: StatusEffect
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 5.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18053,12 +18031,11 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 9.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18074,12 +18051,11 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 9.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18095,12 +18071,11 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 7.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18116,12 +18091,11 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 9.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18137,12 +18111,11 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 9.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18158,12 +18131,11 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 7.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18179,12 +18151,11 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 7.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18200,12 +18171,11 @@ size: 0.35
 level: 6
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 4.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18221,12 +18191,11 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 9.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18242,12 +18211,11 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 7.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18263,8 +18231,8 @@ size: 0.35
 level: 7
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 next_status_code: Confused
 new: StatusEffect
 permanent: true
@@ -18275,7 +18243,6 @@ end: StatusEffect
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 5.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18291,12 +18258,11 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 9.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18322,7 +18288,6 @@ end: StatusEffect
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 3.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18348,7 +18313,6 @@ end: StatusEffect
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 3.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18374,7 +18338,6 @@ end: StatusEffect
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 3.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18400,7 +18363,6 @@ end: StatusEffect
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 3.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18416,8 +18378,8 @@ size: 0.35
 level: 3
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 next_status_code: Sick
 new: StatusEffect
 permanent: true
@@ -18428,7 +18390,6 @@ end: StatusEffect
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 2.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18447,7 +18408,6 @@ element: Gray
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 2.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18466,7 +18426,6 @@ element: Gray
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 2.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18482,12 +18441,11 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 7.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18503,12 +18461,11 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 7.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18524,12 +18481,11 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 7.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18545,12 +18501,11 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 7.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18566,12 +18521,11 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 7.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18587,12 +18541,11 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 7.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -18608,6 +18561,7 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
+gearSlot: ERROR
 gearSlot: WEAPON
 new: Item: 2901
 location: 0.0, 0.0, 0
@@ -18620,7 +18574,6 @@ durability: 1
 ammo: 39
 toggled: false
 end: Item: Weapon
-gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0

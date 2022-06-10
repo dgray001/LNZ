@@ -1,0 +1,6159 @@
+new: Map
+code: ERROR
+mapName: brothersdoor_brothersdoor
+dimensions: 35, 100
+maxHeight: 10
+outside_map: true
+color_tint: 65793
+show_tint: false
+terrain: 0, 0: 1, 100, false
+terrain: 0, 1: 1, 100, false
+terrain: 0, 2: 1, 100, false
+terrain: 0, 3: 1, 100, false
+terrain: 0, 4: 1, 100, false
+terrain: 0, 5: 1, 100, false
+terrain: 0, 6: 1, 100, false
+terrain: 0, 7: 1, 100, false
+terrain: 0, 8: 1, 100, false
+terrain: 0, 9: 1, 100, false
+terrain: 0, 10: 1, 100, false
+terrain: 0, 11: 1, 100, false
+terrain: 0, 12: 172, 0, false
+terrain: 0, 13: 1, 100, false
+terrain: 0, 14: 1, 100, false
+terrain: 0, 15: 1, 100, false
+terrain: 0, 16: 1, 100, false
+terrain: 0, 17: 1, 100, false
+terrain: 0, 18: 1, 100, false
+terrain: 0, 19: 132, 0, false
+terrain: 0, 20: 132, 0, false
+terrain: 0, 21: 122, 0, false
+terrain: 0, 22: 122, 0, false
+terrain: 0, 23: 122, 0, false
+terrain: 0, 24: 122, 0, false
+terrain: 0, 25: 1, 100, false
+terrain: 0, 26: 1, 100, false
+terrain: 0, 27: 1, 100, false
+terrain: 0, 28: 1, 100, false
+terrain: 0, 29: 1, 100, false
+terrain: 0, 30: 1, 100, false
+terrain: 0, 31: 1, 100, false
+terrain: 0, 32: 1, 100, false
+terrain: 0, 33: 1, 100, false
+terrain: 0, 34: 1, 100, false
+terrain: 0, 35: 1, 100, false
+terrain: 0, 36: 1, 100, false
+terrain: 0, 37: 1, 100, false
+terrain: 0, 38: 1, 100, false
+terrain: 0, 39: 1, 100, false
+terrain: 0, 40: 1, 100, false
+terrain: 0, 41: 1, 100, false
+terrain: 0, 42: 1, 100, false
+terrain: 0, 43: 1, 100, false
+terrain: 0, 44: 1, 100, false
+terrain: 0, 45: 1, 100, false
+terrain: 0, 46: 1, 100, false
+terrain: 0, 47: 1, 100, false
+terrain: 0, 48: 1, 100, false
+terrain: 0, 49: 1, 100, false
+terrain: 0, 50: 1, 100, false
+terrain: 0, 51: 1, 100, false
+terrain: 0, 52: 1, 100, false
+terrain: 0, 53: 1, 100, false
+terrain: 0, 54: 1, 100, false
+terrain: 0, 55: 1, 100, false
+terrain: 0, 56: 1, 100, false
+terrain: 0, 57: 1, 100, false
+terrain: 0, 58: 1, 100, false
+terrain: 0, 59: 1, 100, false
+terrain: 0, 60: 1, 100, false
+terrain: 0, 61: 1, 100, false
+terrain: 0, 62: 1, 100, false
+terrain: 0, 63: 1, 100, false
+terrain: 0, 64: 1, 100, false
+terrain: 0, 65: 1, 100, false
+terrain: 0, 66: 1, 100, false
+terrain: 0, 67: 1, 100, false
+terrain: 0, 68: 1, 100, false
+terrain: 0, 69: 1, 100, false
+terrain: 0, 70: 1, 100, false
+terrain: 0, 71: 1, 100, false
+terrain: 0, 72: 1, 100, false
+terrain: 0, 73: 151, 0, false
+terrain: 0, 74: 151, 0, false
+terrain: 0, 75: 151, 0, false
+terrain: 0, 76: 151, 0, false
+terrain: 0, 77: 151, 0, false
+terrain: 0, 78: 151, 0, false
+terrain: 0, 79: 151, 0, false
+terrain: 0, 80: 133, 0, false
+terrain: 0, 81: 132, 0, false
+terrain: 0, 82: 132, 0, false
+terrain: 0, 83: 132, 0, false
+terrain: 0, 84: 132, 0, false
+terrain: 0, 85: 133, 0, false
+terrain: 0, 86: 132, 0, false
+terrain: 0, 87: 133, 0, false
+terrain: 0, 88: 132, 0, false
+terrain: 0, 89: 133, 0, false
+terrain: 0, 90: 133, 0, false
+terrain: 0, 91: 133, 0, false
+terrain: 0, 92: 132, 0, false
+terrain: 0, 93: 132, 0, false
+terrain: 0, 94: 132, 0, false
+terrain: 0, 95: 132, 0, false
+terrain: 0, 96: 132, 0, false
+terrain: 0, 97: 133, 0, false
+terrain: 0, 98: 133, 0, false
+terrain: 0, 99: 133, 0, false
+terrain: 1, 0: 1, 100, false
+terrain: 1, 1: 1, 100, false
+terrain: 1, 2: 1, 100, false
+terrain: 1, 3: 1, 100, false
+terrain: 1, 4: 1, 100, false
+terrain: 1, 5: 1, 100, false
+terrain: 1, 6: 1, 100, false
+terrain: 1, 7: 1, 100, false
+terrain: 1, 8: 172, 0, false
+terrain: 1, 9: 172, 0, false
+terrain: 1, 10: 172, 0, false
+terrain: 1, 11: 172, 0, false
+terrain: 1, 12: 172, 0, false
+terrain: 1, 13: 132, 0, false
+terrain: 1, 14: 132, 0, false
+terrain: 1, 15: 132, 0, false
+terrain: 1, 16: 132, 0, false
+terrain: 1, 17: 132, 0, false
+terrain: 1, 18: 133, 0, false
+terrain: 1, 19: 132, 0, false
+terrain: 1, 20: 132, 0, false
+terrain: 1, 21: 122, 0, false
+terrain: 1, 22: 122, 0, false
+terrain: 1, 23: 122, 0, false
+terrain: 1, 24: 122, 0, false
+terrain: 1, 25: 1, 100, false
+terrain: 1, 26: 1, 100, false
+terrain: 1, 27: 1, 100, false
+terrain: 1, 28: 1, 100, false
+terrain: 1, 29: 1, 100, false
+terrain: 1, 30: 1, 100, false
+terrain: 1, 31: 1, 100, false
+terrain: 1, 32: 1, 100, false
+terrain: 1, 33: 1, 100, false
+terrain: 1, 34: 1, 100, false
+terrain: 1, 35: 1, 100, false
+terrain: 1, 36: 1, 100, false
+terrain: 1, 37: 1, 100, false
+terrain: 1, 38: 1, 100, false
+terrain: 1, 39: 1, 100, false
+terrain: 1, 40: 1, 100, false
+terrain: 1, 41: 1, 100, false
+terrain: 1, 42: 1, 100, false
+terrain: 1, 43: 1, 100, false
+terrain: 1, 44: 1, 100, false
+terrain: 1, 45: 1, 100, false
+terrain: 1, 46: 1, 100, false
+terrain: 1, 47: 1, 100, false
+terrain: 1, 48: 1, 100, false
+terrain: 1, 49: 1, 100, false
+terrain: 1, 50: 1, 100, false
+terrain: 1, 51: 1, 100, false
+terrain: 1, 52: 1, 100, false
+terrain: 1, 53: 1, 100, false
+terrain: 1, 54: 1, 100, false
+terrain: 1, 55: 1, 100, false
+terrain: 1, 56: 1, 100, false
+terrain: 1, 57: 1, 100, false
+terrain: 1, 58: 1, 100, false
+terrain: 1, 59: 1, 100, false
+terrain: 1, 60: 1, 100, false
+terrain: 1, 61: 1, 100, false
+terrain: 1, 62: 1, 100, false
+terrain: 1, 63: 1, 100, false
+terrain: 1, 64: 1, 100, false
+terrain: 1, 65: 1, 100, false
+terrain: 1, 66: 1, 100, false
+terrain: 1, 67: 1, 100, false
+terrain: 1, 68: 1, 100, false
+terrain: 1, 69: 1, 100, false
+terrain: 1, 70: 1, 100, false
+terrain: 1, 71: 1, 100, false
+terrain: 1, 72: 151, 0, false
+terrain: 1, 73: 151, 0, false
+terrain: 1, 74: 151, 0, false
+terrain: 1, 75: 151, 0, false
+terrain: 1, 76: 151, 0, false
+terrain: 1, 77: 151, 0, false
+terrain: 1, 78: 151, 0, false
+terrain: 1, 79: 154, 0, false
+terrain: 1, 80: 132, 0, false
+terrain: 1, 81: 132, 0, false
+terrain: 1, 82: 133, 0, false
+terrain: 1, 83: 132, 0, false
+terrain: 1, 84: 133, 0, false
+terrain: 1, 85: 132, 0, false
+terrain: 1, 86: 132, 0, false
+terrain: 1, 87: 132, 0, false
+terrain: 1, 88: 152, 0, false
+terrain: 1, 89: 152, 0, false
+terrain: 1, 90: 152, 0, false
+terrain: 1, 91: 152, 0, false
+terrain: 1, 92: 152, 0, false
+terrain: 1, 93: 152, 0, false
+terrain: 1, 94: 152, 0, false
+terrain: 1, 95: 152, 0, false
+terrain: 1, 96: 133, 0, false
+terrain: 1, 97: 133, 0, false
+terrain: 1, 98: 133, 0, false
+terrain: 1, 99: 134, 0, false
+terrain: 2, 0: 1, 100, false
+terrain: 2, 1: 1, 100, false
+terrain: 2, 2: 1, 100, false
+terrain: 2, 3: 1, 100, false
+terrain: 2, 4: 1, 100, false
+terrain: 2, 5: 1, 100, false
+terrain: 2, 6: 1, 100, false
+terrain: 2, 7: 1, 100, false
+terrain: 2, 8: 172, 0, false
+terrain: 2, 9: 172, 0, false
+terrain: 2, 10: 172, 0, false
+terrain: 2, 11: 172, 0, false
+terrain: 2, 12: 172, 0, false
+terrain: 2, 13: 133, 0, false
+terrain: 2, 14: 132, 0, false
+terrain: 2, 15: 133, 0, false
+terrain: 2, 16: 133, 0, false
+terrain: 2, 17: 132, 0, false
+terrain: 2, 18: 132, 0, false
+terrain: 2, 19: 132, 0, false
+terrain: 2, 20: 132, 0, false
+terrain: 2, 21: 131, 0, false
+terrain: 2, 22: 122, 0, false
+terrain: 2, 23: 122, 0, false
+terrain: 2, 24: 122, 0, false
+terrain: 2, 25: 1, 100, false
+terrain: 2, 26: 1, 100, false
+terrain: 2, 27: 1, 100, false
+terrain: 2, 28: 1, 100, false
+terrain: 2, 29: 1, 100, false
+terrain: 2, 30: 1, 100, false
+terrain: 2, 31: 1, 100, false
+terrain: 2, 32: 1, 100, false
+terrain: 2, 33: 1, 100, false
+terrain: 2, 34: 1, 100, false
+terrain: 2, 35: 1, 100, false
+terrain: 2, 36: 1, 100, false
+terrain: 2, 37: 1, 100, false
+terrain: 2, 38: 1, 100, false
+terrain: 2, 39: 1, 100, false
+terrain: 2, 40: 1, 100, false
+terrain: 2, 41: 1, 100, false
+terrain: 2, 42: 1, 100, false
+terrain: 2, 43: 1, 100, false
+terrain: 2, 44: 1, 100, false
+terrain: 2, 45: 1, 100, false
+terrain: 2, 46: 1, 100, false
+terrain: 2, 47: 1, 100, false
+terrain: 2, 48: 1, 100, false
+terrain: 2, 49: 1, 100, false
+terrain: 2, 50: 1, 100, false
+terrain: 2, 51: 1, 100, false
+terrain: 2, 52: 1, 100, false
+terrain: 2, 53: 1, 100, false
+terrain: 2, 54: 1, 100, false
+terrain: 2, 55: 1, 100, false
+terrain: 2, 56: 1, 100, false
+terrain: 2, 57: 1, 100, false
+terrain: 2, 58: 1, 100, false
+terrain: 2, 59: 1, 100, false
+terrain: 2, 60: 1, 100, false
+terrain: 2, 61: 1, 100, false
+terrain: 2, 62: 1, 100, false
+terrain: 2, 63: 1, 100, false
+terrain: 2, 64: 1, 100, false
+terrain: 2, 65: 1, 100, false
+terrain: 2, 66: 1, 100, false
+terrain: 2, 67: 1, 100, false
+terrain: 2, 68: 1, 100, false
+terrain: 2, 69: 1, 100, false
+terrain: 2, 70: 1, 100, false
+terrain: 2, 71: 151, 0, false
+terrain: 2, 72: 151, 0, false
+terrain: 2, 73: 151, 0, false
+terrain: 2, 74: 151, 0, false
+terrain: 2, 75: 151, 0, false
+terrain: 2, 76: 151, 0, false
+terrain: 2, 77: 151, 0, false
+terrain: 2, 78: 151, 0, false
+terrain: 2, 79: 154, 0, false
+terrain: 2, 80: 132, 0, false
+terrain: 2, 81: 132, 0, false
+terrain: 2, 82: 133, 0, false
+terrain: 2, 83: 152, 0, false
+terrain: 2, 84: 152, 0, false
+terrain: 2, 85: 152, 0, false
+terrain: 2, 86: 152, 0, false
+terrain: 2, 87: 152, 0, false
+terrain: 2, 88: 152, 0, false
+terrain: 2, 89: 152, 0, false
+terrain: 2, 90: 152, 0, false
+terrain: 2, 91: 152, 0, false
+terrain: 2, 92: 152, 0, false
+terrain: 2, 93: 152, 0, false
+terrain: 2, 94: 152, 0, false
+terrain: 2, 95: 152, 0, false
+terrain: 2, 96: 133, 0, false
+terrain: 2, 97: 132, 0, false
+terrain: 2, 98: 133, 0, false
+terrain: 2, 99: 134, 0, false
+terrain: 3, 0: 1, 100, false
+terrain: 3, 1: 1, 100, false
+terrain: 3, 2: 1, 100, false
+terrain: 3, 3: 1, 100, false
+terrain: 3, 4: 1, 100, false
+terrain: 3, 5: 1, 100, false
+terrain: 3, 6: 1, 100, false
+terrain: 3, 7: 1, 100, false
+terrain: 3, 8: 172, 0, false
+terrain: 3, 9: 172, 0, false
+terrain: 3, 10: 172, 0, false
+terrain: 3, 11: 172, 0, false
+terrain: 3, 12: 172, 0, false
+terrain: 3, 13: 133, 0, false
+terrain: 3, 14: 132, 0, false
+terrain: 3, 15: 133, 0, false
+terrain: 3, 16: 133, 0, false
+terrain: 3, 17: 133, 0, false
+terrain: 3, 18: 132, 0, false
+terrain: 3, 19: 132, 0, false
+terrain: 3, 20: 132, 0, false
+terrain: 3, 21: 122, 0, false
+terrain: 3, 22: 122, 0, false
+terrain: 3, 23: 122, 0, false
+terrain: 3, 24: 122, 0, false
+terrain: 3, 25: 1, 100, false
+terrain: 3, 26: 1, 100, false
+terrain: 3, 27: 1, 100, false
+terrain: 3, 28: 1, 100, false
+terrain: 3, 29: 1, 100, false
+terrain: 3, 30: 1, 100, false
+terrain: 3, 31: 1, 100, false
+terrain: 3, 32: 1, 100, false
+terrain: 3, 33: 1, 100, false
+terrain: 3, 34: 1, 100, false
+terrain: 3, 35: 1, 100, false
+terrain: 3, 36: 1, 100, false
+terrain: 3, 37: 1, 100, false
+terrain: 3, 38: 1, 100, false
+terrain: 3, 39: 1, 100, false
+terrain: 3, 40: 1, 100, false
+terrain: 3, 41: 1, 100, false
+terrain: 3, 42: 1, 100, false
+terrain: 3, 43: 1, 100, false
+terrain: 3, 44: 1, 100, false
+terrain: 3, 45: 1, 100, false
+terrain: 3, 46: 1, 100, false
+terrain: 3, 47: 1, 100, false
+terrain: 3, 48: 1, 100, false
+terrain: 3, 49: 1, 100, false
+terrain: 3, 50: 1, 100, false
+terrain: 3, 51: 1, 100, false
+terrain: 3, 52: 1, 100, false
+terrain: 3, 53: 1, 100, false
+terrain: 3, 54: 1, 100, false
+terrain: 3, 55: 1, 100, false
+terrain: 3, 56: 1, 100, false
+terrain: 3, 57: 1, 100, false
+terrain: 3, 58: 1, 100, false
+terrain: 3, 59: 1, 100, false
+terrain: 3, 60: 1, 100, false
+terrain: 3, 61: 1, 100, false
+terrain: 3, 62: 1, 100, false
+terrain: 3, 63: 1, 100, false
+terrain: 3, 64: 1, 100, false
+terrain: 3, 65: 1, 100, false
+terrain: 3, 66: 1, 100, false
+terrain: 3, 67: 1, 100, false
+terrain: 3, 68: 1, 100, false
+terrain: 3, 69: 1, 100, false
+terrain: 3, 70: 163, 0, false
+terrain: 3, 71: 163, 0, false
+terrain: 3, 72: 163, 0, false
+terrain: 3, 73: 163, 0, false
+terrain: 3, 74: 163, 0, false
+terrain: 3, 75: 162, 0, false
+terrain: 3, 76: 163, 0, false
+terrain: 3, 77: 163, 0, false
+terrain: 3, 78: 163, 0, false
+terrain: 3, 79: 163, 0, false
+terrain: 3, 80: 132, 0, false
+terrain: 3, 81: 133, 0, false
+terrain: 3, 82: 133, 0, false
+terrain: 3, 83: 152, 0, false
+terrain: 3, 84: 152, 0, false
+terrain: 3, 85: 152, 0, false
+terrain: 3, 86: 152, 0, false
+terrain: 3, 87: 152, 0, false
+terrain: 3, 88: 152, 0, false
+terrain: 3, 89: 152, 0, false
+terrain: 3, 90: 152, 0, false
+terrain: 3, 91: 152, 0, false
+terrain: 3, 92: 154, 0, false
+terrain: 3, 93: 162, 0, false
+terrain: 3, 94: 162, 0, false
+terrain: 3, 95: 152, 0, false
+terrain: 3, 96: 133, 0, false
+terrain: 3, 97: 133, 0, false
+terrain: 3, 98: 133, 0, false
+terrain: 3, 99: 134, 0, false
+terrain: 4, 0: 1, 100, false
+terrain: 4, 1: 1, 100, false
+terrain: 4, 2: 1, 100, false
+terrain: 4, 3: 1, 100, false
+terrain: 4, 4: 1, 100, false
+terrain: 4, 5: 1, 100, false
+terrain: 4, 6: 1, 100, false
+terrain: 4, 7: 132, 0, false
+terrain: 4, 8: 172, 0, false
+terrain: 4, 9: 172, 0, false
+terrain: 4, 10: 172, 0, false
+terrain: 4, 11: 172, 0, false
+terrain: 4, 12: 172, 0, false
+terrain: 4, 13: 132, 0, false
+terrain: 4, 14: 132, 0, false
+terrain: 4, 15: 132, 0, false
+terrain: 4, 16: 132, 0, false
+terrain: 4, 17: 132, 0, false
+terrain: 4, 18: 132, 0, false
+terrain: 4, 19: 132, 0, false
+terrain: 4, 20: 132, 0, false
+terrain: 4, 21: 122, 0, false
+terrain: 4, 22: 122, 0, false
+terrain: 4, 23: 122, 0, false
+terrain: 4, 24: 122, 0, false
+terrain: 4, 25: 1, 100, false
+terrain: 4, 26: 1, 100, false
+terrain: 4, 27: 1, 100, false
+terrain: 4, 28: 1, 100, false
+terrain: 4, 29: 1, 100, false
+terrain: 4, 30: 1, 100, false
+terrain: 4, 31: 1, 100, false
+terrain: 4, 32: 1, 100, false
+terrain: 4, 33: 1, 100, false
+terrain: 4, 34: 1, 100, false
+terrain: 4, 35: 1, 100, false
+terrain: 4, 36: 1, 100, false
+terrain: 4, 37: 1, 100, false
+terrain: 4, 38: 1, 100, false
+terrain: 4, 39: 1, 100, false
+terrain: 4, 40: 1, 100, false
+terrain: 4, 41: 1, 100, false
+terrain: 4, 42: 1, 100, false
+terrain: 4, 43: 1, 100, false
+terrain: 4, 44: 1, 100, false
+terrain: 4, 45: 1, 100, false
+terrain: 4, 46: 1, 100, false
+terrain: 4, 47: 1, 100, false
+terrain: 4, 48: 1, 100, false
+terrain: 4, 49: 1, 100, false
+terrain: 4, 50: 1, 100, false
+terrain: 4, 51: 1, 100, false
+terrain: 4, 52: 1, 100, false
+terrain: 4, 53: 1, 100, false
+terrain: 4, 54: 1, 100, false
+terrain: 4, 55: 1, 100, false
+terrain: 4, 56: 1, 100, false
+terrain: 4, 57: 1, 100, false
+terrain: 4, 58: 1, 100, false
+terrain: 4, 59: 1, 100, false
+terrain: 4, 60: 1, 100, false
+terrain: 4, 61: 1, 100, false
+terrain: 4, 62: 1, 100, false
+terrain: 4, 63: 1, 100, false
+terrain: 4, 64: 1, 100, false
+terrain: 4, 65: 1, 100, false
+terrain: 4, 66: 1, 100, false
+terrain: 4, 67: 1, 100, false
+terrain: 4, 68: 207, 100, false
+terrain: 4, 69: 134, 0, false
+terrain: 4, 70: 132, 0, false
+terrain: 4, 71: 132, 0, false
+terrain: 4, 72: 132, 0, false
+terrain: 4, 73: 133, 0, false
+terrain: 4, 74: 132, 0, false
+terrain: 4, 75: 132, 0, false
+terrain: 4, 76: 163, 0, false
+terrain: 4, 77: 163, 0, false
+terrain: 4, 78: 163, 0, false
+terrain: 4, 79: 163, 0, false
+terrain: 4, 80: 132, 0, false
+terrain: 4, 81: 132, 0, false
+terrain: 4, 82: 133, 0, false
+terrain: 4, 83: 152, 0, false
+terrain: 4, 84: 152, 0, false
+terrain: 4, 85: 152, 0, false
+terrain: 4, 86: 152, 0, false
+terrain: 4, 87: 152, 0, false
+terrain: 4, 88: 152, 0, false
+terrain: 4, 89: 152, 0, false
+terrain: 4, 90: 154, 0, false
+terrain: 4, 91: 152, 0, false
+terrain: 4, 92: 162, 0, false
+terrain: 4, 93: 162, 0, false
+terrain: 4, 94: 153, 0, false
+terrain: 4, 95: 152, 0, false
+terrain: 4, 96: 133, 0, false
+terrain: 4, 97: 133, 0, false
+terrain: 4, 98: 132, 0, false
+terrain: 4, 99: 134, 0, false
+terrain: 5, 0: 1, 100, false
+terrain: 5, 1: 1, 100, false
+terrain: 5, 2: 1, 100, false
+terrain: 5, 3: 1, 100, false
+terrain: 5, 4: 1, 100, false
+terrain: 5, 5: 1, 100, false
+terrain: 5, 6: 1, 100, false
+terrain: 5, 7: 132, 0, false
+terrain: 5, 8: 172, 0, false
+terrain: 5, 9: 172, 0, false
+terrain: 5, 10: 172, 0, false
+terrain: 5, 11: 172, 0, false
+terrain: 5, 12: 172, 0, false
+terrain: 5, 13: 132, 0, false
+terrain: 5, 14: 132, 0, false
+terrain: 5, 15: 132, 0, false
+terrain: 5, 16: 132, 0, false
+terrain: 5, 17: 154, 0, false
+terrain: 5, 18: 161, 0, false
+terrain: 5, 19: 161, 0, false
+terrain: 5, 20: 161, 0, false
+terrain: 5, 21: 131, 0, false
+terrain: 5, 22: 122, 0, false
+terrain: 5, 23: 122, 0, false
+terrain: 5, 24: 122, 0, false
+terrain: 5, 25: 1, 100, false
+terrain: 5, 26: 1, 100, false
+terrain: 5, 27: 1, 100, false
+terrain: 5, 28: 1, 100, false
+terrain: 5, 29: 1, 100, false
+terrain: 5, 30: 1, 100, false
+terrain: 5, 31: 1, 100, false
+terrain: 5, 32: 1, 100, false
+terrain: 5, 33: 1, 100, false
+terrain: 5, 34: 1, 100, false
+terrain: 5, 35: 1, 100, false
+terrain: 5, 36: 1, 100, false
+terrain: 5, 37: 1, 100, false
+terrain: 5, 38: 1, 100, false
+terrain: 5, 39: 1, 100, false
+terrain: 5, 40: 1, 100, false
+terrain: 5, 41: 1, 100, false
+terrain: 5, 42: 1, 100, false
+terrain: 5, 43: 1, 100, false
+terrain: 5, 44: 1, 100, false
+terrain: 5, 45: 1, 100, false
+terrain: 5, 46: 1, 100, false
+terrain: 5, 47: 1, 100, false
+terrain: 5, 48: 1, 100, false
+terrain: 5, 49: 1, 100, false
+terrain: 5, 50: 1, 100, false
+terrain: 5, 51: 1, 100, false
+terrain: 5, 52: 1, 100, false
+terrain: 5, 53: 1, 100, false
+terrain: 5, 54: 1, 100, false
+terrain: 5, 55: 1, 100, false
+terrain: 5, 56: 1, 100, false
+terrain: 5, 57: 1, 100, false
+terrain: 5, 58: 1, 100, false
+terrain: 5, 59: 1, 100, false
+terrain: 5, 60: 1, 100, false
+terrain: 5, 61: 1, 100, false
+terrain: 5, 62: 1, 100, false
+terrain: 5, 63: 1, 100, false
+terrain: 5, 64: 1, 100, false
+terrain: 5, 65: 1, 100, false
+terrain: 5, 66: 1, 100, false
+terrain: 5, 67: 1, 100, false
+terrain: 5, 68: 1, 100, false
+terrain: 5, 69: 207, 100, false
+terrain: 5, 70: 132, 0, false
+terrain: 5, 71: 132, 0, false
+terrain: 5, 72: 133, 0, false
+terrain: 5, 73: 133, 0, false
+terrain: 5, 74: 133, 0, false
+terrain: 5, 75: 132, 0, false
+terrain: 5, 76: 163, 0, false
+terrain: 5, 77: 163, 0, false
+terrain: 5, 78: 163, 0, false
+terrain: 5, 79: 163, 0, false
+terrain: 5, 80: 133, 0, false
+terrain: 5, 81: 132, 0, false
+terrain: 5, 82: 132, 0, false
+terrain: 5, 83: 152, 0, false
+terrain: 5, 84: 152, 0, false
+terrain: 5, 85: 152, 0, false
+terrain: 5, 86: 152, 0, false
+terrain: 5, 87: 152, 0, false
+terrain: 5, 88: 152, 0, false
+terrain: 5, 89: 152, 0, false
+terrain: 5, 90: 161, 0, false
+terrain: 5, 91: 154, 0, false
+terrain: 5, 92: 154, 0, false
+terrain: 5, 93: 162, 0, false
+terrain: 5, 94: 154, 0, false
+terrain: 5, 95: 134, 0, false
+terrain: 5, 96: 132, 0, false
+terrain: 5, 97: 132, 0, false
+terrain: 5, 98: 133, 0, false
+terrain: 5, 99: 207, 100, false
+terrain: 6, 0: 1, 100, false
+terrain: 6, 1: 1, 100, false
+terrain: 6, 2: 1, 100, false
+terrain: 6, 3: 1, 100, false
+terrain: 6, 4: 1, 100, false
+terrain: 6, 5: 1, 100, false
+terrain: 6, 6: 1, 100, false
+terrain: 6, 7: 132, 0, false
+terrain: 6, 8: 172, 0, false
+terrain: 6, 9: 172, 0, false
+terrain: 6, 10: 172, 0, false
+terrain: 6, 11: 172, 0, false
+terrain: 6, 12: 172, 0, false
+terrain: 6, 13: 132, 0, false
+terrain: 6, 14: 133, 0, false
+terrain: 6, 15: 132, 0, false
+terrain: 6, 16: 161, 0, false
+terrain: 6, 17: 161, 0, false
+terrain: 6, 18: 161, 0, false
+terrain: 6, 19: 154, 0, false
+terrain: 6, 20: 154, 0, false
+terrain: 6, 21: 131, 0, false
+terrain: 6, 22: 1, 100, false
+terrain: 6, 23: 1, 100, false
+terrain: 6, 24: 1, 100, false
+terrain: 6, 25: 1, 100, false
+terrain: 6, 26: 1, 100, false
+terrain: 6, 27: 1, 100, false
+terrain: 6, 28: 1, 100, false
+terrain: 6, 29: 1, 100, false
+terrain: 6, 30: 1, 100, false
+terrain: 6, 31: 1, 100, false
+terrain: 6, 32: 1, 100, false
+terrain: 6, 33: 1, 100, false
+terrain: 6, 34: 1, 100, false
+terrain: 6, 35: 1, 100, false
+terrain: 6, 36: 1, 100, false
+terrain: 6, 37: 1, 100, false
+terrain: 6, 38: 1, 100, false
+terrain: 6, 39: 1, 100, false
+terrain: 6, 40: 1, 100, false
+terrain: 6, 41: 1, 100, false
+terrain: 6, 42: 1, 100, false
+terrain: 6, 43: 1, 100, false
+terrain: 6, 44: 1, 100, false
+terrain: 6, 45: 1, 100, false
+terrain: 6, 46: 1, 100, false
+terrain: 6, 47: 1, 100, false
+terrain: 6, 48: 1, 100, false
+terrain: 6, 49: 1, 100, false
+terrain: 6, 50: 1, 100, false
+terrain: 6, 51: 1, 100, false
+terrain: 6, 52: 1, 100, false
+terrain: 6, 53: 1, 100, false
+terrain: 6, 54: 1, 100, false
+terrain: 6, 55: 1, 100, false
+terrain: 6, 56: 1, 100, false
+terrain: 6, 57: 1, 100, false
+terrain: 6, 58: 1, 100, false
+terrain: 6, 59: 1, 100, false
+terrain: 6, 60: 1, 100, false
+terrain: 6, 61: 1, 100, false
+terrain: 6, 62: 1, 100, false
+terrain: 6, 63: 1, 100, false
+terrain: 6, 64: 1, 100, false
+terrain: 6, 65: 1, 100, false
+terrain: 6, 66: 1, 100, false
+terrain: 6, 67: 1, 100, false
+terrain: 6, 68: 1, 100, false
+terrain: 6, 69: 207, 100, false
+terrain: 6, 70: 131, 0, false
+terrain: 6, 71: 132, 0, false
+terrain: 6, 72: 132, 0, false
+terrain: 6, 73: 132, 0, false
+terrain: 6, 74: 133, 0, false
+terrain: 6, 75: 132, 0, false
+terrain: 6, 76: 163, 0, false
+terrain: 6, 77: 163, 0, false
+terrain: 6, 78: 163, 0, false
+terrain: 6, 79: 163, 0, false
+terrain: 6, 80: 133, 0, false
+terrain: 6, 81: 132, 0, false
+terrain: 6, 82: 132, 0, false
+terrain: 6, 83: 152, 0, false
+terrain: 6, 84: 152, 0, false
+terrain: 6, 85: 152, 0, false
+terrain: 6, 86: 152, 0, false
+terrain: 6, 87: 152, 0, false
+terrain: 6, 88: 152, 0, false
+terrain: 6, 89: 152, 0, false
+terrain: 6, 90: 152, 0, false
+terrain: 6, 91: 161, 0, false
+terrain: 6, 92: 154, 0, false
+terrain: 6, 93: 163, 0, false
+terrain: 6, 94: 162, 0, false
+terrain: 6, 95: 152, 0, false
+terrain: 6, 96: 132, 0, false
+terrain: 6, 97: 132, 0, false
+terrain: 6, 98: 133, 0, false
+terrain: 6, 99: 207, 100, false
+terrain: 7, 0: 1, 100, false
+terrain: 7, 1: 1, 100, false
+terrain: 7, 2: 1, 100, false
+terrain: 7, 3: 1, 100, false
+terrain: 7, 4: 1, 100, false
+terrain: 7, 5: 1, 100, false
+terrain: 7, 6: 132, 0, false
+terrain: 7, 7: 132, 0, false
+terrain: 7, 8: 172, 0, false
+terrain: 7, 9: 172, 0, false
+terrain: 7, 10: 172, 0, false
+terrain: 7, 11: 172, 0, false
+terrain: 7, 12: 172, 0, false
+terrain: 7, 13: 132, 0, false
+terrain: 7, 14: 132, 0, false
+terrain: 7, 15: 132, 0, false
+terrain: 7, 16: 154, 0, false
+terrain: 7, 17: 161, 0, false
+terrain: 7, 18: 154, 0, false
+terrain: 7, 19: 154, 0, false
+terrain: 7, 20: 161, 0, false
+terrain: 7, 21: 131, 0, false
+terrain: 7, 22: 1, 100, false
+terrain: 7, 23: 1, 100, false
+terrain: 7, 24: 1, 100, false
+terrain: 7, 25: 1, 100, false
+terrain: 7, 26: 1, 100, false
+terrain: 7, 27: 1, 100, false
+terrain: 7, 28: 1, 100, false
+terrain: 7, 29: 1, 100, false
+terrain: 7, 30: 1, 100, false
+terrain: 7, 31: 1, 100, false
+terrain: 7, 32: 1, 100, false
+terrain: 7, 33: 1, 100, false
+terrain: 7, 34: 1, 100, false
+terrain: 7, 35: 1, 100, false
+terrain: 7, 36: 1, 100, false
+terrain: 7, 37: 1, 100, false
+terrain: 7, 38: 1, 100, false
+terrain: 7, 39: 1, 100, false
+terrain: 7, 40: 1, 100, false
+terrain: 7, 41: 1, 100, false
+terrain: 7, 42: 1, 100, false
+terrain: 7, 43: 1, 100, false
+terrain: 7, 44: 1, 100, false
+terrain: 7, 45: 1, 100, false
+terrain: 7, 46: 1, 100, false
+terrain: 7, 47: 1, 100, false
+terrain: 7, 48: 1, 100, false
+terrain: 7, 49: 1, 100, false
+terrain: 7, 50: 1, 100, false
+terrain: 7, 51: 1, 100, false
+terrain: 7, 52: 1, 100, false
+terrain: 7, 53: 1, 100, false
+terrain: 7, 54: 1, 100, false
+terrain: 7, 55: 1, 100, false
+terrain: 7, 56: 1, 100, false
+terrain: 7, 57: 1, 100, false
+terrain: 7, 58: 1, 100, false
+terrain: 7, 59: 1, 100, false
+terrain: 7, 60: 1, 100, false
+terrain: 7, 61: 1, 100, false
+terrain: 7, 62: 1, 100, false
+terrain: 7, 63: 1, 100, false
+terrain: 7, 64: 1, 100, false
+terrain: 7, 65: 1, 100, false
+terrain: 7, 66: 1, 100, false
+terrain: 7, 67: 1, 100, false
+terrain: 7, 68: 1, 100, false
+terrain: 7, 69: 1, 100, false
+terrain: 7, 70: 1, 100, false
+terrain: 7, 71: 131, 0, false
+terrain: 7, 72: 132, 0, false
+terrain: 7, 73: 132, 0, false
+terrain: 7, 74: 133, 0, false
+terrain: 7, 75: 132, 0, false
+terrain: 7, 76: 163, 0, false
+terrain: 7, 77: 163, 0, false
+terrain: 7, 78: 163, 0, false
+terrain: 7, 79: 162, 0, false
+terrain: 7, 80: 133, 0, false
+terrain: 7, 81: 133, 0, false
+terrain: 7, 82: 132, 0, false
+terrain: 7, 83: 152, 0, false
+terrain: 7, 84: 152, 0, false
+terrain: 7, 85: 152, 0, false
+terrain: 7, 86: 152, 0, false
+terrain: 7, 87: 152, 0, false
+terrain: 7, 88: 152, 0, false
+terrain: 7, 89: 152, 0, false
+terrain: 7, 90: 152, 0, false
+terrain: 7, 91: 152, 0, false
+terrain: 7, 92: 162, 0, false
+terrain: 7, 93: 162, 0, false
+terrain: 7, 94: 162, 0, false
+terrain: 7, 95: 152, 0, false
+terrain: 7, 96: 132, 0, false
+terrain: 7, 97: 133, 0, false
+terrain: 7, 98: 133, 0, false
+terrain: 7, 99: 207, 100, false
+terrain: 8, 0: 1, 100, false
+terrain: 8, 1: 1, 100, false
+terrain: 8, 2: 1, 100, false
+terrain: 8, 3: 1, 100, false
+terrain: 8, 4: 1, 100, false
+terrain: 8, 5: 1, 100, false
+terrain: 8, 6: 132, 0, false
+terrain: 8, 7: 132, 0, false
+terrain: 8, 8: 172, 0, false
+terrain: 8, 9: 172, 0, false
+terrain: 8, 10: 172, 0, false
+terrain: 8, 11: 172, 0, false
+terrain: 8, 12: 172, 0, false
+terrain: 8, 13: 132, 0, false
+terrain: 8, 14: 133, 0, false
+terrain: 8, 15: 132, 0, false
+terrain: 8, 16: 152, 0, false
+terrain: 8, 17: 161, 0, false
+terrain: 8, 18: 152, 0, false
+terrain: 8, 19: 154, 0, false
+terrain: 8, 20: 161, 0, false
+terrain: 8, 21: 131, 0, false
+terrain: 8, 22: 1, 100, false
+terrain: 8, 23: 1, 100, false
+terrain: 8, 24: 1, 100, false
+terrain: 8, 25: 1, 100, false
+terrain: 8, 26: 1, 100, false
+terrain: 8, 27: 1, 100, false
+terrain: 8, 28: 1, 100, false
+terrain: 8, 29: 1, 100, false
+terrain: 8, 30: 1, 100, false
+terrain: 8, 31: 1, 100, false
+terrain: 8, 32: 1, 100, false
+terrain: 8, 33: 1, 100, false
+terrain: 8, 34: 1, 100, false
+terrain: 8, 35: 1, 100, false
+terrain: 8, 36: 1, 100, false
+terrain: 8, 37: 1, 100, false
+terrain: 8, 38: 1, 100, false
+terrain: 8, 39: 1, 100, false
+terrain: 8, 40: 1, 100, false
+terrain: 8, 41: 1, 100, false
+terrain: 8, 42: 1, 100, false
+terrain: 8, 43: 1, 100, false
+terrain: 8, 44: 1, 100, false
+terrain: 8, 45: 1, 100, false
+terrain: 8, 46: 1, 100, false
+terrain: 8, 47: 1, 100, false
+terrain: 8, 48: 1, 100, false
+terrain: 8, 49: 1, 100, false
+terrain: 8, 50: 1, 100, false
+terrain: 8, 51: 1, 100, false
+terrain: 8, 52: 1, 100, false
+terrain: 8, 53: 1, 100, false
+terrain: 8, 54: 1, 100, false
+terrain: 8, 55: 1, 100, false
+terrain: 8, 56: 1, 100, false
+terrain: 8, 57: 1, 100, false
+terrain: 8, 58: 1, 100, false
+terrain: 8, 59: 1, 100, false
+terrain: 8, 60: 1, 100, false
+terrain: 8, 61: 1, 100, false
+terrain: 8, 62: 1, 100, false
+terrain: 8, 63: 1, 100, false
+terrain: 8, 64: 1, 100, false
+terrain: 8, 65: 1, 100, false
+terrain: 8, 66: 1, 100, false
+terrain: 8, 67: 1, 100, false
+terrain: 8, 68: 1, 100, false
+terrain: 8, 69: 1, 100, false
+terrain: 8, 70: 1, 100, false
+terrain: 8, 71: 207, 100, false
+terrain: 8, 72: 207, 100, false
+terrain: 8, 73: 132, 0, false
+terrain: 8, 74: 132, 0, false
+terrain: 8, 75: 132, 0, false
+terrain: 8, 76: 163, 0, false
+terrain: 8, 77: 163, 0, false
+terrain: 8, 78: 162, 0, false
+terrain: 8, 79: 162, 0, false
+terrain: 8, 80: 132, 0, false
+terrain: 8, 81: 133, 0, false
+terrain: 8, 82: 132, 0, false
+terrain: 8, 83: 152, 0, false
+terrain: 8, 84: 152, 0, false
+terrain: 8, 85: 152, 0, false
+terrain: 8, 86: 152, 0, false
+terrain: 8, 87: 152, 0, false
+terrain: 8, 88: 152, 0, false
+terrain: 8, 89: 152, 0, false
+terrain: 8, 90: 152, 0, false
+terrain: 8, 91: 152, 0, false
+terrain: 8, 92: 162, 0, false
+terrain: 8, 93: 152, 0, false
+terrain: 8, 94: 153, 0, false
+terrain: 8, 95: 152, 0, false
+terrain: 8, 96: 132, 0, false
+terrain: 8, 97: 132, 0, false
+terrain: 8, 98: 132, 0, false
+terrain: 8, 99: 207, 100, false
+terrain: 9, 0: 1, 100, false
+terrain: 9, 1: 1, 100, false
+terrain: 9, 2: 1, 100, false
+terrain: 9, 3: 1, 100, false
+terrain: 9, 4: 1, 100, false
+terrain: 9, 5: 1, 100, false
+terrain: 9, 6: 132, 0, false
+terrain: 9, 7: 132, 0, false
+terrain: 9, 8: 172, 0, false
+terrain: 9, 9: 172, 0, false
+terrain: 9, 10: 172, 0, false
+terrain: 9, 11: 172, 0, false
+terrain: 9, 12: 172, 0, false
+terrain: 9, 13: 132, 0, false
+terrain: 9, 14: 132, 0, false
+terrain: 9, 15: 132, 0, false
+terrain: 9, 16: 152, 0, false
+terrain: 9, 17: 152, 0, false
+terrain: 9, 18: 152, 0, false
+terrain: 9, 19: 161, 0, false
+terrain: 9, 20: 161, 0, false
+terrain: 9, 21: 207, 100, false
+terrain: 9, 22: 207, 100, false
+terrain: 9, 23: 207, 100, false
+terrain: 9, 24: 207, 100, false
+terrain: 9, 25: 207, 100, false
+terrain: 9, 26: 1, 100, false
+terrain: 9, 27: 1, 100, false
+terrain: 9, 28: 1, 100, false
+terrain: 9, 29: 1, 100, false
+terrain: 9, 30: 1, 100, false
+terrain: 9, 31: 1, 100, false
+terrain: 9, 32: 1, 100, false
+terrain: 9, 33: 1, 100, false
+terrain: 9, 34: 1, 100, false
+terrain: 9, 35: 1, 100, false
+terrain: 9, 36: 1, 100, false
+terrain: 9, 37: 1, 100, false
+terrain: 9, 38: 1, 100, false
+terrain: 9, 39: 1, 100, false
+terrain: 9, 40: 1, 100, false
+terrain: 9, 41: 1, 100, false
+terrain: 9, 42: 1, 100, false
+terrain: 9, 43: 1, 100, false
+terrain: 9, 44: 1, 100, false
+terrain: 9, 45: 1, 100, false
+terrain: 9, 46: 1, 100, false
+terrain: 9, 47: 1, 100, false
+terrain: 9, 48: 1, 100, false
+terrain: 9, 49: 1, 100, false
+terrain: 9, 50: 1, 100, false
+terrain: 9, 51: 1, 100, false
+terrain: 9, 52: 1, 100, false
+terrain: 9, 53: 1, 100, false
+terrain: 9, 54: 1, 100, false
+terrain: 9, 55: 1, 100, false
+terrain: 9, 56: 1, 100, false
+terrain: 9, 57: 1, 100, false
+terrain: 9, 58: 1, 100, false
+terrain: 9, 59: 1, 100, false
+terrain: 9, 60: 1, 100, false
+terrain: 9, 61: 1, 100, false
+terrain: 9, 62: 1, 100, false
+terrain: 9, 63: 1, 100, false
+terrain: 9, 64: 1, 100, false
+terrain: 9, 65: 1, 100, false
+terrain: 9, 66: 1, 100, false
+terrain: 9, 67: 1, 100, false
+terrain: 9, 68: 1, 100, false
+terrain: 9, 69: 1, 100, false
+terrain: 9, 70: 1, 100, false
+terrain: 9, 71: 207, 100, false
+terrain: 9, 72: 133, 0, false
+terrain: 9, 73: 132, 0, false
+terrain: 9, 74: 133, 0, false
+terrain: 9, 75: 132, 0, false
+terrain: 9, 76: 163, 0, false
+terrain: 9, 77: 163, 0, false
+terrain: 9, 78: 162, 0, false
+terrain: 9, 79: 132, 0, false
+terrain: 9, 80: 132, 0, false
+terrain: 9, 81: 132, 0, false
+terrain: 9, 82: 132, 0, false
+terrain: 9, 83: 152, 0, false
+terrain: 9, 84: 152, 0, false
+terrain: 9, 85: 152, 0, false
+terrain: 9, 86: 152, 0, false
+terrain: 9, 87: 152, 0, false
+terrain: 9, 88: 152, 0, false
+terrain: 9, 89: 152, 0, false
+terrain: 9, 90: 152, 0, false
+terrain: 9, 91: 152, 0, false
+terrain: 9, 92: 162, 0, false
+terrain: 9, 93: 162, 0, false
+terrain: 9, 94: 153, 0, false
+terrain: 9, 95: 152, 0, false
+terrain: 9, 96: 132, 0, false
+terrain: 9, 97: 132, 0, false
+terrain: 9, 98: 132, 0, false
+terrain: 9, 99: 207, 100, false
+terrain: 10, 0: 1, 100, false
+terrain: 10, 1: 1, 100, false
+terrain: 10, 2: 1, 100, false
+terrain: 10, 3: 1, 100, false
+terrain: 10, 4: 1, 100, false
+terrain: 10, 5: 152, 0, false
+terrain: 10, 6: 132, 0, false
+terrain: 10, 7: 132, 0, false
+terrain: 10, 8: 172, 0, false
+terrain: 10, 9: 172, 0, false
+terrain: 10, 10: 172, 0, false
+terrain: 10, 11: 172, 0, false
+terrain: 10, 12: 172, 0, false
+terrain: 10, 13: 132, 0, false
+terrain: 10, 14: 132, 0, false
+terrain: 10, 15: 132, 0, false
+terrain: 10, 16: 152, 0, false
+terrain: 10, 17: 152, 0, false
+terrain: 10, 18: 152, 0, false
+terrain: 10, 19: 152, 0, false
+terrain: 10, 20: 162, 0, false
+terrain: 10, 21: 163, 0, false
+terrain: 10, 22: 163, 0, false
+terrain: 10, 23: 163, 0, false
+terrain: 10, 24: 161, 0, false
+terrain: 10, 25: 161, 0, false
+terrain: 10, 26: 207, 100, false
+terrain: 10, 27: 1, 100, false
+terrain: 10, 28: 1, 100, false
+terrain: 10, 29: 1, 100, false
+terrain: 10, 30: 1, 100, false
+terrain: 10, 31: 1, 100, false
+terrain: 10, 32: 1, 100, false
+terrain: 10, 33: 1, 100, false
+terrain: 10, 34: 1, 100, false
+terrain: 10, 35: 1, 100, false
+terrain: 10, 36: 1, 100, false
+terrain: 10, 37: 1, 100, false
+terrain: 10, 38: 1, 100, false
+terrain: 10, 39: 1, 100, false
+terrain: 10, 40: 1, 100, false
+terrain: 10, 41: 1, 100, false
+terrain: 10, 42: 1, 100, false
+terrain: 10, 43: 1, 100, false
+terrain: 10, 44: 1, 100, false
+terrain: 10, 45: 1, 100, false
+terrain: 10, 46: 1, 100, false
+terrain: 10, 47: 1, 100, false
+terrain: 10, 48: 1, 100, false
+terrain: 10, 49: 1, 100, false
+terrain: 10, 50: 1, 100, false
+terrain: 10, 51: 1, 100, false
+terrain: 10, 52: 1, 100, false
+terrain: 10, 53: 1, 100, false
+terrain: 10, 54: 1, 100, false
+terrain: 10, 55: 1, 100, false
+terrain: 10, 56: 1, 100, false
+terrain: 10, 57: 1, 100, false
+terrain: 10, 58: 1, 100, false
+terrain: 10, 59: 1, 100, false
+terrain: 10, 60: 1, 100, false
+terrain: 10, 61: 1, 100, false
+terrain: 10, 62: 1, 100, false
+terrain: 10, 63: 1, 100, false
+terrain: 10, 64: 1, 100, false
+terrain: 10, 65: 1, 100, false
+terrain: 10, 66: 1, 100, false
+terrain: 10, 67: 1, 100, false
+terrain: 10, 68: 1, 100, false
+terrain: 10, 69: 1, 100, false
+terrain: 10, 70: 122, 0, false
+terrain: 10, 71: 207, 100, false
+terrain: 10, 72: 207, 100, false
+terrain: 10, 73: 132, 0, false
+terrain: 10, 74: 132, 0, false
+terrain: 10, 75: 133, 0, false
+terrain: 10, 76: 133, 0, false
+terrain: 10, 77: 133, 0, false
+terrain: 10, 78: 133, 0, false
+terrain: 10, 79: 132, 0, false
+terrain: 10, 80: 132, 0, false
+terrain: 10, 81: 132, 0, false
+terrain: 10, 82: 132, 0, false
+terrain: 10, 83: 152, 0, false
+terrain: 10, 84: 152, 0, false
+terrain: 10, 85: 152, 0, false
+terrain: 10, 86: 152, 0, false
+terrain: 10, 87: 152, 0, false
+terrain: 10, 88: 152, 0, false
+terrain: 10, 89: 162, 0, false
+terrain: 10, 90: 152, 0, false
+terrain: 10, 91: 152, 0, false
+terrain: 10, 92: 162, 0, false
+terrain: 10, 93: 163, 0, false
+terrain: 10, 94: 162, 0, false
+terrain: 10, 95: 134, 0, false
+terrain: 10, 96: 132, 0, false
+terrain: 10, 97: 132, 0, false
+terrain: 10, 98: 132, 0, false
+terrain: 10, 99: 207, 100, false
+terrain: 11, 0: 1, 100, false
+terrain: 11, 1: 1, 100, false
+terrain: 11, 2: 1, 100, false
+terrain: 11, 3: 1, 100, false
+terrain: 11, 4: 1, 100, false
+terrain: 11, 5: 152, 0, false
+terrain: 11, 6: 132, 0, false
+terrain: 11, 7: 132, 0, false
+terrain: 11, 8: 172, 0, false
+terrain: 11, 9: 172, 0, false
+terrain: 11, 10: 172, 0, false
+terrain: 11, 11: 172, 0, false
+terrain: 11, 12: 172, 0, false
+terrain: 11, 13: 132, 0, false
+terrain: 11, 14: 132, 0, false
+terrain: 11, 15: 132, 0, false
+terrain: 11, 16: 152, 0, false
+terrain: 11, 17: 152, 0, false
+terrain: 11, 18: 152, 0, false
+terrain: 11, 19: 152, 0, false
+terrain: 11, 20: 162, 0, false
+terrain: 11, 21: 163, 0, false
+terrain: 11, 22: 163, 0, false
+terrain: 11, 23: 163, 0, false
+terrain: 11, 24: 163, 0, false
+terrain: 11, 25: 163, 0, false
+terrain: 11, 26: 207, 100, false
+terrain: 11, 27: 1, 100, false
+terrain: 11, 28: 1, 100, false
+terrain: 11, 29: 1, 100, false
+terrain: 11, 30: 1, 100, false
+terrain: 11, 31: 1, 100, false
+terrain: 11, 32: 1, 100, false
+terrain: 11, 33: 1, 100, false
+terrain: 11, 34: 1, 100, false
+terrain: 11, 35: 1, 100, false
+terrain: 11, 36: 1, 100, false
+terrain: 11, 37: 1, 100, false
+terrain: 11, 38: 1, 100, false
+terrain: 11, 39: 1, 100, false
+terrain: 11, 40: 1, 100, false
+terrain: 11, 41: 1, 100, false
+terrain: 11, 42: 1, 100, false
+terrain: 11, 43: 1, 100, false
+terrain: 11, 44: 1, 100, false
+terrain: 11, 45: 1, 100, false
+terrain: 11, 46: 1, 100, false
+terrain: 11, 47: 1, 100, false
+terrain: 11, 48: 1, 100, false
+terrain: 11, 49: 1, 100, false
+terrain: 11, 50: 1, 100, false
+terrain: 11, 51: 1, 100, false
+terrain: 11, 52: 1, 100, false
+terrain: 11, 53: 1, 100, false
+terrain: 11, 54: 1, 100, false
+terrain: 11, 55: 1, 100, false
+terrain: 11, 56: 1, 100, false
+terrain: 11, 57: 1, 100, false
+terrain: 11, 58: 1, 100, false
+terrain: 11, 59: 1, 100, false
+terrain: 11, 60: 1, 100, false
+terrain: 11, 61: 1, 100, false
+terrain: 11, 62: 1, 100, false
+terrain: 11, 63: 1, 100, false
+terrain: 11, 64: 1, 100, false
+terrain: 11, 65: 1, 100, false
+terrain: 11, 66: 1, 100, false
+terrain: 11, 67: 1, 100, false
+terrain: 11, 68: 1, 100, false
+terrain: 11, 69: 122, 0, false
+terrain: 11, 70: 122, 0, false
+terrain: 11, 71: 122, 0, false
+terrain: 11, 72: 207, 100, false
+terrain: 11, 73: 207, 100, false
+terrain: 11, 74: 132, 0, false
+terrain: 11, 75: 132, 0, false
+terrain: 11, 76: 132, 0, false
+terrain: 11, 77: 132, 0, false
+terrain: 11, 78: 132, 0, false
+terrain: 11, 79: 132, 0, false
+terrain: 11, 80: 132, 0, false
+terrain: 11, 81: 132, 0, false
+terrain: 11, 82: 132, 0, false
+terrain: 11, 83: 152, 0, false
+terrain: 11, 84: 154, 0, false
+terrain: 11, 85: 152, 0, false
+terrain: 11, 86: 152, 0, false
+terrain: 11, 87: 152, 0, false
+terrain: 11, 88: 152, 0, false
+terrain: 11, 89: 162, 0, false
+terrain: 11, 90: 152, 0, false
+terrain: 11, 91: 152, 0, false
+terrain: 11, 92: 162, 0, false
+terrain: 11, 93: 162, 0, false
+terrain: 11, 94: 153, 0, false
+terrain: 11, 95: 134, 0, false
+terrain: 11, 96: 132, 0, false
+terrain: 11, 97: 132, 0, false
+terrain: 11, 98: 132, 0, false
+terrain: 11, 99: 207, 100, false
+terrain: 12, 0: 1, 100, false
+terrain: 12, 1: 1, 100, false
+terrain: 12, 2: 1, 100, false
+terrain: 12, 3: 1, 100, false
+terrain: 12, 4: 1, 100, false
+terrain: 12, 5: 152, 0, false
+terrain: 12, 6: 132, 0, false
+terrain: 12, 7: 132, 0, false
+terrain: 12, 8: 172, 0, false
+terrain: 12, 9: 172, 0, false
+terrain: 12, 10: 172, 0, false
+terrain: 12, 11: 172, 0, false
+terrain: 12, 12: 172, 0, false
+terrain: 12, 13: 132, 0, false
+terrain: 12, 14: 133, 0, false
+terrain: 12, 15: 132, 0, false
+terrain: 12, 16: 152, 0, false
+terrain: 12, 17: 152, 0, false
+terrain: 12, 18: 152, 0, false
+terrain: 12, 19: 152, 0, false
+terrain: 12, 20: 162, 0, false
+terrain: 12, 21: 162, 0, false
+terrain: 12, 22: 163, 0, false
+terrain: 12, 23: 163, 0, false
+terrain: 12, 24: 163, 0, false
+terrain: 12, 25: 163, 0, false
+terrain: 12, 26: 207, 100, false
+terrain: 12, 27: 1, 100, false
+terrain: 12, 28: 1, 100, false
+terrain: 12, 29: 1, 100, false
+terrain: 12, 30: 1, 100, false
+terrain: 12, 31: 1, 100, false
+terrain: 12, 32: 1, 100, false
+terrain: 12, 33: 1, 100, false
+terrain: 12, 34: 1, 100, false
+terrain: 12, 35: 1, 100, false
+terrain: 12, 36: 1, 100, false
+terrain: 12, 37: 1, 100, false
+terrain: 12, 38: 1, 100, false
+terrain: 12, 39: 1, 100, false
+terrain: 12, 40: 1, 100, false
+terrain: 12, 41: 1, 100, false
+terrain: 12, 42: 1, 100, false
+terrain: 12, 43: 1, 100, false
+terrain: 12, 44: 1, 100, false
+terrain: 12, 45: 1, 100, false
+terrain: 12, 46: 1, 100, false
+terrain: 12, 47: 1, 100, false
+terrain: 12, 48: 1, 100, false
+terrain: 12, 49: 1, 100, false
+terrain: 12, 50: 1, 100, false
+terrain: 12, 51: 1, 100, false
+terrain: 12, 52: 1, 100, false
+terrain: 12, 53: 1, 100, false
+terrain: 12, 54: 1, 100, false
+terrain: 12, 55: 1, 100, false
+terrain: 12, 56: 1, 100, false
+terrain: 12, 57: 1, 100, false
+terrain: 12, 58: 1, 100, false
+terrain: 12, 59: 1, 100, false
+terrain: 12, 60: 1, 100, false
+terrain: 12, 61: 1, 100, false
+terrain: 12, 62: 1, 100, false
+terrain: 12, 63: 1, 100, false
+terrain: 12, 64: 1, 100, false
+terrain: 12, 65: 1, 100, false
+terrain: 12, 66: 1, 100, false
+terrain: 12, 67: 1, 100, false
+terrain: 12, 68: 122, 0, false
+terrain: 12, 69: 122, 0, false
+terrain: 12, 70: 122, 0, false
+terrain: 12, 71: 131, 0, false
+terrain: 12, 72: 132, 0, false
+terrain: 12, 73: 132, 0, false
+terrain: 12, 74: 132, 0, false
+terrain: 12, 75: 132, 0, false
+terrain: 12, 76: 163, 0, false
+terrain: 12, 77: 163, 0, false
+terrain: 12, 78: 162, 0, false
+terrain: 12, 79: 132, 0, false
+terrain: 12, 80: 132, 0, false
+terrain: 12, 81: 132, 0, false
+terrain: 12, 82: 132, 0, false
+terrain: 12, 83: 152, 0, false
+terrain: 12, 84: 152, 0, false
+terrain: 12, 85: 152, 0, false
+terrain: 12, 86: 152, 0, false
+terrain: 12, 87: 152, 0, false
+terrain: 12, 88: 152, 0, false
+terrain: 12, 89: 161, 0, false
+terrain: 12, 90: 152, 0, false
+terrain: 12, 91: 152, 0, false
+terrain: 12, 92: 153, 0, false
+terrain: 12, 93: 153, 0, false
+terrain: 12, 94: 163, 0, false
+terrain: 12, 95: 163, 0, false
+terrain: 12, 96: 132, 0, false
+terrain: 12, 97: 133, 0, false
+terrain: 12, 98: 133, 0, false
+terrain: 12, 99: 207, 100, false
+terrain: 13, 0: 1, 100, false
+terrain: 13, 1: 1, 100, false
+terrain: 13, 2: 1, 100, false
+terrain: 13, 3: 1, 100, false
+terrain: 13, 4: 152, 0, false
+terrain: 13, 5: 152, 0, false
+terrain: 13, 6: 132, 0, false
+terrain: 13, 7: 132, 0, false
+terrain: 13, 8: 172, 0, false
+terrain: 13, 9: 172, 0, false
+terrain: 13, 10: 172, 0, false
+terrain: 13, 11: 172, 0, false
+terrain: 13, 12: 172, 0, false
+terrain: 13, 13: 132, 0, false
+terrain: 13, 14: 132, 0, false
+terrain: 13, 15: 132, 0, false
+terrain: 13, 16: 152, 0, false
+terrain: 13, 17: 153, 0, false
+terrain: 13, 18: 153, 0, false
+terrain: 13, 19: 153, 0, false
+terrain: 13, 20: 152, 0, false
+terrain: 13, 21: 162, 0, false
+terrain: 13, 22: 162, 0, false
+terrain: 13, 23: 163, 0, false
+terrain: 13, 24: 162, 0, false
+terrain: 13, 25: 163, 0, false
+terrain: 13, 26: 207, 100, false
+terrain: 13, 27: 131, 0, false
+terrain: 13, 28: 131, 0, false
+terrain: 13, 29: 131, 0, false
+terrain: 13, 30: 131, 0, false
+terrain: 13, 31: 207, 100, false
+terrain: 13, 32: 131, 0, false
+terrain: 13, 33: 131, 0, false
+terrain: 13, 34: 131, 0, false
+terrain: 13, 35: 131, 0, false
+terrain: 13, 36: 207, 100, false
+terrain: 13, 37: 131, 0, false
+terrain: 13, 38: 131, 0, false
+terrain: 13, 39: 131, 0, false
+terrain: 13, 40: 131, 0, false
+terrain: 13, 41: 207, 100, false
+terrain: 13, 42: 131, 0, false
+terrain: 13, 43: 131, 0, false
+terrain: 13, 44: 131, 0, false
+terrain: 13, 45: 131, 0, false
+terrain: 13, 46: 207, 100, false
+terrain: 13, 47: 131, 0, false
+terrain: 13, 48: 131, 0, false
+terrain: 13, 49: 131, 0, false
+terrain: 13, 50: 131, 0, false
+terrain: 13, 51: 207, 100, false
+terrain: 13, 52: 131, 0, false
+terrain: 13, 53: 131, 0, false
+terrain: 13, 54: 131, 0, false
+terrain: 13, 55: 131, 0, false
+terrain: 13, 56: 207, 100, false
+terrain: 13, 57: 131, 0, false
+terrain: 13, 58: 131, 0, false
+terrain: 13, 59: 131, 0, false
+terrain: 13, 60: 131, 0, false
+terrain: 13, 61: 207, 100, false
+terrain: 13, 62: 131, 0, false
+terrain: 13, 63: 131, 0, false
+terrain: 13, 64: 131, 0, false
+terrain: 13, 65: 131, 0, false
+terrain: 13, 66: 1, 100, false
+terrain: 13, 67: 207, 100, false
+terrain: 13, 68: 207, 100, false
+terrain: 13, 69: 122, 0, false
+terrain: 13, 70: 131, 0, false
+terrain: 13, 71: 132, 0, false
+terrain: 13, 72: 132, 0, false
+terrain: 13, 73: 132, 0, false
+terrain: 13, 74: 132, 0, false
+terrain: 13, 75: 163, 0, false
+terrain: 13, 76: 163, 0, false
+terrain: 13, 77: 163, 0, false
+terrain: 13, 78: 162, 0, false
+terrain: 13, 79: 162, 0, false
+terrain: 13, 80: 132, 0, false
+terrain: 13, 81: 132, 0, false
+terrain: 13, 82: 132, 0, false
+terrain: 13, 83: 152, 0, false
+terrain: 13, 84: 152, 0, false
+terrain: 13, 85: 152, 0, false
+terrain: 13, 86: 152, 0, false
+terrain: 13, 87: 152, 0, false
+terrain: 13, 88: 152, 0, false
+terrain: 13, 89: 152, 0, false
+terrain: 13, 90: 152, 0, false
+terrain: 13, 91: 152, 0, false
+terrain: 13, 92: 152, 0, false
+terrain: 13, 93: 152, 0, false
+terrain: 13, 94: 163, 0, false
+terrain: 13, 95: 203, 100, false
+terrain: 13, 96: 121, 0, false
+terrain: 13, 97: 203, 100, false
+terrain: 13, 98: 203, 100, false
+terrain: 13, 99: 1, 100, false
+terrain: 14, 0: 1, 100, false
+terrain: 14, 1: 1, 100, false
+terrain: 14, 2: 1, 100, false
+terrain: 14, 3: 1, 100, false
+terrain: 14, 4: 161, 0, false
+terrain: 14, 5: 152, 0, false
+terrain: 14, 6: 132, 0, false
+terrain: 14, 7: 132, 0, false
+terrain: 14, 8: 172, 0, false
+terrain: 14, 9: 172, 0, false
+terrain: 14, 10: 172, 0, false
+terrain: 14, 11: 172, 0, false
+terrain: 14, 12: 172, 0, false
+terrain: 14, 13: 133, 0, false
+terrain: 14, 14: 132, 0, false
+terrain: 14, 15: 132, 0, false
+terrain: 14, 16: 152, 0, false
+terrain: 14, 17: 152, 0, false
+terrain: 14, 18: 154, 0, false
+terrain: 14, 19: 153, 0, false
+terrain: 14, 20: 152, 0, false
+terrain: 14, 21: 161, 0, false
+terrain: 14, 22: 161, 0, false
+terrain: 14, 23: 162, 0, false
+terrain: 14, 24: 162, 0, false
+terrain: 14, 25: 163, 0, false
+terrain: 14, 26: 163, 0, false
+terrain: 14, 27: 163, 0, false
+terrain: 14, 28: 163, 0, false
+terrain: 14, 29: 163, 0, false
+terrain: 14, 30: 163, 0, false
+terrain: 14, 31: 163, 0, false
+terrain: 14, 32: 163, 0, false
+terrain: 14, 33: 163, 0, false
+terrain: 14, 34: 163, 0, false
+terrain: 14, 35: 163, 0, false
+terrain: 14, 36: 163, 0, false
+terrain: 14, 37: 163, 0, false
+terrain: 14, 38: 163, 0, false
+terrain: 14, 39: 163, 0, false
+terrain: 14, 40: 163, 0, false
+terrain: 14, 41: 163, 0, false
+terrain: 14, 42: 163, 0, false
+terrain: 14, 43: 163, 0, false
+terrain: 14, 44: 163, 0, false
+terrain: 14, 45: 163, 0, false
+terrain: 14, 46: 163, 0, false
+terrain: 14, 47: 163, 0, false
+terrain: 14, 48: 163, 0, false
+terrain: 14, 49: 163, 0, false
+terrain: 14, 50: 163, 0, false
+terrain: 14, 51: 163, 0, false
+terrain: 14, 52: 163, 0, false
+terrain: 14, 53: 163, 0, false
+terrain: 14, 54: 163, 0, false
+terrain: 14, 55: 163, 0, false
+terrain: 14, 56: 163, 0, false
+terrain: 14, 57: 163, 0, false
+terrain: 14, 58: 163, 0, false
+terrain: 14, 59: 163, 0, false
+terrain: 14, 60: 163, 0, false
+terrain: 14, 61: 163, 0, false
+terrain: 14, 62: 163, 0, false
+terrain: 14, 63: 163, 0, false
+terrain: 14, 64: 163, 0, false
+terrain: 14, 65: 163, 0, false
+terrain: 14, 66: 207, 100, false
+terrain: 14, 67: 163, 0, false
+terrain: 14, 68: 207, 100, false
+terrain: 14, 69: 207, 100, false
+terrain: 14, 70: 132, 0, false
+terrain: 14, 71: 132, 0, false
+terrain: 14, 72: 133, 0, false
+terrain: 14, 73: 132, 0, false
+terrain: 14, 74: 163, 0, false
+terrain: 14, 75: 163, 0, false
+terrain: 14, 76: 163, 0, false
+terrain: 14, 77: 162, 0, false
+terrain: 14, 78: 162, 0, false
+terrain: 14, 79: 163, 0, false
+terrain: 14, 80: 132, 0, false
+terrain: 14, 81: 132, 0, false
+terrain: 14, 82: 132, 0, false
+terrain: 14, 83: 152, 0, false
+terrain: 14, 84: 152, 0, false
+terrain: 14, 85: 152, 0, false
+terrain: 14, 86: 152, 0, false
+terrain: 14, 87: 152, 0, false
+terrain: 14, 88: 152, 0, false
+terrain: 14, 89: 152, 0, false
+terrain: 14, 90: 152, 0, false
+terrain: 14, 91: 152, 0, false
+terrain: 14, 92: 152, 0, false
+terrain: 14, 93: 152, 0, false
+terrain: 14, 94: 162, 0, false
+terrain: 14, 95: 207, 100, false
+terrain: 14, 96: 1, 100, false
+terrain: 14, 97: 1, 100, false
+terrain: 14, 98: 1, 100, false
+terrain: 14, 99: 1, 100, false
+terrain: 15, 0: 1, 100, false
+terrain: 15, 1: 1, 100, false
+terrain: 15, 2: 1, 100, false
+terrain: 15, 3: 1, 100, false
+terrain: 15, 4: 161, 0, false
+terrain: 15, 5: 161, 0, false
+terrain: 15, 6: 132, 0, false
+terrain: 15, 7: 132, 0, false
+terrain: 15, 8: 172, 0, false
+terrain: 15, 9: 172, 0, false
+terrain: 15, 10: 172, 0, false
+terrain: 15, 11: 172, 0, false
+terrain: 15, 12: 172, 0, false
+terrain: 15, 13: 132, 0, false
+terrain: 15, 14: 133, 0, false
+terrain: 15, 15: 133, 0, false
+terrain: 15, 16: 152, 0, false
+terrain: 15, 17: 152, 0, false
+terrain: 15, 18: 152, 0, false
+terrain: 15, 19: 153, 0, false
+terrain: 15, 20: 152, 0, false
+terrain: 15, 21: 152, 0, false
+terrain: 15, 22: 152, 0, false
+terrain: 15, 23: 162, 0, false
+terrain: 15, 24: 162, 0, false
+terrain: 15, 25: 162, 0, false
+terrain: 15, 26: 162, 0, false
+terrain: 15, 27: 152, 0, false
+terrain: 15, 28: 152, 0, false
+terrain: 15, 29: 152, 0, false
+terrain: 15, 30: 152, 0, false
+terrain: 15, 31: 152, 0, false
+terrain: 15, 32: 152, 0, false
+terrain: 15, 33: 152, 0, false
+terrain: 15, 34: 152, 0, false
+terrain: 15, 35: 152, 0, false
+terrain: 15, 36: 152, 0, false
+terrain: 15, 37: 152, 0, false
+terrain: 15, 38: 152, 0, false
+terrain: 15, 39: 152, 0, false
+terrain: 15, 40: 152, 0, false
+terrain: 15, 41: 152, 0, false
+terrain: 15, 42: 152, 0, false
+terrain: 15, 43: 152, 0, false
+terrain: 15, 44: 152, 0, false
+terrain: 15, 45: 152, 0, false
+terrain: 15, 46: 152, 0, false
+terrain: 15, 47: 152, 0, false
+terrain: 15, 48: 152, 0, false
+terrain: 15, 49: 152, 0, false
+terrain: 15, 50: 152, 0, false
+terrain: 15, 51: 152, 0, false
+terrain: 15, 52: 152, 0, false
+terrain: 15, 53: 152, 0, false
+terrain: 15, 54: 152, 0, false
+terrain: 15, 55: 152, 0, false
+terrain: 15, 56: 152, 0, false
+terrain: 15, 57: 152, 0, false
+terrain: 15, 58: 152, 0, false
+terrain: 15, 59: 152, 0, false
+terrain: 15, 60: 152, 0, false
+terrain: 15, 61: 152, 0, false
+terrain: 15, 62: 152, 0, false
+terrain: 15, 63: 152, 0, false
+terrain: 15, 64: 152, 0, false
+terrain: 15, 65: 152, 0, false
+terrain: 15, 66: 163, 0, false
+terrain: 15, 67: 163, 0, false
+terrain: 15, 68: 163, 0, false
+terrain: 15, 69: 207, 100, false
+terrain: 15, 70: 132, 0, false
+terrain: 15, 71: 132, 0, false
+terrain: 15, 72: 132, 0, false
+terrain: 15, 73: 132, 0, false
+terrain: 15, 74: 132, 0, false
+terrain: 15, 75: 132, 0, false
+terrain: 15, 76: 163, 0, false
+terrain: 15, 77: 163, 0, false
+terrain: 15, 78: 163, 0, false
+terrain: 15, 79: 163, 0, false
+terrain: 15, 80: 132, 0, false
+terrain: 15, 81: 132, 0, false
+terrain: 15, 82: 132, 0, false
+terrain: 15, 83: 152, 0, false
+terrain: 15, 84: 154, 0, false
+terrain: 15, 85: 161, 0, false
+terrain: 15, 86: 152, 0, false
+terrain: 15, 87: 152, 0, false
+terrain: 15, 88: 152, 0, false
+terrain: 15, 89: 152, 0, false
+terrain: 15, 90: 152, 0, false
+terrain: 15, 91: 152, 0, false
+terrain: 15, 92: 152, 0, false
+terrain: 15, 93: 152, 0, false
+terrain: 15, 94: 163, 0, false
+terrain: 15, 95: 207, 100, false
+terrain: 15, 96: 1, 100, false
+terrain: 15, 97: 1, 100, false
+terrain: 15, 98: 1, 100, false
+terrain: 15, 99: 1, 100, false
+terrain: 16, 0: 1, 100, false
+terrain: 16, 1: 163, 0, false
+terrain: 16, 2: 163, 0, false
+terrain: 16, 3: 1, 100, false
+terrain: 16, 4: 161, 0, false
+terrain: 16, 5: 152, 0, false
+terrain: 16, 6: 132, 0, false
+terrain: 16, 7: 132, 0, false
+terrain: 16, 8: 172, 0, false
+terrain: 16, 9: 172, 0, false
+terrain: 16, 10: 172, 0, false
+terrain: 16, 11: 172, 0, false
+terrain: 16, 12: 172, 0, false
+terrain: 16, 13: 132, 0, false
+terrain: 16, 14: 133, 0, false
+terrain: 16, 15: 133, 0, false
+terrain: 16, 16: 152, 0, false
+terrain: 16, 17: 152, 0, false
+terrain: 16, 18: 152, 0, false
+terrain: 16, 19: 152, 0, false
+terrain: 16, 20: 152, 0, false
+terrain: 16, 21: 152, 0, false
+terrain: 16, 22: 152, 0, false
+terrain: 16, 23: 152, 0, false
+terrain: 16, 24: 152, 0, false
+terrain: 16, 25: 162, 0, false
+terrain: 16, 26: 152, 0, false
+terrain: 16, 27: 152, 0, false
+terrain: 16, 28: 152, 0, false
+terrain: 16, 29: 152, 0, false
+terrain: 16, 30: 152, 0, false
+terrain: 16, 31: 152, 0, false
+terrain: 16, 32: 152, 0, false
+terrain: 16, 33: 152, 0, false
+terrain: 16, 34: 152, 0, false
+terrain: 16, 35: 152, 0, false
+terrain: 16, 36: 152, 0, false
+terrain: 16, 37: 152, 0, false
+terrain: 16, 38: 152, 0, false
+terrain: 16, 39: 152, 0, false
+terrain: 16, 40: 152, 0, false
+terrain: 16, 41: 152, 0, false
+terrain: 16, 42: 152, 0, false
+terrain: 16, 43: 152, 0, false
+terrain: 16, 44: 152, 0, false
+terrain: 16, 45: 152, 0, false
+terrain: 16, 46: 152, 0, false
+terrain: 16, 47: 152, 0, false
+terrain: 16, 48: 152, 0, false
+terrain: 16, 49: 152, 0, false
+terrain: 16, 50: 152, 0, false
+terrain: 16, 51: 152, 0, false
+terrain: 16, 52: 152, 0, false
+terrain: 16, 53: 152, 0, false
+terrain: 16, 54: 152, 0, false
+terrain: 16, 55: 152, 0, false
+terrain: 16, 56: 152, 0, false
+terrain: 16, 57: 152, 0, false
+terrain: 16, 58: 152, 0, false
+terrain: 16, 59: 152, 0, false
+terrain: 16, 60: 152, 0, false
+terrain: 16, 61: 152, 0, false
+terrain: 16, 62: 152, 0, false
+terrain: 16, 63: 152, 0, false
+terrain: 16, 64: 152, 0, false
+terrain: 16, 65: 152, 0, false
+terrain: 16, 66: 152, 0, false
+terrain: 16, 67: 163, 0, false
+terrain: 16, 68: 163, 0, false
+terrain: 16, 69: 163, 0, false
+terrain: 16, 70: 132, 0, false
+terrain: 16, 71: 132, 0, false
+terrain: 16, 72: 132, 0, false
+terrain: 16, 73: 132, 0, false
+terrain: 16, 74: 133, 0, false
+terrain: 16, 75: 132, 0, false
+terrain: 16, 76: 133, 0, false
+terrain: 16, 77: 163, 0, false
+terrain: 16, 78: 163, 0, false
+terrain: 16, 79: 163, 0, false
+terrain: 16, 80: 132, 0, false
+terrain: 16, 81: 133, 0, false
+terrain: 16, 82: 132, 0, false
+terrain: 16, 83: 152, 0, false
+terrain: 16, 84: 154, 0, false
+terrain: 16, 85: 154, 0, false
+terrain: 16, 86: 152, 0, false
+terrain: 16, 87: 152, 0, false
+terrain: 16, 88: 152, 0, false
+terrain: 16, 89: 152, 0, false
+terrain: 16, 90: 152, 0, false
+terrain: 16, 91: 152, 0, false
+terrain: 16, 92: 152, 0, false
+terrain: 16, 93: 152, 0, false
+terrain: 16, 94: 162, 0, false
+terrain: 16, 95: 207, 100, false
+terrain: 16, 96: 1, 100, false
+terrain: 16, 97: 1, 100, false
+terrain: 16, 98: 1, 100, false
+terrain: 16, 99: 1, 100, false
+terrain: 17, 0: 1, 100, false
+terrain: 17, 1: 163, 0, false
+terrain: 17, 2: 163, 0, false
+terrain: 17, 3: 163, 0, false
+terrain: 17, 4: 152, 0, false
+terrain: 17, 5: 152, 0, false
+terrain: 17, 6: 132, 0, false
+terrain: 17, 7: 132, 0, false
+terrain: 17, 8: 172, 0, false
+terrain: 17, 9: 172, 0, false
+terrain: 17, 10: 172, 0, false
+terrain: 17, 11: 172, 0, false
+terrain: 17, 12: 172, 0, false
+terrain: 17, 13: 132, 0, false
+terrain: 17, 14: 133, 0, false
+terrain: 17, 15: 132, 0, false
+terrain: 17, 16: 152, 0, false
+terrain: 17, 17: 152, 0, false
+terrain: 17, 18: 152, 0, false
+terrain: 17, 19: 152, 0, false
+terrain: 17, 20: 152, 0, false
+terrain: 17, 21: 152, 0, false
+terrain: 17, 22: 152, 0, false
+terrain: 17, 23: 152, 0, false
+terrain: 17, 24: 152, 0, false
+terrain: 17, 25: 152, 0, false
+terrain: 17, 26: 152, 0, false
+terrain: 17, 27: 152, 0, false
+terrain: 17, 28: 152, 0, false
+terrain: 17, 29: 152, 0, false
+terrain: 17, 30: 152, 0, false
+terrain: 17, 31: 152, 0, false
+terrain: 17, 32: 152, 0, false
+terrain: 17, 33: 152, 0, false
+terrain: 17, 34: 152, 0, false
+terrain: 17, 35: 152, 0, false
+terrain: 17, 36: 152, 0, false
+terrain: 17, 37: 152, 0, false
+terrain: 17, 38: 152, 0, false
+terrain: 17, 39: 152, 0, false
+terrain: 17, 40: 152, 0, false
+terrain: 17, 41: 152, 0, false
+terrain: 17, 42: 152, 0, false
+terrain: 17, 43: 152, 0, false
+terrain: 17, 44: 152, 0, false
+terrain: 17, 45: 152, 0, false
+terrain: 17, 46: 152, 0, false
+terrain: 17, 47: 152, 0, false
+terrain: 17, 48: 152, 0, false
+terrain: 17, 49: 152, 0, false
+terrain: 17, 50: 152, 0, false
+terrain: 17, 51: 152, 0, false
+terrain: 17, 52: 152, 0, false
+terrain: 17, 53: 152, 0, false
+terrain: 17, 54: 152, 0, false
+terrain: 17, 55: 152, 0, false
+terrain: 17, 56: 152, 0, false
+terrain: 17, 57: 152, 0, false
+terrain: 17, 58: 152, 0, false
+terrain: 17, 59: 152, 0, false
+terrain: 17, 60: 152, 0, false
+terrain: 17, 61: 152, 0, false
+terrain: 17, 62: 152, 0, false
+terrain: 17, 63: 152, 0, false
+terrain: 17, 64: 152, 0, false
+terrain: 17, 65: 152, 0, false
+terrain: 17, 66: 152, 0, false
+terrain: 17, 67: 163, 0, false
+terrain: 17, 68: 163, 0, false
+terrain: 17, 69: 163, 0, false
+terrain: 17, 70: 132, 0, false
+terrain: 17, 71: 132, 0, false
+terrain: 17, 72: 163, 0, false
+terrain: 17, 73: 163, 0, false
+terrain: 17, 74: 163, 0, false
+terrain: 17, 75: 132, 0, false
+terrain: 17, 76: 133, 0, false
+terrain: 17, 77: 133, 0, false
+terrain: 17, 78: 132, 0, false
+terrain: 17, 79: 133, 0, false
+terrain: 17, 80: 133, 0, false
+terrain: 17, 81: 132, 0, false
+terrain: 17, 82: 132, 0, false
+terrain: 17, 83: 152, 0, false
+terrain: 17, 84: 154, 0, false
+terrain: 17, 85: 152, 0, false
+terrain: 17, 86: 152, 0, false
+terrain: 17, 87: 152, 0, false
+terrain: 17, 88: 152, 0, false
+terrain: 17, 89: 152, 0, false
+terrain: 17, 90: 152, 0, false
+terrain: 17, 91: 152, 0, false
+terrain: 17, 92: 152, 0, false
+terrain: 17, 93: 161, 0, false
+terrain: 17, 94: 162, 0, false
+terrain: 17, 95: 207, 100, false
+terrain: 17, 96: 1, 100, false
+terrain: 17, 97: 1, 100, false
+terrain: 17, 98: 1, 100, false
+terrain: 17, 99: 1, 100, false
+terrain: 18, 0: 1, 100, false
+terrain: 18, 1: 1, 100, false
+terrain: 18, 2: 163, 0, false
+terrain: 18, 3: 163, 0, false
+terrain: 18, 4: 152, 0, false
+terrain: 18, 5: 152, 0, false
+terrain: 18, 6: 132, 0, false
+terrain: 18, 7: 132, 0, false
+terrain: 18, 8: 172, 0, false
+terrain: 18, 9: 172, 0, false
+terrain: 18, 10: 172, 0, false
+terrain: 18, 11: 172, 0, false
+terrain: 18, 12: 172, 0, false
+terrain: 18, 13: 132, 0, false
+terrain: 18, 14: 132, 0, false
+terrain: 18, 15: 132, 0, false
+terrain: 18, 16: 154, 0, false
+terrain: 18, 17: 154, 0, false
+terrain: 18, 18: 152, 0, false
+terrain: 18, 19: 152, 0, false
+terrain: 18, 20: 152, 0, false
+terrain: 18, 21: 153, 0, false
+terrain: 18, 22: 154, 0, false
+terrain: 18, 23: 152, 0, false
+terrain: 18, 24: 152, 0, false
+terrain: 18, 25: 152, 0, false
+terrain: 18, 26: 152, 0, false
+terrain: 18, 27: 152, 0, false
+terrain: 18, 28: 152, 0, false
+terrain: 18, 29: 152, 0, false
+terrain: 18, 30: 152, 0, false
+terrain: 18, 31: 152, 0, false
+terrain: 18, 32: 152, 0, false
+terrain: 18, 33: 152, 0, false
+terrain: 18, 34: 152, 0, false
+terrain: 18, 35: 152, 0, false
+terrain: 18, 36: 152, 0, false
+terrain: 18, 37: 152, 0, false
+terrain: 18, 38: 152, 0, false
+terrain: 18, 39: 152, 0, false
+terrain: 18, 40: 152, 0, false
+terrain: 18, 41: 152, 0, false
+terrain: 18, 42: 152, 0, false
+terrain: 18, 43: 152, 0, false
+terrain: 18, 44: 152, 0, false
+terrain: 18, 45: 152, 0, false
+terrain: 18, 46: 152, 0, false
+terrain: 18, 47: 152, 0, false
+terrain: 18, 48: 152, 0, false
+terrain: 18, 49: 152, 0, false
+terrain: 18, 50: 152, 0, false
+terrain: 18, 51: 152, 0, false
+terrain: 18, 52: 152, 0, false
+terrain: 18, 53: 152, 0, false
+terrain: 18, 54: 152, 0, false
+terrain: 18, 55: 152, 0, false
+terrain: 18, 56: 152, 0, false
+terrain: 18, 57: 152, 0, false
+terrain: 18, 58: 152, 0, false
+terrain: 18, 59: 152, 0, false
+terrain: 18, 60: 152, 0, false
+terrain: 18, 61: 152, 0, false
+terrain: 18, 62: 152, 0, false
+terrain: 18, 63: 152, 0, false
+terrain: 18, 64: 152, 0, false
+terrain: 18, 65: 152, 0, false
+terrain: 18, 66: 152, 0, false
+terrain: 18, 67: 163, 0, false
+terrain: 18, 68: 163, 0, false
+terrain: 18, 69: 133, 0, false
+terrain: 18, 70: 133, 0, false
+terrain: 18, 71: 163, 0, false
+terrain: 18, 72: 163, 0, false
+terrain: 18, 73: 163, 0, false
+terrain: 18, 74: 163, 0, false
+terrain: 18, 75: 132, 0, false
+terrain: 18, 76: 132, 0, false
+terrain: 18, 77: 133, 0, false
+terrain: 18, 78: 132, 0, false
+terrain: 18, 79: 132, 0, false
+terrain: 18, 80: 132, 0, false
+terrain: 18, 81: 132, 0, false
+terrain: 18, 82: 132, 0, false
+terrain: 18, 83: 152, 0, false
+terrain: 18, 84: 152, 0, false
+terrain: 18, 85: 152, 0, false
+terrain: 18, 86: 152, 0, false
+terrain: 18, 87: 152, 0, false
+terrain: 18, 88: 152, 0, false
+terrain: 18, 89: 152, 0, false
+terrain: 18, 90: 152, 0, false
+terrain: 18, 91: 152, 0, false
+terrain: 18, 92: 152, 0, false
+terrain: 18, 93: 161, 0, false
+terrain: 18, 94: 162, 0, false
+terrain: 18, 95: 207, 100, false
+terrain: 18, 96: 1, 100, false
+terrain: 18, 97: 1, 100, false
+terrain: 18, 98: 1, 100, false
+terrain: 18, 99: 1, 100, false
+terrain: 19, 0: 1, 100, false
+terrain: 19, 1: 1, 100, false
+terrain: 19, 2: 162, 0, false
+terrain: 19, 3: 162, 0, false
+terrain: 19, 4: 152, 0, false
+terrain: 19, 5: 152, 0, false
+terrain: 19, 6: 132, 0, false
+terrain: 19, 7: 132, 0, false
+terrain: 19, 8: 172, 0, false
+terrain: 19, 9: 172, 0, false
+terrain: 19, 10: 172, 0, false
+terrain: 19, 11: 172, 0, false
+terrain: 19, 12: 172, 0, false
+terrain: 19, 13: 132, 0, false
+terrain: 19, 14: 132, 0, false
+terrain: 19, 15: 132, 0, false
+terrain: 19, 16: 154, 0, false
+terrain: 19, 17: 152, 0, false
+terrain: 19, 18: 152, 0, false
+terrain: 19, 19: 152, 0, false
+terrain: 19, 20: 152, 0, false
+terrain: 19, 21: 153, 0, false
+terrain: 19, 22: 153, 0, false
+terrain: 19, 23: 152, 0, false
+terrain: 19, 24: 152, 0, false
+terrain: 19, 25: 152, 0, false
+terrain: 19, 26: 152, 0, false
+terrain: 19, 27: 152, 0, false
+terrain: 19, 28: 152, 0, false
+terrain: 19, 29: 152, 0, false
+terrain: 19, 30: 152, 0, false
+terrain: 19, 31: 152, 0, false
+terrain: 19, 32: 152, 0, false
+terrain: 19, 33: 152, 0, false
+terrain: 19, 34: 152, 0, false
+terrain: 19, 35: 152, 0, false
+terrain: 19, 36: 152, 0, false
+terrain: 19, 37: 152, 0, false
+terrain: 19, 38: 152, 0, false
+terrain: 19, 39: 152, 0, false
+terrain: 19, 40: 152, 0, false
+terrain: 19, 41: 152, 0, false
+terrain: 19, 42: 152, 0, false
+terrain: 19, 43: 152, 0, false
+terrain: 19, 44: 152, 0, false
+terrain: 19, 45: 152, 0, false
+terrain: 19, 46: 152, 0, false
+terrain: 19, 47: 152, 0, false
+terrain: 19, 48: 152, 0, false
+terrain: 19, 49: 152, 0, false
+terrain: 19, 50: 152, 0, false
+terrain: 19, 51: 152, 0, false
+terrain: 19, 52: 152, 0, false
+terrain: 19, 53: 152, 0, false
+terrain: 19, 54: 152, 0, false
+terrain: 19, 55: 152, 0, false
+terrain: 19, 56: 152, 0, false
+terrain: 19, 57: 152, 0, false
+terrain: 19, 58: 152, 0, false
+terrain: 19, 59: 152, 0, false
+terrain: 19, 60: 152, 0, false
+terrain: 19, 61: 152, 0, false
+terrain: 19, 62: 152, 0, false
+terrain: 19, 63: 152, 0, false
+terrain: 19, 64: 152, 0, false
+terrain: 19, 65: 152, 0, false
+terrain: 19, 66: 152, 0, false
+terrain: 19, 67: 163, 0, false
+terrain: 19, 68: 133, 0, false
+terrain: 19, 69: 133, 0, false
+terrain: 19, 70: 163, 0, false
+terrain: 19, 71: 163, 0, false
+terrain: 19, 72: 163, 0, false
+terrain: 19, 73: 162, 0, false
+terrain: 19, 74: 163, 0, false
+terrain: 19, 75: 132, 0, false
+terrain: 19, 76: 133, 0, false
+terrain: 19, 77: 133, 0, false
+terrain: 19, 78: 133, 0, false
+terrain: 19, 79: 133, 0, false
+terrain: 19, 80: 133, 0, false
+terrain: 19, 81: 132, 0, false
+terrain: 19, 82: 132, 0, false
+terrain: 19, 83: 152, 0, false
+terrain: 19, 84: 152, 0, false
+terrain: 19, 85: 152, 0, false
+terrain: 19, 86: 152, 0, false
+terrain: 19, 87: 152, 0, false
+terrain: 19, 88: 152, 0, false
+terrain: 19, 89: 152, 0, false
+terrain: 19, 90: 152, 0, false
+terrain: 19, 91: 152, 0, false
+terrain: 19, 92: 152, 0, false
+terrain: 19, 93: 161, 0, false
+terrain: 19, 94: 161, 0, false
+terrain: 19, 95: 203, 100, false
+terrain: 19, 96: 1, 100, false
+terrain: 19, 97: 1, 100, false
+terrain: 19, 98: 1, 100, false
+terrain: 19, 99: 1, 100, false
+terrain: 20, 0: 1, 100, false
+terrain: 20, 1: 1, 100, false
+terrain: 20, 2: 162, 0, false
+terrain: 20, 3: 162, 0, false
+terrain: 20, 4: 152, 0, false
+terrain: 20, 5: 152, 0, false
+terrain: 20, 6: 132, 0, false
+terrain: 20, 7: 132, 0, false
+terrain: 20, 8: 172, 0, false
+terrain: 20, 9: 172, 0, false
+terrain: 20, 10: 172, 0, false
+terrain: 20, 11: 172, 0, false
+terrain: 20, 12: 172, 0, false
+terrain: 20, 13: 132, 0, false
+terrain: 20, 14: 133, 0, false
+terrain: 20, 15: 133, 0, false
+terrain: 20, 16: 154, 0, false
+terrain: 20, 17: 154, 0, false
+terrain: 20, 18: 152, 0, false
+terrain: 20, 19: 152, 0, false
+terrain: 20, 20: 152, 0, false
+terrain: 20, 21: 152, 0, false
+terrain: 20, 22: 152, 0, false
+terrain: 20, 23: 152, 0, false
+terrain: 20, 24: 152, 0, false
+terrain: 20, 25: 152, 0, false
+terrain: 20, 26: 152, 0, false
+terrain: 20, 27: 152, 0, false
+terrain: 20, 28: 152, 0, false
+terrain: 20, 29: 152, 0, false
+terrain: 20, 30: 152, 0, false
+terrain: 20, 31: 152, 0, false
+terrain: 20, 32: 152, 0, false
+terrain: 20, 33: 152, 0, false
+terrain: 20, 34: 152, 0, false
+terrain: 20, 35: 152, 0, false
+terrain: 20, 36: 152, 0, false
+terrain: 20, 37: 152, 0, false
+terrain: 20, 38: 152, 0, false
+terrain: 20, 39: 152, 0, false
+terrain: 20, 40: 152, 0, false
+terrain: 20, 41: 152, 0, false
+terrain: 20, 42: 152, 0, false
+terrain: 20, 43: 152, 0, false
+terrain: 20, 44: 152, 0, false
+terrain: 20, 45: 152, 0, false
+terrain: 20, 46: 152, 0, false
+terrain: 20, 47: 152, 0, false
+terrain: 20, 48: 152, 0, false
+terrain: 20, 49: 152, 0, false
+terrain: 20, 50: 152, 0, false
+terrain: 20, 51: 152, 0, false
+terrain: 20, 52: 152, 0, false
+terrain: 20, 53: 152, 0, false
+terrain: 20, 54: 152, 0, false
+terrain: 20, 55: 152, 0, false
+terrain: 20, 56: 152, 0, false
+terrain: 20, 57: 152, 0, false
+terrain: 20, 58: 152, 0, false
+terrain: 20, 59: 152, 0, false
+terrain: 20, 60: 152, 0, false
+terrain: 20, 61: 152, 0, false
+terrain: 20, 62: 152, 0, false
+terrain: 20, 63: 152, 0, false
+terrain: 20, 64: 152, 0, false
+terrain: 20, 65: 152, 0, false
+terrain: 20, 66: 152, 0, false
+terrain: 20, 67: 132, 0, false
+terrain: 20, 68: 133, 0, false
+terrain: 20, 69: 133, 0, false
+terrain: 20, 70: 132, 0, false
+terrain: 20, 71: 162, 0, false
+terrain: 20, 72: 162, 0, false
+terrain: 20, 73: 163, 0, false
+terrain: 20, 74: 163, 0, false
+terrain: 20, 75: 132, 0, false
+terrain: 20, 76: 133, 0, false
+terrain: 20, 77: 133, 0, false
+terrain: 20, 78: 133, 0, false
+terrain: 20, 79: 132, 0, false
+terrain: 20, 80: 132, 0, false
+terrain: 20, 81: 132, 0, false
+terrain: 20, 82: 133, 0, false
+terrain: 20, 83: 152, 0, false
+terrain: 20, 84: 152, 0, false
+terrain: 20, 85: 152, 0, false
+terrain: 20, 86: 152, 0, false
+terrain: 20, 87: 152, 0, false
+terrain: 20, 88: 152, 0, false
+terrain: 20, 89: 152, 0, false
+terrain: 20, 90: 152, 0, false
+terrain: 20, 91: 152, 0, false
+terrain: 20, 92: 154, 0, false
+terrain: 20, 93: 161, 0, false
+terrain: 20, 94: 1, 100, false
+terrain: 20, 95: 1, 100, false
+terrain: 20, 96: 1, 100, false
+terrain: 20, 97: 1, 100, false
+terrain: 20, 98: 1, 100, false
+terrain: 20, 99: 1, 100, false
+terrain: 21, 0: 1, 100, false
+terrain: 21, 1: 1, 100, false
+terrain: 21, 2: 162, 0, false
+terrain: 21, 3: 152, 0, false
+terrain: 21, 4: 152, 0, false
+terrain: 21, 5: 132, 0, false
+terrain: 21, 6: 132, 0, false
+terrain: 21, 7: 132, 0, false
+terrain: 21, 8: 172, 0, false
+terrain: 21, 9: 172, 0, false
+terrain: 21, 10: 172, 0, false
+terrain: 21, 11: 172, 0, false
+terrain: 21, 12: 172, 0, false
+terrain: 21, 13: 132, 0, false
+terrain: 21, 14: 132, 0, false
+terrain: 21, 15: 132, 0, false
+terrain: 21, 16: 132, 0, false
+terrain: 21, 17: 154, 0, false
+terrain: 21, 18: 154, 0, false
+terrain: 21, 19: 152, 0, false
+terrain: 21, 20: 152, 0, false
+terrain: 21, 21: 152, 0, false
+terrain: 21, 22: 152, 0, false
+terrain: 21, 23: 152, 0, false
+terrain: 21, 24: 152, 0, false
+terrain: 21, 25: 152, 0, false
+terrain: 21, 26: 152, 0, false
+terrain: 21, 27: 152, 0, false
+terrain: 21, 28: 152, 0, false
+terrain: 21, 29: 152, 0, false
+terrain: 21, 30: 152, 0, false
+terrain: 21, 31: 152, 0, false
+terrain: 21, 32: 152, 0, false
+terrain: 21, 33: 152, 0, false
+terrain: 21, 34: 152, 0, false
+terrain: 21, 35: 152, 0, false
+terrain: 21, 36: 152, 0, false
+terrain: 21, 37: 152, 0, false
+terrain: 21, 38: 152, 0, false
+terrain: 21, 39: 152, 0, false
+terrain: 21, 40: 152, 0, false
+terrain: 21, 41: 152, 0, false
+terrain: 21, 42: 152, 0, false
+terrain: 21, 43: 152, 0, false
+terrain: 21, 44: 152, 0, false
+terrain: 21, 45: 152, 0, false
+terrain: 21, 46: 152, 0, false
+terrain: 21, 47: 152, 0, false
+terrain: 21, 48: 152, 0, false
+terrain: 21, 49: 152, 0, false
+terrain: 21, 50: 152, 0, false
+terrain: 21, 51: 152, 0, false
+terrain: 21, 52: 152, 0, false
+terrain: 21, 53: 152, 0, false
+terrain: 21, 54: 152, 0, false
+terrain: 21, 55: 152, 0, false
+terrain: 21, 56: 152, 0, false
+terrain: 21, 57: 152, 0, false
+terrain: 21, 58: 152, 0, false
+terrain: 21, 59: 152, 0, false
+terrain: 21, 60: 152, 0, false
+terrain: 21, 61: 152, 0, false
+terrain: 21, 62: 152, 0, false
+terrain: 21, 63: 152, 0, false
+terrain: 21, 64: 134, 0, false
+terrain: 21, 65: 133, 0, false
+terrain: 21, 66: 132, 0, false
+terrain: 21, 67: 132, 0, false
+terrain: 21, 68: 132, 0, false
+terrain: 21, 69: 133, 0, false
+terrain: 21, 70: 132, 0, false
+terrain: 21, 71: 132, 0, false
+terrain: 21, 72: 162, 0, false
+terrain: 21, 73: 163, 0, false
+terrain: 21, 74: 163, 0, false
+terrain: 21, 75: 132, 0, false
+terrain: 21, 76: 133, 0, false
+terrain: 21, 77: 133, 0, false
+terrain: 21, 78: 133, 0, false
+terrain: 21, 79: 133, 0, false
+terrain: 21, 80: 132, 0, false
+terrain: 21, 81: 133, 0, false
+terrain: 21, 82: 133, 0, false
+terrain: 21, 83: 152, 0, false
+terrain: 21, 84: 152, 0, false
+terrain: 21, 85: 152, 0, false
+terrain: 21, 86: 152, 0, false
+terrain: 21, 87: 152, 0, false
+terrain: 21, 88: 152, 0, false
+terrain: 21, 89: 152, 0, false
+terrain: 21, 90: 152, 0, false
+terrain: 21, 91: 154, 0, false
+terrain: 21, 92: 161, 0, false
+terrain: 21, 93: 1, 100, false
+terrain: 21, 94: 1, 100, false
+terrain: 21, 95: 1, 100, false
+terrain: 21, 96: 1, 100, false
+terrain: 21, 97: 1, 100, false
+terrain: 21, 98: 1, 100, false
+terrain: 21, 99: 1, 100, false
+terrain: 22, 0: 132, 0, false
+terrain: 22, 1: 132, 0, false
+terrain: 22, 2: 132, 0, false
+terrain: 22, 3: 132, 0, false
+terrain: 22, 4: 132, 0, false
+terrain: 22, 5: 132, 0, false
+terrain: 22, 6: 132, 0, false
+terrain: 22, 7: 132, 0, false
+terrain: 22, 8: 172, 0, false
+terrain: 22, 9: 172, 0, false
+terrain: 22, 10: 172, 0, false
+terrain: 22, 11: 172, 0, false
+terrain: 22, 12: 172, 0, false
+terrain: 22, 13: 133, 0, false
+terrain: 22, 14: 132, 0, false
+terrain: 22, 15: 132, 0, false
+terrain: 22, 16: 132, 0, false
+terrain: 22, 17: 132, 0, false
+terrain: 22, 18: 132, 0, false
+terrain: 22, 19: 132, 0, false
+terrain: 22, 20: 132, 0, false
+terrain: 22, 21: 133, 0, false
+terrain: 22, 22: 133, 0, false
+terrain: 22, 23: 132, 0, false
+terrain: 22, 24: 132, 0, false
+terrain: 22, 25: 132, 0, false
+terrain: 22, 26: 132, 0, false
+terrain: 22, 27: 133, 0, false
+terrain: 22, 28: 133, 0, false
+terrain: 22, 29: 132, 0, false
+terrain: 22, 30: 133, 0, false
+terrain: 22, 31: 133, 0, false
+terrain: 22, 32: 132, 0, false
+terrain: 22, 33: 132, 0, false
+terrain: 22, 34: 132, 0, false
+terrain: 22, 35: 133, 0, false
+terrain: 22, 36: 132, 0, false
+terrain: 22, 37: 133, 0, false
+terrain: 22, 38: 133, 0, false
+terrain: 22, 39: 133, 0, false
+terrain: 22, 40: 133, 0, false
+terrain: 22, 41: 133, 0, false
+terrain: 22, 42: 133, 0, false
+terrain: 22, 43: 132, 0, false
+terrain: 22, 44: 132, 0, false
+terrain: 22, 45: 132, 0, false
+terrain: 22, 46: 132, 0, false
+terrain: 22, 47: 132, 0, false
+terrain: 22, 48: 132, 0, false
+terrain: 22, 49: 132, 0, false
+terrain: 22, 50: 132, 0, false
+terrain: 22, 51: 132, 0, false
+terrain: 22, 52: 132, 0, false
+terrain: 22, 53: 132, 0, false
+terrain: 22, 54: 133, 0, false
+terrain: 22, 55: 133, 0, false
+terrain: 22, 56: 132, 0, false
+terrain: 22, 57: 132, 0, false
+terrain: 22, 58: 132, 0, false
+terrain: 22, 59: 132, 0, false
+terrain: 22, 60: 132, 0, false
+terrain: 22, 61: 132, 0, false
+terrain: 22, 62: 132, 0, false
+terrain: 22, 63: 132, 0, false
+terrain: 22, 64: 132, 0, false
+terrain: 22, 65: 132, 0, false
+terrain: 22, 66: 133, 0, false
+terrain: 22, 67: 132, 0, false
+terrain: 22, 68: 133, 0, false
+terrain: 22, 69: 133, 0, false
+terrain: 22, 70: 132, 0, false
+terrain: 22, 71: 132, 0, false
+terrain: 22, 72: 132, 0, false
+terrain: 22, 73: 132, 0, false
+terrain: 22, 74: 132, 0, false
+terrain: 22, 75: 132, 0, false
+terrain: 22, 76: 133, 0, false
+terrain: 22, 77: 133, 0, false
+terrain: 22, 78: 133, 0, false
+terrain: 22, 79: 132, 0, false
+terrain: 22, 80: 132, 0, false
+terrain: 22, 81: 132, 0, false
+terrain: 22, 82: 133, 0, false
+terrain: 22, 83: 152, 0, false
+terrain: 22, 84: 152, 0, false
+terrain: 22, 85: 152, 0, false
+terrain: 22, 86: 152, 0, false
+terrain: 22, 87: 152, 0, false
+terrain: 22, 88: 152, 0, false
+terrain: 22, 89: 152, 0, false
+terrain: 22, 90: 154, 0, false
+terrain: 22, 91: 134, 0, false
+terrain: 22, 92: 1, 100, false
+terrain: 22, 93: 1, 100, false
+terrain: 22, 94: 1, 100, false
+terrain: 22, 95: 1, 100, false
+terrain: 22, 96: 1, 100, false
+terrain: 22, 97: 1, 100, false
+terrain: 22, 98: 1, 100, false
+terrain: 22, 99: 1, 100, false
+terrain: 23, 0: 132, 0, false
+terrain: 23, 1: 132, 0, false
+terrain: 23, 2: 132, 0, false
+terrain: 23, 3: 132, 0, false
+terrain: 23, 4: 132, 0, false
+terrain: 23, 5: 132, 0, false
+terrain: 23, 6: 132, 0, false
+terrain: 23, 7: 172, 0, false
+terrain: 23, 8: 172, 0, false
+terrain: 23, 9: 172, 0, false
+terrain: 23, 10: 172, 0, false
+terrain: 23, 11: 172, 0, false
+terrain: 23, 12: 172, 0, false
+terrain: 23, 13: 172, 0, false
+terrain: 23, 14: 133, 0, false
+terrain: 23, 15: 132, 0, false
+terrain: 23, 16: 132, 0, false
+terrain: 23, 17: 132, 0, false
+terrain: 23, 18: 133, 0, false
+terrain: 23, 19: 132, 0, false
+terrain: 23, 20: 132, 0, false
+terrain: 23, 21: 133, 0, false
+terrain: 23, 22: 133, 0, false
+terrain: 23, 23: 132, 0, false
+terrain: 23, 24: 132, 0, false
+terrain: 23, 25: 132, 0, false
+terrain: 23, 26: 132, 0, false
+terrain: 23, 27: 132, 0, false
+terrain: 23, 28: 132, 0, false
+terrain: 23, 29: 133, 0, false
+terrain: 23, 30: 133, 0, false
+terrain: 23, 31: 132, 0, false
+terrain: 23, 32: 132, 0, false
+terrain: 23, 33: 132, 0, false
+terrain: 23, 34: 132, 0, false
+terrain: 23, 35: 132, 0, false
+terrain: 23, 36: 132, 0, false
+terrain: 23, 37: 132, 0, false
+terrain: 23, 38: 132, 0, false
+terrain: 23, 39: 133, 0, false
+terrain: 23, 40: 133, 0, false
+terrain: 23, 41: 133, 0, false
+terrain: 23, 42: 133, 0, false
+terrain: 23, 43: 132, 0, false
+terrain: 23, 44: 132, 0, false
+terrain: 23, 45: 132, 0, false
+terrain: 23, 46: 132, 0, false
+terrain: 23, 47: 132, 0, false
+terrain: 23, 48: 132, 0, false
+terrain: 23, 49: 133, 0, false
+terrain: 23, 50: 133, 0, false
+terrain: 23, 51: 133, 0, false
+terrain: 23, 52: 133, 0, false
+terrain: 23, 53: 133, 0, false
+terrain: 23, 54: 132, 0, false
+terrain: 23, 55: 132, 0, false
+terrain: 23, 56: 132, 0, false
+terrain: 23, 57: 132, 0, false
+terrain: 23, 58: 132, 0, false
+terrain: 23, 59: 132, 0, false
+terrain: 23, 60: 132, 0, false
+terrain: 23, 61: 132, 0, false
+terrain: 23, 62: 132, 0, false
+terrain: 23, 63: 132, 0, false
+terrain: 23, 64: 133, 0, false
+terrain: 23, 65: 133, 0, false
+terrain: 23, 66: 133, 0, false
+terrain: 23, 67: 132, 0, false
+terrain: 23, 68: 132, 0, false
+terrain: 23, 69: 132, 0, false
+terrain: 23, 70: 132, 0, false
+terrain: 23, 71: 132, 0, false
+terrain: 23, 72: 132, 0, false
+terrain: 23, 73: 132, 0, false
+terrain: 23, 74: 132, 0, false
+terrain: 23, 75: 132, 0, false
+terrain: 23, 76: 132, 0, false
+terrain: 23, 77: 132, 0, false
+terrain: 23, 78: 132, 0, false
+terrain: 23, 79: 132, 0, false
+terrain: 23, 80: 132, 0, false
+terrain: 23, 81: 133, 0, false
+terrain: 23, 82: 133, 0, false
+terrain: 23, 83: 152, 0, false
+terrain: 23, 84: 152, 0, false
+terrain: 23, 85: 152, 0, false
+terrain: 23, 86: 152, 0, false
+terrain: 23, 87: 152, 0, false
+terrain: 23, 88: 152, 0, false
+terrain: 23, 89: 152, 0, false
+terrain: 23, 90: 134, 0, false
+terrain: 23, 91: 1, 100, false
+terrain: 23, 92: 1, 100, false
+terrain: 23, 93: 1, 100, false
+terrain: 23, 94: 1, 100, false
+terrain: 23, 95: 1, 100, false
+terrain: 23, 96: 1, 100, false
+terrain: 23, 97: 1, 100, false
+terrain: 23, 98: 1, 100, false
+terrain: 23, 99: 1, 100, false
+terrain: 24, 0: 1, 100, false
+terrain: 24, 1: 1, 100, false
+terrain: 24, 2: 174, 0, false
+terrain: 24, 3: 171, 0, false
+terrain: 24, 4: 171, 0, false
+terrain: 24, 5: 174, 0, false
+terrain: 24, 6: 171, 0, false
+terrain: 24, 7: 171, 0, false
+terrain: 24, 8: 172, 0, false
+terrain: 24, 9: 172, 0, false
+terrain: 24, 10: 172, 0, false
+terrain: 24, 11: 172, 0, false
+terrain: 24, 12: 172, 0, false
+terrain: 24, 13: 172, 0, false
+terrain: 24, 14: 172, 0, false
+terrain: 24, 15: 172, 0, false
+terrain: 24, 16: 172, 0, false
+terrain: 24, 17: 172, 0, false
+terrain: 24, 18: 172, 0, false
+terrain: 24, 19: 172, 0, false
+terrain: 24, 20: 172, 0, false
+terrain: 24, 21: 172, 0, false
+terrain: 24, 22: 172, 0, false
+terrain: 24, 23: 172, 0, false
+terrain: 24, 24: 172, 0, false
+terrain: 24, 25: 172, 0, false
+terrain: 24, 26: 172, 0, false
+terrain: 24, 27: 172, 0, false
+terrain: 24, 28: 172, 0, false
+terrain: 24, 29: 172, 0, false
+terrain: 24, 30: 172, 0, false
+terrain: 24, 31: 172, 0, false
+terrain: 24, 32: 172, 0, false
+terrain: 24, 33: 172, 0, false
+terrain: 24, 34: 172, 0, false
+terrain: 24, 35: 172, 0, false
+terrain: 24, 36: 172, 0, false
+terrain: 24, 37: 172, 0, false
+terrain: 24, 38: 172, 0, false
+terrain: 24, 39: 172, 0, false
+terrain: 24, 40: 172, 0, false
+terrain: 24, 41: 172, 0, false
+terrain: 24, 42: 172, 0, false
+terrain: 24, 43: 172, 0, false
+terrain: 24, 44: 172, 0, false
+terrain: 24, 45: 172, 0, false
+terrain: 24, 46: 172, 0, false
+terrain: 24, 47: 172, 0, false
+terrain: 24, 48: 172, 0, false
+terrain: 24, 49: 172, 0, false
+terrain: 24, 50: 172, 0, false
+terrain: 24, 51: 172, 0, false
+terrain: 24, 52: 172, 0, false
+terrain: 24, 53: 172, 0, false
+terrain: 24, 54: 172, 0, false
+terrain: 24, 55: 172, 0, false
+terrain: 24, 56: 172, 0, false
+terrain: 24, 57: 172, 0, false
+terrain: 24, 58: 172, 0, false
+terrain: 24, 59: 172, 0, false
+terrain: 24, 60: 172, 0, false
+terrain: 24, 61: 172, 0, false
+terrain: 24, 62: 172, 0, false
+terrain: 24, 63: 172, 0, false
+terrain: 24, 64: 172, 0, false
+terrain: 24, 65: 172, 0, false
+terrain: 24, 66: 172, 0, false
+terrain: 24, 67: 172, 0, false
+terrain: 24, 68: 172, 0, false
+terrain: 24, 69: 172, 0, false
+terrain: 24, 70: 172, 0, false
+terrain: 24, 71: 172, 0, false
+terrain: 24, 72: 172, 0, false
+terrain: 24, 73: 172, 0, false
+terrain: 24, 74: 172, 0, false
+terrain: 24, 75: 172, 0, false
+terrain: 24, 76: 172, 0, false
+terrain: 24, 77: 172, 0, false
+terrain: 24, 78: 172, 0, false
+terrain: 24, 79: 172, 0, false
+terrain: 24, 80: 172, 0, false
+terrain: 24, 81: 172, 0, false
+terrain: 24, 82: 172, 0, false
+terrain: 24, 83: 172, 0, false
+terrain: 24, 84: 172, 0, false
+terrain: 24, 85: 172, 0, false
+terrain: 24, 86: 162, 0, false
+terrain: 24, 87: 162, 0, false
+terrain: 24, 88: 162, 0, false
+terrain: 24, 89: 162, 0, false
+terrain: 24, 90: 134, 0, false
+terrain: 24, 91: 1, 100, false
+terrain: 24, 92: 1, 100, false
+terrain: 24, 93: 1, 100, false
+terrain: 24, 94: 1, 100, false
+terrain: 24, 95: 1, 100, false
+terrain: 24, 96: 1, 100, false
+terrain: 24, 97: 1, 100, false
+terrain: 24, 98: 1, 100, false
+terrain: 24, 99: 1, 100, false
+terrain: 25, 0: 1, 100, false
+terrain: 25, 1: 1, 100, false
+terrain: 25, 2: 171, 0, false
+terrain: 25, 3: 171, 0, false
+terrain: 25, 4: 171, 0, false
+terrain: 25, 5: 171, 0, false
+terrain: 25, 6: 171, 0, false
+terrain: 25, 7: 171, 0, false
+terrain: 25, 8: 171, 0, false
+terrain: 25, 9: 172, 0, false
+terrain: 25, 10: 172, 0, false
+terrain: 25, 11: 172, 0, false
+terrain: 25, 12: 172, 0, false
+terrain: 25, 13: 172, 0, false
+terrain: 25, 14: 172, 0, false
+terrain: 25, 15: 172, 0, false
+terrain: 25, 16: 172, 0, false
+terrain: 25, 17: 172, 0, false
+terrain: 25, 18: 172, 0, false
+terrain: 25, 19: 172, 0, false
+terrain: 25, 20: 172, 0, false
+terrain: 25, 21: 172, 0, false
+terrain: 25, 22: 172, 0, false
+terrain: 25, 23: 172, 0, false
+terrain: 25, 24: 172, 0, false
+terrain: 25, 25: 172, 0, false
+terrain: 25, 26: 172, 0, false
+terrain: 25, 27: 172, 0, false
+terrain: 25, 28: 172, 0, false
+terrain: 25, 29: 172, 0, false
+terrain: 25, 30: 172, 0, false
+terrain: 25, 31: 172, 0, false
+terrain: 25, 32: 172, 0, false
+terrain: 25, 33: 172, 0, false
+terrain: 25, 34: 172, 0, false
+terrain: 25, 35: 172, 0, false
+terrain: 25, 36: 172, 0, false
+terrain: 25, 37: 172, 0, false
+terrain: 25, 38: 172, 0, false
+terrain: 25, 39: 172, 0, false
+terrain: 25, 40: 172, 0, false
+terrain: 25, 41: 172, 0, false
+terrain: 25, 42: 172, 0, false
+terrain: 25, 43: 172, 0, false
+terrain: 25, 44: 172, 0, false
+terrain: 25, 45: 172, 0, false
+terrain: 25, 46: 172, 0, false
+terrain: 25, 47: 172, 0, false
+terrain: 25, 48: 172, 0, false
+terrain: 25, 49: 172, 0, false
+terrain: 25, 50: 172, 0, false
+terrain: 25, 51: 172, 0, false
+terrain: 25, 52: 172, 0, false
+terrain: 25, 53: 172, 0, false
+terrain: 25, 54: 172, 0, false
+terrain: 25, 55: 172, 0, false
+terrain: 25, 56: 172, 0, false
+terrain: 25, 57: 172, 0, false
+terrain: 25, 58: 172, 0, false
+terrain: 25, 59: 172, 0, false
+terrain: 25, 60: 172, 0, false
+terrain: 25, 61: 172, 0, false
+terrain: 25, 62: 172, 0, false
+terrain: 25, 63: 172, 0, false
+terrain: 25, 64: 172, 0, false
+terrain: 25, 65: 172, 0, false
+terrain: 25, 66: 172, 0, false
+terrain: 25, 67: 172, 0, false
+terrain: 25, 68: 172, 0, false
+terrain: 25, 69: 172, 0, false
+terrain: 25, 70: 172, 0, false
+terrain: 25, 71: 172, 0, false
+terrain: 25, 72: 172, 0, false
+terrain: 25, 73: 172, 0, false
+terrain: 25, 74: 172, 0, false
+terrain: 25, 75: 172, 0, false
+terrain: 25, 76: 172, 0, false
+terrain: 25, 77: 172, 0, false
+terrain: 25, 78: 172, 0, false
+terrain: 25, 79: 172, 0, false
+terrain: 25, 80: 172, 0, false
+terrain: 25, 81: 172, 0, false
+terrain: 25, 82: 172, 0, false
+terrain: 25, 83: 172, 0, false
+terrain: 25, 84: 172, 0, false
+terrain: 25, 85: 172, 0, false
+terrain: 25, 86: 172, 0, false
+terrain: 25, 87: 172, 0, false
+terrain: 25, 88: 134, 0, false
+terrain: 25, 89: 134, 0, false
+terrain: 25, 90: 1, 100, false
+terrain: 25, 91: 1, 100, false
+terrain: 25, 92: 1, 100, false
+terrain: 25, 93: 1, 100, false
+terrain: 25, 94: 1, 100, false
+terrain: 25, 95: 1, 100, false
+terrain: 25, 96: 1, 100, false
+terrain: 25, 97: 1, 100, false
+terrain: 25, 98: 1, 100, false
+terrain: 25, 99: 1, 100, false
+terrain: 26, 0: 1, 100, false
+terrain: 26, 1: 1, 100, false
+terrain: 26, 2: 171, 0, false
+terrain: 26, 3: 171, 0, false
+terrain: 26, 4: 171, 0, false
+terrain: 26, 5: 171, 0, false
+terrain: 26, 6: 171, 0, false
+terrain: 26, 7: 171, 0, false
+terrain: 26, 8: 171, 0, false
+terrain: 26, 9: 171, 0, false
+terrain: 26, 10: 171, 0, false
+terrain: 26, 11: 172, 0, false
+terrain: 26, 12: 172, 0, false
+terrain: 26, 13: 172, 0, false
+terrain: 26, 14: 172, 0, false
+terrain: 26, 15: 172, 0, false
+terrain: 26, 16: 172, 0, false
+terrain: 26, 17: 172, 0, false
+terrain: 26, 18: 172, 0, false
+terrain: 26, 19: 172, 0, false
+terrain: 26, 20: 172, 0, false
+terrain: 26, 21: 172, 0, false
+terrain: 26, 22: 172, 0, false
+terrain: 26, 23: 172, 0, false
+terrain: 26, 24: 172, 0, false
+terrain: 26, 25: 172, 0, false
+terrain: 26, 26: 172, 0, false
+terrain: 26, 27: 172, 0, false
+terrain: 26, 28: 172, 0, false
+terrain: 26, 29: 172, 0, false
+terrain: 26, 30: 172, 0, false
+terrain: 26, 31: 172, 0, false
+terrain: 26, 32: 172, 0, false
+terrain: 26, 33: 172, 0, false
+terrain: 26, 34: 172, 0, false
+terrain: 26, 35: 172, 0, false
+terrain: 26, 36: 172, 0, false
+terrain: 26, 37: 172, 0, false
+terrain: 26, 38: 172, 0, false
+terrain: 26, 39: 172, 0, false
+terrain: 26, 40: 172, 0, false
+terrain: 26, 41: 172, 0, false
+terrain: 26, 42: 172, 0, false
+terrain: 26, 43: 172, 0, false
+terrain: 26, 44: 172, 0, false
+terrain: 26, 45: 172, 0, false
+terrain: 26, 46: 172, 0, false
+terrain: 26, 47: 172, 0, false
+terrain: 26, 48: 172, 0, false
+terrain: 26, 49: 172, 0, false
+terrain: 26, 50: 172, 0, false
+terrain: 26, 51: 172, 0, false
+terrain: 26, 52: 172, 0, false
+terrain: 26, 53: 172, 0, false
+terrain: 26, 54: 172, 0, false
+terrain: 26, 55: 172, 0, false
+terrain: 26, 56: 172, 0, false
+terrain: 26, 57: 172, 0, false
+terrain: 26, 58: 172, 0, false
+terrain: 26, 59: 172, 0, false
+terrain: 26, 60: 172, 0, false
+terrain: 26, 61: 172, 0, false
+terrain: 26, 62: 172, 0, false
+terrain: 26, 63: 172, 0, false
+terrain: 26, 64: 172, 0, false
+terrain: 26, 65: 172, 0, false
+terrain: 26, 66: 172, 0, false
+terrain: 26, 67: 172, 0, false
+terrain: 26, 68: 172, 0, false
+terrain: 26, 69: 172, 0, false
+terrain: 26, 70: 172, 0, false
+terrain: 26, 71: 172, 0, false
+terrain: 26, 72: 172, 0, false
+terrain: 26, 73: 172, 0, false
+terrain: 26, 74: 172, 0, false
+terrain: 26, 75: 172, 0, false
+terrain: 26, 76: 172, 0, false
+terrain: 26, 77: 172, 0, false
+terrain: 26, 78: 172, 0, false
+terrain: 26, 79: 172, 0, false
+terrain: 26, 80: 172, 0, false
+terrain: 26, 81: 172, 0, false
+terrain: 26, 82: 172, 0, false
+terrain: 26, 83: 172, 0, false
+terrain: 26, 84: 172, 0, false
+terrain: 26, 85: 172, 0, false
+terrain: 26, 86: 172, 0, false
+terrain: 26, 87: 172, 0, false
+terrain: 26, 88: 172, 0, false
+terrain: 26, 89: 1, 100, false
+terrain: 26, 90: 1, 100, false
+terrain: 26, 91: 1, 100, false
+terrain: 26, 92: 1, 100, false
+terrain: 26, 93: 1, 100, false
+terrain: 26, 94: 1, 100, false
+terrain: 26, 95: 1, 100, false
+terrain: 26, 96: 1, 100, false
+terrain: 26, 97: 1, 100, false
+terrain: 26, 98: 1, 100, false
+terrain: 26, 99: 1, 100, false
+terrain: 27, 0: 1, 100, false
+terrain: 27, 1: 1, 100, false
+terrain: 27, 2: 171, 0, false
+terrain: 27, 3: 171, 0, false
+terrain: 27, 4: 171, 0, false
+terrain: 27, 5: 171, 0, false
+terrain: 27, 6: 171, 0, false
+terrain: 27, 7: 171, 0, false
+terrain: 27, 8: 171, 0, false
+terrain: 27, 9: 171, 0, false
+terrain: 27, 10: 171, 0, false
+terrain: 27, 11: 172, 0, false
+terrain: 27, 12: 172, 0, false
+terrain: 27, 13: 172, 0, false
+terrain: 27, 14: 172, 0, false
+terrain: 27, 15: 172, 0, false
+terrain: 27, 16: 172, 0, false
+terrain: 27, 17: 172, 0, false
+terrain: 27, 18: 172, 0, false
+terrain: 27, 19: 172, 0, false
+terrain: 27, 20: 172, 0, false
+terrain: 27, 21: 172, 0, false
+terrain: 27, 22: 172, 0, false
+terrain: 27, 23: 172, 0, false
+terrain: 27, 24: 172, 0, false
+terrain: 27, 25: 172, 0, false
+terrain: 27, 26: 172, 0, false
+terrain: 27, 27: 172, 0, false
+terrain: 27, 28: 172, 0, false
+terrain: 27, 29: 172, 0, false
+terrain: 27, 30: 172, 0, false
+terrain: 27, 31: 172, 0, false
+terrain: 27, 32: 172, 0, false
+terrain: 27, 33: 172, 0, false
+terrain: 27, 34: 172, 0, false
+terrain: 27, 35: 172, 0, false
+terrain: 27, 36: 172, 0, false
+terrain: 27, 37: 172, 0, false
+terrain: 27, 38: 172, 0, false
+terrain: 27, 39: 172, 0, false
+terrain: 27, 40: 172, 0, false
+terrain: 27, 41: 172, 0, false
+terrain: 27, 42: 172, 0, false
+terrain: 27, 43: 172, 0, false
+terrain: 27, 44: 172, 0, false
+terrain: 27, 45: 172, 0, false
+terrain: 27, 46: 172, 0, false
+terrain: 27, 47: 172, 0, false
+terrain: 27, 48: 172, 0, false
+terrain: 27, 49: 172, 0, false
+terrain: 27, 50: 172, 0, false
+terrain: 27, 51: 172, 0, false
+terrain: 27, 52: 172, 0, false
+terrain: 27, 53: 172, 0, false
+terrain: 27, 54: 172, 0, false
+terrain: 27, 55: 172, 0, false
+terrain: 27, 56: 172, 0, false
+terrain: 27, 57: 172, 0, false
+terrain: 27, 58: 172, 0, false
+terrain: 27, 59: 172, 0, false
+terrain: 27, 60: 172, 0, false
+terrain: 27, 61: 172, 0, false
+terrain: 27, 62: 172, 0, false
+terrain: 27, 63: 172, 0, false
+terrain: 27, 64: 172, 0, false
+terrain: 27, 65: 172, 0, false
+terrain: 27, 66: 172, 0, false
+terrain: 27, 67: 172, 0, false
+terrain: 27, 68: 172, 0, false
+terrain: 27, 69: 172, 0, false
+terrain: 27, 70: 172, 0, false
+terrain: 27, 71: 172, 0, false
+terrain: 27, 72: 172, 0, false
+terrain: 27, 73: 172, 0, false
+terrain: 27, 74: 172, 0, false
+terrain: 27, 75: 172, 0, false
+terrain: 27, 76: 172, 0, false
+terrain: 27, 77: 172, 0, false
+terrain: 27, 78: 172, 0, false
+terrain: 27, 79: 172, 0, false
+terrain: 27, 80: 172, 0, false
+terrain: 27, 81: 172, 0, false
+terrain: 27, 82: 172, 0, false
+terrain: 27, 83: 172, 0, false
+terrain: 27, 84: 172, 0, false
+terrain: 27, 85: 172, 0, false
+terrain: 27, 86: 172, 0, false
+terrain: 27, 87: 172, 0, false
+terrain: 27, 88: 172, 0, false
+terrain: 27, 89: 1, 100, false
+terrain: 27, 90: 1, 100, false
+terrain: 27, 91: 1, 100, false
+terrain: 27, 92: 1, 100, false
+terrain: 27, 93: 1, 100, false
+terrain: 27, 94: 1, 100, false
+terrain: 27, 95: 1, 100, false
+terrain: 27, 96: 1, 100, false
+terrain: 27, 97: 1, 100, false
+terrain: 27, 98: 1, 100, false
+terrain: 27, 99: 1, 100, false
+terrain: 28, 0: 1, 100, false
+terrain: 28, 1: 1, 100, false
+terrain: 28, 2: 171, 0, false
+terrain: 28, 3: 171, 0, false
+terrain: 28, 4: 171, 0, false
+terrain: 28, 5: 171, 0, false
+terrain: 28, 6: 171, 0, false
+terrain: 28, 7: 171, 0, false
+terrain: 28, 8: 171, 0, false
+terrain: 28, 9: 171, 0, false
+terrain: 28, 10: 172, 0, false
+terrain: 28, 11: 172, 0, false
+terrain: 28, 12: 172, 0, false
+terrain: 28, 13: 172, 0, false
+terrain: 28, 14: 172, 0, false
+terrain: 28, 15: 172, 0, false
+terrain: 28, 16: 172, 0, false
+terrain: 28, 17: 172, 0, false
+terrain: 28, 18: 172, 0, false
+terrain: 28, 19: 172, 0, false
+terrain: 28, 20: 172, 0, false
+terrain: 28, 21: 172, 0, false
+terrain: 28, 22: 172, 0, false
+terrain: 28, 23: 172, 0, false
+terrain: 28, 24: 172, 0, false
+terrain: 28, 25: 172, 0, false
+terrain: 28, 26: 172, 0, false
+terrain: 28, 27: 172, 0, false
+terrain: 28, 28: 172, 0, false
+terrain: 28, 29: 172, 0, false
+terrain: 28, 30: 172, 0, false
+terrain: 28, 31: 172, 0, false
+terrain: 28, 32: 172, 0, false
+terrain: 28, 33: 172, 0, false
+terrain: 28, 34: 172, 0, false
+terrain: 28, 35: 172, 0, false
+terrain: 28, 36: 172, 0, false
+terrain: 28, 37: 172, 0, false
+terrain: 28, 38: 172, 0, false
+terrain: 28, 39: 172, 0, false
+terrain: 28, 40: 172, 0, false
+terrain: 28, 41: 172, 0, false
+terrain: 28, 42: 172, 0, false
+terrain: 28, 43: 172, 0, false
+terrain: 28, 44: 172, 0, false
+terrain: 28, 45: 172, 0, false
+terrain: 28, 46: 172, 0, false
+terrain: 28, 47: 172, 0, false
+terrain: 28, 48: 172, 0, false
+terrain: 28, 49: 172, 0, false
+terrain: 28, 50: 172, 0, false
+terrain: 28, 51: 172, 0, false
+terrain: 28, 52: 172, 0, false
+terrain: 28, 53: 172, 0, false
+terrain: 28, 54: 172, 0, false
+terrain: 28, 55: 172, 0, false
+terrain: 28, 56: 172, 0, false
+terrain: 28, 57: 172, 0, false
+terrain: 28, 58: 172, 0, false
+terrain: 28, 59: 172, 0, false
+terrain: 28, 60: 172, 0, false
+terrain: 28, 61: 172, 0, false
+terrain: 28, 62: 172, 0, false
+terrain: 28, 63: 172, 0, false
+terrain: 28, 64: 172, 0, false
+terrain: 28, 65: 172, 0, false
+terrain: 28, 66: 172, 0, false
+terrain: 28, 67: 172, 0, false
+terrain: 28, 68: 172, 0, false
+terrain: 28, 69: 172, 0, false
+terrain: 28, 70: 172, 0, false
+terrain: 28, 71: 172, 0, false
+terrain: 28, 72: 172, 0, false
+terrain: 28, 73: 172, 0, false
+terrain: 28, 74: 172, 0, false
+terrain: 28, 75: 172, 0, false
+terrain: 28, 76: 172, 0, false
+terrain: 28, 77: 172, 0, false
+terrain: 28, 78: 172, 0, false
+terrain: 28, 79: 172, 0, false
+terrain: 28, 80: 172, 0, false
+terrain: 28, 81: 172, 0, false
+terrain: 28, 82: 172, 0, false
+terrain: 28, 83: 172, 0, false
+terrain: 28, 84: 172, 0, false
+terrain: 28, 85: 172, 0, false
+terrain: 28, 86: 172, 0, false
+terrain: 28, 87: 172, 0, false
+terrain: 28, 88: 1, 100, false
+terrain: 28, 89: 1, 100, false
+terrain: 28, 90: 1, 100, false
+terrain: 28, 91: 1, 100, false
+terrain: 28, 92: 1, 100, false
+terrain: 28, 93: 1, 100, false
+terrain: 28, 94: 1, 100, false
+terrain: 28, 95: 1, 100, false
+terrain: 28, 96: 1, 100, false
+terrain: 28, 97: 1, 100, false
+terrain: 28, 98: 1, 100, false
+terrain: 28, 99: 1, 100, false
+terrain: 29, 0: 1, 100, false
+terrain: 29, 1: 1, 100, false
+terrain: 29, 2: 171, 0, false
+terrain: 29, 3: 174, 0, false
+terrain: 29, 4: 171, 0, false
+terrain: 29, 5: 174, 0, false
+terrain: 29, 6: 171, 0, false
+terrain: 29, 7: 174, 0, false
+terrain: 29, 8: 171, 0, false
+terrain: 29, 9: 174, 0, false
+terrain: 29, 10: 171, 0, false
+terrain: 29, 11: 174, 0, false
+terrain: 29, 12: 171, 0, false
+terrain: 29, 13: 174, 0, false
+terrain: 29, 14: 171, 0, false
+terrain: 29, 15: 174, 0, false
+terrain: 29, 16: 171, 0, false
+terrain: 29, 17: 174, 0, false
+terrain: 29, 18: 171, 0, false
+terrain: 29, 19: 174, 0, false
+terrain: 29, 20: 171, 0, false
+terrain: 29, 21: 174, 0, false
+terrain: 29, 22: 171, 0, false
+terrain: 29, 23: 174, 0, false
+terrain: 29, 24: 171, 0, false
+terrain: 29, 25: 174, 0, false
+terrain: 29, 26: 171, 0, false
+terrain: 29, 27: 174, 0, false
+terrain: 29, 28: 171, 0, false
+terrain: 29, 29: 174, 0, false
+terrain: 29, 30: 171, 0, false
+terrain: 29, 31: 174, 0, false
+terrain: 29, 32: 171, 0, false
+terrain: 29, 33: 174, 0, false
+terrain: 29, 34: 171, 0, false
+terrain: 29, 35: 174, 0, false
+terrain: 29, 36: 171, 0, false
+terrain: 29, 37: 174, 0, false
+terrain: 29, 38: 171, 0, false
+terrain: 29, 39: 174, 0, false
+terrain: 29, 40: 171, 0, false
+terrain: 29, 41: 174, 0, false
+terrain: 29, 42: 171, 0, false
+terrain: 29, 43: 174, 0, false
+terrain: 29, 44: 171, 0, false
+terrain: 29, 45: 174, 0, false
+terrain: 29, 46: 171, 0, false
+terrain: 29, 47: 174, 0, false
+terrain: 29, 48: 171, 0, false
+terrain: 29, 49: 174, 0, false
+terrain: 29, 50: 171, 0, false
+terrain: 29, 51: 174, 0, false
+terrain: 29, 52: 171, 0, false
+terrain: 29, 53: 174, 0, false
+terrain: 29, 54: 171, 0, false
+terrain: 29, 55: 174, 0, false
+terrain: 29, 56: 171, 0, false
+terrain: 29, 57: 174, 0, false
+terrain: 29, 58: 171, 0, false
+terrain: 29, 59: 174, 0, false
+terrain: 29, 60: 171, 0, false
+terrain: 29, 61: 174, 0, false
+terrain: 29, 62: 171, 0, false
+terrain: 29, 63: 174, 0, false
+terrain: 29, 64: 171, 0, false
+terrain: 29, 65: 174, 0, false
+terrain: 29, 66: 171, 0, false
+terrain: 29, 67: 174, 0, false
+terrain: 29, 68: 171, 0, false
+terrain: 29, 69: 174, 0, false
+terrain: 29, 70: 171, 0, false
+terrain: 29, 71: 174, 0, false
+terrain: 29, 72: 171, 0, false
+terrain: 29, 73: 174, 0, false
+terrain: 29, 74: 133, 0, false
+terrain: 29, 75: 133, 0, false
+terrain: 29, 76: 133, 0, false
+terrain: 29, 77: 133, 0, false
+terrain: 29, 78: 133, 0, false
+terrain: 29, 79: 133, 0, false
+terrain: 29, 80: 133, 0, false
+terrain: 29, 81: 133, 0, false
+terrain: 29, 82: 133, 0, false
+terrain: 29, 83: 132, 0, false
+terrain: 29, 84: 132, 0, false
+terrain: 29, 85: 132, 0, false
+terrain: 29, 86: 132, 0, false
+terrain: 29, 87: 1, 100, false
+terrain: 29, 88: 1, 100, false
+terrain: 29, 89: 1, 100, false
+terrain: 29, 90: 1, 100, false
+terrain: 29, 91: 1, 100, false
+terrain: 29, 92: 1, 100, false
+terrain: 29, 93: 1, 100, false
+terrain: 29, 94: 1, 100, false
+terrain: 29, 95: 1, 100, false
+terrain: 29, 96: 1, 100, false
+terrain: 29, 97: 1, 100, false
+terrain: 29, 98: 1, 100, false
+terrain: 29, 99: 1, 100, false
+terrain: 30, 0: 1, 100, false
+terrain: 30, 1: 1, 100, false
+terrain: 30, 2: 171, 0, false
+terrain: 30, 3: 174, 0, false
+terrain: 30, 4: 171, 0, false
+terrain: 30, 5: 174, 0, false
+terrain: 30, 6: 171, 0, false
+terrain: 30, 7: 174, 0, false
+terrain: 30, 8: 171, 0, false
+terrain: 30, 9: 174, 0, false
+terrain: 30, 10: 171, 0, false
+terrain: 30, 11: 174, 0, false
+terrain: 30, 12: 171, 0, false
+terrain: 30, 13: 174, 0, false
+terrain: 30, 14: 171, 0, false
+terrain: 30, 15: 174, 0, false
+terrain: 30, 16: 171, 0, false
+terrain: 30, 17: 174, 0, false
+terrain: 30, 18: 171, 0, false
+terrain: 30, 19: 174, 0, false
+terrain: 30, 20: 171, 0, false
+terrain: 30, 21: 174, 0, false
+terrain: 30, 22: 171, 0, false
+terrain: 30, 23: 174, 0, false
+terrain: 30, 24: 171, 0, false
+terrain: 30, 25: 174, 0, false
+terrain: 30, 26: 171, 0, false
+terrain: 30, 27: 174, 0, false
+terrain: 30, 28: 171, 0, false
+terrain: 30, 29: 174, 0, false
+terrain: 30, 30: 171, 0, false
+terrain: 30, 31: 174, 0, false
+terrain: 30, 32: 171, 0, false
+terrain: 30, 33: 174, 0, false
+terrain: 30, 34: 171, 0, false
+terrain: 30, 35: 174, 0, false
+terrain: 30, 36: 171, 0, false
+terrain: 30, 37: 174, 0, false
+terrain: 30, 38: 171, 0, false
+terrain: 30, 39: 174, 0, false
+terrain: 30, 40: 171, 0, false
+terrain: 30, 41: 174, 0, false
+terrain: 30, 42: 171, 0, false
+terrain: 30, 43: 174, 0, false
+terrain: 30, 44: 171, 0, false
+terrain: 30, 45: 174, 0, false
+terrain: 30, 46: 171, 0, false
+terrain: 30, 47: 174, 0, false
+terrain: 30, 48: 171, 0, false
+terrain: 30, 49: 174, 0, false
+terrain: 30, 50: 171, 0, false
+terrain: 30, 51: 174, 0, false
+terrain: 30, 52: 171, 0, false
+terrain: 30, 53: 174, 0, false
+terrain: 30, 54: 171, 0, false
+terrain: 30, 55: 174, 0, false
+terrain: 30, 56: 171, 0, false
+terrain: 30, 57: 174, 0, false
+terrain: 30, 58: 171, 0, false
+terrain: 30, 59: 174, 0, false
+terrain: 30, 60: 171, 0, false
+terrain: 30, 61: 174, 0, false
+terrain: 30, 62: 171, 0, false
+terrain: 30, 63: 174, 0, false
+terrain: 30, 64: 171, 0, false
+terrain: 30, 65: 174, 0, false
+terrain: 30, 66: 171, 0, false
+terrain: 30, 67: 174, 0, false
+terrain: 30, 68: 171, 0, false
+terrain: 30, 69: 174, 0, false
+terrain: 30, 70: 171, 0, false
+terrain: 30, 71: 174, 0, false
+terrain: 30, 72: 171, 0, false
+terrain: 30, 73: 174, 0, false
+terrain: 30, 74: 133, 0, false
+terrain: 30, 75: 133, 0, false
+terrain: 30, 76: 133, 0, false
+terrain: 30, 77: 133, 0, false
+terrain: 30, 78: 133, 0, false
+terrain: 30, 79: 132, 0, false
+terrain: 30, 80: 132, 0, false
+terrain: 30, 81: 132, 0, false
+terrain: 30, 82: 133, 0, false
+terrain: 30, 83: 132, 0, false
+terrain: 30, 84: 132, 0, false
+terrain: 30, 85: 132, 0, false
+terrain: 30, 86: 1, 100, false
+terrain: 30, 87: 1, 100, false
+terrain: 30, 88: 1, 100, false
+terrain: 30, 89: 1, 100, false
+terrain: 30, 90: 1, 100, false
+terrain: 30, 91: 1, 100, false
+terrain: 30, 92: 1, 100, false
+terrain: 30, 93: 1, 100, false
+terrain: 30, 94: 1, 100, false
+terrain: 30, 95: 1, 100, false
+terrain: 30, 96: 1, 100, false
+terrain: 30, 97: 1, 100, false
+terrain: 30, 98: 1, 100, false
+terrain: 30, 99: 1, 100, false
+terrain: 31, 0: 1, 100, false
+terrain: 31, 1: 1, 100, false
+terrain: 31, 2: 171, 0, false
+terrain: 31, 3: 174, 0, false
+terrain: 31, 4: 171, 0, false
+terrain: 31, 5: 174, 0, false
+terrain: 31, 6: 171, 0, false
+terrain: 31, 7: 174, 0, false
+terrain: 31, 8: 171, 0, false
+terrain: 31, 9: 174, 0, false
+terrain: 31, 10: 171, 0, false
+terrain: 31, 11: 174, 0, false
+terrain: 31, 12: 171, 0, false
+terrain: 31, 13: 174, 0, false
+terrain: 31, 14: 171, 0, false
+terrain: 31, 15: 174, 0, false
+terrain: 31, 16: 171, 0, false
+terrain: 31, 17: 174, 0, false
+terrain: 31, 18: 171, 0, false
+terrain: 31, 19: 174, 0, false
+terrain: 31, 20: 171, 0, false
+terrain: 31, 21: 174, 0, false
+terrain: 31, 22: 171, 0, false
+terrain: 31, 23: 174, 0, false
+terrain: 31, 24: 171, 0, false
+terrain: 31, 25: 174, 0, false
+terrain: 31, 26: 171, 0, false
+terrain: 31, 27: 174, 0, false
+terrain: 31, 28: 171, 0, false
+terrain: 31, 29: 174, 0, false
+terrain: 31, 30: 171, 0, false
+terrain: 31, 31: 174, 0, false
+terrain: 31, 32: 171, 0, false
+terrain: 31, 33: 174, 0, false
+terrain: 31, 34: 171, 0, false
+terrain: 31, 35: 174, 0, false
+terrain: 31, 36: 171, 0, false
+terrain: 31, 37: 174, 0, false
+terrain: 31, 38: 171, 0, false
+terrain: 31, 39: 174, 0, false
+terrain: 31, 40: 171, 0, false
+terrain: 31, 41: 174, 0, false
+terrain: 31, 42: 171, 0, false
+terrain: 31, 43: 174, 0, false
+terrain: 31, 44: 171, 0, false
+terrain: 31, 45: 174, 0, false
+terrain: 31, 46: 171, 0, false
+terrain: 31, 47: 174, 0, false
+terrain: 31, 48: 171, 0, false
+terrain: 31, 49: 174, 0, false
+terrain: 31, 50: 171, 0, false
+terrain: 31, 51: 174, 0, false
+terrain: 31, 52: 171, 0, false
+terrain: 31, 53: 174, 0, false
+terrain: 31, 54: 171, 0, false
+terrain: 31, 55: 174, 0, false
+terrain: 31, 56: 171, 0, false
+terrain: 31, 57: 174, 0, false
+terrain: 31, 58: 171, 0, false
+terrain: 31, 59: 174, 0, false
+terrain: 31, 60: 171, 0, false
+terrain: 31, 61: 174, 0, false
+terrain: 31, 62: 171, 0, false
+terrain: 31, 63: 174, 0, false
+terrain: 31, 64: 171, 0, false
+terrain: 31, 65: 174, 0, false
+terrain: 31, 66: 171, 0, false
+terrain: 31, 67: 174, 0, false
+terrain: 31, 68: 171, 0, false
+terrain: 31, 69: 174, 0, false
+terrain: 31, 70: 171, 0, false
+terrain: 31, 71: 174, 0, false
+terrain: 31, 72: 171, 0, false
+terrain: 31, 73: 174, 0, false
+terrain: 31, 74: 133, 0, false
+terrain: 31, 75: 134, 0, false
+terrain: 31, 76: 134, 0, false
+terrain: 31, 77: 152, 0, false
+terrain: 31, 78: 152, 0, false
+terrain: 31, 79: 152, 0, false
+terrain: 31, 80: 151, 0, false
+terrain: 31, 81: 152, 0, false
+terrain: 31, 82: 152, 0, false
+terrain: 31, 83: 162, 0, false
+terrain: 31, 84: 134, 0, false
+terrain: 31, 85: 134, 0, false
+terrain: 31, 86: 1, 100, false
+terrain: 31, 87: 1, 100, false
+terrain: 31, 88: 1, 100, false
+terrain: 31, 89: 1, 100, false
+terrain: 31, 90: 1, 100, false
+terrain: 31, 91: 1, 100, false
+terrain: 31, 92: 1, 100, false
+terrain: 31, 93: 1, 100, false
+terrain: 31, 94: 1, 100, false
+terrain: 31, 95: 1, 100, false
+terrain: 31, 96: 1, 100, false
+terrain: 31, 97: 1, 100, false
+terrain: 31, 98: 1, 100, false
+terrain: 31, 99: 1, 100, false
+terrain: 32, 0: 1, 100, false
+terrain: 32, 1: 1, 100, false
+terrain: 32, 2: 152, 0, false
+terrain: 32, 3: 152, 0, false
+terrain: 32, 4: 152, 0, false
+terrain: 32, 5: 152, 0, false
+terrain: 32, 6: 152, 0, false
+terrain: 32, 7: 152, 0, false
+terrain: 32, 8: 152, 0, false
+terrain: 32, 9: 152, 0, false
+terrain: 32, 10: 152, 0, false
+terrain: 32, 11: 152, 0, false
+terrain: 32, 12: 152, 0, false
+terrain: 32, 13: 152, 0, false
+terrain: 32, 14: 152, 0, false
+terrain: 32, 15: 152, 0, false
+terrain: 32, 16: 152, 0, false
+terrain: 32, 17: 152, 0, false
+terrain: 32, 18: 152, 0, false
+terrain: 32, 19: 152, 0, false
+terrain: 32, 20: 152, 0, false
+terrain: 32, 21: 152, 0, false
+terrain: 32, 22: 152, 0, false
+terrain: 32, 23: 152, 0, false
+terrain: 32, 24: 152, 0, false
+terrain: 32, 25: 152, 0, false
+terrain: 32, 26: 152, 0, false
+terrain: 32, 27: 152, 0, false
+terrain: 32, 28: 152, 0, false
+terrain: 32, 29: 152, 0, false
+terrain: 32, 30: 152, 0, false
+terrain: 32, 31: 152, 0, false
+terrain: 32, 32: 152, 0, false
+terrain: 32, 33: 152, 0, false
+terrain: 32, 34: 152, 0, false
+terrain: 32, 35: 152, 0, false
+terrain: 32, 36: 152, 0, false
+terrain: 32, 37: 152, 0, false
+terrain: 32, 38: 152, 0, false
+terrain: 32, 39: 152, 0, false
+terrain: 32, 40: 152, 0, false
+terrain: 32, 41: 152, 0, false
+terrain: 32, 42: 152, 0, false
+terrain: 32, 43: 152, 0, false
+terrain: 32, 44: 152, 0, false
+terrain: 32, 45: 152, 0, false
+terrain: 32, 46: 152, 0, false
+terrain: 32, 47: 152, 0, false
+terrain: 32, 48: 152, 0, false
+terrain: 32, 49: 152, 0, false
+terrain: 32, 50: 152, 0, false
+terrain: 32, 51: 152, 0, false
+terrain: 32, 52: 152, 0, false
+terrain: 32, 53: 152, 0, false
+terrain: 32, 54: 152, 0, false
+terrain: 32, 55: 152, 0, false
+terrain: 32, 56: 152, 0, false
+terrain: 32, 57: 152, 0, false
+terrain: 32, 58: 152, 0, false
+terrain: 32, 59: 152, 0, false
+terrain: 32, 60: 152, 0, false
+terrain: 32, 61: 152, 0, false
+terrain: 32, 62: 151, 0, false
+terrain: 32, 63: 151, 0, false
+terrain: 32, 64: 151, 0, false
+terrain: 32, 65: 161, 0, false
+terrain: 32, 66: 152, 0, false
+terrain: 32, 67: 152, 0, false
+terrain: 32, 68: 151, 0, false
+terrain: 32, 69: 151, 0, false
+terrain: 32, 70: 152, 0, false
+terrain: 32, 71: 152, 0, false
+terrain: 32, 72: 152, 0, false
+terrain: 32, 73: 152, 0, false
+terrain: 32, 74: 152, 0, false
+terrain: 32, 75: 152, 0, false
+terrain: 32, 76: 152, 0, false
+terrain: 32, 77: 152, 0, false
+terrain: 32, 78: 151, 0, false
+terrain: 32, 79: 151, 0, false
+terrain: 32, 80: 151, 0, false
+terrain: 32, 81: 152, 0, false
+terrain: 32, 82: 152, 0, false
+terrain: 32, 83: 154, 0, false
+terrain: 32, 84: 154, 0, false
+terrain: 32, 85: 1, 100, false
+terrain: 32, 86: 1, 100, false
+terrain: 32, 87: 1, 100, false
+terrain: 32, 88: 1, 100, false
+terrain: 32, 89: 1, 100, false
+terrain: 32, 90: 1, 100, false
+terrain: 32, 91: 1, 100, false
+terrain: 32, 92: 1, 100, false
+terrain: 32, 93: 1, 100, false
+terrain: 32, 94: 1, 100, false
+terrain: 32, 95: 1, 100, false
+terrain: 32, 96: 1, 100, false
+terrain: 32, 97: 1, 100, false
+terrain: 32, 98: 1, 100, false
+terrain: 32, 99: 1, 100, false
+terrain: 33, 0: 1, 100, false
+terrain: 33, 1: 1, 100, false
+terrain: 33, 2: 152, 0, false
+terrain: 33, 3: 152, 0, false
+terrain: 33, 4: 152, 0, false
+terrain: 33, 5: 152, 0, false
+terrain: 33, 6: 152, 0, false
+terrain: 33, 7: 152, 0, false
+terrain: 33, 8: 152, 0, false
+terrain: 33, 9: 152, 0, false
+terrain: 33, 10: 152, 0, false
+terrain: 33, 11: 152, 0, false
+terrain: 33, 12: 152, 0, false
+terrain: 33, 13: 152, 0, false
+terrain: 33, 14: 152, 0, false
+terrain: 33, 15: 152, 0, false
+terrain: 33, 16: 152, 0, false
+terrain: 33, 17: 152, 0, false
+terrain: 33, 18: 152, 0, false
+terrain: 33, 19: 152, 0, false
+terrain: 33, 20: 152, 0, false
+terrain: 33, 21: 152, 0, false
+terrain: 33, 22: 152, 0, false
+terrain: 33, 23: 152, 0, false
+terrain: 33, 24: 152, 0, false
+terrain: 33, 25: 152, 0, false
+terrain: 33, 26: 152, 0, false
+terrain: 33, 27: 152, 0, false
+terrain: 33, 28: 152, 0, false
+terrain: 33, 29: 152, 0, false
+terrain: 33, 30: 152, 0, false
+terrain: 33, 31: 152, 0, false
+terrain: 33, 32: 152, 0, false
+terrain: 33, 33: 152, 0, false
+terrain: 33, 34: 152, 0, false
+terrain: 33, 35: 152, 0, false
+terrain: 33, 36: 152, 0, false
+terrain: 33, 37: 152, 0, false
+terrain: 33, 38: 152, 0, false
+terrain: 33, 39: 152, 0, false
+terrain: 33, 40: 152, 0, false
+terrain: 33, 41: 152, 0, false
+terrain: 33, 42: 152, 0, false
+terrain: 33, 43: 152, 0, false
+terrain: 33, 44: 152, 0, false
+terrain: 33, 45: 152, 0, false
+terrain: 33, 46: 152, 0, false
+terrain: 33, 47: 152, 0, false
+terrain: 33, 48: 152, 0, false
+terrain: 33, 49: 152, 0, false
+terrain: 33, 50: 152, 0, false
+terrain: 33, 51: 152, 0, false
+terrain: 33, 52: 152, 0, false
+terrain: 33, 53: 152, 0, false
+terrain: 33, 54: 152, 0, false
+terrain: 33, 55: 152, 0, false
+terrain: 33, 56: 152, 0, false
+terrain: 33, 57: 152, 0, false
+terrain: 33, 58: 152, 0, false
+terrain: 33, 59: 152, 0, false
+terrain: 33, 60: 152, 0, false
+terrain: 33, 61: 152, 0, false
+terrain: 33, 62: 151, 0, false
+terrain: 33, 63: 151, 0, false
+terrain: 33, 64: 161, 0, false
+terrain: 33, 65: 152, 0, false
+terrain: 33, 66: 154, 0, false
+terrain: 33, 67: 162, 0, false
+terrain: 33, 68: 151, 0, false
+terrain: 33, 69: 161, 0, false
+terrain: 33, 70: 151, 0, false
+terrain: 33, 71: 152, 0, false
+terrain: 33, 72: 152, 0, false
+terrain: 33, 73: 152, 0, false
+terrain: 33, 74: 152, 0, false
+terrain: 33, 75: 152, 0, false
+terrain: 33, 76: 152, 0, false
+terrain: 33, 77: 152, 0, false
+terrain: 33, 78: 151, 0, false
+terrain: 33, 79: 154, 0, false
+terrain: 33, 80: 161, 0, false
+terrain: 33, 81: 152, 0, false
+terrain: 33, 82: 152, 0, false
+terrain: 33, 83: 154, 0, false
+terrain: 33, 84: 162, 0, false
+terrain: 33, 85: 1, 100, false
+terrain: 33, 86: 1, 100, false
+terrain: 33, 87: 1, 100, false
+terrain: 33, 88: 1, 100, false
+terrain: 33, 89: 1, 100, false
+terrain: 33, 90: 1, 100, false
+terrain: 33, 91: 1, 100, false
+terrain: 33, 92: 1, 100, false
+terrain: 33, 93: 1, 100, false
+terrain: 33, 94: 1, 100, false
+terrain: 33, 95: 1, 100, false
+terrain: 33, 96: 1, 100, false
+terrain: 33, 97: 1, 100, false
+terrain: 33, 98: 1, 100, false
+terrain: 33, 99: 1, 100, false
+terrain: 34, 0: 1, 100, false
+terrain: 34, 1: 1, 100, false
+terrain: 34, 2: 152, 0, false
+terrain: 34, 3: 152, 0, false
+terrain: 34, 4: 152, 0, false
+terrain: 34, 5: 152, 0, false
+terrain: 34, 6: 152, 0, false
+terrain: 34, 7: 152, 0, false
+terrain: 34, 8: 152, 0, false
+terrain: 34, 9: 152, 0, false
+terrain: 34, 10: 152, 0, false
+terrain: 34, 11: 152, 0, false
+terrain: 34, 12: 152, 0, false
+terrain: 34, 13: 152, 0, false
+terrain: 34, 14: 152, 0, false
+terrain: 34, 15: 152, 0, false
+terrain: 34, 16: 152, 0, false
+terrain: 34, 17: 152, 0, false
+terrain: 34, 18: 152, 0, false
+terrain: 34, 19: 152, 0, false
+terrain: 34, 20: 152, 0, false
+terrain: 34, 21: 152, 0, false
+terrain: 34, 22: 152, 0, false
+terrain: 34, 23: 152, 0, false
+terrain: 34, 24: 152, 0, false
+terrain: 34, 25: 152, 0, false
+terrain: 34, 26: 152, 0, false
+terrain: 34, 27: 152, 0, false
+terrain: 34, 28: 152, 0, false
+terrain: 34, 29: 152, 0, false
+terrain: 34, 30: 152, 0, false
+terrain: 34, 31: 152, 0, false
+terrain: 34, 32: 152, 0, false
+terrain: 34, 33: 152, 0, false
+terrain: 34, 34: 152, 0, false
+terrain: 34, 35: 152, 0, false
+terrain: 34, 36: 152, 0, false
+terrain: 34, 37: 152, 0, false
+terrain: 34, 38: 152, 0, false
+terrain: 34, 39: 152, 0, false
+terrain: 34, 40: 152, 0, false
+terrain: 34, 41: 152, 0, false
+terrain: 34, 42: 152, 0, false
+terrain: 34, 43: 152, 0, false
+terrain: 34, 44: 152, 0, false
+terrain: 34, 45: 152, 0, false
+terrain: 34, 46: 152, 0, false
+terrain: 34, 47: 152, 0, false
+terrain: 34, 48: 152, 0, false
+terrain: 34, 49: 152, 0, false
+terrain: 34, 50: 152, 0, false
+terrain: 34, 51: 152, 0, false
+terrain: 34, 52: 152, 0, false
+terrain: 34, 53: 152, 0, false
+terrain: 34, 54: 152, 0, false
+terrain: 34, 55: 152, 0, false
+terrain: 34, 56: 152, 0, false
+terrain: 34, 57: 152, 0, false
+terrain: 34, 58: 152, 0, false
+terrain: 34, 59: 152, 0, false
+terrain: 34, 60: 152, 0, false
+terrain: 34, 61: 152, 0, false
+terrain: 34, 62: 154, 0, false
+terrain: 34, 63: 161, 0, false
+terrain: 34, 64: 161, 0, false
+terrain: 34, 65: 154, 0, false
+terrain: 34, 66: 154, 0, false
+terrain: 34, 67: 162, 0, false
+terrain: 34, 68: 162, 0, false
+terrain: 34, 69: 162, 0, false
+terrain: 34, 70: 161, 0, false
+terrain: 34, 71: 161, 0, false
+terrain: 34, 72: 154, 0, false
+terrain: 34, 73: 152, 0, false
+terrain: 34, 74: 152, 0, false
+terrain: 34, 75: 152, 0, false
+terrain: 34, 76: 152, 0, false
+terrain: 34, 77: 152, 0, false
+terrain: 34, 78: 152, 0, false
+terrain: 34, 79: 161, 0, false
+terrain: 34, 80: 161, 0, false
+terrain: 34, 81: 152, 0, false
+terrain: 34, 82: 152, 0, false
+terrain: 34, 83: 152, 0, false
+terrain: 34, 84: 1, 100, false
+terrain: 34, 85: 1, 100, false
+terrain: 34, 86: 1, 100, false
+terrain: 34, 87: 1, 100, false
+terrain: 34, 88: 1, 100, false
+terrain: 34, 89: 1, 100, false
+terrain: 34, 90: 1, 100, false
+terrain: 34, 91: 1, 100, false
+terrain: 34, 92: 1, 100, false
+terrain: 34, 93: 1, 100, false
+terrain: 34, 94: 1, 100, false
+terrain: 34, 95: 1, 100, false
+terrain: 34, 96: 1, 100, false
+terrain: 34, 97: 1, 100, false
+terrain: 34, 98: 1, 100, false
+terrain: 34, 99: 1, 100, false
+nextFeatureKey: 1
+
+new: Feature: 444
+location: 9.0, 92.0, 0
+curr_height: 0
+remove: false
+number: 12
+toggle: true
+end: Feature
+
+nextFeatureKey: 2
+
+new: Feature: 444
+location: 6.0, 92.0, 0
+curr_height: 0
+remove: false
+number: 12
+toggle: true
+end: Feature
+
+nextFeatureKey: 3
+
+new: Feature: 444
+location: 3.0, 92.0, 0
+curr_height: 0
+remove: false
+number: 12
+toggle: true
+end: Feature
+
+nextFeatureKey: 4
+
+new: Feature: 401
+location: 15.0, 90.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 5
+
+new: Feature: 401
+location: 6.0, 86.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 6
+
+new: Feature: 401
+location: 13.0, 86.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 7
+
+new: Feature: 401
+location: 19.0, 86.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 8
+
+new: Feature: 401
+location: 18.0, 89.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 9
+
+new: Feature: 441
+location: 12.0, 95.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 10
+
+new: Feature: 441
+location: 12.0, 94.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 11
+
+new: Feature: 441
+location: 13.0, 94.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 12
+
+new: Feature: 441
+location: 14.0, 94.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 13
+
+new: Feature: 441
+location: 15.0, 94.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 14
+
+new: Feature: 181
+location: 10.0, 95.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 15
+
+new: Feature: 411
+location: 11.0, 95.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 16
+
+new: Feature: 411
+location: 5.0, 95.0, 0
+curr_height: 0
+remove: false
+number: 4
+toggle: false
+end: Feature
+
+nextFeatureKey: 17
+
+new: Feature: 412
+location: 2.0, 99.0, 0
+curr_height: 0
+remove: false
+number: 2
+toggle: false
+end: Feature
+
+nextFeatureKey: 18
+
+new: Feature: 411
+location: 1.0, 99.0, 0
+curr_height: 0
+remove: false
+number: 4
+toggle: false
+end: Feature
+
+nextFeatureKey: 20
+
+new: Feature: 411
+location: 3.0, 99.0, 0
+curr_height: 0
+remove: false
+number: 1
+toggle: false
+end: Feature
+
+nextFeatureKey: 21
+
+new: Feature: 411
+location: 24.0, 90.0, 0
+curr_height: 0
+remove: false
+number: 1
+toggle: false
+end: Feature
+
+nextFeatureKey: 22
+
+new: Feature: 411
+location: 22.0, 91.0, 0
+curr_height: 0
+remove: false
+number: 2
+toggle: false
+end: Feature
+
+nextFeatureKey: 23
+
+new: Feature: 364
+location: 13.0, 96.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 24
+
+new: Feature: 442
+location: 3.0, 70.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 25
+
+new: Feature: 442
+location: 3.0, 71.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 26
+
+new: Feature: 442
+location: 3.0, 72.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 27
+
+new: Feature: 442
+location: 3.0, 73.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 28
+
+new: Feature: 442
+location: 3.0, 74.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 29
+
+new: Feature: 442
+location: 3.0, 75.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 30
+
+new: Feature: 442
+location: 3.0, 76.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 32
+
+new: Feature: 442
+location: 3.0, 77.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 33
+
+new: Feature: 442
+location: 3.0, 78.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 34
+
+new: Feature: 442
+location: 3.0, 79.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 35
+
+new: Feature: 442
+location: 5.0, 76.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 36
+
+new: Feature: 442
+location: 5.0, 77.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 37
+
+new: Feature: 442
+location: 5.0, 78.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 38
+
+new: Feature: 442
+location: 6.0, 78.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 39
+
+new: Feature: 442
+location: 6.0, 77.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 40
+
+new: Feature: 442
+location: 6.0, 76.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 41
+
+new: Feature: 442
+location: 7.0, 76.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 42
+
+new: Feature: 442
+location: 7.0, 77.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 43
+
+new: Feature: 442
+location: 7.0, 78.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 44
+
+new: Feature: 442
+location: 8.0, 78.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 45
+
+new: Feature: 442
+location: 8.0, 77.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 46
+
+new: Feature: 442
+location: 8.0, 76.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 47
+
+new: Feature: 442
+location: 9.0, 76.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 48
+
+new: Feature: 442
+location: 9.0, 77.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 49
+
+new: Feature: 442
+location: 9.0, 78.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 50
+
+new: Feature: 441
+location: 14.0, 75.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 51
+
+new: Feature: 441
+location: 14.0, 76.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 52
+
+new: Feature: 441
+location: 13.0, 76.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 53
+
+new: Feature: 441
+location: 15.0, 76.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 54
+
+new: Feature: 441
+location: 13.0, 77.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 55
+
+new: Feature: 441
+location: 14.0, 77.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 56
+
+new: Feature: 441
+location: 15.0, 77.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 57
+
+new: Feature: 441
+location: 16.0, 77.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 58
+
+new: Feature: 441
+location: 16.0, 78.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 59
+
+new: Feature: 441
+location: 16.0, 79.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 60
+
+new: Feature: 441
+location: 15.0, 78.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 61
+
+new: Feature: 441
+location: 17.0, 72.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 62
+
+new: Feature: 441
+location: 18.0, 72.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 63
+
+new: Feature: 441
+location: 18.0, 71.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 64
+
+new: Feature: 441
+location: 19.0, 72.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 65
+
+new: Feature: 441
+location: 17.0, 73.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 66
+
+new: Feature: 441
+location: 19.0, 73.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 67
+
+new: Feature: 441
+location: 20.0, 73.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 68
+
+new: Feature: 441
+location: 18.0, 74.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 69
+
+new: Feature: 441
+location: 19.0, 74.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 70
+
+new: Feature: 441
+location: 20.0, 74.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 71
+
+new: Feature: 441
+location: 21.0, 74.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 72
+
+new: Feature: 220
+location: 34.0, 72.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 73
+
+new: Feature: 211
+location: 34.0, 71.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 74
+
+new: Feature: 211
+location: 34.0, 70.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 75
+
+new: Feature: 211
+location: 34.0, 69.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 76
+
+new: Feature: 211
+location: 34.0, 68.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 77
+
+new: Feature: 211
+location: 34.0, 67.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 78
+
+new: Feature: 211
+location: 34.0, 66.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 79
+
+new: Feature: 211
+location: 34.0, 65.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 80
+
+new: Feature: 211
+location: 34.0, 64.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 81
+
+new: Feature: 211
+location: 34.0, 63.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 82
+
+new: Feature: 211
+location: 34.0, 62.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 83
+
+new: Feature: 401
+location: 32.0, 72.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 84
+
+new: Feature: 401
+location: 34.0, 81.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 85
+
+new: Feature: 323
+location: 6.0, 70.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 86
+
+new: Feature: 323
+location: 7.0, 71.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 87
+
+new: Feature: 323
+location: 13.0, 65.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 88
+
+new: Feature: 323
+location: 13.0, 64.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 89
+
+new: Feature: 323
+location: 13.0, 63.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 90
+
+new: Feature: 323
+location: 13.0, 62.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 91
+
+new: Feature: 323
+location: 13.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 92
+
+new: Feature: 323
+location: 13.0, 59.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 93
+
+new: Feature: 323
+location: 13.0, 58.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 94
+
+new: Feature: 323
+location: 13.0, 57.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 95
+
+new: Feature: 323
+location: 13.0, 52.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 96
+
+new: Feature: 323
+location: 13.0, 53.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 97
+
+new: Feature: 323
+location: 13.0, 54.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 98
+
+new: Feature: 323
+location: 13.0, 55.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 99
+
+new: Feature: 323
+location: 13.0, 50.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 100
+
+new: Feature: 323
+location: 13.0, 49.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 101
+
+new: Feature: 323
+location: 13.0, 48.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 102
+
+new: Feature: 323
+location: 13.0, 47.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 103
+
+new: Feature: 323
+location: 13.0, 45.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 104
+
+new: Feature: 323
+location: 13.0, 44.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 105
+
+new: Feature: 323
+location: 13.0, 43.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 107
+
+new: Feature: 323
+location: 13.0, 42.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 108
+
+new: Feature: 366
+location: 12.0, 71.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 109
+
+new: Feature: 366
+location: 13.0, 70.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 110
+
+new: Feature: 323
+location: 13.0, 27.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 111
+
+new: Feature: 323
+location: 13.0, 28.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 112
+
+new: Feature: 323
+location: 13.0, 29.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 113
+
+new: Feature: 323
+location: 13.0, 30.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 114
+
+new: Feature: 323
+location: 13.0, 32.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 115
+
+new: Feature: 323
+location: 13.0, 33.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 116
+
+new: Feature: 323
+location: 13.0, 35.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 117
+
+new: Feature: 323
+location: 13.0, 34.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 118
+
+new: Feature: 323
+location: 13.0, 37.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 119
+
+new: Feature: 323
+location: 13.0, 38.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 120
+
+new: Feature: 323
+location: 13.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 121
+
+new: Feature: 323
+location: 13.0, 40.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 122
+
+new: Feature: 443
+location: 14.0, 26.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 123
+
+new: Feature: 443
+location: 14.0, 28.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 124
+
+new: Feature: 443
+location: 14.0, 30.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 125
+
+new: Feature: 443
+location: 14.0, 32.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 126
+
+new: Feature: 443
+location: 14.0, 34.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 127
+
+new: Feature: 443
+location: 14.0, 36.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 128
+
+new: Feature: 443
+location: 14.0, 38.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 129
+
+new: Feature: 443
+location: 14.0, 40.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 130
+
+new: Feature: 443
+location: 14.0, 42.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 131
+
+new: Feature: 443
+location: 14.0, 44.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 132
+
+new: Feature: 443
+location: 14.0, 46.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 133
+
+new: Feature: 443
+location: 14.0, 48.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 134
+
+new: Feature: 443
+location: 14.0, 50.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 135
+
+new: Feature: 443
+location: 14.0, 52.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 136
+
+new: Feature: 443
+location: 14.0, 54.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 137
+
+new: Feature: 443
+location: 14.0, 56.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 138
+
+new: Feature: 443
+location: 14.0, 58.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 139
+
+new: Feature: 443
+location: 14.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 140
+
+new: Feature: 443
+location: 14.0, 62.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 141
+
+new: Feature: 443
+location: 14.0, 64.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 142
+
+new: Feature: 443
+location: 15.0, 66.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 143
+
+new: Feature: 443
+location: 14.0, 67.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 144
+
+new: Feature: 443
+location: 16.0, 67.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 145
+
+new: Feature: 443
+location: 15.0, 68.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 146
+
+new: Feature: 443
+location: 17.0, 68.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 147
+
+new: Feature: 442
+location: 16.0, 69.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 148
+
+new: Feature: 442
+location: 17.0, 69.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 149
+
+new: Feature: 442
+location: 18.0, 68.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 150
+
+new: Feature: 442
+location: 18.0, 67.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 151
+
+new: Feature: 442
+location: 17.0, 67.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 152
+
+new: Feature: 442
+location: 16.0, 68.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 153
+
+new: Feature: 442
+location: 15.0, 67.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 154
+
+new: Feature: 442
+location: 14.0, 65.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 155
+
+new: Feature: 442
+location: 14.0, 63.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 156
+
+new: Feature: 442
+location: 14.0, 61.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 157
+
+new: Feature: 442
+location: 14.0, 59.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 158
+
+new: Feature: 442
+location: 14.0, 57.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 159
+
+new: Feature: 442
+location: 14.0, 55.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 160
+
+new: Feature: 442
+location: 14.0, 53.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 161
+
+new: Feature: 442
+location: 14.0, 51.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 162
+
+new: Feature: 442
+location: 14.0, 49.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 163
+
+new: Feature: 442
+location: 14.0, 47.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 164
+
+new: Feature: 442
+location: 14.0, 45.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 165
+
+new: Feature: 442
+location: 14.0, 43.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 166
+
+new: Feature: 442
+location: 14.0, 41.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 167
+
+new: Feature: 442
+location: 14.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 168
+
+new: Feature: 442
+location: 14.0, 37.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 169
+
+new: Feature: 442
+location: 14.0, 27.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 170
+
+new: Feature: 442
+location: 14.0, 29.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 171
+
+new: Feature: 442
+location: 14.0, 31.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 172
+
+new: Feature: 442
+location: 14.0, 33.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 173
+
+new: Feature: 442
+location: 14.0, 35.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 174
+
+new: Feature: 211
+location: 34.0, 61.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 175
+
+new: Feature: 211
+location: 34.0, 60.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 176
+
+new: Feature: 211
+location: 34.0, 59.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 177
+
+new: Feature: 211
+location: 34.0, 45.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 178
+
+new: Feature: 211
+location: 34.0, 46.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 179
+
+new: Feature: 211
+location: 34.0, 47.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 180
+
+new: Feature: 211
+location: 34.0, 48.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 181
+
+new: Feature: 211
+location: 34.0, 49.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 182
+
+new: Feature: 211
+location: 34.0, 50.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 183
+
+new: Feature: 211
+location: 34.0, 51.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 184
+
+new: Feature: 211
+location: 34.0, 52.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 185
+
+new: Feature: 211
+location: 34.0, 53.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 186
+
+new: Feature: 211
+location: 34.0, 54.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 187
+
+new: Feature: 211
+location: 34.0, 55.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 188
+
+new: Feature: 211
+location: 34.0, 56.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 189
+
+new: Feature: 211
+location: 34.0, 57.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 190
+
+new: Feature: 211
+location: 34.0, 58.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 191
+
+new: Feature: 211
+location: 34.0, 25.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 192
+
+new: Feature: 211
+location: 34.0, 26.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 193
+
+new: Feature: 211
+location: 34.0, 27.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 194
+
+new: Feature: 211
+location: 34.0, 28.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 195
+
+new: Feature: 211
+location: 34.0, 29.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 196
+
+new: Feature: 211
+location: 34.0, 30.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 197
+
+new: Feature: 211
+location: 34.0, 31.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 198
+
+new: Feature: 211
+location: 34.0, 32.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 199
+
+new: Feature: 211
+location: 34.0, 33.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 200
+
+new: Feature: 211
+location: 34.0, 34.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 201
+
+new: Feature: 211
+location: 34.0, 35.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 202
+
+new: Feature: 211
+location: 34.0, 36.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 203
+
+new: Feature: 211
+location: 34.0, 37.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 204
+
+new: Feature: 211
+location: 34.0, 38.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 205
+
+new: Feature: 211
+location: 34.0, 39.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 206
+
+new: Feature: 211
+location: 34.0, 40.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 207
+
+new: Feature: 211
+location: 34.0, 41.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 208
+
+new: Feature: 211
+location: 34.0, 42.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 209
+
+new: Feature: 211
+location: 34.0, 43.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 210
+
+new: Feature: 211
+location: 34.0, 44.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 211
+
+new: Feature: 446
+location: 17.0, 63.0, 0
+curr_height: 0
+remove: false
+number: 12
+toggle: true
+end: Feature
+
+nextFeatureKey: 212
+
+new: Feature: 446
+location: 17.0, 58.0, 0
+curr_height: 0
+remove: false
+number: 12
+toggle: true
+end: Feature
+
+nextFeatureKey: 213
+
+new: Feature: 446
+location: 16.0, 53.0, 0
+curr_height: 0
+remove: false
+number: 12
+toggle: true
+end: Feature
+
+nextFeatureKey: 214
+
+new: Feature: 446
+location: 17.0, 47.0, 0
+curr_height: 0
+remove: false
+number: 12
+toggle: true
+end: Feature
+
+nextFeatureKey: 215
+
+new: Feature: 446
+location: 17.0, 40.0, 0
+curr_height: 0
+remove: false
+number: 12
+toggle: true
+end: Feature
+
+nextFeatureKey: 216
+
+new: Feature: 446
+location: 17.0, 33.0, 0
+curr_height: 0
+remove: false
+number: 12
+toggle: true
+end: Feature
+
+nextFeatureKey: 217
+
+new: Feature: 446
+location: 18.0, 26.0, 0
+curr_height: 0
+remove: false
+number: 12
+toggle: true
+end: Feature
+
+nextFeatureKey: 218
+
+new: Feature: 423
+location: 18.0, 36.0, 0
+curr_height: 0
+remove: false
+number: 8
+toggle: true
+end: Feature
+
+nextFeatureKey: 219
+
+new: Feature: 423
+location: 16.0, 47.0, 0
+curr_height: 0
+remove: false
+number: 8
+toggle: true
+end: Feature
+
+nextFeatureKey: 220
+
+new: Feature: 444
+location: 17.0, 21.0, 0
+curr_height: 0
+remove: false
+number: 12
+toggle: true
+end: Feature
+
+nextFeatureKey: 221
+
+new: Feature: 444
+location: 13.0, 17.0, 0
+curr_height: 0
+remove: false
+number: 12
+toggle: true
+end: Feature
+
+nextFeatureKey: 222
+
+new: Feature: 441
+location: 20.0, 16.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 223
+
+new: Feature: 441
+location: 10.0, 21.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 224
+
+new: Feature: 441
+location: 9.0, 20.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 227
+
+new: Feature: 444
+location: 10.0, 23.0, 0
+curr_height: 0
+remove: false
+number: 12
+toggle: true
+end: Feature
+
+nextFeatureKey: 228
+
+new: Feature: 443
+location: 13.0, 25.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 229
+
+new: Feature: 443
+location: 13.0, 23.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 230
+
+new: Feature: 443
+location: 12.0, 22.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 231
+
+new: Feature: 443
+location: 10.0, 22.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 232
+
+new: Feature: 442
+location: 14.0, 25.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 233
+
+new: Feature: 442
+location: 13.0, 24.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 234
+
+new: Feature: 442
+location: 13.0, 22.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 235
+
+new: Feature: 442
+location: 11.0, 22.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 236
+
+new: Feature: 442
+location: 14.0, 24.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 237
+
+new: Feature: 442
+location: 11.0, 21.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 238
+
+new: Feature: 211
+location: 34.0, 2.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 239
+
+new: Feature: 211
+location: 34.0, 3.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 240
+
+new: Feature: 211
+location: 34.0, 4.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 241
+
+new: Feature: 211
+location: 34.0, 5.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 242
+
+new: Feature: 211
+location: 34.0, 6.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 243
+
+new: Feature: 211
+location: 34.0, 7.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 244
+
+new: Feature: 211
+location: 34.0, 8.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 245
+
+new: Feature: 211
+location: 34.0, 9.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 246
+
+new: Feature: 211
+location: 34.0, 10.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 247
+
+new: Feature: 211
+location: 34.0, 11.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 248
+
+new: Feature: 211
+location: 34.0, 12.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 249
+
+new: Feature: 211
+location: 34.0, 13.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 250
+
+new: Feature: 211
+location: 34.0, 14.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 251
+
+new: Feature: 211
+location: 34.0, 15.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 252
+
+new: Feature: 211
+location: 34.0, 16.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 253
+
+new: Feature: 211
+location: 34.0, 17.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 254
+
+new: Feature: 211
+location: 34.0, 18.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 255
+
+new: Feature: 211
+location: 34.0, 19.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 256
+
+new: Feature: 211
+location: 34.0, 20.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 257
+
+new: Feature: 211
+location: 34.0, 21.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 258
+
+new: Feature: 211
+location: 34.0, 22.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 259
+
+new: Feature: 211
+location: 34.0, 23.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 260
+
+new: Feature: 211
+location: 34.0, 24.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 261
+
+new: Feature: 323
+location: 2.0, 21.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 262
+
+new: Feature: 323
+location: 5.0, 21.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 263
+
+new: Feature: 323
+location: 6.0, 21.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 264
+
+new: Feature: 323
+location: 7.0, 21.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 265
+
+new: Feature: 323
+location: 8.0, 21.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 266
+
+new: Feature: 181
+location: 5.0, 17.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextFeatureKey: 269
+
+new: Feature: 441
+location: 18.0, 2.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 270
+
+new: Feature: 441
+location: 16.0, 4.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 271
+
+new: Feature: 441
+location: 15.0, 4.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 272
+
+new: Feature: 441
+location: 19.0, 2.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+end: Map

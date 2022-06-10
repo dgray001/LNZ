@@ -2110,7 +2110,7 @@ nextTriggerKey: 50
 
 new: Trigger
 triggerName: 2
-active: true
+active: false
 looping: false
 amalgam: true
 new: Condition
@@ -2281,7 +2281,7 @@ nextTriggerKey: 54
 
 new: Trigger
 triggerName: 2
-active: true
+active: false
 looping: false
 amalgam: true
 new: Condition
@@ -2605,7 +2605,7 @@ nextTriggerKey: 62
 
 new: Trigger
 triggerName: 2
-active: true
+active: false
 looping: false
 amalgam: true
 new: Condition
@@ -2776,7 +2776,7 @@ nextTriggerKey: 66
 
 new: Trigger
 triggerName: 2
-active: true
+active: false
 looping: false
 amalgam: true
 new: Condition

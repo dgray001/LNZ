@@ -25,7 +25,7 @@ terrain: 0, 15: 207, 100, true
 terrain: 0, 16: 207, 100, true
 terrain: 0, 17: 207, 100, true
 terrain: 0, 18: 207, 100, true
-terrain: 0, 19: 207, 100, true
+terrain: 0, 19: 1, 100, true
 terrain: 1, 0: 1, 100, true
 terrain: 1, 1: 1, 100, true
 terrain: 1, 2: 1, 100, true
@@ -126,7 +126,7 @@ terrain: 5, 16: 121, 0, true
 terrain: 5, 17: 121, 0, true
 terrain: 5, 18: 121, 0, true
 terrain: 5, 19: 207, 100, true
-terrain: 6, 0: 207, 100, true
+terrain: 6, 0: 1, 100, true
 terrain: 6, 1: 207, 100, true
 terrain: 6, 2: 207, 100, true
 terrain: 6, 3: 207, 100, true
@@ -145,7 +145,7 @@ terrain: 6, 15: 201, 100, true
 terrain: 6, 16: 201, 100, true
 terrain: 6, 17: 201, 100, true
 terrain: 6, 18: 201, 100, true
-terrain: 6, 19: 207, 100, true
+terrain: 6, 19: 1, 100, true
 terrain: 7, 0: 207, 100, true
 terrain: 7, 1: 101, 0, true
 terrain: 7, 2: 101, 0, true
@@ -246,7 +246,7 @@ terrain: 11, 16: 104, 0, true
 terrain: 11, 17: 104, 0, true
 terrain: 11, 18: 104, 0, true
 terrain: 11, 19: 201, 100, true
-terrain: 12, 0: 207, 100, true
+terrain: 12, 0: 1, 100, true
 terrain: 12, 1: 207, 100, true
 terrain: 12, 2: 207, 100, true
 terrain: 12, 3: 207, 100, true
@@ -265,7 +265,7 @@ terrain: 12, 15: 201, 100, true
 terrain: 12, 16: 201, 100, true
 terrain: 12, 17: 201, 100, true
 terrain: 12, 18: 201, 100, true
-terrain: 12, 19: 207, 100, true
+terrain: 12, 19: 1, 100, true
 terrain: 13, 0: 1, 100, true
 terrain: 13, 1: 1, 100, true
 terrain: 13, 2: 1, 100, true
@@ -1253,7 +1253,7 @@ terrain: 62, 3: 1, 100, true
 terrain: 62, 4: 1, 100, true
 terrain: 62, 5: 1, 100, true
 terrain: 62, 6: 1, 100, true
-terrain: 62, 7: 205, 100, true
+terrain: 62, 7: 1, 100, true
 terrain: 62, 8: 205, 100, true
 terrain: 62, 9: 205, 100, true
 terrain: 62, 10: 121, 0, true
@@ -1373,11 +1373,11 @@ terrain: 68, 3: 1, 100, true
 terrain: 68, 4: 1, 100, true
 terrain: 68, 5: 1, 100, true
 terrain: 68, 6: 1, 100, true
-terrain: 68, 7: 201, 100, true
+terrain: 68, 7: 1, 100, true
 terrain: 68, 8: 201, 100, true
 terrain: 68, 9: 201, 100, true
 terrain: 68, 10: 201, 100, true
-terrain: 68, 11: 201, 100, true
+terrain: 68, 11: 1, 100, true
 terrain: 68, 12: 1, 100, true
 terrain: 68, 13: 1, 100, true
 terrain: 68, 14: 1, 100, true
@@ -2412,16 +2412,15 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Gray
-gearSlot: CHEST
 gearSlot: HEAD
-gearSlot: WEAPON
-gearSlot: LEGS
 gearSlot: FEET
+gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: CHEST
+gearSlot: LEGS
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 4.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -2437,16 +2436,15 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Gray
-gearSlot: CHEST
 gearSlot: HEAD
-gearSlot: WEAPON
-gearSlot: LEGS
 gearSlot: FEET
+gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: CHEST
+gearSlot: LEGS
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 4.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -2462,16 +2460,15 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Gray
-gearSlot: CHEST
 gearSlot: HEAD
-gearSlot: WEAPON
-gearSlot: LEGS
 gearSlot: FEET
+gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: CHEST
+gearSlot: LEGS
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 4.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -2487,16 +2484,15 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Brown
-gearSlot: CHEST
 gearSlot: HEAD
-gearSlot: WEAPON
-gearSlot: LEGS
 gearSlot: FEET
+gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: CHEST
+gearSlot: LEGS
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 4.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -2512,16 +2508,15 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Gray
-gearSlot: CHEST
 gearSlot: HEAD
-gearSlot: WEAPON
-gearSlot: LEGS
 gearSlot: FEET
+gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: CHEST
+gearSlot: LEGS
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 4.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
@@ -2537,16 +2532,15 @@ size: 0.35
 level: 0
 alliance: Ben
 element: Gray
-gearSlot: CHEST
 gearSlot: HEAD
-gearSlot: WEAPON
-gearSlot: LEGS
 gearSlot: FEET
+gearSlot: WEAPON
 gearSlot: ERROR
+gearSlot: CHEST
+gearSlot: LEGS
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
-curr_health: 4.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0

@@ -11,7 +11,7 @@ sleeping: false
 sleep_timer: 0
 in_control: true
 currMapName: tutorial_frontdoor
-mapNames: tutorial_frontdoor, tutorial_stairwell, tutorial_soldiers
+mapNames: tutorial_frontdoor, tutorial_soldiers, tutorial_stairwell
 
 new: Linker
 rect1: tutorial_frontdoor, 5.0, 26.0, 6.0, 27.0
@@ -2889,7 +2889,7 @@ end: Condition
 
 new: Effect
 ID: 4
-message: Leveling up will earn you level tokens, which you can spend to upgrade your hero
+message: Leveling up will earn you level tokens and increase your base stats
 number: 0
 decimal1: 0.0
 decimal2: 0.0

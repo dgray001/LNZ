@@ -702,6 +702,19 @@ class Unit extends MapObject {
         this.gearSlots("Weapon");
         this.alliance = Alliance.ZOMBIE;
         break;
+      case 1292:
+        this.setStrings("Running Zombie", "Zombie", "");
+        this.baseStats(3, 1, 0, 0, 1);
+        this.gearSlots("Weapon");
+        this.addStatusEffect(StatusEffectCode.RUNNING);
+        this.alliance = Alliance.ZOMBIE;
+        break;
+      case 1293:
+        this.setStrings("Armored Zombie", "Zombie", "");
+        this.baseStats(3, 1, 2, 0, 0.8);
+        this.gearSlots("Weapon");
+        this.alliance = Alliance.ZOMBIE;
+        break;
 
       // Named Zombies
       case 1301:
@@ -956,6 +969,12 @@ class Unit extends MapObject {
       case 1291:
         path += "zombie1.png";
         break;
+      case 1292:
+        path += "zombie2.png";
+        break;
+      case 1293:
+        path += "zombie3.png";
+        break;
       case 1301:
         path += "duggy_zombie.png";
         break;
@@ -1005,10 +1024,17 @@ class Unit extends MapObject {
     float level_constant = 0.5 * level * (level + 1);
     switch(this.ID) {
       case 1291: // Zombie
+      case 1292: // Running Zombie
         this.base_health = 3 + 0.4 * level_constant;
         this.curr_health = this.health();
         this.base_attack = 1 + 0.1 * level_constant;
-        this.base_defense = 0.01 * level_constant;
+        this.base_defense = 0.012 * level_constant;
+        break;
+      case 1293: // Armored Zombie
+        this.base_health = 3 + 0.4 * level_constant;
+        this.curr_health = this.health();
+        this.base_attack = 1 + 0.1 * level_constant;
+        this.base_defense = 2 + 0.022 * level_constant;
         break;
       default:
         break;
@@ -3289,6 +3315,8 @@ class Unit extends MapObject {
         case 1209:
         case 1210:
         case 1291: // Auto-spawned Zombies
+        case 1292:
+        case 1293:
         case 1301: // Tier I named zombies
         case 1302:
         case 1303:
@@ -3443,6 +3471,16 @@ class Unit extends MapObject {
       case 1208:
       case 1209:
       case 1291: // Auto-spawned Zombies
+        if (randomChance(0.2)) {
+          drops.add(new Item(2119));
+        }
+        break;
+      case 1292:
+        if (randomChance(0.2)) {
+          drops.add(new Item(2119));
+        }
+        break;
+      case 1293:
         if (randomChance(0.2)) {
           drops.add(new Item(2119));
         }
@@ -3766,6 +3804,8 @@ class Unit extends MapObject {
       case 1209:
       case 1210:
       case 1291: // Auto-spawned Zombies
+      case 1292:
+      case 1293:
       case 1301: // Named Zombies
       case 1302:
       case 1303:
@@ -3799,6 +3839,8 @@ class Unit extends MapObject {
       case 1209:
       case 1210:
       case 1291: // Auto-spawned Zombies
+      case 1292:
+      case 1293:
       case 1301: // Named Zombies
       case 1302:
       case 1303:
@@ -3836,6 +3878,8 @@ class Unit extends MapObject {
       case 1209:
       case 1210:
       case 1291: // Auto-spawned Zombies
+      case 1292:
+      case 1293:
       case 1301: // Named Zombies
       case 1302:
       case 1303:
@@ -3878,6 +3922,8 @@ class Unit extends MapObject {
       case 1209:
       case 1210:
       case 1291: // Auto-spawned Zombies
+      case 1292:
+      case 1293:
       case 1301: // Named Zombies
       case 1302:
       case 1303:
@@ -3916,6 +3962,8 @@ class Unit extends MapObject {
       case 1209:
       case 1210:
       case 1291: // Auto-spawned Zombies
+      case 1292:
+      case 1293:
       case 1301: // Named Zombies
       case 1302:
       case 1303:
@@ -3949,6 +3997,8 @@ class Unit extends MapObject {
       case 1209:
       case 1210:
       case 1291: // Auto-spawned Zombies
+      case 1292:
+      case 1293:
       case 1301: // Named Zombies
       case 1302:
       case 1303:
@@ -4623,6 +4673,8 @@ class Unit extends MapObject {
       case 1209:
       case 1210:
       case 1291: // Auto-spawned Zombies
+      case 1292:
+      case 1293:
       case 1302: // Tier I Named Zombies
       case 1303:
       case 1304:

@@ -1,13 +1,10 @@
 v0.7.5: Lev2 maps (06/18)
- o: Add magic zombie, ranged zombie, runner zombie
- p: Cathy Heck last ability (Title IX Charge), has a good item drop
- q: Car feature mechanics
- r: Car trigger controls
- s: Can start Ahimdoor car
- t: Prevent other endings to Lev1, going to abandoned
+ q: Cathy Heck last ability (Title IX Charge), has a good item drop
+ r: Car feature mechanics
+ s: Car trigger controls
+ t: Can start Ahimdoor car
  u: Make lev3 maps
- v: Add sidewalk melding into all maps
- w: Add zombies / items into frontdoor maps / remove visual saying you can just walk down campus road, add trigger for that (need car)
+ w: Add items into frontdoor maps
  x: Can access unlocked minigames, Notification for minigame unlock
  y: Campaigns can unlock minigames, force you to play if you haven't previously unlocked it
  z: Mock car broke down minigame unlocked when ahimdoor car started
@@ -32,6 +29,7 @@ v0.7.6: Fernwood (06/30)
   - Finish all triggers for all levels
   - Other generic zombies (various abilities)
   - Notifications for hero/area unlocks
+  - Add magic zombie, ranged zombie (uses sight)
 
   Pathfinding issues:
    - add random choose if multiple correct paths
