@@ -3456,7 +3456,7 @@ class Hero extends Unit {
     void unlockNode(HeroTreeCode code) {
       this.unlockNode(code, false, true);
     }
-    void unlockNode(HeroTreeCode code, boolean force_unlock, boolean play_sound) {
+    void unlockNode(HeroTreeCode code, boolean force_unlock, boolean first_time) {
       if (!this.nodes.containsKey(code)) {
         return;
       }
@@ -3472,8 +3472,19 @@ class Hero extends Unit {
       this.nodes.get(code).unlock();
       this.updateDependencies();
       Hero.this.upgrade(code);
-      if (play_sound) {
+      if (first_time) {
         global.sounds.trigger_player("player/unlock_node");
+        switch(code) {
+          case HEALTHI:
+            Hero.this.curr_health += Constants.upgrade_healthI;
+            break;
+          case HEALTHII:
+            Hero.this.curr_health += Constants.upgrade_healthII;
+            break;
+          case HEALTHIII:
+            Hero.this.curr_health += Constants.upgrade_healthIII;
+            break;
+        }
       }
     }
 
@@ -4514,7 +4525,7 @@ class Hero extends Unit {
         this.upgradeAbility(4);
         break;
       case HEALTHI:
-        this.addBaseHealth(Constants.upgrade_healthI);
+        this.base_health += Constants.upgrade_healthI;
         break;
       case ATTACKI:
         this.base_attack += Constants.upgrade_attackI;
@@ -4547,7 +4558,7 @@ class Hero extends Unit {
         this.base_penetration += Constants.upgrade_penetrationI;
         break;
       case HEALTHII:
-        this.addBaseHealth(Constants.upgrade_healthII);
+        this.base_health += Constants.upgrade_healthII;
         break;
       case ATTACKII:
         this.base_attack += Constants.upgrade_attackII;
@@ -4580,7 +4591,7 @@ class Hero extends Unit {
         this.base_penetration += Constants.upgrade_penetrationII;
         break;
       case HEALTHIII:
-        this.addBaseHealth(Constants.upgrade_healthIII);
+        this.base_health += Constants.upgrade_healthIII;
         break;
       case OFFHAND:
         this.gearSlots("Offhand");
@@ -4781,12 +4792,30 @@ class Hero extends Unit {
     }
   }
 
-
   void levelup() {
-    this.level++;
+    this.setLevel(this.level + 1);
     this.refreshExperienceNextLevel();
     this.level_tokens += this.level;
     global.sounds.trigger_player("player/levelup");
+  }
+
+  @Override
+  void setLevel(int level) {
+    super.setLevel(level);
+    this.base_health = 4 + 0.5 * Constants.hero_scaling_health * level * (level + 1.0);
+    this.base_attack = 1 + 0.5 * Constants.hero_scaling_attack * level * (level + 1.0);
+    this.base_magic = 0.5 * Constants.hero_scaling_magic * level * (level + 1.0);
+    this.base_defense = 0.5 * Constants.hero_scaling_defense * level * (level + 1.0);
+    this.base_resistance = 0.5 * Constants.hero_scaling_resistance * level * (level + 1.0);
+    this.base_piercing = 0.5 * Constants.hero_scaling_piercing * level * (level + 1.0);
+    this.base_penetration = 0.5 * Constants.hero_scaling_penetration * level * (level + 1.0);
+    switch(this.ID) {
+      case 1102: // Dan Gray
+        this.base_magic += 2.5;
+        break;
+      default:
+        break;
+    }
   }
 
 

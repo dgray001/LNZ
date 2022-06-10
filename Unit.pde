@@ -515,7 +515,7 @@ class Unit extends MapObject {
         this.base_agility = 1;
         this.timer_ai_action1 = int(Constants.ai_chickenTimer1 + random(Constants.ai_chickenTimer1));
         this.timer_ai_action2 = int(Constants.ai_chickenTimer2 + random(Constants.ai_chickenTimer2));
-        this.level = 1;
+        this.setLevel(1);
         this.sizeZ = 2;
         break;
       case 1003:
@@ -523,14 +523,14 @@ class Unit extends MapObject {
         this.baseStats(1.5, 0, 0, 0, 1.1);
         this.timer_ai_action1 = int(Constants.ai_chickenTimer1 + random(Constants.ai_chickenTimer1));
         this.timer_ai_action2 = int(2 * Constants.ai_chickenTimer2 + 2 * random(Constants.ai_chickenTimer2));
-        this.level = 0;
+        this.setLevel(0);
         this.size = 0.8 * Constants.unit_defaultSize;
         this.sizeZ = 1;
         break;
       case 1004:
         this.setStrings("Rankin", "Human", "");
         this.baseStats(8, 3, 2, 0, 3);
-        this.level = 5;
+        this.setLevel(5);
         this.size = 0.45;
         this.sizeZ = 6;
         break;
@@ -540,7 +540,7 @@ class Unit extends MapObject {
         this.base_agility = 1;
         this.timer_ai_action1 = int(Constants.ai_chickenTimer1 + random(Constants.ai_chickenTimer1));
         this.timer_ai_action2 = int(Constants.ai_chickenTimer2 + random(Constants.ai_chickenTimer2));
-        this.level = 2;
+        this.setLevel(2);
         this.sizeZ = 2;
         break;
       case 1006:
@@ -548,7 +548,7 @@ class Unit extends MapObject {
         this.baseStats(3.5, 2, 0, 0, 2);
         this.magicStats(2, 4, 0.05);
         this.alliance = Alliance.BEN;
-        this.level = 3;
+        this.setLevel(3);
         this.sizeZ = 4;
         this.gearSlots("Weapon");
         this.pickup(new Item(2928));
@@ -557,7 +557,7 @@ class Unit extends MapObject {
         this.setStrings("Michael Schmiesing", "Human", "The fat man himself!");
         this.baseStats(15, 4, 3, 0, 1.5);
         this.alliance = Alliance.BEN;
-        this.level = 7;
+        this.setLevel(7);
         this.gearSlots("Weapon");
         this.size = 0.55;
         break;
@@ -565,13 +565,14 @@ class Unit extends MapObject {
         this.setStrings("Molly Schmiesing", "Human", "");
         this.baseStats(9, 4, 1, 0, 1.7);
         this.alliance = Alliance.BEN;
-        this.level = 6;
+        this.setLevel(6);
         break;
 
       // Heroes
       case 1101:
         this.setStrings("Ben Nelson", "Hero", "");
         this.baseStats(4, 1, 0, 0, 1.7);
+        this.setLevel(0);
         this.base_agility = 1;
         this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
         this.alliance = Alliance.BEN;
@@ -580,8 +581,8 @@ class Unit extends MapObject {
       case 1102:
         this.setStrings("Dan Gray", "Hero", "");
         this.baseStats(4, 1, 0, 0, 1.8);
+        this.setLevel(0);
         this.base_agility = 2;
-        this.base_magic = 3;
         this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
         this.alliance = Alliance.BEN;
         this.element = Element.BROWN;
@@ -589,30 +590,35 @@ class Unit extends MapObject {
       case 1103:
         this.setStrings("JIF", "Hero", "");
         this.baseStats(4, 1, 0, 0, 2);
+        this.setLevel(0);
         this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
         this.alliance = Alliance.BEN;
         break;
       case 1104:
         this.setStrings("Mark Spinny", "Hero", "");
         this.baseStats(4, 1, 0, 0, 2);
+        this.setLevel(0);
         this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
         this.alliance = Alliance.BEN;
         break;
       case 1105:
         this.setStrings("Mad Dog Mattus", "Hero", "");
         this.baseStats(4, 1, 0, 0, 2);
+        this.setLevel(0);
         this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
         this.alliance = Alliance.BEN;
         break;
       case 1106:
         this.setStrings("Jeremiah", "Hero", "");
         this.baseStats(4, 1, 0, 0, 2);
+        this.setLevel(0);
         this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
         this.alliance = Alliance.BEN;
         break;
       case 1131:
         this.setStrings("Michael Fischer", "Hero", "");
         this.baseStats(4, 1, 0, 0, 2);
+        this.setLevel(0);
         this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
         this.alliance = Alliance.BEN;
         break;
@@ -987,6 +993,11 @@ class Unit extends MapObject {
   }
 
 
+  void setLevel(int level) {
+    this.level = level;
+  }
+
+
   Item weapon() {
     if (this.gear.containsKey(GearSlot.WEAPON)) {
       return this.gear.get(GearSlot.WEAPON);
@@ -1083,13 +1094,6 @@ class Unit extends MapObject {
       }
     }
     return health;
-  }
-
-  void addBaseHealth(float amount) {
-    this.base_health += amount;
-    if (amount > 0) {
-      this.curr_health += amount;
-    }
   }
 
   // To make abilities array in Unit instead of Hero
@@ -4736,7 +4740,7 @@ class Unit extends MapObject {
         this.size = toFloat(data);
         break;
       case "level":
-        this.level = toInt(data);
+        this.setLevel(toInt(data));
         break;
       case "alliance":
         this.alliance = Alliance.alliance(data);
