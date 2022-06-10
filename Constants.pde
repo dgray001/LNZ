@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\nAlpha v0.7.5i: 20220609" +
+  "\nAlpha v0.7.5j: 20220609" +
   "\n\nLines: 45592 (v0.7.5)" +
   "\nImages: 1226 (v0.7.5)" +
   "\nSounds: 327 (v0.7.5)" +
@@ -258,6 +258,7 @@ static class Constants {
   static final float unit_fallDamageMultiplier = 0.015;
   static final int unit_timer_talk = 9000;
   static final int unit_timer_walk = 380;
+  static final int unit_update_pathfinding_timer = 500;
   static final float unit_footgearDurabilityDistance = 100;
 
   // Resistances
@@ -591,9 +592,10 @@ static class Constants {
   static final float ability_120_physicalRatio = 0.2;
   static final float ability_120_magicalRatio = 1.4;
   // Cathy Heck
-  static final float ability_1001_range = 3;
+  static final float ability_1001_range = 2.7;
   static final float ability_1001_castTime = 600;
-  static final float ability_1001_coneAngle = 0.15 * PI;
+  static final float ability_1001_coneAngle = 0.12 * PI;
+  static final float ability_1001_tanConeAngle = 2 * (float)Math.tan(Constants.ability_1001_coneAngle);
   static final float ability_1001_basePower = 2;
   static final float ability_1001_magicRatio = 0.8;
   static final float ability_1001_woozyTime = 5000;

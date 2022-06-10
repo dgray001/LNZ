@@ -6,6 +6,7 @@ class Ability {
   private int target_key = -1;
   private int stacks = 0;
   private boolean toggle = false;
+  private HashSet<Integer> currently_hit;
 
   Ability(int ID) {
     this.ID = ID;
@@ -13,14 +14,16 @@ class Ability {
       // Ben Nelson
       case 101:
       case 102:
-      case 103:
       case 104:
       case 105:
       case 106:
       case 107:
-      case 108:
       case 109:
       case 110:
+        break;
+      case 103:
+      case 108:
+        this.currently_hit = new HashSet<Integer>();
         break;
       // Daniel Gray
       case 111:
@@ -36,6 +39,8 @@ class Ability {
         break;
       // Cathy Heck, zombie
       case 1001:
+        this.currently_hit = new HashSet<Integer>();
+        break;
       case 1002:
       case 1003:
         break;
@@ -521,7 +526,7 @@ class Ability {
       default:
         return global.images.getImage("transparent.png");
     }
-    return global.images.getImage("abilities/" + this.ID + ".png");
+    return global.images.getImage("abilities/" + image_id + ".png");
   }
 
 
@@ -569,6 +574,7 @@ class Ability {
         this.toggle = true;
         u.curr_action = UnitAction.CASTING;
         u.curr_action_id = ability_index;
+        this.currently_hit.clear();
         global.sounds.trigger_units("units/ability/103", u.x - map.viewX, u.y - map.viewY);
         break;
       case 104: // Senseless Grit
@@ -591,6 +597,7 @@ class Ability {
         this.toggle = true;
         u.curr_action = UnitAction.CASTING;
         u.curr_action_id = ability_index;
+        this.currently_hit.clear();
         global.sounds.trigger_units("units/ability/103", u.x - map.viewX, u.y - map.viewY);
         break;
       case 109: // Senseless Grit II
@@ -659,6 +666,7 @@ class Ability {
         this.timer_other = Constants.ability_112_castTime;
         this.toggle = true;
         u.curr_action = UnitAction.CASTING;
+        u.curr_action_id = ability_index;
         global.sounds.trigger_units("units/ability/112", u.x - map.viewX, u.y - map.viewY);
         break;
       case 118: // Amphibious Leap II
@@ -709,6 +717,7 @@ class Ability {
         this.toggle = true;
         u.curr_action = UnitAction.CASTING;
         u.curr_action_id = ability_index;
+        this.currently_hit.clear();
         global.sounds.trigger_units("units/ability/1001", u.x - map.viewX, u.y - map.viewY);
         break;
       default:
@@ -746,7 +755,7 @@ class Ability {
             continue;
           }
           // already hit
-          if (target.nelsonGlare()) {
+          if (this.currently_hit.contains(target.map_key)) {
             continue;
           }
           float distance = u.centerDistance(target);
@@ -760,6 +769,7 @@ class Ability {
               continue;
             }
           }
+          this.currently_hit.add(target.map_key);
           target.addStatusEffect(StatusEffectCode.NELSON_GLARE, Constants.ability_103_time);
         }
         if (this.timer_other <= 0) {
@@ -795,7 +805,7 @@ class Ability {
             continue;
           }
           // already hit
-          if (target.nelsonGlareII()) {
+          if (this.currently_hit.contains(target.map_key)) {
             continue;
           }
           float distance = u.centerDistance(target);
@@ -809,6 +819,7 @@ class Ability {
               continue;
             }
           }
+          this.currently_hit.add(target.map_key);
           target.addStatusEffect(StatusEffectCode.NELSON_GLAREII, Constants.ability_108_time);
         }
         if (this.timer_other <= 0) {
@@ -1164,7 +1175,7 @@ class Ability {
             continue;
           }
           // already hit
-          if (target.woozy()) {
+          if (this.currently_hit.contains(target.map_key)) {
             continue;
           }
           float distance = u.centerDistance(target);
@@ -1178,6 +1189,10 @@ class Ability {
               continue;
             }
           }
+          this.currently_hit.add(target.map_key);
+          float power = Constants.ability_1001_basePower + u.power(0, Constants.ability_1001_magicRatio);
+          target.damage(u, target.calculateDamageFrom(power,
+            DamageType.MAGICAL, Element.GRAY, u.piercing(), u.penetration()));
           target.addStatusEffect(StatusEffectCode.WOOZY, Constants.ability_1001_woozyTime);
         }
         if (this.timer_other <= 0) {

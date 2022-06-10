@@ -31,13 +31,8 @@ v0.7.5: Lev2 maps
   - add random choose if multiple correct paths
   - if colliding need to move to center of current square
      => (maybe predict if collision will happen from start square, shouldn't be too hard)
-  - sometimes unit will clip edge of wall when using diagonal movement then straight movement
-     => because a diagonal then straights (in a single direction) will all get skipped and give no goal
-     => solving this will likely solve above issue? since this seems like a more general issue
-  - features above the walk height ignore pathfinding because is treated like you want to move to a wall
+  - targeted features above the walk height ignore pathfinding because is treated like you want to move to a wall
   - update pathfinding whenever you have an any collision and it currently isn't running
-     => need boolean that says using current pathfinding but waiting for next one?
-  - when targeting units specifically update pathfinding often (200ms?) no matter what
 
 v0.7.6: Lev2/3 Levels
  - All triggers for Lev2/3 levels

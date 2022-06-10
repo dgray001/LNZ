@@ -1557,6 +1557,7 @@ class GameMap {
     if (removeCache) {
       g.removeCache(u.getImage());
     }
+    imageMode(CENTER);
     image(u.getImage(), 0, 0, u.width() * this.zoom_old, u.height() * this.zoom_old);
     if (player_unit && global.player_blinking) {
       ellipseMode(CENTER);
@@ -1640,19 +1641,19 @@ class GameMap {
             img_width = Constants.ability_112_distance * (1 - a.timer_other / Constants.ability_112_castTime);
             img_height = u.size;
             image(global.images.getImage("abilities/tongue.png"), 0.5 * img_width * this.zoom_old,
-              0.5 * img_height * this.zoom_old, img_width * this.zoom_old, img_height * this.zoom_old);
+              0, img_width * this.zoom_old, img_height * this.zoom_old);
             break;
           case 117: // Tongue Lash II
             img_width = Constants.ability_117_distance * (1 - a.timer_other / Constants.ability_112_castTime);
             img_height = u.size;
             image(global.images.getImage("abilities/tongue.png"), 0.5 * img_width * this.zoom_old,
-              0.5 * img_height * this.zoom_old, img_width * this.zoom_old, img_height * this.zoom_old);
+              0, img_width * this.zoom_old, img_height * this.zoom_old);
             break;
           case 1001: // Blow Smoke
             img_width = Constants.ability_1001_range * (1 - a.timer_other / Constants.ability_1001_castTime);
-            img_height = 2 * img_width * tan(0.5 * Constants.ability_1001_coneAngle);
+            img_height = img_width * Constants.ability_1001_tanConeAngle;
             image(global.images.getImage("abilities/smoke.png"), 0.5 * img_width * this.zoom_old,
-              0.5 * img_height * this.zoom_old, img_width * this.zoom_old, img_height * this.zoom_old);
+              0, img_width * this.zoom_old, img_height * this.zoom_old);
             break;
           default:
             break;
@@ -2089,9 +2090,12 @@ class GameMap {
   }
 
   int heightOfSquare(IntegerCoordinate coordinate, boolean moving_onto) {
+    return this.heightOfSquare(coordinate.x, coordinate.y, moving_onto);
+  }
+  int heightOfSquare(int x, int y, boolean moving_onto) {
     int square_height = -100;
     try {
-      square_height = this.mapSquare(coordinate.x, coordinate.y).elevation(moving_onto);
+      square_height = this.mapSquare(x, y).elevation(moving_onto);
     } catch(NullPointerException e) {}
     return square_height;
   }
