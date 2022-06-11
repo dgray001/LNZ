@@ -201,6 +201,10 @@ class Unit extends MapObject {
       if (this.map == null) {
         return;
       }
+      int unit_max_height = Unit.this.curr_height + Unit.this.walkHeight();
+      ArrayList<IntegerCoordinate> unit_squares_on = Unit.this.getSquaresOn();
+      float unit_current_x = Unit.this.x;
+      float unit_current_y = Unit.this.y;
       HashMap<IntegerCoordinate, CoordinateValues> coordinates = new HashMap<IntegerCoordinate, CoordinateValues>(); // value is distance
       IntegerCoordinate goal = new IntegerCoordinate(int(this.goal_x), int(this.goal_y));
       IntegerCoordinate current = new IntegerCoordinate(int(Unit.this.x), int(Unit.this.y));
@@ -220,37 +224,39 @@ class Unit extends MapObject {
         HashMap<IntegerCoordinate, CoordinateValues> current_coordinates = this.next_coordinates(last_coordinates, map);
         last_coordinates.clear();
         boolean all_dead_ends = true;
-        for (Map.Entry<IntegerCoordinate, CoordinateValues> entry : current_coordinates.entrySet()) {
-          if (!map.containsMapSquare(entry.getKey())) {
+        ArrayList<IntegerCoordinate> current_coordinates_keys = new ArrayList<IntegerCoordinate>(current_coordinates.keySet());
+        Collections.shuffle(current_coordinates_keys);
+        for (IntegerCoordinate coordinate : current_coordinates_keys) {
+          if (!map.containsMapSquare(coordinate)) {
             continue;
           }
-          int max_height = entry.getValue().source_height + Unit.this.walkHeight();
-          int coordinate_height = map.heightOfSquare(entry.getKey(), true);
+          int max_height = current_coordinates.get(coordinate).source_height + Unit.this.walkHeight();
+          int coordinate_height = map.heightOfSquare(coordinate, true);
           if (coordinate_height > max_height) {
             continue;
           }
-          if (entry.getValue().corner_square) {
+          if (current_coordinates.get(coordinate).corner_square) {
             coordinate_height = map.heightOfSquare(new IntegerCoordinate(
-              entry.getValue().source_x, entry.getKey().y), true);
+              current_coordinates.get(coordinate).source_x, coordinate.y), true);
             if (coordinate_height > max_height) {
               continue;
             }
             coordinate_height = map.heightOfSquare(new IntegerCoordinate(
-              entry.getKey().x, entry.getValue().source_y), true);
+              coordinate.x, current_coordinates.get(coordinate).source_y), true);
             if (coordinate_height > max_height) {
               continue;
             }
           }
-          if (coordinates.containsKey(entry.getKey()) && coordinates.get(
-            entry.getKey()).distance <= entry.getValue().distance) {
+          if (coordinates.containsKey(coordinate) && coordinates.get(
+            coordinate).distance <= current_coordinates.get(coordinate).distance) {
             continue;
           }
-          coordinates.put(entry.getKey(), new CoordinateValues(entry.getValue()));
-          if (entry.getKey().equals(goal)) {
-            last_distance = entry.getValue().distance + 1;
+          coordinates.put(coordinate, new CoordinateValues(current_coordinates.get(coordinate)));
+          if (coordinate.equals(goal)) {
+            last_distance = current_coordinates.get(coordinate).distance + 1;
             break_map_loop = true;
           }
-          last_coordinates.put(entry.getKey(), entry.getValue().distance);
+          last_coordinates.put(coordinate, current_coordinates.get(coordinate).distance);
           all_dead_ends = false;
         }
         if (all_dead_ends) {
@@ -262,6 +268,10 @@ class Unit extends MapObject {
       }
       boolean x_changed = false;
       boolean y_changed = false;
+      boolean x_changed_last_turn = false;
+      boolean y_changed_last_turn = false;
+      boolean x_not_changed = false;
+      boolean y_not_changed = false;
       boolean push_next_goal = false;
       boolean check_next_goal = false;
       int check_next_goal_x = 0;
@@ -275,14 +285,23 @@ class Unit extends MapObject {
         if (this.stop_thread) {
           return;
         }
+        x_not_changed = false;
+        y_not_changed = false;
+        if (!x_changed) {
+          x_not_changed = true;
+        }
+        if (!y_changed) {
+          y_not_changed = true;
+        }
         IntegerCoordinate next_goal = null;
-        IntegerCoordinate[] adjacents;
+        List<IntegerCoordinate> adjacents;
         if (coordinates.get(goal).corner_square) {
-          adjacents = goal.adjacentAndCornerCoordinates();
+          adjacents = Arrays.asList(goal.adjacentAndCornerCoordinates());
         }
         else {
-          adjacents = goal.adjacentCoordinates();
+          adjacents = Arrays.asList(goal.adjacentCoordinates());
         }
+        Collections.shuffle(adjacents); // to allow random choosing of equivalent paths
         for (IntegerCoordinate adjacent : adjacents) {
           if (!coordinates.containsKey(adjacent)) {
             continue;
@@ -337,6 +356,8 @@ class Unit extends MapObject {
           }
         }
         else {
+          boolean keep_x_changed = false;
+          boolean keep_y_changed = false;
           if (next_goal.x != goal.x) {
             x_changed = true;
             if (coordinates.get(next_goal).corner_square) {
@@ -353,6 +374,9 @@ class Unit extends MapObject {
                   push_next_goal = true;
                 }
               }
+            }
+            else if (y_changed_last_turn) {
+              keep_x_changed = true; // zig zag
             }
           }
           if (next_goal.y != goal.y) {
@@ -372,10 +396,29 @@ class Unit extends MapObject {
                 }
               }
             }
+            else if (x_changed_last_turn) {
+              keep_y_changed = true; // zig zag
+            }
+          }
+          if (x_changed && x_not_changed) {
+            x_changed_last_turn = true;
+          }
+          else {
+            x_changed_last_turn = false;
+          }
+          if (y_changed && y_not_changed) {
+            y_changed_last_turn = true;
+          }
+          else {
+            y_changed_last_turn = false;
           }
           if (x_changed && y_changed) {
-            x_changed = false;
-            y_changed = false;
+            if (!keep_x_changed) {
+              x_changed = false;
+            }
+            if (!keep_y_changed) {
+              y_changed = false;
+            }
             this.move_stack.push(new FloatCoordinate(goal.x + 0.5, goal.y + 0.5));
           }
         }
@@ -388,28 +431,42 @@ class Unit extends MapObject {
           this.move_stack.push(new FloatCoordinate(goal.x + 0.5, goal.y + 0.5));
         }
       }
-      /*
-      FloatCoordinate initial_goal;
-      if (this.move_stack.empty()) {
-        initial_goal = new FloatCoordinate(this.goal_x, this.goal_y);
+      float initial_goal_x = this.goal_x;
+      float initial_goal_y = this.goal_y;
+      if (!this.move_stack.empty()) {
+        initial_goal_x = this.move_stack.peek().x;
+        initial_goal_y = this.move_stack.peek().y;
       }
-      else {
-        initial_goal = this.move_stack.peek();
+      float x_dif = initial_goal_x - unit_current_x;
+      float y_dif = initial_goal_y - unit_current_y;
+      float dif_distance = sqrt(x_dif * x_dif + y_dif * y_dif);
+      if (abs(dif_distance) < 1 || Unit.this.size == 0) {
+        return;
       }
-      HashSet<IntegerCoordinate> initial_intersected_squares = squaresIntersectedByLine(
-        new FloatCoordinate(Unit.this.x, Unit.this.y), initial_goal);
-      int max_height = coordinates.get(current).source_height + Unit.this.walkHeight();
-      for (IntegerCoordinate coordinate : initial_intersected_squares) {
-        if (coordinates.containsKey(coordinate)) {
-          continue;
+      float x_multiplier = x_dif / dif_distance;
+      float y_multiplier = y_dif / dif_distance;
+      HashSet<IntegerCoordinate> new_squares_on = new HashSet<IntegerCoordinate>();
+      int number_sets_to_check = 2;
+      for (int n = 0; n < number_sets_to_check; n++) {
+        unit_current_x += x_multiplier * Unit.this.size * 0.4;
+        unit_current_y += y_multiplier * Unit.this.size * 0.4;
+        for (int i = round(floor(unit_current_x - Unit.this.size)); i < round(ceil(unit_current_x + Unit.this.size)); i++) {
+          for (int j = round(floor(unit_current_y - Unit.this.size)); j < round(ceil(unit_current_y + Unit.this.size)); j++) {
+            IntegerCoordinate coordinate = new IntegerCoordinate(i, j);
+            if (unit_squares_on.contains(coordinate)) {
+              continue;
+            }
+            new_squares_on.add(coordinate);
+          }
         }
-        int coordinate_height = map.heightOfSquare(coordinate, true);
-        if (coordinate_height > max_height) {
+      }
+      for (IntegerCoordinate coordinate : new_squares_on) {
+        int coordinate_height = map.heightOfSquare(coordinate.x, coordinate.y, true);
+        if (coordinate_height > unit_max_height) {
           this.move_stack.push(new FloatCoordinate(current.x + 0.5, current.y + 0.5));
           break;
         }
       }
-      */
     }
   }
 
@@ -480,6 +537,7 @@ class Unit extends MapObject {
   protected boolean falling = false;
   protected int fall_amount = 0;
   protected float timer_falling = 0;
+  protected int timer_resolve_floor_height = Constants.unit_timer_resolve_floor_height_cooldown;
 
   protected boolean ai_controlled = true;
   protected int timer_ai_action1 = 0;
@@ -490,6 +548,7 @@ class Unit extends MapObject {
   // graphics
   protected float random_number = random(100);
   protected int timer_talk = Constants.unit_timer_talk + int(random(Constants.unit_timer_talk));
+  protected int timer_target_sound = 0;
   protected int timer_walk = Constants.unit_timer_walk;
 
   Unit(int ID) {
@@ -2803,13 +2862,17 @@ class Unit extends MapObject {
           }
         } catch(ArrayIndexOutOfBoundsException e) {}
       }
+      if (this.timer_resolve_floor_height < 0) {
+        this.timer_resolve_floor_height += Constants.unit_timer_resolve_floor_height_cooldown;
+        this.resolveFloorHeight(map);
+      }
     }
   }
 
   // timers independent of curr action
-  void update(int timeElapsed) {
+  void update(int time_elapsed) {
     if (this.timer_last_damage > 0) {
-      this.timer_last_damage -= timeElapsed;
+      this.timer_last_damage -= time_elapsed;
     }
     if (this.timer_attackCooldown > 0) {
       if (this.frozen()) {
@@ -2817,22 +2880,24 @@ class Unit extends MapObject {
       }
       else if (this.chilled()) {
         if (this.element == Element.CYAN) {
-          this.timer_attackCooldown -= timeElapsed * Constants.status_chilled_cooldownMultiplierCyan;
+          this.timer_attackCooldown -= time_elapsed * Constants.status_chilled_cooldownMultiplierCyan;
         }
         else {
-          this.timer_attackCooldown -= timeElapsed * Constants.status_chilled_cooldownMultiplier;
+          this.timer_attackCooldown -= time_elapsed * Constants.status_chilled_cooldownMultiplier;
         }
       }
       else {
-        this.timer_attackCooldown -= timeElapsed;
+        this.timer_attackCooldown -= time_elapsed;
       }
     }
-    this.timer_talk -= timeElapsed;
+    this.timer_resolve_floor_height -= time_elapsed;
+    this.timer_target_sound -= time_elapsed;
+    this.timer_talk -= time_elapsed;
     if (this.timer_talk < 0) {
       this.timer_talk += Constants.unit_timer_talk + int(random(Constants.unit_timer_talk));
       this.talkSound();
     }
-    this.healPercent(this.passiveHeal() * timeElapsed * 0.001, true);
+    this.healPercent(this.passiveHeal() * time_elapsed * 0.001, true);
     this.updateItems();
   }
 
@@ -3224,7 +3289,7 @@ class Unit extends MapObject {
       this.remove = true;
       this.deathSound();
     }
-    else {
+    else if (source != null) {
       this.damagedSound();
     }
     this.last_damage_from = source;
@@ -3663,6 +3728,7 @@ class Unit extends MapObject {
     this.resolveFloorHeight(map);
     if (!this.falling && this.curr_height == this.floor_height) {
       this.curr_height += this.jumpHeight();
+      this.falling = true;
     }
     this.resolveFloorHeight(map);
   }
@@ -3686,6 +3752,9 @@ class Unit extends MapObject {
   }
 
   int walkHeight() {
+    if (this.falling) {
+      return 0;
+    }
     switch(this.agility()) {
       case 0:
         return 0;
@@ -3829,6 +3898,15 @@ class Unit extends MapObject {
   void targetSound() {
     if (!this.in_view) {
       return;
+    }
+    if (this.timer_target_sound > 0) {
+      return;
+    }
+    if (this.ai_controlled) {
+      this.timer_target_sound = 2 * Constants.unit_timer_target_sound + 2 * round(random(Constants.unit_timer_target_sound));
+    }
+    else {
+      this.timer_target_sound = Constants.unit_timer_target_sound + round(random(Constants.unit_timer_target_sound));
     }
     String sound_name = "units/target/";
     switch(this.ID) {
@@ -4100,6 +4178,7 @@ class Unit extends MapObject {
     // calculates squares_on and height
     this.curr_squares_on = this.getSquaresOn();
     this.resolveFloorHeight(map);
+    this.timer_resolve_floor_height = Constants.unit_timer_resolve_floor_height_cooldown;
     // move stat
     float moveX = this.x - startX;
     float moveY = this.y - startY;
@@ -4326,7 +4405,7 @@ class Unit extends MapObject {
       }
       Unit u = entry.getValue();
       float distance_to = this.distance(u);
-      if (distance_to > 0) {
+      if (distance_to > Constants.small_number) {
         continue;
       }
       if (u.zf() > this.zi()) {

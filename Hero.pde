@@ -5069,6 +5069,8 @@ class Hero extends Unit {
           i.ammo -= thirst_quenched;
           this.increaseThirst(thirst_quenched);
           break;
+        case 2929: // gas can
+          break;
       }
       return;
     }

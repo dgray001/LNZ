@@ -2055,6 +2055,44 @@ class Level {
             this.currMap.viewX, f.yCenter() - this.currMap.viewY);
         }
         break;
+      case 501: // car
+      case 502:
+      case 503:
+      case 504:
+      case 505:
+        if (h.holding(2929)) {
+          if (h.weapon().ammo < 1) {
+            this.currMap.addHeaderMessage("The gas can is empty");
+          }
+          else if (f.number >= f.gasTankSize()) {
+            this.currMap.addHeaderMessage("The car's gas tank is full");
+          }
+          else {
+            int amount_to_fill = min(h.weapon().ammo, f.gasTankSize() - f.number, 8);
+            h.weapon().ammo -= amount_to_fill;
+            f.number += amount_to_fill;
+            global.sounds.trigger_units("player/pour_fuel", f.xCenter() -
+              this.currMap.viewX, f.yCenter() - this.currMap.viewY);
+          }
+        }
+        else if (h.holding(2906)) {
+          if (h.weapon().unlocks(f.ID)) {
+            if (f.number > 0) {
+              this.level_form = new VehicleForm(f, h);
+              global.defaultCursor();
+            }
+            else {
+              this.currMap.addHeaderMessage("The car is out of gas");
+            }
+          }
+          else {
+            this.currMap.addHeaderMessage("This key doesn't operate that car");
+          }
+        }
+        else {
+          this.currMap.addHeaderMessage("You need a key to operate this car");
+        }
+        break;
       default:
         global.errorMessage("ERROR: Hero " + h.display_name() + " trying to " +
           "interact with feature " + f.display_name() + " but no interaction logic found.");
@@ -3524,6 +3562,28 @@ class Level {
       else {
         button.message = i.display_name() + " (" + i.stack + " left): $" + this.costs.get(selection);
       }
+    }
+  }
+
+
+
+  class VehicleForm extends LevelForm {
+    private Feature car = null;
+    private Hero hero = null;
+
+    VehicleForm(Feature f, Hero h) {
+      super(0.5 * (width - Constants.level_vehicleFormWidth), 0.5 * (height - Constants.level_vehicleFormHeight),
+        0.5 * (width + Constants.level_vehicleFormWidth), 0.5 * (height + Constants.level_vehicleFormHeight));
+      if (f == null || f.remove || h == null || h.remove) {
+        global.errorMessage("ERROR: Null parameter passed into VehicleForm.");
+        return;
+      }
+      this.car = f;
+      this.hero = h;
+      this.setTitleText(f.display_name());
+    }
+
+    void submit() {
     }
   }
 }

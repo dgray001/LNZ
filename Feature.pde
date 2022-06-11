@@ -691,7 +691,10 @@ class Feature extends MapObject {
     }
   }
   String selectedObjectTextboxText() {
-    String text = "-- " + this.type() + " --";
+    String text = "-- " + this.type() + " --\n";
+    if (this.car()) {
+      text += "\nGas: " + 0.1 * this.number + "/" + round(0.1 * this.gasTankSize()) + " gallons";
+    }
     return text + "\n\n" + this.description();
   }
 
@@ -1343,6 +1346,24 @@ class Feature extends MapObject {
   }
 
 
+  boolean car() {
+    return this.type.equals("Car");
+  }
+
+  int gasTankSize() {
+    switch(this.ID) {
+      case 501: // Honda CRV
+      case 502: // Ford F150
+      case 503: // VW Jetta
+      case 504: // VW Beetle
+      case 505: // Lamborghini
+        return 150;
+      default:
+        return 0;
+    }
+  }
+
+
   boolean targetable(Unit u) {
     if (this.targetableByUnit()) {
       return true;
@@ -1519,6 +1540,11 @@ class Feature extends MapObject {
       case 305:
       case 306:
       case 307:
+      case 501: // cars
+      case 502:
+      case 503:
+      case 504:
+      case 505:
         return true;
       default:
         return false;

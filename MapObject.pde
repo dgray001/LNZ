@@ -271,8 +271,8 @@ abstract class MapObject {
   // returns arraylist of squares the unit is on
   ArrayList<IntegerCoordinate> getSquaresOn() {
     ArrayList<IntegerCoordinate> squares_on = new ArrayList<IntegerCoordinate>();
-    for (int i = int(floor(this.xi())); i < int(ceil(this.xf())); i++) {
-      for (int j = int(floor(this.yi())); j < int(ceil(this.yf())); j++) {
+    for (int i = round(floor(this.xi())); i < round(ceil(this.xf())); i++) {
+      for (int j = round(floor(this.yi())); j < round(ceil(this.yf())); j++) {
         squares_on.add(new IntegerCoordinate(i, j));
       }
     }

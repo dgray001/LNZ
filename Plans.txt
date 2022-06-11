@@ -1,7 +1,5 @@
 v0.7.5: Lev2 maps (06/18)
  q: Cathy Heck last ability (Title IX Charge), has a good item drop
- r: Car feature mechanics
- s: Car trigger controls
  t: Can start Ahimdoor car
  u: Make lev3 maps
  w: Add items into frontdoor maps
@@ -18,11 +16,10 @@ v0.7.6: Fernwood (06/30)
   - Design maps for Lev3s
   - Add ticks to healthbars
   - Add nelson glare silence in center of cone, visual effect of it
-  - Lot boss drops key
+  - Lot boss drops key for car in lot
   - Map outlines for Lev3s
-  - Hard limit on number of zombie sounds that can happen per whatever amount of time (do it in sounds class)
   - Linkers for Lev3s
-  - More crafting recipes (axes, tools for metalworking, hoe?, knife, bow, arrow, sling)
+  - More crafting recipes (axes, tools for metalworking, hoe?, knife, bow, arrows, sling, slingshot)
   - brothersdoor initial and boss fight triggers
   - ahimdoor initial and boss fight triggers
   - chapeldoor initial and boss fight triggers
@@ -35,13 +32,9 @@ v0.7.6: Fernwood (06/30)
   - Add magic zombie, ranged zombie (uses sight)
 
   Pathfinding issues:
-   - add random choose if multiple correct paths
-   - if colliding need to move to center of current square
-      => (maybe predict if collision will happen from start square, shouldn't be too hard)
    - targeted features above the walk height ignore pathfinding because is treated like you want to move to a wall
       => need to calculate pathfinding for every possibility (all sides and maybe corners) then return shortest
    - various other issues I can see when trying basic checks in map tester
-   - update pathfinding whenever you have an any collision and it currently isn't running
 
    Options issues:
    - flag to turn off pathfinding for player unit

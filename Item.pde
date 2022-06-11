@@ -1456,6 +1456,10 @@ class Item extends MapObject {
         this.tier = 3;
         this.inventory = new LargeKeyringInventory();
         break;
+      case 2906:
+        this.setStrings("Car Key", "Key", "");
+        this.tier = 3;
+        break;
       case 2911:
         this.setStrings("Pen", "Office", "");
         this.attack = 0.6;
@@ -1524,6 +1528,12 @@ class Item extends MapObject {
       case 2928:
         this.setStrings("Cigar", "Utility", "");
         this.ammo = Constants.item_cigarLitTime;
+        break;
+      case 2929:
+        this.setStrings("Gas Can", "Utility", "");
+        this.size = 0.28;
+        this.attack = 0.4;
+        this.tier = 3;
         break;
       case 2931:
         this.setStrings("Rock", "Ammo", "");
@@ -1765,6 +1775,21 @@ class Item extends MapObject {
         return this.display_name + " (" + this.ammo * 10 + " - " + int(this.ammo * 10 + 9) + ")";
       case 2903: // skeleton key
         return this.display_name + " (" + this.ammo * 100 + " - " + int(this.ammo * 100 + 99) + ")";
+      case 2906: // car key
+        switch(this.ammo) {
+          case 1:
+            return "Honda CRV key";
+          case 2:
+            return "Ford F150 key";
+          case 3:
+            return "VW Jetta key";
+          case 4:
+            return "VW Beetle key";
+          case 5:
+            return "Lamborghini key";
+          default:
+            return this.display_name;
+        }
       case 2928: // cigar
         if (this.toggled) {
           return "Lit " + this.display_name;
@@ -1814,6 +1839,9 @@ class Item extends MapObject {
     }
     if (this.waterBottle()) {
       text += "\nWater: " + this.ammo + "/" + this.maximumAmmo();
+    }
+    else if (this.ID == 2929) {
+      text += "\nGas: " + 0.1 * this.ammo + "/" + round(0.1 * this.maximumAmmo()) + " gallons";
     }
     if (this.type.equals("Ranged Weapon")) {
       text += "\nAmmo: " + this.ammo + "/" + this.maximumAmmo();
@@ -2589,6 +2617,9 @@ class Item extends MapObject {
       case 2905:
         path += "large_keyring.png";
         break;
+      case 2906:
+        path += "car_key.png";
+        break;
       case 2911:
         path += "pen.png";
         break;
@@ -2665,6 +2696,9 @@ class Item extends MapObject {
         else {
           path += "cigar.png";
         }
+        break;
+      case 2929:
+        path += "gas_can.png";
         break;
       case 2931:
         path += "rock.png";
@@ -3091,6 +3125,21 @@ class Item extends MapObject {
           }
         }
         return false;
+      case 2906: // car key
+        switch(lock_code) {
+          case 501: // Honda CRV
+            return this.ammo == 1;
+          case 502: // Ford F150
+            return this.ammo == 2;
+          case 503: // VS Jetta
+            return this.ammo == 3;
+          case 504: // VS Beetle
+            return this.ammo == 4;
+          case 505: // Lamborghini
+            return this.ammo == 5;
+          default:
+            return false;
+        }
       default:
         return false;
     }
@@ -4026,6 +4075,8 @@ class Item extends MapObject {
         return 400;
       case 2927: // Water Jug
         return 2500;
+      case 2929: // Gas Can
+        return 50;
       default:
         return 0;
     }
