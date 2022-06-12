@@ -1735,6 +1735,9 @@ class Hero extends Unit {
           imageMode(CORNERS);
           ellipseMode(CENTER);
           image(this.a.getImage(), this.xi, this.yi, this.xf, this.yf);
+          if (InventoryBar.this.hero().silenced()) {
+            image(global.images.getImage("statuses/silenced.png"), this.xi, this.yi, this.xf, this.yf);
+          }
           if (this.a.timer_cooldown > 0) {
             fill(100, 100, 255, 140);
             noStroke();
@@ -1819,6 +1822,11 @@ class Hero extends Unit {
       else {
         this.setHeight(global.profile.options.inventory_bar_size);
       }
+    }
+
+
+    Hero hero() {
+      return Hero.this;
     }
 
 

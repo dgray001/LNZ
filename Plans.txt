@@ -1,5 +1,5 @@
 v0.7.5: Lev2 maps (06/18)
- q: Cathy Heck last ability (Title IX Charge), has a good item drop
+ s: Cathy Heck last ability (Title IX Charge), has a good item drop
  t: Can start Ahimdoor car
  u: Make lev3 maps
  w: Add items into frontdoor maps
@@ -15,7 +15,6 @@ v0.7.6: Fernwood (06/30)
 
   - Design maps for Lev3s
   - Add ticks to healthbars
-  - Add nelson glare silence in center of cone, visual effect of it
   - Lot boss drops key for car in lot
   - Map outlines for Lev3s
   - Linkers for Lev3s

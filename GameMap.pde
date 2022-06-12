@@ -1644,6 +1644,9 @@ class GameMap {
             img_width = Constants.ability_103_range * (1 - a.timer_other / Constants.ability_103_castTime);
             arc(0, 0, img_width * this.zoom_old, img_width * this.zoom_old, -Constants.
               ability_103_coneAngle, Constants.ability_103_coneAngle, PIE);
+            fill(100, 200);
+            arc(0, 0, img_width * this.zoom_old, img_width * this.zoom_old, -0.3 *
+              Constants.ability_103_coneAngle, 0.3 * Constants.ability_103_coneAngle, PIE);
             break;
           case 108: // Nelson Glare II
             ellipseMode(RADIUS);
@@ -1651,7 +1654,10 @@ class GameMap {
             noStroke();
             img_width = Constants.ability_108_range * (1 - a.timer_other / Constants.ability_108_castTime);
             arc(0, 0, img_width * this.zoom_old, img_width * this.zoom_old, -Constants.
-              ability_103_coneAngle, Constants.ability_103_coneAngle, PIE);
+              ability_108_coneAngle, Constants.ability_108_coneAngle, PIE);
+            fill(100, 200);
+            arc(0, 0, img_width * this.zoom_old, img_width * this.zoom_old, -0.3 *
+              Constants.ability_108_coneAngle, 0.3 * Constants.ability_108_coneAngle, PIE);
             break;
           case 112: // Tongue Lash
             img_width = Constants.ability_112_distance * (1 - a.timer_other / Constants.ability_112_castTime);
@@ -2322,25 +2328,57 @@ class GameMap {
         case 'a':
         case 'A':
           if (this.units.containsKey(0) && !global.holding_ctrl && this.in_control) {
-            this.units.get(0).cast(1, this, this.hovered_object, true);
+            if (this.units.get(0).abilities.size() < 2 || this.units.get(0).abilities.get(1) == null) {
+              break;
+            }
+            else if (this.units.get(0).silenced()) {
+              this.addHeaderMessage("You are silenced");
+            }
+            else {
+              this.units.get(0).cast(1, this, this.hovered_object, true);
+            }
           }
           break;
         case 's':
         case 'S':
           if (this.units.containsKey(0) && !global.holding_ctrl && this.in_control) {
-            this.units.get(0).cast(2, this, this.hovered_object, true);
+            if (this.units.get(0).abilities.size() < 3 || this.units.get(0).abilities.get(2) == null) {
+              break;
+            }
+            else if (this.units.get(0).silenced()) {
+              this.addHeaderMessage("You are silenced");
+            }
+            else {
+              this.units.get(0).cast(2, this, this.hovered_object, true);
+            }
           }
           break;
         case 'd':
         case 'D':
           if (this.units.containsKey(0) && !global.holding_ctrl && this.in_control) {
-            this.units.get(0).cast(3, this, this.hovered_object, true);
+            if (this.units.get(0).abilities.size() < 4 || this.units.get(0).abilities.get(3) == null) {
+              break;
+            }
+            else if (this.units.get(0).silenced()) {
+              this.addHeaderMessage("You are silenced");
+            }
+            else {
+              this.units.get(0).cast(3, this, this.hovered_object, true);
+            }
           }
           break;
         case 'f':
         case 'F':
           if (this.units.containsKey(0) && !global.holding_ctrl && this.in_control) {
-            this.units.get(0).cast(4, this, this.hovered_object, true);
+            if (this.units.get(0).abilities.size() < 5 || this.units.get(0).abilities.get(4) == null) {
+              break;
+            }
+            else if (this.units.get(0).silenced()) {
+              this.addHeaderMessage("You are silenced");
+            }
+            else {
+              this.units.get(0).cast(4, this, this.hovered_object, true);
+            }
           }
           break;
         case 'v':

@@ -2023,6 +2023,9 @@ class Unit extends MapObject {
   boolean ghosting() {
     return this.hasStatusEffect(StatusEffectCode.GHOSTING);
   }
+  boolean silenced() {
+    return this.hasStatusEffect(StatusEffectCode.SILENCED);
+  }
   boolean drenched() {
     return this.hasStatusEffect(StatusEffectCode.DRENCHED);
   }
@@ -3022,7 +3025,7 @@ class Unit extends MapObject {
     this.cast(index, map, secondary_target, false);
   }
   void cast(int index , GameMap map, MapObject secondary_target, boolean player_casting) {
-    if (this.suppressed() || this.stunned()) {
+    if (this.suppressed() || this.stunned() || this.silenced()) {
       return;
     }
     if (index < 0 || index >= this.abilities.size()) {

@@ -778,15 +778,22 @@ class Ability {
           if (distance > max_distance + target.size) {
             continue;
           }
+          boolean silenced = true;
           if (distance > 0) {
             float angle = abs((float)Math.atan2(target.y - u.y, target.x - u.x) - u.facingA);
             float unit_angle = 2 * asin(0.5 * target.size / distance);
             if (angle > unit_angle + Constants.ability_103_coneAngle) {
               continue;
             }
+            if (angle > unit_angle + 0.3 * Constants.ability_103_coneAngle) {
+              silenced = false;
+            }
           }
           this.currently_hit.add(target.map_key);
           target.addStatusEffect(StatusEffectCode.NELSON_GLARE, Constants.ability_103_time);
+          if (silenced) {
+            target.addStatusEffect(StatusEffectCode.SILENCED, Constants.ability_103_time);
+          }
         }
         if (this.timer_other <= 0) {
           this.toggle = false;
@@ -828,15 +835,22 @@ class Ability {
           if (distance > max_distance + target.size) {
             continue;
           }
+          boolean silenced = true;
           if (distance > 0) {
             float angle = abs((float)Math.atan2(target.y - u.y, target.x - u.x) - u.facingA);
             float unit_angle = 2 * asin(0.5 * target.size / distance);
             if (angle > unit_angle + Constants.ability_108_coneAngle) {
               continue;
             }
+            if (angle > unit_angle + 0.3 * Constants.ability_108_coneAngle) {
+              silenced = false;
+            }
           }
           this.currently_hit.add(target.map_key);
           target.addStatusEffect(StatusEffectCode.NELSON_GLAREII, Constants.ability_108_time);
+          if (silenced) {
+            target.addStatusEffect(StatusEffectCode.SILENCED, Constants.ability_108_time);
+          }
         }
         if (this.timer_other <= 0) {
           this.toggle = false;
