@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\nAlpha v0.7.5p: 20220611" +
+  "\nAlpha v0.7.5q: 20220612" +
   "\n\nLines: 47544 (v0.7.5m)" +
   "\nImages: 1231 (v0.7.5m)" +
   "\nSounds: 335 (v0.7.5m)" +
@@ -624,8 +624,8 @@ static class Constants {
   static final float level_quizmoTimeDelay = 900;
   static final float level_khalilFormWidth = 550;
   static final float level_khalilFormHeight = 750;
-  static final float level_vehicleFormWidth = 500;
-  static final float level_vehicleFormHeight = 700;
+  static final float level_vehicleFormWidth = 450;
+  static final float level_vehicleFormHeight = 380;
   static final int level_questBlinkTime = 500;
   static final int level_questBlinks = 3;
   static final float level_timeConstants = 0.00002; // 20 minute day / night cycles

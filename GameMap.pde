@@ -993,8 +993,11 @@ class GameMap {
     if (!f.inMap(this.mapWidth, this.mapHeight)) {
       return;
     }
-    for (int i = int(floor(f.x)); i < int(floor(f.x + f.sizeX)); i++) {
-      for (int j = int(floor(f.y)); j < int(floor(f.y + f.sizeY)); j++) {
+    for (int i = round(floor(f.x)); i < round(floor(f.x + f.sizeX)); i++) {
+      for (int j = round(floor(f.y)); j < round(floor(f.y + f.sizeY)); j++) {
+        if (f.ignoreSquare(i - round(floor(f.x)), j - round(floor(f.y)))) {
+          continue;
+        }
         this.squares[i][j].addedFeature(f);
       }
     }
@@ -1029,8 +1032,11 @@ class GameMap {
     if (!f.inMap(this.mapWidth, this.mapHeight)) {
       return;
     }
-    for (int i = int(floor(f.x)); i < int(floor(f.x + f.sizeX)); i++) {
-      for (int j = int(floor(f.y)); j < int(floor(f.y + f.sizeY)); j++) {
+    for (int i = round(floor(f.x)); i < round(floor(f.x + f.sizeX)); i++) {
+      for (int j = round(floor(f.y)); j < round(floor(f.y + f.sizeY)); j++) {
+        if (f.ignoreSquare(i - round(floor(f.x)), j - round(floor(f.y)))) {
+          continue;
+        }
         this.squares[i][j].removedFeature(f);
       }
     }
@@ -1038,8 +1044,8 @@ class GameMap {
       return;
     }
     this.terrain_dimg.colorGrid(color(1, 0), int(round(f.x)), int(round(f.y)), f.sizeX, f.sizeY);
-    for (int i = int(round(f.xi())); i < int(round(f.xf())); i++) {
-      for (int j = int(round(f.yi())); j < int(round(f.yf())); j++) {
+    for (int i = round(f.xi()); i < round(f.xf()); i++) {
+      for (int j = round(f.yi()); j < round(f.yf()); j++) {
         this.terrain_dimg.addImageGrid(this.squares[i][j].terrainImage(), i, j);
       }
     }
@@ -1051,11 +1057,11 @@ class GameMap {
       if (f2.x < f.x + f.sizeX && f2.y < f.y + f.sizeY && f2.x + f2.sizeX > f.x && f2.y + f2.sizeY > f.y) {
         DImg dimg = new DImg(f2.getImage());
         dimg.setGrid(f2.sizeX, f2.sizeY);
-        int xi_overlap = int(round(max(f.x, f2.x)));
-        int yi_overlap = int(round(max(f.y, f2.y)));
-        int w_overlap = int(round(min(f.xf() - xi_overlap, f2.xf() - xi_overlap)));
-        int h_overlap = int(round(min(f.yf() - yi_overlap, f2.yf() - yi_overlap)));
-        PImage imagePiece = dimg.getImageGridPiece(xi_overlap - int(round(f2.x)),
+        int xi_overlap = round(max(f.x, f2.x));
+        int yi_overlap = round(max(f.y, f2.y));
+        int w_overlap = round(min(f.xf() - xi_overlap, f2.xf() - xi_overlap));
+        int h_overlap = round(min(f.yf() - yi_overlap, f2.yf() - yi_overlap));
+        PImage imagePiece = dimg.getImageGridPiece(xi_overlap - round(f2.x),
           yi_overlap - int(round(f2.y)), w_overlap, h_overlap);
         this.terrain_dimg.addImageGrid(imagePiece, xi_overlap, yi_overlap, w_overlap, h_overlap);
       }
@@ -1076,8 +1082,8 @@ class GameMap {
       return;
     }
     this.terrain_dimg.colorGrid(color(1, 0), int(round(f.x)), int(round(f.y)), f.sizeX, f.sizeY);
-    for (int i = int(round(f.xi())); i < int(round(f.xf())); i++) {
-      for (int j = int(round(f.yi())); j < int(round(f.yf())); j++) {
+    for (int i = round(f.xi()); i < round(f.xf()); i++) {
+      for (int j = round(f.yi()); j < round(f.yf()); j++) {
         this.terrain_dimg.addImageGrid(this.squares[i][j].terrainImage(), i, j);
       }
     }
@@ -1089,11 +1095,11 @@ class GameMap {
       if (f2.x < f.x + f.sizeX && f2.y < f.y + f.sizeY && f2.x + f2.sizeX > f.x && f2.y + f2.sizeY > f.y) {
         DImg dimg = new DImg(f2.getImage());
         dimg.setGrid(f2.sizeX, f2.sizeY);
-        int xi_overlap = int(round(max(f.x, f2.x)));
-        int yi_overlap = int(round(max(f.y, f2.y)));
-        int w_overlap = int(round(min(f.xf() - xi_overlap, f2.xf() - xi_overlap)));
-        int h_overlap = int(round(min(f.yf() - yi_overlap, f2.yf() - yi_overlap)));
-        PImage imagePiece = dimg.getImageGridPiece(xi_overlap - int(round(f2.x)),
+        int xi_overlap = round(max(f.x, f2.x));
+        int yi_overlap = round(max(f.y, f2.y));
+        int w_overlap = round(min(f.xf() - xi_overlap, f2.xf() - xi_overlap));
+        int h_overlap = round(min(f.yf() - yi_overlap, f2.yf() - yi_overlap));
+        PImage imagePiece = dimg.getImageGridPiece(xi_overlap - round(f2.x),
           yi_overlap - int(round(f2.y)), w_overlap, h_overlap);
         this.terrain_dimg.addImageGrid(imagePiece, xi_overlap, yi_overlap, w_overlap, h_overlap);
       }

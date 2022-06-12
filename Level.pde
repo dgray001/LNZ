@@ -3570,6 +3570,9 @@ class Level {
   class VehicleForm extends LevelForm {
     private Feature car = null;
     private Hero hero = null;
+    private int timer_idle_sound = 0;
+    private int last_update_time = 0;
+    private boolean first_update = true;
 
     VehicleForm(Feature f, Hero h) {
       super(0.5 * (width - Constants.level_vehicleFormWidth), 0.5 * (height - Constants.level_vehicleFormHeight),
@@ -3581,9 +3584,94 @@ class Level {
       this.car = f;
       this.hero = h;
       this.setTitleText(f.display_name());
+      this.setFieldCushion(10);
+
+      String message_body = this.getMessageBody(); // from level location / car
+      MessageFormField message = new MessageFormField(message_body);
+      SubmitCancelFormField submit = new SubmitCancelFormField("Drive Away", "Exit Vehicle");
+      submit.button1.setColors(color(170), color(236, 213, 166), color(211,
+        188, 141), color(190, 165, 120), color(0));
+      submit.button2.setColors(color(170), color(236, 213, 166), color(211,
+        188, 141), color(190, 165, 120), color(0));
+
+      this.addField(new SpacerFormField(210));
+      this.addField(new MessageFormField("You started the car"));
+      this.addField(message);
+      this.addField(submit);
+
+      global.sounds.trigger_player("player/car_start");
     }
 
+    String getMessageBody() {
+      switch(Level.this.location) {
+        case FRANCISCAN_LEV2_FRONTDOOR:
+          switch(this.car.ID) {
+            case 501: // ahimdoor
+            case 502: // outside egan
+            case 503: // behindcaf
+            case 504: // lower lot
+              return "Drive off-campus to find a more remote area?";
+            default:
+              break;
+          }
+          break;
+        default:
+          break;
+      }
+      return "Error";
+    }
+
+    @Override
+    void update(int millis) {
+      if (this.first_update) {
+        this.first_update = false;
+        this.last_update_time = millis;
+      }
+      int time_elapsed = millis - this.last_update_time;
+      this.timer_idle_sound -= time_elapsed;
+      if (this.timer_idle_sound < 0) {
+        this.timer_idle_sound = 6900;
+        global.sounds.trigger_player("player/car_idle");
+      }
+      super.update(millis);
+      imageMode(CENTER);
+      float image_width = this.car.width() * 200.0 / this.car.height();
+      image(this.car.getImage(), this.xCenter(), this.yStart + 105, image_width, 200);
+      this.last_update_time = millis;
+    }
+
+    @Override
+    void cancel() {
+      super.cancel();
+      global.sounds.trigger_player("player/car_off");
+      global.sounds.silence_player("player/car_idle");
+      this.timer_idle_sound = 500;
+    }
+
+
     void submit() {
+      boolean found_action = false;
+      switch(Level.this.location) {
+        case FRANCISCAN_LEV2_FRONTDOOR:
+          switch(this.car.ID) {
+            case 501: // ahimdoor
+            case 502: // outside egan
+            case 503: // behindcaf
+            case 504: // lower lot
+              found_action = true;
+              Level.this.complete(1);
+            default:
+              break;
+          }
+          break;
+        default:
+          break;
+      }
+      if (!found_action) {
+        global.errorMessage("ERROR: Location " + Level.this.location.file_name() +
+          "with vehicle " + this.car.ID + " not found in VehicleForm::submit().");
+      }
+      this.canceled = true;
     }
   }
 }

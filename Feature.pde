@@ -609,7 +609,7 @@ class Feature extends MapObject {
       // Vehicles
       case 501:
         this.setStrings("Honda CR-V", "Car", "");
-        this.setSize(5, 3, 5);
+        this.setSize(6, 3, 5);
         break;
       case 502:
         this.setStrings("Ford F-150", "Car", "");
@@ -617,7 +617,7 @@ class Feature extends MapObject {
         break;
       case 503:
         this.setStrings("VW Jetta", "Car", "");
-        this.setSize(5, 3, 5);
+        this.setSize(5, 2, 5);
         break;
       case 504:
         this.setStrings("VW Bug", "Car", "");
@@ -625,7 +625,7 @@ class Feature extends MapObject {
         break;
       case 505:
         this.setStrings("Lamborghini", "Car", "");
-        this.setSize(4, 4, 5);
+        this.setSize(4, 3, 5);
         break;
       case 511:
         this.setStrings("Civilian Helicopter", "Helicopter", "");
@@ -1343,6 +1343,121 @@ class Feature extends MapObject {
         break;
     }
     return global.images.getImage(path);
+  }
+
+
+  boolean ignoreSquare(int i, int j) {
+    switch(this.ID) {
+      case 448: // Tree large, large
+        if (i == 0 || i == 3) {
+          if (j == 0 || j == 3) {
+            return true;
+          }
+        }
+        break;
+      case 501: // Honda CRV
+        if (i == 0 && j == 0) {
+          return true;
+        }
+        if (i == 1 && j == 0) {
+          return true;
+        }
+        if (i == 0 && j == 2) {
+          return true;
+        }
+        if (i == 2 && j == 2) {
+          return true;
+        }
+        if (i == 3 && j == 2) {
+          return true;
+        }
+        if (i == 4 && j == 2) {
+          return true;
+        }
+        if (i == 5 && j == 2) {
+          return true;
+        }
+        break;
+      case 502: // Ford F150
+        if (i == 0 && j == 0) {
+          return true;
+        }
+        if (i == 1 && j == 0) {
+          return true;
+        }
+        if (i == 4 && j == 0) {
+          return true;
+        }
+        if (i == 0 && j == 2) {
+          return true;
+        }
+        if (i == 1 && j == 2) {
+          return true;
+        }
+        if (i == 2 && j == 2) {
+          return true;
+        }
+        if (i == 3 && j == 2) {
+          return true;
+        }
+        if (i == 4 && j == 2) {
+          return true;
+        }
+        if (i == 5 && j == 2) {
+          return true;
+        }
+        break;
+      case 503: // VW Jetta
+        if (i == 0 && j == 0) {
+          return true;
+        }
+        break;
+      case 504: // VW Beetle
+        if (i == 0 && j == 0) {
+          return true;
+        }
+        if (i == 3 && j == 0) {
+          return true;
+        }
+        if (i == 0 && j == 2) {
+          return true;
+        }
+        if (i == 1 && j == 2) {
+          return true;
+        }
+        if (i == 3 && j == 2) {
+          return true;
+        }
+        break;
+      case 505: // Lamborghini
+        if (i == 2 && j == 0) {
+          return true;
+        }
+        if (i == 3 && j == 0) {
+          return true;
+        }
+        if (i == 0 && j == 2) {
+          return true;
+        }
+        break;
+      default:
+        return false;
+    }
+    return false;
+  }
+
+
+  @Override
+  void mouseMove(float mX, float mY) {
+    super.mouseMove(mX, mY);
+    if (!this.hovered) {
+      return;
+    }
+    int i = round(floor(mX - this.xi()));
+    int j = round(floor(mY - this.yi()));
+    if (this.ignoreSquare(i, j)) {
+      this.hovered = false;
+    }
   }
 
 

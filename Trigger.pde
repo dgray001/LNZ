@@ -130,6 +130,7 @@ class Condition {
       case 14: // player mana
       case 15: // time after
       case 16: // player respawning
+      case 17: // item id in rectangle
         break;
       default:
         global.errorMessage("ERROR: Condition ID " + ID + " not recognized.");
@@ -192,6 +193,9 @@ class Condition {
         break;
       case 16: // player respawning
         this.display_name = "Player Respawning";
+        break;
+      case 17: // item id in rectangle
+        this.display_name = "Item ID (" + this.number1 + ") In: " + this.rectangle.fileString();
         break;
       default:
         this.display_name = "Condition";
@@ -404,6 +408,22 @@ class Condition {
         }
         this.met = level.respawning;
         break;
+      case 17: // item id in rectangle
+        if (this.met) {
+          break;
+        }
+        if (level.currMap == null) {
+          break;
+        }
+        for (Item i : level.currMap.items.values()) {
+          if (i.remove || i.ID != this.number1) {
+            continue;
+          }
+          if (this.rectangle.contains(i, level.currMapName)) {
+            this.met = true;
+          }
+        }
+        break;
       default:
         global.errorMessage("ERROR: Condition ID " + ID + " not recognized.");
         return false;
@@ -451,6 +471,8 @@ class Condition {
       case 15: // time after
         break;
       case 16: // player respawning
+        break;
+      case 17: // item id in rectangle
         break;
       default:
         global.errorMessage("ERROR: Condition ID " + ID + " not recognized.");

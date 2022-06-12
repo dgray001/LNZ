@@ -1273,7 +1273,7 @@ class MapEditorInterface extends InterfaceLNZ {
       condition.setName();
       this.condition = condition;
       this.addField(new SpacerFormField(20));
-      this.addField(new IntegerFormField("ID: ", "Enter an integer from 0-16", 0, 16));
+      this.addField(new IntegerFormField("ID: ", "Enter an integer from 0-17", 0, 17));
       this.addField(new SpacerFormField(20));
       this.addField(new IntegerFormField("Number 1: ", "enter an integer", 0, Integer.MAX_VALUE - 1));
       this.addField(new IntegerFormField("Number 2: ", "enter an integer", 0, Integer.MAX_VALUE - 1));
