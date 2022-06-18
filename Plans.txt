@@ -1,7 +1,5 @@
 v0.7.5: Lev2 maps (06/18)
  s: Cathy Heck last ability (Title IX Charge), has a good item drop
- t: Can start Ahimdoor car
- u: Make lev3 maps
  w: Add items into frontdoor maps
  x: Can access unlocked minigames, Notification for minigame unlock
  y: Campaigns can unlock minigames, force you to play if you haven't previously unlocked it

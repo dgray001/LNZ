@@ -1,4 +1,6 @@
 enum MinigameName {
+  CHESS, EPIC_FOOLS, ZAMBOS,
+  ;
 }
 
 abstract class Minigame {

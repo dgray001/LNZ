@@ -39,6 +39,22 @@ class GameMapArea extends GameMap {
   }
 
 
+  class MouseMoveThreadArea extends Thread {
+    private float mX = 0;
+    private float mY = 0;
+
+    MouseMoveThreadArea(float mX, float mY) {
+      super("MouseMoveThreadArea");
+      this.mX = mX;
+      this.mY = mY;
+    }
+
+    @Override
+    void run() {
+    }
+  }
+
+
 
   protected HashMap<IntegerCoordinate, GameMapSquare[][]> squares_reference =
     new HashMap<IntegerCoordinate, GameMapSquare[][]>();
