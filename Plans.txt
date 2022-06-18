@@ -1,5 +1,4 @@
 v0.7.5: Lev2 maps (06/18)
- t: AbstractGameMap
  u: Can access unlocked minigames, Notification for minigame unlock
  v: Campaigns can unlock minigames, force you to play if you haven't previously unlocked it
  w: Mock car broke down minigame unlocked when ahimdoor car started
