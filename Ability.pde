@@ -537,10 +537,10 @@ class Ability {
   }
 
 
-  void activate(Unit u, GameMap map) {
+  void activate(Unit u, AbstractGameMap map) {
     this.activate(u, map, null);
   }
-  void activate(Unit u, GameMap map, Unit target_unit) {
+  void activate(Unit u, AbstractGameMap map, Unit target_unit) {
     int ability_index = u.curr_action_id;
     u.curr_action_id = 0;
     switch(this.ID) {
@@ -743,7 +743,7 @@ class Ability {
   }
 
 
-  void update(int timeElapsed, Unit u, GameMap map) {
+  void update(int timeElapsed, Unit u, AbstractGameMap map) {
     this.update(timeElapsed);
     float max_distance = 0;
     float box_width = 0;

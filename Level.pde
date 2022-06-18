@@ -146,7 +146,7 @@ class ZombieSpawnParams {
     if (level.currMap.zombie_counter > this.max_zombies) {
       return;
     }
-    if (level.currMap.zombie_counter > this.max_zombies_per_square * level.currMap.mapWidth() * level.currMap.mapHeight()) {
+    if (level.currMap.zombie_counter > this.max_zombies_per_square * level.currMap.currWidth() * level.currMap.currHeight()) {
       return;
     }
     float x_facing = random(-1.0, 1.0);

@@ -205,6 +205,29 @@ class MainMenuInterface extends InterfaceLNZ {
     }
   }
 
+  class MainMenuGrowButton6 extends MainMenuGrowButton {
+    MainMenuGrowButton6() {
+      super(0, height - 560, 200, height - 500, 0.3);
+      this.message = "Minigames";
+    }
+    PImage getIcon() {
+      return global.images.getImage("icons/minigame.png");
+    }
+
+    @Override
+    void update(int millis) {
+      super.update(millis);
+    }
+
+    @Override
+    void release() {
+      if (this.hovered) {
+        // enter minigame state
+      }
+      super.release();
+    }
+  }
+
 
   class BannerButton extends ImageButton {
     BannerButton() {
@@ -743,7 +766,7 @@ class MainMenuInterface extends InterfaceLNZ {
   }
 
 
-  private MainMenuGrowButton[] growButtons = new MainMenuGrowButton[5];
+  private MainMenuGrowButton[] growButtons = new MainMenuGrowButton[6];
   private BannerButton banner = new BannerButton();
   private PlayButton play = new PlayButton();
   private ProfileButton profile = new ProfileButton();
@@ -760,6 +783,7 @@ class MainMenuInterface extends InterfaceLNZ {
     this.growButtons[2] = new MainMenuGrowButton3();
     this.growButtons[3] = new MainMenuGrowButton4();
     this.growButtons[4] = new MainMenuGrowButton5();
+    this.growButtons[5] = new MainMenuGrowButton6();
     if (global.profile == null) {
       this.loadProfile();
     }

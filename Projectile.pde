@@ -515,7 +515,7 @@ class Projectile extends MapObject {
   }
 
 
-  void update(int timeElapsed, GameMap map) {
+  void update(int timeElapsed, AbstractGameMap map) {
     if (this.remove) {
       return;
     }
@@ -565,7 +565,7 @@ class Projectile extends MapObject {
 
 
   // returns true if collision occurs
-  boolean moveX(float tryMoveX, GameMap map) {
+  boolean moveX(float tryMoveX, AbstractGameMap map) {
     while(abs(tryMoveX) > Constants.map_moveLogicCap) {
       if (tryMoveX > 0) {
         if (this.collisionLogicX(Constants.map_moveLogicCap, map)) {
@@ -587,7 +587,7 @@ class Projectile extends MapObject {
   }
 
   // returns true if collision occurs
-  boolean moveY(float tryMoveY, GameMap map) {
+  boolean moveY(float tryMoveY, AbstractGameMap map) {
     while(abs(tryMoveY) > Constants.map_moveLogicCap) {
       if (tryMoveY > 0) {
         if (this.collisionLogicY(Constants.map_moveLogicCap, map)) {
@@ -609,17 +609,17 @@ class Projectile extends MapObject {
   }
 
   // returns true if collision occurs
-  boolean collisionLogicX(float tryMoveX, GameMap map) {
+  boolean collisionLogicX(float tryMoveX, AbstractGameMap map) {
     float startX = this.x;
     this.x += tryMoveX;
     // map collisions
-    if (!this.inMapX(map.mapWidth)) {
+    if (!this.inMapX(map.mapXI(), map.mapXF())) {
       this.remove = true;
       return true;
     }
     // terrain collisions
     try {
-      if (map.squares[int(floor(this.x))][int(floor(this.y))].elevation(true) > this.curr_height) {
+      if (map.mapSquare(int(this.x), int(this.y)).elevation(true) > this.curr_height) {
         this.x = startX;
         this.dropOnGround(map);
         this.collideSound(map);
@@ -654,17 +654,17 @@ class Projectile extends MapObject {
   }
 
   // returns true if collision occurs
-  boolean collisionLogicY(float tryMoveY, GameMap map) {
+  boolean collisionLogicY(float tryMoveY, AbstractGameMap map) {
     float startY = this.y;
     this.y += tryMoveY;
     // map collisions
-    if (!this.inMapY(map.mapHeight)) {
+    if (!this.inMapY(map.mapYI(), map.mapYF())) {
       this.remove = true;
       return true;
     }
     // terrain collisions
     try {
-      if (map.squares[int(floor(this.x))][int(floor(this.y))].elevation(true) > this.curr_height) {
+      if (map.mapSquare(int(this.x), int(this.y)).elevation(true) > this.curr_height) {
         this.y = startY;
         this.dropOnGround(map);
         this.collideSound(map);
@@ -729,7 +729,7 @@ class Projectile extends MapObject {
     return droppedItems;
   }
 
-  void dropItems(GameMap map) {
+  void dropItems(AbstractGameMap map) {
     for (Item i : this.droppedItems(false)) {
       map.addItem(i, this.x, this.y);
     }
@@ -748,7 +748,7 @@ class Projectile extends MapObject {
     }
   }
 
-  void dropOnGround(GameMap map) {
+  void dropOnGround(AbstractGameMap map) {
     this.dropItems(map);
     if (this.waitsToExplode()) {
       this.startExplodeTimer(map);
@@ -761,7 +761,7 @@ class Projectile extends MapObject {
     }
   }
 
-  void collideWithUnit(GameMap map, Unit u) {
+  void collideWithUnit(AbstractGameMap map, Unit u) {
     this.dropItems(map);
     float damage = u.calculateDamageFrom(this.collidePower(), this.damageType,
       this.element, this.piercing, this.penetration);
@@ -788,7 +788,7 @@ class Projectile extends MapObject {
   }
 
 
-  void dropSound(GameMap map) {
+  void dropSound(AbstractGameMap map) {
     switch(this.ID) {
       case 3118: // Chicken Egg
         global.sounds.trigger_units("items/egg_crack", this.x - map.viewX, this.y - map.viewY);
@@ -803,7 +803,7 @@ class Projectile extends MapObject {
   }
 
 
-  void collideSound(GameMap map) {
+  void collideSound(AbstractGameMap map) {
     switch(this.ID) {
       case 3118: // Chicken Egg
         global.sounds.trigger_units("items/egg_crack", this.x - map.viewX, this.y - map.viewY);
@@ -891,7 +891,7 @@ class Projectile extends MapObject {
     }
   }
 
-  void startExplodeTimer(GameMap map) {
+  void startExplodeTimer(AbstractGameMap map) {
     this.waiting_to_explode = true;
     switch(this.ID) {
       case 3321: // War Machine
@@ -923,7 +923,7 @@ class Projectile extends MapObject {
     }
   }
 
-  void explode(GameMap map) {
+  void explode(AbstractGameMap map) {
     float explode_x = this.x;
     float explode_y = this.y;
     float explode_range = 0;

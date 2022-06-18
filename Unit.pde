@@ -161,18 +161,18 @@ class Unit extends MapObject {
 
     private float goal_x = 0;
     private float goal_y = 0;
-    private GameMap map = null;
+    private AbstractGameMap map = null;
     private Stack<FloatCoordinate> move_stack = new Stack<FloatCoordinate>();
     private boolean stop_thread = false;
 
-    PathFindingThread(float goal_x, float goal_y, GameMap map) {
+    PathFindingThread(float goal_x, float goal_y, AbstractGameMap map) {
       super("PathFindingThread");
       this.goal_x = goal_x;
       this.goal_y = goal_y;
       this.map = map;
     }
 
-    HashMap<IntegerCoordinate, CoordinateValues> next_coordinates(HashMap<IntegerCoordinate, Float> last_coordinates, GameMap map) {
+    HashMap<IntegerCoordinate, CoordinateValues> next_coordinates(HashMap<IntegerCoordinate, Float> last_coordinates, AbstractGameMap map) {
       HashMap<IntegerCoordinate, CoordinateValues> next_coordinates = new HashMap<IntegerCoordinate, CoordinateValues>();
       for (Map.Entry<IntegerCoordinate, Float> entry : last_coordinates.entrySet()) {
         int source_height = map.heightOfSquare(entry.getKey(), true);
@@ -2113,7 +2113,7 @@ class Unit extends MapObject {
   }
 
 
-  void refreshPlayerSight(GameMap map) {
+  void refreshPlayerSight(AbstractGameMap map) {
     for (IntegerCoordinate coordinate : this.curr_squares_sight) {
       map.setTerrainVisible(false, coordinate.x, coordinate.y);
     }
@@ -2124,7 +2124,7 @@ class Unit extends MapObject {
   }
 
 
-  void startPathfindingThread(GameMap map) {
+  void startPathfindingThread(AbstractGameMap map) {
     switch(this.curr_action) {
       case MOVING:
       case MOVING_AND_USING_ITEM:
@@ -2143,7 +2143,7 @@ class Unit extends MapObject {
         break;
     }
   }
-  void startPathfindingThread(float targetX, float targetY, GameMap map) {
+  void startPathfindingThread(float targetX, float targetY, AbstractGameMap map) {
     this.waiting_for_pathfinding_thread = true;
     if (this.pathfinding_thread != null && this.pathfinding_thread.isAlive()) {
       this.pathfinding_thread.stop_thread = true;
@@ -2153,7 +2153,7 @@ class Unit extends MapObject {
   }
 
   // If unit choosing to move somewhere
-  void moveLogic(int time_elapsed, GameMap map) {
+  void moveLogic(int time_elapsed, AbstractGameMap map) {
     if (this.waiting_for_pathfinding_thread) {
       if (this.pathfinding_thread == null) {
         this.waiting_for_pathfinding_thread = false;
@@ -2220,12 +2220,12 @@ class Unit extends MapObject {
     this.timer_walk -= time_elapsed;
     if (this.timer_walk < 0) {
       this.timer_walk += Constants.unit_timer_walk;
-      this.walkSound(map.squares[int(floor(this.x))][int(floor(this.y))].terrain_id);
+      this.walkSound(map.mapSquare(int(this.x), int(this.y)).terrain_id);
     }
   }
 
 
-  void update(int timeElapsed, GameMap map) {
+  void update(int timeElapsed, AbstractGameMap map) {
     // timers
     this.update(timeElapsed);
     // ai logic for ai units
@@ -2835,7 +2835,7 @@ class Unit extends MapObject {
     else {
       for (IntegerCoordinate coordinate : this.curr_squares_on) {
         try {
-          switch(map.squares[coordinate.x][coordinate.y].terrain_id) {
+          switch(map.mapSquare(coordinate.x, coordinate.y).terrain_id) {
             case 181: // Very Shallow Water
             case 182:
               break;
@@ -2928,12 +2928,12 @@ class Unit extends MapObject {
   }
 
 
-  void useItem(GameMap map) {
+  void useItem(AbstractGameMap map) {
     global.errorMessage("ERROR: Units cannot use Items, only Heroes can.");
   }
 
 
-  void dropWeapon(GameMap map) {
+  void dropWeapon(AbstractGameMap map) {
     if (this.weapon() == null) {
       return;
     }
@@ -2953,10 +2953,10 @@ class Unit extends MapObject {
   }
 
 
-  void target(MapObject object, GameMap map) {
+  void target(MapObject object, AbstractGameMap map) {
     this.target(object, map, false);
   }
-  void target(MapObject object, GameMap map, boolean use_item) {
+  void target(MapObject object, AbstractGameMap map, boolean use_item) {
     if (object == null) {
       return;
     }
@@ -3018,13 +3018,13 @@ class Unit extends MapObject {
     this.buffer_cast = index;
   }
 
-  void cast(int index, GameMap map) {
+  void cast(int index, AbstractGameMap map) {
     this.cast(index, map, null);
   }
-  void cast(int index , GameMap map, MapObject secondary_target) {
+  void cast(int index , AbstractGameMap map, MapObject secondary_target) {
     this.cast(index, map, secondary_target, false);
   }
-  void cast(int index , GameMap map, MapObject secondary_target, boolean player_casting) {
+  void cast(int index , AbstractGameMap map, MapObject secondary_target, boolean player_casting) {
     if (this.suppressed() || this.stunned() || this.silenced()) {
       return;
     }
@@ -3094,7 +3094,7 @@ class Unit extends MapObject {
 
 
   // Shoot projectile
-  void shoot(GameMap map) {
+  void shoot(AbstractGameMap map) {
     if (this.weapon() == null || !this.weapon().shootable()) {
       return;
     }
@@ -3491,7 +3491,7 @@ class Unit extends MapObject {
   }
 
 
-  void destroy(GameMap map) {
+  void destroy(AbstractGameMap map) {
     for (Item i : this.drops()) {
       map.addItem(i, this.x + this.size - random(this.size), this.y + this.size - random(this.size));
     }
@@ -3727,7 +3727,7 @@ class Unit extends MapObject {
   }
 
 
-  void jump(GameMap map) {
+  void jump(AbstractGameMap map) {
     this.resolveFloorHeight(map);
     if (!this.falling && this.curr_height == this.floor_height) {
       this.curr_height += this.jumpHeight();
@@ -4117,11 +4117,11 @@ class Unit extends MapObject {
   }
 
 
-  void moveForward(float distance, GameMap map) {
+  void moveForward(float distance, AbstractGameMap map) {
     this.moveTo(this.x + this.facingX * distance, this.y + this.facingY * distance, map);
   }
 
-  void moveTo(float targetX, float targetY, GameMap map) {
+  void moveTo(float targetX, float targetY, AbstractGameMap map) {
     if (this.curr_action == UnitAction.USING_ITEM || this.curr_action == UnitAction.MOVING_AND_USING_ITEM) {
       this.curr_action = UnitAction.MOVING_AND_USING_ITEM;
     }
@@ -4139,7 +4139,7 @@ class Unit extends MapObject {
     this.curr_action_id = 0;
   }
 
-  void move(float timeElapsed, GameMap map, MoveModifier modifier) {
+  void move(float timeElapsed, AbstractGameMap map, MoveModifier modifier) {
     // remove camouflage
     if (this.aposematicCamouflage()) {
       this.removeStatusEffect(StatusEffectCode.APOSEMATIC_CAMOUFLAGE);
@@ -4195,7 +4195,7 @@ class Unit extends MapObject {
     }
   }
 
-  void moveX(float tryMoveX, float tryMoveY, GameMap map) {
+  void moveX(float tryMoveX, float tryMoveY, AbstractGameMap map) {
     if (tryMoveX == 0) {
       return;
     }
@@ -4233,7 +4233,7 @@ class Unit extends MapObject {
     }
   }
 
-  void moveY(float tryMoveX, float tryMoveY, GameMap map) {
+  void moveY(float tryMoveX, float tryMoveY, AbstractGameMap map) {
     if (tryMoveY == 0) {
       return;
     }
@@ -4268,11 +4268,11 @@ class Unit extends MapObject {
   }
 
   // returns true if collision occurs
-  boolean collisionLogicX(float tryMoveX, float equivalentMoveY, GameMap map) {
+  boolean collisionLogicX(float tryMoveX, float equivalentMoveY, AbstractGameMap map) {
     float startX = this.x;
     this.x += tryMoveX;
     // map collisions
-    if (!this.inMapX(map.mapWidth)) {
+    if (!this.inMapX(map.mapXI(), map.mapXF())) {
       this.x = startX;
       return true;
     }
@@ -4334,11 +4334,11 @@ class Unit extends MapObject {
   }
 
   // returns true if collision occurs
-  boolean collisionLogicY(float tryMoveY, float equivalentMoveX, GameMap map) {
+  boolean collisionLogicY(float tryMoveY, float equivalentMoveX, AbstractGameMap map) {
     float startY = this.y;
     this.y += tryMoveY;
     // map collisions
-    if (!this.inMapY(map.mapHeight)) {
+    if (!this.inMapY(map.mapYI(), map.mapYF())) {
       this.y = startY;
       return true;
     }
@@ -4399,7 +4399,7 @@ class Unit extends MapObject {
   }
 
 
-  void resolveFloorHeight(GameMap map) {
+  void resolveFloorHeight(AbstractGameMap map) {
     this.floor_height = map.maxHeightOfSquares(this.curr_squares_on, false);
     this.unit_height = -100;
     for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
@@ -4436,7 +4436,7 @@ class Unit extends MapObject {
   }
 
 
-  ArrayList<IntegerCoordinate> getSquaresSight(GameMap map) {
+  ArrayList<IntegerCoordinate> getSquaresSight(AbstractGameMap map) {
     ArrayList<IntegerCoordinate> squares_sight = new ArrayList<IntegerCoordinate>();
     float unit_sight = this.sight();
     float inner_square_distance = Constants.inverse_root_two * unit_sight;
@@ -4472,7 +4472,7 @@ class Unit extends MapObject {
                 continue;
               }
               try {
-                if (map.squares[a][b].passesLight()) {
+                if (map.mapSquare(a, b).passesLight()) {
                   continue;
                 }
                 float p_x = a + 0.5;
@@ -4523,7 +4523,7 @@ class Unit extends MapObject {
   }
 
   // Only checks terrain collisions, used in pathfinding at end to patch initial collision artifact
-  boolean willCollideMovingTo(float target_x, float target_y, GameMap map) {
+  boolean willCollideMovingTo(float target_x, float target_y, AbstractGameMap map) {
     int xi = round(min(floor(this.xi() + Constants.small_number), target_x));
     int yi = round(min(floor(this.yi() + Constants.small_number), target_y));
     int xf = round(max(floor(this.xf() - Constants.small_number), target_x));
@@ -4564,7 +4564,7 @@ class Unit extends MapObject {
   }
 
 
-  void aiLogic(int timeElapsed, GameMap map) {
+  void aiLogic(int timeElapsed, AbstractGameMap map) {
     switch(this.ID) {
       case 1002: // Chicken
         if (this.curr_action == UnitAction.NONE || this.last_move_collision) {

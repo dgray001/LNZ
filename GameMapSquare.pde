@@ -26,7 +26,7 @@ class GameMapSquare {
     this.light_blocked_by_feature -= f.lightPercentageBlocked();
   }
 
-  void updateLightLevel(GameMap map, int x, int y) {
+  void updateLightLevel(AbstractGameMap map, int x, int y) {
     if (this.terrain_id == 191) { // lava
       this.light_source = true;
       this.light_level = 9.2;
@@ -40,7 +40,7 @@ class GameMapSquare {
       light = map.base_light_level;
     }
     try {
-      GameMapSquare square = map.squares[x+1][y];
+      GameMapSquare square = map.mapSquare(x + 1, y);
       if (square.light_source || square.passesLight()) {
         float light_right = square.light_level - Constants.map_lightDecay;
         light_right *= 1 - square.light_blocked_by_feature;
@@ -50,7 +50,7 @@ class GameMapSquare {
       }
     } catch(ArrayIndexOutOfBoundsException e) {}
     try {
-      GameMapSquare square = map.squares[x-1][y];
+      GameMapSquare square = map.mapSquare(x - 1, y);
       if (square.light_source || square.passesLight()) {
         float light_left = square.light_level - Constants.map_lightDecay;
         light_left *= 1 - square.light_blocked_by_feature;
@@ -60,7 +60,7 @@ class GameMapSquare {
       }
     } catch(ArrayIndexOutOfBoundsException e) {}
     try {
-      GameMapSquare square = map.squares[x][y+1];
+      GameMapSquare square = map.mapSquare(x, y + 1);
       if (square.light_source || square.passesLight()) {
         float light_down = square.light_level - Constants.map_lightDecay;
         light_down *= 1 - square.light_blocked_by_feature;
@@ -70,7 +70,7 @@ class GameMapSquare {
       }
     } catch(ArrayIndexOutOfBoundsException e) {}
     try {
-      GameMapSquare square = map.squares[x][y-1];
+      GameMapSquare square = map.mapSquare(x, y - 1);
       if (square.light_source || square.passesLight()) {
         float light_up = square.light_level - Constants.map_lightDecay;
         light_up *= 1 - square.light_blocked_by_feature;

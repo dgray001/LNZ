@@ -1954,7 +1954,7 @@ class Feature extends MapObject {
   }
 
 
-  void destroy(GameMap map) {
+  void destroy(AbstractGameMap map) {
     this.remove = true;
     for (int id : this.drops()) {
       map.addItem(new Item(id, this.x + 0.2 + random(0.6 + this.sizeX - 1),
@@ -1975,10 +1975,10 @@ class Feature extends MapObject {
   }
 
 
-  void interact(Unit u, GameMap map) {
+  void interact(Unit u, AbstractGameMap map) {
     this.interact(u, map, false);
   }
-  void interact(Unit u, GameMap map, boolean use_item) {
+  void interact(Unit u, AbstractGameMap map, boolean use_item) {
     if (Hero.class.isInstance(u)) {
       if (use_item) {
         u.curr_action = UnitAction.HERO_INTERACTING_WITH_FEATURE_WITH_ITEM;
@@ -2634,7 +2634,7 @@ class Feature extends MapObject {
   }
 
 
-  void update(int timeElapsed, GameMap map) {
+  void update(int timeElapsed, AbstractGameMap map) {
     this.update(timeElapsed);
     switch(this.ID) {
       case 21: // workbench
@@ -2650,17 +2650,17 @@ class Feature extends MapObject {
           break;
         }
         try {
-          map.squares[int(this.x)][int(this.y)].light_level = 9;
-          map.squares[int(this.x)][int(this.y)].light_source = true;
-          map.squares[int(this.x)][int(this.y + 1)].light_level = 9;
-          map.squares[int(this.x)][int(this.y + 1)].light_source = true;
-        } catch(ArrayIndexOutOfBoundsException e) {}
+          map.mapSquare(int(this.x), int(this.y)).light_level = 9;
+          map.mapSquare(int(this.x), int(this.y)).light_source = true;
+          map.mapSquare(int(this.x), int(this.y + 1)).light_level = 9;
+          map.mapSquare(int(this.x), int(this.y + 1)).light_source = true;
+        } catch(NullPointerException e) {}
         break;
       case 186: // outside light source
         try {
-          map.squares[int(this.x)][int(this.y + 1)].light_level = map.base_light_level;
-          map.squares[int(this.x)][int(this.y + 1)].light_source = true;
-        } catch(ArrayIndexOutOfBoundsException e) {}
+          map.mapSquare(int(this.x), int(this.y + 1)).light_level = map.base_light_level;
+          map.mapSquare(int(this.x), int(this.y + 1)).light_source = true;
+        } catch(NullPointerException e) {}
         break;
       case 187: // invisible light source
       case 188:
@@ -2672,17 +2672,17 @@ class Feature extends MapObject {
         try {
           for (int i = int(this.x); i < int(this.x + this.sizeX); i++) {
             for (int j = int(this.y); j < int(this.y + this.sizeY); j++) {
-              map.squares[i][j].light_level = 10;
-              map.squares[i][j].light_source = true;
+              map.mapSquare(i, j).light_level = 10;
+              map.mapSquare(i, j).light_source = true;
             }
           }
-        } catch(ArrayIndexOutOfBoundsException e) {}
+        } catch(NullPointerException e) {}
         break;
       case 195: // light switch
       case 196:
       case 197:
       case 198:
-        Feature light = map.features.get(this.number);
+        Feature light = map.getFeature(this.number);
         if (light == null || light.remove || !light.switchable()) {
           break;
         }

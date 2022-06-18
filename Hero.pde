@@ -4971,10 +4971,10 @@ class Hero extends Unit {
   }
 
   @Override
-  void useItem(GameMap map) {
+  void useItem(AbstractGameMap map) {
     this.useItem(map, new InventoryKey(InventoryLocation.GEAR, 3));
   }
-  void useItem(GameMap map, InventoryKey location) {
+  void useItem(AbstractGameMap map, InventoryKey location) {
     Item i = this.inventory.getItem(location);
     if (i == null || !i.usable() || i.remove) {
       return;
@@ -5087,7 +5087,7 @@ class Hero extends Unit {
 
 
   @Override
-  void destroy(GameMap map) {
+  void destroy(AbstractGameMap map) {
     super.destroy(map);
     this.inventory.clear();
   }

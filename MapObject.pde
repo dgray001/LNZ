@@ -210,20 +210,20 @@ abstract class MapObject {
   abstract float xRadius();
   abstract float yRadius();
 
-  boolean inMap(int mapWidth, int mapHeight) {
-    if (this.xi() >= 0 && this.yi() >= 0 && this.xf() <= mapWidth && this.yf() <= mapHeight) {
+  boolean inMap(int mapXI, int mapYI, int mapXF, int mapYF) {
+    if (this.xi() >= mapXI && this.yi() >= mapYI && this.xf() <= mapXF && this.yf() <= mapYF) {
       return true;
     }
     return false;
   }
-  boolean inMapX(int mapWidth) {
-    if (this.xi() >= 0 && this.xf() <= mapWidth) {
+  boolean inMapX(int mapXI, int mapXF) {
+    if (this.xi() >= mapXI && this.xf() <= mapXF) {
       return true;
     }
     return false;
   }
-  boolean inMapY(int mapHeight) {
-    if (this.yi() >= 0 && this.yf() <= mapHeight) {
+  boolean inMapY(int mapYI, int mapYF) {
+    if (this.yi() >= mapYI && this.yf() <= mapYF) {
       return true;
     }
     return false;
