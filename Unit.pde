@@ -98,6 +98,7 @@ class EditUnitForm extends EditMapObjectForm {
     this.addField(new FloatFormField("Base Speed: ", "base speed", 0, Float.MAX_VALUE - 1));
     this.addField(new FloatFormField("Base Tenacity: ", "base tenacity", 0, 1));
     this.addField(new IntegerFormField("Base Agility: ", "base agility", 0, 10));
+    this.addField(new CheckboxFormField("AI Toggle:  "));
     this.addField(new SubmitFormField("Finished", false));
     this.updateForm();
   }
@@ -115,6 +116,7 @@ class EditUnitForm extends EditMapObjectForm {
     this.unit.base_speed = toFloat(this.fields.get(10).getValue());
     this.unit.base_tenacity = toFloat(this.fields.get(11).getValue());
     this.unit.base_agility = toInt(this.fields.get(12).getValue());
+    this.unit.ai_toggle = toBoolean(this.fields.get(13).getValue());
   }
 
   void updateForm() {
@@ -130,6 +132,7 @@ class EditUnitForm extends EditMapObjectForm {
     this.fields.get(10).setValueIfNotFocused(Float.toString(this.unit.base_speed));
     this.fields.get(11).setValueIfNotFocused(Float.toString(this.unit.base_tenacity));
     this.fields.get(12).setValueIfNotFocused(Integer.toString(this.unit.base_agility));
+    this.fields.get(13).setValueIfNotFocused(Boolean.toString(this.unit.ai_toggle));
   }
 }
 
@@ -836,9 +839,9 @@ class Unit extends MapObject {
         this.abilities.add(new Ability(1003));
         this.setLevel(11);
         this.alliance = Alliance.ZOMBIE;
-        this.timer_ai_action1 = round(5000 + random(5000));
+        this.timer_ai_action1 = round(3000 + random(3000));
         this.timer_ai_action2 = round(9000 + random(9000));
-        this.timer_ai_action3 = round(21000 + random(21000));
+        this.timer_ai_action3 = round(15000 + random(15000));
         break;
 
       default:
@@ -1701,6 +1704,9 @@ class Unit extends MapObject {
     if (this.running()) {
       speed *= Constants.status_running_multiplier;
     }
+    if (this.slowed()) {
+      speed *= Constants.status_slowed_multiplier;
+    }
     if (this.relaxed()) {
       speed *= Constants.status_relaxed_multiplier;
     }
@@ -2025,6 +2031,9 @@ class Unit extends MapObject {
   }
   boolean silenced() {
     return this.hasStatusEffect(StatusEffectCode.SILENCED);
+  }
+  boolean slowed() {
+    return this.hasStatusEffect(StatusEffectCode.SLOWED);
   }
   boolean drenched() {
     return this.hasStatusEffect(StatusEffectCode.DRENCHED);
@@ -3506,6 +3515,7 @@ class Unit extends MapObject {
 
   ArrayList<Item> drops() {
     ArrayList<Item> drops = new ArrayList<Item>();
+    Item i;
     switch(this.ID) {
       case 1002: // Chicken
         if (randomChance(0.5)) {
@@ -3533,7 +3543,7 @@ class Unit extends MapObject {
         drops.add(new Item(2988));
         drops.add(new Item(2928));
         break;
-      case 1201: // Tier I zombies
+      case 1201: // Base Zombies
       case 1202:
       case 1203:
       case 1204:
@@ -3542,22 +3552,12 @@ class Unit extends MapObject {
       case 1207:
       case 1208:
       case 1209:
-      case 1291: // Auto-spawned Zombies
+      case 1291:
         if (randomChance(0.2)) {
           drops.add(new Item(2119));
         }
         break;
-      case 1292:
-        if (randomChance(0.2)) {
-          drops.add(new Item(2119));
-        }
-        break;
-      case 1293:
-        if (randomChance(0.2)) {
-          drops.add(new Item(2119));
-        }
-        break;
-      case 1210:
+      case 1210: // Intellectual Zombie
         if (randomChance(0.2)) {
           drops.add(new Item(2119));
         }
@@ -3567,6 +3567,52 @@ class Unit extends MapObject {
         if (randomChance(0.15)) {
           drops.add(new Item(2913));
         }
+        break;
+      case 1292: // Running Zombie
+        if (randomChance(0.2)) {
+          drops.add(new Item(2119));
+        }
+        if (randomChance(0.1)) {
+          drops.add(new Item(2712));
+        }
+        break;
+      case 1293: // Armored Zombie
+        if (randomChance(0.2)) {
+          drops.add(new Item(2119));
+        }
+        if (randomChance(0.1)) {
+          int ore_id = 0;
+          if (this.tier() >= 9) {
+            ore_id = 2872;
+          }
+          else if (this.tier() >= 7) {
+            ore_id = 2862;
+          }
+          else if (this.tier() == 6) {
+            ore_id = 2852;
+          }
+          else if (this.tier() == 5) {
+            ore_id = 2842;
+          }
+          else if (this.tier() == 4) {
+            ore_id = 2832;
+          }
+          else if (this.tier() == 3) {
+            ore_id = 2822;
+          }
+          else if (this.tier() == 2) {
+            ore_id = 2812;
+          }
+          else {
+            ore_id = 2802;
+          }
+          drops.add(new Item(ore_id));
+        }
+        break;
+      case 1311: // Cathy Heck
+        i = new Item(2904);
+        i.inventory.stash(new Item(2903));
+        drops.add(i);
         break;
       default:
         break;
@@ -4815,7 +4861,13 @@ class Unit extends MapObject {
             break;
           case TARGETING_UNIT:
             if (this.timer_ai_action3 < 0) {
-              this.timer_ai_action3 = 3500;
+              this.timer_ai_action3 = round(9000 + random(9000));
+              if (this.object_targeting == null || this.object_targeting.remove) {
+                break;
+              }
+              if (this.distance(this.object_targeting) > Constants.ability_1003_size_w * 1.3) {
+                break;
+              }
               this.cast(2, map);
             }
             else if (this.timer_ai_action2 < 0) {
@@ -4823,14 +4875,8 @@ class Unit extends MapObject {
               this.cast(1, map);
             }
             else if (this.timer_ai_action1 < 0) {
-              this.timer_ai_action1 = round(6000 + random(6000));
+              this.timer_ai_action1 = round(9000 + random(9000));
               this.cast(0, map);
-            }
-            break;
-          case CAST_WHEN_IN_RANGE:
-            if (this.timer_ai_action3 < 0) {
-              this.timer_ai_action3 = round(21000 + random(21000));
-              this.curr_action = UnitAction.NONE;
             }
             break;
         }
@@ -4891,6 +4937,7 @@ class Unit extends MapObject {
     fileString += "\nfootgear_durability_distance: " + this.footgear_durability_distance;
     fileString += "\ntimer_attackCooldown: " + this.timer_attackCooldown;
     fileString += "\ntimer_actionTime: " + this.timer_actionTime;
+    fileString += "\nai_toggle: " + this.ai_toggle;
     if (include_headers) {
       fileString += "\nend: Unit\n";
     }
@@ -4988,6 +5035,9 @@ class Unit extends MapObject {
         break;
       case "timer_actionTime":
         this.timer_actionTime = toFloat(data);
+        break;
+      case "ai_toggle":
+        this.ai_toggle = toBoolean(data);
         break;
       default:
         global.errorMessage("ERROR: Datakey " + datakey + " not found for unit data.");

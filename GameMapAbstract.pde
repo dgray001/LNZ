@@ -1566,6 +1566,11 @@ abstract class AbstractGameMap {
         millis()) % Constants.gif_drenched_time) / Constants.gif_drenched_time));
       image(global.images.getImage("gifs/drenched/" + drenched_frame + ".png"), 0, 0, u.width() * this.zoom_old, u.height() * this.zoom_old);
     }
+    if (removeCache) {
+      g.removeCache(u.getImage());
+      noTint();
+      g.removeCache(u.getImage());
+    }
     if (u.curr_action == UnitAction.CASTING) {
       try {
         Ability a = u.abilities.get(u.curr_action_id);
@@ -1612,15 +1617,23 @@ abstract class AbstractGameMap {
             image(global.images.getImage("abilities/smoke.png"), 0.5 * img_width * this.zoom_old,
               0, img_width * this.zoom_old, img_height * this.zoom_old);
             break;
+          case 1003: // Title IX Charge
+            img_width = Constants.ability_1003_size_w;
+            img_height = Constants.ability_1003_size_h;
+            strokeWeight(2);
+            stroke(0);
+            noFill();
+            tint(255, round(255 * (1 - a.timer_other / Constants.ability_1003_castTime)));
+            rectMode(CENTER);
+            rect(0.5 * img_width * this.zoom_old, 0, img_width * this.zoom_old, img_height * this.zoom_old);
+            image(global.images.getImage("abilities/title_ix.png"), 0.5 * img_width * this.zoom_old,
+              0, img_width * this.zoom_old, img_height * this.zoom_old);
+            noTint();
+            break;
           default:
             break;
         }
       } catch(Exception e) {}
-    }
-    if (removeCache) {
-      g.removeCache(u.getImage());
-      noTint();
-      g.removeCache(u.getImage());
     }
     translate(-extra_translate_x, -extra_translate_y);
     rotate(-net_rotation);

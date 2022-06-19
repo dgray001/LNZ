@@ -541,7 +541,7 @@ abstract class InterfaceLNZ {
         width - Constants.optionsForm_widthOffset, height - Constants.optionsForm_heightOffset);
       this.setTitleText("Options");
       this.setTitleSize(20);
-      this.setFieldCushion(0);
+      this.setFieldCushion(5);
       this.color_background = color(250, 250, 180);
       this.color_header = color(180, 180, 50);
       if (global.profile == null) {
@@ -552,26 +552,32 @@ abstract class InterfaceLNZ {
         Constants.options_volumeMin, Constants.options_volumeMax);
       volume_master.threshhold = Constants.optionsForm_threshhold_master;
       volume_master.addCheckbox("mute: ");
+      volume_master.addLabel("%", true);
       SliderFormField volume_music = new SliderFormField("Music: ",
         Constants.options_volumeMin, Constants.options_volumeMax);
       volume_music.threshhold = Constants.optionsForm_threshhold_other;
       volume_music.addCheckbox("mute: ");
+      volume_music.addLabel("%", true);
       SliderFormField volume_interface = new SliderFormField("Interface: ",
         Constants.options_volumeMin, Constants.options_volumeMax);
       volume_interface.threshhold = Constants.optionsForm_threshhold_other;
       volume_interface.addCheckbox("mute: ");
+      volume_interface.addLabel("%", true);
       SliderFormField volume_environment = new SliderFormField("Environment: ",
         Constants.options_volumeMin, Constants.options_volumeMax);
       volume_environment.threshhold = Constants.optionsForm_threshhold_other;
       volume_environment.addCheckbox("mute: ");
+      volume_environment.addLabel("%", true);
       SliderFormField volume_units = new SliderFormField("Units: ",
         Constants.options_volumeMin, Constants.options_volumeMax);
       volume_units.threshhold = Constants.optionsForm_threshhold_other;
       volume_units.addCheckbox("mute: ");
+      volume_units.addLabel("%", true);
       SliderFormField volume_player = new SliderFormField("Player: ",
         Constants.options_volumeMin, Constants.options_volumeMax);
       volume_player.threshhold = Constants.optionsForm_threshhold_other;
       volume_player.addCheckbox("mute: ");
+      volume_player.addLabel("%", true);
       SliderFormField map_move_speed = new SliderFormField("Camera Speed: ",
         Constants.map_minCameraSpeed, Constants.map_maxCameraSpeed);
       map_move_speed.threshhold = Constants.optionsForm_threshhold_other;
@@ -580,9 +586,11 @@ abstract class InterfaceLNZ {
       inventory_bar_size.addCheckbox("hide: ");
       SliderFormField map_resolution = new SliderFormField("Terrain Resolution: ", 10, 110, 20);
       map_resolution.threshhold = Constants.optionsForm_threshhold_other;
+      map_resolution.addLabel(" pixels", true, false);
       SliderFormField fog_update_time = new SliderFormField("Fog Update Time: ",
         Constants.map_timer_refresh_fog_min, Constants.map_timer_refresh_fog_max, 50);
       fog_update_time.threshhold = Constants.optionsForm_threshhold_other;
+      fog_update_time.addLabel(" ms", true, true);
       CheckboxFormField lock_screen = new CheckboxFormField("Lock Screen:  ");
       SubmitFormField apply = new ButtonFormField("Apply");
       apply.button.setColors(color(220), color(240, 240, 190),
@@ -622,6 +630,7 @@ abstract class InterfaceLNZ {
       this.addField(cancel);
 
       this.setFormFieldValues();
+      println(volume_interface.slider.show_label);
     }
 
     void setFormFieldValues() {

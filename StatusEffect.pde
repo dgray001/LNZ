@@ -5,7 +5,7 @@ enum StatusEffectCode {
   VISIBLE("Visible"), SUPPRESSED("Suppressed"), UNTARGETABLE("Untargetable"),
   STUNNED("Stunned"), INVISIBLE("Invisible"), UNCOLLIDABLE("Uncollidable"),
   RUNNING("Running"), FERTILIZED("Fertilized"), SNEAKING("Sneaking"), RELAXED("Relaxed"),
-  GHOSTING("Ghosting"), SILENCED("Silenced"),
+  GHOSTING("Ghosting"), SILENCED("Silenced"), SLOWED("Slowed"),
 
   DRENCHED("Drenched"), DROWNING("Drowning"), BURNT("Burning"), CHARRED("Charred"),
   CHILLED("Chilled"), FROZEN("Frozen"), SICK("Sick"), DISEASED("Diseased"), ROTTING("Rotting"),
@@ -250,6 +250,7 @@ enum StatusEffectCode {
       case APOSEMATIC_CAMOUFLAGEII:
         image_path += "camouflaged.jpg";
         break;
+      case SLOWED:
       case TONGUE_LASH:
         image_path += "slowed.png";
         break;
@@ -271,14 +272,14 @@ enum StatusEffectCode {
       case UNKILLABLE:
         return "This unit cannot be killed.";
       case HUNGRY:
-        return "This unit is hungry and will slowly take damage to " + int(100.0 *
+        return "This unit is hungry and will slowly take damage to " + round(100.0 *
           Constants.status_hunger_damageLimit) + "% max health.\nHunger can " +
           "also lead to weakness.";
       case WEAK:
-        return "This unit is weak and has " + int(100.0 * Constants.
+        return "This unit is weak and has " + round(100.0 * Constants.
           status_weak_multiplier) + "% combat stats (attack, defense, etc.).";
       case THIRSTY:
-        return "This unit is thirsty and will slowly take damage to " + int(100.0 *
+        return "This unit is thirsty and will slowly take damage to " + round(100.0 *
           Constants.status_thirst_damageLimit) + "% max health.\nThirst can " +
           "also lead to becoming woozy or confused.";
       case WOOZY:
@@ -288,16 +289,16 @@ enum StatusEffectCode {
         return "This unit is confused and will randomly stop what they are " +
           "doing and move in a random direction.";
       case BLEEDING:
-        return "This unit is bleeding and will take damage to " + int(100.0 *
+        return "This unit is bleeding and will take damage to " + round(100.0 *
           Constants.status_bleed_damageLimit) + "% max health.\nBleeding can " +
           "also lead to hemorrhaging";
       case HEMORRHAGING:
         return "This unit is hemorraghing and will quickly die if it is not stopped.";
       case WILTED:
-        return "This unit is wilted and has " + int(100.0 * Constants.
+        return "This unit is wilted and has " + round(100.0 * Constants.
           status_wilted_multiplier) + "% combat stats (attack, defense, etc.).";
       case WITHERED:
-        return "This unit is withered and has " + int(100.0 * Constants.
+        return "This unit is withered and has " + round(100.0 * Constants.
           status_withered_multiplier) + "% combat stats (attack, defense, etc.).";
       case VISIBLE:
         return "This unit is visible and can be seen by enemies.";
@@ -312,65 +313,68 @@ enum StatusEffectCode {
       case UNCOLLIDABLE:
         return "This unit is uncollidable and cannot be collided with.";
       case RUNNING:
-        return "This unit is running and moves " + int(100.0 * (Constants.
+        return "This unit is running and moves " + round(100.0 * (Constants.
           status_running_multiplier - 1.0)) + "% faster.";
       case FERTILIZED:
         return "This unit is fertilized.";
       case RELAXED:
-        return "This unit is relaxed and has " + int(100.0 * Constants.
+        return "This unit is relaxed and has " + round(100.0 * Constants.
           status_relaxed_multiplier) + "% combat stats (attack, defense, etc.), " +
-          " move speed, and tenacity, but " + int(1000.0 * Constants.
+          " move speed, and tenacity, but " + round(1000.0 * Constants.
           status_relaxed_healMultiplier) / 10.0 + "% increased passive healing.";
       case GHOSTING:
         return "This unit is ghosting and can move through walls and other units.";
       case SILENCED:
         return "This unit is silenced and cannot cast spells.";
+      case SLOWED:
+        return "This unit is slowed and moves " + round(100.0 * (1.0 - Constants.
+          status_slowed_multiplier)) + "% slower.";
       case DRENCHED:
         return "This unit is drenched so will take more damage from blue sources." +
-          "\nIf this unit is red it will also slowly take damage to " + int(100.0 *
+          "\nIf this unit is red it will also slowly take damage to " + round(100.0 *
           Constants.status_drenched_damageLimit) + "% max health.";
       case DROWNING:
         return "This unit is drowning and will quickly take damage to their death." +
           "\nDrowning will also make the unit drenched." +
-          "\nIf this unit is blue it will only take damage to " + int(100.0 *
+          "\nIf this unit is blue it will only take damage to " + round(100.0 *
           Constants.status_drowning_damageLimitBlue) + "% max health.";
       case BURNT:
         return "This unit is burning and will take damage to its death." +
           "\nBurning also has chance to make this unit charred." +
-          "\nIf this unit is red it will only take damage to " + int(100.0 *
+          "\nIf this unit is red it will only take damage to " + round(100.0 *
           Constants.status_burnt_damageLimitRed) + "% max health.";
       case CHARRED:
         return "This unit is charred and will quickly take damage to its death." +
-          "\nIf this unit is red it will only take damage to " + int(100.0 *
+          "\nIf this unit is red it will only take damage to " + round(100.0 *
           Constants.status_charred_damageLimitRed) + "% max health.";
       case CHILLED:
-        return "This unit is chilled and has " + int(100.0 * Constants.
+        return "This unit is chilled and has " + round(100.0 * Constants.
           status_chilled_speedMultiplier) + "% movement and attack speed." +
-          "\nIf this unit is cyan it has " + int(100.0 * Constants.
+          "\nIf this unit is cyan it has " + round(100.0 * Constants.
             status_chilled_speedMultiplierCyan) + "% movement and attack speed.";
       case FROZEN:
         return "This unit is frozen and cannot move or attack." +
-          "\nIf this unit is orange they will take small damage to " + int(100.0 *
+          "\nIf this unit is orange they will take small damage to " + round(100.0 *
           Constants.status_frozen_damageLimit) + "% max health.";
       case SICK:
         return "This unit is sick and cannot defend themselves. They will take " +
-          int(100.0 * (Constants.status_sick_damageMultiplier - 1)) + "% more " +
+          round(100.0 * (Constants.status_sick_damageMultiplier - 1)) + "% more " +
           "damage from all sources and have their defensive stats reduced by " +
-          int(100.0 * (1 - Constants.status_sick_defenseMultiplier)) + "%.";
+          round(100.0 * (1 - Constants.status_sick_defenseMultiplier)) + "%.";
       case DISEASED:
         return "This unit is diseased and cannot defend themselves. They will take " +
-          int(100.0 * (Constants.status_diseased_damageMultiplier - 1)) + "% more " +
+          round(100.0 * (Constants.status_diseased_damageMultiplier - 1)) + "% more " +
           "damage from all sources and have their defensive stats reduced by " +
-          int(100.0 * (1 - Constants.status_diseased_defenseMultiplier)) + "%.";
+          round(100.0 * (1 - Constants.status_diseased_defenseMultiplier)) + "%.";
       case ROTTING:
-        return "This unit is rotting and will take damage to " + int(100.0 *
+        return "This unit is rotting and will take damage to " + round(100.0 *
           Constants.status_rotting_damageLimit) + "% max health.\nIf this " +
           "unit is blue they can die from rotting; if this unit is brown they " +
-          "will only take damage to " + int(100.0 * Constants.
+          "will only take damage to " + round(100.0 * Constants.
           status_rotting_damageLimitBrown) + "% max health.";
       case DECAYED:
         return "This unit is decayed and will take damage to their death.\nIf " +
-        "this unit is brown they will only take damage to " + int(100.0 *
+        "this unit is brown they will only take damage to " + round(100.0 *
         Constants.status_decayed_damageLimitBrown) + "% max health.";
       case SHAKEN:
         return "This unit is shaken.";
@@ -385,33 +389,33 @@ enum StatusEffectCode {
       case RADIOACTIVE:
         return "This unit is radioactive.";
       case NELSON_GLARE:
-        return "This unit is Nelson glared and has " + int(100.0 * (1 - Constants.
+        return "This unit is Nelson glared and has " + round(100.0 * (1 - Constants.
           ability_103_debuff)) + "% reduced attack and speed.";
       case NELSON_GLAREII:
-        return "This unit is Nelson glared and has " + int(100.0 * (1 - Constants.
+        return "This unit is Nelson glared and has " + round(100.0 * (1 - Constants.
           ability_108_debuff)) + "% reduced attack and speed.";
       case SENSELESS_GRIT:
-        return "This unit has senseless grit and has " + int(100.0 * (Constants.
+        return "This unit has senseless grit and has " + round(100.0 * (Constants.
           ability_104_speedBuff - 1)) + "% more move speed when targeting enemies.";
       case SENSELESS_GRITII:
-        return "This unit has senseless grit and has " + int(100.0 * (Constants.
+        return "This unit has senseless grit and has " + round(100.0 * (Constants.
           ability_109_speedBuff - 1)) + "% more move speed when targeting enemies.";
       case RAGE_OF_THE_BEN:
-        return "This unit has the rage of the Ben and has " + int(100.0 * (Constants.
+        return "This unit has the rage of the Ben and has " + round(100.0 * (Constants.
           ability_105_buffAmount - 1)) + "% increased attack and incrased rage gains.";
       case RAGE_OF_THE_BENII:
-        return "This unit has the rage of the Ben and has " + int(100.0 * (Constants.
+        return "This unit has the rage of the Ben and has " + round(100.0 * (Constants.
           ability_110_buffAmount - 1)) + "% increased attack and incrased rage gains.";
       case APOSEMATIC_CAMOUFLAGE:
         return "This unit is camouflaged and cannot be seen by enemies.\nThis " +
-        "unit will also have a " + int(100.0 * (Constants.ability_111_powerBuff -
+        "unit will also have a " + round(100.0 * (Constants.ability_111_powerBuff -
         1)) + "% bonus power the first attack they deliver while camouflaged.";
       case APOSEMATIC_CAMOUFLAGEII:
         return "This unit is camouflaged and cannot be seen by enemies.\nThis " +
-        "unit will also have a " + int(100.0 * (Constants.ability_116_powerBuff -
+        "unit will also have a " + round(100.0 * (Constants.ability_116_powerBuff -
         1)) + "% bonus power the first attack they deliver while camouflaged.";
       case TONGUE_LASH:
-        return "This unit has been tongue lashed and is slowed by " + int(100.0 *
+        return "This unit has been tongue lashed and is slowed by " + round(100.0 *
           (1 - Constants.ability_112_slowAmount)) + "%.";
       case ALKALOID_SECRETION:
       case ALKALOID_SECRETIONII:

@@ -222,7 +222,7 @@ class MainMenuInterface extends InterfaceLNZ {
     @Override
     void release() {
       if (this.hovered) {
-        // enter minigame state
+        global.state = ProgramState.ENTERING_MINIGAMES;
       }
       super.release();
     }

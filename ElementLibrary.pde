@@ -2632,6 +2632,12 @@ class Slider  {
 
   protected boolean hovered = false;
 
+  protected String label = "";
+  protected boolean show_label = false;
+  protected boolean round_label = true;
+  protected boolean only_label_ends = false;
+  protected boolean show_label_in_middle = false;
+
   Slider() {
     this(0, 0, 0, 0);
   }
@@ -2693,7 +2699,7 @@ class Slider  {
     }
     float change = targetValue - this.value;
     if (!this.no_step && !hitbound && this.step_size != 0 && change != 0) {
-      float new_change = this.step_size * (floor(change / this.step_size));
+      float new_change = this.step_size * (round(change / this.step_size));
       this.button.changeFactor = new_change/change;
       change = new_change;
     }
@@ -2750,6 +2756,70 @@ class Slider  {
   }
 
   void update(int millis) {
+    if (this.show_label) {
+      textSize(this.button.yr);
+      textAlign(CENTER, BOTTOM);
+    }
+    if (!this.no_step && this.max_value != this.min_value) {
+      strokeWeight(0.5 * this.line_thickness);
+      stroke(this.button.active_color);
+      fill(this.button.active_color);
+      boolean not_switched_color = true;
+      boolean on_end = true;
+      for (float i = this.min_value; i <= this.max_value; i += this.step_size) {
+        if (i + this.step_size > this.max_value) {
+          on_end = true;
+        }
+        float targetX = this.xi + this.offset + (this.xf - 2 * this.offset - this.xi) *
+          (i - this.min_value) / (this.max_value - this.min_value);
+        if (not_switched_color && targetX > this.button.xCenter()) {
+          stroke(this.button.color_stroke);
+          fill(this.button.color_stroke);
+          not_switched_color = false;
+        }
+        if (this.show_label && (!this.only_label_ends || on_end)) {
+          line(targetX, this.button.yc - 3, targetX, this.button.yc + this.button.yr - 1);
+          String label_text = "";
+          if (this.round_label) {
+            if (on_end || this.show_label_in_middle) {
+              label_text = round(i) + this.label;
+            }
+            else {
+              label_text = Integer.toString(round(i));
+            }
+          }
+          else {
+            if (on_end || this.show_label_in_middle) {
+              label_text = i + this.label;
+            }
+            else {
+              label_text = Float.toString(i);
+            }
+          }
+          text(label_text, targetX, this.button.yc);
+        }
+        else {
+          line(targetX, this.button.yc - this.button.yr + 1, targetX, this.button.yc + this.button.yr - 1);
+        }
+        on_end = false;
+      }
+    }
+    else if (this.show_label) {
+      String label_min = "";
+      String label_max = "";
+      if (this.round_label) {
+        label_min = round(this.min_value) + this.label;
+        label_max = round(this.max_value) + this.label;
+      }
+      else {
+        label_min = this.min_value + this.label;
+        label_max = this.max_value + this.label;
+      }
+      fill(this.button.active_color);
+      text(label_min, this.xi + this.offset, this.button.yc);
+      fill(this.button.color_stroke);
+      text(label_max, this.xf - this.offset, this.button.yc);
+    }
     strokeWeight(this.line_thickness);
     stroke(this.button.active_color);
     line(min(this.xi + this.offset, this.button.xc - this.button.radius()),
@@ -3528,6 +3598,16 @@ class SliderFormField extends MessageFormField {
     this.checkbox = new DefaultCheckBox();
     this.checkbox.message = message;
     this.updateWidthDependencies();
+  }
+
+  void addLabel(String label, boolean round_label) {
+    this.addLabel(label, round_label, this.slider.only_label_ends);
+  }
+  void addLabel(String label, boolean round_label, boolean only_label_ends) {
+    this.slider.show_label = true;
+    this.slider.label = label;
+    this.slider.round_label = round_label;
+    this.slider.only_label_ends = only_label_ends;
   }
 
   @Override

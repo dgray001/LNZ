@@ -315,8 +315,13 @@ class Ability {
       case 1003:
         return "Cathy's ultimatum is to hunt down unsuspecting men using all " +
           "power at her disposal, usually just a Title IX charge.\nSlap a Title " +
-          "IX charge on target enemy within ... m, dealing ... damage (missing health as well) and making " +
-          "them confused and wilted for ... s";
+          "IX charge in front of you, dealing magic damage with " + Constants.
+          ability_1003_basePower + " + (0% attack power + " + round(100*Constants.
+          ability_1003_magicRatio) + "% magic power) + " + round(100*Constants.
+          ability_1003_maxHealth) + "% max health power to enemies hit.\n" +
+          "Enemies hit also are wilted, woozy, and slowed for " + (Constants.
+          ability_1003_statusTime/1000.0) + "s and stunned for " + (Constants.
+          ability_1003_statusTime*0.3/1000.0) + "s.";
       default:
         return "-- error -- ";
     }
@@ -735,6 +740,11 @@ class Ability {
         global.sounds.trigger_units("units/ability/1002", u.x - map.viewX, u.y - map.viewY);
         break;
       case 1003: // Title IX Charge
+        this.timer_other = Constants.ability_1003_castTime;
+        this.toggle = true;
+        u.curr_action = UnitAction.CASTING;
+        u.curr_action_id = ability_index;
+        //global.sounds.trigger_units("units/ability/1003_cast", u.x - map.viewX, u.y - map.viewY);
         break;
       default:
         global.errorMessage("ERROR: Can't activate ability with ID " + this.ID + ".");
@@ -1267,6 +1277,42 @@ class Ability {
         }
         break;
       case 1003: // Title IX Charge
+        if (!this.toggle) {
+          break;
+        }
+        if (u.curr_action != UnitAction.CASTING) {
+          this.toggle = false;
+          break;
+        }
+        if (this.timer_other <= 0) {
+          this.toggle = false;
+          u.stopAction();
+          //global.sounds.trigger_units("units/ability/1003_slap", u.x - map.viewX, u.y - map.viewY);
+          for (Map.Entry<Integer, Unit> entry : map.units.entrySet()) {
+            Unit target = entry.getValue();
+            if (target.alliance == u.alliance) {
+              continue;
+            }
+            PVector distance = new PVector(target.x - u.x, target.y - u.y);
+            distance.rotate(-u.facingA);
+            if (distance.x + target.size > 0 && distance.y + target.size > -0.5 *
+              Constants.ability_1003_size_h && distance.x - target.size < Constants.
+              ability_1003_size_w && distance.y - target.size < 0.5 * Constants.ability_1003_size_h) {
+              // collision
+              float power = Constants.ability_1003_basePower + u.power(0, Constants.
+                ability_1003_magicRatio) + target.health() * Constants.ability_1003_maxHealth;
+              float damage = target.calculateDamageFrom(power, DamageType.MAGICAL,
+                Element.GRAY, u.piercing(), u.penetration());
+              target.damage(u, damage);
+              target.refreshStatusEffect(StatusEffectCode.STUNNED, 0.3 * Constants.ability_1003_statusTime);
+              target.refreshStatusEffect(StatusEffectCode.WILTED, Constants.ability_1003_statusTime);
+              target.refreshStatusEffect(StatusEffectCode.WOOZY, Constants.ability_1003_statusTime);
+              target.refreshStatusEffect(StatusEffectCode.SLOWED, Constants.ability_1003_statusTime);
+              this.toggle = false;
+              break;
+            }
+          }
+        }
         break;
 
       default:

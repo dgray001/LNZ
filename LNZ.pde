@@ -91,6 +91,14 @@ void draw() {
       break;
     case PLAYING:
       break;
+    case ENTERING_MINIGAMES:
+      background(60);
+      global.state = ProgramState.MINIGAMES;
+      global.menu = new MinigameInterface();
+      global.defaultCursor();
+      break;
+    case MINIGAMES:
+      break;
     case EXITING:
       global.timer_exiting -= timeElapsed;
       if (global.timer_exiting < 0) {

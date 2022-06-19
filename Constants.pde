@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\nAlpha v0.7.5u: 20220618" +
+  "\nAlpha v0.7.5v: 20220618" +
   "\n\nLines: 48229 (v0.7.5s)" +
   "\nImages: 1231 (v0.7.5m)" +
   "\nSounds: 335 (v0.7.5m)" +
@@ -316,6 +316,7 @@ static class Constants {
   static final float status_wilted_multiplier = 0.8;
   static final float status_withered_multiplier = 0.7;
   static final float status_running_multiplier = 1.35;
+  static final float status_slowed_multiplier = 0.7;
   static final float status_relaxed_multiplier = 0.85;
   static final float status_relaxed_healMultiplier = 0.01;
   static final float status_drenched_multiplier = 1.3;
@@ -612,6 +613,13 @@ static class Constants {
   static final float ability_1002_range = 30;
   static final float ability_1002_basePower = 6;
   static final float ability_1002_magicRatio = 1.1;
+  static final float ability_1003_basePower = 10;
+  static final float ability_1003_magicRatio = 1.4;
+  static final float ability_1003_maxHealth = 0.05;
+  static final float ability_1003_statusTime = 2500;
+  static final float ability_1003_castTime = 500;
+  static final float ability_1003_size_w = 1.7;
+  static final float ability_1003_size_h = 1.24;
 
   // Level
   static final float level_questBoxHeightRatio = 0.25;

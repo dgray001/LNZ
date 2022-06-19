@@ -149,6 +149,13 @@ class MapEditorInterface extends InterfaceLNZ {
     protected float scroll_features = 0;
     protected float scroll_units = 0;
     protected float scroll_items = 0;
+    protected String text_ref_maps = null;
+    protected String text_ref_levels = null;
+    protected String text_ref_terrain = null;
+    protected String text_ref_features = null;
+    protected String text_ref_units = null;
+    protected String text_ref_items = null;
+    protected String text_ref_levelMaps = null;
 
     MapEditorListTextBox() {
       super(width, Constants.mapEditor_listBoxGap, width, 0.9 * height - Constants.mapEditor_listBoxGap);
@@ -374,133 +381,71 @@ class MapEditorInterface extends InterfaceLNZ {
       switch(page) {
         case MAPS:
           this.setTitleText("Maps");
-          if (folderExists("data/maps")) {
-            boolean first = true;
-            for (Path p : listFiles("data/maps/")) {
-              String filename = p.getFileName().toString();
-              if (!filename.endsWith(".map.lnz")) {
-                continue;
-              }
-              String mapName = split(filename, '.')[0];
-              if (first) {
-                this.setText(mapName);
-                first = false;
-              }
-              else {
-                this.addLine(mapName);
-              }
-            }
+          if (this.text_ref_maps == null) {
+            this.setMapsText();
           }
           else {
-            mkdir("data/maps");
+            this.setText(this.text_ref_maps);
           }
           this.scrollbar.updateValue(this.scroll_maps);
           break;
         case LEVELS:
           this.setTitleText("Levels");
-          if (folderExists("data/levels")) {
-            boolean first = true;
-            for (Path p : listFolders("data/levels")) {
-              String levelName = p.getFileName().toString();
-              if (first) {
-                this.setText(levelName);
-                first = false;
-              }
-              else {
-                this.addLine(levelName);
-              }
-            }
+          if (this.text_ref_levels == null) {
+            this.setLevelsText();
           }
           else {
-            mkdir("data/levels");
+            this.setText(this.text_ref_levels);
           }
           this.scrollbar.updateValue(this.scroll_levels);
           break;
         case TERRAIN:
           this.setTitleText("Terrain");
-          boolean first_terrain = true;
-          if (fileExists("data/terrains.lnz")) {
-            for (String line : loadStrings(sketchPath("data/terrains.lnz"))) {
-              if (first_terrain) {
-                first_terrain = false;
-                this.setText(line);
-              }
-              else {
-                this.addLine(line);
-              }
-            }
+          if (this.text_ref_terrain == null) {
+            this.setTerrainText();
+          }
+          else {
+            this.setText(this.text_ref_terrain);
           }
           this.scrollbar.updateValue(this.scroll_terrain);
           break;
         case FEATURES:
           this.setTitleText("Features");
-          boolean first_feature = true;
-          if (fileExists("data/features.lnz")) {
-            for (String line : loadStrings(sketchPath("data/features.lnz"))) {
-              if (first_feature) {
-                first_feature = false;
-                this.setText(line);
-              }
-              else {
-                this.addLine(line);
-              }
-            }
+          if (this.text_ref_features == null) {
+            this.setFeaturesText();
+          }
+          else {
+            this.setText(this.text_ref_features);
           }
           this.scrollbar.updateValue(this.scroll_features);
           break;
         case UNITS:
           this.setTitleText("Units");
-          boolean first_unit = true;
-          if (fileExists("data/units.lnz")) {
-            for (String line : loadStrings(sketchPath("data/units.lnz"))) {
-              if (first_unit) {
-                first_unit = false;
-                this.setText(line);
-              }
-              else {
-                this.addLine(line);
-              }
-            }
+          if (this.text_ref_units == null) {
+            this.setUnitsText();
+          }
+          else {
+            this.setText(this.text_ref_units);
           }
           this.scrollbar.updateValue(this.scroll_units);
           break;
         case ITEMS:
           this.setTitleText("Items");
-          boolean first_item = true;
-          if (fileExists("data/items.lnz")) {
-            for (String line : loadStrings(sketchPath("data/items.lnz"))) {
-              if (first_item) {
-                first_item = false;
-                this.setText(line);
-              }
-              else {
-                this.addLine(line);
-              }
-            }
+          if (this.text_ref_items == null) {
+            this.setItemsText();
+          }
+          else {
+            this.setText(this.text_ref_items);
           }
           this.scrollbar.updateValue(this.scroll_items);
           break;
         case LEVEL_MAPS:
           this.setTitleText("Saved Maps");
-          if (folderExists("data/maps")) {
-            boolean first = true;
-            for (Path p : listFiles("data/maps/")) {
-              String filename = p.getFileName().toString();
-              if (!filename.endsWith(".map.lnz")) {
-                continue;
-              }
-              String mapName = split(filename, '.')[0];
-              if (first) {
-                this.setText(mapName);
-                first = false;
-              }
-              else {
-                this.addLine(mapName);
-              }
-            }
+          if (this.text_ref_levelMaps == null) {
+            this.setLevelMapsText();
           }
           else {
-            mkdir("data/maps");
+            this.setText(this.text_ref_levelMaps);
           }
           break;
         default:
@@ -509,7 +454,156 @@ class MapEditorInterface extends InterfaceLNZ {
       }
     }
 
+    void setMapsText() {
+      if (folderExists("data/maps")) {
+        boolean first = true;
+        for (Path p : listFiles("data/maps/")) {
+          String filename = p.getFileName().toString();
+          if (!filename.endsWith(".map.lnz")) {
+            continue;
+          }
+          String mapName = split(filename, '.')[0];
+          if (first) {
+            this.setText(mapName);
+            first = false;
+          }
+          else {
+            this.addLine(mapName);
+          }
+        }
+      }
+      else {
+        mkdir("data/maps");
+      }
+      this.text_ref_maps = this.text_ref;
+    }
+
+    void setLevelsText() {
+      if (folderExists("data/levels")) {
+        boolean first = true;
+        for (Path p : listFolders("data/levels")) {
+          String levelName = p.getFileName().toString();
+          if (first) {
+            this.setText(levelName);
+            first = false;
+          }
+          else {
+            this.addLine(levelName);
+          }
+        }
+      }
+      else {
+        mkdir("data/levels");
+      }
+      this.text_ref_levels = this.text_ref;
+    }
+
+    void setTerrainText() {
+      boolean first_terrain = true;
+      if (fileExists("data/terrains.lnz")) {
+        for (String line : loadStrings(sketchPath("data/terrains.lnz"))) {
+          if (first_terrain) {
+            first_terrain = false;
+            this.setText(line);
+          }
+          else {
+            this.addLine(line);
+          }
+        }
+      }
+      this.text_ref_terrain = this.text_ref;
+    }
+
+    void setFeaturesText() {
+      boolean first_feature = true;
+      if (fileExists("data/features.lnz")) {
+        for (String line : loadStrings(sketchPath("data/features.lnz"))) {
+          if (first_feature) {
+            first_feature = false;
+            this.setText(line);
+          }
+          else {
+            this.addLine(line);
+          }
+        }
+      }
+      this.text_ref_features = this.text_ref;
+    }
+
+    void setUnitsText() {
+      boolean first_unit = true;
+      if (fileExists("data/units.lnz")) {
+        for (String line : loadStrings(sketchPath("data/units.lnz"))) {
+          if (first_unit) {
+            first_unit = false;
+            this.setText(line);
+          }
+          else {
+            this.addLine(line);
+          }
+        }
+      }
+      this.text_ref_units = this.text_ref;
+    }
+
+    void setItemsText() {
+      boolean first_item = true;
+      if (fileExists("data/items.lnz")) {
+        for (String line : loadStrings(sketchPath("data/items.lnz"))) {
+          if (first_item) {
+            first_item = false;
+            this.setText(line);
+          }
+          else {
+            this.addLine(line);
+          }
+        }
+      }
+      this.text_ref_items = this.text_ref;
+    }
+
+    void setLevelMapsText() {
+      if (folderExists("data/maps")) {
+        boolean first = true;
+        for (Path p : listFiles("data/maps/")) {
+          String filename = p.getFileName().toString();
+          if (!filename.endsWith(".map.lnz")) {
+            continue;
+          }
+          String mapName = split(filename, '.')[0];
+          if (first) {
+            this.setText(mapName);
+            first = false;
+          }
+          else {
+            this.addLine(mapName);
+          }
+        }
+      }
+      else {
+        mkdir("data/maps");
+      }
+      this.text_ref_levelMaps = this.text_ref;
+    }
+
     void refresh() {
+      switch(MapEditorInterface.this.page) {
+        case MAPS:
+          break;
+        case LEVELS:
+          break;
+        case TERRAIN:
+          break;
+        case FEATURES:
+          break;
+        case UNITS:
+          break;
+        case ITEMS:
+          break;
+        case LEVEL_MAPS:
+          this.text_ref_levelMaps = null;
+          break;
+      }
       this.setList(MapEditorInterface.this.page);
     }
 
