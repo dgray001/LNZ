@@ -637,7 +637,9 @@ abstract class AbstractGameMap {
   abstract GameMapSquare mapSquare(int i, int j); // return null if out of bounds
   abstract void initializeSquares();
   void initializeTerrain() {
-    this.terrain_resolution = global.profile.options.terrain_resolution;
+    try {
+      this.terrain_resolution = global.profile.options.terrain_resolution;
+    } catch(Exception e) {}
     this.initializeBackgroundImage();
     this.setFogHandling(this.fogHandling);
   }

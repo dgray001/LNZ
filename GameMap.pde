@@ -23,17 +23,22 @@ class GameMap extends AbstractGameMap {
 
   protected HashMap<Integer, Feature> features = new HashMap<Integer, Feature>();
 
-  GameMap() {}
+  GameMap() {
+    super();
+  }
   GameMap(GameMapCode code, String folderPath) {
+    super();
     this.code = code;
     this.mapName = GameMapCode.display_name(code);
     this.open(folderPath);
   }
   GameMap(String mapName, String folderPath) {
+    super();
     this.mapName = mapName;
     this.open(folderPath);
   }
   GameMap(String mapName, int mapWidth, int mapHeight) {
+    super();
     this.mapName = mapName;
     this.mapWidth = mapWidth;
     this.mapHeight = mapHeight;
@@ -77,8 +82,8 @@ class GameMap extends AbstractGameMap {
 
   void initializeSquares() {
     this.squares = new GameMapSquare[this.mapWidth][this.mapHeight];
-    for (int i = 0; i < this.mapWidth; i++) {
-      for (int j = 0; j < this.mapHeight; j++) {
+    for (int i = 0; i < this.squares.length; i++) {
+      for (int j = 0; j < this.squares[i].length; j++) {
         this.squares[i][j] = new GameMapSquare();
       }
     }

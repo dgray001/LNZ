@@ -4,121 +4,165 @@ class GameMapArea extends AbstractGameMap {
       super("TerrainDimgThread");
     }
     void updateTerrainDisplay() {
-      PImage new_terrain_display = GameMapArea.this.terrain_dimg.getImagePiece(
+      for (int i = Math.floorDiv(startSquareX, Constants.map_chunkWidth); i <=
+      Math.floorDiv(startSquareX + visSquareX, Constants.map_chunkWidth); i++) {
+        for (int j = Math.floorDiv(startSquareY, Constants.map_chunkWidth); j <=
+        Math.floorDiv(startSquareY + visSquareY, Constants.map_chunkWidth); j++) {
+          // relevant chunks
+        }
+      }
+      PImage new_terrain_display = GameMap.this.terrain_dimg.getImagePiece(
         round(startSquareX * terrain_resolution), round(startSquareY * terrain_resolution),
         round(visSquareX * terrain_resolution), round(visSquareY * terrain_resolution));
       new_terrain_display = resizeImage(new_terrain_display,
         round(xf_map - xi_map), round(yf_map - yi_map));
-      GameMapArea.this.terrain_display = new_terrain_display;
+      GameMap.this.terrain_display = new_terrain_display;
     }
   }
 
 
   class Chunk {
-    Chunk() {
+    private GameMapSquare[][] squares;
+    private HashMap<Integer, Feature> features = new HashMap<Integer, Feature>();
+    private DImg terrain_dimg = new DImg(global.images.getBlackPixel());
+    private DImg fog_dimg = new DImg(global.images.getBlackPixel());
+
+    Chunk(IntegerCoordinate coordinate) {
+      this.squares = new GameMapSquare[Constants.map_chunkWidth][Constants.map_chunkWidth];
+      for (int i = 0; i < this.squares.length; i++) {
+        for (int j = 0; j < this.squares[i].length; j++) {
+          this.squares[i][j] = new GameMapSquare();
+        }
+      }
+      // from coordinate either load previously-made chunk or create new one (not in thread)
+      // then load image (in thread)
+    }
+
+    void save() {
+      // save chunk in map folder
     }
   }
 
 
   protected HashMap<IntegerCoordinate, Chunk> chunk_reference = new HashMap<IntegerCoordinate, Chunk>();
+  protected IntegerCoordinate current_chunk = new IntegerCoordinate(0, 0);
+
+  protected String map_folder;
   protected int max_chunks_from_zero = 4;
+  protected int chunk_view_radius = 1;
   protected int seed = 0;
 
 
-  protected int mapWidth = 0;
-  protected int mapHeight = 0;
-  protected GameMapSquare[][] squares;
-
-  protected DImg terrain_dimg;
-  protected DImg fog_dimg;
-
-  protected HashMap<Integer, Feature> features = new HashMap<Integer, Feature>();
-
-
-  GameMapArea() {
+  GameMapArea(String map_folder) {
     super();
-    this.mapWidth = Constants.map_chunkWidth;
-    this.mapHeight = Constants.map_chunkWidth;
-    this.terrain_resolution = global.profile.options.terrain_resolution;
+    this.map_folder = map_folder;
   }
 
 
   int mapXI() {
-    return 0;
+    return -Constants.map_chunkWidth * this.max_chunks_from_zero;
   }
   int mapYI() {
-    return 0;
+    return -Constants.map_chunkWidth * this.max_chunks_from_zero;
   }
   int mapXF() {
-    return this.mapWidth;
+    return Constants.map_chunkWidth * this.max_chunks_from_zero;
   }
   int mapYF() {
-    return this.mapHeight;
+    return Constants.map_chunkWidth * this.max_chunks_from_zero;
   }
   int currMapXI() {
-    return 0;
+    return Constants.map_chunkWidth * (this.current_chunk.x - this.chunk_view_radius);
   }
   int currMapYI() {
-    return 0;
+    return Constants.map_chunkWidth * (this.current_chunk.y - this.chunk_view_radius);
   }
   int currMapXF() {
-    return this.mapWidth;
+    return Constants.map_chunkWidth * (this.current_chunk.x + this.chunk_view_radius + 1);
   }
   int currMapYF() {
-    return this.mapHeight;
+    return Constants.map_chunkWidth * (this.current_chunk.y + this.chunk_view_radius + 1);
   }
 
 
   GameMapSquare mapSquare(int i, int j) {
     try {
-      return this.squares[i][j];
+      Chunk chunk = this.chunk_reference.get(this.coordinateOf(i, j));
+      if (chunk == null) {
+        return null;
+      }
+      return chunk.squares[i % Constants.map_chunkWidth][j % Constants.map_chunkWidth];
     } catch(ArrayIndexOutOfBoundsException e) {
       return null;
     }
   }
+  IntegerCoordinate coordinateOf(int i, int j) {
+    return new IntegerCoordinate(Math.floorDiv(i, Constants.map_chunkWidth),
+      Math.floorDiv(j, Constants.map_chunkWidth));
+  }
 
   void initializeSquares() {
-    this.squares = new GameMapSquare[this.mapWidth][this.mapHeight];
-    for (int i = 0; i < this.mapWidth; i++) {
-      for (int j = 0; j < this.mapHeight; j++) {
-        this.squares[i][j] = new GameMapSquare();
+    this.refreshChunks();
+  }
+  void refreshChunks() {
+    // remove unnecessary chunks from memory
+    Iterator it = this.chunk_reference.entrySet().iterator();
+    while(it.hasNext()) {
+      Map.Entry<IntegerCoordinate, Chunk> entry = (Map.Entry<IntegerCoordinate, Chunk>)it.next();
+      IntegerCoordinate coordinate = entry.getKey();
+      if (coordinate.x > this.current_chunk.x + this.chunk_view_radius ||
+        coordinate.x < this.current_chunk.x - this.chunk_view_radius ||
+        coordinate.y > this.current_chunk.y + this.chunk_view_radius ||
+        coordinate.y < this.current_chunk.y - this.chunk_view_radius) {
+        entry.getValue().save();
+        it.remove();
       }
     }
+    // add needed new chunks
+    for (int i = this.current_chunk.x - this.chunk_view_radius; i <= this.current_chunk.x + this.chunk_view_radius; i++) {
+      for (int j = this.current_chunk.y - this.chunk_view_radius; j <= this.current_chunk.y + this.chunk_view_radius; j++) {
+        IntegerCoordinate coordinate = new IntegerCoordinate(i, j);
+        if (!this.coordinateInMap(coordinate)) {
+          continue;
+        }
+        if (this.chunk_reference.containsKey(coordinate)) {
+          continue;
+        }
+        this.chunk_reference.put(coordinate, new Chunk(coordinate));
+      }
+    }
+  }
+  boolean coordinateInMap(IntegerCoordinate coordinate) {
+    if (abs(coordinate.x) <= this.max_chunks_from_zero && abs(coordinate.y) <= this.max_chunks_from_zero) {
+      return true;
+    }
+    return false;
   }
 
-  void initializeBackgroundImage() {
-    this.terrain_dimg = new DImg(this.mapWidth * this.terrain_resolution, this.mapHeight * this.terrain_resolution);
-    this.terrain_dimg.setGrid(this.mapWidth, this.mapHeight);
-    for (int i = 0; i < this.mapWidth; i++) {
-      for (int j = 0; j < this.mapHeight; j++) {
-        this.terrain_dimg.addImageGrid(this.mapSquare(i, j).terrainImage(), i, j);
-      }
-    }
-    for (Feature f : this.features.values()) {
-      if (f.displaysImage()) {
-        this.terrain_dimg.addImageGrid(f.getImage(), int(floor(f.x)), int(floor(f.y)), f.sizeX, f.sizeY);
-      }
-    }
-    this.fog_dimg = new DImg(this.mapWidth * Constants.map_fogResolution, this.mapHeight * Constants.map_fogResolution);
-    this.fog_dimg.setGrid(this.mapWidth, this.mapHeight);
-  }
+  void initializeBackgroundImage() {}
 
   void colorFogGrid(color c, int i, int j) {
-    this.fog_dimg.colorGrid(c, i, j);
+    Chunk chunk = this.chunk_reference.get(this.coordinateOf(new IntegerCoordinate(i, j)));
+    if (chunk == null) {
+      return;
+    }
+    chunk.fog_dimg.colorGrid(c, i % Constants.map_chunkWidth, j % Constants.map_chunkWidth);
   }
 
   void terrainImageGrid(PImage img, int x, int y, int w, int h) {
-    if (this.terrain_dimg == null) {
+    Chunk chunk = this.chunk_reference.get(this.coordinateOf(new IntegerCoordinate(x, y)));
+    if (chunk == null) {
       return;
     }
-    this.terrain_dimg.addImageGrid(img, x, y, w, h);
+    chunk.terrain_dimg.addImageGrid(img, x % Constants.map_chunkWidth, y % Constants.map_chunkWidth, w, h);
   }
 
   void colorTerrainGrid(color c, int x, int y, int w, int h) {
-    if (this.terrain_dimg == null) {
+    Chunk chunk = this.chunk_reference.get(this.coordinateOf(new IntegerCoordinate(i, j)));
+    if (chunk == null) {
       return;
     }
-    this.terrain_dimg.colorGrid(c, x, y, w, h);
+    chunk.terrain_dimg.colorGrid(c, i % Constants.map_chunkWidth, j % Constants.map_chunkWidth);
   }
 
   void startTerrainDimgThread() {

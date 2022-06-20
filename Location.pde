@@ -1,8 +1,11 @@
 // level location
 enum Location {
-  ERROR, TUTORIAL, FRANCISCAN_FRANCIS, FRANCISCAN_LEV2_FRONTDOOR,
-  FRANCISCAN_LEV2_AHIMDOOR, FRANCISCAN_LEV2_CHAPELDOOR, FRANCISCAN_LEV2_BROTHERSDOOR,
-  FRANCISCAN_LEV2_CUSTODIALDOOR, AREA_GOLFCOURSE;
+  ERROR, TUTORIAL,
+
+  FRANCISCAN_FRANCIS, FRANCISCAN_LEV2_FRONTDOOR, FRANCISCAN_LEV2_AHIMDOOR,
+  FRANCISCAN_LEV2_CHAPELDOOR, FRANCISCAN_LEV2_BROTHERSDOOR, FRANCISCAN_LEV2_CUSTODIALDOOR,
+  FRANCISCAN_LEV3_KILLEDHECK, FRANCISCAN_LEV3_AROUNDCODA,
+  AREA_GOLFCOURSE;
 
   private static final List<Location> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 
@@ -20,6 +23,8 @@ enum Location {
       case FRANCISCAN_LEV2_CHAPELDOOR:
       case FRANCISCAN_LEV2_BROTHERSDOOR:
       case FRANCISCAN_LEV2_CUSTODIALDOOR:
+      case FRANCISCAN_LEV3_KILLEDHECK:
+      case FRANCISCAN_LEV3_AROUNDCODA:
         return "Franciscan Campus";
       case AREA_GOLFCOURSE:
         return "Golf Course";
@@ -47,6 +52,10 @@ enum Location {
         return "franciscan_lev2_brothersdoor";
       case FRANCISCAN_LEV2_CUSTODIALDOOR:
         return "franciscan_lev2_custodialdoor";
+      case FRANCISCAN_LEV3_KILLEDHECK:
+        return "franciscan_lev3_killedheck";
+      case FRANCISCAN_LEV3_AROUNDCODA:
+        return "franciscan_lev3_aroundcoda";
       case AREA_GOLFCOURSE:
         return "golf_course";
       default:
@@ -75,6 +84,9 @@ enum Location {
     switch(a) {
       case FRANCISCAN_FRANCIS:
         switch(completion_code) {
+          case 0: // ctrl-c
+            return_location = Location.FRANCISCAN_LEV2_FRONTDOOR;
+            break;
           case 1:
             return_location = Location.FRANCISCAN_LEV2_FRONTDOOR;
             break;
@@ -96,6 +108,56 @@ enum Location {
         }
         break;
       case FRANCISCAN_LEV2_FRONTDOOR:
+        switch(completion_code) {
+          case 0: // ctrl-c
+            return_location = Location.FRANCISCAN_LEV3_KILLEDHECK;
+            break;
+          case 1: // ahimdoor car
+            return_location = Location.AREA_GOLFCOURSE;
+            break;
+          case 2: // lot boss car
+            return_location = Location.AREA_GOLFCOURSE;
+            break;
+          case 3: // killed heck
+            return_location = Location.FRANCISCAN_LEV3_KILLEDHECK;
+            break;
+          case 4: // around coda
+            return_location = Location.FRANCISCAN_LEV3_AROUNDCODA;
+            break;
+          default:
+            return_location = Location.ERROR;
+            break;
+        }
+        break;
+      case FRANCISCAN_LEV3_KILLEDHECK:
+        switch(completion_code) {
+          case 0:
+            return_location = Location.AREA_GOLFCOURSE;
+            break;
+          case 1: // down hill boss
+            return_location = Location.AREA_GOLFCOURSE;
+            break;
+          case 2: // starvaggi car
+            return_location = Location.AREA_GOLFCOURSE;
+            break;
+          default:
+            return_location = Location.ERROR;
+            break;
+        }
+        break;
+      case FRANCISCAN_LEV3_AROUNDCODA:
+        switch(completion_code) {
+          case 0:
+            return_location = Location.AREA_GOLFCOURSE;
+            break;
+          case 1: // down hill boss
+            return_location = Location.AREA_GOLFCOURSE;
+            break;
+          default:
+            return_location = Location.ERROR;
+            break;
+        }
+        break;
       case FRANCISCAN_LEV2_AHIMDOOR:
       case FRANCISCAN_LEV2_CHAPELDOOR:
       case FRANCISCAN_LEV2_BROTHERSDOOR:
@@ -139,6 +201,8 @@ enum Location {
       case FRANCISCAN_LEV2_CHAPELDOOR:
       case FRANCISCAN_LEV2_BROTHERSDOOR:
       case FRANCISCAN_LEV2_CUSTODIALDOOR:
+      case FRANCISCAN_LEV3_KILLEDHECK:
+      case FRANCISCAN_LEV3_AROUNDCODA:
         return Location.FRANCISCAN_FRANCIS;
       default:
         return Location.ERROR;
@@ -168,6 +232,8 @@ enum Location {
       case FRANCISCAN_LEV2_CHAPELDOOR:
       case FRANCISCAN_LEV2_BROTHERSDOOR:
       case FRANCISCAN_LEV2_CUSTODIALDOOR:
+      case FRANCISCAN_LEV3_KILLEDHECK:
+      case FRANCISCAN_LEV3_AROUNDCODA:
         return Location.AREA_GOLFCOURSE;
       default:
         return Location.ERROR;

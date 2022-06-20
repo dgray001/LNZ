@@ -94,6 +94,7 @@ class MinigameInterface extends InterfaceLNZ {
 
   private Minigame minigame = null;
   private MinigameStatus status = MinigameStatus.INITIAL;
+  private boolean return_to_playing = false;
   private int last_update_time = millis();
 
 
@@ -129,6 +130,9 @@ class MinigameInterface extends InterfaceLNZ {
       return;
     }
     global.log("Completed minigame " + this.minigame.displayName() + ".");
+    if (this.return_to_playing) {
+      global.state = ProgramState.ENTERING_PLAYING;
+    }
     this.status = MinigameStatus.INITIAL;
     this.minigame = null;
   }
