@@ -903,6 +903,7 @@ class Profile {
 
   private String display_name = "";
 
+  private HashSet<MinigameName> minigames = new HashSet<MinigameName>();
   private HashMap<AchievementCode, Boolean> achievements = new HashMap<AchievementCode, Boolean>();
   private int achievement_tokens = 0;
   private boolean ben_has_eyes = true;
@@ -948,19 +949,30 @@ class Profile {
       global.errorMessage("ERROR: Cannot add initial hero when heroes already in profile.");
       return;
     }
-    Hero hero = new Hero(HeroCode.BEN);
-    hero.location = Location.FRANCISCAN_FRANCIS;
-    this.heroes.put(HeroCode.BEN, hero);
+    this.addHero(HeroCode.BEN);
     this.curr_hero = HeroCode.BEN;
-    this.saveHeroesFile();
+    this.saveProfileFile();
   }
 
   void addHero(HeroCode code) {
     if (this.heroes.containsKey(code)) {
       return;
     }
-    this.heroes.put(code, new Hero(code));
-    this.save();
+    Hero h = new Hero(code);
+    switch(code) {
+      case BEN:
+        h.location = Location.FRANCISCAN_FRANCIS;
+        break;
+      case DAN:
+      default:
+        global.errorMessage("ERROR: HeroCode " + code.display_name() + " not " +
+          "recognized when being added to profile.");
+        break;
+    }
+    this.heroes.put(code, h);
+    this.saveHeroesFile();
+    global.notification.add(new HeroUnlockNotification(code));
+    global.log("Added Hero: " + code.display_name());
   }
 
   void achievement(AchievementCode code) {
@@ -971,7 +983,7 @@ class Profile {
       this.achievements.put(code, Boolean.TRUE);
       this.achievement_tokens += code.tokens();
       this.saveProfileFile();
-      global.notification = new AchievementNotification(code);
+      global.notification.add(new AchievementNotification(code));
       global.log("Completed achievement: " + code.display_name());
     }
   }
@@ -995,12 +1007,16 @@ class Profile {
     if (this.areas.get(location).equals(Boolean.FALSE)) {
       this.areas.put(location, Boolean.TRUE);
       this.saveProfileFile();
+      global.notification.add(new AreaUnlockNotification(location));
       global.log("Unlocked area: " + location.display_name());
     }
   }
 
   void upgrade(PlayerTreeCode code) {
     switch(code) {
+      case CAN_PLAY:
+        this.addInitialHero();
+        break;
       default:
         break;
     }
@@ -1015,6 +1031,23 @@ class Profile {
     return this.player_tree.nodes.get(code).unlocked;
   }
 
+  boolean unlockedMinigame(MinigameName name) {
+    if (name == null) {
+      return false;
+    }
+    return this.minigames.contains(name);
+  }
+
+  void unlockMinigame(MinigameName name) {
+    if (name == null || this.minigames.contains(name)) {
+      return;
+    }
+    this.minigames.add(name);
+    this.saveProfileFile();
+    global.notification.add(new MinigameUnlockNotification(name));
+    global.log("Unlocked minigame: " + name.displayName());
+  }
+
   void saveProfileFile() {
     if (this.display_name.equals("")) {
       return;
@@ -1026,6 +1059,9 @@ class Profile {
       if (this.achievements.get(code).equals(Boolean.TRUE)) {
         file.println("achievement: " + code.file_name());
       }
+    }
+    for (MinigameName minigame : this.minigames) {
+      file.println("minigame: " + minigame.fileName());
     }
     for (Map.Entry<Location, Boolean> entry : this.areas.entrySet()) {
       if (entry.getValue().equals(Boolean.TRUE)) {
@@ -1093,8 +1129,20 @@ Profile readProfile(String folder_path) {
         if (code != null && p.achievements.containsKey(code)) {
           p.achievements.put(code, Boolean.TRUE);
         }
+        else if (code == null) {
+          global.errorMessage("ERROR: Unknown achievement " + trim(data[1]) + " in profile data.");
+        }
         else {
           global.errorMessage("ERROR: Unknown achievement " + code.display_name() + " in profile data.");
+        }
+        break;
+      case "minigame":
+        MinigameName name = MinigameName.minigameName(trim(data[1]));
+        if (name != null) {
+          p.minigames.add(name);
+        }
+        else {
+          global.errorMessage("ERROR: Unknown minigame " + trim(data[1]) + " in profile data.");
         }
         break;
       case "areaUnlocked":

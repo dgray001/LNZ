@@ -923,10 +923,10 @@ class Effect {
             translate(-translate_x, -0.05 * height);
             translate_x = level.xi + 80;
             translate(translate_x, 0.05 * height);
-            rotate(-0.7 * PI);
+            rotate(-0.8 * PI);
             imageMode(CENTER);
             image(global.images.getImage("gifs/arrow/" + frame + ".png"), 0, 0, 130, 130);
-            rotate(0.7 * PI);
+            rotate(0.8 * PI);
             translate(-translate_x, -0.05 * height);
             break;
           case 3: // inventory bar

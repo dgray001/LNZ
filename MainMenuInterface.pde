@@ -610,8 +610,6 @@ class MainMenuInterface extends InterfaceLNZ {
           Profile p = new Profile(possibleProfileName);
           p.save();
           global.profile = p;
-          p.addInitialHero();
-          p.save();
           this.canceled = true;
           if (this.fields.get(4).getValue().equals("true")) {
             global.configuration.default_profile_name = possibleProfileName;

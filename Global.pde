@@ -8,7 +8,7 @@ enum ProgramState {
 class Global {
   // Program
   private InterfaceLNZ menu;
-  private NotificationLNZ notification;
+  private Queue<NotificationLNZ> notification = new ArrayDeque<NotificationLNZ>();
   private ProgramState state = ProgramState.INITIAL_INTERFACE;
   private int timer_exiting = Constants.exit_delay;
   private Images images;

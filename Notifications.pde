@@ -51,15 +51,22 @@ abstract class NotificationLNZ {
 }
 
 
-class AchievementNotification extends NotificationLNZ {
-  AchievementCode code;
-  AchievementNotification(AchievementCode code) {
+abstract class BottomRightNotification extends NotificationLNZ {
+  private String header;
+  private String content;
+  private color color_background;
+  private color color_text;
+
+  BottomRightNotification(String header, String content, color color_background, color color_text) {
     super();
-    this.code = code;
+    this.header = header;
+    this.content = content;
+    this.color_background = color_background;
+    this.color_text = color_text;
   }
 
   void drawNotification() {
-    fill(160, 155, 88, 200);
+    fill(this.color_background);
     noStroke();
     rectMode(CORNERS);
     if (this.sliding_in) {
@@ -75,20 +82,20 @@ class AchievementNotification extends NotificationLNZ {
     else {
       rect(width - Constants.notification_achievement_width, height -
         Constants.notification_achievement_height, width, height);
-      fill(0);
+      fill(this.color_text);
       textSize(18);
       textAlign(CENTER, TOP);
-      text("Achievement Complete!", width - 0.5 * Constants.notification_achievement_width,
+      text(this.header, width - 0.5 * Constants.notification_achievement_width,
         height - Constants.notification_achievement_height - 1);
       float offset = textAscent() + textDescent() + 2;
-      stroke(0);
+      stroke(this.color_text);
       strokeWeight(2);
       line(width - Constants.notification_achievement_width + 3, height -
         Constants.notification_achievement_height + offset, width - 3, height -
         Constants.notification_achievement_height + offset);
       textSize(16);
       textAlign(CENTER, CENTER);
-      text(code.display_name(), width - 0.5 * Constants.notification_achievement_width,
+      text(this.content, width - 0.5 * Constants.notification_achievement_width,
         height - 0.5 * (Constants.notification_achievement_height - offset));
     }
   }
@@ -99,5 +106,33 @@ class AchievementNotification extends NotificationLNZ {
       return true;
     }
     return false;
+  }
+}
+
+
+class AchievementNotification extends BottomRightNotification {
+  AchievementNotification(AchievementCode code) {
+    super("Achievement Complete!", code.display_name(), color(160, 155, 88, 200), color(0));
+  }
+}
+
+
+class AreaUnlockNotification extends BottomRightNotification {
+  AreaUnlockNotification(Location location) {
+    super("Area Unlocked!", location.display_name(), color(177, 156, 217, 200), color(0));
+  }
+}
+
+
+class HeroUnlockNotification extends BottomRightNotification {
+  HeroUnlockNotification(HeroCode code) {
+    super("Hero Unlocked!", code.display_name(), color(255, 127, 127, 200), color(0));
+  }
+}
+
+
+class MinigameUnlockNotification extends BottomRightNotification {
+  MinigameUnlockNotification(MinigameName name) {
+    super("Minigame Unlocked!", name.displayName(), color(100, 255, 255, 200), color(0));
   }
 }

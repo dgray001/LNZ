@@ -109,10 +109,10 @@ void draw() {
       break;
   }
   // global notification
-  if (global.notification != null) {
-    global.notification.update(timeElapsed);
-    if (global.notification.finished) {
-      global.notification = null;
+  if (global.notification.peek() != null) {
+    global.notification.peek().update(timeElapsed);
+    if (global.notification.peek().finished) {
+      global.notification.remove();
     }
   }
   // background music go to next track
@@ -136,16 +136,16 @@ void mouseDragged() {
   if (global.menu != null) {
     global.menu.LNZ_mouseMove(mouseX, mouseY);
   }
-  if (global.notification != null) {
-    global.notification.mouseMove(mouseX, mouseY);
+  if (global.notification.peek() != null) {
+    global.notification.peek().mouseMove(mouseX, mouseY);
   }
 }
 void mouseMoved() {
   if (global.menu != null) {
     global.menu.LNZ_mouseMove(mouseX, mouseY);
   }
-  if (global.notification != null) {
-    global.notification.mouseMove(mouseX, mouseY);
+  if (global.notification.peek() != null) {
+    global.notification.peek().mouseMove(mouseX, mouseY);
   }
 }
 
@@ -156,8 +156,8 @@ void mousePressed() {
   if (global.menu != null) {
     global.menu.LNZ_mousePress();
   }
-  if (global.notification != null) {
-    global.notification.mousePress();
+  if (global.notification.peek() != null) {
+    global.notification.peek().mousePress();
   }
 }
 

@@ -630,7 +630,6 @@ abstract class InterfaceLNZ {
       this.addField(cancel);
 
       this.setFormFieldValues();
-      println(volume_interface.slider.show_label);
     }
 
     void setFormFieldValues() {
