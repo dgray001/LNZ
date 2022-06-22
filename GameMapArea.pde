@@ -266,9 +266,6 @@ class GameMapArea extends AbstractGameMap {
     return "area";
   }
 
-  void saveAreaFile(String folder_path) {
-  }
-
   void addImplementationSpecificData(String datakey, String data) {
     switch(datakey) {
       case "max_chunks_from_zero":

@@ -101,10 +101,9 @@ class MapEditorInterface extends InterfaceLNZ {
             this.addLine("Delete Map");
             break;
           case AREAS:
-            this.setText("");
-            this.addLine("");
-            this.addLine("");
-            this.addLine("");
+            this.setText("Open Area");
+            this.addLine("Rename Area");
+            this.addLine("Delete Area");
             break;
           case LEVELS:
             this.setText("Open Level");
@@ -280,7 +279,7 @@ class MapEditorInterface extends InterfaceLNZ {
             MapEditorInterface.this.renameMapFile(this.highlightedLine(), this.renameInputBox.text);
             break;
           case AREAS:
-            // rename areas
+            MapEditorInterface.this.renameAreaFile(this.highlightedLine(), this.renameInputBox.text);
             break;
           case LEVELS:
             MapEditorInterface.this.renameLevelFolder(this.highlightedLine(), this.renameInputBox.text);
@@ -318,7 +317,23 @@ class MapEditorInterface extends InterfaceLNZ {
           }
           break;
         case AREAS:
-          //
+          switch(option) {
+            case 0:
+              MapEditorInterface.this.openAreaEditor(this.highlightedLine());
+              break;
+            case 1:
+              if (this.line_clicked < 0 || this.line_clicked >= this.text_lines_ref.size()) {
+                break;
+              }
+              this.renameInputBox = new RenameInputBox(this.line_clicked);
+              break;
+            case 2:
+              MapEditorInterface.this.deleteArea();
+              break;
+            default:
+              global.errorMessage("ERROR: Option index " + option + " not recognized.");
+              break;
+          }
           break;
         case LEVELS:
           switch(option) {
@@ -1304,6 +1319,20 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
 
+  class DeleteAreaForm extends ConfirmForm {
+    private String area_name;
+    DeleteAreaForm(String area_name) {
+      super("Delete Area", "Are you sure you want to delete this area?\n" + area_name);
+      this.area_name = area_name;
+    }
+    void submit() {
+      deleteFile("data/areas/" + this.area_name + ".area.lnz");
+      this.canceled = true;
+      MapEditorInterface.this.listBox1.refresh();
+    }
+  }
+
+
   class DeleteLevelForm extends ConfirmForm {
     private String levelName;
     DeleteLevelForm(String levelName) {
@@ -2200,10 +2229,6 @@ class MapEditorInterface extends InterfaceLNZ {
     this.open_mapEditor_thread.start();
   }
 
-  void openAreaEditor(String areaName) {
-    // area editor form
-  }
-
   void saveMapEditor() {
     if (this.curr_map != null) {
       this.curr_map.save(sketchPath("data/maps/"));
@@ -2249,6 +2274,53 @@ class MapEditorInterface extends InterfaceLNZ {
   void closeAreaTester() {
     this.curr_area = null;
     this.navigate(MapEditorPage.AREAS);
+  }
+
+  void openAreaEditor(String area_name) {
+    if (area_name == null || area_name.equals("")) {
+      return;
+    }
+    if (!fileExists("data/areas/" + area_name + ".area.lnz")) {
+      return;
+    }
+    this.curr_area = new GameMapArea("data/areas/temp");
+    this.curr_area.mapName = area_name;
+    this.curr_area.open("data/areas");
+    this.curr_area.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+    this.navigate(MapEditorPage.EDITING_AREA);
+  }
+
+  void deleteArea() {
+    String area_name = this.listBox1.highlightedLine();
+    if (area_name == null) {
+      this.form = new MessageForm("Delete Area", "No area selected to delete.");
+    }
+    else {
+      this.form = new DeleteAreaForm(area_name);
+    }
+  }
+
+  void renameAreaFile(String area_name, String target_name) {
+    if (!entryExists("data/areas/" + area_name + ".area.lnz")) {
+      global.errorMessage("ERROR: Can't rename area file that doesn't exist.");
+      return;
+    }
+    if (entryExists("data/areas/" + target_name + ".area.lnz")) {
+      return;
+    }
+    GameMapArea map = new GameMapArea("data/areas/temp");
+    map.mapName = area_name;
+    String[] lines = map.open1File("data/areas/");
+    PrintWriter mapFile = createWriter("data/areas/" + target_name + ".area.lnz");
+    for (String line : lines) {
+      if (trim(split(line, ':')[0]).equals("mapName")) {
+        line = "mapName: " + target_name;
+      }
+      mapFile.println(line);
+    }
+    mapFile.flush();
+    mapFile.close();
+    deleteFile("data/areas/" + area_name + ".area.lnz");
   }
 
 

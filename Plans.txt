@@ -1,6 +1,4 @@
 v0.7.6: Fernwood (06/30)
- a: Can load area
- b: Can delete / rename area
  c: View blank canvas for map in area editor
 
  - Finish frontdoor forcing you to get access to a car

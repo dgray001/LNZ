@@ -663,13 +663,17 @@ abstract class AbstractGameMap {
       case DEFAULT:
         for (int i = this.currMapXI(); i < this.currMapXF(); i++) {
           for (int j = this.currMapYI(); j < this.currMapYF(); j++) {
-            if (this.mapSquare(i, j).mapEdge()) {
+            GameMapSquare square = this.mapSquare(i, j);
+            if (square == null) {
+              continue;
+            }
+            if (square.mapEdge()) {
               this.colorFogGrid(Constants.color_transparent, i, j);
             }
-            else if (!this.mapSquare(i, j).explored) {
+            else if (!square.explored) {
               this.colorFogGrid(Constants.color_black, i, j);
             }
-            else if (!this.mapSquare(i, j).visible) {
+            else if (!square.visible) {
               this.colorFogGrid(this.fogColor, i, j);
             }
             else {
@@ -690,10 +694,14 @@ abstract class AbstractGameMap {
         for (int i = this.currMapXI(); i < this.currMapXF(); i++) {
           for (int j = this.currMapYI(); j < this.currMapYF(); j++) {
             this.setTerrainVisible(true, i, j, false);
-            if (this.mapSquare(i, j).mapEdge()) {
+            GameMapSquare square = this.mapSquare(i, j);
+            if (square == null) {
+              continue;
+            }
+            if (square.mapEdge()) {
               this.colorFogGrid(Constants.color_transparent, i, j);
             }
-            else if (!mapSquare(i, j).explored) {
+            else if (!square.explored) {
               this.colorFogGrid(Constants.color_black, i, j);
             }
             else {
@@ -706,10 +714,14 @@ abstract class AbstractGameMap {
         for (int i = this.currMapXI(); i < this.currMapXF(); i++) {
           for (int j = this.currMapYI(); j < this.currMapYF(); j++) {
             this.exploreTerrain(i, j, false);
-            if (this.mapSquare(i, j).mapEdge()) {
+            GameMapSquare square = this.mapSquare(i, j);
+            if (square == null) {
+              continue;
+            }
+            if (square.mapEdge()) {
               this.colorFogGrid(Constants.color_transparent, i, j);
             }
-            else if (!this.mapSquare(i, j).visible) {
+            else if (!square.visible) {
               this.colorFogGrid(this.fogColor, i, j);
             }
             else {
@@ -2407,7 +2419,7 @@ abstract class AbstractGameMap {
   }
 
   String[] open1File(String folder_path) {
-    String path = folder_path + "/" + this.mapName + ".map.lnz";
+    String path = folder_path + "/" + this.mapName + "." + this.fileType() + ".lnz";
     String[] lines = loadStrings(path);
     if (lines == null) {
       global.errorMessage("ERROR: Reading map at path " + path + " but no file exists.");
@@ -2418,6 +2430,12 @@ abstract class AbstractGameMap {
 
 
   void open2Data(String[] lines) {
+    if (lines == null) {
+      global.errorMessage("ERROR: Trying to open map data with null data.");
+      this.nullify = true;
+      return;
+    }
+
     Stack<ReadFileObject> object_queue = new Stack<ReadFileObject>();
 
     int max_feature_key = 0;
@@ -2433,6 +2451,11 @@ abstract class AbstractGameMap {
     Ability curr_ability = null;
 
     for (String line : lines) {
+      if (line == null) {
+        global.errorMessage("ERROR: Trying to open map data with null line.");
+        this.nullify = true;
+        continue;
+      }
       String[] parameters = split(line, ':');
       if (parameters.length < 2) {
         continue;
