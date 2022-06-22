@@ -4,10 +4,10 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\nAlpha v0.7.5y: 20220622" +
-  "\n\nLines: 48667 (v0.7.5w)" +
-  "\nImages: 1231 (v0.7.5m)" +
-  "\nSounds: 335 (v0.7.5m)" +
+  "\nAlpha v0.7.6: 20220622" +
+  "\n\nLines: 49062 (v0.7.6)" +
+  "\nImages: 1236 (v0.7.6)" +
+  "\nSounds: 339 (v0.7.6)" +
   "";
   static final String version_history =
   "Liberal Nazi Zombies" +
