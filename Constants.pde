@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\nAlpha v0.7.5x: 20220620" +
+  "\nAlpha v0.7.5y: 20220622" +
   "\n\nLines: 48667 (v0.7.5w)" +
   "\nImages: 1231 (v0.7.5m)" +
   "\nSounds: 335 (v0.7.5m)" +
@@ -96,6 +96,7 @@ static class Constants {
   static final String help_mapEditor_maps = "Maps\n\nThis view displays the " +
     "maps you've made. Double-click a map to edit it, or right click one to " +
     "see more options.";
+  static final String help_mapEditor_areas = "Areas\n\nThis view ...";
   static final String help_mapEditor_levels = "Levels\n\nThis view displays the " +
     "levels you've made. Double-click a level to edit it, or right click one to " +
     "see more options.";

@@ -4,19 +4,52 @@ class GameMapArea extends AbstractGameMap {
       super("TerrainDimgThread");
     }
     void updateTerrainDisplay() {
-      for (int i = Math.floorDiv(startSquareX, Constants.map_chunkWidth); i <=
-      Math.floorDiv(startSquareX + visSquareX, Constants.map_chunkWidth); i++) {
-        for (int j = Math.floorDiv(startSquareY, Constants.map_chunkWidth); j <=
-        Math.floorDiv(startSquareY + visSquareY, Constants.map_chunkWidth); j++) {
-          // relevant chunks
+      DImg new_terrain_display = new DImg(round(xf_map - xi_map), round(yf_map - yi_map));
+      if (visSquareX == 0 || visSquareY == 0) {
+        return;
+      }
+      boolean i_first = true;
+      int xi_chunk = int(Math.floorDiv((long)startSquareX, (long)Constants.map_chunkWidth));
+      int yi_chunk = int(Math.floorDiv((long)startSquareY, (long)Constants.map_chunkWidth));
+      int xf_chunk = int(Math.floorDiv((long)(startSquareX + visSquareX), (long)Constants.map_chunkWidth));
+      int yf_chunk = int(Math.floorDiv((long)(startSquareY + visSquareY), (long)Constants.map_chunkWidth));
+      for (int i = xi_chunk; i <= xf_chunk; i++, i_first = false) {
+        boolean j_first = true;
+        for (int j = yi_chunk; j <= yf_chunk; j++, j_first = false) {
+          Chunk chunk = GameMapArea.this.chunk_reference.get(new IntegerCoordinate(i, j));
+          if (chunk == null) {
+            continue;
+          }
+          float img_x = 0;
+          if (i_first) {
+            img_x = Math.floorMod((long)startSquareX, (long)Constants.map_chunkWidth);
+          }
+          float img_y = 0;
+          if (j_first) {
+            img_y = Math.floorMod((long)startSquareY, (long)Constants.map_chunkWidth);
+          }
+          float img_w = Constants.map_chunkWidth - img_x;
+          if (i == xf_chunk) {
+            img_w = Math.floorMod((long)(startSquareX + visSquareX), (long)Constants.map_chunkWidth) - img_x;
+          }
+          float img_h = Constants.map_chunkWidth - img_y;
+          if (j == yf_chunk) {
+            img_h = Math.floorMod((long)(startSquareY + visSquareY), (long)Constants.map_chunkWidth) - img_y;
+          }
+          PImage chunk_terrain_image = chunk.terrain_dimg.getImagePiece(round(img_x * terrain_resolution),
+            round(img_y * terrain_resolution), round(img_w * terrain_resolution), round(img_h * terrain_resolution));
+          int resized_w = round((xf_map - xi_map) * img_w / visSquareX);
+          int resized_h = round((yf_map - yi_map) * img_h / visSquareY);
+          chunk_terrain_image = resizeImage(chunk_terrain_image, resized_w, resized_h);
         }
       }
-      PImage new_terrain_display = GameMap.this.terrain_dimg.getImagePiece(
+      GameMapArea.this.terrain_display = new_terrain_display.img;
+      /*PImage new_terrain_display = GameMap.this.terrain_dimg.getImagePiece(
         round(startSquareX * terrain_resolution), round(startSquareY * terrain_resolution),
         round(visSquareX * terrain_resolution), round(visSquareY * terrain_resolution));
       new_terrain_display = resizeImage(new_terrain_display,
         round(xf_map - xi_map), round(yf_map - yi_map));
-      GameMap.this.terrain_display = new_terrain_display;
+      GameMap.this.terrain_display = new_terrain_display;*/
     }
   }
 
@@ -142,27 +175,30 @@ class GameMapArea extends AbstractGameMap {
   void initializeBackgroundImage() {}
 
   void colorFogGrid(color c, int i, int j) {
-    Chunk chunk = this.chunk_reference.get(this.coordinateOf(new IntegerCoordinate(i, j)));
+    Chunk chunk = this.chunk_reference.get(this.coordinateOf(i, j));
     if (chunk == null) {
       return;
     }
-    chunk.fog_dimg.colorGrid(c, i % Constants.map_chunkWidth, j % Constants.map_chunkWidth);
+    chunk.fog_dimg.colorGrid(c, Math.floorMod(i, Constants.map_chunkWidth),
+      Math.floorMod(j, Constants.map_chunkWidth));
   }
 
   void terrainImageGrid(PImage img, int x, int y, int w, int h) {
-    Chunk chunk = this.chunk_reference.get(this.coordinateOf(new IntegerCoordinate(x, y)));
+    Chunk chunk = this.chunk_reference.get(this.coordinateOf(x, y));
     if (chunk == null) {
       return;
     }
-    chunk.terrain_dimg.addImageGrid(img, x % Constants.map_chunkWidth, y % Constants.map_chunkWidth, w, h);
+    chunk.terrain_dimg.addImageGrid(img, Math.floorMod(x, Constants.map_chunkWidth),
+      Math.floorMod(y, Constants.map_chunkWidth), w, h);
   }
 
   void colorTerrainGrid(color c, int x, int y, int w, int h) {
-    Chunk chunk = this.chunk_reference.get(this.coordinateOf(new IntegerCoordinate(i, j)));
+    Chunk chunk = this.chunk_reference.get(this.coordinateOf(x, y));
     if (chunk == null) {
       return;
     }
-    chunk.terrain_dimg.colorGrid(c, i % Constants.map_chunkWidth, j % Constants.map_chunkWidth);
+    chunk.terrain_dimg.colorGrid(c, Math.floorMod(x, Constants.map_chunkWidth),
+      Math.floorMod(y, Constants.map_chunkWidth));
   }
 
   void startTerrainDimgThread() {
@@ -171,43 +207,34 @@ class GameMapArea extends AbstractGameMap {
   }
 
   PImage getFogImagePiece(int fog_xi, int fog_yi, int fog_w, int fog_h) {
-    return this.fog_dimg.getImagePiece(fog_xi, fog_yi, fog_w, fog_h);
+    // account for whatever spreading across many chunks (do this after terrain image working)
+    //return this.fog_dimg.getImagePiece(fog_xi, fog_yi, fog_w, fog_h);
+    return global.images.getTransparentPixel();
   }
 
   void actuallyAddFeature(int code, Feature f) {
-    this.features.put(code, f);
+    //this.features.put(code, f);
   }
 
   Feature getFeature(int code) {
-    return this.features.get(code);
+    return null;
+    //return this.features.get(code);
   }
 
   Collection<Feature> features() {
-    return this.features.values();
+    return null;
+    //return this.features.values();
   }
 
-  void updateFeatures(int time_elapsed) {
+  void updateFeatures(int time_elapsed) {/*
     Iterator feature_iterator = this.features.entrySet().iterator();
     while(feature_iterator.hasNext()) {
       Map.Entry<Integer, Feature> entry = (Map.Entry<Integer, Feature>)feature_iterator.next();
-      Feature f = entry.getValue();
-      if (f.remove) {
-        this.removeFeature(entry.getKey());
-        feature_iterator.remove();
-        continue;
-      }
-      f.update(time_elapsed, this);
-      if (f.refresh_map_image) {
-        this.refreshFeature(entry.getKey());
-      }
-      if (f.remove) {
-        this.removeFeature(entry.getKey());
-        feature_iterator.remove();
-      }
-    }
+      updateFeature(entry.getValue(), feature_iterator, time_elapsed);
+    }*/
   }
 
-  void updateFeaturesCheckRemovalOnly() {
+  void updateFeaturesCheckRemovalOnly() {/*
     Iterator feature_iterator = this.features.entrySet().iterator();
     while(feature_iterator.hasNext()) {
       Map.Entry<Integer, Feature> entry = (Map.Entry<Integer, Feature>)feature_iterator.next();
@@ -215,12 +242,11 @@ class GameMapArea extends AbstractGameMap {
         this.removeFeature(entry.getKey());
         feature_iterator.remove();
       }
-    }
+    }*/
   }
 
 
   void saveTerrain(PrintWriter file, String folderPath) {
-    file.println("dimensions: " + this.mapWidth + ", " + this.mapHeight);
     for (int i = this.mapXI(); i < this.mapXF(); i++) {
       for (int j = this.mapYI(); j < this.mapYF(); j++) {
         file.println("terrain: " + i + ", " + j + ": " + this.mapSquare(i, j).terrain_id +
@@ -228,16 +254,16 @@ class GameMapArea extends AbstractGameMap {
       }
     }
     // add feature data
-    for (Map.Entry<Integer, Feature> entry : this.features.entrySet()) {
+    /*for (Map.Entry<Integer, Feature> entry : this.features.entrySet()) {
       file.println("nextFeatureKey: " + entry.getKey());
       file.println(entry.getValue().fileString());
-    }
+    }*/
   }
 
   void addImplementationSpecificData(String datakey, String data) {
     switch(datakey) {
       case "dimensions":
-        String[] dimensions = split(data, ',');
+        /*String[] dimensions = split(data, ',');
         if (dimensions.length < 2) {
           global.errorMessage("ERROR: Map missing dimensions in data: " + data + ".");
           this.mapWidth = 1;
@@ -247,7 +273,7 @@ class GameMapArea extends AbstractGameMap {
           this.mapWidth = toInt(trim(dimensions[0]));
           this.mapHeight = toInt(trim(dimensions[1]));
         }
-        this.initializeSquares();
+        this.initializeSquares();*/
         break;
       default:
         global.errorMessage("ERROR: Datakey " + datakey + " not recognized for GameMap object.");

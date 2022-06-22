@@ -1,5 +1,5 @@
 enum MapEditorPage {
-  MAPS, LEVELS, TERRAIN, FEATURES, UNITS, ITEMS, TESTMAP, OPENING_MAPEDITOR,
+  MAPS, AREAS, LEVELS, TERRAIN, FEATURES, UNITS, ITEMS, TESTMAP, OPENING_MAPEDITOR,
   CREATING_MAP, OPENING_TESTMAP, OPENING_TESTLEVEL, LEVEL_INFO, LEVEL_MAPS,
   LINKERS, TRIGGERS, TRIGGER_EDITOR, CONDITION_EDITOR, EFFECT_EDITOR, TESTLEVEL;
 }
@@ -99,6 +99,12 @@ class MapEditorInterface extends InterfaceLNZ {
             this.addLine("Test Map");
             this.addLine("Delete Map");
             break;
+          case AREAS:
+            this.setText("");
+            this.addLine("");
+            this.addLine("");
+            this.addLine("");
+            break;
           case LEVELS:
             this.setText("Open Level");
             this.addLine("Rename Level");
@@ -144,12 +150,14 @@ class MapEditorInterface extends InterfaceLNZ {
     protected RenameInputBox renameInputBox;
     protected MapEditorPage previous_page = MapEditorPage.LEVEL_INFO;
     protected float scroll_maps = 0;
+    protected float scroll_areas = 0;
     protected float scroll_levels = 0;
     protected float scroll_terrain = 0;
     protected float scroll_features = 0;
     protected float scroll_units = 0;
     protected float scroll_items = 0;
     protected String text_ref_maps = null;
+    protected String text_ref_areas = null;
     protected String text_ref_levels = null;
     protected String text_ref_terrain = null;
     protected String text_ref_features = null;
@@ -270,6 +278,9 @@ class MapEditorInterface extends InterfaceLNZ {
           case MAPS:
             MapEditorInterface.this.renameMapFile(this.highlightedLine(), this.renameInputBox.text);
             break;
+          case AREAS:
+            // rename areas
+            break;
           case LEVELS:
             MapEditorInterface.this.renameLevelFolder(this.highlightedLine(), this.renameInputBox.text);
             break;
@@ -304,6 +315,9 @@ class MapEditorInterface extends InterfaceLNZ {
               global.errorMessage("ERROR: Option index " + option + " not recognized.");
               break;
           }
+          break;
+        case AREAS:
+          //
           break;
         case LEVELS:
           switch(option) {
@@ -355,6 +369,9 @@ class MapEditorInterface extends InterfaceLNZ {
         case MAPS:
           this.scroll_maps = this.scrollbar.value;
           break;
+        case AREAS:
+          this.scroll_areas = this.scrollbar.value;
+          break;
         case LEVELS:
           this.scroll_levels = this.scrollbar.value;
           break;
@@ -388,6 +405,16 @@ class MapEditorInterface extends InterfaceLNZ {
             this.setText(this.text_ref_maps);
           }
           this.scrollbar.updateValue(this.scroll_maps);
+          break;
+        case AREAS:
+          this.setTitleText("Areas");
+          if (this.text_ref_areas == null) {
+            this.setAreasText();
+          }
+          else {
+            this.setText(this.text_ref_maps);
+          }
+          this.scrollbar.updateValue(this.scroll_areas);
           break;
         case LEVELS:
           this.setTitleText("Levels");
@@ -476,6 +503,30 @@ class MapEditorInterface extends InterfaceLNZ {
         mkdir("data/maps");
       }
       this.text_ref_maps = this.text_ref;
+    }
+
+    void setAreasText() {
+      if (folderExists("data/areas")) {
+        boolean first = true;
+        for (Path p : listFiles("data/areas/")) {
+          String filename = p.getFileName().toString();
+          if (!filename.endsWith(".area.lnz")) {
+            continue;
+          }
+          String mapName = split(filename, '.')[0];
+          if (first) {
+            this.setText(mapName);
+            first = false;
+          }
+          else {
+            this.addLine(mapName);
+          }
+        }
+      }
+      else {
+        mkdir("data/areas");
+      }
+      this.text_ref_areas = this.text_ref;
     }
 
     void setLevelsText() {
@@ -589,16 +640,13 @@ class MapEditorInterface extends InterfaceLNZ {
     void refresh() {
       switch(MapEditorInterface.this.page) {
         case MAPS:
+          this.text_ref_maps = null;
+          break;
+        case AREAS:
+          this.text_ref_areas = null;
           break;
         case LEVELS:
-          break;
-        case TERRAIN:
-          break;
-        case FEATURES:
-          break;
-        case UNITS:
-          break;
-        case ITEMS:
+          this.text_ref_levels = null;
           break;
         case LEVEL_MAPS:
           this.text_ref_levelMaps = null;
@@ -610,6 +658,11 @@ class MapEditorInterface extends InterfaceLNZ {
     void click() {
       switch(MapEditorInterface.this.page) {
         case MAPS:
+          if (mouseButton == RIGHT) {
+            this.rightClickMenu = new RightClickListTextBox(mouseX, mouseY, MapEditorInterface.this.page);
+          }
+          break;
+        case AREAS:
           if (mouseButton == RIGHT) {
             this.rightClickMenu = new RightClickListTextBox(mouseX, mouseY, MapEditorInterface.this.page);
           }
@@ -640,6 +693,11 @@ class MapEditorInterface extends InterfaceLNZ {
         case MAPS:
           if (mouseButton == LEFT) {
             MapEditorInterface.this.openMapEditor(this.highlightedLine());
+          }
+          break;
+        case AREAS:
+          if (mouseButton == LEFT) {
+            MapEditorInterface.this.openAreaEditor(this.highlightedLine());
           }
           break;
         case LEVELS:
@@ -1128,6 +1186,45 @@ class MapEditorInterface extends InterfaceLNZ {
       MapEditorInterface.this.create_map_thread = new NewMapThread(this.fields.get(1).getValue(),
         toInt(this.fields.get(4).getValue()), toInt(this.fields.get(6).getValue()));
       MapEditorInterface.this.create_map_thread.start();
+      this.canceled = true;
+    }
+  }
+
+
+  class NewAreaForm extends FormLNZ {
+    NewAreaForm() {
+      super(0.5 * (width - Constants.mapEditor_formWidth), 0.5 * (height - Constants.mapEditor_formHeight),
+        0.5 * (width + Constants.mapEditor_formWidth), 0.5 * (height + Constants.mapEditor_formHeight));
+      this.setTitleText("New Area");
+      this.setTitleSize(18);
+      this.color_background = color(180, 250, 180);
+      this.color_header = color(30, 170, 30);
+      this.setFieldCushion(0);
+
+      MessageFormField error = new MessageFormField("");
+      error.text_color = color(150, 20, 20);
+      error.setTextSize(16);
+      SubmitCancelFormField submit = new SubmitCancelFormField("  Ok  ", "Cancel");
+      submit.button1.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+      submit.button2.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+
+      this.addField(new SpacerFormField(20));
+      this.addField(new StringFormField("", "Area Name"));
+      this.addField(error);
+      this.addField(new SpacerFormField(10));
+      this.addField(new IntegerFormField("", "Chunks from zero", 0, 30000));
+      this.addField(new SpacerFormField(20));
+      this.addField(submit);
+    }
+
+    void submit() {
+      if (fileExists("data/areas/" + this.fields.get(1).getValue() + ".area.lnz")) {
+        this.fields.get(2).setValue("An area with that name already exists");
+        return;
+      }
+      MapEditorInterface.this.curr_map = new GameMapArea();
       this.canceled = true;
     }
   }
@@ -1698,6 +1795,12 @@ class MapEditorInterface extends InterfaceLNZ {
         this.buttons[2].message = "Test\nMap";
         this.listBox1.setPosition(RightPanelElementLocation.WHOLE);
         break;
+      case AREAS:
+        this.buttons[0].message = "Toggle\nDisplay";
+        this.buttons[1].message = "New\nArea";
+        this.buttons[2].message = "Load\nArea";
+        this.listBox1.setPosition(RightPanelElementLocation.WHOLE);
+        break;
       case LEVELS:
         this.buttons[0].message = "Toggle\nDisplay";
         this.buttons[1].message = "New\nLevel";
@@ -1805,6 +1908,9 @@ class MapEditorInterface extends InterfaceLNZ {
   void buttonClick1() {
     switch(this.page) {
       case MAPS:
+        this.navigate(MapEditorPage.AREAS);
+        break;
+      case AREAS:
         this.navigate(MapEditorPage.LEVELS);
         break;
       case LEVELS:
@@ -1865,6 +1971,9 @@ class MapEditorInterface extends InterfaceLNZ {
       case MAPS:
         this.form = new NewMapForm();
         break;
+      case AREAS:
+        this.form = new NewAreaForm();
+        break;
       case LEVELS:
         this.form = new NewLevelForm();
         break;
@@ -1906,6 +2015,9 @@ class MapEditorInterface extends InterfaceLNZ {
       case MAPS:
         this.testMap();
         break;
+      case AREA:
+        this.loadArea();
+        break;
       case LEVELS:
         this.testLevel();
         break;
@@ -1945,6 +2057,7 @@ class MapEditorInterface extends InterfaceLNZ {
   void buttonClick4() {
     switch(this.page) {
       case MAPS:
+      case AREAS:
       case LEVELS:
         MapEditorInterface.this.curr_map = null;
         MapEditorInterface.this.curr_level = null;
@@ -1960,6 +2073,9 @@ class MapEditorInterface extends InterfaceLNZ {
     switch(this.page) {
       case MAPS:
         this.form = new HelpForm(Constants.help_mapEditor_maps);
+        break;
+      case AREAS:
+        this.form = new HelpForm(Constants.help_mapEditor_areas);
         break;
       case LEVELS:
         this.form = new HelpForm(Constants.help_mapEditor_levels);
@@ -2067,6 +2183,10 @@ class MapEditorInterface extends InterfaceLNZ {
     this.navigate(MapEditorPage.OPENING_MAPEDITOR);
     this.open_mapEditor_thread = new OpenMapEditorThread(mapName, sketchPath("data/maps/"));
     this.open_mapEditor_thread.start();
+  }
+
+  void openAreaEditor(String areaName) {
+    // area editor form
   }
 
   void saveMapEditor() {

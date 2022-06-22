@@ -612,22 +612,22 @@ class Profile {
     void unlockNode(PlayerTreeCode code) {
       this.unlockNode(code, false);
     }
-    void unlockNode(PlayerTreeCode code, boolean force_unlock) {
+    void unlockNode(PlayerTreeCode code, boolean from_save) {
       if (!this.nodes.containsKey(code)) {
         return;
       }
-      if (this.nodes.get(code).unlocked || (!this.nodes.get(code).visible && !force_unlock)) {
+      if (this.nodes.get(code).unlocked || (!this.nodes.get(code).visible && !from_save)) {
         return;
       }
-      if (!force_unlock && Profile.this.achievement_tokens < code.cost()) {
+      if (!from_save && Profile.this.achievement_tokens < code.cost()) {
         return;
       }
-      if (!force_unlock) {
+      if (!from_save) {
         Profile.this.achievement_tokens -= code.cost();
       }
       this.nodes.get(code).unlock();
       this.updateDependencies();
-      Profile.this.upgrade(code);
+      Profile.this.upgrade(code, from_save);
     }
 
     ArrayList<PlayerTreeCode> unlockedCodes() {
@@ -1012,16 +1012,20 @@ class Profile {
     }
   }
 
-  void upgrade(PlayerTreeCode code) {
+  void upgrade(PlayerTreeCode code, boolean from_save) {
     switch(code) {
       case CAN_PLAY:
-        this.addInitialHero();
+        if (!from_save) {
+          this.addInitialHero();
+        }
         break;
       default:
         break;
     }
-    this.saveProfileFile();
-    global.log("Unlocked perk: " + code.display_name());
+    if (!from_save) {
+      this.saveProfileFile();
+      global.log("Unlocked perk: " + code.display_name());
+    }
   }
 
   boolean upgraded(PlayerTreeCode code) {

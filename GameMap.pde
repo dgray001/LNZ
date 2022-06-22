@@ -149,20 +149,7 @@ class GameMap extends AbstractGameMap {
     Iterator feature_iterator = this.features.entrySet().iterator();
     while(feature_iterator.hasNext()) {
       Map.Entry<Integer, Feature> entry = (Map.Entry<Integer, Feature>)feature_iterator.next();
-      Feature f = entry.getValue();
-      if (f.remove) {
-        this.removeFeature(entry.getKey());
-        feature_iterator.remove();
-        continue;
-      }
-      f.update(time_elapsed, this);
-      if (f.refresh_map_image) {
-        this.refreshFeature(entry.getKey());
-      }
-      if (f.remove) {
-        this.removeFeature(entry.getKey());
-        feature_iterator.remove();
-      }
+      updateFeature(entry.getValue(), feature_iterator, time_elapsed);
     }
   }
 

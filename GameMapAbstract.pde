@@ -2007,6 +2007,21 @@ abstract class AbstractGameMap {
     }
   }
   abstract void updateFeatures(int time_elapsed);
+  void updateFeature(Feature f, Iterator it, int time_elapsed) {
+    if (f.remove) {
+      this.removeFeature(f.map_key);
+      it.remove();
+      return;
+    }
+    f.update(time_elapsed, this);
+    if (f.refresh_map_image) {
+      this.refreshFeature(f.map_key);
+    }
+    if (f.remove) {
+      this.removeFeature(f.map_key);
+      it.remove();
+    }
+  }
   abstract void updateFeaturesCheckRemovalOnly();
 
   void updatePlayerUnit(int timeElapsed) {
