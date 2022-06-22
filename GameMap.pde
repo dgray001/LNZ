@@ -165,7 +165,7 @@ class GameMap extends AbstractGameMap {
   }
 
 
-  void saveTerrain(PrintWriter file, String folderPath) {
+  void saveTerrain(PrintWriter file) {
     file.println("dimensions: " + this.mapWidth + ", " + this.mapHeight);
     for (int i = this.mapXI(); i < this.mapXF(); i++) {
       for (int j = this.mapYI(); j < this.mapYF(); j++) {

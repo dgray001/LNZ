@@ -222,7 +222,7 @@ class GameMapArea extends AbstractGameMap {
   }
 
   Collection<Feature> features() {
-    return null;
+    return new ArrayList<Feature>();
     //return this.features.values();
   }
 
@@ -246,11 +246,13 @@ class GameMapArea extends AbstractGameMap {
   }
 
 
-  void saveTerrain(PrintWriter file, String folderPath) {
+  void saveTerrain(PrintWriter file) {
+    file.println("max_chunks_from_zero: " + this.max_chunks_from_zero);
+    file.println("seed: " + this.seed);
     for (int i = this.mapXI(); i < this.mapXF(); i++) {
       for (int j = this.mapYI(); j < this.mapYF(); j++) {
-        file.println("terrain: " + i + ", " + j + ": " + this.mapSquare(i, j).terrain_id +
-          ", " + this.mapSquare(i, j).base_elevation + ", " + this.mapSquare(i, j).explored);
+        //file.println("terrain: " + i + ", " + j + ": " + this.mapSquare(i, j).terrain_id +
+          //", " + this.mapSquare(i, j).base_elevation + ", " + this.mapSquare(i, j).explored);
       }
     }
     // add feature data
@@ -259,9 +261,22 @@ class GameMapArea extends AbstractGameMap {
       file.println(entry.getValue().fileString());
     }*/
   }
+  @Override
+  String fileType() {
+    return "area";
+  }
+
+  void saveAreaFile(String folder_path) {
+  }
 
   void addImplementationSpecificData(String datakey, String data) {
     switch(datakey) {
+      case "max_chunks_from_zero":
+        this.max_chunks_from_zero = toInt(data);
+        break;
+      case "seed":
+        this.seed = toInt(data);
+        break;
       case "dimensions":
         /*String[] dimensions = split(data, ',');
         if (dimensions.length < 2) {

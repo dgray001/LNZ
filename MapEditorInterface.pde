@@ -1,7 +1,8 @@
 enum MapEditorPage {
   MAPS, AREAS, LEVELS, TERRAIN, FEATURES, UNITS, ITEMS, TESTMAP, OPENING_MAPEDITOR,
   CREATING_MAP, OPENING_TESTMAP, OPENING_TESTLEVEL, LEVEL_INFO, LEVEL_MAPS,
-  LINKERS, TRIGGERS, TRIGGER_EDITOR, CONDITION_EDITOR, EFFECT_EDITOR, TESTLEVEL;
+  LINKERS, TRIGGERS, TRIGGER_EDITOR, CONDITION_EDITOR, EFFECT_EDITOR, TESTLEVEL,
+  EDITING_AREA;
 }
 
 
@@ -412,7 +413,7 @@ class MapEditorInterface extends InterfaceLNZ {
             this.setAreasText();
           }
           else {
-            this.setText(this.text_ref_maps);
+            this.setText(this.text_ref_areas);
           }
           this.scrollbar.updateValue(this.scroll_areas);
           break;
@@ -502,7 +503,7 @@ class MapEditorInterface extends InterfaceLNZ {
       else {
         mkdir("data/maps");
       }
-      this.text_ref_maps = this.text_ref;
+      //this.text_ref_maps = this.text_ref; // need to refresh whenever a map is made/deleted/renamed
     }
 
     void setAreasText() {
@@ -526,7 +527,7 @@ class MapEditorInterface extends InterfaceLNZ {
       else {
         mkdir("data/areas");
       }
-      this.text_ref_areas = this.text_ref;
+      //this.text_ref_areas = this.text_ref;
     }
 
     void setLevelsText() {
@@ -546,7 +547,7 @@ class MapEditorInterface extends InterfaceLNZ {
       else {
         mkdir("data/levels");
       }
-      this.text_ref_levels = this.text_ref;
+      //this.text_ref_levels = this.text_ref;
     }
 
     void setTerrainText() {
@@ -1224,7 +1225,7 @@ class MapEditorInterface extends InterfaceLNZ {
         this.fields.get(2).setValue("An area with that name already exists");
         return;
       }
-      MapEditorInterface.this.curr_map = new GameMapArea();
+      MapEditorInterface.this.createArea(this.fields.get(1).getValue());
       this.canceled = true;
     }
   }
@@ -1757,6 +1758,7 @@ class MapEditorInterface extends InterfaceLNZ {
   private LevelEditorForm levelForm;
 
   private GameMapEditor curr_map;
+  private GameMapArea curr_area;
   private Level curr_level;
   private Trigger curr_trigger;
   private int curr_trigger_component = -1;
@@ -1798,7 +1800,7 @@ class MapEditorInterface extends InterfaceLNZ {
       case AREAS:
         this.buttons[0].message = "Toggle\nDisplay";
         this.buttons[1].message = "New\nArea";
-        this.buttons[2].message = "Load\nArea";
+        this.buttons[2].message = "";
         this.listBox1.setPosition(RightPanelElementLocation.WHOLE);
         break;
       case LEVELS:
@@ -1871,6 +1873,11 @@ class MapEditorInterface extends InterfaceLNZ {
         this.buttons[0].message = "";
         this.buttons[1].message = "Save\nLevel";
         this.buttons[2].message = "Cancel\nLevel";
+        break;
+      case EDITING_AREA:
+        this.buttons[0].message = "";
+        this.buttons[1].message = "";
+        this.buttons[2].message = "Cancel\nArea";
         break;
       default:
         global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
@@ -1960,6 +1967,8 @@ class MapEditorInterface extends InterfaceLNZ {
         break;
       case TESTLEVEL:
         break;
+      case EDITING_AREA:
+        break;
       default:
         global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
         break;
@@ -2004,6 +2013,8 @@ class MapEditorInterface extends InterfaceLNZ {
       case TESTLEVEL:
         this.saveLevelTester();
         break;
+      case EDITING_AREA:
+        break;
       default:
         global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
         break;
@@ -2015,8 +2026,8 @@ class MapEditorInterface extends InterfaceLNZ {
       case MAPS:
         this.testMap();
         break;
-      case AREA:
-        this.loadArea();
+      case AREAS:
+        //this.loadArea();
         break;
       case LEVELS:
         this.testLevel();
@@ -2047,6 +2058,9 @@ class MapEditorInterface extends InterfaceLNZ {
         break;
       case TESTLEVEL:
         this.closeLevelTester();
+        break;
+      case EDITING_AREA:
+        this.closeAreaTester();
         break;
       default:
         global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
@@ -2098,6 +2112,7 @@ class MapEditorInterface extends InterfaceLNZ {
       case OPENING_TESTMAP:
       case OPENING_TESTLEVEL:
       case TESTLEVEL:
+      case EDITING_AREA:
         break;
       case LEVEL_INFO:
         this.form = new HelpForm(Constants.help_mapEditor_levelInfo);
@@ -2214,6 +2229,26 @@ class MapEditorInterface extends InterfaceLNZ {
     this.curr_level = null;
     global.viewing_ender_chest = false;
     this.navigate(MapEditorPage.MAPS);
+  }
+
+
+  void createArea(String area_name) {
+    if (area_name == null || area_name.equals("")) {
+      return;
+    }
+    if (fileExists("data/areas/" + area_name + ".area.lnz")) {
+      return;
+    }
+    this.curr_area = new GameMapArea("data/areas/temp");
+    this.curr_area.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+    this.curr_area.mapName = area_name;
+    this.curr_area.save(sketchPath("data/areas/"));
+    this.navigate(MapEditorPage.EDITING_AREA);
+  }
+
+  void closeAreaTester() {
+    this.curr_area = null;
+    this.navigate(MapEditorPage.AREAS);
   }
 
 
@@ -2783,6 +2818,12 @@ class MapEditorInterface extends InterfaceLNZ {
             refreshMapLocation = true;
           }
         }
+        else if (this.curr_area != null) {
+          this.curr_area.update(millis);
+          if (this.leftPanel.collapsing || this.rightPanel.collapsing) {
+            refreshMapLocation = true;
+          }
+        }
         else {
           rectMode(CORNERS);
           noStroke();
@@ -2822,6 +2863,9 @@ class MapEditorInterface extends InterfaceLNZ {
       else if (this.curr_map != null) {
         this.curr_map.drawLeftPanel(millis);
       }
+      else if (this.curr_area != null) {
+        this.curr_area.drawLeftPanel(millis);
+      }
     }
     if (refreshMapLocation) {
       if (this.curr_level != null) {
@@ -2829,6 +2873,9 @@ class MapEditorInterface extends InterfaceLNZ {
       }
       else if (this.curr_map != null) {
         this.curr_map.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+      }
+      else if (this.curr_area != null) {
+        this.curr_area.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
       }
     }
   }
@@ -2839,6 +2886,9 @@ class MapEditorInterface extends InterfaceLNZ {
     }
     else if (this.curr_map != null) {
       this.curr_map.displayNerdStats();
+    }
+    else if (this.curr_area != null) {
+      this.curr_area.displayNerdStats();
     }
     else {
       this.showDefaultNerdStats(color(255));
@@ -2860,6 +2910,12 @@ class MapEditorInterface extends InterfaceLNZ {
         refreshMapLocation = true;
       }
     }
+    else if (this.curr_area != null) {
+      this.curr_area.mouseMove(mX, mY);
+      if (this.leftPanel.clicked || this.rightPanel.clicked) {
+        refreshMapLocation = true;
+      }
+    }
     // left panel mouse move
     this.leftPanel.mouseMove(mX, mY);
     if (this.leftPanel.open && !this.leftPanel.collapsing) {
@@ -2870,6 +2926,11 @@ class MapEditorInterface extends InterfaceLNZ {
       }
       else if (this.curr_map != null) {
         if (this.curr_map.leftPanelElementsHovered()) {
+          this.leftPanel.hovered = false;
+        }
+      }
+      else if (this.curr_area != null) {
+        if (this.curr_area.leftPanelElementsHovered()) {
           this.leftPanel.hovered = false;
         }
       }
@@ -2898,8 +2959,11 @@ class MapEditorInterface extends InterfaceLNZ {
       if (this.curr_level != null) {
         this.curr_level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
       }
-      else {
+      else if (this.curr_map != null) {
         this.curr_map.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+      }
+      else if (this.curr_area != null) {
+        this.curr_area.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
       }
     }
     // cursor icon resolution
@@ -2921,6 +2985,9 @@ class MapEditorInterface extends InterfaceLNZ {
     }
     else if (this.curr_map != null) {
       this.curr_map.mousePress();
+    }
+    else if (this.curr_area != null) {
+      this.curr_area.mousePress();
     }
     this.leftPanel.mousePress();
     this.rightPanel.mousePress();
@@ -2953,6 +3020,9 @@ class MapEditorInterface extends InterfaceLNZ {
     else if (this.curr_map != null) {
       this.curr_map.mouseRelease(mX, mY);
     }
+    else if (this.curr_area != null) {
+      this.curr_area.mouseRelease(mX, mY);
+    }
     this.leftPanel.mouseRelease(mX, mY);
     this.rightPanel.mouseRelease(mX, mY);
     if (this.leftPanel.hovered || this.rightPanel.hovered) {
@@ -2984,6 +3054,9 @@ class MapEditorInterface extends InterfaceLNZ {
     else if (this.curr_map != null) {
       this.curr_map.scroll(amount);
     }
+    else if (this.curr_area != null) {
+      this.curr_area.scroll(amount);
+    }
     if (this.rightPanel.open && !this.rightPanel.collapsing) {
       if (this.listBox1.active) {
         this.listBox1.scroll(amount);
@@ -3009,6 +3082,9 @@ class MapEditorInterface extends InterfaceLNZ {
         }
         else if (this.curr_map != null) {
           this.curr_map.keyPress();
+        }
+        else if (this.curr_area != null) {
+          this.curr_area.keyPress();
         }
         break;
     }
@@ -3036,6 +3112,9 @@ class MapEditorInterface extends InterfaceLNZ {
     else if (this.curr_map != null) {
       this.curr_map.keyRelease();
     }
+    else if (this.curr_area != null) {
+      this.curr_area.keyRelease();
+    }
     if (this.rightPanel.open && !this.rightPanel.collapsing) {
       if (this.listBox1.active) {
         this.listBox1.keyRelease();
@@ -3057,6 +3136,9 @@ class MapEditorInterface extends InterfaceLNZ {
     else if (this.curr_map != null) {
       this.curr_map.loseFocus();
     }
+    else if (this.curr_area != null) {
+      this.curr_area.loseFocus();
+    }
   }
 
   void gainFocus() {
@@ -3065,6 +3147,9 @@ class MapEditorInterface extends InterfaceLNZ {
     }
     else if (this.curr_map != null) {
       this.curr_map.gainFocus();
+    }
+    else if (this.curr_area != null) {
+      this.curr_area.gainFocus();
     }
   }
 

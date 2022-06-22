@@ -1252,6 +1252,8 @@ abstract class AbstractGameMap {
     text("GameMap Threads: " + gamemap_threads, this.xi + 1, y_stats);
     y_stats += line_height;
     text("Unit Threads: " + unit_threads, this.xi + 1, y_stats);
+    y_stats += line_height;
+    text("Current View: " + this.viewX + ", " + this.viewY, this.xi + 1, y_stats);
     if (this.units.containsKey(0)) {
       y_stats += line_height;
       text("Location: (" + this.units.get(0).x + ", " + this.units.get(0).y +
@@ -1302,10 +1304,12 @@ abstract class AbstractGameMap {
     imageMode(CORNER);
     for (int i = round(ceil(this.startSquareX_old)); i < round(floor(this.startSquareX_old + this.visSquareX_old)); i++) {
       for (int j = round(ceil(this.startSquareY_old)); j < round(floor(this.startSquareY_old + this.visSquareY_old)); j++) {
-        if (this.mapSquare(i, j).terrain_id == 191) {
-          image(this.mapSquare(i, j).terrainImage(), this.xi_map_old + (i - this.startSquareX_old) *
-            this.zoom_old, this.yi_map_old + (j - this.startSquareY_old) * this.zoom_old, this.zoom_old, this.zoom_old);
-        }
+        try {
+          if (this.mapSquare(i, j).terrain_id == 191) {
+            image(this.mapSquare(i, j).terrainImage(), this.xi_map_old + (i - this.startSquareX_old) *
+              this.zoom_old, this.yi_map_old + (j - this.startSquareY_old) * this.zoom_old, this.zoom_old, this.zoom_old);
+          }
+        } catch(NullPointerException e) {}
       }
     }
     // display units
@@ -2365,7 +2369,7 @@ abstract class AbstractGameMap {
 
   void save(String folder_path) {
     PrintWriter file;
-    file = createWriter(folder_path + "/" + this.mapName + ".map.lnz");
+    file = createWriter(folder_path + "/" + this.mapName + "." + this.fileType() + ".lnz");
     file.println("new: Map");
     file.println("code: " + this.code.file_name());
     file.println("mapName: " + this.mapName);
@@ -2373,7 +2377,7 @@ abstract class AbstractGameMap {
     file.println("outside_map: " + this.outside_map);
     file.println("color_tint: " + this.color_tint);
     file.println("show_tint: " + this.show_tint);
-    this.saveTerrain(file, folder_path);
+    this.saveTerrain(file);
     // add unit data
     for (Map.Entry<Integer, Unit> entry : this.units.entrySet()) {
       if (entry.getKey() == 0) {
@@ -2392,7 +2396,10 @@ abstract class AbstractGameMap {
     file.close();
     global.profile.save(); // for ender chest
   }
-  abstract void saveTerrain(PrintWriter file, String folder_path);
+  String fileType() {
+    return "map";
+  }
+  abstract void saveTerrain(PrintWriter file);
 
   void open(String folderPath) {
     this.open2Data(this.open1File(folderPath));
