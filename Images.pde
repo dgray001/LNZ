@@ -24,6 +24,11 @@ class Images {
     return graphic;
   }
 
+  void loadImageFiles(String ... filePaths) {
+    for (String filePath : filePaths) {
+      this.loadImageFile(filePath);
+    }
+  }
   void loadImageFile(String filePath) {
     PImage img = loadImage(this.basePath + filePath);
     if (img == null) {
@@ -80,6 +85,21 @@ class Images {
     // other images
     for (int i = 1; i <= 11; i++) {
       this.loadImageFile("icons/tier_" + i + ".png");
+    }
+  }
+
+  void loadMinigameImages(MinigameName name) {
+    switch(name) {
+      case CHESS:
+        String p = "minigames/chess/";
+        this.loadImageFiles(p + "black_bishop.png", p + "black_king.png",
+        p + "black_knight.png", p + "black_pawn.png", p + "black_queen.png",
+        p + "black_rook.png", p + "white_bishop.png", p + "white_king.png",
+        p + "white_knight.png", p + "white_pawn.png", p + "white_queen.png",
+        p + "white_rook.png");
+        break;
+      default:
+        break;
     }
   }
 

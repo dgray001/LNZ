@@ -1,5 +1,94 @@
+enum BoardOrientation {
+  STANDARD, LEFT, RIGHT;
+}
+
 abstract class GridBoard {
+  abstract class BoardSquare {
+    class SquareButton extends RectangleButton {
+      SquareButton() {
+        super(0, 0, 0, 0);
+        this.use_time_elapsed = true;
+        this.setColors(color(1, 0), color(1, 0), color(1, 0), color(1, 0), color(1, 0));
+      }
+
+      void dehover() {}
+      void hover() {}
+      void click() {
+        BoardSquare.this.clicked();
+      }
+      void release() {
+        BoardSquare.this.released();
+      }
+    }
+
+    protected IntegerCoordinate coordinate;
+    protected HashMap<Integer, GamePiece> pieces;
+    protected SquareButton button = new SquareButton();
+
+    BoardSquare(IntegerCoordinate coordinate) {
+      this.coordinate = coordinate;
+      this.initializePieceMap();
+    }
+
+    abstract void initializePieceMap();
+
+    void clearSquare() {
+      this.pieces.clear();
+    }
+
+    void addPiece(GamePiece piece) {
+      if (this.pieces.containsKey(piece.board_key)) {
+        global.errorMessage("ERROR: Can't add piece with key " + piece.board_key +
+          " to square " + this.coordinate.x + ", " + this.coordinate.y + ".");
+        return;
+      }
+      this.pieces.put(piece.board_key, piece);
+      piece.coordinate = new IntegerCoordinate(this.coordinate.x, this.coordinate.y);
+    }
+
+    abstract boolean canTakePiece(GamePiece piece);
+
+    boolean empty() {
+      return this.pieces.isEmpty();
+    }
+
+    void setSize(float size) {
+      this.button.xf = size;
+      this.button.yf = size;
+    }
+
+    void update(int time_elapsed) {
+      this.button.update(time_elapsed);
+      this.drawSquare();
+      Iterator iterator = this.pieces.entrySet().iterator();
+      while(iterator.hasNext()) {
+        Map.Entry<Integer, GamePiece> entry = (Map.Entry<Integer, GamePiece>)iterator.next();
+        if (entry.getValue().remove) {
+          iterator.remove();
+        }
+      }
+    }
+    abstract void drawSquare();
+
+    void mouseMove(float mX, float mY) {
+      this.button.mouseMove(mX, mY);
+    }
+
+    void mousePress() {
+      this.button.mousePress();
+    }
+
+    void mouseRelease(float mX, float mY) {
+      this.button.mouseRelease(mX, mY);
+    }
+
+    abstract void clicked();
+    abstract void released();
+  }
+
+
   protected BoardSquare[][] squares;
+  protected BoardOrientation orientation = BoardOrientation.STANDARD;
   protected HashMap<Integer, GamePiece> pieces;
   protected int next_piece_key = 1;
 
@@ -17,6 +106,13 @@ abstract class GridBoard {
     this.initializePieceMap();
   }
 
+  void setOrientation(BoardOrientation orientation) {
+    if (this.boardWidth() != this.boardHeight()) {
+      return;
+    }
+    this.orientation = orientation;
+  }
+
   int boardWidth() {
     return this.squares.length;
   }
@@ -27,6 +123,10 @@ abstract class GridBoard {
     return 0;
   }
 
+  boolean contains(IntegerCoordinate coordinate) {
+    return this.squareAt(coordinate) != null;
+  }
+
   abstract void initializePieceMap();
   abstract void initializeSquares();
 
@@ -35,6 +135,17 @@ abstract class GridBoard {
       for (int j = 0; j < this.squares[i].length; j++) {
         this.squares[i][j].clearSquare();
       }
+    }
+  }
+
+  BoardSquare squareAt(IntegerCoordinate coordinate) {
+    if (coordinate == null) {
+      return null;
+    }
+    try {
+      return this.squares[coordinate.x][coordinate.y];
+    } catch(ArrayIndexOutOfBoundsException e) {
+      return null;
     }
   }
 
@@ -85,12 +196,44 @@ abstract class GridBoard {
   void update(int time_elapsed) {
     this.drawBoard();
     float x_curr = this.xi_draw;
-    for (int i = 0; i < this.squares.length; i++, x_curr += this.square_length) {
-      float y_curr = this.yi_draw;
-      for (int j = 0; j < this.squares[i].length; j++, y_curr += this.square_length) {
-        translate(x_curr, y_curr);
-        this.squares[i][j].update(time_elapsed);
-        translate(-x_curr, -y_curr);
+    float y_curr = this.yi_draw;
+    switch(this.orientation) {
+      case STANDARD:
+        for (int i = 0; i < this.squares.length; i++, x_curr += this.square_length) {
+          y_curr = this.yi_draw;
+          for (int j = 0; j < this.squares[i].length; j++, y_curr += this.square_length) {
+            translate(x_curr, y_curr);
+            this.squares[i][j].update(time_elapsed);
+            translate(-x_curr, -y_curr);
+          }
+        }
+        break;
+      case LEFT:
+        for (int j = this.squares[0].length - 1; j >= 0; j--, x_curr += this.square_length) {
+          y_curr = this.yi_draw;
+          for (int i = 0; i < this.squares.length; i++, y_curr += this.square_length) {
+            translate(x_curr, y_curr);
+            this.squares[i][j].update(time_elapsed);
+            translate(-x_curr, -y_curr);
+          }
+        }
+        break;
+      case RIGHT:
+        for (int j = 0; j < this.squares[0].length; j++, x_curr += this.square_length) {
+          y_curr = this.yi_draw;
+          for (int i = this.squares.length - 1; i >= 0; i--, y_curr += this.square_length) {
+            translate(x_curr, y_curr);
+            this.squares[i][j].update(time_elapsed);
+            translate(-x_curr, -y_curr);
+          }
+        }
+        break;
+    }
+    Iterator iterator = this.pieces.entrySet().iterator();
+    while(iterator.hasNext()) {
+      Map.Entry<Integer, GamePiece> entry = (Map.Entry<Integer, GamePiece>)iterator.next();
+      if (entry.getValue().remove) {
+        iterator.remove();
       }
     }
   }
@@ -98,11 +241,32 @@ abstract class GridBoard {
 
   void mouseMove(float mX, float mY) {
     float x_curr = this.xi_draw;
-    for (int i = 0; i < this.squares.length; i++, x_curr += this.square_length) {
-      float y_curr = this.yi_draw;
-      for (int j = 0; j < this.squares[i].length; j++, y_curr += this.square_length) {
-        this.squares[i][j].mouseMove(mX - x_curr, mY - y_curr);
-      }
+    float y_curr = this.yi_draw;
+    switch(this.orientation) {
+      case STANDARD:
+        for (int i = 0; i < this.squares.length; i++, x_curr += this.square_length) {
+          y_curr = this.yi_draw;
+          for (int j = 0; j < this.squares[i].length; j++, y_curr += this.square_length) {
+            this.squares[i][j].mouseMove(mX - x_curr, mY - y_curr);
+          }
+        }
+        break;
+      case LEFT:
+        for (int j = this.squares[0].length - 1; j >= 0; j--, x_curr += this.square_length) {
+          y_curr = this.yi_draw;
+          for (int i = 0; i < this.squares.length; i++, y_curr += this.square_length) {
+            this.squares[i][j].mouseMove(mX - x_curr, mY - y_curr);
+          }
+        }
+        break;
+      case RIGHT:
+        for (int j = 0; j < this.squares[0].length; j++, x_curr += this.square_length) {
+          y_curr = this.yi_draw;
+          for (int i = this.squares.length - 1; i >= 0; i--, y_curr += this.square_length) {
+            this.squares[i][j].mouseMove(mX - x_curr, mY - y_curr);
+          }
+        }
+        break;
     }
   }
 
@@ -116,88 +280,40 @@ abstract class GridBoard {
 
   void mouseRelease(float mX, float mY) {
     float x_curr = this.xi_draw;
-    for (int i = 0; i < this.squares.length; i++, x_curr += this.square_length) {
-      float y_curr = this.yi_draw;
-      for (int j = 0; j < this.squares[i].length; j++, y_curr += this.square_length) {
-        this.squares[i][j].mouseRelease(mX - x_curr, mY - y_curr);
-      }
+    float y_curr = this.yi_draw;
+    switch(this.orientation) {
+      case STANDARD:
+        for (int i = 0; i < this.squares.length; i++, x_curr += this.square_length) {
+          y_curr = this.yi_draw;
+          for (int j = 0; j < this.squares[i].length; j++, y_curr += this.square_length) {
+            this.squares[i][j].mouseRelease(mX - x_curr, mY - y_curr);
+          }
+        }
+        break;
+      case LEFT:
+        for (int j = this.squares[0].length - 1; j >= 0; j--, x_curr += this.square_length) {
+          y_curr = this.yi_draw;
+          for (int i = 0; i < this.squares.length; i++, y_curr += this.square_length) {
+            this.squares[i][j].mouseRelease(mX - x_curr, mY - y_curr);
+          }
+        }
+        break;
+      case RIGHT:
+        for (int j = 0; j < this.squares[0].length; j++, x_curr += this.square_length) {
+          y_curr = this.yi_draw;
+          for (int i = this.squares.length - 1; i >= 0; i--, y_curr += this.square_length) {
+            this.squares[i][j].mouseRelease(mX - x_curr, mY - y_curr);
+          }
+        }
+        break;
     }
-  }
-}
-
-
-abstract class BoardSquare {
-  class SquareButton extends RectangleButton {
-    SquareButton() {
-      super(0, 0, 0, 0);
-      this.use_time_elapsed = true;
-      this.setColors(color(1, 0), color(1, 0), color(1, 0), color(1, 0), color(1, 0));
-    }
-
-    void dehover() {}
-    void hover() {}
-    void click() {}
-    void release() {}
-  }
-
-  protected IntegerCoordinate coordinate;
-  protected HashMap<Integer, GamePiece> pieces;
-  protected SquareButton button = new SquareButton();
-
-  BoardSquare(IntegerCoordinate coordinate) {
-    this.coordinate = coordinate;
-    this.initializePieceMap();
-  }
-
-  abstract void initializePieceMap();
-
-  void clearSquare() {
-    this.pieces.clear();
-  }
-
-  void addPiece(GamePiece piece) {
-    if (this.pieces.containsKey(piece.board_key)) {
-      global.errorMessage("ERROR: Can't add piece with key " + piece.board_key +
-        " to square " + this.coordinate.x + ", " + this.coordinate.y + ".");
-      return;
-    }
-    this.pieces.put(piece.board_key, piece);
-    piece.coordinate = new IntegerCoordinate(this.coordinate.x, this.coordinate.y);
-  }
-
-  abstract boolean canTakePiece(GamePiece piece);
-
-  boolean empty() {
-    return this.pieces.isEmpty();
-  }
-
-  void setSize(float size) {
-    this.button.xf = size;
-    this.button.yf = size;
-  }
-
-  void update(int time_elapsed) {
-    this.button.update(time_elapsed);
-    this.drawSquare();
-  }
-  abstract void drawSquare();
-
-  void mouseMove(float mX, float mY) {
-    this.button.mouseMove(mX, mY);
-  }
-
-  void mousePress() {
-    this.button.mousePress();
-  }
-
-  void mouseRelease(float mX, float mY) {
-    this.button.mouseRelease(mX, mY);
   }
 }
 
 
 abstract class GamePiece {
   protected int board_key = -1;
+  protected boolean remove = false;
   protected IntegerCoordinate coordinate = new IntegerCoordinate(0, 0);
 
   GamePiece() {

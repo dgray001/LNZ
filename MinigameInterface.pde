@@ -221,7 +221,7 @@ class MinigameInterface extends InterfaceLNZ {
     @Override
     void run() {
       this.minigame = MinigameInterface.this.initializeMinigame(this.name);
-      delay(2000);
+      global.images.loadMinigameImages(this.name);
     }
   }
 
@@ -386,7 +386,7 @@ class MinigameInterface extends InterfaceLNZ {
 
   void update(int millis) {
     int time_elapsed = millis - this.last_update_time;
-    boolean refreshLevelLocation = false;
+    boolean refreshMinigameLocation = false;
     rectMode(CORNERS);
     noStroke();
     fill(60);
@@ -425,12 +425,13 @@ class MinigameInterface extends InterfaceLNZ {
         this.minigame = this.initialize_minigame_thread.minigame;
         this.status = MinigameStatus.PLAYING;
         this.minigame.setLocation(0, 0, width, height - this.bottomPanel.size);
+        this.initialize_minigame_thread = null;
         break;
       case PLAYING:
         if (this.minigame != null) {
           this.minigame.update(time_elapsed);
           if (this.bottomPanel.collapsing) {
-            refreshLevelLocation = true;
+            refreshMinigameLocation = true;
           }
           if (this.minigame.completed) {
             this.completedMinigame();
@@ -454,7 +455,7 @@ class MinigameInterface extends InterfaceLNZ {
         this.minigame.drawBottomPanel(time_elapsed);
       }
     }
-    if (refreshLevelLocation) {
+    if (refreshMinigameLocation) {
       if (this.minigame != null) {
         this.minigame.setLocation(0, 0, width, height - this.bottomPanel.size);
       }
