@@ -7,6 +7,9 @@ class IntegerCoordinate {
     this.y = y;
     this.hashCode = Objects.hash(x, y);
   }
+  IntegerCoordinate copy() {
+    return new IntegerCoordinate(this.x, this.y);
+  }
   @Override
   public boolean equals(Object coordinate_object) {
     if (this == coordinate_object) {

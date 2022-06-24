@@ -282,6 +282,11 @@ class ChessBoard extends GridBoard {
     if (target_piece != null && target_piece.piece_color == source_piece.piece_color) {
       return;
     }
+    if (target_piece == null) { // check for en passant
+      if (source_piece.type == ChessPieceType.PAWN && source.y != target.y) {
+        target_piece = this.pieceAt(new IntegerCoordinate(source.x, target.y));
+      }
+    }
     ChessMove potential_move = new ChessMove(source, target, target_piece != null,
       source_piece.piece_color, source_piece.type);
     if (!this.valid_moves.contains(potential_move)) {
@@ -294,7 +299,7 @@ class ChessBoard extends GridBoard {
     else {
       global.sounds.trigger_player("minigames/chess/move");
     }
-    source_piece.last_coordinate = source_piece.coordinate;
+    source_piece.last_coordinate = source_piece.coordinate.copy();
     source_piece.has_moved = true;
     this.squareAt(source).clearSquare();
     this.squareAt(target).addPiece(source_piece);
@@ -401,10 +406,14 @@ class ChessPiece extends GamePiece {
         }
         break;
       case QUEEN:
+        this.addBishopMoves(board);
+        this.addRookMoves(board);
         break;
       case ROOK:
+        this.addRookMoves(board);
         break;
       case BISHOP:
+        this.addBishopMoves(board);
         break;
       case KNIGHT:
         for (IntegerCoordinate target : this.coordinate.knightMoves()) {
@@ -497,6 +506,127 @@ class ChessPiece extends GamePiece {
         break;
       default:
         break;
+    }
+  }
+
+  void addBishopMoves(ChessBoard board) {
+    for (int x = this.coordinate.x + 1, y = this.coordinate.y + 1; x <
+      board.boardWidth() && y < board.boardHeight(); x++, y++) {
+      IntegerCoordinate target = new IntegerCoordinate(x, y);
+      if (!board.contains(target)) {
+        break;
+      }
+      ChessPiece target_piece = board.pieceAt(target);
+      if (target_piece == null || target_piece.piece_color != this.piece_color) {
+        this.valid_moves.add(new ChessMove(this.coordinate, target,
+          target_piece != null, this.piece_color, this.type));
+      }
+      if (target_piece != null) {
+        break;
+      }
+    }
+    for (int x = this.coordinate.x + 1, y = this.coordinate.y - 1; x <
+      board.boardWidth() && y >= 0; x++, y--) {
+      IntegerCoordinate target = new IntegerCoordinate(x, y);
+      if (!board.contains(target)) {
+        break;
+      }
+      ChessPiece target_piece = board.pieceAt(target);
+      if (target_piece == null || target_piece.piece_color != this.piece_color) {
+        this.valid_moves.add(new ChessMove(this.coordinate, target,
+          target_piece != null, this.piece_color, this.type));
+      }
+      if (target_piece != null) {
+        break;
+      }
+    }
+    for (int x = this.coordinate.x - 1, y = this.coordinate.y + 1; x
+      >= 0 && y < board.boardHeight(); x--, y++) {
+      IntegerCoordinate target = new IntegerCoordinate(x, y);
+      if (!board.contains(target)) {
+        break;
+      }
+      ChessPiece target_piece = board.pieceAt(target);
+      if (target_piece == null || target_piece.piece_color != this.piece_color) {
+        this.valid_moves.add(new ChessMove(this.coordinate, target,
+          target_piece != null, this.piece_color, this.type));
+      }
+      if (target_piece != null) {
+        break;
+      }
+    }
+    for (int x = this.coordinate.x - 1, y = this.coordinate.y - 1; x >= 0 && y >= 0; x--, y--) {
+      IntegerCoordinate target = new IntegerCoordinate(x, y);
+      if (!board.contains(target)) {
+        break;
+      }
+      ChessPiece target_piece = board.pieceAt(target);
+      if (target_piece == null || target_piece.piece_color != this.piece_color) {
+        this.valid_moves.add(new ChessMove(this.coordinate, target,
+          target_piece != null, this.piece_color, this.type));
+      }
+      if (target_piece != null) {
+        break;
+      }
+    }
+  }
+
+  void addRookMoves(ChessBoard board) {
+    for (int x = this.coordinate.x + 1, y = this.coordinate.y; x < board.boardWidth(); x++) {
+      IntegerCoordinate target = new IntegerCoordinate(x, y);
+      if (!board.contains(target)) {
+        break;
+      }
+      ChessPiece target_piece = board.pieceAt(target);
+      if (target_piece == null || target_piece.piece_color != this.piece_color) {
+        this.valid_moves.add(new ChessMove(this.coordinate, target,
+          target_piece != null, this.piece_color, this.type));
+      }
+      if (target_piece != null) {
+        break;
+      }
+    }
+    for (int x = this.coordinate.x, y = this.coordinate.y + 1; y < board.boardHeight(); y++) {
+      IntegerCoordinate target = new IntegerCoordinate(x, y);
+      if (!board.contains(target)) {
+        break;
+      }
+      ChessPiece target_piece = board.pieceAt(target);
+      if (target_piece == null || target_piece.piece_color != this.piece_color) {
+        this.valid_moves.add(new ChessMove(this.coordinate, target,
+          target_piece != null, this.piece_color, this.type));
+      }
+      if (target_piece != null) {
+        break;
+      }
+    }
+    for (int x = this.coordinate.x - 1, y = this.coordinate.y; x >= 0; x--) {
+      IntegerCoordinate target = new IntegerCoordinate(x, y);
+      if (!board.contains(target)) {
+        break;
+      }
+      ChessPiece target_piece = board.pieceAt(target);
+      if (target_piece == null || target_piece.piece_color != this.piece_color) {
+        this.valid_moves.add(new ChessMove(this.coordinate, target,
+          target_piece != null, this.piece_color, this.type));
+      }
+      if (target_piece != null) {
+        break;
+      }
+    }
+    for (int x = this.coordinate.x, y = this.coordinate.y - 1; y >= 0; y--) {
+      IntegerCoordinate target = new IntegerCoordinate(x, y);
+      if (!board.contains(target)) {
+        break;
+      }
+      ChessPiece target_piece = board.pieceAt(target);
+      if (target_piece == null || target_piece.piece_color != this.piece_color) {
+        this.valid_moves.add(new ChessMove(this.coordinate, target,
+          target_piece != null, this.piece_color, this.type));
+      }
+      if (target_piece != null) {
+        break;
+      }
     }
   }
 }
