@@ -86,7 +86,7 @@ class ChessBoard extends GridBoard {
 
   ChessBoard() {
     super(8, 8);
-    this.orientation = BoardOrientation.LEFT;
+    this.orientation = BoardOrientation.RIGHT;
   }
 
   void initializePieceMap() {
@@ -216,7 +216,6 @@ class ChessBoard extends GridBoard {
         }
         break;
     }
-    println(this.valid_moves);
     this.turn = chess_color;
   }
 
@@ -295,10 +294,11 @@ class ChessBoard extends GridBoard {
     else {
       global.sounds.trigger_player("minigames/chess/move");
     }
+    source_piece.last_coordinate = source_piece.coordinate;
+    source_piece.has_moved = true;
     this.squareAt(source).clearSquare();
     this.squareAt(target).addPiece(source_piece);
     this.moves.add(potential_move);
-    source_piece.has_moved = true;
     this.nextTurn();
   }
 
@@ -371,6 +371,7 @@ class ChessPiece extends GamePiece {
   protected ChessColor piece_color;
   protected HashSet<ChessMove> valid_moves = new HashSet<ChessMove>();
   protected boolean has_moved = false;
+  protected IntegerCoordinate last_coordinate = null;
 
   ChessPiece(ChessPieceType type, ChessColor piece_color) {
     super();
@@ -420,18 +421,30 @@ class ChessPiece extends GamePiece {
         break;
       case PAWN:
         IntegerCoordinate move1 = null;
+        IntegerCoordinate capture_left = null;
+        IntegerCoordinate capture_right = null;
+        IntegerCoordinate capture_left_en_passant = null;
+        IntegerCoordinate capture_right_en_passant = null;
         IntegerCoordinate move2 = null;
         switch(this.piece_color) {
           case WHITE:
-            move1 = new IntegerCoordinate(this.coordinate.x, this.coordinate.y + 1);
+            move1 = new IntegerCoordinate(this.coordinate.x + 1, this.coordinate.y);
+            capture_left = new IntegerCoordinate(this.coordinate.x + 1, this.coordinate.y + 1);
+            capture_left_en_passant = new IntegerCoordinate(this.coordinate.x, this.coordinate.y + 1);
+            capture_right = new IntegerCoordinate(this.coordinate.x + 1, this.coordinate.y - 1);
+            capture_right_en_passant = new IntegerCoordinate(this.coordinate.x, this.coordinate.y - 1);
             if (!this.has_moved) {
-              move2 = new IntegerCoordinate(this.coordinate.x, this.coordinate.y + 2);
+              move2 = new IntegerCoordinate(this.coordinate.x + 2, this.coordinate.y);
             }
             break;
           case BLACK:
-            move1 = new IntegerCoordinate(this.coordinate.x, this.coordinate.y - 1);
+            move1 = new IntegerCoordinate(this.coordinate.x - 1, this.coordinate.y);
+            capture_left = new IntegerCoordinate(this.coordinate.x - 1, this.coordinate.y + 1);
+            capture_left_en_passant = new IntegerCoordinate(this.coordinate.x, this.coordinate.y + 1);
+            capture_right = new IntegerCoordinate(this.coordinate.x - 1, this.coordinate.y - 1);
+            capture_right_en_passant = new IntegerCoordinate(this.coordinate.x, this.coordinate.y - 1);
             if (!this.has_moved) {
-              move2 = new IntegerCoordinate(this.coordinate.x, this.coordinate.y - 2);
+              move2 = new IntegerCoordinate(this.coordinate.x - 2, this.coordinate.y);
             }
             break;
         }
@@ -442,6 +455,36 @@ class ChessPiece extends GamePiece {
             this.valid_moves.add(new ChessMove(this.coordinate, move1, false,
               this.piece_color, this.type));
             move1_valid = true;
+          }
+        }
+        if (capture_left != null) {
+          ChessPiece target_piece = board.pieceAt(capture_left);
+          if (target_piece == null) {
+            ChessPiece maybe_target_piece = board.pieceAt(capture_left_en_passant);
+            if (maybe_target_piece != null && maybe_target_piece.type == ChessPieceType.
+              PAWN && maybe_target_piece.has_moved && abs(maybe_target_piece.
+              coordinate.x - maybe_target_piece.last_coordinate.x) == 2) {
+              target_piece = maybe_target_piece;
+            }
+          }
+          if (board.contains(capture_left) && target_piece != null && target_piece.piece_color != this.piece_color) {
+            this.valid_moves.add(new ChessMove(this.coordinate, capture_left, true,
+              this.piece_color, this.type));
+          }
+        }
+        if (capture_right != null) {
+          ChessPiece target_piece = board.pieceAt(capture_right);
+          if (target_piece == null) {
+            ChessPiece maybe_target_piece = board.pieceAt(capture_right_en_passant);
+            if (maybe_target_piece != null && maybe_target_piece.type == ChessPieceType.
+              PAWN && maybe_target_piece.has_moved && abs(maybe_target_piece.
+              coordinate.x - maybe_target_piece.last_coordinate.x) == 2) {
+              target_piece = maybe_target_piece;
+            }
+          }
+          if (board.contains(capture_right) && target_piece != null && target_piece.piece_color != this.piece_color) {
+            this.valid_moves.add(new ChessMove(this.coordinate, capture_right, true,
+              this.piece_color, this.type));
           }
         }
         if (move2 != null && move1_valid) {
