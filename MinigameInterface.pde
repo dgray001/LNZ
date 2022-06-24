@@ -1,5 +1,5 @@
 enum MinigameStatus {
-  INITIAL, LAUNCHING, PLAYING;
+  INITIAL, PLAYING;
 }
 
 class MinigameInterface extends InterfaceLNZ {
@@ -87,6 +87,9 @@ class MinigameInterface extends InterfaceLNZ {
       }
       void click() {}
       void release() {
+        if (this.hovered) {
+          MinigameChooser.this.chooseMinigame(this.minigame);
+        }
       }
     }
 
@@ -118,6 +121,10 @@ class MinigameInterface extends InterfaceLNZ {
       if (minigame == this.minigame_hovered) {
         this.minigame_hovered = null;
       }
+    }
+
+    void chooseMinigame(MinigameName minigame) {
+      MinigameInterface.this.launchMinigame(minigame);
     }
 
     void setLocation(float xi, float yi, float xf, float yf) {
@@ -232,6 +239,18 @@ class MinigameInterface extends InterfaceLNZ {
   }
 
 
+  void launchMinigame(MinigameName name) {
+    if (this.minigame != null || this.status != MinigameStatus.INITIAL) {
+      global.errorMessage("ERROR: Can't launch minigame when playing one.");
+      return;
+    }
+    this.minigame = initializeMinigame(name);
+    if (this.minigame != null) {
+      this.status = MinigameStatus.PLAYING;
+    }
+    this.minigame.setLocation(0, 0, width, height - this.bottomPanel.size);
+  }
+
   void completedMinigame() {
     if (this.minigame == null || this.status != MinigameStatus.PLAYING) {
       global.errorMessage("ERROR: Can't complete minigame when not playing one.");
@@ -277,12 +296,12 @@ class MinigameInterface extends InterfaceLNZ {
   void update(int millis) {
     int time_elapsed = millis - this.last_update_time;
     boolean refreshLevelLocation = false;
+    rectMode(CORNERS);
+    noStroke();
+    fill(60);
+    rect(0, 0, width, height - this.bottomPanel.size);
     switch(this.status) {
       case INITIAL:
-        rectMode(CORNERS);
-        noStroke();
-        fill(60);
-        rect(0, 0, width, height - this.bottomPanel.size);
         this.minigame_chooser.update(time_elapsed);
         if (this.minigame_chooser.minigame_hovered != null) {
           imageMode(CENTER);
@@ -294,8 +313,6 @@ class MinigameInterface extends InterfaceLNZ {
           textAlign(CENTER, TOP);
           text(this.minigame_chooser.minigame_hovered.displayName(), 0.5 * width, 5);
         }
-        break;
-      case LAUNCHING:
         break;
       case PLAYING:
         if (this.minigame != null) {

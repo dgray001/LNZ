@@ -9,7 +9,9 @@ class Chess extends Minigame {
     return "Chess";
   }
   void drawBottomPanel(int time_elapsed) {}
-  void setLocation(float xi, float yi, float xf, float yf) {}
+  void setLocation(float xi, float yi, float xf, float yf) {
+    this.chessboard.setLocation(xi, yi, xf, yf);
+  }
   void restartTimers() {}
   void displayNerdStats() {}
   boolean leftPanelElementsHovered() {
@@ -19,10 +21,18 @@ class Chess extends Minigame {
     return null;
   }
 
-  void update(int time_elapsed) {}
-  void mouseMove(float mX, float mY) {}
-  void mousePress() {}
-  void mouseRelease(float mX, float mY) {}
+  void update(int time_elapsed) {
+    this.chessboard.update(time_elapsed);
+  }
+  void mouseMove(float mX, float mY) {
+    this.chessboard.mouseMove(mX, mY);
+  }
+  void mousePress() {
+    this.chessboard.mousePress();
+  }
+  void mouseRelease(float mX, float mY) {
+    this.chessboard.mouseRelease(mX, mY);
+  }
   void scroll(int amount) {}
   void keyPress() {}
   void keyRelease() {}

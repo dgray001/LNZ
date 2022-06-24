@@ -7,6 +7,9 @@ abstract class GridBoard {
   protected float yi = 0;
   protected float xf = 0;
   protected float yf = 0;
+  protected float xi_draw = 0;
+  protected float yi_draw = 0;
+  protected float square_length = 0;
 
   GridBoard(int w, int h) {
     this.squares = new BoardSquare[w][h];
@@ -62,13 +65,31 @@ abstract class GridBoard {
     this.yi = yi;
     this.xf = xf;
     this.yf = yf;
+
+    if (this.boardWidth() == 0 || this.boardHeight() == 0) {
+      return;
+    }
+    float square_length_from_width = (xf - xi) / this.boardWidth();
+    float square_length_from_height = (yf - yi) / this.boardHeight();
+    this.square_length = min(square_length_from_width, square_length_from_height);
+    for (int i = 0; i < this.squares.length; i++) {
+      for (int j = 0; j < this.squares[i].length; j++) {
+        this.squares[i][j].setSize(this.square_length);
+      }
+    }
+    this.xi_draw = xi + 0.5 * (xf - xi - this.boardWidth() * this.square_length);
+    this.yi_draw = yi + 0.5 * (yf - yi - this.boardHeight() * this.square_length);
   }
 
   void update(int time_elapsed) {
     this.drawBoard();
-    for (int i = 0; i < this.squares.length; i++) {
-      for (int j = 0; j < this.squares[i].length; j++) {
+    float x_curr = this.xi_draw;
+    for (int i = 0; i < this.squares.length; i++, x_curr += this.square_length) {
+      float y_curr = this.yi_draw;
+      for (int j = 0; j < this.squares[i].length; j++, y_curr += this.square_length) {
+        translate(x_curr, y_curr);
         this.squares[i][j].update(time_elapsed);
+        translate(-x_curr, -y_curr);
       }
     }
   }
@@ -82,7 +103,7 @@ abstract class GridBoard {
     }
   }
 
-  void mousePress(float mX, float mY) {
+  void mousePress() {
     for (int i = 0; i < this.squares.length; i++) {
       for (int j = 0; j < this.squares[i].length; j++) {
         this.squares[i][j].mousePress();
@@ -143,6 +164,11 @@ abstract class BoardSquare {
 
   boolean empty() {
     return this.pieces.isEmpty();
+  }
+
+  void setSize(float size) {
+    this.button.xf = size;
+    this.button.yf = size;
   }
 
   void update(int time_elapsed) {
