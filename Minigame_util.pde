@@ -3,9 +3,24 @@ abstract class GridBoard {
   protected HashMap<Integer, GamePiece> pieces;
   protected int next_piece_key = 1;
 
+  protected float xi = 0;
+  protected float yi = 0;
+  protected float xf = 0;
+  protected float yf = 0;
+
   GridBoard(int w, int h) {
     this.squares = new BoardSquare[w][h];
     this.initializeSquares();
+  }
+
+  int boardWidth() {
+    return this.squares.length;
+  }
+  int boardHeight() {
+    if (this.squares.length > 0) {
+      return this.squares[0].length;
+    }
+    return 0;
   }
 
   abstract void initializePieceMap();
@@ -24,22 +39,84 @@ abstract class GridBoard {
   }
   void addPiece(GamePiece piece, int x, int y) {
     if (x < 0 || y < 0 || x >= this.boardWidth() || y >= this.boardHeight()) {
+      global.errorMessage("ERROR: Can't add piece to square " + x + ", " + y +
+        " since that square is not on the board.");
       return;
     }
     if (!this.squares[x][y].canTakePiece(piece)) {
+      global.errorMessage("ERROR: Can't add piece with key " + piece.board_key +
+        " to square " + x + ", " + y + " since it won't take it.");
       return;
     }
     piece.board_key = this.next_piece_key;
     this.pieces.put(this.next_piece_key, piece);
     this.squares[x][y].addPiece(piece);
     this.next_piece_key++;
+    this.addedPiece(piece);
+  }
+
+  abstract void addedPiece(GamePiece piece);
+
+  void setLocation(float xi, float yi, float xf, float yf) {
+    this.xi = xi;
+    this.yi = yi;
+    this.xf = xf;
+    this.yf = yf;
+  }
+
+  void update(int time_elapsed) {
+    this.drawBoard();
+    for (int i = 0; i < this.squares.length; i++) {
+      for (int j = 0; j < this.squares[i].length; j++) {
+        this.squares[i][j].update(time_elapsed);
+      }
+    }
+  }
+  abstract void drawBoard();
+
+  void mouseMove(float mX, float mY) {
+    for (int i = 0; i < this.squares.length; i++) {
+      for (int j = 0; j < this.squares[i].length; j++) {
+        this.squares[i][j].mouseMove(mX, mY);
+      }
+    }
+  }
+
+  void mousePress(float mX, float mY) {
+    for (int i = 0; i < this.squares.length; i++) {
+      for (int j = 0; j < this.squares[i].length; j++) {
+        this.squares[i][j].mousePress();
+      }
+    }
+  }
+
+  void mouseRelease(float mX, float mY) {
+    for (int i = 0; i < this.squares.length; i++) {
+      for (int j = 0; j < this.squares[i].length; j++) {
+        this.squares[i][j].mouseRelease(mX, mY);
+      }
+    }
   }
 }
 
 
 abstract class BoardSquare {
+  class SquareButton extends RectangleButton {
+    SquareButton() {
+      super(0, 0, 0, 0);
+      this.use_time_elapsed = true;
+      this.setColors(color(1, 0), color(1, 0), color(1, 0), color(1, 0), color(1, 0));
+    }
+
+    void dehover() {}
+    void hover() {}
+    void click() {}
+    void release() {}
+  }
+
   protected IntegerCoordinate coordinate;
   protected HashMap<Integer, GamePiece> pieces;
+  protected SquareButton button = new SquareButton();
 
   BoardSquare(IntegerCoordinate coordinate) {
     this.coordinate = coordinate;
@@ -53,7 +130,9 @@ abstract class BoardSquare {
   }
 
   void addPiece(GamePiece piece) {
-    if (this.pieces.containsKey(piece.board_key) {
+    if (this.pieces.containsKey(piece.board_key)) {
+      global.errorMessage("ERROR: Can't add piece with key " + piece.board_key +
+        " to square " + this.coordinate.x + ", " + this.coordinate.y + ".");
       return;
     }
     this.pieces.put(piece.board_key, piece);
@@ -63,7 +142,25 @@ abstract class BoardSquare {
   abstract boolean canTakePiece(GamePiece piece);
 
   boolean empty() {
-    return this.pieces.isEmtpy();
+    return this.pieces.isEmpty();
+  }
+
+  void update(int time_elapsed) {
+    this.button.update(time_elapsed);
+    this.drawSquare();
+  }
+  abstract void drawSquare();
+
+  void mouseMove(float mX, float mY) {
+    this.button.mouseMove(mX, mY);
+  }
+
+  void mousePress() {
+    this.button.mousePress();
+  }
+
+  void mouseRelease(float mX, float mY) {
+    this.button.mouseRelease(mX, mY);
   }
 }
 
@@ -72,8 +169,8 @@ abstract class GamePiece {
   protected int board_key = -1;
   protected IntegerCoordinate coordinate = new IntegerCoordinate(0, 0);
 
-  BoardPiece() {
+  GamePiece() {
   }
 
-  PImage getImage();
+  abstract PImage getImage();
 }
