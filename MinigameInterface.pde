@@ -6,7 +6,8 @@ class MinigameInterface extends InterfaceLNZ {
 
   abstract class MinigameButton extends RectangleButton {
     MinigameButton() {
-      super(0.95 * width, 0, width - Constants.mapEditor_buttonGapSize, 0);
+      super(width - Constants.mapEditor_buttonGapSize - Constants.
+        minigames_minigameButtonWidth, 0, width - Constants.mapEditor_buttonGapSize, 0);
       this.raised_border = true;
       this.roundness = 0;
       this.setColors(color(170), color(90, 140, 155), color(110, 170, 195), color(80, 130, 150), color(0));
@@ -49,18 +50,49 @@ class MinigameInterface extends InterfaceLNZ {
 
   class MinigameChooser {
     class MinigameChooserButton extends ImageButton {
+      private MinigameName minigame;
+
       MinigameChooserButton(MinigameName minigame) {
         super(global.images.getImage(minigame.imagePath()), 0, 0, 0, 0);
+        this.minigame = minigame;
+        this.use_time_elapsed = true;
+        this.show_message = true;
+        this.message = minigame.displayName();
+        this.text_size = 22;
+        this.color_text = color(255);
       }
 
-      void hover() {}
-      void dehover() {}
+      @Override
+      void drawButton() {
+        super.drawButton();
+        rectMode(CORNERS);
+        strokeWeight(0.01);
+        if (this.clicked) {
+          fill(200, 100);
+          stroke(200, 100);
+          rect(this.xi, this.yi, this.xf, this.yf);
+        }
+        else if (this.hovered) {
+          fill(200, 200);
+          stroke(200, 200);
+          rect(this.xi, this.yi, this.xf, this.yf);
+        }
+      }
+
+      void hover() {
+        MinigameChooser.this.hovered(this.minigame);
+      }
+      void dehover() {
+        MinigameChooser.this.dehovered(this.minigame);
+      }
       void click() {}
-      void release() {}
+      void release() {
+      }
     }
 
     private ArrayList<MinigameChooserButton> buttons = new ArrayList<MinigameChooserButton>();
     private ScrollBar scrollbar = new ScrollBar(0, 0, 0, 0, false);
+    private MinigameName minigame_hovered = null;
 
     private float xi = 0;
     private float yi = 0;
@@ -78,6 +110,15 @@ class MinigameInterface extends InterfaceLNZ {
       }
     }
 
+    void hovered(MinigameName minigame) {
+      this.minigame_hovered = minigame;
+    }
+
+    void dehovered(MinigameName minigame) {
+      if (minigame == this.minigame_hovered) {
+        this.minigame_hovered = null;
+      }
+    }
 
     void setLocation(float xi, float yi, float xf, float yf) {
       this.xi = xi;
@@ -93,13 +134,24 @@ class MinigameInterface extends InterfaceLNZ {
         Constants.minigames_edgeGap, this.yf - Constants.minigames_edgeGap);
       float all_buttons_width = this.buttons.size() * (button_width + Constants.
         minigames_buttonGap) - Constants.minigames_buttonGap;
-      float excess_width = this.xf - this.xi - 2 * Constants.minigames_edgeGap;
+      float excess_width = max(0, all_buttons_width - (this.xf - this.xi - 2 * Constants.minigames_edgeGap));
       this.scrollbar.updateMaxValue(round(ceil(excess_width / (button_width + Constants.minigames_edgeGap))));
     }
 
-
     void update(int time_elapsed) {
       this.scrollbar.update(time_elapsed);
+      translate(0, this.yi + Constants.minigames_edgeGap);
+      float x_translate = this.xi + Constants.minigames_edgeGap;
+      for (int i = round(this.scrollbar.value); i < this.buttons.size(); i++) {
+        if (x_translate + this.buttons.get(i).button_width() > this.xf) {
+          break;
+        }
+        translate(x_translate, 0);
+        this.buttons.get(i).update(time_elapsed);
+        translate(-x_translate, 0);
+        x_translate += this.buttons.get(i).button_width() + Constants.minigames_buttonGap;
+      }
+      translate(0, -this.yi - Constants.minigames_edgeGap);
     }
 
     void mouseMove(float mX, float mY) {
@@ -110,14 +162,38 @@ class MinigameInterface extends InterfaceLNZ {
       else {
         this.hovered = false;
       }
+      float x_translate = this.xi + Constants.minigames_edgeGap;
+      for (int i = round(this.scrollbar.value); i < this.buttons.size(); i++) {
+        if (x_translate + this.buttons.get(i).button_width() > this.xf) {
+          break;
+        }
+        this.buttons.get(i).mouseMove(mX - x_translate, mY - this.yi - Constants.minigames_edgeGap);
+        x_translate += this.buttons.get(i).button_width() + Constants.minigames_buttonGap;
+      }
     }
 
     void mousePress() {
       this.scrollbar.mousePress();
+      float x_translate = this.xi + Constants.minigames_edgeGap;
+      for (int i = round(this.scrollbar.value); i < this.buttons.size(); i++) {
+        if (x_translate + this.buttons.get(i).button_width() > this.xf) {
+          break;
+        }
+        this.buttons.get(i).mousePress();
+        x_translate += this.buttons.get(i).button_width() + Constants.minigames_buttonGap;
+      }
     }
 
     void mouseRelease(float mX, float mY) {
       this.scrollbar.mouseRelease(mX, mY);
+      float x_translate = this.xi + Constants.minigames_edgeGap;
+      for (int i = round(this.scrollbar.value); i < this.buttons.size(); i++) {
+        if (x_translate + this.buttons.get(i).button_width() > this.xf) {
+          break;
+        }
+        this.buttons.get(i).mouseRelease(mX - x_translate, mY - this.yi - Constants.minigames_edgeGap);
+        x_translate += this.buttons.get(i).button_width() + Constants.minigames_buttonGap;
+      }
     }
 
     void scroll(int amount) {
@@ -148,7 +224,7 @@ class MinigameInterface extends InterfaceLNZ {
 
 
   void resizeButtons() {
-    float buttonSize = (this.bottomPanel.size_curr - 5 * Constants.mapEditor_buttonGapSize) / 4.0;
+    float buttonSize = (this.bottomPanel.size_curr - 5 * Constants.mapEditor_buttonGapSize) / 2.0;
     float yf = height - Constants.mapEditor_buttonGapSize;
     this.buttons[0].setYLocation(yf - buttonSize, yf);
     yf -= buttonSize + Constants.mapEditor_buttonGapSize;
@@ -208,6 +284,16 @@ class MinigameInterface extends InterfaceLNZ {
         fill(60);
         rect(0, 0, width, height - this.bottomPanel.size);
         this.minigame_chooser.update(time_elapsed);
+        if (this.minigame_chooser.minigame_hovered != null) {
+          imageMode(CENTER);
+          image(global.images.getImage(this.minigame_chooser.minigame_hovered.
+            imagePath()), 0.5 * width, 0.5 * (height - this.bottomPanel.size),
+            0.4 * (height - this.bottomPanel.size), 0.4 * (height - this.bottomPanel.size));
+          fill(255);
+          textSize(50);
+          textAlign(CENTER, TOP);
+          text(this.minigame_chooser.minigame_hovered.displayName(), 0.5 * width, 5);
+        }
         break;
       case LAUNCHING:
         break;
