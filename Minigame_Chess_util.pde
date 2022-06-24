@@ -200,22 +200,23 @@ class ChessBoard extends GridBoard {
       case WHITE:
         for (ChessPiece piece : this.white_pieces) {
           piece.updateMoveToSquares(this);
-          this.valid_moves.addAll(piece.move_to_squares);
+          this.valid_moves.addAll(piece.valid_moves);
         }
         for (ChessPiece piece : this.black_pieces) {
-          piece.move_to_squares.clear();
+          piece.valid_moves.clear();
         }
         break;
       case BLACK:
         for (ChessPiece piece : this.white_pieces) {
-          piece.move_to_squares.clear();
+          piece.valid_moves.clear();
         }
         for (ChessPiece piece : this.black_pieces) {
           piece.updateMoveToSquares(this);
-          this.valid_moves.addAll(piece.move_to_squares);
+          this.valid_moves.addAll(piece.valid_moves);
         }
         break;
     }
+    println(this.valid_moves);
     this.turn = chess_color;
   }
 
@@ -297,6 +298,7 @@ class ChessBoard extends GridBoard {
     this.squareAt(source).clearSquare();
     this.squareAt(target).addPiece(source_piece);
     this.moves.add(potential_move);
+    source_piece.has_moved = true;
     this.nextTurn();
   }
 
@@ -367,7 +369,8 @@ enum ChessColor {
 class ChessPiece extends GamePiece {
   protected ChessPieceType type;
   protected ChessColor piece_color;
-  protected HashSet<ChessMove> move_to_squares = new HashSet<ChessMove>();
+  protected HashSet<ChessMove> valid_moves = new HashSet<ChessMove>();
+  protected boolean has_moved = false;
 
   ChessPiece(ChessPieceType type, ChessColor piece_color) {
     super();
@@ -381,15 +384,19 @@ class ChessPiece extends GamePiece {
   }
 
   void updateMoveToSquares(ChessBoard board) {
-    this.move_to_squares.clear();
+    this.valid_moves.clear();
     switch(this.type) {
       case KING:
         for (IntegerCoordinate target : this.coordinate.adjacentAndCornerCoordinates()) {
           if (!board.contains(target)) {
             continue;
           }
-          this.move_to_squares.add(new ChessMove(this.coordinate, target,
-            !board.squareAt(target).empty(), this.piece_color, this.type));
+          ChessPiece target_piece = board.pieceAt(target);
+          if (target_piece != null && target_piece.piece_color == this.piece_color) {
+            continue;
+          }
+          this.valid_moves.add(new ChessMove(this.coordinate, target,
+            target_piece != null, this.piece_color, this.type));
         }
         break;
       case QUEEN:
@@ -399,8 +406,51 @@ class ChessPiece extends GamePiece {
       case BISHOP:
         break;
       case KNIGHT:
+        for (IntegerCoordinate target : this.coordinate.knightMoves()) {
+          if (!board.contains(target)) {
+            continue;
+          }
+          ChessPiece target_piece = board.pieceAt(target);
+          if (target_piece != null && target_piece.piece_color == this.piece_color) {
+            continue;
+          }
+          this.valid_moves.add(new ChessMove(this.coordinate, target,
+            target_piece != null, this.piece_color, this.type));
+        }
         break;
       case PAWN:
+        IntegerCoordinate move1 = null;
+        IntegerCoordinate move2 = null;
+        switch(this.piece_color) {
+          case WHITE:
+            move1 = new IntegerCoordinate(this.coordinate.x, this.coordinate.y + 1);
+            if (!this.has_moved) {
+              move2 = new IntegerCoordinate(this.coordinate.x, this.coordinate.y + 2);
+            }
+            break;
+          case BLACK:
+            move1 = new IntegerCoordinate(this.coordinate.x, this.coordinate.y - 1);
+            if (!this.has_moved) {
+              move2 = new IntegerCoordinate(this.coordinate.x, this.coordinate.y - 2);
+            }
+            break;
+        }
+        boolean move1_valid = false;
+        if (move1 != null) {
+          ChessPiece target_piece = board.pieceAt(move1);
+          if (board.contains(move1) && target_piece == null) {
+            this.valid_moves.add(new ChessMove(this.coordinate, move1, false,
+              this.piece_color, this.type));
+            move1_valid = true;
+          }
+        }
+        if (move2 != null && move1_valid) {
+          ChessPiece target_piece = board.pieceAt(move2);
+          if (board.contains(move2) && target_piece == null) {
+            this.valid_moves.add(new ChessMove(this.coordinate, move2, false,
+              this.piece_color, this.type));
+          }
+        }
         break;
       default:
         break;
@@ -423,6 +473,11 @@ class ChessMove {
     this.capture = capture;
     this.source_color = source_color;
     this.source_type = source_type;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(source.x, source.y, target.x, target.y, capture, source_color, source_type);
   }
 
   @Override
