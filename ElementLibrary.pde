@@ -4736,6 +4736,7 @@ class Panel {
     protected float image_rotation_speed = 0.01;
     protected float image_rotation_target = 0;
     protected PImage icon;
+    protected boolean removed = false;
 
     PanelButton() {
       super(0, 0, 0, 0);
@@ -4747,6 +4748,9 @@ class Panel {
 
     @Override
     void update(int millis) {
+      if (this.removed) {
+        return;
+      }
       super.update(millis);
       if (this.icon != null) {
         float rotate_change = (millis - Panel.this.lastUpdateTime) * this.image_rotation_speed;
@@ -4775,6 +4779,9 @@ class Panel {
     void dehover() {}
     void click() {}
     void release() {
+      if (this.removed) {
+        return;
+      }
       if (this.hovered) {
         Panel.this.collapse();
         this.hovered = false;
@@ -4790,6 +4797,7 @@ class Panel {
   protected float size;
 
   protected boolean hovered = false;
+  protected boolean cant_resize = false;
   protected boolean clicked = false;
   protected float hovered_delta = 5;
 
@@ -4804,6 +4812,9 @@ class Panel {
 
   protected color color_background = color(220);
 
+  Panel(int location, float size) {
+    this(location, size, size, size);
+  }
   Panel(int location, float size_min, float size_max, float size) {
     switch(location) {
       case LEFT:
@@ -4866,6 +4877,9 @@ class Panel {
   }
   void addIcon(PImage icon) {
     this.button.icon = icon;
+  }
+  void removeButton() {
+    this.button.removed = true;
   }
 
   void changeSize(float size_delta) {
@@ -4990,6 +5004,9 @@ class Panel {
 
   void mouseMove(float mX, float mY) {
     this.button.mouseMove(mX, mY);
+    if (this.cant_resize) {
+      return;
+    }
     if (!this.open || this.button.hovered) {
       this.hovered = false;
       return;

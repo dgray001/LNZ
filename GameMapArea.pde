@@ -8,6 +8,7 @@ class GameMapArea extends AbstractGameMap {
       if (visSquareX == 0 || visSquareY == 0) {
         return;
       }
+      println(startSquareX, startSquareY, visSquareX, visSquareY);
       boolean i_first = true;
       int xi_chunk = int(Math.floorDiv((long)startSquareX, (long)Constants.map_chunkWidth));
       int yi_chunk = int(Math.floorDiv((long)startSquareY, (long)Constants.map_chunkWidth));
@@ -36,20 +37,19 @@ class GameMapArea extends AbstractGameMap {
           if (j == yf_chunk) {
             img_h = Math.floorMod((long)(startSquareY + visSquareY), (long)Constants.map_chunkWidth) - img_y;
           }
+          println("chunk:", i, j, " has nums:", img_x, img_y, img_w, img_h);
           PImage chunk_terrain_image = chunk.terrain_dimg.getImagePiece(round(img_x * terrain_resolution),
             round(img_y * terrain_resolution), round(img_w * terrain_resolution), round(img_h * terrain_resolution));
           int resized_w = round((xf_map - xi_map) * img_w / visSquareX);
           int resized_h = round((yf_map - yi_map) * img_h / visSquareY);
           chunk_terrain_image = resizeImage(chunk_terrain_image, resized_w, resized_h);
+          int resized_xi = round(max(0, i * Constants.map_chunkWidth - startSquareX) * terrain_resolution);
+          int resized_yi = round(max(0, j * Constants.map_chunkWidth - startSquareY) * terrain_resolution);
+          new_terrain_display.addImage(chunk_terrain_image, resized_xi, resized_yi, resized_w, resized_h);
         }
       }
+      new_terrain_display.img.save("data/areas/terrain" + millis() + ".png");
       GameMapArea.this.terrain_display = new_terrain_display.img;
-      /*PImage new_terrain_display = GameMap.this.terrain_dimg.getImagePiece(
-        round(startSquareX * terrain_resolution), round(startSquareY * terrain_resolution),
-        round(visSquareX * terrain_resolution), round(visSquareY * terrain_resolution));
-      new_terrain_display = resizeImage(new_terrain_display,
-        round(xf_map - xi_map), round(yf_map - yi_map));
-      GameMap.this.terrain_display = new_terrain_display;*/
     }
   }
 
@@ -57,8 +57,8 @@ class GameMapArea extends AbstractGameMap {
   class Chunk {
     private GameMapSquare[][] squares;
     private HashMap<Integer, Feature> features = new HashMap<Integer, Feature>();
-    private DImg terrain_dimg = new DImg(global.images.getBlackPixel());
-    private DImg fog_dimg = new DImg(global.images.getBlackPixel());
+    private DImg terrain_dimg = new DImg(global.images.getRandomPixel());
+    private DImg fog_dimg = new DImg(global.images.getTransparentPixel());
 
     Chunk(IntegerCoordinate coordinate) {
       this.squares = new GameMapSquare[Constants.map_chunkWidth][Constants.map_chunkWidth];
@@ -67,6 +67,9 @@ class GameMapArea extends AbstractGameMap {
           this.squares[i][j] = new GameMapSquare();
         }
       }
+      this.terrain_dimg.img = global.images.getColoredPixel(color(150 + 100 * coordinate.x, 200 - 40 * coordinate.y));
+      this.terrain_dimg.setGrid(Constants.map_chunkWidth, Constants.map_chunkWidth);
+      this.fog_dimg.setGrid(Constants.map_chunkWidth, Constants.map_chunkWidth);
       // from coordinate either load previously-made chunk or create new one (not in thread)
       // then load image (in thread)
     }
@@ -202,6 +205,7 @@ class GameMapArea extends AbstractGameMap {
   }
 
   void startTerrainDimgThread() {
+    this.refreshChunks();
     this.terrain_dimg_thread = new TerrainDimgThread();
     this.terrain_dimg_thread.start();
   }

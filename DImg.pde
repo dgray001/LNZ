@@ -2,8 +2,8 @@ class DImg {
 
   PImage img = null;
   int imgMode = CORNERS;
-  int gridX = 0;
-  int gridY = 0;
+  int gridX = 1;
+  int gridY = 1;
 
   // Constructor for blank image
   DImg(int x, int y) {
@@ -27,6 +27,9 @@ class DImg {
   }
 
   void setGrid(int x, int y) {
+    if (x < 1 || y < 1) {
+      return;
+    }
     this.gridX = x;
     this.gridY = y;
   }
@@ -48,7 +51,8 @@ class DImg {
 
   // Add image to part of this using width / height
   void addImage(PImage newImg, int x, int y, int w, int h) {
-    this.copyImage(newImg, x, y, w, h);
+    this.img.blend(newImg, 0, 0, newImg.width, newImg.height, x, y, w, h, BLEND);
+    //this.copyImage(newImg, x, y, w, h);
   }
   // Add image to part of this using percent of width / height
   void addImagePercent(PImage newImg, float xP, float yP, float wP, float hP) {
@@ -56,9 +60,12 @@ class DImg {
       global.log("DImg: addImagePercent coordinates out of range");
       return;
     }
-    this.copyImage(newImg,
+    this.img.blend(newImg, 0, 0, newImg.width, newImg.height,
       round(this.img.width * xP), round(this.img.height * yP),
-      round(this.img.width * wP), round(this.img.height * hP));
+      round(this.img.width * wP), round(this.img.height * hP), BLEND);
+    /*this.copyImage(newImg,
+      round(this.img.width * xP), round(this.img.height * yP),
+      round(this.img.width * wP), round(this.img.height * hP));*/
   }
   // Add image to grid square
   void addImageGrid(PImage newImg, int x, int y) {
@@ -88,14 +95,6 @@ class DImg {
     this.colorGrid(c, x, y, 1, 1);
   }
   void colorGrid(color c, int x, int y, int w, int h) {
-    if (x < 0 || y < 0 || x >= this.gridX || y >= this.gridY) {
-      global.log("DImg: colorGrid coordinate out of range");
-      return;
-    }
-    if (w < 1 || h < 1 || x + w > this.gridX || y + h > this.gridY) {
-      global.log("DImg: colorGrid coordinate out of range");
-      return;
-    }
     this.img.loadPixels();
     for (int i = 0; i < h * this.img.height / this.gridY; i++) {
       for (int j = 0; j < w * this.img.width / this.gridX; j++) {
@@ -147,7 +146,7 @@ class DImg {
 
   // image piece
   PImage getImagePiece(int xi, int yi, int w, int h) {
-    if (w < 0 || h < 0) {
+    if (xi < 0 || yi < 0 || w <= 0 || h <= 0) {
       return createImage(1, 1, ARGB);
     }
     if (xi + w > this.img.width) {
@@ -155,6 +154,9 @@ class DImg {
     }
     if (yi + h > this.img.height) {
       h = this.img.height - yi;
+    }
+    if (w <= 0 || h <= 0) {
+      return createImage(1, 1, ARGB);
     }
     PImage return_image = createImage(w, h, ARGB);
     return_image.loadPixels();

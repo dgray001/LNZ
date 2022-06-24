@@ -20,7 +20,7 @@ enum AchievementCode {
   public String file_name() {
     return AchievementCode.file_name(this);
   }
-  static public String file_name(AchievementCode code) {
+  public static String file_name(AchievementCode code) {
     switch(code) {
       case COMPLETED_TUTORIAL:
         return "Completed_Tutorial";

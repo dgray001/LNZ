@@ -98,6 +98,22 @@ class Images {
     img.updatePixels();
     return img;
   }
+
+  PImage getRandomPixel() {
+    PImage img = new PImage(1, 1, ARGB);
+    img.loadPixels();
+    img.pixels[0] = color(round(random(255)), round(random(255)), round(random(255)));
+    img.updatePixels();
+    return img;
+  }
+
+  PImage getColoredPixel(color c) {
+    PImage img = new PImage(1, 1, ARGB);
+    img.loadPixels();
+    img.pixels[0] = c;
+    img.updatePixels();
+    return img;
+  }
 }
 
 

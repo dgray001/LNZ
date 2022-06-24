@@ -7,8 +7,7 @@ class Zambos extends Minigame {
   String displayName() {
     return "Zambos";
   }
-  void drawLeftPanel(int time_elapsed) {}
-  void drawRightPanel(int time_elapsed) {}
+  void drawBottomPanel(int time_elapsed) {}
   void setLocation(float xi, float yi, float xf, float yf) {}
   void restartTimers() {}
   void displayNerdStats() {}

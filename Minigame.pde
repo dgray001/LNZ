@@ -25,16 +25,16 @@ enum MinigameName {
   public String fileName() {
     return MinigameName.fileName(this);
   }
-  static public String fileName(MinigameName code) {
+  public static String fileName(MinigameName code) {
     switch(code) {
       case CHESS:
-        return "Chess";
+        return "CHESS";
       case EPIC_FOOLS:
-        return "Epic Fools";
+        return "EPIC_FOOLS";
       case ZAMBOS:
-        return "Zambos";
+        return "ZAMBOS";
       case BENDOUR:
-        return "Bendour";
+        return "BENDOUR";
       default:
         return "ERROR";
     }
@@ -49,6 +49,18 @@ enum MinigameName {
     }
     return null;
   }
+
+  public String imagePath() {
+    return MinigameName.imagePath(this);
+  }
+  public static String imagePath(MinigameName code) {
+    switch(code) {
+      case CHESS:
+        return "minigames/chess/logo.png";
+      default:
+        return "minigames/default.png";
+    }
+  }
 }
 
 
@@ -61,8 +73,7 @@ abstract class Minigame {
   }
 
   abstract String displayName();
-  abstract void drawLeftPanel(int time_elapsed);
-  abstract void drawRightPanel(int time_elapsed);
+  abstract void drawBottomPanel(int time_elapsed);
   abstract void setLocation(float xi, float yi, float xf, float yf);
   abstract void restartTimers();
   abstract void displayNerdStats();
