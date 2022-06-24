@@ -14,6 +14,7 @@ abstract class GridBoard {
   GridBoard(int w, int h) {
     this.squares = new BoardSquare[w][h];
     this.initializeSquares();
+    this.initializePieceMap();
   }
 
   int boardWidth() {
@@ -96,9 +97,11 @@ abstract class GridBoard {
   abstract void drawBoard();
 
   void mouseMove(float mX, float mY) {
-    for (int i = 0; i < this.squares.length; i++) {
-      for (int j = 0; j < this.squares[i].length; j++) {
-        this.squares[i][j].mouseMove(mX, mY);
+    float x_curr = this.xi_draw;
+    for (int i = 0; i < this.squares.length; i++, x_curr += this.square_length) {
+      float y_curr = this.yi_draw;
+      for (int j = 0; j < this.squares[i].length; j++, y_curr += this.square_length) {
+        this.squares[i][j].mouseMove(mX - x_curr, mY - y_curr);
       }
     }
   }
@@ -112,9 +115,11 @@ abstract class GridBoard {
   }
 
   void mouseRelease(float mX, float mY) {
-    for (int i = 0; i < this.squares.length; i++) {
-      for (int j = 0; j < this.squares[i].length; j++) {
-        this.squares[i][j].mouseRelease(mX, mY);
+    float x_curr = this.xi_draw;
+    for (int i = 0; i < this.squares.length; i++, x_curr += this.square_length) {
+      float y_curr = this.yi_draw;
+      for (int j = 0; j < this.squares[i].length; j++, y_curr += this.square_length) {
+        this.squares[i][j].mouseRelease(mX - x_curr, mY - y_curr);
       }
     }
   }

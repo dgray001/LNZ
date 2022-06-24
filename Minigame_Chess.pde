@@ -3,17 +3,22 @@ class Chess extends Minigame {
 
   Chess() {
     super(MinigameName.CHESS);
+    this.chessboard.setupBoard();
   }
 
-  String displayName() {
-    return "Chess";
-  }
   void drawBottomPanel(int time_elapsed) {}
   void setLocation(float xi, float yi, float xf, float yf) {
     this.chessboard.setLocation(xi, yi, xf, yf);
   }
   void restartTimers() {}
-  void displayNerdStats() {}
+  void displayNerdStats() {
+    fill(255);
+    textSize(14);
+    textAlign(LEFT, TOP);
+    float y_stats = 1;
+    float line_height = textAscent() + textDescent() + 2;
+    text("FPS: " + int(global.lastFPS), 1, y_stats);
+  }
   boolean leftPanelElementsHovered() {
     return false;
   }

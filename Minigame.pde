@@ -64,16 +64,6 @@ enum MinigameName {
 }
 
 
-Minigame initializeMinigame(MinigameName code) {
-  switch(code) {
-    case CHESS:
-      return new Chess();
-    default:
-      return null;
-  }
-}
-
-
 abstract class Minigame {
   protected boolean completed = false;
   protected MinigameName name;
@@ -82,7 +72,9 @@ abstract class Minigame {
     this.name = name;
   }
 
-  abstract String displayName();
+  String displayName() {
+    return this.name.displayName();
+  }
   abstract void drawBottomPanel(int time_elapsed);
   abstract void setLocation(float xi, float yi, float xf, float yf);
   abstract void restartTimers();

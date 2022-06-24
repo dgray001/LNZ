@@ -161,6 +161,14 @@ class ChessSquare extends BoardSquare {
     for (GamePiece piece : this.pieces.values()) {
       image(piece.getImage(), this.button.xi, this.button.yi, this.button.xf, this.button.yf);
     }
+    if (this.button.clicked) {
+      fill(200, 160);
+      rect(this.button.xi, this.button.yi, this.button.xf, this.button.yf);
+    }
+    else if (this.button.hovered) {
+      fill(120, 80);
+      rect(this.button.xi, this.button.yi, this.button.xf, this.button.yf);
+    }
   }
 }
 

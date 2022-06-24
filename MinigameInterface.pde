@@ -1,5 +1,5 @@
 enum MinigameStatus {
-  INITIAL, PLAYING;
+  INITIAL, LAUNCHING, PLAYING;
 }
 
 class MinigameInterface extends InterfaceLNZ {
@@ -211,9 +211,92 @@ class MinigameInterface extends InterfaceLNZ {
   }
 
 
+  class InitializeMinigameThread extends Thread {
+    private MinigameName name;
+    private Minigame minigame;
+    InitializeMinigameThread(MinigameName name) {
+      super("InitializeMinigameThread");
+      this.name = name;
+    }
+    @Override
+    void run() {
+      this.minigame = MinigameInterface.this.initializeMinigame(this.name);
+      delay(2000);
+    }
+  }
+
+
+  class MouseMoveThread extends Thread {
+    private float mX = 0;
+    private float mY = 0;
+    private boolean start_again = false;
+    private float next_mX = 0;
+    private float next_mY = 0;
+    MouseMoveThread(float mX, float mY) {
+      super("MouseMoveThread");
+      this.mX = mX;
+      this.mY = mY;
+    }
+    void startAgain(float mX, float mY) {
+      this.start_again = true;
+      this.next_mX = mX;
+      this.next_mY = mY;
+    }
+    @Override
+    void run() {
+      while(true) {
+        boolean refreshMapLocation = false;
+        if (MinigameInterface.this.status == MinigameStatus.INITIAL) {
+          MinigameInterface.this.minigame_chooser.mouseMove(this.mX, this.mY);
+        }
+        // minigame mouse move
+        if (MinigameInterface.this.minigame != null) {
+          MinigameInterface.this.minigame.mouseMove(this.mX, this.mY);
+          if (MinigameInterface.this.bottomPanel.clicked) {
+            refreshMapLocation = true;
+          }
+        }
+        // right panel mouse move
+        MinigameInterface.this.bottomPanel.mouseMove(this.mX, this.mY);
+        if (MinigameInterface.this.bottomPanel.open && !MinigameInterface.this.bottomPanel.collapsing) {
+          for (MinigameButton button : MinigameInterface.this.buttons) {
+            button.mouseMove(this.mX, this.mY);
+          }
+        }
+        // refresh minigame location
+        if (refreshMapLocation) {
+          if (MinigameInterface.this.minigame != null) {
+            MinigameInterface.this.minigame.setLocation(0, 0, width, height - MinigameInterface.this.bottomPanel.size);
+          }
+        }
+        // cursor icon resolution
+        if (MinigameInterface.this.bottomPanel.clicked) {
+          MinigameInterface.this.resizeButtons();
+          global.setCursor("icons/cursor_resizeh_white.png");
+        }
+        else if (MinigameInterface.this.bottomPanel.hovered) {
+          global.setCursor("icons/cursor_resizeh.png");
+        }
+        else {
+          global.defaultCursor("icons/cursor_resizeh_white.png", "icons/cursor_resizeh.png");
+        }
+        if (this.start_again) {
+          this.mX = this.next_mX;
+          this.mY = this.next_mY;
+          this.start_again = false;
+          continue;
+        }
+        break;
+      }
+    }
+  }
+
+
   private MinigameButton[] buttons = new MinigameButton[1];
   private Panel bottomPanel = new Panel(DOWN, Constants.minigames_panelWidth);
   private MinigameChooser minigame_chooser = new MinigameChooser();
+  private InitializeMinigameThread initialize_minigame_thread = null;
+  private MouseMoveThread mouse_move_thread = null;
 
   private Minigame minigame = null;
   private MinigameStatus status = MinigameStatus.INITIAL;
@@ -239,16 +322,24 @@ class MinigameInterface extends InterfaceLNZ {
   }
 
 
+  Minigame initializeMinigame(MinigameName code) {
+    switch(code) {
+      case CHESS:
+        return new Chess();
+      default:
+        return null;
+    }
+  }
+
+
   void launchMinigame(MinigameName name) {
     if (this.minigame != null || this.status != MinigameStatus.INITIAL) {
       global.errorMessage("ERROR: Can't launch minigame when playing one.");
       return;
     }
-    this.minigame = initializeMinigame(name);
-    if (this.minigame != null) {
-      this.status = MinigameStatus.PLAYING;
-    }
-    this.minigame.setLocation(0, 0, width, height - this.bottomPanel.size);
+    this.status = MinigameStatus.LAUNCHING;
+    this.initialize_minigame_thread = new InitializeMinigameThread(name);
+    this.initialize_minigame_thread.start();
   }
 
   void completedMinigame() {
@@ -314,6 +405,27 @@ class MinigameInterface extends InterfaceLNZ {
           text(this.minigame_chooser.minigame_hovered.displayName(), 0.5 * width, 5);
         }
         break;
+      case LAUNCHING:
+        if (this.initialize_minigame_thread == null) {
+          this.status = MinigameStatus.INITIAL;
+          break;
+        }
+        if (this.initialize_minigame_thread.isAlive()) {
+          imageMode(CENTER);
+          int frame = int(floor(Constants.gif_loading_frames * (float(millis %
+            Constants.gif_loading_time) / (1 + Constants.gif_loading_time))));
+          image(global.images.getImage("gifs/loading/" + frame + ".png"), 0.5 * width, 0.5 * height, 250, 250);
+          break;
+        }
+        if (this.initialize_minigame_thread.minigame == null) {
+          this.status = MinigameStatus.INITIAL;
+          this.initialize_minigame_thread = null;
+          break;
+        }
+        this.minigame = this.initialize_minigame_thread.minigame;
+        this.status = MinigameStatus.PLAYING;
+        this.minigame.setLocation(0, 0, width, height - this.bottomPanel.size);
+        break;
       case PLAYING:
         if (this.minigame != null) {
           this.minigame.update(time_elapsed);
@@ -365,41 +477,11 @@ class MinigameInterface extends InterfaceLNZ {
   }
 
   void mouseMove(float mX, float mY) {
-    boolean refreshMapLocation = false;
-    if (this.status == MinigameStatus.INITIAL) {
-      this.minigame_chooser.mouseMove(mX, mY);
+    if (this.mouse_move_thread != null && this.mouse_move_thread.isAlive()) {
+      this.mouse_move_thread.startAgain(mX, mY);
     }
-    // minigame mouse move
-    if (this.minigame != null) {
-      this.minigame.mouseMove(mX, mY);
-      if (this.bottomPanel.clicked) {
-        refreshMapLocation = true;
-      }
-    }
-    // right panel mouse move
-    this.bottomPanel.mouseMove(mX, mY);
-    if (this.bottomPanel.open && !this.bottomPanel.collapsing) {
-      for (MinigameButton button : this.buttons) {
-        button.mouseMove(mX, mY);
-      }
-    }
-    // refresh minigame location
-    if (refreshMapLocation) {
-      if (this.minigame != null) {
-        this.minigame.setLocation(0, 0, width, height - this.bottomPanel.size);
-      }
-    }
-    // cursor icon resolution
-    if (this.bottomPanel.clicked) {
-      this.resizeButtons();
-      global.setCursor("icons/cursor_resizeh_white.png");
-    }
-    else if (this.bottomPanel.hovered) {
-      global.setCursor("icons/cursor_resizeh.png");
-    }
-    else {
-      global.defaultCursor("icons/cursor_resizeh_white.png", "icons/cursor_resizeh.png");
-    }
+    this.mouse_move_thread = new MouseMoveThread(mX, mY);
+    this.mouse_move_thread.start();
   }
 
   void mousePress() {
