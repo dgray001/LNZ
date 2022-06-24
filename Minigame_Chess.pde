@@ -1,4 +1,5 @@
 class Chess extends Minigame {
+  private ChessBoard chessboard = new ChessBoard();
 
   Chess() {
     super(MinigameName.CHESS);
