@@ -1,5 +1,5 @@
 enum ChessState {
-  ANALYSIS, PLAYING;
+  ANALYSIS, VS_COMPUTER;
 }
 
 class Chess extends Minigame {

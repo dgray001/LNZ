@@ -53,8 +53,7 @@ abstract class GridBoard {
     }
 
     void setSize(float size) {
-      this.button.xf = size;
-      this.button.yf = size;
+      this.button.setLocation(0, 0, size, size);
     }
 
     void update(int time_elapsed) {

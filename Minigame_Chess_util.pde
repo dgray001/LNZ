@@ -6,6 +6,7 @@ class ChessBoard extends GridBoard {
   class ChessSquare extends BoardSquare {
     protected ChessColor square_color;
     protected boolean clicked = false;
+    protected boolean can_move_to = false;
 
     ChessSquare(IntegerCoordinate coordinate) {
       super(coordinate);
@@ -18,6 +19,9 @@ class ChessBoard extends GridBoard {
 
     ChessPiece getPiece() {
       for (GamePiece piece : this.pieces.values()) {
+        if (piece.remove) {
+          continue;
+        }
         return (ChessPiece)piece;
       }
       return null;
@@ -35,14 +39,13 @@ class ChessBoard extends GridBoard {
 
     void drawSquare() {
       rectMode(CORNERS);
-      noStroke();
-      strokeWeight(0.01);
+      stroke(0, 1);
       switch(this.square_color) {
         case WHITE:
           fill(248, 240, 227);
           break;
         case BLACK:
-          fill(165,42,42);
+          fill(165, 42, 42);
           break;
       }
       rect(this.button.xi, this.button.yi, this.button.xf, this.button.yf);
@@ -53,12 +56,28 @@ class ChessBoard extends GridBoard {
         }
         image(piece.getImage(), this.button.xi, this.button.yi, this.button.xf, this.button.yf);
       }
+      if (this.can_move_to) {
+        ellipseMode(CENTER);
+        if (this.empty()) {
+          fill(200, 160);
+          stroke(200, 160);
+          circle(this.button.xCenter(), this.button.yCenter(), 0.3 * this.button.button_width());
+        }
+        else {
+          fill(0, 1);
+          stroke(200, 160);
+          strokeWeight(6);
+          circle(this.button.xCenter(), this.button.yCenter(), this.button.button_width());
+        }
+      }
       if ((this.clicked || this.button.clicked) && !this.empty()) {
         fill(200, 160);
+        stroke(200, 160);
         rect(this.button.xi, this.button.yi, this.button.xf, this.button.yf);
       }
       else if (this.button.hovered) {
         fill(120, 80);
+        stroke(120, 80);
         rect(this.button.xi, this.button.yi, this.button.xf, this.button.yf);
       }
     }
@@ -255,12 +274,23 @@ class ChessBoard extends GridBoard {
     if (coordinate == null) {
       return;
     }
-    if (this.coordinate_clicked == null && this.pieceAt(coordinate) != null) {
+    ChessPiece piece = this.pieceAt(coordinate);
+    if (this.coordinate_clicked == null && piece != null && piece.piece_color == this.turn) {
       ChessSquare square = ((ChessSquare)this.squareAt(coordinate));
       if (square.button.hovered) {
         this.coordinate_clicked = coordinate;
         square.clicked = true;
-        this.pieceAt(coordinate).updateMoveToSquares(this);
+      }
+      else {
+        // use dragged
+      }
+    }
+    else if (piece != null && piece.piece_color == this.turn) {
+      ChessSquare square = ((ChessSquare)this.squareAt(coordinate));
+      if (square.button.hovered) {
+        ((ChessSquare)this.squareAt(this.coordinate_clicked)).clicked = false;
+        this.coordinate_clicked = coordinate;
+        square.clicked = true;
       }
       else {
         // use dragged
@@ -270,6 +300,25 @@ class ChessBoard extends GridBoard {
       this.tryMovePiece(this.coordinate_clicked, coordinate);
       ((ChessSquare)this.squareAt(this.coordinate_clicked)).clicked = false;
       this.coordinate_clicked = null;
+    }
+    this.updateSquaresMarked();
+  }
+
+  void updateSquaresMarked() {
+    boolean all_false = false;
+    ChessPiece piece = this.pieceAt(this.coordinate_clicked);
+    if (piece == null) {
+      all_false = true;
+    }
+    for (BoardSquare[] squares_row : this.squares) {
+      for (BoardSquare board_square : squares_row) {
+        ChessSquare square = (ChessSquare)board_square;
+        if (all_false) {
+          square.can_move_to = false;
+          continue;
+        }
+        square.can_move_to = piece.canMoveTo(square.coordinate);
+      }
     }
   }
 
@@ -387,6 +436,15 @@ class ChessPiece extends GamePiece {
   PImage getImage() {
     return global.images.getImage("minigames/chess/" + this.piece_color.fileName() +
       "_" + this.type.fileName() + ".png");
+  }
+
+  boolean canMoveTo(IntegerCoordinate coordinate) {
+    for (ChessMove move : this.valid_moves) {
+      if (move.target.equals(coordinate)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   void updateMoveToSquares(ChessBoard board) {

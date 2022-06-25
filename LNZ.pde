@@ -27,6 +27,14 @@ void setup() {
 }
 
 void draw() {
+  int time_elapsed = millis() - global.lastFrameTime;
+  if (time_elapsed < 5) { // hard throttle to keep framerate < 200
+    return;
+  }
+  actuallyDraw();
+}
+
+void actuallyDraw() {
   int timeElapsed = global.frame();
   // FPS counter
   global.timer_FPS -= timeElapsed;
