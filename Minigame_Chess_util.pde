@@ -185,6 +185,7 @@ class ChessBoard extends GridBoard {
     this.black_pieces.clear();
     this.valid_moves.clear();
     this.moves.clear();
+    this.move_queue.clear();
     this.turn = ChessColor.WHITE;
     // White back-rank
     ChessPiece white_rook1 = new ChessPiece(ChessPieceType.ROOK, ChessColor.WHITE);
@@ -355,6 +356,20 @@ class ChessBoard extends GridBoard {
     return false;
   }
 
+  boolean computersTurn() {
+    switch(this.human_controlled) {
+      case NONE:
+        return true;
+      case WHITE:
+        return this.turn != ChessColor.WHITE;
+      case BLACK:
+        return this.turn != ChessColor.BLACK;
+      case BOTH:
+        return false;
+    }
+    return false;
+  }
+
   void addedPiece(GamePiece piece) {
     if (!ChessPiece.class.isInstance(piece)) {
       global.errorMessage("ERROR: Piece with class " + piece.getClass() + " not a chess piece.");
@@ -479,6 +494,12 @@ class ChessBoard extends GridBoard {
     this.makeMove(potential_move);
   }
 
+  void makeRandomMove() {
+    ArrayList<ChessMove> possible_moves = new ArrayList<ChessMove>(this.valid_moves);
+    Collections.shuffle(possible_moves);
+    this.makeMove(possible_moves.get(0));
+  }
+
   void makeMove(ChessMove move) {
     this.makeMove(move, true);
   }
@@ -543,7 +564,11 @@ class ChessBoard extends GridBoard {
     if (square.empty()) {
       return null;
     }
-    return ((ChessSquare)square).getPiece();
+    ChessPiece piece = ((ChessSquare)square).getPiece();
+    if (piece != null && piece.remove) {
+      piece = null;
+    }
+    return piece;
   }
 }
 
@@ -721,7 +746,7 @@ class ChessPiece extends GamePiece {
         boolean move1_valid = false;
         if (move1 != null) {
           ChessPiece target_piece = board.pieceAt(move1);
-          if (board.contains(move1) && target_piece == null) {
+          if (board.contains(move1) && (target_piece == null || target_piece.remove)) {
             this.valid_moves.add(new ChessMove(this.coordinate, move1, false,
               this.piece_color, this.type));
             move1_valid = true;
@@ -729,7 +754,7 @@ class ChessPiece extends GamePiece {
         }
         if (capture_left != null) {
           ChessPiece target_piece = board.pieceAt(capture_left);
-          if (target_piece == null) {
+          if (target_piece == null || target_piece.remove) {
             ChessPiece maybe_target_piece = board.pieceAt(capture_left_en_passant);
             if (maybe_target_piece != null && maybe_target_piece.type == ChessPieceType.
               PAWN && maybe_target_piece.has_moved && abs(maybe_target_piece.
@@ -744,7 +769,7 @@ class ChessPiece extends GamePiece {
         }
         if (capture_right != null) {
           ChessPiece target_piece = board.pieceAt(capture_right);
-          if (target_piece == null) {
+          if (target_piece == null || target_piece.remove) {
             ChessPiece maybe_target_piece = board.pieceAt(capture_right_en_passant);
             if (maybe_target_piece != null && maybe_target_piece.type == ChessPieceType.
               PAWN && maybe_target_piece.has_moved && abs(maybe_target_piece.
@@ -804,7 +829,7 @@ class ChessPiece extends GamePiece {
       boolean blocking = false;
       for (int i = this.coordinate.y + direction; (i > 0 && i < board.boardHeight() - 1); i += direction) {
         ChessPiece piece = board.pieceAt(new IntegerCoordinate(this.coordinate.x, i));
-        if (piece == null) {
+        if (piece == null || piece.remove) {
           continue;
         }
         blocking = true;
@@ -834,11 +859,11 @@ class ChessPiece extends GamePiece {
         break;
       }
       ChessPiece target_piece = board.pieceAt(target);
-      if (target_piece == null || target_piece.piece_color != this.piece_color) {
+      if (target_piece == null || target_piece.remove || target_piece.piece_color != this.piece_color) {
         this.valid_moves.add(new ChessMove(this.coordinate, target,
-          target_piece != null, this.piece_color, this.type));
+          (target_piece != null && !target_piece.remove), this.piece_color, this.type));
       }
-      if (target_piece != null) {
+      if (target_piece != null && !target_piece.remove) {
         break;
       }
     }
@@ -849,11 +874,11 @@ class ChessPiece extends GamePiece {
         break;
       }
       ChessPiece target_piece = board.pieceAt(target);
-      if (target_piece == null || target_piece.piece_color != this.piece_color) {
+      if (target_piece == null || target_piece.remove || target_piece.piece_color != this.piece_color) {
         this.valid_moves.add(new ChessMove(this.coordinate, target,
-          target_piece != null, this.piece_color, this.type));
+          (target_piece != null && !target_piece.remove), this.piece_color, this.type));
       }
-      if (target_piece != null) {
+      if (target_piece != null && !target_piece.remove) {
         break;
       }
     }
@@ -864,11 +889,11 @@ class ChessPiece extends GamePiece {
         break;
       }
       ChessPiece target_piece = board.pieceAt(target);
-      if (target_piece == null || target_piece.piece_color != this.piece_color) {
+      if (target_piece == null || target_piece.remove || target_piece.piece_color != this.piece_color) {
         this.valid_moves.add(new ChessMove(this.coordinate, target,
-          target_piece != null, this.piece_color, this.type));
+          (target_piece != null && !target_piece.remove), this.piece_color, this.type));
       }
-      if (target_piece != null) {
+      if (target_piece != null && !target_piece.remove) {
         break;
       }
     }
@@ -878,11 +903,11 @@ class ChessPiece extends GamePiece {
         break;
       }
       ChessPiece target_piece = board.pieceAt(target);
-      if (target_piece == null || target_piece.piece_color != this.piece_color) {
+      if (target_piece == null || target_piece.remove || target_piece.piece_color != this.piece_color) {
         this.valid_moves.add(new ChessMove(this.coordinate, target,
-          target_piece != null, this.piece_color, this.type));
+          (target_piece != null && !target_piece.remove), this.piece_color, this.type));
       }
-      if (target_piece != null) {
+      if (target_piece != null && !target_piece.remove) {
         break;
       }
     }
@@ -895,11 +920,11 @@ class ChessPiece extends GamePiece {
         break;
       }
       ChessPiece target_piece = board.pieceAt(target);
-      if (target_piece == null || target_piece.piece_color != this.piece_color) {
+      if (target_piece == null || target_piece.remove || target_piece.piece_color != this.piece_color) {
         this.valid_moves.add(new ChessMove(this.coordinate, target,
-          target_piece != null, this.piece_color, this.type));
+          (target_piece != null && !target_piece.remove), this.piece_color, this.type));
       }
-      if (target_piece != null) {
+      if (target_piece != null && !target_piece.remove) {
         break;
       }
     }
@@ -909,11 +934,11 @@ class ChessPiece extends GamePiece {
         break;
       }
       ChessPiece target_piece = board.pieceAt(target);
-      if (target_piece == null || target_piece.piece_color != this.piece_color) {
+      if (target_piece == null || target_piece.remove || target_piece.piece_color != this.piece_color) {
         this.valid_moves.add(new ChessMove(this.coordinate, target,
-          target_piece != null, this.piece_color, this.type));
+          (target_piece != null && !target_piece.remove), this.piece_color, this.type));
       }
-      if (target_piece != null) {
+      if (target_piece != null && !target_piece.remove) {
         break;
       }
     }
@@ -923,11 +948,11 @@ class ChessPiece extends GamePiece {
         break;
       }
       ChessPiece target_piece = board.pieceAt(target);
-      if (target_piece == null || target_piece.piece_color != this.piece_color) {
+      if (target_piece == null || target_piece.remove || target_piece.piece_color != this.piece_color) {
         this.valid_moves.add(new ChessMove(this.coordinate, target,
-          target_piece != null, this.piece_color, this.type));
+          (target_piece != null && !target_piece.remove), this.piece_color, this.type));
       }
-      if (target_piece != null) {
+      if (target_piece != null && !target_piece.remove) {
         break;
       }
     }
@@ -937,11 +962,11 @@ class ChessPiece extends GamePiece {
         break;
       }
       ChessPiece target_piece = board.pieceAt(target);
-      if (target_piece == null || target_piece.piece_color != this.piece_color) {
+      if (target_piece == null || target_piece.remove || target_piece.piece_color != this.piece_color) {
         this.valid_moves.add(new ChessMove(this.coordinate, target,
-          target_piece != null, this.piece_color, this.type));
+          (target_piece != null && !target_piece.remove), this.piece_color, this.type));
       }
-      if (target_piece != null) {
+      if (target_piece != null && !target_piece.remove) {
         break;
       }
     }

@@ -5,7 +5,7 @@ class ChessAI {
   }
 
   void reset() {
-    this.board = new ChessBoard();
+    this.board.setupBoard();
   }
 
   void addMove(ChessMove move) {

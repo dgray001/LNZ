@@ -143,14 +143,17 @@ class Chess extends Minigame {
 
     void setLocation(float xi, float yi, float xf, float yf) {
       this.moves.setLocation(xi, yi, xf, yf);
-      // smaller for times
+      // smaller for time controls
     }
   }
 
   private ChessBoard chessboard = new ChessBoard();
-  private ChessAI chess_ai = new ChessAI();
   private ChessState state = ChessState.ANALYSIS;
   private MoveBox move_box = new AnalysisMoveBox();
+
+  private ChessAI chess_ai = new ChessAI();
+  private boolean computers_turn = false;
+  private int computers_time_left = 0;
 
   Chess() {
     super(MinigameName.CHESS);
@@ -184,6 +187,7 @@ class Chess extends Minigame {
     else {
       this.chessboard.human_controlled = HumanMovable.BLACK;
       this.chessboard.orientation = BoardOrientation.LEFT;
+      this.startComputersTurn();
     }
     this.refreshLocation();
   }
@@ -212,12 +216,38 @@ class Chess extends Minigame {
     return null;
   }
 
+  void startComputersTurn() {
+    this.computers_turn = true;
+    this.computers_time_left = 100;
+  }
+
   void update(int time_elapsed) {
     this.chessboard.update(time_elapsed);
+    if (this.computers_turn) {
+      this.computers_time_left -= time_elapsed;
+      if (this.computers_time_left < 0) {
+        this.computers_turn = false;
+        ChessMove computers_move = this.chess_ai.getMove();
+        if (chessboard.valid_moves.contains(computers_move)) {
+          this.chessboard.makeMove(computers_move);
+        }
+        else {
+          String move_string = "Null";
+          if (computers_move != null) {
+            move_string = computers_move.pgnString();
+          }
+          global.errorMessage("ERROR: Chess AI returned invalid move:\n" + move_string);
+          this.chessboard.makeRandomMove();
+        }
+      }
+    }
     while (this.chessboard.move_queue.peek() != null) {
       ChessMove move = this.chessboard.move_queue.poll();
       this.move_box.addMove(move);
       this.chess_ai.addMove(move);
+      if (this.chessboard.computersTurn()) {
+        this.startComputersTurn();
+      }
     }
     this.move_box.update(time_elapsed);
   }
