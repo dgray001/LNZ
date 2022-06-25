@@ -2,6 +2,10 @@ enum ChessSetup {
   STANDARD;
 }
 
+enum HumanMovable {
+  NONE, WHITE, BLACK, BOTH;
+}
+
 class ChessBoard extends GridBoard {
   class ChessSquare extends BoardSquare {
     protected ChessColor square_color;
@@ -100,6 +104,7 @@ class ChessBoard extends GridBoard {
 
 
   protected ChessSetup setup = null;
+  protected HumanMovable human_controlled = HumanMovable.BOTH;
   protected ArrayList<ChessPiece> white_pieces = new ArrayList<ChessPiece>();
   protected ArrayList<ChessPiece> black_pieces = new ArrayList<ChessPiece>();
 
@@ -336,6 +341,20 @@ class ChessBoard extends GridBoard {
     return false;
   }
 
+  boolean humanCanMakeMove() {
+    switch(this.human_controlled) {
+      case NONE:
+        return false;
+      case WHITE:
+        return this.turn == ChessColor.WHITE;
+      case BLACK:
+        return this.turn == ChessColor.BLACK;
+      case BOTH:
+        return true;
+    }
+    return false;
+  }
+
   void addedPiece(GamePiece piece) {
     if (!ChessPiece.class.isInstance(piece)) {
       global.errorMessage("ERROR: Piece with class " + piece.getClass() + " not a chess piece.");
@@ -371,6 +390,9 @@ class ChessBoard extends GridBoard {
   }
 
   void clicked(IntegerCoordinate coordinate) {
+    if (!this.humanCanMakeMove()) {
+      return;
+    }
     if (coordinate == null) {
       return;
     }
@@ -381,6 +403,9 @@ class ChessBoard extends GridBoard {
   }
 
   void released(IntegerCoordinate coordinate) {
+    if (!this.humanCanMakeMove()) {
+      return;
+    }
     if (coordinate == null) {
       return;
     }

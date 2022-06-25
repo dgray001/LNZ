@@ -68,6 +68,11 @@ abstract class Minigame {
   protected boolean completed = false;
   protected MinigameName name;
 
+  protected float xi = 0;
+  protected float yi = 0;
+  protected float xf = 0;
+  protected float yf = 0;
+
   Minigame(MinigameName name) {
     this.name = name;
   }
@@ -76,7 +81,17 @@ abstract class Minigame {
     return this.name.displayName();
   }
   abstract void drawBottomPanel(int time_elapsed);
-  abstract void setLocation(float xi, float yi, float xf, float yf);
+  void setLocation(float xi, float yi, float xf, float yf) {
+    this.xi = xi;
+    this.yi = yi;
+    this.xf = xf;
+    this.yf = yf;
+    this.setDependencyLocations(xi, yi, xf, yf);
+  }
+  abstract void setDependencyLocations(float xi, float yi, float xf, float yf);
+  void refreshLocation() {
+    this.setLocation(this.xi, this.yi, this.xf, this.yf);
+  }
   abstract void restartTimers();
   abstract void displayNerdStats();
   abstract boolean leftPanelElementsHovered();

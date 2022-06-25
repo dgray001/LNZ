@@ -8,7 +8,7 @@ class EpicFools extends Minigame {
     return "Epic Fools";
   }
   void drawBottomPanel(int time_elapsed) {}
-  void setLocation(float xi, float yi, float xf, float yf) {}
+  void setDependencyLocations(float xi, float yi, float xf, float yf) {}
   void restartTimers() {}
   void displayNerdStats() {}
   boolean leftPanelElementsHovered() {
