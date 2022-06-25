@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\nAlpha v0.7.6o: 20220625" +
+  "\nAlpha v0.7.6p: 20220625" +
   "\n\nLines: 50460 (v0.7.6m)" +
   "\nImages: 1236 (v0.7.6)" +
   "\nSounds: 339 (v0.7.6)" +
@@ -98,6 +98,7 @@ static class Constants {
   static final float minigames_edgeGap = 5;
   static final float minigames_buttonGap = 15;
   static final float minigames_scrollbarWidth = 18;
+  static final float minigames_chessPanelsSize = 400;
 
   // Help strings
   static final String help_mapEditor_maps = "Maps\n\nThis view displays the " +

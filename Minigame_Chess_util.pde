@@ -110,6 +110,7 @@ class ChessBoard extends GridBoard {
 
   protected ChessColor in_check = null;
   protected ArrayList<ChessMove> moves = new ArrayList<ChessMove>();
+  protected Queue<ChessMove> move_queue = new ArrayDeque<ChessMove>();
 
   protected IntegerCoordinate coordinate_dragging = null;
   protected IntegerCoordinate coordinate_clicked = null;
@@ -454,6 +455,9 @@ class ChessBoard extends GridBoard {
   }
 
   void makeMove(ChessMove move) {
+    this.makeMove(move, true);
+  }
+  void makeMove(ChessMove move, boolean play_sound) {
     ChessPiece source_piece = this.pieceAt(move.source);
     if (source_piece == null) {
       return;
@@ -469,7 +473,9 @@ class ChessBoard extends GridBoard {
     }
     if (target_piece != null) {
       target_piece.remove = true;
-      global.sounds.trigger_player("minigames/chess/capture");
+      if (play_sound) {
+        global.sounds.trigger_player("minigames/chess/capture");
+      }
     }
     else {
       if (move.castlingMove()) { // check for castling
@@ -491,13 +497,16 @@ class ChessBoard extends GridBoard {
         this.squareAt(rook_source).clearSquare();
         rook_target_square.addPiece(rook);
       }
-      global.sounds.trigger_player("minigames/chess/move");
+      if (play_sound) {
+        global.sounds.trigger_player("minigames/chess/move");
+      }
     }
     source_piece.last_coordinate = source_piece.coordinate.copy();
     source_piece.has_moved = true;
     this.squareAt(move.source).clearSquare();
     this.squareAt(move.target).addPiece(source_piece);
     this.moves.add(move);
+    this.move_queue.add(move);
     this.nextTurn();
   }
 
@@ -741,7 +750,7 @@ class ChessPiece extends GamePiece {
       ChessMove move = i.next();
       ChessBoard copied_board = new ChessBoard(board);
       copied_board.calculate_return_moves = false;
-      copied_board.makeMove(move);
+      copied_board.makeMove(move, false);
       if (copied_board.canTakeKing()) {
         i.remove();
       }
@@ -783,7 +792,7 @@ class ChessPiece extends GamePiece {
         this.coordinate.x, this.coordinate.y + direction), false, this.piece_color, this.type);
       ChessBoard copied_board = new ChessBoard(board);
       copied_board.calculate_return_moves = false;
-      copied_board.makeMove(through_check_check);
+      copied_board.makeMove(through_check_check, false);
       if (copied_board.canTakeKing()) {
         continue;
       }
@@ -915,6 +924,11 @@ class ChessPiece extends GamePiece {
 }
 
 
+String chessBoardNotation(IntegerCoordinate coordinate) {
+  return Character.toString('a' + coordinate.y) + Integer.toString(coordinate.x + 1);
+}
+
+
 class ChessMove {
   private IntegerCoordinate source;
   private IntegerCoordinate target;
@@ -933,6 +947,33 @@ class ChessMove {
   ChessMove copy() {
     return new ChessMove(this.source.copy(), this.target.copy(), this.capture,
       this.source_color, this.source_type);
+  }
+
+  String pgnString() {
+    String source_string = chessBoardNotation(this.source);
+    String target_string = chessBoardNotation(this.target);
+    String piece_string = "";
+    switch(this.source_type) {
+      case KING:
+        piece_string = "K";
+        break;
+      case QUEEN:
+        piece_string = "Q";
+        break;
+      case ROOK:
+        piece_string = "R";
+        break;
+      case BISHOP:
+        piece_string = "B";
+        break;
+      case KNIGHT:
+        piece_string = "N";
+        break;
+    }
+    if (this.capture) {
+      target_string = "x" + target_string;
+    }
+    return piece_string + source_string + target_string;
   }
 
   @Override

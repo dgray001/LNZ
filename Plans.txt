@@ -1,5 +1,4 @@
 v0.7.6: Fernwood (06/30)
- p: initial movebox
  q: can move through view with movebox
  r: can flip board and jump to curr in movebox
  s: can use right click to make drawings on board (get cleared on move or left click)

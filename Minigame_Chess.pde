@@ -19,9 +19,86 @@ class Chess extends Minigame {
     }
   }
 
-  private ChessBoard chessboard = new ChessBoard();
 
-  private RotateBoardButton rotate = new RotateBoardButton();
+  abstract class MoveBox {
+    class MoveContainer extends ListTextBox {
+      MoveContainer() {
+        super();
+      }
+
+      void click() {
+      }
+
+      void doubleclick() {
+      }
+    }
+
+
+    protected MoveContainer moves = new MoveContainer();
+    MoveBox() {
+    }
+
+    abstract void setLocation(float xi, float yi, float xf, float yf);
+
+    void addMove(ChessMove move) {
+      this.moves.addLine(move.pgnString());
+    }
+
+
+    void update(int time_elapsed) {
+      this.moves.update(time_elapsed);
+    }
+
+    void mouseMove(float mX, float mY) {
+      this.moves.mouseMove(mX, mY);
+    }
+
+    void mousePress() {
+      this.moves.mousePress();
+    }
+
+    void mouseRelease(float mX, float mY) {
+      this.moves.mouseRelease(mX, mY);
+    }
+
+    void scroll(int amount) {
+      this.moves.scroll(amount);
+    }
+
+    void keyPress() {
+      this.moves.keyPress();
+    }
+
+    void keyRelease() {
+    }
+  }
+
+
+  class AnalysisMoveBox extends MoveBox {
+    AnalysisMoveBox() {
+      super();
+    }
+
+    void setLocation(float xi, float yi, float xf, float yf) {
+      this.moves.setLocation(xi, yi, xf, yf);
+    }
+  }
+
+
+  class PlayingMoveBox extends MoveBox {
+    PlayingMoveBox() {
+      super();
+    }
+
+    void setLocation(float xi, float yi, float xf, float yf) {
+      this.moves.setLocation(xi, yi, xf, yf);
+      // smaller for times
+    }
+  }
+
+  private ChessBoard chessboard = new ChessBoard();
+  private ChessState state = ChessState.ANALYSIS;
+  private MoveBox move_box = new AnalysisMoveBox();
 
   Chess() {
     super(MinigameName.CHESS);
@@ -41,9 +118,11 @@ class Chess extends Minigame {
 
   void drawBottomPanel(int time_elapsed) {}
   void setLocation(float xi, float yi, float xf, float yf) {
-    this.chessboard.setLocation(xi + Constants.minigames_edgeGap, yi + Constants.
-      minigames_edgeGap, xf - Constants.minigames_edgeGap, yf - Constants.minigames_edgeGap);
-    this.rotate.setLocation(xf - 300, yi + 200, xf - 260, yi + 240);
+    this.chessboard.setLocation(xi + Constants.minigames_chessPanelsSize +
+      Constants.minigames_edgeGap, yi + Constants.minigames_edgeGap, xf -
+      Constants.minigames_chessPanelsSize - Constants.minigames_edgeGap, yf -
+      Constants.minigames_edgeGap);
+    this.move_box.setLocation(xf - Constants.minigames_chessPanelsSize, yi, xf, yf);
   }
   void restartTimers() {}
   void displayNerdStats() {
@@ -63,23 +142,33 @@ class Chess extends Minigame {
 
   void update(int time_elapsed) {
     this.chessboard.update(time_elapsed);
-    this.rotate.update(time_elapsed);
+    while (this.chessboard.move_queue.peek() != null) {
+      ChessMove move = this.chessboard.move_queue.poll();
+      this.move_box.addMove(move);
+    }
+    this.move_box.update(time_elapsed);
   }
   void mouseMove(float mX, float mY) {
     this.chessboard.mouseMove(mX, mY);
-    this.rotate.mouseMove(mX, mY);
+    this.move_box.mouseMove(mX, mY);
   }
   void mousePress() {
     this.chessboard.mousePress();
-    this.rotate.mousePress();
+    this.move_box.mousePress();
   }
   void mouseRelease(float mX, float mY) {
     this.chessboard.mouseRelease(mX, mY);
-    this.rotate.mouseRelease(mX, mY);
+    this.move_box.mouseRelease(mX, mY);
   }
-  void scroll(int amount) {}
-  void keyPress() {}
-  void keyRelease() {}
+  void scroll(int amount) {
+    this.move_box.scroll(amount);
+  }
+  void keyPress() {
+    this.move_box.keyPress();
+  }
+  void keyRelease() {
+    this.move_box.keyRelease();
+  }
 
   void loseFocus() {}
   void gainFocus() {}

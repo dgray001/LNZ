@@ -325,7 +325,7 @@ class MinigameInterface extends InterfaceLNZ {
   Minigame initializeMinigame(MinigameName code) {
     switch(code) {
       case CHESS:
-        return null;
+        return new Chess();
       default:
         return null;
     }
@@ -337,9 +337,7 @@ class MinigameInterface extends InterfaceLNZ {
       global.errorMessage("ERROR: Can't launch minigame when playing one.");
       return;
     }
-    this.status = MinigameStatus.PLAYING;
-    this.minigame = new Chess();
-    this.minigame.setLocation(0, 0, width, height - this.bottomPanel.size);
+    this.status = MinigameStatus.LAUNCHING;
     this.initialize_minigame_thread = new InitializeMinigameThread(name);
     this.initialize_minigame_thread.start();
   }
