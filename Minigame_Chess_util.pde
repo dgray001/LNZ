@@ -264,16 +264,11 @@ class ChessBoard extends GridBoard {
   }
   void startTurn(ChessColor chess_color) {
     this.valid_moves.clear();
+    this.return_moves.clear();
     this.turn = chess_color;
+    this.in_check = null;
     switch(chess_color) {
       case WHITE:
-        for (ChessPiece piece : this.white_pieces) {
-          if (piece.remove) {
-            continue;
-          }
-          piece.updateValidMoves(this, !this.calculate_return_moves);
-          this.valid_moves.addAll(piece.valid_moves);
-        }
         for (ChessPiece piece : this.black_pieces) {
           if (piece.remove) {
             continue;
@@ -283,6 +278,16 @@ class ChessBoard extends GridBoard {
             this.return_moves.addAll(piece.valid_moves);
           }
           piece.valid_moves.clear();
+        }
+        if (this.inCheck()) {
+          this.in_check = chess_color;
+        }
+        for (ChessPiece piece : this.white_pieces) {
+          if (piece.remove) {
+            continue;
+          }
+          piece.updateValidMoves(this, !this.calculate_return_moves);
+          this.valid_moves.addAll(piece.valid_moves);
         }
         break;
       case BLACK:
@@ -296,6 +301,9 @@ class ChessBoard extends GridBoard {
           }
           piece.valid_moves.clear();
         }
+        if (this.inCheck()) {
+          this.in_check = chess_color;
+        }
         for (ChessPiece piece : this.black_pieces) {
           if (piece.remove) {
             continue;
@@ -304,12 +312,6 @@ class ChessBoard extends GridBoard {
           this.valid_moves.addAll(piece.valid_moves);
         }
         break;
-    }
-    if (this.inCheck()) {
-      this.in_check = chess_color;
-    }
-    else {
-      this.in_check = null;
     }
   }
 
@@ -470,6 +472,25 @@ class ChessBoard extends GridBoard {
       global.sounds.trigger_player("minigames/chess/capture");
     }
     else {
+      if (move.castlingMove()) { // check for castling
+        IntegerCoordinate rook_source = move.castlingMoveRookSource(this);
+        ChessPiece rook = this.pieceAt(rook_source);
+        if (rook == null || rook.remove || rook.piece_color != source_piece.piece_color ||
+          rook.type != ChessPieceType.ROOK || rook.has_moved) {
+          global.errorMessage("ERROR: Can't castle with invalid rook.");
+          return;
+        }
+        IntegerCoordinate rook_target = move.castlingMoveRookTarget();
+        BoardSquare rook_target_square = this.squareAt(rook_target);
+        if (rook_source == null || rook_target == null || !rook_target_square.empty()) {
+          global.errorMessage("ERROR: Can't castle with invalid rook squares.");
+          return;
+        }
+        rook.last_coordinate = rook.coordinate.copy();
+        rook.has_moved = true;
+        this.squareAt(rook_source).clearSquare();
+        rook_target_square.addPiece(rook);
+      }
       global.sounds.trigger_player("minigames/chess/move");
     }
     source_piece.last_coordinate = source_piece.coordinate.copy();
@@ -609,6 +630,7 @@ class ChessPiece extends GamePiece {
           this.valid_moves.add(new ChessMove(this.coordinate, target,
             target_piece != null, this.piece_color, this.type));
         }
+        this.addCastlingMoves(board);
         break;
       case QUEEN:
         this.addBishopMoves(board);
@@ -723,6 +745,50 @@ class ChessPiece extends GamePiece {
       if (copied_board.canTakeKing()) {
         i.remove();
       }
+    }
+  }
+
+  void addCastlingMoves(ChessBoard board) {
+    if (this.has_moved) {
+      return;
+    }
+    ChessPiece[] rooks = new ChessPiece[2];
+    rooks[0] = board.pieceAt(new IntegerCoordinate(this.coordinate.x, 0));
+    rooks[1] = board.pieceAt(new IntegerCoordinate(this.coordinate.x, board.boardHeight() - 1));
+    for (ChessPiece rook : rooks) {
+      if (rook == null || rook.remove || rook.piece_color != this.piece_color ||
+        rook.type != ChessPieceType.ROOK || rook.has_moved) {
+        continue;
+      }
+      if (board.in_check == this.piece_color) {
+        continue;
+      }
+      int direction = 1;
+      if (rook.coordinate.y < this.coordinate.y) {
+        direction = -1;
+      }
+      boolean blocking = false;
+      for (int i = this.coordinate.y + direction; (i > 0 && i < board.boardHeight() - 1); i += direction) {
+        ChessPiece piece = board.pieceAt(new IntegerCoordinate(this.coordinate.x, i));
+        if (piece == null) {
+          continue;
+        }
+        blocking = true;
+        break;
+      }
+      if (blocking) {
+        continue;
+      }
+      ChessMove through_check_check = new ChessMove(this.coordinate, new IntegerCoordinate(
+        this.coordinate.x, this.coordinate.y + direction), false, this.piece_color, this.type);
+      ChessBoard copied_board = new ChessBoard(board);
+      copied_board.calculate_return_moves = false;
+      copied_board.makeMove(through_check_check);
+      if (copied_board.canTakeKing()) {
+        continue;
+      }
+      this.valid_moves.add(new ChessMove(this.coordinate, new IntegerCoordinate(
+        this.coordinate.x, this.coordinate.y + 2 * direction), false, this.piece_color, this.type));
     }
   }
 
@@ -889,5 +955,34 @@ class ChessMove {
       return true;
     }
     return false;
+  }
+
+  boolean castlingMove() {
+    return (this.source.x == this.target.x && abs(this.source.y - this.target.y) == 2 &&
+      !this.capture && this.source_type == ChessPieceType.KING);
+  }
+
+  IntegerCoordinate castlingMoveRookSource(ChessBoard board) {
+    if (!this.castlingMove()) {
+      return null;
+    }
+    if (this.source.y < this.target.y) {
+      return new IntegerCoordinate(this.source.x, board.boardHeight() - 1);
+    }
+    else {
+      return new IntegerCoordinate(this.source.x, 0);
+    }
+  }
+
+  IntegerCoordinate castlingMoveRookTarget() {
+    if (!this.castlingMove()) {
+      return null;
+    }
+    if (this.source.y < this.target.y) {
+      return new IntegerCoordinate(this.source.x, this.source.y + 1);
+    }
+    else {
+      return new IntegerCoordinate(this.source.x, this.source.y - 1);
+    }
   }
 }

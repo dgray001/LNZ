@@ -1,4 +1,16 @@
 v0.7.6: Fernwood (06/30)
+ p: initial movebox
+ q: can move through view with movebox
+ r: can flip board and jump to curr in movebox
+ s: can use right click to make drawings on board (get cleared on move or left click)
+ t: can drag-drop to move
+ u: can play vs human (flips board after each move)
+ v: games can end (go to main menu)
+ w: main menu has analysis, vs human, vs computer
+ x: time controls
+ y: can play vs computer
+ z: computer makes random decisions
+
  c: View blank canvas for map in area editor
 
  - Finish frontdoor forcing you to get access to a car
