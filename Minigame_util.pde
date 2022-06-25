@@ -162,10 +162,13 @@ abstract class GridBoard {
         " to square " + x + ", " + y + " since it won't take it.");
       return;
     }
-    piece.board_key = this.next_piece_key;
+    this.addPiece(piece, x, y, this.next_piece_key);
+    this.next_piece_key++;
+  }
+  void addPiece(GamePiece piece, int x, int y, int board_key) {
+    piece.board_key = board_key;
     this.pieces.put(this.next_piece_key, piece);
     this.squares[x][y].addPiece(piece);
-    this.next_piece_key++;
     this.addedPiece(piece);
   }
 
@@ -193,7 +196,6 @@ abstract class GridBoard {
   }
 
   void update(int time_elapsed) {
-    this.drawBoard();
     float x_curr = this.xi_draw;
     float y_curr = this.yi_draw;
     switch(this.orientation) {
@@ -235,8 +237,9 @@ abstract class GridBoard {
         iterator.remove();
       }
     }
+    this.afterUpdate();
   }
-  abstract void drawBoard();
+  abstract void afterUpdate();
 
   void mouseMove(float mX, float mY) {
     float x_curr = this.xi_draw;
