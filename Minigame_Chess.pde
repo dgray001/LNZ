@@ -3,10 +3,14 @@ enum ChessState {
 }
 
 class Chess extends Minigame {
-  class RotateBoardButton extends ImageButton {
-    RotateBoardButton() {
-      super(global.images.getImage("icons/flip.png"), 0, 0, 0, 0);
+  abstract class MoveBoxButton extends ImageButton {
+    protected float width_ratio = 0.85; // ratio of width to height
+
+    MoveBoxButton(String icon_name) {
+      super(global.images.getImage("icons/" + icon_name + ".png"), 0, 0, 0, 0);
       this.use_time_elapsed = true;
+      this.overshadow_colors = true;
+      this.setColors(color(170, 170), color(1, 0), color(100, 80), color(200, 160), color(0));
     }
 
     void hover() {}
@@ -14,24 +18,87 @@ class Chess extends Minigame {
     void click() {}
     void release() {
       if (this.hovered) {
-        Chess.this.flipBoard();
+        this.buttonFunction();
       }
+    }
+
+    abstract void buttonFunction();
+  }
+
+  class SpacerButton extends MoveBoxButton {
+    SpacerButton(float width_ratio) {
+      super("first");
+      this.img = global.images.getTransparentPixel();
+      this.width_ratio = width_ratio;
+      this.overshadow_colors = false;
+    }
+    void buttonFunction() {}
+  }
+
+  class ViewFirstButton extends MoveBoxButton {
+    ViewFirstButton() {
+      super("first");
+      this.width_ratio = 1.0;
+    }
+    void buttonFunction() {
+      // first
     }
   }
 
-  class VsComputerButton extends ImageButton {
-    VsComputerButton() {
-      super(global.images.getImage("icons/ai.png"), 0, 0, 0, 0);
-      this.use_time_elapsed = true;
+  class ViewLastButton extends MoveBoxButton {
+    ViewLastButton() {
+      super("last");
+      this.width_ratio = 1.0;
     }
+    void buttonFunction() {
+      // last
+    }
+  }
 
-    void hover() {}
-    void dehover() {}
-    void click() {}
-    void release() {
-      if (this.hovered) {
-        Chess.this.startGameVsComputer();
-      }
+  class ViewPreviousButton extends MoveBoxButton {
+    ViewPreviousButton() {
+      super("previous");
+      this.width_ratio = 1.4;
+    }
+    void buttonFunction() {
+      // previous
+    }
+  }
+
+  class ViewNextButton extends MoveBoxButton {
+    ViewNextButton() {
+      super("next");
+      this.width_ratio = 1.4;
+    }
+    void buttonFunction() {
+      // next
+    }
+  }
+
+  class RotateBoardButton extends MoveBoxButton {
+    RotateBoardButton() {
+      super("flip");
+    }
+    void buttonFunction() {
+      Chess.this.flipBoard();
+    }
+  }
+
+  class ResetButton extends MoveBoxButton {
+    ResetButton() {
+      super("reset");
+    }
+    void buttonFunction() {
+      Chess.this.resetAnalysisBoard();
+    }
+  }
+
+  class VsComputerButton extends MoveBoxButton {
+    VsComputerButton() {
+      super("ai");
+    }
+    void buttonFunction() {
+      Chess.this.startGameVsComputer();
     }
   }
 
@@ -51,31 +118,70 @@ class Chess extends Minigame {
 
 
     protected MoveContainer moves = new MoveContainer();
+    protected ArrayList<MoveBoxButton> buttons = new ArrayList<MoveBoxButton>();
+    protected float button_min_size = 50;
+    protected float button_gap = 5;
 
     MoveBox() {
+      this.addButtons();
     }
 
-    abstract void setLocation(float xi, float yi, float xf, float yf);
+    abstract void addButtons();
+
+    void setLocation(float xi, float yi, float xf, float yf) {
+      float button_weight = 0;
+      for (MoveBoxButton button : this.buttons) {
+        button_weight += button.width_ratio;
+      }
+      float button_height = 0;
+      if (button_weight != 0) {
+        button_height = min(this.button_min_size, (xf - xi - (this.buttons.size() - 1) * this.button_gap) / button_weight);
+      }
+      this.moves.setLocation(xi + this.button_gap, yi + this.button_gap,
+        xf - this.button_gap, yf - 2 * this.button_gap - button_height);
+      float x_curr = xi;
+      for (MoveBoxButton button : this.buttons) {
+        float button_width = button.width_ratio * button_height;
+        button.setLocation(x_curr, yf - this.button_gap - button_height,
+          x_curr + button_width, yf - this.button_gap);
+        x_curr += button_width + this.button_gap;
+      }
+    }
 
     void addMove(ChessMove move) {
       this.moves.addLine(move.pgnString());
     }
 
+    void gameEnded(GameEnds ends) {
+      this.moves.addLine(ends.displayName());
+    }
 
     void update(int time_elapsed) {
       this.moves.update(time_elapsed);
+      for (MoveBoxButton button : this.buttons) {
+        button.update(time_elapsed);
+      }
     }
 
     void mouseMove(float mX, float mY) {
       this.moves.mouseMove(mX, mY);
+      for (MoveBoxButton button : this.buttons) {
+        button.mouseMove(mX, mY);
+      }
     }
 
     void mousePress() {
       this.moves.mousePress();
+      for (MoveBoxButton button : this.buttons) {
+        button.mousePress();
+      }
     }
 
     void mouseRelease(float mX, float mY) {
       this.moves.mouseRelease(mX, mY);
+      for (MoveBoxButton button : this.buttons) {
+        button.mouseRelease(mX, mY);
+      }
     }
 
     void scroll(int amount) {
@@ -92,46 +198,21 @@ class Chess extends Minigame {
 
 
   class AnalysisMoveBox extends MoveBox {
-    protected RotateBoardButton rotate_board = new RotateBoardButton();
-    protected VsComputerButton vs_computer = new VsComputerButton();
-
     AnalysisMoveBox() {
       super();
+      this.moves.setTitleText("Analysis");
     }
 
-    void setLocation(float xi, float yi, float xf, float yf) {
-      this.moves.setLocation(xi, yi, xf, yf - 54);
-      this.rotate_board.setLocation(xi + 2, yf - 52, xi + 52, yf - 2);
-      this.vs_computer.setLocation(xi + 54, yf - 52, xi + 106, yf - 2);
-    }
-
-
-    @Override
-    void update(int time_elapsed) {
-      super.update(time_elapsed);
-      this.rotate_board.update(time_elapsed);
-      this.vs_computer.update(time_elapsed);
-    }
-
-    @Override
-    void mouseMove(float mX, float mY) {
-      super.mouseMove(mX, mY);
-      this.rotate_board.mouseMove(mX, mY);
-      this.vs_computer.mouseMove(mX, mY);
-    }
-
-    @Override
-    void mousePress() {
-      super.mousePress();
-      this.rotate_board.mousePress();
-      this.vs_computer.mousePress();
-    }
-
-    @Override
-    void mouseRelease(float mX, float mY) {
-      super.mouseRelease(mX, mY);
-      this.rotate_board.mouseRelease(mX, mY);
-      this.vs_computer.mouseRelease(mX, mY);
+    void addButtons() {
+      this.buttons.add(new RotateBoardButton());
+      this.buttons.add(new SpacerButton(0.3));
+      this.buttons.add(new ViewFirstButton());
+      this.buttons.add(new ViewPreviousButton());
+      this.buttons.add(new ViewNextButton());
+      this.buttons.add(new ViewLastButton());
+      this.buttons.add(new SpacerButton(0.3));
+      this.buttons.add(new ResetButton());
+      this.buttons.add(new VsComputerButton());
     }
   }
 
@@ -139,11 +220,13 @@ class Chess extends Minigame {
   class PlayingMoveBox extends MoveBox {
     PlayingMoveBox() {
       super();
+      this.moves.setTitleText("Vs Computer");
     }
 
-    void setLocation(float xi, float yi, float xf, float yf) {
-      this.moves.setLocation(xi, yi, xf, yf);
-      // smaller for time controls
+    void addButtons() {
+      this.buttons.add(new RotateBoardButton());
+      this.buttons.add(new SpacerButton(0.3));
+      this.buttons.add(new ViewFirstButton());
     }
   }
 
@@ -169,6 +252,19 @@ class Chess extends Minigame {
         this.chessboard.orientation = BoardOrientation.RIGHT;
         break;
     }
+  }
+
+  void resetAnalysisBoard() {
+    if (this.state != ChessState.ANALYSIS) {
+      global.errorMessage("ERROR: Can't reset analyis when not in analysis.");
+      return;
+    }
+    this.chessboard.setupBoard();
+    this.chessboard.human_controlled = HumanMovable.BOTH;
+    this.chessboard.orientation = BoardOrientation.RIGHT;
+    this.chess_ai.reset();
+    this.move_box = new AnalysisMoveBox();
+    this.refreshLocation();
   }
 
   void startGameVsComputer() {
@@ -228,7 +324,12 @@ class Chess extends Minigame {
       if (this.computers_time_left < 0) {
         this.computers_turn = false;
         ChessMove computers_move = this.chess_ai.getMove();
-        if (chessboard.valid_moves.contains(computers_move)) {
+        if (computers_move == null) {
+          if (this.chessboard.game_ended == null) {
+           global.errorMessage("ERROR: Chess AI returned null move when game not over.");
+          }
+        }
+        else if (chessboard.valid_moves.contains(computers_move)) {
           this.chessboard.makeMove(computers_move);
         }
         else {
@@ -236,7 +337,12 @@ class Chess extends Minigame {
           if (computers_move != null) {
             move_string = computers_move.pgnString();
           }
-          global.errorMessage("ERROR: Chess AI returned invalid move:\n" + move_string);
+          String valid_moves = "";
+          for (ChessMove move : this.chessboard.valid_moves) {
+            valid_moves += "\n" + move.pgnString();
+          }
+          global.errorMessage("ERROR: Chess AI returned invalid move:\n" + move_string +
+            "\n\nValid moves are:" + valid_moves);
           this.chessboard.makeRandomMove();
         }
       }
@@ -245,7 +351,10 @@ class Chess extends Minigame {
       ChessMove move = this.chessboard.move_queue.poll();
       this.move_box.addMove(move);
       this.chess_ai.addMove(move);
-      if (this.chessboard.computersTurn()) {
+      if (this.chessboard.game_ended != null) {
+        this.move_box.gameEnded(this.chessboard.game_ended);
+      }
+      else if (this.chessboard.computersTurn()) {
         this.startComputersTurn();
       }
     }

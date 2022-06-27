@@ -6,6 +6,59 @@ enum HumanMovable {
   NONE, WHITE, BLACK, BOTH;
 }
 
+enum GameEnds {
+  WHITE_CHECKMATES, BLACK_CHECKMATES, STALEMATE, REPETITION, FIFTY_MOVE,
+  WHITE_TIME, BLACK_TIME; // abandonment, resignation, agree to draw
+
+  public String displayName() {
+    return GameEnds.displayName(this);
+  }
+  public static String displayName(GameEnds end) {
+    switch(end) {
+      case WHITE_CHECKMATES:
+        return "Checkmate - White is Victorious";
+      case BLACK_CHECKMATES:
+        return "Checkmate - Black is Victorious";
+      case STALEMATE:
+        return "Stalemate - Draw";
+      case REPETITION:
+        return "Repetition - Draw";
+      case FIFTY_MOVE:
+        return "Fifty Move rule - Draw";
+      case WHITE_TIME:
+        return "White time out - Black is Victorious";
+      case BLACK_TIME:
+        return "Black time out - White is Victorious";
+      default:
+        return "Error";
+    }
+  }
+
+  public int points() {
+    return GameEnds.points(this);
+  }
+  public static int points(GameEnds end) {
+    switch(end) {
+      case WHITE_CHECKMATES:
+        return 1;
+      case BLACK_CHECKMATES:
+        return -1;
+      case STALEMATE:
+        return 0;
+      case REPETITION:
+        return 0;
+      case FIFTY_MOVE:
+        return 0;
+      case WHITE_TIME:
+        return -1;
+      case BLACK_TIME:
+        return 1;
+      default:
+        return 0;
+    }
+  }
+}
+
 class ChessBoard extends GridBoard {
   class ChessSquare extends BoardSquare {
     protected ChessColor square_color;
@@ -30,7 +83,7 @@ class ChessBoard extends GridBoard {
 
     ChessPiece getPiece() {
       for (GamePiece piece : this.pieces.values()) {
-        if (piece.remove) {
+        if (piece == null || piece.remove) {
           continue;
         }
         return (ChessPiece)piece;
@@ -39,7 +92,7 @@ class ChessBoard extends GridBoard {
     }
 
     boolean canTakePiece(GamePiece piece) {
-      if (piece == null || !ChessPiece.class.isInstance(piece)) {
+      if (piece == null || piece.remove || !ChessPiece.class.isInstance(piece)) {
         return false;
       }
       if (this.empty()) {
@@ -62,7 +115,7 @@ class ChessBoard extends GridBoard {
       rect(this.button.xi, this.button.yi, this.button.xf, this.button.yf);
       imageMode(CORNERS);
       for (GamePiece piece : this.pieces.values()) {
-        if (piece.remove) {
+        if (piece == null || piece.remove) {
           continue;
         }
         image(piece.getImage(), this.button.xi, this.button.yi, this.button.xf, this.button.yf);
@@ -116,6 +169,7 @@ class ChessBoard extends GridBoard {
   protected ChessColor in_check = null;
   protected ArrayList<ChessMove> moves = new ArrayList<ChessMove>();
   protected Queue<ChessMove> move_queue = new ArrayDeque<ChessMove>();
+  protected GameEnds game_ended = null; // null until game ends
 
   protected IntegerCoordinate coordinate_dragging = null;
   protected IntegerCoordinate coordinate_clicked = null;
@@ -186,6 +240,7 @@ class ChessBoard extends GridBoard {
     this.valid_moves.clear();
     this.moves.clear();
     this.move_queue.clear();
+    this.game_ended = null;
     this.turn = ChessColor.WHITE;
     // White back-rank
     ChessPiece white_rook1 = new ChessPiece(ChessPieceType.ROOK, ChessColor.WHITE);
@@ -259,6 +314,32 @@ class ChessBoard extends GridBoard {
     this.startTurn(ChessColor.WHITE);
   }
 
+  int materialDifference() {
+    return this.whiteMaterial() - this.blackMaterial();
+  }
+
+  int whiteMaterial() {
+    int material = 0;
+    for (ChessPiece piece : this.white_pieces) {
+      if (piece == null || piece.remove) {
+        continue;
+      }
+      material += piece.type.material();
+    }
+    return material;
+  }
+
+  int blackMaterial() {
+    int material = 0;
+    for (ChessPiece piece : this.black_pieces) {
+      if (piece == null || piece.remove) {
+        continue;
+      }
+      material += piece.type.material();
+    }
+    return material;
+  }
+
   void nextTurn() {
     switch(this.turn) {
       case WHITE:
@@ -320,6 +401,19 @@ class ChessBoard extends GridBoard {
         }
         break;
     }
+    if (this.valid_moves.size() == 0) { // game over
+      switch(this.in_check) {
+        case WHITE:
+          this.game_ended = GameEnds.BLACK_CHECKMATES;
+          break;
+        case BLACK:
+          this.game_ended = GameEnds.WHITE_CHECKMATES;
+          break;
+        default:
+          this.game_ended = GameEnds.STALEMATE;
+          break;
+      }
+    }
   }
 
   boolean inCheck() {
@@ -357,6 +451,9 @@ class ChessBoard extends GridBoard {
   }
 
   boolean computersTurn() {
+    if (this.valid_moves.size() == 0) {
+      return false;
+    }
     switch(this.human_controlled) {
       case NONE:
         return true;
@@ -595,6 +692,28 @@ enum ChessPieceType {
         return "pawn";
       default:
         return "";
+    }
+  }
+
+  public int material() {
+    return ChessPieceType.material(this);
+  }
+  public static int material(ChessPieceType type) {
+    switch(type) {
+      case KING:
+        return 0;
+      case QUEEN:
+        return 8;
+      case ROOK:
+        return 5;
+      case BISHOP:
+        return 3;
+      case KNIGHT:
+        return 3;
+      case PAWN:
+        return 1;
+      default:
+        return 0;
     }
   }
 }
@@ -852,8 +971,8 @@ class ChessPiece extends GamePiece {
   }
 
   void addBishopMoves(ChessBoard board) {
-    for (int x = this.coordinate.x + 1, y = this.coordinate.y + 1; x <
-      board.boardWidth() && y < board.boardHeight(); x++, y++) {
+    for (int x = this.coordinate.x + 1, y = this.coordinate.y + 1; (x <
+      board.boardWidth() && y < board.boardHeight()); x++, y++) {
       IntegerCoordinate target = new IntegerCoordinate(x, y);
       if (!board.contains(target)) {
         break;

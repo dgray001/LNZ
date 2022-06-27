@@ -426,6 +426,7 @@ abstract class CheckBox extends RectangleButton {
 abstract class ImageButton extends RectangleButton {
   protected PImage img;
   protected color color_tint = color(255);
+  protected boolean overshadow_colors = false;
 
   ImageButton(PImage img, float xi, float yi, float xf, float yf) {
     super(xi, yi, xf, yf);
@@ -439,6 +440,12 @@ abstract class ImageButton extends RectangleButton {
     image(this.img, this.xi, this.yi, this.xf, this.yf);
     noTint();
     this.writeText();
+    if (this.overshadow_colors) {
+      fill(this.fillColor());
+      stroke(this.fillColor());
+      rectMode(CORNERS);
+      rect(this.xi, this.yi, this.xf, this.yf);
+    }
   }
 
   void setImg(PImage img) {
@@ -1924,7 +1931,12 @@ abstract class ListTextBox extends TextBox {
   }
 
   void addLine(String line) {
-    this.addText("\n" + line);
+    if (this.text_ref == null || this.text_ref.equals("")) {
+      this.setText(line);
+    }
+    else {
+      this.addText("\n" + line);
+    }
   }
 
   String highlightedLine() {
