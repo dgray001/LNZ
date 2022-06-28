@@ -104,6 +104,7 @@ class ChessBoard extends GridBoard {
     void drawSquare() {
       rectMode(CORNERS);
       stroke(0, 1);
+      strokeWeight(0.01);
       switch(this.square_color) {
         case WHITE:
           fill(248, 240, 227);
@@ -125,23 +126,26 @@ class ChessBoard extends GridBoard {
         if (this.empty()) {
           fill(200, 160);
           stroke(200, 160);
+          strokeWeight(0.01);
           circle(this.button.xCenter(), this.button.yCenter(), 0.3 * this.button.button_width());
         }
         else {
           fill(0, 1);
           stroke(200, 160);
           strokeWeight(6);
-          circle(this.button.xCenter(), this.button.yCenter(), this.button.button_width());
+          circle(this.button.xCenter(), this.button.yCenter(), this.button.button_width() - 3);
         }
       }
       if ((this.clicked || this.button.clicked) && !this.empty()) {
         fill(200, 160);
         stroke(200, 160);
+        strokeWeight(0.01);
         rect(this.button.xi, this.button.yi, this.button.xf, this.button.yf);
       }
       else if (this.button.hovered) {
         fill(120, 80);
         stroke(120, 80);
+        strokeWeight(0.01);
         rect(this.button.xi, this.button.yi, this.button.xf, this.button.yf);
       }
     }
@@ -158,6 +162,7 @@ class ChessBoard extends GridBoard {
 
   protected ChessSetup setup = null;
   protected HumanMovable human_controlled = HumanMovable.BOTH;
+  protected boolean toggle_human_controllable = false;
   protected ArrayList<ChessPiece> white_pieces = new ArrayList<ChessPiece>();
   protected ArrayList<ChessPiece> black_pieces = new ArrayList<ChessPiece>();
 
@@ -204,7 +209,8 @@ class ChessBoard extends GridBoard {
       }
     }
     for (GamePiece piece : board.pieces.values()) {
-      this.addPiece(((ChessPiece)piece).copy(), piece.coordinate.x, piece.coordinate.y, piece.board_key);
+      ChessPiece copied_piece = ((ChessPiece)piece).copy();
+      this.addPiece(copied_piece, piece.coordinate.x, piece.coordinate.y, piece.board_key);
     }
     for (ChessMove move : board.valid_moves) {
       this.valid_moves.add(move.copy());
@@ -227,6 +233,12 @@ class ChessBoard extends GridBoard {
         this.squares[i][j] = new ChessSquare(new IntegerCoordinate(i, j));
       }
     }
+  }
+
+  void resetAnalysis() {
+    this.human_controlled = HumanMovable.BOTH;
+    this.orientation = BoardOrientation.RIGHT;
+    this.setupBoard();
   }
 
   void setupBoard() {
@@ -437,6 +449,9 @@ class ChessBoard extends GridBoard {
   }
 
   boolean humanCanMakeMove() {
+    if (this.toggle_human_controllable) {
+      return false;
+    }
     switch(this.human_controlled) {
       case NONE:
         return false;
@@ -570,6 +585,9 @@ class ChessBoard extends GridBoard {
   }
 
   void tryMovePiece(IntegerCoordinate source, IntegerCoordinate target) {
+    if (!this.humanCanMakeMove()) {
+      return;
+    }
     ChessPiece source_piece = this.pieceAt(source);
     if (source_piece == null) {
       return;

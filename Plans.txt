@@ -1,10 +1,8 @@
 v0.7.6: Fernwood (06/30)
- q: can move through view with movebox
- r: can flip board and jump to curr in movebox
  s: can use right click to make drawings on board (get cleared on move or left click)
  t: can drag-drop to move
  u: can play vs human (flips board after each move)
- v: games can end (go to main menu)
+ v: games can end (go to analysis?)
  w: main menu has analysis, vs human, vs computer
  x: time controls
  y: can play vs computer

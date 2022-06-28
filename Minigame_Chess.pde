@@ -41,7 +41,7 @@ class Chess extends Minigame {
       this.width_ratio = 1.0;
     }
     void buttonFunction() {
-      // first
+      Chess.this.viewFirst();
     }
   }
 
@@ -51,7 +51,7 @@ class Chess extends Minigame {
       this.width_ratio = 1.0;
     }
     void buttonFunction() {
-      // last
+      Chess.this.viewLast();
     }
   }
 
@@ -61,7 +61,7 @@ class Chess extends Minigame {
       this.width_ratio = 1.4;
     }
     void buttonFunction() {
-      // previous
+      Chess.this.viewPrevious();
     }
   }
 
@@ -71,7 +71,7 @@ class Chess extends Minigame {
       this.width_ratio = 1.4;
     }
     void buttonFunction() {
-      // next
+      Chess.this.viewNext();
     }
   }
 
@@ -231,6 +231,8 @@ class Chess extends Minigame {
   }
 
   private ChessBoard chessboard = new ChessBoard();
+  private ArrayList<ChessBoard> chessboard_views = new ArrayList<ChessBoard>();
+  private int current_view = 0;
   private ChessState state = ChessState.ANALYSIS;
   private MoveBox move_box = new AnalysisMoveBox();
 
@@ -241,6 +243,64 @@ class Chess extends Minigame {
   Chess() {
     super(MinigameName.CHESS);
     this.chessboard.setupBoard();
+    this.initialChessboardView();
+  }
+
+  ChessBoard chessboardView() {
+    if (this.current_view >= this.chessboard_views.size()) {
+      return null;
+    }
+    return this.chessboard_views.get(this.current_view);
+  }
+
+  void initialChessboardView() {
+    ChessBoard copied_board = new ChessBoard(this.chessboard);
+    copied_board.toggle_human_controllable = true;
+    this.chessboard_views.clear();
+    this.chessboard_views.add(copied_board);
+    this.current_view = this.chessboard_views.size() - 1;
+    this.chessboard.toggle_human_controllable = false;
+  }
+
+  void updateView(ChessMove move) {
+    ChessBoard copied_board = new ChessBoard(this.chessboard_views.get(this.chessboard_views.size() - 1));
+    copied_board.makeMove(move);
+    copied_board.toggle_human_controllable = true;
+    this.chessboard_views.add(copied_board);
+    this.current_view = this.chessboard_views.size() - 1;
+    this.chessboard.toggle_human_controllable = false;
+  }
+
+  void viewFirst() {
+    this.current_view = 0;
+    if (this.chessboard_views.size() > 1) {
+      this.chessboard.toggle_human_controllable = true;
+    }
+    this.refreshChessboardViewLocation();
+  }
+
+  void viewLast() {
+    this.current_view = this.chessboard_views.size() - 1;
+    this.chessboard.toggle_human_controllable = false;
+    this.refreshChessboardViewLocation();
+  }
+
+  void viewPrevious() {
+    if (this.current_view > 0) {
+      this.current_view--;
+      this.chessboard.toggle_human_controllable = true;
+    }
+    this.refreshChessboardViewLocation();
+  }
+
+  void viewNext() {
+    if (this.current_view < this.chessboard_views.size() - 1) {
+      this.current_view++;
+      if (this.current_view == this.chessboard_views.size() - 1) {
+        this.chessboard.toggle_human_controllable = false;
+      }
+    }
+    this.refreshChessboardViewLocation();
   }
 
   void flipBoard() {
@@ -252,6 +312,7 @@ class Chess extends Minigame {
         this.chessboard.orientation = BoardOrientation.RIGHT;
         break;
     }
+    this.chessboardView().orientation = this.chessboard.orientation;
   }
 
   void resetAnalysisBoard() {
@@ -259,9 +320,8 @@ class Chess extends Minigame {
       global.errorMessage("ERROR: Can't reset analyis when not in analysis.");
       return;
     }
-    this.chessboard.setupBoard();
-    this.chessboard.human_controlled = HumanMovable.BOTH;
-    this.chessboard.orientation = BoardOrientation.RIGHT;
+    this.chessboard.resetAnalysis();
+    this.initialChessboardView();
     this.chess_ai.reset();
     this.move_box = new AnalysisMoveBox();
     this.refreshLocation();
@@ -275,6 +335,7 @@ class Chess extends Minigame {
     this.state = ChessState.VS_COMPUTER;
     this.move_box = new PlayingMoveBox();
     this.chessboard.setupBoard();
+    this.initialChessboardView();
     this.chess_ai.reset();
     if (randomChance(0.5)) {
       this.chessboard.human_controlled = HumanMovable.WHITE;
@@ -294,7 +355,18 @@ class Chess extends Minigame {
       Constants.minigames_edgeGap, yi + Constants.minigames_edgeGap, xf -
       Constants.minigames_chessPanelsSize - Constants.minigames_edgeGap, yf -
       Constants.minigames_edgeGap);
+    this.refreshChessboardViewLocation();
     this.move_box.setLocation(xf - Constants.minigames_chessPanelsSize, yi, xf, yf);
+  }
+  void refreshChessboardViewLocation() {
+    if (this.chessboardView() == null) {
+      return;
+    }
+    this.chessboardView().setLocation(this.xi + Constants.minigames_chessPanelsSize +
+      Constants.minigames_edgeGap, this.yi + Constants.minigames_edgeGap, this.xf -
+      Constants.minigames_chessPanelsSize - Constants.minigames_edgeGap, this.yf -
+      Constants.minigames_edgeGap);
+    this.chessboardView().orientation = this.chessboard.orientation;
   }
   void restartTimers() {}
   void displayNerdStats() {
@@ -318,7 +390,13 @@ class Chess extends Minigame {
   }
 
   void update(int time_elapsed) {
-    this.chessboard.update(time_elapsed);
+    if (this.current_view < this.chessboard_views.size() - 1) {
+      this.chessboardView().update(time_elapsed);
+      this.chessboard.updateWithoutDisplay(time_elapsed);
+    }
+    else {
+      this.chessboard.update(time_elapsed);
+    }
     if (this.computers_turn) {
       this.computers_time_left -= time_elapsed;
       if (this.computers_time_left < 0) {
@@ -326,7 +404,8 @@ class Chess extends Minigame {
         ChessMove computers_move = this.chess_ai.getMove();
         if (computers_move == null) {
           if (this.chessboard.game_ended == null) {
-           global.errorMessage("ERROR: Chess AI returned null move when game not over.");
+            global.errorMessage("ERROR: Chess AI returned null move when game not over.");
+            this.chessboard.makeRandomMove();
           }
         }
         else if (chessboard.valid_moves.contains(computers_move)) {
@@ -351,6 +430,7 @@ class Chess extends Minigame {
       ChessMove move = this.chessboard.move_queue.poll();
       this.move_box.addMove(move);
       this.chess_ai.addMove(move);
+      this.updateView(move);
       if (this.chessboard.game_ended != null) {
         this.move_box.gameEnded(this.chessboard.game_ended);
       }

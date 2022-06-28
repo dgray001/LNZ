@@ -5,10 +5,28 @@ enum BoardOrientation {
 abstract class GridBoard {
   abstract class BoardSquare {
     class SquareButton extends RectangleButton {
+      protected boolean no_draw_button = false;
+
       SquareButton() {
         super(0, 0, 0, 0);
         this.use_time_elapsed = true;
+        this.roundness = 0;
         this.setColors(color(1, 0), color(1, 0), color(1, 0), color(1, 0), color(1, 0));
+      }
+
+      void turnOffDrawing() {
+        this.no_draw_button = true;
+      }
+      void turnOnDrawing() {
+        this.no_draw_button = false;
+      }
+
+      @Override
+      void drawButton() {
+        if (this.no_draw_button) {
+          return;
+        }
+        super.drawButton();
       }
 
       void dehover() {}
@@ -57,8 +75,13 @@ abstract class GridBoard {
     }
 
     void update(int time_elapsed) {
-      this.button.update(time_elapsed);
+      this.updateWithoutDisplay(time_elapsed);
       this.drawSquare();
+    }
+    void updateWithoutDisplay(int time_elapsed) {
+      this.button.turnOffDrawing();
+      this.button.update(time_elapsed);
+      this.button.turnOnDrawing();
       Iterator iterator = this.pieces.entrySet().iterator();
       while(iterator.hasNext()) {
         Map.Entry<Integer, GamePiece> entry = (Map.Entry<Integer, GamePiece>)iterator.next();
@@ -167,7 +190,7 @@ abstract class GridBoard {
   }
   void addPiece(GamePiece piece, int x, int y, int board_key) {
     piece.board_key = board_key;
-    this.pieces.put(this.next_piece_key, piece);
+    this.pieces.put(board_key, piece);
     this.squares[x][y].addPiece(piece);
     this.addedPiece(piece);
   }
@@ -179,10 +202,10 @@ abstract class GridBoard {
     this.yi = yi;
     this.xf = xf;
     this.yf = yf;
-
     if (this.boardWidth() == 0 || this.boardHeight() == 0) {
       return;
     }
+
     float square_length_from_width = (xf - xi) / this.boardWidth();
     float square_length_from_height = (yf - yi) / this.boardHeight();
     this.square_length = min(square_length_from_width, square_length_from_height);
@@ -230,6 +253,18 @@ abstract class GridBoard {
         }
         break;
     }
+    this.removePieces();
+    this.afterUpdate();
+  }
+  void updateWithoutDisplay(int time_elapsed) {
+    for (int i = 0; i < this.squares.length; i++) {
+      for (int j = 0; j < this.squares[i].length; j++) {
+        this.squares[i][j].updateWithoutDisplay(time_elapsed);
+      }
+    }
+    this.removePieces();
+  }
+  void removePieces() {
     Iterator iterator = this.pieces.entrySet().iterator();
     while(iterator.hasNext()) {
       Map.Entry<Integer, GamePiece> entry = (Map.Entry<Integer, GamePiece>)iterator.next();
@@ -237,7 +272,6 @@ abstract class GridBoard {
         iterator.remove();
       }
     }
-    this.afterUpdate();
   }
   abstract void afterUpdate();
 
