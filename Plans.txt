@@ -1,20 +1,18 @@
 v0.7.6: Fernwood (06/30)
- s: can use right click to make drawings on board (get cleared on move or left click)
  t: can drag-drop to move
  u: can play vs human (flips board after each move)
  v: games can end (go to analysis?)
- w: main menu has analysis, vs human, vs computer
  x: time controls
- y: can play vs computer
- z: computer makes random decisions
 
  - Pawn promotion
+ - Make arrow marking back a little
+ - Computer moved into check (moved king into pawn check)
+ - Mark last move
  - Can quit game vs computer
- - Checks are annotated
- - End games are annotated (checkmate, stalemate, repetition, too many moves, out of time, resignation, agree to draw)
+ - Checks are annotated (and marked on board)
+ - End games are annotated (repetition, too many moves, out of time, resignation, agree to draw)
  - Can save / load chess games (.chess.lnz file)
  - Multiple color / piece schemes switchable in an options button on bottom right
- - Make MoveBox bottom buttons an array so all are updated/etc in abstract class
 
  - Shatranj minigame
 

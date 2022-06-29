@@ -10,6 +10,7 @@ abstract class GridBoard {
       SquareButton() {
         super(0, 0, 0, 0);
         this.use_time_elapsed = true;
+        this.force_left_button = false;
         this.roundness = 0;
         this.setColors(color(1, 0), color(1, 0), color(1, 0), color(1, 0), color(1, 0));
       }
@@ -122,6 +123,8 @@ abstract class GridBoard {
   protected float yi_draw = 0;
   protected float square_length = 0;
 
+  protected IntegerCoordinate coordinate_hovered = null;
+
   GridBoard(int w, int h) {
     this.squares = new BoardSquare[w][h];
     this.initializeSquares();
@@ -218,6 +221,44 @@ abstract class GridBoard {
     this.yi_draw = yi + 0.5 * (yf - yi - this.boardHeight() * this.square_length);
   }
 
+  float squareCenterX(IntegerCoordinate coordinate) {
+    if (coordinate == null) {
+      return 0;
+    }
+    float x_curr = this.xi_draw;
+    switch(this.orientation) {
+      case STANDARD:
+        x_curr += coordinate.x * this.square_length;
+        break;
+      case LEFT:
+        x_curr += (this.squares[0].length - 1 - coordinate.y) * this.square_length;
+        break;
+      case RIGHT:
+        x_curr += coordinate.y * this.square_length;
+        break;
+    }
+    return x_curr + 0.5 * this.square_length;
+  }
+
+  float squareCenterY(IntegerCoordinate coordinate) {
+    if (coordinate == null) {
+      return 0;
+    }
+    float y_curr = this.yi_draw;
+    switch(this.orientation) {
+      case STANDARD:
+        y_curr += coordinate.y * this.square_length;
+        break;
+      case LEFT:
+        y_curr += coordinate.x * this.square_length;
+        break;
+      case RIGHT:
+        y_curr += (this.squares.length - 1 - coordinate.x) * this.square_length;
+        break;
+    }
+    return y_curr + 0.5 * this.square_length;
+  }
+
   void update(int time_elapsed) {
     float x_curr = this.xi_draw;
     float y_curr = this.yi_draw;
@@ -276,6 +317,7 @@ abstract class GridBoard {
   abstract void afterUpdate();
 
   void mouseMove(float mX, float mY) {
+    this.coordinate_hovered = null;
     float x_curr = this.xi_draw;
     float y_curr = this.yi_draw;
     switch(this.orientation) {
@@ -284,6 +326,9 @@ abstract class GridBoard {
           y_curr = this.yi_draw;
           for (int j = 0; j < this.squares[i].length; j++, y_curr += this.square_length) {
             this.squares[i][j].mouseMove(mX - x_curr, mY - y_curr);
+            if (this.squares[i][j].button.hovered) {
+              this.coordinate_hovered = this.squares[i][j].coordinate;
+            }
           }
         }
         break;
@@ -292,6 +337,9 @@ abstract class GridBoard {
           y_curr = this.yi_draw;
           for (int i = 0; i < this.squares.length; i++, y_curr += this.square_length) {
             this.squares[i][j].mouseMove(mX - x_curr, mY - y_curr);
+            if (this.squares[i][j].button.hovered) {
+              this.coordinate_hovered = this.squares[i][j].coordinate;
+            }
           }
         }
         break;
@@ -300,6 +348,9 @@ abstract class GridBoard {
           y_curr = this.yi_draw;
           for (int i = this.squares.length - 1; i >= 0; i--, y_curr += this.square_length) {
             this.squares[i][j].mouseMove(mX - x_curr, mY - y_curr);
+            if (this.squares[i][j].button.hovered) {
+              this.coordinate_hovered = this.squares[i][j].coordinate;
+            }
           }
         }
         break;

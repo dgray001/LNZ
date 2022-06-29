@@ -105,14 +105,7 @@ class ChessBoard extends GridBoard {
       rectMode(CORNERS);
       stroke(0, 1);
       strokeWeight(0.01);
-      switch(this.square_color) {
-        case WHITE:
-          fill(248, 240, 227);
-          break;
-        case BLACK:
-          fill(165, 42, 42);
-          break;
-      }
+      fill(ChessBoard.this.squareColor(this.square_color));
       rect(this.button.xi, this.button.yi, this.button.xf, this.button.yf);
       imageMode(CORNERS);
       for (GamePiece piece : this.pieces.values()) {
@@ -124,27 +117,27 @@ class ChessBoard extends GridBoard {
       if (this.can_move_to) {
         ellipseMode(CENTER);
         if (this.empty()) {
-          fill(200, 160);
-          stroke(200, 160);
+          fill(ChessBoard.this.clickColor());
+          stroke(ChessBoard.this.clickColor());
           strokeWeight(0.01);
           circle(this.button.xCenter(), this.button.yCenter(), 0.3 * this.button.button_width());
         }
         else {
           fill(0, 1);
-          stroke(200, 160);
+          stroke(ChessBoard.this.clickColor());
           strokeWeight(6);
           circle(this.button.xCenter(), this.button.yCenter(), this.button.button_width() - 3);
         }
       }
       if ((this.clicked || this.button.clicked) && !this.empty()) {
-        fill(200, 160);
-        stroke(200, 160);
+        fill(ChessBoard.this.clickColor());
+        stroke(ChessBoard.this.clickColor());
         strokeWeight(0.01);
         rect(this.button.xi, this.button.yi, this.button.xf, this.button.yf);
       }
       else if (this.button.hovered) {
-        fill(120, 80);
-        stroke(120, 80);
+        fill(ChessBoard.this.hoverColor());
+        stroke(ChessBoard.this.hoverColor());
         strokeWeight(0.01);
         rect(this.button.xi, this.button.yi, this.button.xf, this.button.yf);
       }
@@ -156,6 +149,80 @@ class ChessBoard extends GridBoard {
 
     void released() {
       ChessBoard.this.released(this.coordinate);
+    }
+  }
+
+
+  abstract class ChessMarking {
+    protected IntegerCoordinate coordinate; // for translating into right place
+    protected boolean smaller = false; // for current marking
+    ChessMarking(IntegerCoordinate coordinate) {
+      this.coordinate = coordinate;
+    }
+    abstract void setFill();
+    abstract void drawMarking(float button_width);
+    void draw(float button_width) {
+      if (this.coordinate == null) {
+        return;
+      }
+      this.setFill();
+      this.drawMarking(button_width);
+    }
+  }
+  class CircleMark extends ChessMarking {
+    CircleMark(IntegerCoordinate coordinate) {
+      super(coordinate);
+    }
+    void setFill() {
+      fill(1, 0);
+      stroke(ChessBoard.this.markingColor());
+      if (this.smaller) {
+        strokeWeight(4);
+      }
+      else {
+        strokeWeight(6);
+      }
+      ellipseMode(CENTER);
+    }
+    void drawMarking(float button_width) {
+      circle(0, 0, button_width - 3);
+    }
+  }
+  class ArrowMark extends ChessMarking {
+    protected IntegerCoordinate head;
+    ArrowMark(IntegerCoordinate tail, IntegerCoordinate head) {
+      super(tail);
+      this.head = head;
+    }
+    void setFill() {
+      fill(ChessBoard.this.markingColor());
+      stroke(ChessBoard.this.markingColor());
+    }
+    void drawMarking(float button_width) {
+      float ratio = 0.3;
+      if (this.smaller) {
+        strokeWeight(0.14 * button_width);
+        ratio = 0.2;
+      }
+      else {
+        strokeWeight(0.2 * button_width);
+      }
+      if (this.head == null) {
+        return;
+      }
+      float x_head = button_width * (this.head.x - this.coordinate.x);
+      float y_head = button_width * (this.head.y - this.coordinate.y);
+      float dist = sqrt(x_head * x_head + y_head * y_head);
+      if (dist == 0) {
+        return;
+      }
+      line(0, 0, x_head, y_head);
+      strokeWeight(0.01);
+      translate(x_head, y_head);
+      triangle(ratio * button_width * y_head / dist, -ratio * button_width * x_head / dist,
+        -ratio * button_width * y_head / dist, ratio * button_width * x_head / dist,
+        1.3 * ratio * button_width * x_head / dist, 1.3 * ratio * button_width * y_head / dist);
+      translate(-x_head, -y_head);
     }
   }
 
@@ -178,6 +245,8 @@ class ChessBoard extends GridBoard {
 
   protected IntegerCoordinate coordinate_dragging = null;
   protected IntegerCoordinate coordinate_clicked = null;
+  protected IntegerCoordinate coordinate_marking = null;
+  protected ArrayList<ChessMarking> markings = new ArrayList<ChessMarking>();
 
   ChessBoard() {
     super(8, 8);
@@ -202,6 +271,12 @@ class ChessBoard extends GridBoard {
     }
     else {
       this.coordinate_clicked = board.coordinate_clicked.copy();
+    }
+    if (board.coordinate_marking == null) {
+      this.coordinate_marking = null;
+    }
+    else {
+      this.coordinate_marking = board.coordinate_marking.copy();
     }
     for (int i = 0; i < this.squares.length; i++) {
       for (int j = 0; j < this.squares[i].length; j++) {
@@ -514,56 +589,148 @@ class ChessBoard extends GridBoard {
         i--;
       }
     }
+    float marking_rotate = 0;
+    switch(this.orientation) {
+      case LEFT:
+        marking_rotate = 0.5 * PI;
+        break;
+      case RIGHT:
+        marking_rotate = -0.5 * PI;
+        break;
+    }
+    for (ChessMarking marking : this.markings) {
+      float translate_x = this.squareCenterX(marking.coordinate);
+      float translate_y = this.squareCenterY(marking.coordinate);
+      translate(translate_x, translate_y);
+      rotate(marking_rotate);
+      marking.draw(this.square_length);
+      rotate(-marking_rotate);
+      translate(-translate_x, -translate_y);
+    }
+    if (this.coordinate_marking != null) {
+      ChessMarking marking;
+      if (this.coordinate_marking.equals(this.coordinate_hovered)) {
+        marking = new CircleMark(this.coordinate_marking);
+      }
+      else if (this.coordinate_hovered != null) {
+        marking = new ArrowMark(this.coordinate_marking, this.coordinate_hovered);
+      }
+      else {
+        return;
+      }
+      marking.smaller = true;
+      float translate_x = this.squareCenterX(marking.coordinate);
+      float translate_y = this.squareCenterY(marking.coordinate);
+      translate(translate_x, translate_y);
+      rotate(marking_rotate);
+      marking.draw(this.square_length);
+      rotate(-marking_rotate);
+      translate(-translate_x, -translate_y);
+    }
+  }
+
+  color squareColor(ChessColor square_color) {
+    switch(square_color) {
+      case WHITE:
+        return color(248, 240, 227);
+      case BLACK:
+        return color(165, 42, 42);
+    }
+    return color(1, 0);
+  }
+
+  color hoverColor() {
+    return color(120, 80);
+  }
+
+  color clickColor() {
+    return color(200, 160);
+  }
+
+  color markingColor() {
+    return color(180, 100, 90, 170);
   }
 
   void clicked(IntegerCoordinate coordinate) {
-    if (!this.humanCanMakeMove()) {
-      return;
-    }
     if (coordinate == null) {
+      this.markings.clear();
       return;
     }
-    if (this.pieceAt(coordinate) != null) {
-      this.coordinate_dragging = coordinate;
-      //((ChessSquare)this.squareAt(coordinate)).clicked = true;
+    switch(mouseButton) {
+      case LEFT:
+        this.markings.clear();
+        if (!this.humanCanMakeMove()) {
+          break;
+        }
+        if (this.pieceAt(coordinate) != null) {
+          this.coordinate_dragging = coordinate;
+          //((ChessSquare)this.squareAt(coordinate)).clicked = true;
+        }
+        break;
+      case RIGHT:
+        this.coordinate_marking = coordinate;
+        break;
+      default:
+        this.markings.clear();
+        break;
     }
   }
 
   void released(IntegerCoordinate coordinate) {
-    if (!this.humanCanMakeMove()) {
-      return;
-    }
     if (coordinate == null) {
+      this.markings.clear();
       return;
     }
-    ChessPiece piece = this.pieceAt(coordinate);
-    if (this.coordinate_clicked == null && piece != null && piece.piece_color == this.turn) {
-      ChessSquare square = ((ChessSquare)this.squareAt(coordinate));
-      if (square.button.hovered) {
-        this.coordinate_clicked = coordinate;
-        square.clicked = true;
-      }
-      else {
-        // use dragged
-      }
+    switch(mouseButton) {
+      case LEFT:
+        this.markings.clear();
+        if (!this.humanCanMakeMove()) {
+          break;
+        }
+        ChessPiece piece = this.pieceAt(coordinate);
+        if (this.coordinate_clicked == null && piece != null && piece.piece_color == this.turn) {
+          ChessSquare square = ((ChessSquare)this.squareAt(coordinate));
+          if (square.button.hovered) {
+            this.coordinate_clicked = coordinate;
+            square.clicked = true;
+          }
+          else {
+            // use dragged
+          }
+        }
+        else if (piece != null && piece.piece_color == this.turn) {
+          ChessSquare square = ((ChessSquare)this.squareAt(coordinate));
+          if (square.button.hovered) {
+            ((ChessSquare)this.squareAt(this.coordinate_clicked)).clicked = false;
+            this.coordinate_clicked = coordinate;
+            square.clicked = true;
+          }
+          else {
+            // use dragged
+          }
+        }
+        else if (this.coordinate_clicked != null) {
+          this.tryMovePiece(this.coordinate_clicked, coordinate);
+          ((ChessSquare)this.squareAt(this.coordinate_clicked)).clicked = false;
+          this.coordinate_clicked = null;
+        }
+        this.updateSquaresMarked();
+        break;
+      case RIGHT:
+        if (this.coordinate_marking == null) {
+          return;
+        }
+        else if (this.coordinate_marking.equals(this.coordinate_hovered)) {
+          this.markings.add(new CircleMark(coordinate));
+        }
+        else {
+          this.markings.add(new ArrowMark(this.coordinate_marking, this.coordinate_hovered));
+        }
+        this.coordinate_marking = null;
+        break;
+      default:
+        break;
     }
-    else if (piece != null && piece.piece_color == this.turn) {
-      ChessSquare square = ((ChessSquare)this.squareAt(coordinate));
-      if (square.button.hovered) {
-        ((ChessSquare)this.squareAt(this.coordinate_clicked)).clicked = false;
-        this.coordinate_clicked = coordinate;
-        square.clicked = true;
-      }
-      else {
-        // use dragged
-      }
-    }
-    else if (this.coordinate_clicked != null) {
-      this.tryMovePiece(this.coordinate_clicked, coordinate);
-      ((ChessSquare)this.squareAt(this.coordinate_clicked)).clicked = false;
-      this.coordinate_clicked = null;
-    }
-    this.updateSquaresMarked();
   }
 
   void updateSquaresMarked() {
@@ -627,6 +794,12 @@ class ChessBoard extends GridBoard {
     if (target_piece != null && target_piece.piece_color == source_piece.piece_color) {
       return;
     }
+    for (ChessPiece piece : this.white_pieces) {
+      piece.moved_last_turn = false;
+    }
+    for (ChessPiece piece : this.black_pieces) {
+      piece.moved_last_turn = false;
+    }
     if (target_piece == null) { // check for en passant
       if (source_piece.type == ChessPieceType.PAWN && move.source.y != move.target.y) {
         target_piece = this.pieceAt(new IntegerCoordinate(move.source.x, move.target.y));
@@ -655,6 +828,7 @@ class ChessBoard extends GridBoard {
         }
         rook.last_coordinate = rook.coordinate.copy();
         rook.has_moved = true;
+        rook.moved_last_turn = true;
         this.squareAt(rook_source).clearSquare();
         rook_target_square.addPiece(rook);
       }
@@ -664,10 +838,12 @@ class ChessBoard extends GridBoard {
     }
     source_piece.last_coordinate = source_piece.coordinate.copy();
     source_piece.has_moved = true;
+    source_piece.moved_last_turn = true;
     this.squareAt(move.source).clearSquare();
     this.squareAt(move.target).addPiece(source_piece);
     this.moves.add(move);
     this.move_queue.add(move);
+    this.markings.clear();
     this.nextTurn();
   }
 
@@ -766,6 +942,7 @@ class ChessPiece extends GamePiece {
   protected ChessColor piece_color;
   protected HashSet<ChessMove> valid_moves = new HashSet<ChessMove>();
   protected boolean has_moved = false;
+  protected boolean moved_last_turn = false;
   protected IntegerCoordinate last_coordinate = null;
 
   ChessPiece(ChessPieceType type, ChessColor piece_color) {
@@ -779,6 +956,7 @@ class ChessPiece extends GamePiece {
     piece.remove = this.remove;
     piece.coordinate = this.coordinate.copy();
     piece.has_moved = this.has_moved;
+    piece.moved_last_turn = this.moved_last_turn;
     if (this.last_coordinate == null) {
       piece.last_coordinate = null;
     }
@@ -894,7 +1072,7 @@ class ChessPiece extends GamePiece {
           if (target_piece == null || target_piece.remove) {
             ChessPiece maybe_target_piece = board.pieceAt(capture_left_en_passant);
             if (maybe_target_piece != null && maybe_target_piece.type == ChessPieceType.
-              PAWN && maybe_target_piece.has_moved && abs(maybe_target_piece.
+              PAWN && maybe_target_piece.moved_last_turn && abs(maybe_target_piece.
               coordinate.x - maybe_target_piece.last_coordinate.x) == 2) {
               target_piece = maybe_target_piece;
             }
@@ -909,7 +1087,7 @@ class ChessPiece extends GamePiece {
           if (target_piece == null || target_piece.remove) {
             ChessPiece maybe_target_piece = board.pieceAt(capture_right_en_passant);
             if (maybe_target_piece != null && maybe_target_piece.type == ChessPieceType.
-              PAWN && maybe_target_piece.has_moved && abs(maybe_target_piece.
+              PAWN && maybe_target_piece.moved_last_turn && abs(maybe_target_piece.
               coordinate.x - maybe_target_piece.last_coordinate.x) == 2) {
               target_piece = maybe_target_piece;
             }
