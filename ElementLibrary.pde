@@ -2035,6 +2035,9 @@ abstract class ListTextBox extends TextBox {
     }
   }
 
+  void jump_to_line() {
+    this.jump_to_line(false);
+  }
   void jump_to_line(boolean hard_jump) {
     if (this.line_clicked < 0) {
       return;

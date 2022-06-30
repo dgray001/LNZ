@@ -102,6 +102,24 @@ class Chess extends Minigame {
     }
   }
 
+  class OfferDrawButton extends MoveBoxButton {
+    OfferDrawButton() {
+      super("draw");
+    }
+    void buttonFunction() {
+      Chess.this.offerDraw();
+    }
+  }
+
+  class ResignButton extends MoveBoxButton {
+    ResignButton() {
+      super("resign");
+    }
+    void buttonFunction() {
+      Chess.this.resign();
+    }
+  }
+
 
   abstract class MoveBox {
     class MoveContainer extends ListTextBox {
@@ -148,8 +166,13 @@ class Chess extends Minigame {
       }
     }
 
-    void addMove(ChessMove move) {
-      this.moves.addLine(move.pgnString());
+    void addMove(ChessMove move, ChessColor in_check) {
+      if (in_check == null) {
+        this.moves.addLine(move.pgnString());
+      }
+      else {
+        this.moves.addLine(move.pgnString() + "+");
+      }
     }
 
     void gameEnded(GameEnds ends) {
@@ -227,6 +250,12 @@ class Chess extends Minigame {
       this.buttons.add(new RotateBoardButton());
       this.buttons.add(new SpacerButton(0.3));
       this.buttons.add(new ViewFirstButton());
+      this.buttons.add(new ViewPreviousButton());
+      this.buttons.add(new ViewNextButton());
+      this.buttons.add(new ViewLastButton());
+      this.buttons.add(new SpacerButton(0.3));
+      this.buttons.add(new OfferDrawButton());
+      this.buttons.add(new ResignButton());
     }
   }
 
@@ -258,13 +287,13 @@ class Chess extends Minigame {
     copied_board.toggle_human_controllable = true;
     this.chessboard_views.clear();
     this.chessboard_views.add(copied_board);
-    this.current_view = this.chessboard_views.size() - 1;
+    this.current_view = 0;
     this.chessboard.toggle_human_controllable = false;
   }
 
   void updateView(ChessMove move) {
     ChessBoard copied_board = new ChessBoard(this.chessboard_views.get(this.chessboard_views.size() - 1));
-    copied_board.makeMove(move);
+    copied_board.makeMove(move, false);
     copied_board.toggle_human_controllable = true;
     this.chessboard_views.add(copied_board);
     this.current_view = this.chessboard_views.size() - 1;
@@ -349,6 +378,12 @@ class Chess extends Minigame {
     this.refreshLocation();
   }
 
+  void offerDraw() {
+  }
+
+  void resign() {
+  }
+
   void drawBottomPanel(int time_elapsed) {}
   void setDependencyLocations(float xi, float yi, float xf, float yf) {
     this.chessboard.setLocation(xi + Constants.minigames_chessPanelsSize +
@@ -428,9 +463,9 @@ class Chess extends Minigame {
     }
     while (this.chessboard.move_queue.peek() != null) {
       ChessMove move = this.chessboard.move_queue.poll();
-      this.move_box.addMove(move);
       this.chess_ai.addMove(move);
       this.updateView(move);
+      this.move_box.addMove(move, this.chessboard_views.get(this.chessboard_views.size() - 1).in_check);
       if (this.chessboard.game_ended != null) {
         this.move_box.gameEnded(this.chessboard.game_ended);
       }

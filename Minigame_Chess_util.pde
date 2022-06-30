@@ -81,6 +81,17 @@ class ChessBoard extends GridBoard {
       this.pieces = new HashMap<Integer, GamePiece>();
     }
 
+    @Override
+    boolean empty() {
+      for (GamePiece piece : this.pieces.values()) {
+        if (piece == null || piece.remove) {
+          continue;
+        }
+        return false;
+      }
+      return true;
+    }
+
     ChessPiece getPiece() {
       for (GamePiece piece : this.pieces.values()) {
         if (piece == null || piece.remove) {
@@ -112,7 +123,11 @@ class ChessBoard extends GridBoard {
         if (piece == null || piece.remove) {
           continue;
         }
-        image(piece.getImage(), this.button.xi, this.button.yi, this.button.xf, this.button.yf);
+        ChessPiece chess_piece = (ChessPiece)piece;
+        if (chess_piece.type == ChessPieceType.KING && ChessBoard.this.in_check == chess_piece.piece_color) {
+          image(global.images.getImage("minigames/chess/check.png"), this.button.xi, this.button.yi, this.button.xf, this.button.yf);
+        }
+        image(chess_piece.getImage(), this.button.xi, this.button.yi, this.button.xf, this.button.yf);
       }
       if (this.can_move_to) {
         ellipseMode(CENTER);
@@ -187,6 +202,24 @@ class ChessBoard extends GridBoard {
     void drawMarking(float button_width) {
       circle(0, 0, button_width - 3);
     }
+    @Override
+    public int hashCode() {
+      return Objects.hash(this.coordinate.x, this.coordinate.y);
+    }
+    @Override
+    public boolean equals(Object circle_mark_object) {
+      if (this == circle_mark_object) {
+        return true;
+      }
+      if (circle_mark_object == null || this.getClass() != circle_mark_object.getClass()) {
+        return false;
+      }
+      CircleMark circle_mark = (CircleMark)circle_mark_object;
+      if (this.coordinate.equals(circle_mark.coordinate)) {
+        return true;
+      }
+      return false;
+    }
   }
   class ArrowMark extends ChessMarking {
     protected IntegerCoordinate head;
@@ -212,6 +245,18 @@ class ChessBoard extends GridBoard {
       }
       float x_head = button_width * (this.head.x - this.coordinate.x);
       float y_head = button_width * (this.head.y - this.coordinate.y);
+      if (this.head.x > this.coordinate.x) {
+        x_head -= ratio * button_width;
+      }
+      else if (this.coordinate.x > this.head.x) {
+        x_head += ratio * button_width;
+      }
+      if (this.head.y > this.coordinate.y) {
+        y_head -= ratio * button_width;
+      }
+      else if (this.coordinate.y > this.head.y) {
+        y_head += ratio * button_width;
+      }
       float dist = sqrt(x_head * x_head + y_head * y_head);
       if (dist == 0) {
         return;
@@ -224,6 +269,139 @@ class ChessBoard extends GridBoard {
         1.3 * ratio * button_width * x_head / dist, 1.3 * ratio * button_width * y_head / dist);
       translate(-x_head, -y_head);
     }
+    @Override
+    public int hashCode() {
+      return Objects.hash(this.coordinate.x, this.coordinate.y, this.head.x, this.head.y);
+    }
+    @Override
+    public boolean equals(Object arrow_mark_object) {
+      if (this == arrow_mark_object) {
+        return true;
+      }
+      if (arrow_mark_object == null || this.getClass() != arrow_mark_object.getClass()) {
+        return false;
+      }
+      ArrowMark arrow_mark = (ArrowMark)arrow_mark_object;
+      if (this.coordinate.equals(arrow_mark.coordinate) && this.head.equals(arrow_mark.head)) {
+        return true;
+      }
+      return false;
+    }
+  }
+
+
+  class PawnPromotionChooser {
+    class PawnPromotionChooserButton extends ImageButton {
+      protected ChessPieceType type;
+      PawnPromotionChooserButton(ChessPieceType type, ChessColor piece_color) {
+        super(global.images.getImage("minigames/chess/" + piece_color.fileName() +
+          "_" + type.fileName() + ".png"), 0, 0, 0, 0);
+        this.type = type;
+        this.use_time_elapsed = true;
+        this.overshadow_colors = true;
+        this.setColors(color(170, 170), color(1, 0), color(100, 80), color(200, 160), color(0));
+      }
+
+      @Override
+      void drawButton() {
+        rectMode(CORNERS);
+        fill(120, 120, 60);
+        stroke(120, 120, 60);
+        strokeWeight(0.01);
+        rect(this.xi, this.yi, this.xf, this.yf);
+        super.drawButton();
+      }
+
+      void hover() {}
+      void dehover() {}
+      void click() {}
+      void release() {
+        PawnPromotionChooser.this.promote_to = this.type;
+        PawnPromotionChooser.this.move.pawn_promotion = this.type;
+      }
+    }
+
+    private boolean remove = false;
+    private ChessMove move;
+    private PawnPromotionChooserButton[] buttons = new PawnPromotionChooserButton[4];
+    private ChessPieceType promote_to = null;
+    private int fade_in_timer = 200;
+    private boolean button_pressed = false;
+
+    PawnPromotionChooser(ChessMove move) {
+      this.move = move;
+      this.buttons[0] = new PawnPromotionChooserButton(ChessPieceType.QUEEN, move.source_color);
+      this.buttons[1] = new PawnPromotionChooserButton(ChessPieceType.KNIGHT, move.source_color);
+      this.buttons[2] = new PawnPromotionChooserButton(ChessPieceType.ROOK, move.source_color);
+      this.buttons[3] = new PawnPromotionChooserButton(ChessPieceType.BISHOP, move.source_color);
+      if (move == null) {
+        this.remove = true;
+        return;
+      }
+      this.updateLocations();
+    }
+
+    void updateLocations() {
+      float x_button = ChessBoard.this.squareCenterX(this.move.target) - 0.5 * ChessBoard.this.square_length;
+      float y_center = ChessBoard.this.squareCenterY(this.move.target);
+      boolean increase = (y_center > 0.5 * height);
+      float y_curr = y_center - 0.5 * ChessBoard.this.square_length;
+      for (PawnPromotionChooserButton button : this.buttons) {
+        button.setLocation(x_button, y_curr, x_button + ChessBoard.this.square_length, y_curr + ChessBoard.this.square_length);
+        if (increase) {
+          y_curr -= ChessBoard.this.square_length;
+        }
+        else {
+          y_curr += ChessBoard.this.square_length;
+        }
+      }
+    }
+
+    void update(int time_elapsed) {
+      this.fade_in_timer -= time_elapsed;
+      if (this.promote_to != null) {
+        this.remove = true;
+      }
+      for (PawnPromotionChooserButton button : this.buttons) {
+        button.update(time_elapsed);
+      }
+    }
+
+    void mouseMove(float mX, float mY) {
+      if (this.promote_to != null) {
+        this.remove = true;
+        return;
+      }
+      for (PawnPromotionChooserButton button : this.buttons) {
+        button.mouseMove(mX, mY);
+      }
+    }
+
+    void mousePress() {
+      if (this.promote_to != null) {
+        this.remove = true;
+        return;
+      }
+      this.button_pressed = false;
+      for (PawnPromotionChooserButton button : this.buttons) {
+        button.mousePress();
+        if (button.clicked) {
+          this.button_pressed = true;
+        }
+      }
+    }
+
+    void mouseRelease(float mX, float mY) {
+      if (this.fade_in_timer < 0 && !this.button_pressed) {
+        this.remove = true;
+      }
+      if (this.promote_to != null) {
+        return;
+      }
+      for (PawnPromotionChooserButton button : this.buttons) {
+        button.mouseRelease(mX, mY);
+      }
+    }
   }
 
 
@@ -235,18 +413,20 @@ class ChessBoard extends GridBoard {
 
   protected ChessColor turn = ChessColor.WHITE;
   protected HashSet<ChessMove> valid_moves = new HashSet<ChessMove>();
+  protected PawnPromotionChooser pawn_promotion_chooser = null;
   protected HashSet<ChessMove> return_moves = new HashSet<ChessMove>();
   protected boolean calculate_return_moves = true;
 
   protected ChessColor in_check = null;
   protected ArrayList<ChessMove> moves = new ArrayList<ChessMove>();
   protected Queue<ChessMove> move_queue = new ArrayDeque<ChessMove>();
+  protected HashMap<ChessPosition, Integer> all_positions = new HashMap<ChessPosition, Integer>();
   protected GameEnds game_ended = null; // null until game ends
 
   protected IntegerCoordinate coordinate_dragging = null;
   protected IntegerCoordinate coordinate_clicked = null;
   protected IntegerCoordinate coordinate_marking = null;
-  protected ArrayList<ChessMarking> markings = new ArrayList<ChessMarking>();
+  protected HashSet<ChessMarking> markings = new HashSet<ChessMarking>();
 
   ChessBoard() {
     super(8, 8);
@@ -296,6 +476,7 @@ class ChessBoard extends GridBoard {
     for (ChessMove move : board.moves) {
       this.moves.add(move.copy());
     }
+    this.removeSquareMarkings();
   }
 
   void initializePieceMap() {
@@ -306,6 +487,16 @@ class ChessBoard extends GridBoard {
     for (int i = 0; i < this.squares.length; i++) {
       for (int j = 0; j < this.squares[i].length; j++) {
         this.squares[i][j] = new ChessSquare(new IntegerCoordinate(i, j));
+      }
+    }
+  }
+
+  void removeSquareMarkings() {
+    for (int i = 0; i < this.squares.length; i++) {
+      for (int j = 0; j < this.squares[i].length; j++) {
+        ChessSquare square = (ChessSquare)this.squares[i][j];
+        square.clicked = false;
+        square.can_move_to = false;
       }
     }
   }
@@ -322,11 +513,19 @@ class ChessBoard extends GridBoard {
   void setupBoard(ChessSetup setup) {
     this.setup = setup;
     this.clearBoard();
-    this.white_pieces.clear();
-    this.black_pieces.clear();
+    for (ChessPiece piece : this.white_pieces) {
+      piece.remove = true;
+    }
+    for (ChessPiece piece : this.black_pieces) {
+      piece.remove = true;
+    }
+    this.removeSquareMarkings();
     this.valid_moves.clear();
+    this.return_moves.clear();
+    this.markings.clear();
     this.moves.clear();
     this.move_queue.clear();
+    this.all_positions.clear();
     this.game_ended = null;
     this.turn = ChessColor.WHITE;
     // White back-rank
@@ -524,7 +723,7 @@ class ChessBoard extends GridBoard {
   }
 
   boolean humanCanMakeMove() {
-    if (this.toggle_human_controllable) {
+    if (this.toggle_human_controllable || this.game_ended != null) {
       return false;
     }
     switch(this.human_controlled) {
@@ -629,6 +828,44 @@ class ChessBoard extends GridBoard {
     }
   }
 
+  @Override
+  void update(int time_elapsed) {
+    super.update(time_elapsed);
+    if (this.pawn_promotion_chooser != null) {
+      this.pawn_promotion_chooser.update(time_elapsed);
+      if (this.pawn_promotion_chooser.promote_to != null) {
+        this.tryMakeMove(this.pawn_promotion_chooser.move);
+      }
+      if (this.pawn_promotion_chooser.remove) {
+        this.pawn_promotion_chooser = null;
+      }
+    }
+  }
+
+  @Override
+  void mouseMove(float mX, float mY) {
+    super.mouseMove(mX, mY);
+    if (this.pawn_promotion_chooser != null) {
+      this.pawn_promotion_chooser.mouseMove(mX, mY);
+    }
+  }
+
+  @Override
+  void mousePress() {
+    if (this.pawn_promotion_chooser != null) {
+      this.pawn_promotion_chooser.mousePress();
+    }
+    super.mousePress();
+  }
+
+  @Override
+  void mouseRelease(float mX, float mY) {
+    super.mouseRelease(mX, mY);
+    if (this.pawn_promotion_chooser != null) {
+      this.pawn_promotion_chooser.mouseRelease(mX, mY);
+    }
+  }
+
   color squareColor(ChessColor square_color) {
     switch(square_color) {
       case WHITE:
@@ -721,15 +958,27 @@ class ChessBoard extends GridBoard {
           return;
         }
         else if (this.coordinate_marking.equals(this.coordinate_hovered)) {
-          this.markings.add(new CircleMark(coordinate));
+          this.addMarking(new CircleMark(coordinate));
         }
         else {
-          this.markings.add(new ArrowMark(this.coordinate_marking, this.coordinate_hovered));
+          this.addMarking(new ArrowMark(this.coordinate_marking, this.coordinate_hovered));
         }
         this.coordinate_marking = null;
         break;
       default:
         break;
+    }
+  }
+
+  void addMarking(ChessMarking chess_marking) {
+    if (chess_marking == null) {
+      return;
+    }
+    if (this.markings.contains(chess_marking)) {
+      this.markings.remove(chess_marking);
+    }
+    else {
+      this.markings.add(chess_marking);
     }
   }
 
@@ -751,6 +1000,7 @@ class ChessBoard extends GridBoard {
     }
   }
 
+  // For when human tries to make a move
   void tryMovePiece(IntegerCoordinate source, IntegerCoordinate target) {
     if (!this.humanCanMakeMove()) {
       return;
@@ -770,16 +1020,45 @@ class ChessBoard extends GridBoard {
     }
     ChessMove potential_move = new ChessMove(source, target, target_piece != null,
       source_piece.piece_color, source_piece.type);
+    if (source_piece.type == ChessPieceType.PAWN && (target.x == 0 || target.x == this.boardHeight() - 1)) {
+      this.pawnPromotionChooser(potential_move);
+      return;
+    }
     if (!this.valid_moves.contains(potential_move)) {
       return;
     }
     this.makeMove(potential_move);
   }
 
+  void tryMakeMove(ChessMove move) {
+    if (!this.humanCanMakeMove()) {
+      return;
+    }
+    if (!this.valid_moves.contains(move)) {
+      return;
+    }
+    if (move.pawn_promotion == null && move.source_type == ChessPieceType.PAWN &&
+      (move.target.x == 0 || move.target.x == this.boardHeight() - 1)) {
+      this.pawnPromotionChooser(move);
+      return;
+    }
+    this.makeMove(move);
+  }
+
+  void pawnPromotionChooser(ChessMove move) {
+    if (!this.humanCanMakeMove()) {
+      return;
+    }
+    if (move.source_type != ChessPieceType.PAWN || (move.target.x > 0 && move.target.x < this.boardHeight() - 1)) {
+      return;
+    }
+    this.pawn_promotion_chooser = new PawnPromotionChooser(move);
+  }
+
   void makeRandomMove() {
     ArrayList<ChessMove> possible_moves = new ArrayList<ChessMove>(this.valid_moves);
     Collections.shuffle(possible_moves);
-    this.makeMove(possible_moves.get(0));
+    this.makeMove(possible_moves.get(0), false);
   }
 
   void makeMove(ChessMove move) {
@@ -839,11 +1118,31 @@ class ChessBoard extends GridBoard {
     source_piece.last_coordinate = source_piece.coordinate.copy();
     source_piece.has_moved = true;
     source_piece.moved_last_turn = true;
+    if (move.pawn_promotion != null) {
+      if (source_piece.type == ChessPieceType.PAWN && (move.target.x == 0 || move.target.x == this.boardHeight() - 1)) {
+        source_piece.type = move.pawn_promotion;
+      }
+      else {
+        global.errorMessage("ERROR: Invalid pawn promotion move.");
+        return;
+      }
+    }
     this.squareAt(move.source).clearSquare();
     this.squareAt(move.target).addPiece(source_piece);
     this.moves.add(move);
     this.move_queue.add(move);
     this.markings.clear();
+    ChessPosition new_position = new ChessPosition(this);
+    if (this.all_positions.containsKey(new_position)) {
+      this.all_positions.put(new_position, 1 + this.all_positions.get(new_position));
+      if (this.all_positions.get(new_position) >= 3) {
+        this.game_ended = GameEnds.REPETITION;
+        return;
+      }
+    }
+    else {
+      this.all_positions.put(new_position, 1);
+    }
     this.nextTurn();
   }
 
@@ -884,6 +1183,28 @@ enum ChessPieceType {
         return "knight";
       case PAWN:
         return "pawn";
+      default:
+        return "";
+    }
+  }
+
+  public String characterString() {
+    return ChessPieceType.characterString(this);
+  }
+  public static String characterString(ChessPieceType type) {
+    switch(type) {
+      case KING:
+        return "K";
+      case QUEEN:
+        return "Q";
+      case ROOK:
+        return "R";
+      case BISHOP:
+        return "B";
+      case KNIGHT:
+        return "N";
+      case PAWN:
+        return "P";
       default:
         return "";
     }
@@ -1099,10 +1420,29 @@ class ChessPiece extends GamePiece {
         }
         if (move2 != null && move1_valid) {
           ChessPiece target_piece = board.pieceAt(move2);
-          if (board.contains(move2) && target_piece == null) {
+          if (board.contains(move2) && (target_piece == null || target_piece.remove)) {
             this.valid_moves.add(new ChessMove(this.coordinate, move2, false,
               this.piece_color, this.type));
           }
+        }
+        ArrayList<ChessMove> new_moves_to_add = new ArrayList<ChessMove>();
+        for (ChessMove move : this.valid_moves) {
+          if (move.target.x > 0 && move.target.x < board.boardHeight() - 1) {
+            continue;
+          }
+          move.pawn_promotion = ChessPieceType.QUEEN;
+          ChessMove copied_move = move.copy();
+          copied_move.pawn_promotion = ChessPieceType.ROOK;
+          new_moves_to_add.add(copied_move);
+          copied_move = move.copy();
+          copied_move.pawn_promotion = ChessPieceType.BISHOP;
+          new_moves_to_add.add(copied_move);
+          copied_move = move.copy();
+          copied_move.pawn_promotion = ChessPieceType.KNIGHT;
+          new_moves_to_add.add(copied_move);
+        }
+        for (ChessMove move : new_moves_to_add) {
+          this.valid_moves.add(move);
         }
         break;
       default:
@@ -1300,50 +1640,42 @@ class ChessMove {
   private boolean capture;
   private ChessColor source_color;
   private ChessPieceType source_type;
+  private ChessPieceType pawn_promotion = null;
 
   ChessMove(IntegerCoordinate source, IntegerCoordinate target, boolean capture,
     ChessColor source_color, ChessPieceType source_type) {
+    this(source, target, capture, source_color, source_type, null);
+  }
+    ChessMove(IntegerCoordinate source, IntegerCoordinate target, boolean capture,
+      ChessColor source_color, ChessPieceType source_type, ChessPieceType pawn_promotion) {
     this.source = source;
     this.target = target;
     this.capture = capture;
     this.source_color = source_color;
     this.source_type = source_type;
+    this.pawn_promotion = pawn_promotion;
   }
   ChessMove copy() {
     return new ChessMove(this.source.copy(), this.target.copy(), this.capture,
-      this.source_color, this.source_type);
+      this.source_color, this.source_type, this.pawn_promotion);
   }
 
   String pgnString() {
     String source_string = chessBoardNotation(this.source);
     String target_string = chessBoardNotation(this.target);
-    String piece_string = "";
-    switch(this.source_type) {
-      case KING:
-        piece_string = "K";
-        break;
-      case QUEEN:
-        piece_string = "Q";
-        break;
-      case ROOK:
-        piece_string = "R";
-        break;
-      case BISHOP:
-        piece_string = "B";
-        break;
-      case KNIGHT:
-        piece_string = "N";
-        break;
-    }
+    String piece_string = this.source_type.characterString();
     if (this.capture) {
       target_string = "x" + target_string;
+    }
+    if (this.pawn_promotion != null) {
+      target_string += "=" + this.pawn_promotion.characterString();
     }
     return piece_string + source_string + target_string;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(source.x, source.y, target.x, target.y, capture, source_color, source_type);
+    return Objects.hash(this.source.x, this.source.y, this.target.x, this.target.y, this.capture, this.source_color, this.source_type);
   }
 
   @Override
@@ -1357,7 +1689,7 @@ class ChessMove {
     ChessMove chessmove = (ChessMove)chessmove_object;
     if (this.source.equals(chessmove.source) && this.target.equals(chessmove.target) &&
       this.capture == chessmove.capture && this.source_color == chessmove.source_color &&
-      this.source_type == chessmove.source_type) {
+      this.source_type == chessmove.source_type && this.pawn_promotion == chessmove.pawn_promotion) {
       return true;
     }
     return false;
@@ -1390,5 +1722,54 @@ class ChessMove {
     else {
       return new IntegerCoordinate(this.source.x, this.source.y - 1);
     }
+  }
+}
+
+
+class ChessPosition {
+  private String[][] square_strings;
+  private int hash_code = 0;
+  ChessPosition(ChessBoard board) {
+    this.square_strings = new String[board.boardWidth()][board.boardHeight()];
+    String hash_string = "";
+    for (int i = 0; i < board.squares.length; i++) {
+      for (int j = 0; j < board.squares[i].length; j++) {
+        ChessPiece piece = (ChessPiece)board.squares[i][j].getPiece();
+        if (piece == null || piece.remove) {
+          square_strings[i][j] = "-";
+          hash_string += "-";
+        }
+        else {
+          square_strings[i][j] = piece.type.characterString();
+          hash_string += piece.type.characterString();
+        }
+      }
+    }
+    this.hash_code = hash_string.hashCode();
+  }
+  @Override
+  public int hashCode() {
+    return this.hash_code;
+  }
+  @Override
+  public boolean equals(Object chess_position_object) {
+    if (this == chess_position_object) {
+      return true;
+    }
+    if (chess_position_object == null || this.getClass() != chess_position_object.getClass()) {
+      return false;
+    }
+    ChessPosition chess_position = (ChessPosition)chess_position_object;
+    for (int i = 0; i < this.square_strings.length; i++) {
+      for (int j = 0; j < this.square_strings[i].length; j++) {
+        try {
+          if (this.square_strings[i][j].equals(chess_position.square_strings[i][j])) {
+            continue;
+          }
+        } catch (ArrayIndexOutOfBoundsException e) {}
+        return false;
+      }
+    }
+    return true;
   }
 }

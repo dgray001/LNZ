@@ -66,6 +66,7 @@ abstract class GridBoard {
     }
 
     abstract boolean canTakePiece(GamePiece piece);
+    abstract GamePiece getPiece();
 
     boolean empty() {
       return this.pieces.isEmpty();

@@ -1,15 +1,13 @@
 v0.7.6: Fernwood (06/30)
- t: can drag-drop to move
- u: can play vs human (flips board after each move)
- v: games can end (go to analysis?)
- x: time controls
+ w: can drag-drop to move
+ x: can play vs human (flips board after each move)
+ y: games can end (go to analysis?)
+ z: time controls
 
- - Pawn promotion
- - Make arrow marking back a little
- - Computer moved into check (moved king into pawn check)
  - Mark last move
+ - Can jump to move by double clicking move in list box, will update when buttons pressed / moves made
+ - Move box style updates
  - Can quit game vs computer
- - Checks are annotated (and marked on board)
  - End games are annotated (repetition, too many moves, out of time, resignation, agree to draw)
  - Can save / load chess games (.chess.lnz file)
  - Multiple color / piece schemes switchable in an options button on bottom right
