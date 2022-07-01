@@ -352,7 +352,6 @@ int ccolor(float r, float g, float b, float a) {
   return ccolor(round(r), round(g), round(b), round(a));
 }
 int ccolor(int r, int g, int b, int a) {
-  int max = 256;
   return (a << 24) | (r << 16) | (g << 8) | b;
 }
 

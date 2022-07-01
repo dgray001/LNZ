@@ -1,12 +1,18 @@
 v0.7.6: Fernwood (06/30)
- w: can drag-drop to move
- y: games can end (go to analysis?)
- z: time controls
 
+Chess Notes:
+ - v0.7.6y: ~2-3 nodes / s, depth = 1
+    => Need to create all daughters lazily after evaluations for that depth are complete
+    => Need to determine rate-limiting step (hunch is initializing board)
+    => Some basic pruning once rest of what I can do is done
+ - Not sure if evaluations passed up the tree properly (need to have depth > 1 to know)
  - Can hold next/prev buttons to go through many times
+ - Can drag-drop to move
+ - Time controls
+ - Computer think time based on time controls
  - End games are annotated (out of time, insufficient material)
  - Can save / load chess games (.chess.lnz file)
- - Multiple color / piece schemes switchable in an options button on bottom right
+ - Multiple color / piece schemes switchable in an options button (left panel?)
 
  - Shatranj minigame
 

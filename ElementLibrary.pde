@@ -6,13 +6,13 @@ abstract class Button {
   protected boolean clicked = false;
   protected boolean button_focused = false;
   // colors
-  protected color color_disabled = color(220, 180);
-  protected color color_default = color(220);
-  protected color color_hover = color(170);
-  protected color color_click = color(120);
-  protected color color_text = color(0);
-  protected color color_stroke = color(0);
-  protected color color_focused = color(170, 180);
+  protected color color_disabled = ccolor(220, 180);
+  protected color color_default = ccolor(220);
+  protected color color_hover = ccolor(170);
+  protected color color_click = ccolor(120);
+  protected color color_text = ccolor(0);
+  protected color color_stroke = ccolor(0);
+  protected color color_focused = ccolor(170, 180);
   // config
   protected String message = "";
   protected boolean show_message = false;
@@ -273,7 +273,7 @@ abstract class RectangleButton extends Button {
   void drawButton() {
     rectMode(CORNERS);
     if (this.shadow) {
-      fill(0, 180);
+      fill(ccolor(0, 180));
       rect(this.xi + this.shadow_amount, this.yi + this.shadow_amount,
         this.xf + this.shadow_amount, this.yf + this.shadow_amount, this.roundness);
     }
@@ -282,9 +282,9 @@ abstract class RectangleButton extends Button {
       translate(this.shadow_amount, this.shadow_amount);
     }
     if (this.raised_body && !this.disabled) {
-      fill(255, 0);
+      fill(ccolor(255, 0));
       rect(this.xi, this.yi, this.xf, this.yf, this.roundness);
-      stroke(255, 0);
+      stroke(ccolor(255, 0));
       if (this.clicked) {
         fill(darken(this.fillColor()));
         rect(this.xi, this.yi, this.xf, this.yCenter());
@@ -308,18 +308,18 @@ abstract class RectangleButton extends Button {
     if (this.raised_border && !this.disabled) {
       strokeWeight(1);
       if (this.clicked) {
-        stroke(0);
+        stroke(ccolor(0));
         line(this.xi, this.yi, this.xf, this.yi);
         line(this.xi, this.yi, this.xi, this.yf);
-        stroke(255);
+        stroke(ccolor(255));
         line(this.xf, this.yf, this.xf, this.yi);
         line(this.xf, this.yf, this.xi, this.yf);
       }
       else {
-        stroke(255);
+        stroke(ccolor(255));
         line(this.xi, this.yi, this.xf, this.yi);
         line(this.xi, this.yi, this.xi, this.yf);
-        stroke(0);
+        stroke(ccolor(0));
         line(this.xf, this.yf, this.xf, this.yi);
         line(this.xf, this.yf, this.xi, this.yf);
       }
@@ -388,7 +388,7 @@ abstract class RectangleButton extends Button {
 
 abstract class CheckBox extends RectangleButton {
   protected boolean checked = false;
-  protected color color_check = color(0);
+  protected color color_check = ccolor(0);
   protected float offset = 0;
 
   CheckBox(float xi, float yi, float size) {
@@ -396,7 +396,7 @@ abstract class CheckBox extends RectangleButton {
   }
   CheckBox(float xi, float yi, float xf, float yf) {
     super(xi, yi, xf, yf);
-    this.setColors(color(170, 170), color(170, 0), color(170, 50), color(170, 120), color(0));
+    this.setColors(color(170, 170), ccolor(170, 0), ccolor(170, 50), ccolor(170, 120), ccolor(0));
     this.roundness = 0;
     this.stroke_weight = 2;
   }
@@ -426,7 +426,7 @@ abstract class CheckBox extends RectangleButton {
 
 abstract class ImageButton extends RectangleButton {
   protected PImage img;
-  protected color color_tint = color(255);
+  protected color color_tint = ccolor(255);
   protected boolean overshadow_colors = false;
 
   ImageButton(PImage img, float xi, float yi, float xf, float yf) {
@@ -631,7 +631,7 @@ abstract class RippleRectangleButton extends ImageButton {
 
 
 abstract class IconButton extends RippleRectangleButton {
-  protected color background_color = color(255);
+  protected color background_color = ccolor(255);
   protected PImage icon;
   protected float icon_width = 0;
 
@@ -743,7 +743,7 @@ abstract class RippleCircleButton extends RippleRectangleButton {
     for (Pixel p : this.transparentPixels) {
       int index = p.x + p.y * this.img.width;
       try {
-        this.img.pixels[index] = color(1, 0);
+        this.img.pixels[index] = ccolor(1, 0);
       } catch(ArrayIndexOutOfBoundsException e) {}
     }
     this.img.updatePixels();
@@ -853,11 +853,11 @@ abstract class CircleButton extends EllipseButton {
 
 abstract class RadioButton extends CircleButton {
   protected boolean checked = false;
-  protected color color_active = color(0);
+  protected color color_active = ccolor(0);
 
   RadioButton(float xc, float yc, float r) {
     super(xc, yc, r);
-    this.setColors(color(170, 120), color(170, 0), color(170, 40), color(170, 80), color(0));
+    this.setColors(color(170, 120), ccolor(170, 0), ccolor(170, 40), ccolor(170, 80), ccolor(0));
   }
 
   @Override
@@ -1219,7 +1219,7 @@ class ScrollBar {
     @Override
     void drawButton() {
       super.drawButton();
-      stroke(0);
+      stroke(ccolor(0));
       strokeWeight(this.arrowWidth);
       if (ScrollBar.this.vertical) {
         line(this.xi + this.cushionRatio * this.arrowWidth, this.yf - this.cushionRatio * this.arrowWidth,
@@ -1268,7 +1268,7 @@ class ScrollBar {
     @Override
     void drawButton() {
       super.drawButton();
-      stroke(0);
+      stroke(ccolor(0));
       strokeWeight(this.arrowWidth);
       if (ScrollBar.this.vertical) {
         line(this.xi + this.cushionRatio * this.arrowWidth, this.yi + this.cushionRatio * this.arrowWidth,
@@ -1295,7 +1295,7 @@ class ScrollBar {
   class ScrollBarUpSpaceButton extends ScrollBarButton {
     ScrollBarUpSpaceButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
-      this.setColors(color(180), color(235), color(235), color(0), color(0));
+      this.setColors(color(180), ccolor(235), ccolor(235), ccolor(0), ccolor(0));
       this.raised_border = false;
     }
     void click() {
@@ -1311,7 +1311,7 @@ class ScrollBar {
   class ScrollBarDownSpaceButton extends ScrollBarButton {
     ScrollBarDownSpaceButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
-      this.setColors(color(180), color(235), color(235), color(0), color(0));
+      this.setColors(color(180), ccolor(235), ccolor(235), ccolor(0), ccolor(0));
       this.raised_border = false;
     }
     void click() {
@@ -1622,11 +1622,11 @@ class TextBox {
   protected String text_title = null;
   protected float title_size = 22;
 
-  protected color color_background = color(250);
-  protected color color_header = color(200);
-  protected color color_stroke = color(0);
-  protected color color_text = color(0);
-  protected color color_title = color(0);
+  protected color color_background = ccolor(250);
+  protected color color_header = ccolor(200);
+  protected color color_stroke = ccolor(0);
+  protected color color_text = ccolor(0);
+  protected color color_title = ccolor(0);
 
   TextBox() {
     this(0, 0, 0, 0);
@@ -1928,8 +1928,8 @@ abstract class ListTextBox extends TextBox {
   protected ArrayList<String> text_lines_ref;
   protected int line_hovered = -1;
   protected int line_clicked = -1;
-  protected color hover_color = color(180, 180, 200, 60);
-  protected color highlight_color = color(100, 100, 250, 120);
+  protected color hover_color = ccolor(180, 180, 200, 60);
+  protected color highlight_color = ccolor(100, 100, 250, 120);
   protected int doubleclickTimer = 0;
   protected int doubleclickTime = 400;
   protected boolean can_unclick_outside_box = true;
@@ -2322,7 +2322,7 @@ class DropDownList extends ListTextBox {
 class InputBox extends RectangleButton {
   protected String text = "";
   protected String hint_text = "";
-  protected color hint_color = color(80);
+  protected color hint_color = ccolor(80);
   protected boolean typing = false;
   protected String display_text = "";
 
@@ -2339,7 +2339,7 @@ class InputBox extends RectangleButton {
   InputBox(float xi, float yi, float xf, float yf) {
     super(xi, yi, xf, yf);
     this.roundness = 0;
-    this.setColors(color(170), color(220), color(220), color(255), color(0));
+    this.setColors(color(170), ccolor(220), ccolor(220), ccolor(255), ccolor(0));
   }
 
   void refreshText() {
@@ -2590,13 +2590,13 @@ class Slider  {
   class SliderButton extends CircleButton {
     protected boolean active = false;
     protected float active_grow_factor = 1.3;
-    protected color active_color = color(0, 50, 0);
+    protected color active_color = ccolor(0, 50, 0);
     protected float lastX = 0;
     protected float changeFactor = 1;
 
     SliderButton() {
       super(0, 0, 0);
-      this.setColors(color(170), color(255, 0), color(255, 0), color(255, 0), color(0));
+      this.setColors(color(170), ccolor(255, 0), ccolor(255, 0), ccolor(255, 0), ccolor(0));
       strokeWeight(2);
     }
 
@@ -3055,7 +3055,7 @@ class MessageFormField extends FormField {
   protected float default_text_size = 22;
   protected float minimum_text_size = 8;
   protected float text_size = 0;
-  protected color text_color = color(0);
+  protected color text_color = ccolor(0);
   protected int text_align = LEFT;
   protected float left_edge = 1;
 
@@ -3170,9 +3170,9 @@ class TextBoxFormField extends FormField {
     super(message);
     this.textbox.setText(message);
     this.textbox.setLocation(0, 0, 0, box_height);
-    this.textbox.color_background = color(255, 0);
-    this.textbox.color_header = color(255, 0);
-    this.textbox.color_stroke = color(255, 0);
+    this.textbox.color_background = ccolor(255, 0);
+    this.textbox.color_header = ccolor(255, 0);
+    this.textbox.color_stroke = ccolor(255, 0);
   }
 
   void enable() {}
@@ -3459,7 +3459,7 @@ class RadiosFormField extends MessageFormField {
   void addDisabledRadio(String message) {
     DefaultRadioButton radio = new DefaultRadioButton(message);
     radio.disabled = true;
-    radio.color_text = color(80);
+    radio.color_text = ccolor(80);
     this.addRadio(radio);
   }
   void addRadio(RadioButton radio) {
@@ -3657,7 +3657,7 @@ class ToggleFormField extends MessageFormField {
       super(images, 0, 0, 0, 0);
       this.use_time_elapsed = true;
       this.overshadow_colors = true;
-      this.setColors(color(170, 170), color(1, 0), color(100, 80), color(200, 160), color(0));
+      this.setColors(color(170, 170), ccolor(1, 0), ccolor(100, 80), ccolor(200, 160), ccolor(0));
     }
     @Override
     void toggle() {
@@ -4282,13 +4282,13 @@ abstract class Form {
     CancelButton(float xi, float yi, float xf, float yf) {
       super(xi, yi, xf, yf);
       this.roundness = 0;
-      this.setColors(color(170), color(240, 30, 30), color(255, 60, 60), color(180, 0, 0), color(0));
-      this.color_stroke = color(0, 1);
+      this.setColors(color(170), ccolor(240, 30, 30), ccolor(255, 60, 60), ccolor(180, 0, 0), ccolor(0));
+      this.color_stroke = ccolor(0, 1);
     }
     @Override
     void drawButton() {
       super.drawButton();
-      stroke(0);
+      stroke(ccolor(0));
       strokeWeight(1.5);
       float offset = 0.05 * this.button_width();
       line(this.xi + offset, this.yi + offset, this.xf - offset, this.yf - offset);
@@ -4327,10 +4327,10 @@ abstract class Form {
   protected String text_title = null;
   protected float title_size = 22;
 
-  protected color color_background = color(210);
-  protected color color_header = color(170);
-  protected color color_stroke = color(0);
-  protected color color_title = color(0);
+  protected color color_background = ccolor(210);
+  protected color color_header = ccolor(170);
+  protected color color_stroke = ccolor(0);
+  protected color color_title = ccolor(0);
 
   protected boolean draggable = false;
   protected boolean hovered_header = false;
@@ -4921,7 +4921,7 @@ class Panel {
 
     PanelButton() {
       super(0, 0, 0, 0);
-      this.setColors(color(220), color(1, 0), color(170, 80), color(170, 180), color(0));
+      this.setColors(color(220), ccolor(1, 0), ccolor(170, 80), ccolor(170, 180), ccolor(0));
       this.noStroke();
       this.roundness = 0;
       this.hover_check_after_release = false;
@@ -4991,7 +4991,7 @@ class Panel {
   protected PanelButton button = new PanelButton();
   protected float panelButtonSize = 30;
 
-  protected color color_background = color(220);
+  protected color color_background = ccolor(220);
 
   Panel(int location, float size) {
     this(location, size, size, size);

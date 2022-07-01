@@ -12,7 +12,8 @@ abstract class GridBoard {
         this.use_time_elapsed = true;
         this.force_left_button = false;
         this.roundness = 0;
-        this.setColors(color(1, 0), color(1, 0), color(1, 0), color(1, 0), color(1, 0));
+        this.setColors(Constants.color_transparent, Constants.color_transparent,
+          Constants.color_transparent, Constants.color_transparent, Constants.color_transparent);
       }
 
       void turnOffDrawing() {

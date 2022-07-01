@@ -684,15 +684,18 @@ class Chess extends Minigame {
     if (restarted && this.chessboard.human_controlled == HumanMovable.WHITE) {
       this.chessboard.human_controlled = HumanMovable.BLACK;
       this.chessboard.orientation = BoardOrientation.LEFT;
+      this.chess_ai.decision_algorithm = DecisionAlgorithm.BEST_MOVE_WHITE;
       this.startComputersTurn();
     }
     else if ((restarted && this.chessboard.human_controlled == HumanMovable.BLACK) || randomChance(0.5)) {
       this.chessboard.human_controlled = HumanMovable.WHITE;
       this.chessboard.orientation = BoardOrientation.RIGHT;
+      this.chess_ai.decision_algorithm = DecisionAlgorithm.BEST_MOVE_BLACK;
     }
     else {
       this.chessboard.human_controlled = HumanMovable.BLACK;
       this.chessboard.orientation = BoardOrientation.LEFT;
+      this.chess_ai.decision_algorithm = DecisionAlgorithm.BEST_MOVE_WHITE;
       this.startComputersTurn();
     }
     this.refreshLocation();
@@ -852,6 +855,22 @@ class Chess extends Minigame {
       }
     }
     this.move_box.update(time_elapsed);
+    this.chess_ai.update(time_elapsed);
+    fill(ccolor(255));
+    textSize(20);
+    textAlign(RIGHT, TOP);
+    float curr_x = 26;
+    text(this.chess_ai.head_node.evaluation.displayString(), this.chessboard.xi - 4, curr_x);
+    if (this.chess_ai.thread == null) {
+      return;
+    }
+    curr_x += 26;
+    textSize(18);
+    text("at depth: " + this.chess_ai.thread.current_depth, this.chessboard.xi - 4, curr_x);
+    curr_x += 22;
+    text("nodes: " + this.chess_ai.thread.nodes_evaluated, this.chessboard.xi - 4, curr_x);
+    curr_x += 22;
+    text("nodes / s: " + this.chess_ai.thread.nodes_per_second, this.chessboard.xi - 4, curr_x);
   }
   void mouseMove(float mX, float mY) {
     this.chessboard.mouseMove(mX, mY);

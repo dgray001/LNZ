@@ -280,6 +280,7 @@ abstract class AbstractGameMap {
   abstract class AbstractTerrainDimgThread extends Thread {
     AbstractTerrainDimgThread(String thread_name) {
       super(thread_name);
+      this.setDaemon(true);
     }
     @Override
     void run() {
@@ -317,6 +318,7 @@ abstract class AbstractGameMap {
     private float mY = 0;
     MouseMoveThread(float mX, float mY) {
       super("MouseMoveThread");
+      this.setDaemon(true);
       this.mX = mX;
       this.mY = mY;
     }

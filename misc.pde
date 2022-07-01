@@ -2,76 +2,76 @@
 color elementalColor(Element e) {
   switch(e) {
     case GRAY:
-      return color(170);
+      return ccolor(170);
     case BLUE:
-      return color(0, 0, 255);
+      return ccolor(0, 0, 255);
     case RED:
-      return color(255, 0, 0);
+      return ccolor(255, 0, 0);
     case CYAN:
-      return color(0, 255, 255);
+      return ccolor(0, 255, 255);
     case ORANGE:
-      return color(255, 165, 0);
+      return ccolor(255, 165, 0);
     case BROWN:
-      return color(51, 45, 26);
+      return ccolor(51, 45, 26);
     case PURPLE:
-      return color(125, 0, 125);
+      return ccolor(125, 0, 125);
     case YELLOW:
-      return color(255, 255, 0);
+      return ccolor(255, 255, 0);
     case MAGENTA:
-      return color(255, 0, 255);
+      return ccolor(255, 0, 255);
     default:
       global.errorMessage("ERROR: Element " + e.element_name() + " doesn't have a color.");
-      return color(0);
+      return ccolor(0);
   }
 }
 color elementalColorDark(Element e) {
   switch(e) {
     case GRAY:
-      return color(145);
+      return ccolor(145);
     case BLUE:
-      return color(0, 0, 200);
+      return ccolor(0, 0, 200);
     case RED:
-      return color(200, 0, 0);
+      return ccolor(200, 0, 0);
     case CYAN:
-      return color(0, 200, 200);
+      return ccolor(0, 200, 200);
     case ORANGE:
-      return color(200, 140, 0);
+      return ccolor(200, 140, 0);
     case BROWN:
-      return color(20, 15, 10);
+      return ccolor(20, 15, 10);
     case PURPLE:
-      return color(100, 0, 100);
+      return ccolor(100, 0, 100);
     case YELLOW:
-      return color(200, 200, 0);
+      return ccolor(200, 200, 0);
     case MAGENTA:
-      return color(200, 0, 200);
+      return ccolor(200, 0, 200);
     default:
       global.errorMessage("ERROR: Element " + e.element_name() + " doesn't have a color.");
-      return color(0);
+      return ccolor(0);
   }
 }
 color elementalColorLight(Element e) {
   switch(e) {
     case GRAY:
-      return color(195);
+      return ccolor(195);
     case BLUE:
-      return color(25, 25, 255);
+      return ccolor(25, 25, 255);
     case RED:
-      return color(255, 25, 25);
+      return ccolor(255, 25, 25);
     case CYAN:
-      return color(25, 255, 255);
+      return ccolor(25, 255, 255);
     case ORANGE:
-      return color(255, 190, 25);
+      return ccolor(255, 190, 25);
     case BROWN:
-      return color(70, 65, 45);
+      return ccolor(70, 65, 45);
     case PURPLE:
-      return color(150, 0, 150);
+      return ccolor(150, 0, 150);
     case YELLOW:
-      return color(255, 255, 40);
+      return ccolor(255, 255, 40);
     case MAGENTA:
-      return color(255, 40, 255);
+      return ccolor(255, 40, 255);
     default:
       global.errorMessage("ERROR: Element " + e.element_name() + " doesn't have a color.");
-      return color(0);
+      return ccolor(0);
   }
 }
 color elementalColorText(Element e) {
@@ -84,37 +84,37 @@ color elementalColorText(Element e) {
     case PURPLE:
     case YELLOW:
     case MAGENTA:
-      return color(0);
+      return ccolor(0);
     case BROWN:
-      return color(255);
+      return ccolor(255);
     default:
       global.errorMessage("ERROR: Element " + e.element_name() + " doesn't have a color.");
-      return color(0);
+      return ccolor(0);
   }
 }
 color elementalColorLocked(Element e) {
   switch(e) {
     case GRAY:
-      return color(120);
+      return ccolor(120);
     case BLUE:
-      return color(100, 100, 150);
+      return ccolor(100, 100, 150);
     case RED:
-      return color(150, 100, 100);
+      return ccolor(150, 100, 100);
     case CYAN:
-      return color(100, 150, 150);
+      return ccolor(100, 150, 150);
     case ORANGE:
-      return color(160, 120, 100);
+      return ccolor(160, 120, 100);
     case BROWN:
-      return color(80, 75, 70);
+      return ccolor(80, 75, 70);
     case PURPLE:
-      return color(90, 50, 90);
+      return ccolor(90, 50, 90);
     case YELLOW:
-      return color(150, 150, 100);
+      return ccolor(150, 150, 100);
     case MAGENTA:
-      return color(150, 100, 150);
+      return ccolor(150, 100, 150);
     default:
       global.errorMessage("ERROR: Element " + e.element_name() + " doesn't have a color.");
-      return color(0);
+      return ccolor(0);
   }
 }
 
@@ -200,5 +200,5 @@ color adjust_color_brightness(color c, float factor) {
   float r = constrain(factor * (c >> 16 & 0xFF), 0, 255);
   float g = constrain(factor * (c >> 8 & 0xFF), 0, 255);
   float b = constrain(factor * (c & 0xFF), 0, 255);
-  return color(r, g, b, alpha(c));
+  return ccolor(r, g, b, alpha(c));
 }

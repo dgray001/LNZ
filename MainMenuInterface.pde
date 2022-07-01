@@ -753,6 +753,7 @@ class MainMenuInterface extends InterfaceLNZ {
 
     BackgroundImageThread() {
       super("BackgroundImageThread");
+      this.setDaemon(true);
     }
 
     @Override

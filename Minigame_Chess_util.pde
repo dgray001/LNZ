@@ -138,7 +138,7 @@ class ChessBoard extends GridBoard {
 
     void drawSquare() {
       rectMode(CORNERS);
-      stroke(0, 1);
+      stroke(Constants.color_transparent);
       strokeWeight(0.01);
       if (this.last_move_square) {
         fill(ChessBoard.this.moveColor());
@@ -167,7 +167,7 @@ class ChessBoard extends GridBoard {
           circle(this.button.xCenter(), this.button.yCenter(), 0.3 * this.button.button_width());
         }
         else {
-          fill(0, 1);
+          fill(Constants.color_transparent);
           stroke(ChessBoard.this.clickColor());
           strokeWeight(6);
           circle(this.button.xCenter(), this.button.yCenter(), this.button.button_width() - 3);
@@ -218,7 +218,7 @@ class ChessBoard extends GridBoard {
       super(coordinate);
     }
     void setFill() {
-      fill(1, 0);
+      fill(Constants.color_transparent);
       stroke(ChessBoard.this.markingColor());
       if (this.smaller) {
         strokeWeight(4);
@@ -328,14 +328,14 @@ class ChessBoard extends GridBoard {
         this.type = type;
         this.use_time_elapsed = true;
         this.overshadow_colors = true;
-        this.setColors(color(170, 170), color(1, 0), color(100, 80), color(200, 160), color(0));
+        this.setColors(ccolor(170, 170), ccolor(1, 0), ccolor(100, 80), ccolor(200, 160), ccolor(0));
       }
 
       @Override
       void drawButton() {
         rectMode(CORNERS);
-        fill(120, 120, 60);
-        stroke(120, 120, 60);
+        fill(ccolor(20, 120, 60));
+        stroke(ccolor(120, 120, 60));
         strokeWeight(0.01);
         rect(this.xi, this.yi, this.xf, this.yf);
         super.drawButton();
@@ -928,27 +928,27 @@ class ChessBoard extends GridBoard {
   color squareColor(ChessColor square_color) {
     switch(square_color) {
       case WHITE:
-        return color(248, 240, 227);
+        return ccolor(248, 240, 227);
       case BLACK:
-        return color(165, 42, 42);
+        return ccolor(165, 42, 42);
     }
-    return color(1, 0);
+    return ccolor(1, 0);
   }
 
   color hoverColor() {
-    return color(120, 80);
+    return ccolor(120, 80);
   }
 
   color clickColor() {
-    return color(200, 160);
+    return ccolor(200, 160);
   }
 
   color moveColor() {
-    return color(190, 190, 50);
+    return ccolor(190, 190, 50);
   }
 
   color markingColor() {
-    return color(180, 100, 90, 170);
+    return ccolor(180, 100, 90, 170);
   }
 
   void clicked(IntegerCoordinate coordinate) {
