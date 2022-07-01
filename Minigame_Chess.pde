@@ -1,5 +1,14 @@
 enum ChessState {
-  ANALYSIS, VS_COMPUTER;
+  ANALYSIS, HUMAN_VS_COMPUTER, COMPUTER_VS_COMPUTER;
+  public boolean playingGame() {
+    switch(this) {
+      case HUMAN_VS_COMPUTER:
+      case COMPUTER_VS_COMPUTER:
+        return true;
+      default:
+        return false;
+    }
+  }
 }
 
 class Chess extends Minigame {
@@ -98,7 +107,8 @@ class Chess extends Minigame {
       super("ai");
     }
     void buttonFunction() {
-      Chess.this.startGameVsComputer();
+      //Chess.this.startGameVsComputer();
+      Chess.this.startComputerVsComputerGame();
     }
   }
 
@@ -125,9 +135,48 @@ class Chess extends Minigame {
     class MoveContainer extends ListTextBox {
       MoveContainer() {
         super();
+        this.useElapsedTime();
+        this.color_background = color(40);
+        this.color_header = color(80);
+        this.color_stroke = color(20);
+        this.color_text = color(245);
+        this.color_title = color(255);
+        this.scrollbar_max_width = 35;
+        this.scrollbar.setButtonColors(color(170), color(60), color(100), color(20), color(0));
+        this.scrollbar.button_upspace.setColors(color(170), color(0), color(0), color(200), color(0));
+        this.scrollbar.button_downspace.setColors(color(170), color(0), color(0), color(200), color(0));
+        this.hover_color = color(200, 200, 100, 60);
+        this.highlight_color = color(240, 240, 60, 120);
+        this.can_unclick_outside_box = false;
+      }
+
+      @Override
+      void update(int time_elapsed) {
+        int last_line_clicked = this.line_clicked;
+        this.line_clicked = Chess.this.current_view - 1;
+        if (this.line_clicked != last_line_clicked) {
+          this.jump_to_line();
+        }
+        super.update(time_elapsed);
+      }
+
+      @Override
+      void jump_to_line(boolean hard_jump) {
+        if (hard_jump || this.line_clicked < int(floor(this.scrollbar.value))) {
+          this.scrollbar.updateValue(this.line_clicked);
+          return;
+        }
+        int lines_shown = this.text_lines.size() - int(this.scrollbar.maxValue);
+        if (this.line_clicked >= int(this.scrollbar.value) + lines_shown) {
+          this.scrollbar.increaseValue(2 + this.line_clicked - int(this.scrollbar.value) - lines_shown);
+        }
+        else if (this.line_clicked < int(this.scrollbar.value)) {
+          this.scrollbar.decreaseValue(int(this.scrollbar.value) - this.line_clicked);
+        }
       }
 
       void click() {
+        Chess.this.setCurrentView(this.line_clicked + 1);
       }
 
       void doubleclick() {
@@ -167,12 +216,18 @@ class Chess extends Minigame {
     }
 
     void addMove(ChessMove move, ChessColor in_check) {
-      if (in_check == null) {
-        this.moves.addLine(move.pgnString());
+      String moveString = move.pgnString();
+      if (in_check != null) {
+        moveString += "+";
+      }
+      if (Chess.this.chessboard.turn == ChessColor.BLACK) {
+        moveString = Integer.toString(1 + Chess.this.chessboard.moves.size() / 2) +
+          ". " + moveString + " ...";
       }
       else {
-        this.moves.addLine(move.pgnString() + "+");
+        moveString = "       ... " + moveString;
       }
+      this.moves.addLine(moveString);
     }
 
     void gameEnded(GameEnds ends) {
@@ -266,6 +321,7 @@ class Chess extends Minigame {
   private MoveBox move_box = new AnalysisMoveBox();
 
   private ChessAI chess_ai = new ChessAI();
+  private ChessAI opposing_chess_ai = null;
   private boolean computers_turn = false;
   private int computers_time_left = 0;
 
@@ -298,6 +354,23 @@ class Chess extends Minigame {
     this.chessboard_views.add(copied_board);
     this.current_view = this.chessboard_views.size() - 1;
     this.chessboard.toggle_human_controllable = false;
+  }
+
+  void setCurrentView(int new_view) {
+    this.current_view = new_view;
+    if (this.current_view < 0) {
+      this.current_view = 0;
+    }
+    else if (this.current_view > this.chessboard_views.size() - 1) {
+      this.current_view = this.chessboard_views.size() - 1;
+    }
+    if (this.current_view == this.chessboard_views.size() - 1) {
+      this.chessboard.toggle_human_controllable = true;
+    }
+    else {
+      this.chessboard.toggle_human_controllable = false;
+    }
+    this.refreshChessboardViewLocation();
   }
 
   void viewFirst() {
@@ -357,15 +430,16 @@ class Chess extends Minigame {
   }
 
   void startGameVsComputer() {
-    if (this.state == ChessState.VS_COMPUTER) {
-      global.errorMessage("ERROR: Can't start game while in game vs computer.");
+    if (this.state.playingGame()) {
+      global.errorMessage("ERROR: Can't start game vs computer while in game.");
       return;
     }
-    this.state = ChessState.VS_COMPUTER;
+    this.state = ChessState.HUMAN_VS_COMPUTER;
     this.move_box = new PlayingMoveBox();
     this.chessboard.setupBoard();
     this.initialChessboardView();
     this.chess_ai.reset();
+    this.opposing_chess_ai = null;
     if (randomChance(0.5)) {
       this.chessboard.human_controlled = HumanMovable.WHITE;
       this.chessboard.orientation = BoardOrientation.RIGHT;
@@ -375,6 +449,23 @@ class Chess extends Minigame {
       this.chessboard.orientation = BoardOrientation.LEFT;
       this.startComputersTurn();
     }
+    this.refreshLocation();
+  }
+
+  void startComputerVsComputerGame() {
+    if (this.state.playingGame()) {
+      global.errorMessage("ERROR: Can't start computer vs computer during a game.");
+      return;
+    }
+    this.state = ChessState.COMPUTER_VS_COMPUTER;
+    this.move_box = new PlayingMoveBox();
+    this.chessboard.setupBoard();
+    this.initialChessboardView();
+    this.chess_ai.reset(); // white
+    this.opposing_chess_ai = new ChessAI(); // black
+    this.chessboard.human_controlled = HumanMovable.NONE;
+    this.chessboard.orientation = BoardOrientation.RIGHT;
+    this.startComputersTurn();
     this.refreshLocation();
   }
 

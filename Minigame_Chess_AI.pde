@@ -8,6 +8,7 @@ class ChessAI {
   private DecisionAlgorithm decision_algorithm = DecisionAlgorithm.RANDOM;
 
   ChessAI() {
+    this.reset();
   }
 
   void reset() {
@@ -67,7 +68,7 @@ class ChessNode {
     if (!this.made_daughters) {
       if (this.board.valid_moves.contains(move)) {
         ChessBoard copied = new ChessBoard(this.board);
-        copied.makeMove(move);
+        copied.makeMove(move, false);
         return new ChessNode(copied, this, move);
       }
       else {
@@ -87,7 +88,7 @@ class ChessNode {
     this.made_daughters = true;
     for (ChessMove move : this.board.valid_moves) {
       ChessBoard copied = new ChessBoard(this.board);
-      copied.makeMove(move);
+      copied.makeMove(move, false);
       this.daughters.put(move, new ChessNode(copied, this, move));
     }
   }

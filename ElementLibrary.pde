@@ -1535,6 +1535,12 @@ class ScrollBar {
     this.button_bar.mousePress();
   }
 
+  boolean clicked() {
+    return (this.button_up.clicked || this.button_down.clicked ||
+      this.button_upspace.clicked || this.button_downspace.clicked ||
+      this.button_bar.clicked);
+  }
+
   void mouseRelease(float mX, float mY) {
     this.button_up.mouseRelease(mX, mY);
     this.button_down.mouseRelease(mX, mY);
@@ -1553,6 +1559,7 @@ class TextBox {
   protected float yf = 0;
   protected boolean hovered = false;
   protected int lastUpdateTime = 0;
+  protected boolean use_time_elapsed = false;
 
   protected ScrollBar scrollbar = new ScrollBar(true);
   protected float scrollbar_max_width = 50;
@@ -1589,6 +1596,7 @@ class TextBox {
     if (this.scrollbar_horizontal != null) {
       this.scrollbar_horizontal.useElapsedTime();
     }
+    this.use_time_elapsed = true;
   }
 
   void setXLocation(float xi, float xf) {
@@ -1880,6 +1888,7 @@ abstract class ListTextBox extends TextBox {
   protected color highlight_color = color(100, 100, 250, 120);
   protected int doubleclickTimer = 0;
   protected int doubleclickTime = 400;
+  protected boolean can_unclick_outside_box = true;
 
   ListTextBox() {
     this(0, 0, 0, 0);
@@ -1948,10 +1957,13 @@ abstract class ListTextBox extends TextBox {
 
   @Override
   void update(int millis) {
-    int timeElapsed = millis - this.lastUpdateTime;
+    int time_elapsed = millis - this.lastUpdateTime;
+    if (this.use_time_elapsed) {
+      time_elapsed = millis;
+    }
     super.update(millis);
     if (this.doubleclickTimer > 0) {
-      this.doubleclickTimer -= timeElapsed;
+      this.doubleclickTimer -= time_elapsed;
     }
     float currY = this.yi + 1;
     if (this.text_title_ref != null) {
@@ -2025,14 +2037,17 @@ abstract class ListTextBox extends TextBox {
         this.doubleclickTimer = this.doubleclickTime;
       }
     }
+    else if (this.can_unclick_outside_box || this.hovered) {
+      this.line_clicked = this.line_hovered;
+    }
   }
 
   @Override
   void mouseRelease(float mX, float mY) {
-    super.mouseRelease(mX, mY);
-    if (this.line_hovered < 0) {
+    if (this.line_hovered < 0 && !this.scrollbar.clicked() && (this.can_unclick_outside_box || this.hovered)) {
       this.line_clicked = this.line_hovered;
     }
+    super.mouseRelease(mX, mY);
   }
 
   void jump_to_line() {
@@ -2047,8 +2062,11 @@ abstract class ListTextBox extends TextBox {
       return;
     }
     int lines_shown = this.text_lines.size() - int(this.scrollbar.maxValue);
-    if (this.line_clicked >= int(floor(this.scrollbar.value)) + lines_shown) {
-      this.scrollbar.increaseValue(1 + this.line_clicked - int(floor(this.scrollbar.value)) - lines_shown);
+    if (this.line_clicked >= int(this.scrollbar.value) + lines_shown) {
+      this.scrollbar.increaseValue(1 + this.line_clicked - int(this.scrollbar.value) - lines_shown);
+    }
+    else if (this.line_clicked < int(this.scrollbar.value)) {
+      this.scrollbar.decreaseValue(int(this.scrollbar.value) - this.line_clicked);
     }
   }
 

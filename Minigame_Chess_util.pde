@@ -64,6 +64,7 @@ class ChessBoard extends GridBoard {
     protected ChessColor square_color;
     protected boolean clicked = false;
     protected boolean can_move_to = false;
+    protected boolean last_move_square = false;
 
     ChessSquare(IntegerCoordinate coordinate) {
       super(coordinate);
@@ -74,11 +75,22 @@ class ChessBoard extends GridBoard {
       square.square_color = this.square_color;
       square.clicked = this.clicked;
       square.can_move_to = this.can_move_to;
+      square.last_move_square = this.last_move_square;
       return square;
     }
 
     void initializePieceMap() {
       this.pieces = new HashMap<Integer, GamePiece>();
+    }
+
+    void movingFrom() {
+      this.clearSquare();
+      this.last_move_square = true;
+    }
+
+    void movingTo(ChessPiece piece) {
+      this.addPiece(piece);
+      this.last_move_square = true;
     }
 
     @Override
@@ -116,7 +128,12 @@ class ChessBoard extends GridBoard {
       rectMode(CORNERS);
       stroke(0, 1);
       strokeWeight(0.01);
-      fill(ChessBoard.this.squareColor(this.square_color));
+      if (this.last_move_square) {
+        fill(ChessBoard.this.moveColor());
+      }
+      else {
+        fill(ChessBoard.this.squareColor(this.square_color));
+      }
       rect(this.button.xi, this.button.yi, this.button.xf, this.button.yf);
       imageMode(CORNERS);
       for (GamePiece piece : this.pieces.values()) {
@@ -419,6 +436,7 @@ class ChessBoard extends GridBoard {
 
   protected ChessColor in_check = null;
   protected ArrayList<ChessMove> moves = new ArrayList<ChessMove>();
+  protected int fifty_move_counter = 0;
   protected Queue<ChessMove> move_queue = new ArrayDeque<ChessMove>();
   protected HashMap<ChessPosition, Integer> all_positions = new HashMap<ChessPosition, Integer>();
   protected GameEnds game_ended = null; // null until game ends
@@ -639,6 +657,9 @@ class ChessBoard extends GridBoard {
   void startTurn(ChessColor chess_color) {
     this.valid_moves.clear();
     this.return_moves.clear();
+    if (this.game_ended != null) {
+      return;
+    }
     this.turn = chess_color;
     this.in_check = null;
     switch(chess_color) {
@@ -884,6 +905,10 @@ class ChessBoard extends GridBoard {
     return color(200, 160);
   }
 
+  color moveColor() {
+    return color(190, 190, 50);
+  }
+
   color markingColor() {
     return color(180, 100, 90, 170);
   }
@@ -1127,8 +1152,13 @@ class ChessBoard extends GridBoard {
         return;
       }
     }
-    this.squareAt(move.source).clearSquare();
-    this.squareAt(move.target).addPiece(source_piece);
+    if (this.moves.size() > 0) {
+      ChessMove last_move = this.moves.get(this.moves.size() - 1);
+      ((ChessSquare)this.squareAt(last_move.source)).last_move_square = false;
+      ((ChessSquare)this.squareAt(last_move.target)).last_move_square = false;
+    }
+    ((ChessSquare)this.squareAt(move.source)).movingFrom();
+    ((ChessSquare)this.squareAt(move.target)).movingTo(source_piece);
     this.moves.add(move);
     this.move_queue.add(move);
     this.markings.clear();
@@ -1137,11 +1167,19 @@ class ChessBoard extends GridBoard {
       this.all_positions.put(new_position, 1 + this.all_positions.get(new_position));
       if (this.all_positions.get(new_position) >= 3) {
         this.game_ended = GameEnds.REPETITION;
-        return;
       }
     }
     else {
       this.all_positions.put(new_position, 1);
+    }
+    if (move.fiftyMoveResetMove()) {
+      this.fifty_move_counter = 0;
+    }
+    else {
+      this.fifty_move_counter++;
+      if (this.fifty_move_counter >= 50) {
+        this.game_ended = GameEnds.FIFTY_MOVE;
+      }
     }
     this.nextTurn();
   }
@@ -1189,9 +1227,12 @@ enum ChessPieceType {
   }
 
   public String characterString() {
-    return ChessPieceType.characterString(this);
+    return this.characterString(false);
   }
-  public static String characterString(ChessPieceType type) {
+  public String characterString(boolean show_pawn) {
+    return ChessPieceType.characterString(this, show_pawn);
+  }
+  public static String characterString(ChessPieceType type, boolean show_pawn) {
     switch(type) {
       case KING:
         return "K";
@@ -1204,7 +1245,12 @@ enum ChessPieceType {
       case KNIGHT:
         return "N";
       case PAWN:
-        return "P";
+        if (show_pawn) {
+          return "P";
+        }
+        else {
+          return "";
+        }
       default:
         return "";
     }
@@ -1700,6 +1746,10 @@ class ChessMove {
       !this.capture && this.source_type == ChessPieceType.KING);
   }
 
+  boolean fiftyMoveResetMove() {
+    return (this.capture || this.source_type == ChessPieceType.PAWN);
+  }
+
   IntegerCoordinate castlingMoveRookSource(ChessBoard board) {
     if (!this.castlingMove()) {
       return null;
@@ -1740,8 +1790,8 @@ class ChessPosition {
           hash_string += "-";
         }
         else {
-          square_strings[i][j] = piece.type.characterString();
-          hash_string += piece.type.characterString();
+          square_strings[i][j] = piece.type.characterString(true);
+          hash_string += piece.type.characterString(true);
         }
       }
     }

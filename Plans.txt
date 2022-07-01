@@ -4,11 +4,9 @@ v0.7.6: Fernwood (06/30)
  y: games can end (go to analysis?)
  z: time controls
 
- - Mark last move
- - Can jump to move by double clicking move in list box, will update when buttons pressed / moves made
- - Move box style updates
+ - Can hold next/prev buttons to go through many times
  - Can quit game vs computer
- - End games are annotated (repetition, too many moves, out of time, resignation, agree to draw)
+ - End games are annotated (out of time, resignation, agree to draw, insufficient material)
  - Can save / load chess games (.chess.lnz file)
  - Multiple color / piece schemes switchable in an options button on bottom right
 
