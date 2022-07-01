@@ -8,7 +8,7 @@ enum HumanMovable {
 
 enum GameEnds {
   WHITE_CHECKMATES, BLACK_CHECKMATES, STALEMATE, REPETITION, FIFTY_MOVE,
-  WHITE_TIME, BLACK_TIME; // abandonment, resignation, agree to draw
+  WHITE_TIME, BLACK_TIME, WHITE_RESIGNS, BLACK_RESIGNS, DRAW_AGREED; // abandonment, insufficient material
 
   public String displayName() {
     return GameEnds.displayName(this);
@@ -29,6 +29,12 @@ enum GameEnds {
         return "White time out - Black is Victorious";
       case BLACK_TIME:
         return "Black time out - White is Victorious";
+      case WHITE_RESIGNS:
+        return "White resigns - Black is Victorious";
+      case BLACK_RESIGNS:
+        return "Black resigns - White is Victorious";
+      case DRAW_AGREED:
+        return "Draw agreed - Draw";
       default:
         return "Error";
     }
@@ -53,6 +59,12 @@ enum GameEnds {
         return -1;
       case BLACK_TIME:
         return 1;
+      case WHITE_RESIGNS:
+        return -1;
+      case BLACK_RESIGNS:
+        return 1;
+      case DRAW_AGREED:
+        return 0;
       default:
         return 0;
     }
@@ -515,6 +527,7 @@ class ChessBoard extends GridBoard {
         ChessSquare square = (ChessSquare)this.squares[i][j];
         square.clicked = false;
         square.can_move_to = false;
+        square.last_move_square = false;
       }
     }
   }
@@ -542,6 +555,7 @@ class ChessBoard extends GridBoard {
     this.return_moves.clear();
     this.markings.clear();
     this.moves.clear();
+    this.fifty_move_counter = 0;
     this.move_queue.clear();
     this.all_positions.clear();
     this.game_ended = null;
@@ -758,6 +772,30 @@ class ChessBoard extends GridBoard {
         return true;
     }
     return false;
+  }
+
+  void offerDraw() {
+    this.offerDraw(this.turn);
+  }
+  void offerDraw(ChessColor offering_player) {
+    if (this.game_ended != null) {
+      return;
+    }
+    // offering player offers draw
+  }
+
+  void resign() {
+    if (this.game_ended != null) {
+      return;
+    }
+    switch(this.turn) {
+      case WHITE:
+        this.game_ended = GameEnds.WHITE_RESIGNS;
+        break;
+      case BLACK:
+        this.game_ended = GameEnds.BLACK_RESIGNS;
+        break;
+    }
   }
 
   boolean computersTurn() {

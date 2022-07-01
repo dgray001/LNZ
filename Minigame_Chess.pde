@@ -1,7 +1,8 @@
 enum ChessState {
-  ANALYSIS, HUMAN_VS_COMPUTER, COMPUTER_VS_COMPUTER;
+  ANALYSIS, HUMAN_VS_HUMAN, HUMAN_VS_COMPUTER, COMPUTER_VS_COMPUTER;
   public boolean playingGame() {
     switch(this) {
+      case HUMAN_VS_HUMAN:
       case HUMAN_VS_COMPUTER:
       case COMPUTER_VS_COMPUTER:
         return true;
@@ -9,11 +10,26 @@ enum ChessState {
         return false;
     }
   }
+  public String titleString() {
+    switch(this) {
+      case ANALYSIS:
+        return "Analysis";
+      case HUMAN_VS_HUMAN:
+        return "Human vs. Human";
+      case HUMAN_VS_COMPUTER:
+        return "Human vs. AI";
+      case COMPUTER_VS_COMPUTER:
+        return "AI vs. AI";
+      default:
+        return "";
+    }
+  }
 }
 
 class Chess extends Minigame {
   abstract class MoveBoxButton extends ImageButton {
     protected float width_ratio = 0.85; // ratio of width to height
+    protected boolean show_hover_message = false;
 
     MoveBoxButton(String icon_name) {
       super(global.images.getImage("icons/" + icon_name + ".png"), 0, 0, 0, 0);
@@ -22,8 +38,20 @@ class Chess extends Minigame {
       this.setColors(color(170, 170), color(1, 0), color(100, 80), color(200, 160), color(0));
     }
 
-    void hover() {}
-    void dehover() {}
+    @Override
+    void drawButton() {
+      super.drawButton();
+      if (this.show_hover_message) {
+        // show hover message
+      }
+    }
+
+    void hover() {
+      this.show_hover_message = true;
+    }
+    void dehover() {
+      this.show_hover_message = false;
+    }
     void click() {}
     void release() {
       if (this.hovered) {
@@ -102,16 +130,6 @@ class Chess extends Minigame {
     }
   }
 
-  class VsComputerButton extends MoveBoxButton {
-    VsComputerButton() {
-      super("ai");
-    }
-    void buttonFunction() {
-      //Chess.this.startGameVsComputer();
-      Chess.this.startComputerVsComputerGame();
-    }
-  }
-
   class OfferDrawButton extends MoveBoxButton {
     OfferDrawButton() {
       super("draw");
@@ -127,6 +145,56 @@ class Chess extends Minigame {
     }
     void buttonFunction() {
       Chess.this.resign();
+    }
+  }
+
+  class StopGameButton extends MoveBoxButton {
+    StopGameButton() {
+      super("hand_stop");
+    }
+    void buttonFunction() {
+      Chess.this.stopGame();
+    }
+  }
+
+  class MenuButton extends MoveBoxButton {
+    MenuButton() {
+      super("menu");
+    }
+    void buttonFunction() {
+      Chess.this.toggleMenuForm();
+    }
+  }
+
+  class RestartGameButton extends MoveBoxButton {
+    protected ChessState state;
+    RestartGameButton(ChessState state) {
+      super("reset");
+      this.state = state;
+      switch(state) {
+        case HUMAN_VS_HUMAN:
+          this.img = global.images.getImage("icons/human.png");
+          break;
+        case HUMAN_VS_COMPUTER:
+          this.img = global.images.getImage("icons/human_ai.png");
+          break;
+        case COMPUTER_VS_COMPUTER:
+          this.img = global.images.getImage("icons/ai.png");
+          break;
+      }
+    }
+    void buttonFunction() {
+      switch(this.state) {
+        case HUMAN_VS_HUMAN:
+          Chess.this.startHumanVsHumanGame();
+          break;
+        case HUMAN_VS_COMPUTER:
+          Chess.this.startGameVsComputer(true);
+          break;
+        case COMPUTER_VS_COMPUTER:
+          Chess.this.startComputerVsComputerGame();
+          break;
+      }
     }
   }
 
@@ -184,18 +252,135 @@ class Chess extends Minigame {
     }
 
 
+    class MenuForm extends Form {
+      private boolean hidden = true;
+      private boolean canceled = false;
+
+      MenuForm() {
+        super();
+        this.color_background = color(210);
+        this.color_header = color(170);
+        this.color_title = color(0);
+        this.color_stroke = color(20);
+        this.setTitleText("Create Game");
+      }
+
+      void toggle(ChessState state) {
+        this.hidden = !this.hidden;
+        if (this.hidden) {
+          this.clearFields();
+          return;
+        }
+        this.canceled = false;
+        switch(state) {
+          case ANALYSIS:
+            ArrayList<ToggleFormFieldInput> toggle_input = new ArrayList<ToggleFormFieldInput>();
+            toggle_input.add(new ToggleFormFieldInput("  vs Human", global.images.getImage("icons/human.png")));
+            toggle_input.add(new ToggleFormFieldInput("  vs AI", global.images.getImage("icons/human_ai.png")));
+            toggle_input.add(new ToggleFormFieldInput("  AI vs AI", global.images.getImage("icons/ai.png")));
+            ToggleFormField toggle = new ToggleFormField(toggle_input);
+            toggle.setTextSize(36);
+            SubmitCancelFormField submit_cancel = new SubmitCancelFormField("Play", "Cancel");
+
+            this.addField(new SpacerFormField(60));
+            this.addField(toggle);
+            this.addField(submit_cancel);
+            break;
+          default:
+            this.hidden = true;
+            this.clearFields();
+            break;
+        }
+      }
+
+      void submit() {
+        switch(this.fields.get(1).getValue()) {
+          case "0":
+            Chess.this.startHumanVsHumanGame();
+            break;
+          case "1":
+            Chess.this.startGameVsComputer();
+            break;
+          case "2":
+            Chess.this.startComputerVsComputerGame();
+            break;
+          default:
+            break;
+        }
+        this.cancel();
+      }
+
+      void cancel() {
+        this.canceled = true;
+      }
+
+      void buttonPress(int index) {
+      }
+
+     @Override
+      void update(int time_elapsed) {
+        if (this.hidden) {
+          return;
+        }
+        super.update(time_elapsed);
+        if (this.canceled) {
+          Chess.this.toggleMenuForm();
+          this.canceled = false;
+        }
+      }
+
+     @Override
+      void mouseMove(float mX, float mY) {
+        if (this.hidden) {
+          return;
+        }
+        super.mouseMove(mX, mY);
+      }
+
+     @Override
+      void mousePress() {
+        if (this.hidden) {
+          return;
+        }
+        super.mousePress();
+      }
+
+     @Override
+      void mouseRelease(float mX, float mY) {
+        if (this.hidden) {
+          return;
+        }
+        super.mouseRelease(mX, mY);
+      }
+    }
+
+
     protected MoveContainer moves = new MoveContainer();
+    protected MenuForm menu_form = new MenuForm();
     protected ArrayList<MoveBoxButton> buttons = new ArrayList<MoveBoxButton>();
     protected float button_min_size = 50;
     protected float button_gap = 5;
 
+    protected float xi = 0;
+    protected float yi = 0;
+    protected float xf = 0;
+    protected float yf = 0;
+
     MoveBox() {
       this.addButtons();
+      this.moves.setTitleText(Chess.this.state.titleString());
     }
 
     abstract void addButtons();
 
+    void refreshLocation() {
+      this.setLocation(this.xi, this.yi, this.xf, this.yf);
+    }
     void setLocation(float xi, float yi, float xf, float yf) {
+      this.xi = xi;
+      this.yi = yi;
+      this.xf = xf;
+      this.yf = yf;
       float button_weight = 0;
       for (MoveBoxButton button : this.buttons) {
         button_weight += button.width_ratio;
@@ -205,6 +390,8 @@ class Chess extends Minigame {
         button_height = min(this.button_min_size, (xf - xi - (this.buttons.size() - 1) * this.button_gap) / button_weight);
       }
       this.moves.setLocation(xi + this.button_gap, yi + this.button_gap,
+        xf - this.button_gap, yf - 2 * this.button_gap - button_height);
+      this.menu_form.setLocation(xi + this.button_gap, yi + this.button_gap,
         xf - this.button_gap, yf - 2 * this.button_gap - button_height);
       float x_curr = xi;
       for (MoveBoxButton button : this.buttons) {
@@ -220,7 +407,7 @@ class Chess extends Minigame {
       if (in_check != null) {
         moveString += "+";
       }
-      if (Chess.this.chessboard.turn == ChessColor.BLACK) {
+      if (move.source_color == ChessColor.WHITE) {
         moveString = Integer.toString(1 + Chess.this.chessboard.moves.size() / 2) +
           ". " + moveString + " ...";
       }
@@ -232,31 +419,54 @@ class Chess extends Minigame {
 
     void gameEnded(GameEnds ends) {
       this.moves.addLine(ends.displayName());
+      this.adjustButtonsForGameEnd();
+      this.refreshLocation();
     }
+    abstract void adjustButtonsForGameEnd();
 
     void update(int time_elapsed) {
-      this.moves.update(time_elapsed);
+      if (this.menu_form.hidden) {
+        this.moves.update(time_elapsed);
+      }
+      else {
+        this.menu_form.update(time_elapsed);
+      }
       for (MoveBoxButton button : this.buttons) {
         button.update(time_elapsed);
       }
     }
 
     void mouseMove(float mX, float mY) {
-      this.moves.mouseMove(mX, mY);
+      if (this.menu_form.hidden) {
+        this.moves.mouseMove(mX, mY);
+      }
+      else {
+        this.menu_form.mouseMove(mX, mY);
+      }
       for (MoveBoxButton button : this.buttons) {
         button.mouseMove(mX, mY);
       }
     }
 
     void mousePress() {
-      this.moves.mousePress();
+      if (this.menu_form.hidden) {
+        this.moves.mousePress();
+      }
+      else {
+        this.menu_form.mousePress();
+      }
       for (MoveBoxButton button : this.buttons) {
         button.mousePress();
       }
     }
 
     void mouseRelease(float mX, float mY) {
-      this.moves.mouseRelease(mX, mY);
+      if (this.menu_form.hidden) {
+        this.moves.mouseRelease(mX, mY);
+      }
+      else {
+        this.menu_form.mouseRelease(mX, mY);
+      }
       for (MoveBoxButton button : this.buttons) {
         button.mouseRelease(mX, mY);
       }
@@ -278,7 +488,6 @@ class Chess extends Minigame {
   class AnalysisMoveBox extends MoveBox {
     AnalysisMoveBox() {
       super();
-      this.moves.setTitleText("Analysis");
     }
 
     void addButtons() {
@@ -290,7 +499,10 @@ class Chess extends Minigame {
       this.buttons.add(new ViewLastButton());
       this.buttons.add(new SpacerButton(0.3));
       this.buttons.add(new ResetButton());
-      this.buttons.add(new VsComputerButton());
+      this.buttons.add(new MenuButton());
+    }
+
+    void adjustButtonsForGameEnd() {
     }
   }
 
@@ -298,7 +510,6 @@ class Chess extends Minigame {
   class PlayingMoveBox extends MoveBox {
     PlayingMoveBox() {
       super();
-      this.moves.setTitleText("Vs Computer");
     }
 
     void addButtons() {
@@ -309,8 +520,24 @@ class Chess extends Minigame {
       this.buttons.add(new ViewNextButton());
       this.buttons.add(new ViewLastButton());
       this.buttons.add(new SpacerButton(0.3));
-      this.buttons.add(new OfferDrawButton());
-      this.buttons.add(new ResignButton());
+      switch(Chess.this.state) {
+        case HUMAN_VS_HUMAN:
+        case HUMAN_VS_COMPUTER:
+          this.buttons.add(new OfferDrawButton());
+          this.buttons.add(new ResignButton());
+          break;
+        case COMPUTER_VS_COMPUTER:
+          this.buttons.add(new SpacerButton(0.85));
+          this.buttons.add(new StopGameButton());
+          break;
+        default:
+          break;
+      }
+    }
+
+    void adjustButtonsForGameEnd() {
+      this.buttons.set(7, new RestartGameButton(Chess.this.state));
+      this.buttons.set(8, new MenuButton());
     }
   }
 
@@ -318,6 +545,7 @@ class Chess extends Minigame {
   private ArrayList<ChessBoard> chessboard_views = new ArrayList<ChessBoard>();
   private int current_view = 0;
   private ChessState state = ChessState.ANALYSIS;
+  private boolean game_ended = false;
   private MoveBox move_box = new AnalysisMoveBox();
 
   private ChessAI chess_ai = new ChessAI();
@@ -327,6 +555,7 @@ class Chess extends Minigame {
 
   Chess() {
     super(MinigameName.CHESS);
+    this.color_background = color(90);
     this.chessboard.setupBoard();
     this.initialChessboardView();
   }
@@ -429,8 +658,20 @@ class Chess extends Minigame {
     this.refreshLocation();
   }
 
+  void toggleMenuForm() {
+    if (this.state == ChessState.ANALYSIS || this.chessboard.game_ended != null) {
+      this.move_box.menu_form.toggle(ChessState.ANALYSIS);
+    }
+    else {
+      this.move_box.menu_form.toggle(this.state);
+    }
+  }
+
   void startGameVsComputer() {
-    if (this.state.playingGame()) {
+    this.startGameVsComputer(false);
+  }
+  void startGameVsComputer(boolean restarted) {
+    if (this.state.playingGame() && this.chessboard.game_ended == null) {
       global.errorMessage("ERROR: Can't start game vs computer while in game.");
       return;
     }
@@ -440,7 +681,12 @@ class Chess extends Minigame {
     this.initialChessboardView();
     this.chess_ai.reset();
     this.opposing_chess_ai = null;
-    if (randomChance(0.5)) {
+    if (restarted && this.chessboard.human_controlled == HumanMovable.WHITE) {
+      this.chessboard.human_controlled = HumanMovable.BLACK;
+      this.chessboard.orientation = BoardOrientation.LEFT;
+      this.startComputersTurn();
+    }
+    else if ((restarted && this.chessboard.human_controlled == HumanMovable.BLACK) || randomChance(0.5)) {
       this.chessboard.human_controlled = HumanMovable.WHITE;
       this.chessboard.orientation = BoardOrientation.RIGHT;
     }
@@ -453,7 +699,7 @@ class Chess extends Minigame {
   }
 
   void startComputerVsComputerGame() {
-    if (this.state.playingGame()) {
+    if (this.state.playingGame() && this.chessboard.game_ended == null) {
       global.errorMessage("ERROR: Can't start computer vs computer during a game.");
       return;
     }
@@ -469,10 +715,51 @@ class Chess extends Minigame {
     this.refreshLocation();
   }
 
+  void startHumanVsHumanGame() {
+    if (this.state.playingGame() && this.chessboard.game_ended == null) {
+      global.errorMessage("ERROR: Can't start computer vs computer during a game.");
+      return;
+    }
+    this.state = ChessState.HUMAN_VS_HUMAN;
+    this.move_box = new PlayingMoveBox();
+    this.chessboard.setupBoard();
+    this.initialChessboardView();
+    this.chess_ai.reset(); // white
+    this.opposing_chess_ai = null;
+    this.chessboard.human_controlled = HumanMovable.BOTH;
+    this.chessboard.orientation = BoardOrientation.RIGHT;
+    this.refreshLocation();
+  }
+
   void offerDraw() {
+    if (!this.state.playingGame() || this.chessboard.game_ended != null) {
+      global.errorMessage("ERROR: Can't offer draw not during a game.");
+      return;
+    }
+    if (this.chessboard.humanCanMakeMove()) {
+      this.chessboard.offerDraw();
+      if (this.chessboard.game_ended != null) {
+        this.move_box.gameEnded(this.chessboard.game_ended);
+      }
+    }
   }
 
   void resign() {
+    if (!this.state.playingGame() || this.chessboard.game_ended != null) {
+      global.errorMessage("ERROR: Can't resign not during a game.");
+      return;
+    }
+    if (this.chessboard.humanCanMakeMove()) {
+      this.chessboard.resign();
+      if (this.chessboard.game_ended != null) {
+        this.move_box.gameEnded(this.chessboard.game_ended);
+      }
+    }
+  }
+
+  void stopGame() {
+    this.chessboard.human_controlled = HumanMovable.BOTH;
+    this.move_box.adjustButtonsForGameEnd();
   }
 
   void drawBottomPanel(int time_elapsed) {}

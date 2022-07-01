@@ -387,12 +387,12 @@ class MinigameInterface extends InterfaceLNZ {
   void update(int millis) {
     int time_elapsed = millis - this.last_update_time;
     boolean refreshMinigameLocation = false;
-    rectMode(CORNERS);
-    stroke(60);
-    fill(60);
-    rect(0, 0, width, height - this.bottomPanel.size);
     switch(this.status) {
       case INITIAL:
+        rectMode(CORNERS);
+        stroke(60);
+        fill(60);
+        rect(0, 0, width, height - this.bottomPanel.size);
         this.minigame_chooser.update(time_elapsed);
         if (this.minigame_chooser.minigame_hovered != null) {
           imageMode(CENTER);
@@ -406,6 +406,10 @@ class MinigameInterface extends InterfaceLNZ {
         }
         break;
       case LAUNCHING:
+        rectMode(CORNERS);
+        stroke(60);
+        fill(60);
+        rect(0, 0, width, height - this.bottomPanel.size);
         if (this.initialize_minigame_thread == null) {
           this.status = MinigameStatus.INITIAL;
           break;
@@ -429,6 +433,10 @@ class MinigameInterface extends InterfaceLNZ {
         break;
       case PLAYING:
         if (this.minigame != null) {
+          rectMode(CORNERS);
+          stroke(this.minigame.color_background);
+          fill(this.minigame.color_background);
+          rect(0, 0, width, height - this.bottomPanel.size);
           this.minigame.update(time_elapsed);
           if (this.bottomPanel.collapsing) {
             refreshMinigameLocation = true;
@@ -438,6 +446,10 @@ class MinigameInterface extends InterfaceLNZ {
           }
         }
         else {
+          rectMode(CORNERS);
+          stroke(60);
+          fill(60);
+          rect(0, 0, width, height - this.bottomPanel.size);
           global.errorMessage("ERROR: In playing status but no level to update.");
           this.status = MinigameStatus.INITIAL;
         }

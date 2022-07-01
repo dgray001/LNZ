@@ -93,16 +93,17 @@ abstract class Button {
   }
 
   void writeText() {
-    if (this.show_message) {
-      fill(this.color_text);
-      textAlign(CENTER, CENTER);
-      textSize(this.text_size);
-      if (this.adjust_for_text_descent) {
-        text(this.message, this.xCenter(), this.yCenter() - textDescent());
-      }
-      else {
-        text(this.message, this.xCenter(), this.yCenter());
-      }
+    if (!this.show_message) {
+      return;
+    }
+    fill(this.color_text);
+    textAlign(CENTER, CENTER);
+    textSize(this.text_size);
+    if (this.adjust_for_text_descent) {
+      text(this.message, this.xCenter(), this.yCenter() - textDescent());
+    }
+    else {
+      text(this.message, this.xCenter(), this.yCenter());
     }
   }
 
@@ -451,6 +452,49 @@ abstract class ImageButton extends RectangleButton {
   void setImg(PImage img) {
     this.img = img;
     this.img.resize(int(this.button_width()), int(this.button_height()));
+  }
+}
+
+
+abstract class ToggleButton extends ImageButton {
+  protected int toggle_index = 0;
+  protected boolean click_toggle = true;
+  protected PImage[] images;
+
+  ToggleButton(PImage[] images, float xi, float yi, float xf, float yf) {
+    super(images[0], xi, yi, xf, yf);
+    this.images = images;
+  }
+
+  void setToggle(int toggle_index) {
+    this.toggle_index = toggle_index;
+    if (this.toggle_index < 0) {
+      this.toggle_index = 0;
+    }
+    if (this.toggle_index >= this.images.length) {
+      this.toggle_index = this.images.length - 1;
+    }
+  }
+
+  void toggle() {
+    this.toggle_index++;
+    if (this.toggle_index >= this.images.length) {
+      this.toggle_index = 0;
+    }
+    this.setImg(this.images[this.toggle_index]);
+  }
+
+  void click() {
+    if (this.click_toggle) {
+      this.toggle();
+    }
+  }
+
+  void release() {
+    if (!this.hovered || this.click_toggle) {
+      return;
+    }
+    this.toggle();
   }
 }
 
@@ -3013,6 +3057,7 @@ class MessageFormField extends FormField {
   protected float text_size = 0;
   protected color text_color = color(0);
   protected int text_align = LEFT;
+  protected float left_edge = 1;
 
   MessageFormField(String message) {
     this(message, LEFT);
@@ -3099,7 +3144,7 @@ class MessageFormField extends FormField {
         break;
       case LEFT:
       default:
-        text(this.display_message, 1, 1);
+        text(this.display_message, this.left_edge, 1);
         break;
     }
     return FormFieldSubmit.NONE;
@@ -3591,6 +3636,104 @@ class CheckboxFormField extends MessageFormField {
   @Override
   void mouseRelease(float mX, float mY) {
     this.checkbox.mouseRelease(mX, mY);
+  }
+}
+
+
+class ToggleFormFieldInput {
+  private String message;
+  private PImage img;
+  ToggleFormFieldInput(String message, PImage img) {
+    this.message = message;
+    this.img = img;
+  }
+}
+
+
+// Toggle between discreet list of things
+class ToggleFormField extends MessageFormField {
+  class FormFieldToggleButton extends ToggleButton {
+    FormFieldToggleButton(PImage[] images) {
+      super(images, 0, 0, 0, 0);
+      this.use_time_elapsed = true;
+      this.overshadow_colors = true;
+      this.setColors(color(170, 170), color(1, 0), color(100, 80), color(200, 160), color(0));
+    }
+    @Override
+    void toggle() {
+      super.toggle();
+      ToggleFormField.this.toggle();
+    }
+    void hover() {
+    }
+    void dehover() {
+    }
+  }
+
+  protected FormFieldToggleButton toggle;
+  protected ArrayList<String> messages = new ArrayList<String>();
+
+  ToggleFormField(ArrayList<ToggleFormFieldInput> message_to_images) {
+    super("");
+    PImage[] imgs = new PImage[message_to_images.size()];
+    for (int i = 0; i < message_to_images.size(); i++) {
+      this.messages.add(message_to_images.get(i).message);
+      imgs[i] = message_to_images.get(i).img;
+    }
+    this.toggle = new FormFieldToggleButton(imgs);
+    this.toggle();
+  }
+
+  void toggle() {
+    super.setValue(this.messages.get(this.toggle.toggle_index));
+    this.updateWidthDependencies();
+  }
+
+  @Override
+  void updateWidthDependencies() {
+    float temp_field_width = this.field_width;
+    this.field_width = 0.75 * this.field_width;
+    super.updateWidthDependencies();
+    this.field_width = temp_field_width;
+    textSize(this.text_size);
+    float togglesize = min(0.95 * this.getHeight(), this.field_width - textWidth(this.message) - 2);
+    float xi = textWidth(this.message);
+    float yi = 0.5 * (this.getHeight() - togglesize);
+    this.toggle.setLocation(1, yi, togglesize, yi + togglesize);
+    this.left_edge = 2 + togglesize;
+  }
+
+  @Override
+  String getValue() {
+    return Integer.toString(this.toggle.toggle_index);
+  }
+  @Override
+  void setValue(String newValue) {
+    if (isInt(newValue)) {
+      this.toggle.setToggle(toInt(newValue));
+      this.toggle();
+    }
+  }
+
+  @Override
+  FormFieldSubmit update(int millis) {
+    this.toggle.update(millis);
+    return super.update(millis);
+  }
+
+  @Override
+  void mouseMove(float mX, float mY) {
+    this.toggle.mouseMove(mX, mY);
+  }
+
+  @Override
+  void mousePress() {
+    this.toggle.mousePress();
+  }
+
+  @Override
+  void mouseRelease(float mX, float mY) {
+    this.toggle.mouseRelease(mX, mY);
   }
 }
 
@@ -4333,6 +4476,11 @@ abstract class Form {
       return;
     }
     this.fields.remove(index);
+    this.refreshScrollbar();
+  }
+
+  void clearFields() {
+    this.fields.clear();
     this.refreshScrollbar();
   }
 

@@ -73,6 +73,8 @@ abstract class Minigame {
   protected float xf = 0;
   protected float yf = 0;
 
+  protected color color_background = color(60);
+
   Minigame(MinigameName name) {
     this.name = name;
   }
