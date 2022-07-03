@@ -1,3 +1,8 @@
+// Java mod with negative numbers
+float negMod(float a, float b) {
+  return (a % b + b) % b;
+}
+
 // Element to color
 color elementalColor(Element e) {
   switch(e) {

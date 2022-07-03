@@ -278,36 +278,46 @@ abstract class AbstractGameMap {
 
 
   abstract class AbstractTerrainDimgThread extends Thread {
+    protected float startSquareX = 0;
+    protected float startSquareY = 0;
+    protected float visSquareX = 0;
+    protected float visSquareY = 0;
+    protected float terrain_resolution = 0;
+    protected float xi_map = 0;
+    protected float yi_map = 0;
+    protected float xf_map = 0;
+    protected float yf_map = 0;
+    protected float zoom = 0;
     AbstractTerrainDimgThread(String thread_name) {
       super(thread_name);
       this.setDaemon(true);
     }
     @Override
     void run() {
-      float startSquareX = AbstractGameMap.this.startSquareX;
-      float startSquareY = AbstractGameMap.this.startSquareY;
-      float visSquareX = AbstractGameMap.this.visSquareX;
-      float visSquareY = AbstractGameMap.this.visSquareY;
-      float terrain_resolution = AbstractGameMap.this.terrain_resolution;
-      float xi_map = AbstractGameMap.this.xi_map;
-      float xf_map = AbstractGameMap.this.xf_map;
-      float yi_map = AbstractGameMap.this.yi_map;
-      float yf_map = AbstractGameMap.this.yf_map;
-      float zoom = AbstractGameMap.this.zoom;
+      this.startSquareX = AbstractGameMap.this.startSquareX;
+      this.startSquareY = AbstractGameMap.this.startSquareY;
+      this.visSquareX = AbstractGameMap.this.visSquareX;
+      this.visSquareY = AbstractGameMap.this.visSquareY;
+      this.terrain_resolution = AbstractGameMap.this.terrain_resolution;
+      this.xi_map = AbstractGameMap.this.xi_map;
+      this.yi_map = AbstractGameMap.this.yi_map;
+      this.xf_map = AbstractGameMap.this.xf_map;
+      this.yf_map = AbstractGameMap.this.yf_map;
+      this.zoom = AbstractGameMap.this.zoom;
       this.updateTerrainDisplay();
-      AbstractGameMap.this.startSquareX_old = startSquareX;
-      AbstractGameMap.this.startSquareY_old = startSquareY;
-      AbstractGameMap.this.visSquareX_old = visSquareX;
-      AbstractGameMap.this.visSquareY_old = visSquareY;
-      AbstractGameMap.this.xi_map_old = xi_map;
-      AbstractGameMap.this.xf_map_old = xf_map;
-      AbstractGameMap.this.yi_map_old = yi_map;
-      AbstractGameMap.this.yf_map_old = yf_map;
+      AbstractGameMap.this.startSquareX_old = this.startSquareX;
+      AbstractGameMap.this.startSquareY_old = this.startSquareY;
+      AbstractGameMap.this.visSquareX_old = this.visSquareX;
+      AbstractGameMap.this.visSquareY_old = this.visSquareY;
+      AbstractGameMap.this.xi_map_old = this.xi_map;
+      AbstractGameMap.this.yi_map_old = this.yi_map;
+      AbstractGameMap.this.xf_map_old = this.xf_map;
+      AbstractGameMap.this.yf_map_old = this.yf_map;
       AbstractGameMap.this.xi_map_dif = 0;
-      AbstractGameMap.this.xf_map_dif = 0;
       AbstractGameMap.this.yi_map_dif = 0;
+      AbstractGameMap.this.xf_map_dif = 0;
       AbstractGameMap.this.yf_map_dif = 0;
-      AbstractGameMap.this.zoom_old = zoom;
+      AbstractGameMap.this.zoom_old = this.zoom;
     }
     abstract void updateTerrainDisplay();
   }

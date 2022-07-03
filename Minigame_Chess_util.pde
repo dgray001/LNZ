@@ -1594,9 +1594,6 @@ class ChessPiece extends GamePiece {
     for (int x = this.coordinate.x + 1, y = this.coordinate.y + 1; (x <
       board.boardWidth() && y < board.boardHeight()); x++, y++) {
       IntegerCoordinate target = new IntegerCoordinate(x, y);
-      if (!board.contains(target)) {
-        break;
-      }
       ChessPiece target_piece = board.pieceAt(target);
       if (target_piece == null || target_piece.remove || target_piece.piece_color != this.piece_color) {
         this.valid_moves.add(new ChessMove(this.coordinate, target,
@@ -1609,9 +1606,6 @@ class ChessPiece extends GamePiece {
     for (int x = this.coordinate.x + 1, y = this.coordinate.y - 1; x <
       board.boardWidth() && y >= 0; x++, y--) {
       IntegerCoordinate target = new IntegerCoordinate(x, y);
-      if (!board.contains(target)) {
-        break;
-      }
       ChessPiece target_piece = board.pieceAt(target);
       if (target_piece == null || target_piece.remove || target_piece.piece_color != this.piece_color) {
         this.valid_moves.add(new ChessMove(this.coordinate, target,
@@ -1624,9 +1618,6 @@ class ChessPiece extends GamePiece {
     for (int x = this.coordinate.x - 1, y = this.coordinate.y + 1; x
       >= 0 && y < board.boardHeight(); x--, y++) {
       IntegerCoordinate target = new IntegerCoordinate(x, y);
-      if (!board.contains(target)) {
-        break;
-      }
       ChessPiece target_piece = board.pieceAt(target);
       if (target_piece == null || target_piece.remove || target_piece.piece_color != this.piece_color) {
         this.valid_moves.add(new ChessMove(this.coordinate, target,
@@ -1638,9 +1629,6 @@ class ChessPiece extends GamePiece {
     }
     for (int x = this.coordinate.x - 1, y = this.coordinate.y - 1; x >= 0 && y >= 0; x--, y--) {
       IntegerCoordinate target = new IntegerCoordinate(x, y);
-      if (!board.contains(target)) {
-        break;
-      }
       ChessPiece target_piece = board.pieceAt(target);
       if (target_piece == null || target_piece.remove || target_piece.piece_color != this.piece_color) {
         this.valid_moves.add(new ChessMove(this.coordinate, target,
@@ -1655,9 +1643,6 @@ class ChessPiece extends GamePiece {
   void addRookMoves(ChessBoard board) {
     for (int x = this.coordinate.x + 1, y = this.coordinate.y; x < board.boardWidth(); x++) {
       IntegerCoordinate target = new IntegerCoordinate(x, y);
-      if (!board.contains(target)) {
-        break;
-      }
       ChessPiece target_piece = board.pieceAt(target);
       if (target_piece == null || target_piece.remove || target_piece.piece_color != this.piece_color) {
         this.valid_moves.add(new ChessMove(this.coordinate, target,
@@ -1669,9 +1654,6 @@ class ChessPiece extends GamePiece {
     }
     for (int x = this.coordinate.x, y = this.coordinate.y + 1; y < board.boardHeight(); y++) {
       IntegerCoordinate target = new IntegerCoordinate(x, y);
-      if (!board.contains(target)) {
-        break;
-      }
       ChessPiece target_piece = board.pieceAt(target);
       if (target_piece == null || target_piece.remove || target_piece.piece_color != this.piece_color) {
         this.valid_moves.add(new ChessMove(this.coordinate, target,
@@ -1683,9 +1665,6 @@ class ChessPiece extends GamePiece {
     }
     for (int x = this.coordinate.x - 1, y = this.coordinate.y; x >= 0; x--) {
       IntegerCoordinate target = new IntegerCoordinate(x, y);
-      if (!board.contains(target)) {
-        break;
-      }
       ChessPiece target_piece = board.pieceAt(target);
       if (target_piece == null || target_piece.remove || target_piece.piece_color != this.piece_color) {
         this.valid_moves.add(new ChessMove(this.coordinate, target,
@@ -1697,9 +1676,6 @@ class ChessPiece extends GamePiece {
     }
     for (int x = this.coordinate.x, y = this.coordinate.y - 1; y >= 0; y--) {
       IntegerCoordinate target = new IntegerCoordinate(x, y);
-      if (!board.contains(target)) {
-        break;
-      }
       ChessPiece target_piece = board.pieceAt(target);
       if (target_piece == null || target_piece.remove || target_piece.piece_color != this.piece_color) {
         this.valid_moves.add(new ChessMove(this.coordinate, target,
@@ -1730,8 +1706,8 @@ class ChessMove {
     ChessColor source_color, ChessPieceType source_type) {
     this(source, target, capture, source_color, source_type, null);
   }
-    ChessMove(IntegerCoordinate source, IntegerCoordinate target, boolean capture,
-      ChessColor source_color, ChessPieceType source_type, ChessPieceType pawn_promotion) {
+  ChessMove(IntegerCoordinate source, IntegerCoordinate target, boolean capture,
+    ChessColor source_color, ChessPieceType source_type, ChessPieceType pawn_promotion) {
     this.source = source;
     this.target = target;
     this.capture = capture;

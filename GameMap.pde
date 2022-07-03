@@ -5,10 +5,10 @@ class GameMap extends AbstractGameMap {
     }
     void updateTerrainDisplay() {
       PImage new_terrain_display = GameMap.this.terrain_dimg.getImagePiece(
-        round(startSquareX * terrain_resolution), round(startSquareY * terrain_resolution),
-        round(visSquareX * terrain_resolution), round(visSquareY * terrain_resolution));
+        round(this.startSquareX * this.terrain_resolution), round(this.startSquareY * this.terrain_resolution),
+        round(this.visSquareX * this.terrain_resolution), round(this.visSquareY * this.terrain_resolution));
       new_terrain_display = resizeImage(new_terrain_display,
-        round(xf_map - xi_map), round(yf_map - yi_map));
+        round(this.xf_map - this.xi_map), round(this.yf_map - this.yi_map));
       GameMap.this.terrain_display = new_terrain_display;
     }
   }
