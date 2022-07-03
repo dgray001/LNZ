@@ -52,8 +52,9 @@ class GameMapArea extends AbstractGameMap {
   class Chunk {
     private GameMapSquare[][] squares;
     private HashMap<Integer, Feature> features = new HashMap<Integer, Feature>();
-    private DImg terrain_dimg = new DImg(global.images.getBlackPixel());
-    private DImg fog_dimg = new DImg(global.images.getTransparentPixel());
+    private DImg terrain_dimg;
+    private DImg fog_dimg;
+    private IntegerCoordinate coordinate;
 
     Chunk(IntegerCoordinate coordinate) {
       this.squares = new GameMapSquare[Constants.map_chunkWidth][Constants.map_chunkWidth];
@@ -62,18 +63,107 @@ class GameMapArea extends AbstractGameMap {
           this.squares[i][j] = new GameMapSquare();
         }
       }
-      PImage background_img = global.images.getImage("logo.png");
       this.terrain_dimg = new DImg(Constants.map_chunkWidth * GameMapArea.this.terrain_resolution,
         Constants.map_chunkWidth * GameMapArea.this.terrain_resolution);
       this.terrain_dimg.setGrid(Constants.map_chunkWidth, Constants.map_chunkWidth);
-      this.terrain_dimg.addImageGrid(background_img, 0, 0, Constants.map_chunkWidth, Constants.map_chunkWidth);
+      this.fog_dimg = new DImg(Constants.map_chunkWidth * Constants.map_fogResolution,
+        Constants.map_chunkWidth * Constants.map_fogResolution);
       this.fog_dimg.setGrid(Constants.map_chunkWidth, Constants.map_chunkWidth);
-      // from coordinate either load previously-made chunk or create new one (not in thread)
-      // then load image (in thread)
+      this.coordinate = coordinate;
+      if (fileExists(this.fileName())) {
+        this.load();
+      }
+      else {
+        this.generate();
+      }
+    }
+
+    String fileName() {
+      return (GameMapArea.this.map_folder + "/" + this.coordinate.x + this.coordinate.y + ".chunk.lnz");
+    }
+
+    void generate() {
+      int code = randomInt(151, 156);
+      for (int i = 0; i < this.squares.length; i++) {
+        for (int j = 0; j < this.squares[i].length; j++) {
+          this.squares[i][j].setTerrain(code);
+          this.terrain_dimg.addImageGrid(this.squares[i][j].terrainImage(), i, j);
+        }
+      }
+      this.save();
+    }
+
+    void load() {
+      String[] lines = loadStrings(this.fileName());
+      if (lines == null) {
+        global.errorMessage("ERROR: Reading chunk at path " + this.fileName() + " but no file exists.");
+        return;
+      }
+      for (String line : lines) {
+        String[] line_split = split(line, ':');
+        if (line_split.length < 2) {
+          continue;
+        }
+        String datakey = trim(line_split[0]);
+        String data = trim(line_split[1]);
+        for (int i = 2; i < line_split.length; i++) {
+          data += ":" + line_split[i];
+        }
+        // add feature data
+        this.addData(datakey, data);
+      }
+    }
+
+    void addData(String datakey, String data) {
+      switch(datakey) {
+        case "terrain":
+          String[] data_split = split(data, ':');
+          if (data_split.length < 2) {
+            global.errorMessage("ERROR: Terrain missing dimension in data: " + data + ".");
+            break;
+          }
+          String[] terrain_dimensions = split(data_split[0], ',');
+          if (terrain_dimensions.length < 2) {
+            global.errorMessage("ERROR: Terrain dimensions missing dimension in data: " + data + ".");
+            break;
+          }
+          int terrain_x = toInt(trim(terrain_dimensions[0]));
+          int terrain_y = toInt(trim(terrain_dimensions[1]));
+          String[] terrain_values = split(data_split[1], ',');
+          if (terrain_values.length < 3) {
+            global.errorMessage("ERROR: Terrain values missing dimension in data: " + data + ".");
+            break;
+          }
+          int terrain_id = toInt(trim(terrain_values[0]));
+          int terrain_height = toInt(trim(terrain_values[1]));
+          try {
+            GameMapSquare square = this.squares[terrain_x][terrain_y];
+            square.setTerrain(terrain_id);
+            this.terrain_dimg.addImageGrid(square.terrainImage(), terrain_x, terrain_y);
+            //GameMapArea.this.setTerrainBaseElevation(terrain_height, terrain_x, terrain_y);
+            //if (toBoolean(trim(terrain_values[2]))) {
+            //  GameMapArea.this.exploreTerrain(terrain_x, terrain_y, false);
+            //}
+          }
+          catch(ArrayIndexOutOfBoundsException e) {}
+          break;
+        default:
+          global.errorMessage("ERROR: Datakey " + datakey + " not recognized.");
+          break;
+      }
     }
 
     void save() {
-      // save chunk in map folder
+      PrintWriter file = createWriter(this.fileName());
+      for (int i = 0; i < this.squares.length; i++) {
+        for (int j = 0; j < this.squares[i].length; j++) {
+          file.println("terrain: " + i + ", " + j + ": " + this.squares[i][j].terrain_id +
+            ", " + this.squares[i][j].base_elevation + ", " + this.squares[i][j].explored);
+        }
+      }
+      // save features
+      file.flush();
+      file.close();
     }
   }
 
@@ -253,12 +343,6 @@ class GameMapArea extends AbstractGameMap {
   void saveTerrain(PrintWriter file) {
     file.println("max_chunks_from_zero: " + this.max_chunks_from_zero);
     file.println("seed: " + this.seed);
-    for (int i = this.mapXI(); i < this.mapXF(); i++) {
-      for (int j = this.mapYI(); j < this.mapYF(); j++) {
-        //file.println("terrain: " + i + ", " + j + ": " + this.mapSquare(i, j).terrain_id +
-          //", " + this.mapSquare(i, j).base_elevation + ", " + this.mapSquare(i, j).explored);
-      }
-    }
     // add feature data
     /*for (Map.Entry<Integer, Feature> entry : this.features.entrySet()) {
       file.println("nextFeatureKey: " + entry.getKey());

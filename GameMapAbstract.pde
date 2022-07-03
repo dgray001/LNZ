@@ -866,7 +866,7 @@ abstract class AbstractGameMap {
         this.refreshDisplayImages();
       }
     }
-    catch(IndexOutOfBoundsException e) {}
+    catch(NullPointerException e) {}
   }
   void setTerrainBaseElevation(int h, int x, int y) {
     try {
