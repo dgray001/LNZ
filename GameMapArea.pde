@@ -50,11 +50,31 @@ class GameMapArea extends AbstractGameMap {
 
 
   class Chunk {
+    class LoadChunkThread extends Thread {
+      LoadChunkThread() {
+        super("LoadChunkThread");
+        this.setDaemon(true);
+      }
+
+      @Override
+      void run() {
+        if (fileExists(Chunk.this.fileName())) {
+          Chunk.this.load();
+        }
+        else {
+          Chunk.this.generate();
+        }
+      }
+    }
+
+
     private GameMapSquare[][] squares;
     private HashMap<Integer, Feature> features = new HashMap<Integer, Feature>();
     private DImg terrain_dimg;
     private DImg fog_dimg;
     private IntegerCoordinate coordinate;
+
+    private LoadChunkThread thread;
 
     Chunk(IntegerCoordinate coordinate) {
       this.squares = new GameMapSquare[Constants.map_chunkWidth][Constants.map_chunkWidth];
@@ -63,26 +83,39 @@ class GameMapArea extends AbstractGameMap {
           this.squares[i][j] = new GameMapSquare();
         }
       }
-      this.terrain_dimg = new DImg(Constants.map_chunkWidth * GameMapArea.this.terrain_resolution,
-        Constants.map_chunkWidth * GameMapArea.this.terrain_resolution);
-      this.terrain_dimg.setGrid(Constants.map_chunkWidth, Constants.map_chunkWidth);
-      this.fog_dimg = new DImg(Constants.map_chunkWidth * Constants.map_fogResolution,
-        Constants.map_chunkWidth * Constants.map_fogResolution);
-      this.fog_dimg.setGrid(Constants.map_chunkWidth, Constants.map_chunkWidth);
       this.coordinate = coordinate;
-      if (fileExists(this.fileName())) {
-        this.load();
-      }
-      else {
-        this.generate();
-      }
+      Chunk.this.terrain_dimg = new DImg(Constants.map_chunkWidth * GameMapArea.this.terrain_resolution,
+        Constants.map_chunkWidth * GameMapArea.this.terrain_resolution);
+      Chunk.this.terrain_dimg.setGrid(Constants.map_chunkWidth, Constants.map_chunkWidth);
+      Chunk.this.fog_dimg = new DImg(Constants.map_chunkWidth * Constants.map_fogResolution,
+        Constants.map_chunkWidth * Constants.map_fogResolution);
+      Chunk.this.fog_dimg.setGrid(Constants.map_chunkWidth, Constants.map_chunkWidth);
+    }
+
+    void loadChunk() {
+      this.thread = new LoadChunkThread();
+      this.thread.start();
     }
 
     String fileName() {
       return (GameMapArea.this.map_folder + "/" + this.coordinate.x + this.coordinate.y + ".chunk.lnz");
     }
 
+    int chunkXI() {
+      return this.coordinate.x * Constants.map_chunkWidth;
+    }
+    int chunkYI() {
+      return this.coordinate.y * Constants.map_chunkWidth;
+    }
+    int chunkXF() {
+      return (this.coordinate.x + 1) * Constants.map_chunkWidth;
+    }
+    int chunkYF() {
+      return (this.coordinate.y + 1) * Constants.map_chunkWidth;
+    }
+
     void generate() {
+      randomSeed(GameMapArea.this.seed + this.coordinate.hashCode());
       int code = randomInt(151, 156);
       for (int i = 0; i < this.squares.length; i++) {
         for (int j = 0; j < this.squares[i].length; j++) {
@@ -90,7 +123,9 @@ class GameMapArea extends AbstractGameMap {
           this.terrain_dimg.addImageGrid(this.squares[i][j].terrainImage(), i, j);
         }
       }
+      GameMapArea.this.addFeature(new Feature(442, this.chunkXI() + 1, this.chunkYI() + 1));
       this.save();
+      GameMapArea.this.refreshTerrainImage();
     }
 
     void load() {
@@ -99,6 +134,15 @@ class GameMapArea extends AbstractGameMap {
         global.errorMessage("ERROR: Reading chunk at path " + this.fileName() + " but no file exists.");
         return;
       }
+
+      Stack<ReadFileObject> object_queue = new Stack<ReadFileObject>();
+
+      Feature curr_feature = null;
+      int next_feature_key = 0;
+      int max_item_key = 0;
+      Item curr_item = null;
+      Item curr_item_internal = null; // for item inventories
+
       for (String line : lines) {
         String[] line_split = split(line, ':');
         if (line_split.length < 2) {
@@ -109,48 +153,223 @@ class GameMapArea extends AbstractGameMap {
         for (int i = 2; i < line_split.length; i++) {
           data += ":" + line_split[i];
         }
-        // add feature data
-        this.addData(datakey, data);
+        if (datakey.equals("new")) {
+          ReadFileObject type = ReadFileObject.objectType(trim(line_split[1]));
+          switch(type) {
+            case FEATURE:
+              if (line_split.length < 3) {
+                global.errorMessage("ERROR: Feature ID missing in Feature constructor.");
+                break;
+              }
+              object_queue.push(type);
+              curr_feature = new Feature(toInt(trim(line_split[2])));
+              break;
+            case ITEM:
+              if (line_split.length < 3) {
+                global.errorMessage("ERROR: Item ID missing in Item constructor.");
+                break;
+              }
+              object_queue.push(type);
+              if (curr_item == null) {
+                curr_item = new Item(toInt(trim(line_split[2])));
+              }
+              else {
+                if (curr_item_internal != null) {
+                  global.errorMessage("ERROR: Can't create an internal item inside an internal item.");
+                  break;
+                }
+                if (curr_item.inventory == null) {
+                  global.errorMessage("ERROR: Can't create an internal item " +
+                    "inside an item with no inventory.");
+                  break;
+                }
+                curr_item_internal = new Item(toInt(trim(line_split[2])));
+              }
+              break;
+            default:
+              global.errorMessage("ERROR: Can't add a " + type + " type to Chunk data.");
+              break;
+          }
+        }
+        else if (datakey.equals("end")) {
+          ReadFileObject type = ReadFileObject.objectType(trim(line_split[1]));
+          if (object_queue.empty()) {
+            global.errorMessage("ERROR: Tring to end a " + type.name + " object but not inside any object.");
+          }
+          else if (type.name.equals(object_queue.peek().name)) {
+            switch(object_queue.pop()) {
+              case FEATURE:
+                if (curr_feature == null) {
+                  global.errorMessage("ERROR: Trying to end a null feature.");
+                  break;
+                }
+                GameMapArea.this.addFeature(curr_feature, false, next_feature_key);
+                curr_feature = null;
+                break;
+              case ITEM:
+                if (curr_item == null) {
+                  global.errorMessage("ERROR: Trying to end a null item.");
+                  break;
+                }
+                if (object_queue.empty()) {
+                  global.errorMessage("ERROR: Trying to end an item not inside any other object.");
+                  break;
+                }
+                switch(object_queue.peek()) {
+                  case FEATURE:
+                    if (line_split.length < 3) {
+                      global.errorMessage("ERROR: Ending item in feature inventory " +
+                        "but no slot information given.");
+                      break;
+                    }
+                    if (curr_feature == null) {
+                      global.errorMessage("ERROR: Trying to add item to null feature.");
+                      break;
+                    }
+                    if (curr_feature.inventory == null) {
+                      global.errorMessage("ERROR: Trying to add item to feature " +
+                        "inventory but curr_feature has no inventory.");
+                      break;
+                    }
+                    if (trim(line_split[1]).equals("item_array")) {
+                      if (curr_feature.items == null) {
+                        global.errorMessage("ERROR: Trying to add item to feature " +
+                          "item array but curr_feature has no item array.");
+                        break;
+                      }
+                      curr_feature.items.add(curr_item);
+                      break;
+                    }
+                    if (!isInt(trim(line_split[2]))) {
+                      global.errorMessage("ERROR: Ending item in feature inventory " +
+                        "but no slot information given.");
+                      break;
+                    }
+                    int slot_number = toInt(trim(line_split[2]));
+                    if (slot_number < 0 || slot_number >= curr_feature.inventory.slots.size()) {
+                      global.errorMessage("ERROR: Trying to add item to feature " +
+                        "inventory but slot number " + slot_number + " out of range.");
+                      break;
+                    }
+                    curr_feature.inventory.slots.get(slot_number).item = curr_item;
+                    break;
+                  case ITEM:
+                    if (curr_item_internal == null) {
+                      global.errorMessage("ERROR: Trying to end a null internal item.");
+                      break;
+                    }
+                    if (line_split.length < 3 || !isInt(trim(line_split[2]))) {
+                      global.errorMessage("ERROR: Ending item in item inventory " +
+                        "but no slot number given.");
+                      break;
+                    }
+                    if (curr_item == null) {
+                      global.errorMessage("ERROR: Trying to add item to null item.");
+                      break;
+                    }
+                    if (curr_item.inventory == null) {
+                      global.errorMessage("ERROR: Trying to add item to item " +
+                        "inventory but curr_item has no inventory.");
+                      break;
+                    }
+                    int item_slot_number = toInt(trim(line_split[2]));
+                    if (item_slot_number < 0 || item_slot_number >= curr_item.inventory.slots.size()) {
+                      global.errorMessage("ERROR: Trying to add item to feature " +
+                        "inventory but slot number " + item_slot_number + " out of range.");
+                      break;
+                    }
+                    curr_item.inventory.slots.get(item_slot_number).item = curr_item_internal;
+                    break;
+                  default:
+                    global.errorMessage("ERROR: Trying to end an item inside a " +
+                      object_queue.peek().name + " in Chunk data.");
+                    break;
+                }
+                if (curr_item_internal == null) {
+                  curr_item = null;
+                }
+                else {
+                  curr_item_internal = null;
+                }
+                break;
+              default:
+                global.errorMessage("ERROR: Trying to end a " + type.name + " which is not known.");
+                break;
+            }
+          }
+          else {
+            global.errorMessage("ERROR: Tring to end a " + type.name + " object " +
+              "but current object is a " + object_queue.peek().name + ".");
+          }
+        }
+        else if (!object_queue.empty()) {
+          switch(object_queue.peek()) {
+            case FEATURE:
+              if (curr_feature == null) {
+                global.errorMessage("ERROR: Trying to add feature data to a null feature.");
+                break;
+              }
+              curr_feature.addData(datakey, data);
+              break;
+            case ITEM:
+              if (curr_item == null) {
+                global.errorMessage("ERROR: Trying to add item data to a null item.");
+                break;
+              }
+              if (curr_item_internal != null) {
+                curr_item_internal.addData(datakey, data);
+              }
+              else {
+                curr_item.addData(datakey, data);
+              }
+              break;
+            default:
+              break;
+          }
+        }
+        else {
+          switch(datakey) {
+            case "nextFeatureKey":
+              next_feature_key = toInt(data);
+              break;
+            case "terrain":
+              String[] data_split = split(data, ':');
+              if (data_split.length < 2) {
+                global.errorMessage("ERROR: Terrain missing dimension in data: " + data + ".");
+                break;
+              }
+              String[] terrain_dimensions = split(data_split[0], ',');
+              if (terrain_dimensions.length < 2) {
+                global.errorMessage("ERROR: Terrain dimensions missing dimension in data: " + data + ".");
+                break;
+              }
+              int terrain_x = toInt(trim(terrain_dimensions[0]));
+              int terrain_y = toInt(trim(terrain_dimensions[1]));
+              String[] terrain_values = split(data_split[1], ',');
+              if (terrain_values.length < 3) {
+                global.errorMessage("ERROR: Terrain values missing dimension in data: " + data + ".");
+                break;
+              }
+              int terrain_id = toInt(trim(terrain_values[0]));
+              int terrain_height = toInt(trim(terrain_values[1]));
+              try {
+                GameMapSquare square = this.squares[terrain_x][terrain_y];
+                square.setTerrain(terrain_id);
+                square.base_elevation = terrain_height;
+                this.terrain_dimg.addImageGrid(square.terrainImage(), terrain_x, terrain_y);
+                if (toBoolean(trim(terrain_values[2]))) {
+                  square.explored = true;
+                }
+              }
+              catch(ArrayIndexOutOfBoundsException e) {}
+              break;
+            default:
+              global.errorMessage("ERROR: Datakey " + datakey + " not recognized.");
+              break;
+          }
+        }
       }
-    }
-
-    void addData(String datakey, String data) {
-      switch(datakey) {
-        case "terrain":
-          String[] data_split = split(data, ':');
-          if (data_split.length < 2) {
-            global.errorMessage("ERROR: Terrain missing dimension in data: " + data + ".");
-            break;
-          }
-          String[] terrain_dimensions = split(data_split[0], ',');
-          if (terrain_dimensions.length < 2) {
-            global.errorMessage("ERROR: Terrain dimensions missing dimension in data: " + data + ".");
-            break;
-          }
-          int terrain_x = toInt(trim(terrain_dimensions[0]));
-          int terrain_y = toInt(trim(terrain_dimensions[1]));
-          String[] terrain_values = split(data_split[1], ',');
-          if (terrain_values.length < 3) {
-            global.errorMessage("ERROR: Terrain values missing dimension in data: " + data + ".");
-            break;
-          }
-          int terrain_id = toInt(trim(terrain_values[0]));
-          int terrain_height = toInt(trim(terrain_values[1]));
-          try {
-            GameMapSquare square = this.squares[terrain_x][terrain_y];
-            square.setTerrain(terrain_id);
-            this.terrain_dimg.addImageGrid(square.terrainImage(), terrain_x, terrain_y);
-            //GameMapArea.this.setTerrainBaseElevation(terrain_height, terrain_x, terrain_y);
-            //if (toBoolean(trim(terrain_values[2]))) {
-            //  GameMapArea.this.exploreTerrain(terrain_x, terrain_y, false);
-            //}
-          }
-          catch(ArrayIndexOutOfBoundsException e) {}
-          break;
-        default:
-          global.errorMessage("ERROR: Datakey " + datakey + " not recognized.");
-          break;
-      }
+      GameMapArea.this.refreshTerrainImage();
     }
 
     void save() {
@@ -162,6 +381,10 @@ class GameMapArea extends AbstractGameMap {
         }
       }
       // save features
+      for (Map.Entry<Integer, Feature> entry : this.features.entrySet()) {
+        file.println("nextFeatureKey: " + entry.getKey());
+        file.println(entry.getValue().fileString());
+      }
       file.flush();
       file.close();
     }
@@ -254,7 +477,9 @@ class GameMapArea extends AbstractGameMap {
         if (this.chunk_reference.containsKey(coordinate)) {
           continue;
         }
-        this.chunk_reference.put(coordinate, new Chunk(coordinate));
+        Chunk newChunk = new Chunk(coordinate);
+        this.chunk_reference.put(coordinate, newChunk);
+        newChunk.loadChunk();
       }
     }
   }
@@ -307,16 +532,31 @@ class GameMapArea extends AbstractGameMap {
   }
 
   void actuallyAddFeature(int code, Feature f) {
-    //this.features.put(code, f);
+    IntegerCoordinate coordinate = this.coordinateOf(round(f.x), round(f.y));
+    Chunk chunk = this.chunk_reference.get(coordinate);
+    if (chunk == null) {
+      global.log("WARNING: Can't find chunk with coordinates " + coordinate.x +
+        ", " + coordinate.y + " to add feature to.");
+      return;
+    }
+    chunk.features.put(code, f);
   }
 
   Feature getFeature(int code) {
+    for (Chunk chunk : this.chunk_reference.values()) {
+      if (chunk.features.containsKey(code)) {
+        return chunk.features.get(code);
+      }
+    }
     return null;
-    //return this.features.get(code);
   }
 
-  Collection<Feature> features() {
-    return new ArrayList<Feature>();
+  Collection<Feature> features() { // remove this, make logic more specific
+    ArrayList<Feature> feature_list = new ArrayList<Feature>();
+    for (Chunk chunk : this.chunk_reference.values()) {
+      feature_list.addAll(chunk.features.values());
+    }
+    return feature_list;
     //return this.features.values();
   }
 
@@ -343,11 +583,12 @@ class GameMapArea extends AbstractGameMap {
   void saveTerrain(PrintWriter file) {
     file.println("max_chunks_from_zero: " + this.max_chunks_from_zero);
     file.println("seed: " + this.seed);
-    // add feature data
-    /*for (Map.Entry<Integer, Feature> entry : this.features.entrySet()) {
-      file.println("nextFeatureKey: " + entry.getKey());
-      file.println(entry.getValue().fileString());
-    }*/
+    file.println("nextFeatureKey: " + this.nextFeatureKey);
+    Iterator it = this.chunk_reference.entrySet().iterator();
+    while(it.hasNext()) {
+      Map.Entry<IntegerCoordinate, Chunk> entry = (Map.Entry<IntegerCoordinate, Chunk>)it.next();
+      entry.getValue().save();
+    }
   }
   @Override
   String fileType() {
@@ -361,19 +602,6 @@ class GameMapArea extends AbstractGameMap {
         break;
       case "seed":
         this.seed = toInt(data);
-        break;
-      case "dimensions":
-        /*String[] dimensions = split(data, ',');
-        if (dimensions.length < 2) {
-          global.errorMessage("ERROR: Map missing dimensions in data: " + data + ".");
-          this.mapWidth = 1;
-          this.mapHeight = 1;
-        }
-        else {
-          this.mapWidth = toInt(trim(dimensions[0]));
-          this.mapHeight = toInt(trim(dimensions[1]));
-        }
-        this.initializeSquares();*/
         break;
       default:
         global.errorMessage("ERROR: Datakey " + datakey + " not recognized for GameMap object.");

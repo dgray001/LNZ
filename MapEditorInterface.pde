@@ -2264,6 +2264,7 @@ class MapEditorInterface extends InterfaceLNZ {
     if (fileExists("data/areas/" + area_name + ".area.lnz")) {
       return;
     }
+    deleteFolder("data/areas/temp");
     this.curr_area = new GameMapArea("data/areas/temp");
     this.curr_area.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
     this.curr_area.mapName = area_name;
@@ -2272,6 +2273,7 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
   void closeAreaTester() {
+    deleteFolder("data/areas/temp");
     this.curr_area = null;
     this.navigate(MapEditorPage.AREAS);
   }
@@ -2283,6 +2285,7 @@ class MapEditorInterface extends InterfaceLNZ {
     if (!fileExists("data/areas/" + area_name + ".area.lnz")) {
       return;
     }
+    deleteFolder("data/areas/temp");
     this.curr_area = new GameMapArea("data/areas/temp");
     this.curr_area.mapName = area_name;
     this.curr_area.open("data/areas");

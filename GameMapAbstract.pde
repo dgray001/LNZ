@@ -959,11 +959,10 @@ abstract class AbstractGameMap {
   void addFeature(Feature f) {
     this.addFeature(f, true);
   }
-  void addFeature(Feature f, boolean refreshImage) {
-    this.addFeature(f, refreshImage, this.nextFeatureKey);
-    this.nextFeatureKey++;
+  void addFeature(Feature f, boolean refresh_image) {
+    this.addFeature(f, refresh_image, this.nextFeatureKey++);
   }
-  void addFeature(Feature f, boolean refreshImage, int code) {
+  void addFeature(Feature f, boolean refresh_image, int code) {
     if (!f.inMap(this.mapXI(), this.mapYI(), this.mapXF(), this.mapYF())) {
       return;
     }
@@ -972,13 +971,20 @@ abstract class AbstractGameMap {
         if (f.ignoreSquare(i - round(f.x), j - round(f.y))) {
           continue;
         }
-        this.mapSquare(i, j).addedFeature(f);
+        GameMapSquare square = this.mapSquare(i, j);
+        if (square != null) {
+          square.addedFeature(f);
+        }
+        else {
+          global.log("WARNING: Couldn't find square with coordinates " + i + ", " +
+            j + " where feature was added.");
+        }
       }
     }
     if (f.displaysImage()) {
       this.terrainImageGrid(f.getImage(), round(floor(f.x)), round(floor(f.y)), f.sizeX, f.sizeY);
     }
-    if (refreshImage) {
+    if (refresh_image) {
       this.refreshTerrainImage();
     }
     f.map_key = code;
@@ -1266,7 +1272,7 @@ abstract class AbstractGameMap {
     int unit_threads = 0;
     for (Thread thread : all_threads.keySet()) {
       String thread_name = thread.getName();
-      if (thread_name.equals("TerrainDimgThread") || thread_name.equals("MouseMoveThread")) {
+      if (thread_name.equals("TerrainDimgThread") || thread_name.equals("MouseMoveThread") || thread_name.equals("LoadChunkThread")) {
         gamemap_threads++;
       }
       else if (thread_name.equals("PathFindingThread")) {
@@ -2743,6 +2749,7 @@ abstract class AbstractGameMap {
               curr_ability = null;
               break;
             default:
+              global.errorMessage("ERROR: Trying to end a " + type.name + " which is not known.");
               break;
           }
         }
