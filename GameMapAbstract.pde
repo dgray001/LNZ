@@ -960,7 +960,10 @@ abstract class AbstractGameMap {
     this.addFeature(f, true);
   }
   void addFeature(Feature f, boolean refresh_image) {
-    this.addFeature(f, refresh_image, this.nextFeatureKey++);
+    this.addFeature(f, refresh_image, this.nextFeatureKey());
+  }
+  synchronized int nextFeatureKey() {
+    return this.nextFeatureKey++;
   }
   void addFeature(Feature f, boolean refresh_image, int code) {
     if (!f.inMap(this.mapXI(), this.mapYI(), this.mapXF(), this.mapYF())) {
@@ -977,7 +980,7 @@ abstract class AbstractGameMap {
         }
         else {
           global.log("WARNING: Couldn't find square with coordinates " + i + ", " +
-            j + " where feature was added.");
+            j + " where feature with code " + code + " was added.");
         }
       }
     }

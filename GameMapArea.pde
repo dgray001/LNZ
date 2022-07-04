@@ -73,6 +73,7 @@ class GameMapArea extends AbstractGameMap {
     private DImg terrain_dimg;
     private DImg fog_dimg;
     private IntegerCoordinate coordinate;
+    private Biome biome = Biome.GRASS;
 
     private LoadChunkThread thread;
 
@@ -115,15 +116,15 @@ class GameMapArea extends AbstractGameMap {
     }
 
     void generate() {
-      randomSeed(GameMapArea.this.seed + this.coordinate.hashCode());
-      int code = randomInt(151, 156);
+      // Base terrain from perlin noise and biome
       for (int i = 0; i < this.squares.length; i++) {
         for (int j = 0; j < this.squares[i].length; j++) {
-          this.squares[i][j].setTerrain(code);
+          this.squares[i][j].setTerrain(this.biome.terrainCode(noise(i, j)));
           this.terrain_dimg.addImageGrid(this.squares[i][j].terrainImage(), i, j);
         }
       }
-      GameMapArea.this.addFeature(new Feature(442, this.chunkXI() + 1, this.chunkYI() + 1));
+      // terrain structures ??
+      // add features ??
       this.save();
       GameMapArea.this.refreshTerrainImage();
     }
@@ -403,6 +404,8 @@ class GameMapArea extends AbstractGameMap {
   GameMapArea(String map_folder) {
     super();
     this.map_folder = map_folder;
+    noiseSeed(this.seed);
+    noiseDetail(Constants.map_noiseOctaves, 0.5);
   }
 
 
@@ -434,11 +437,12 @@ class GameMapArea extends AbstractGameMap {
 
   GameMapSquare mapSquare(int i, int j) {
     try {
-      Chunk chunk = this.chunk_reference.get(this.coordinateOf(i, j));
+      IntegerCoordinate coordinate = this.coordinateOf(i, j);
+      Chunk chunk = this.chunk_reference.get(coordinate);
       if (chunk == null) {
         return null;
       }
-      return chunk.squares[i % Constants.map_chunkWidth][j % Constants.map_chunkWidth];
+      return chunk.squares[Math.floorMod(i, Constants.map_chunkWidth)][Math.floorMod(j, Constants.map_chunkWidth)];
     } catch(ArrayIndexOutOfBoundsException e) {
       return null;
     }
@@ -557,26 +561,29 @@ class GameMapArea extends AbstractGameMap {
       feature_list.addAll(chunk.features.values());
     }
     return feature_list;
-    //return this.features.values();
   }
 
-  void updateFeatures(int time_elapsed) {/*
-    Iterator feature_iterator = this.features.entrySet().iterator();
-    while(feature_iterator.hasNext()) {
-      Map.Entry<Integer, Feature> entry = (Map.Entry<Integer, Feature>)feature_iterator.next();
-      updateFeature(entry.getValue(), feature_iterator, time_elapsed);
-    }*/
-  }
-
-  void updateFeaturesCheckRemovalOnly() {/*
-    Iterator feature_iterator = this.features.entrySet().iterator();
-    while(feature_iterator.hasNext()) {
-      Map.Entry<Integer, Feature> entry = (Map.Entry<Integer, Feature>)feature_iterator.next();
-      if (entry.getValue().remove) {
-        this.removeFeature(entry.getKey());
-        feature_iterator.remove();
+  void updateFeatures(int time_elapsed) {
+    for (Chunk chunk : this.chunk_reference.values()) {
+      Iterator feature_iterator = chunk.features.entrySet().iterator();
+      while(feature_iterator.hasNext()) {
+        Map.Entry<Integer, Feature> entry = (Map.Entry<Integer, Feature>)feature_iterator.next();
+        updateFeature(entry.getValue(), feature_iterator, time_elapsed);
       }
-    }*/
+    }
+  }
+
+  void updateFeaturesCheckRemovalOnly() {
+    for (Chunk chunk : this.chunk_reference.values()) {
+      Iterator feature_iterator = chunk.features.entrySet().iterator();
+      while(feature_iterator.hasNext()) {
+        Map.Entry<Integer, Feature> entry = (Map.Entry<Integer, Feature>)feature_iterator.next();
+        if (entry.getValue().remove) {
+          this.removeFeature(entry.getKey());
+          feature_iterator.remove();
+        }
+      }
+    }
   }
 
 
@@ -602,6 +609,7 @@ class GameMapArea extends AbstractGameMap {
         break;
       case "seed":
         this.seed = toInt(data);
+        noiseSeed(this.seed);
         break;
       default:
         global.errorMessage("ERROR: Datakey " + datakey + " not recognized for GameMap object.");

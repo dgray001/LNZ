@@ -114,11 +114,11 @@ class DImg {
     float scaling_width = newImg.width / w;
     float scaling_height = newImg.height / h;
     for (int i = 0; i < h; i++) {
-      int imgY = int(floor(scaling_height * i + 0.5));
+      int imgY = int(scaling_height * i + 0.5);
       for (int j = 0; j < w; j++) {
-        int imgX = int(floor(scaling_width * j + 0.5));
+        int imgX = int(scaling_width * j + 0.5);
 
-        int index = int(floor((i + y) * this.img.width + (j + x)));
+        int index = int((i + y) * this.img.width + (j + x));
         int img_index = imgY * newImg.width + imgX;
         try {
           float r_source = newImg.pixels[img_index] >> 16 & 0xFF;
@@ -366,9 +366,9 @@ PImage resizeImage(PImage img, int w, int h) {
   PImage return_image = createImage(w, h, ARGB);
   return_image.loadPixels();
   for (int i = 0; i < h; i++) {
-    int imgY = int(floor(scaling_height * i + 0.5));
+    int imgY = round(floor(scaling_height * i + 0.5));
     for (int j = 0; j < w; j++) {
-      int imgX = int(floor(scaling_width * j + 0.5)); // must floor to avoid artifacts
+      int imgX = round(floor(scaling_width * j + 0.5)); // must floor to avoid artifacts
       int index = i * w + j;
       int img_index = imgY * img.width + imgX;
       try {
