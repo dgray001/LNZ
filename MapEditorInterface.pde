@@ -1904,8 +1904,8 @@ class MapEditorInterface extends InterfaceLNZ {
         this.buttons[2].message = "Cancel\nLevel";
         break;
       case EDITING_AREA:
-        this.buttons[0].message = "";
-        this.buttons[1].message = "";
+        this.buttons[0].message = "Random\nSeed";
+        this.buttons[1].message = "Input\nSeed";
         this.buttons[2].message = "Cancel\nArea";
         break;
       default:
@@ -1997,6 +1997,7 @@ class MapEditorInterface extends InterfaceLNZ {
       case TESTLEVEL:
         break;
       case EDITING_AREA:
+        this.randomAreaSeed();
         break;
       default:
         global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
@@ -2043,6 +2044,7 @@ class MapEditorInterface extends InterfaceLNZ {
         this.saveLevelTester();
         break;
       case EDITING_AREA:
+        this.inputAreaSeed();
         break;
       default:
         global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
@@ -2056,7 +2058,7 @@ class MapEditorInterface extends InterfaceLNZ {
         this.testMap();
         break;
       case AREAS:
-        //this.loadArea();
+        //this.testArea();
         break;
       case LEVELS:
         this.testLevel();
@@ -2270,6 +2272,32 @@ class MapEditorInterface extends InterfaceLNZ {
     this.curr_area.mapName = area_name;
     this.curr_area.save(sketchPath("data/areas/"));
     this.navigate(MapEditorPage.EDITING_AREA);
+  }
+
+  void inputAreaSeed() {
+    // form to input seed
+  }
+
+  void randomAreaSeed() {
+    this.specificAreaSeed(int(map(random(1), 0, 1, 0, Integer.MAX_VALUE - 1)));
+  }
+  void specificAreaSeed(int new_seed) {
+    if (this.curr_area == null || this.page != MapEditorPage.EDITING_AREA) {
+      return;
+    }
+    this.curr_area.seed = new_seed;
+    String area_name = this.curr_area.mapName;
+    this.saveAreaTester();
+    this.openAreaEditor(area_name);
+    this.curr_area.addHeaderMessage("Now using seed: " + this.curr_area.seed);
+  }
+
+  void saveAreaTester() {
+    if (this.curr_area == null) {
+      return;
+    }
+    this.curr_area.save("data/areas");
+    this.closeAreaTester();
   }
 
   void closeAreaTester() {

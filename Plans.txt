@@ -4,6 +4,8 @@ v0.7.7: Ben Nelson Campaign (07/09)
  - Make World map with all 6 initial heroes (Ben, Dan, Mattus, Patrick, JF, Spinny)
  - Finish all Lev2s/Lev3s for at least ahimdoor/brothersdoor, maybe chapeldoor
 
+ - Apply fog shit to areas
+ - Have area editor to control grid lines and fog display
  - Need to somehow deal with features overlapping chunks
  - Need to do map fog handling on every new chunk
  - Fix GameMapArea terrain image having lines on chunk borders (could be resize, but more likely can be fixed at GameMapEditor thread)

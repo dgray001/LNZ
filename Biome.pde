@@ -19,7 +19,7 @@ enum AreaLocation {
     else if (noise_value > 0.5) {
       return Biome.MAPLE_FOREST2;
     }
-    else if (noise_value > 0.32) {
+    else if (noise_value > 0.31) {
       return Biome.MAPLE_FOREST1;
     }
     else {
