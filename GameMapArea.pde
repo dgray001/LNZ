@@ -73,9 +73,10 @@ class GameMapArea extends AbstractGameMap {
     private DImg terrain_dimg;
     private DImg fog_dimg;
     private IntegerCoordinate coordinate;
-    private Biome biome = Biome.GRASS;
+    private Biome biome = Biome.NONE;
 
     private LoadChunkThread thread;
+    private boolean remove = false; // used to avoid concurrent modification error if trying to remove while generating chunk
 
     Chunk(IntegerCoordinate coordinate) {
       this.squares = new GameMapSquare[Constants.map_chunkWidth][Constants.map_chunkWidth];
@@ -116,10 +117,20 @@ class GameMapArea extends AbstractGameMap {
     }
 
     void generate() {
+      this.biome = GameMapArea.this.getBiome(this.coordinate);
+      // Generate BiomeReturns from Perlin noise
+      BiomeReturn[][] biome_return = new BiomeReturn[Constants.map_chunkWidth][Constants.map_chunkWidth];
+      for (int i = 0; i < biome_return.length; i++) {
+        for (int j = 0; j < biome_return[i].length; j++) {
+          biome_return[i][j] = this.biome.processPerlinNoise(noise(
+            this.chunkXI() + i * 0.0666667 + Constants.map_noiseOffsetX,
+            this.chunkYI() + j * 0.0666667 + Constants.map_noiseOffsetY));
+        }
+      }
       // Base terrain from perlin noise and biome
       for (int i = 0; i < this.squares.length; i++) {
         for (int j = 0; j < this.squares[i].length; j++) {
-          this.squares[i][j].setTerrain(this.biome.terrainCode(noise(i, j)));
+          this.squares[i][j].setTerrain(biome_return[i][j].terrain_code);
           this.terrain_dimg.addImageGrid(this.squares[i][j].terrainImage(), i, j);
         }
       }
@@ -392,20 +403,35 @@ class GameMapArea extends AbstractGameMap {
   }
 
 
-  protected HashMap<IntegerCoordinate, Chunk> chunk_reference = new HashMap<IntegerCoordinate, Chunk>();
+  protected AreaLocation area_location = AreaLocation.FERNWOOD_FOREST;
+
+  protected ConcurrentHashMap<IntegerCoordinate, Chunk> chunk_reference = new ConcurrentHashMap<IntegerCoordinate, Chunk>();
   protected IntegerCoordinate current_chunk = new IntegerCoordinate(0, 0);
 
   protected String map_folder;
   protected int max_chunks_from_zero = 4;
-  protected int chunk_view_radius = 1;
-  protected int seed = 0;
+  protected int chunk_view_radius = 5;
+  protected int seed = 12;
 
 
   GameMapArea(String map_folder) {
     super();
     this.map_folder = map_folder;
     noiseSeed(this.seed);
-    noiseDetail(Constants.map_noiseOctaves, 0.5);
+    noiseDetail(Constants.map_noiseOctaves, 0.55);
+    this.refreshChunks();
+  }
+
+
+  synchronized float chunkBiomePerlinNoise(IntegerCoordinate coordinate) {
+    return noise(coordinate.x * Constants.map_chunkPerlinMultiplier + Constants.map_noiseOffsetX,
+      coordinate.y * Constants.map_chunkPerlinMultiplier + Constants.map_noiseOffsetY);
+  }
+
+  Biome getBiome(IntegerCoordinate coordinate) {
+    float noise_value = this.chunkBiomePerlinNoise(coordinate);
+    //println(noise_value);
+    return this.area_location.getBiome(noise_value);
   }
 
 
@@ -453,7 +479,7 @@ class GameMapArea extends AbstractGameMap {
   }
 
   void initializeSquares() {
-    this.refreshChunks();
+    //this.refreshChunks(); // wait until noiseDetails run
   }
   void refreshChunks() {
     // remove unnecessary chunks from memory
@@ -461,7 +487,7 @@ class GameMapArea extends AbstractGameMap {
     while(it.hasNext()) {
       Map.Entry<IntegerCoordinate, Chunk> entry = (Map.Entry<IntegerCoordinate, Chunk>)it.next();
       IntegerCoordinate coordinate = entry.getKey();
-      if (coordinate.x > this.current_chunk.x + this.chunk_view_radius ||
+      if (entry.getValue().remove || coordinate.x > this.current_chunk.x + this.chunk_view_radius ||
         coordinate.x < this.current_chunk.x - this.chunk_view_radius ||
         coordinate.y > this.current_chunk.y + this.chunk_view_radius ||
         coordinate.y < this.current_chunk.y - this.chunk_view_radius) {
@@ -523,7 +549,7 @@ class GameMapArea extends AbstractGameMap {
       Math.floorMod(y, Constants.map_chunkWidth));
   }
 
-  void startTerrainDimgThread() {
+  synchronized void startTerrainDimgThread() {
     this.refreshChunks();
     this.terrain_dimg_thread = new TerrainDimgThread();
     this.terrain_dimg_thread.start();

@@ -89,6 +89,7 @@ v0.7.9: Beta prep => if have time maybe start making more heroes (or outlines of
     => Happens rarely (<5%) in MapEditorInterface no idea how to replicate
   MAYBE_FIX = remove textbox constructor from GameMap constructor (has color() and textSize() and textWidth() in it)
     => hasn't happened since (v0.6.9n)
+  MAYBE_FIX = removed all uses of color(), etc and replaced with my ccolor()
 
 
 Parking Lot:
