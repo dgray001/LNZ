@@ -3334,15 +3334,23 @@ class IntegerFormField extends StringFormField {
     this.max_value = max;
   }
 
+  int validateInt(int value) {
+    if (this.min_value == this.max_value) {
+      return value;
+    }
+    if (value < this.min_value) {
+      value = this.min_value;
+    }
+    else if (value > this.max_value) {
+      value = this.max_value;
+    }
+    return value;
+  }
+
   @Override
   String getValue() {
     int return_value = toInt(this.input.text);
-    if (return_value < this.min_value) {
-      return_value = this.min_value;
-    }
-    else if (return_value > this.max_value) {
-      return_value = this.max_value;
-    }
+    return_value = this.validateInt(return_value);
     return Integer.toString(return_value);
   }
 
@@ -3350,13 +3358,7 @@ class IntegerFormField extends StringFormField {
     if (this.focused()) {
       return;
     }
-    int value = toInt(this.input.text);
-    if (value > this.max_value) {
-      value = this.max_value;
-    }
-    else if (value < this.min_value) {
-      value = this.min_value;
-    }
+    int value = this.validateInt(toInt(this.input.text));
     this.input.setText(Integer.toString(value));
   }
 }

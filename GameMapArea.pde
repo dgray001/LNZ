@@ -36,6 +36,8 @@ class GameMapArea extends AbstractGameMap {
           }
           PImage chunk_terrain_image = chunk.terrain_dimg.getImagePiece(round(img_x * this.terrain_resolution),
             round(img_y * this.terrain_resolution), round(img_w * this.terrain_resolution), round(img_h * this.terrain_resolution));
+          PImage chunk_fog_image = chunk.fog_dimg.getImagePiece(round(img_x * this.terrain_resolution),
+            round(img_y * this.terrain_resolution), round(img_w * this.terrain_resolution), round(img_h * this.terrain_resolution));
           int resized_w = round((this.xf_map - this.xi_map) * img_w / this.visSquareX);
           int resized_h = round((this.yf_map - this.yi_map) * img_h / this.visSquareY);
           chunk_terrain_image = resizeImage(chunk_terrain_image, resized_w, resized_h);
@@ -45,6 +47,20 @@ class GameMapArea extends AbstractGameMap {
         }
       }
       GameMapArea.this.terrain_display = new_terrain_display.img;
+    }
+  }
+
+
+  class FogDisplayThread extends Thread {
+    FogDisplayThread() {
+      super("FogDisplayThread");
+    }
+    @Override
+    void run() {
+      int map_squares_max_view_width = (GameMapArea.this.chunk_view_radius * 2 + 1) * Constants.map_chunkWidth;
+      DImg new_fog_display = new DImg(map_squares_max_view_width * Constants.
+        map_fogResolution, map_squares_max_view_width * Constants.map_fogResolution);
+      new_fog_display.setGrid(map_squares_max_view_width, map_squares_max_view_width);
     }
   }
 
@@ -64,6 +80,7 @@ class GameMapArea extends AbstractGameMap {
         else {
           Chunk.this.generate();
         }
+        Chunk.this.applyFogHandling();
       }
     }
 
@@ -114,6 +131,66 @@ class GameMapArea extends AbstractGameMap {
     }
     int chunkYF() {
       return (this.coordinate.y + 1) * Constants.map_chunkWidth;
+    }
+
+    void applyFogHandling() {
+      for (int i = 0; i < this.squares.length; i++) {
+        for (int j = 0; j < this.squares[i].length; j++) {
+          GameMapSquare square = this.squares[i][j];
+          if (square == null) {
+            continue;
+          }
+          switch(GameMapArea.this.fogHandling) {
+            case DEFAULT:
+              if (square.mapEdge()) {
+                this.colorFogGrid(Constants.color_transparent, i, j);
+              }
+              else if (!square.explored) {
+                this.colorFogGrid(Constants.color_black, i, j);
+              }
+              else if (!square.visible) {
+                this.colorFogGrid(GameMapArea.this.fogColor, i, j);
+              }
+              else {
+                this.colorFogGrid(Constants.color_transparent, i, j);
+              }
+              break;
+            case NONE:
+              square.explored = true;
+              square.visible = true;
+              this.colorFogGrid(Constants.color_transparent, i, j);
+              break;
+            case NOFOG:
+              square.visible = true;
+              if (square.mapEdge()) {
+                this.colorFogGrid(Constants.color_transparent, i, j);
+              }
+              else if (!square.explored) {
+                this.colorFogGrid(Constants.color_black, i, j);
+              }
+              else {
+                this.colorFogGrid(Constants.color_transparent, i, j);
+              }
+              break;
+            case EXPLORED:
+              square.explored = true;
+              if (square.mapEdge()) {
+                this.colorFogGrid(Constants.color_transparent, i, j);
+              }
+              else if (!square.visible) {
+                this.colorFogGrid(GameMapArea.this.fogColor, i, j);
+              }
+              else {
+                this.colorFogGrid(Constants.color_transparent, i, j);
+              }
+              break;
+          }
+        }
+      }
+    }
+
+    void colorFogGrid(color c, int i, int j) {
+      this.fog_dimg.colorGrid(c, i, j);
     }
 
     void generate() {
@@ -407,6 +484,7 @@ class GameMapArea extends AbstractGameMap {
 
   protected ConcurrentHashMap<IntegerCoordinate, Chunk> chunk_reference = new ConcurrentHashMap<IntegerCoordinate, Chunk>();
   protected IntegerCoordinate current_chunk = new IntegerCoordinate(0, 0);
+  protected FogDisplayThread fog_display_thread = null;
 
   protected String map_folder;
   protected int max_chunks_from_zero = 4;
@@ -424,13 +502,15 @@ class GameMapArea extends AbstractGameMap {
 
 
   synchronized float chunkBiomePerlinNoise(IntegerCoordinate coordinate) {
+    if (coordinate == null) {
+      return 0;
+    }
     return noise(coordinate.x * Constants.map_chunkPerlinMultiplier + Constants.map_noiseOffsetX,
       coordinate.y * Constants.map_chunkPerlinMultiplier + Constants.map_noiseOffsetY);
   }
 
   Biome getBiome(IntegerCoordinate coordinate) {
     float noise_value = this.chunkBiomePerlinNoise(coordinate);
-    //println(noise_value);
     return this.area_location.getBiome(noise_value);
   }
 
@@ -556,9 +636,10 @@ class GameMapArea extends AbstractGameMap {
   }
 
   PImage getFogImagePiece(int fog_xi, int fog_yi, int fog_w, int fog_h) {
-    // account for whatever spreading across many chunks (do this after terrain image working)
-    //return this.fog_dimg.getImagePiece(fog_xi, fog_yi, fog_w, fog_h);
-    return global.images.getTransparentPixel();
+    // set fog display in terrain dimg thread
+    this.fog_display_thread = new FogDisplayThread();
+    this.fog_display_thread.start();
+    return this.fog_display;
   }
 
   void actuallyAddFeature(int code, Feature f) {

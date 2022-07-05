@@ -1368,6 +1368,32 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
 
+  class ChooseSeedForm extends FormLNZ {
+    ChooseSeedForm() {
+      super(0.5 * (width - Constants.mapEditor_formWidth_small), 0.5 * (height - Constants.mapEditor_formHeight_small),
+        0.5 * (width + Constants.mapEditor_formWidth_small), 0.5 * (height + Constants.mapEditor_formHeight_small));
+      this.setTitleText("Choose Seed");
+      this.setTitleSize(18);
+      this.color_background = color(180, 250, 180);
+      this.color_header = color(30, 170, 30);
+
+      SubmitFormField submit = new SubmitFormField(" Load ");
+      submit.button.setColors(color(220), color(190, 240, 190),
+        color(140, 190, 140), color(90, 140, 90), color(0));
+      this.addField(new SpacerFormField(0));
+      this.addField(new MessageFormField("Choose new seed to reload area."));
+      this.addField(new IntegerFormField("   ", "Enter an integer"));
+      this.addField(submit);
+
+      this.fields.get(2).focus();
+    }
+    void submit() {
+      this.canceled = true;
+      MapEditorInterface.this.specificAreaSeed(toInt(this.fields.get(2).getValue()));
+    }
+  }
+
+
   abstract class LevelEditorForm extends Form {
     LevelEditorForm(float xi, float xf) {
       super(xi, Constants.mapEditor_listBoxGap, xf, 0.45 * height - Constants.mapEditor_listBoxGap);
@@ -2207,8 +2233,7 @@ class MapEditorInterface extends InterfaceLNZ {
       return;
     }
     if (entryExists("data/maps/" + targetName + ".map.lnz")) {
-      // name exists
-      return;
+      return; // name exists
     }
     GameMap map = new GameMap();
     map.mapName = mapName;
@@ -2275,9 +2300,8 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
   void inputAreaSeed() {
-    // form to input seed
+    this.form = new ChooseSeedForm();
   }
-
   void randomAreaSeed() {
     this.specificAreaSeed(int(map(random(1), 0, 1, 0, Integer.MAX_VALUE - 1)));
   }
