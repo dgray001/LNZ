@@ -743,3 +743,97 @@ class GameMapLevelEditor extends GameMapEditor {
     }
   }
 }
+
+
+class GameMapAreaEditor extends GameMapArea {
+  protected boolean draw_grid = true;
+
+  GameMapAreaEditor(String map_folder) {
+    super(map_folder);
+    this.draw_fog = false;
+  }
+
+  @Override
+  void setZoom(float zoom) {
+    if (zoom > 500) {
+      zoom = 500;
+    }
+    else if (zoom < 15) {
+      zoom = 15;
+    }
+    this.zoom = zoom;
+    this.refreshDisplayMapParameters();
+  }
+
+  @Override
+  void update(int millis) {
+    int time_elapsed = millis - this.lastUpdateTime;
+    // check map object removals
+    this.updateMapCheckObjectRemovalOnly();
+    // update view
+    this.updateView(time_elapsed);
+    // draw map
+    this.drawMap();
+    // draw grid
+    if (this.draw_grid) {
+      stroke(255);
+      strokeWeight(0.5);
+      textSize(10);
+      textAlign(LEFT, TOP);
+      rectMode(CORNER);
+      for (int i = int(ceil(this.startSquareX)); i < int(floor(this.startSquareX + this.visSquareX)); i++) {
+        for (int j = int(ceil(this.startSquareY)); j < int(floor(this.startSquareY + this.visSquareY)); j++) {
+          float x = this.xi_map + this.zoom * (i - this.startSquareX);
+          float y = this.yi_map + this.zoom * (j - this.startSquareY);
+          fill(200, 0);
+          rect(x, y, this.zoom, this.zoom);
+          fill(255);
+          text("(" + i + ", " + j + ")", x + 1, y + 1);
+        }
+      }
+    }
+    this.lastUpdateTime = millis;
+  }
+
+  @Override
+  void keyPress() {
+    if (key == CODED) {
+      switch(keyCode) {
+        case LEFT:
+          this.view_moving_left = true;
+          break;
+        case RIGHT:
+          this.view_moving_right = true;
+          break;
+        case UP:
+          this.view_moving_up = true;
+          break;
+        case DOWN:
+          this.view_moving_down = true;
+          break;
+      }
+    }
+    else {
+      switch(key) {
+        case 'z':
+          this.draw_grid = !this.draw_grid;
+          if (this.draw_grid) {
+            this.addHeaderMessage("Showing Grid");
+          }
+          else {
+            this.addHeaderMessage("Hiding Grid");
+          }
+          break;
+        case 'x':
+          this.draw_fog = !this.draw_fog;
+          if (this.draw_fog) {
+            this.addHeaderMessage("Showing Fog");
+          }
+          else {
+            this.addHeaderMessage("Hiding Fog");
+          }
+          break;
+      }
+    }
+  }
+}

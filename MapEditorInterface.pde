@@ -1787,7 +1787,7 @@ class MapEditorInterface extends InterfaceLNZ {
   private LevelEditorForm levelForm;
 
   private GameMapEditor curr_map;
-  private GameMapArea curr_area;
+  private GameMapAreaEditor curr_area;
   private Level curr_level;
   private Trigger curr_trigger;
   private int curr_trigger_component = -1;
@@ -2267,7 +2267,7 @@ class MapEditorInterface extends InterfaceLNZ {
       return;
     }
     deleteFolder("data/areas/temp");
-    this.curr_area = new GameMapArea("data/areas/temp");
+    this.curr_area = new GameMapAreaEditor("data/areas/temp");
     this.curr_area.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
     this.curr_area.mapName = area_name;
     this.curr_area.save(sketchPath("data/areas/"));
@@ -2285,10 +2285,16 @@ class MapEditorInterface extends InterfaceLNZ {
     if (this.curr_area == null || this.page != MapEditorPage.EDITING_AREA) {
       return;
     }
+    boolean old_draw_grid = this.curr_area.draw_grid;
+    boolean old_draw_fog = this.curr_area.draw_fog;
+    float old_zoom = this.curr_area.zoom;
     this.curr_area.seed = new_seed;
     String area_name = this.curr_area.mapName;
     this.saveAreaTester();
     this.openAreaEditor(area_name);
+    this.curr_area.draw_grid = old_draw_grid;
+    this.curr_area.draw_fog = old_draw_fog;
+    this.curr_area.setZoom(old_zoom);
     this.curr_area.addHeaderMessage("Now using seed: " + this.curr_area.seed);
   }
 
@@ -2314,7 +2320,7 @@ class MapEditorInterface extends InterfaceLNZ {
       return;
     }
     deleteFolder("data/areas/temp");
-    this.curr_area = new GameMapArea("data/areas/temp");
+    this.curr_area = new GameMapAreaEditor("data/areas/temp");
     this.curr_area.mapName = area_name;
     this.curr_area.open("data/areas");
     this.curr_area.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
@@ -2339,7 +2345,7 @@ class MapEditorInterface extends InterfaceLNZ {
     if (entryExists("data/areas/" + target_name + ".area.lnz")) {
       return;
     }
-    GameMapArea map = new GameMapArea("data/areas/temp");
+    GameMapAreaEditor map = new GameMapAreaEditor("data/areas/temp");
     map.mapName = area_name;
     String[] lines = map.open1File("data/areas/");
     PrintWriter mapFile = createWriter("data/areas/" + target_name + ".area.lnz");
