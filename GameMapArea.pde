@@ -227,9 +227,9 @@ class GameMapArea extends AbstractGameMap {
       BiomeReturn[][] biome_return = new BiomeReturn[Constants.map_chunkWidth][Constants.map_chunkWidth];
       for (int i = 0; i < biome_return.length; i++) {
         for (int j = 0; j < biome_return[i].length; j++) {
-          biome_return[i][j] = this.biome.processPerlinNoise(noise(
-            this.chunkXI() + i * 0.0666667 + Constants.map_noiseOffsetX,
-            this.chunkYI() + j * 0.0666667 + Constants.map_noiseOffsetY));
+          IntegerCoordinate square = new IntegerCoordinate(this.chunkXI() + i, this.chunkYI() + j);
+          float noise_value = GameMapArea.this.perlinNoise(square, false);
+          biome_return[i][j] = processPerlinNoise(this.biome, noise_value);
         }
       }
       // Base terrain from perlin noise and biome
@@ -237,6 +237,9 @@ class GameMapArea extends AbstractGameMap {
         for (int j = 0; j < this.squares[i].length; j++) {
           this.squares[i][j].setTerrain(biome_return[i][j].terrain_code);
           this.terrain_dimg.addImageGrid(this.squares[i][j].terrainImage(), i, j);
+          if (biome_return[i][j].spawn_feature) {
+            GameMapArea.this.addFeature(biome_return[i][j].feature_id, this.chunkXI() + i, this.chunkYI() + j);
+          }
         }
       }
       // terrain structures ??
@@ -517,8 +520,11 @@ class GameMapArea extends AbstractGameMap {
 
   protected String map_folder;
   protected int max_chunks_from_zero = 4;
-  protected int chunk_view_radius = 5;
+  protected int chunk_view_radius = 2;
   protected int seed = 0;
+
+  protected boolean waiting_for_noise_initialization = true;
+  // prevents nullptr on perlinNoise() since noise/noiseDetail/noiseSeed not thread-safe
 
 
   GameMapArea(String map_folder) {
@@ -526,20 +532,31 @@ class GameMapArea extends AbstractGameMap {
     this.map_folder = map_folder;
     noiseSeed(this.seed);
     noiseDetail(Constants.map_noiseOctaves, 0.55);
-    this.refreshChunks();
+    this.waiting_for_noise_initialization = false;
+    this.startTerrainDimgThread();
   }
 
 
-  synchronized float chunkBiomePerlinNoise(IntegerCoordinate coordinate) {
+  synchronized float perlinNoise(IntegerCoordinate coordinate, boolean chunk_noise) {
     if (coordinate == null) {
       return 0;
     }
-    return noise(coordinate.x * Constants.map_chunkPerlinMultiplier + Constants.map_noiseOffsetX,
-      coordinate.y * Constants.map_chunkPerlinMultiplier + Constants.map_noiseOffsetY);
+    try {
+      if (chunk_noise) {
+        return noise(coordinate.x * Constants.map_chunkPerlinMultiplier + Constants.map_noiseOffsetX,
+          coordinate.y * Constants.map_chunkPerlinMultiplier + Constants.map_noiseOffsetY);
+      }
+      else {
+        return noise(coordinate.x * Constants.map_mapPerlinMultiplier + Constants.map_noiseOffsetX,
+          coordinate.y * Constants.map_mapPerlinMultiplier + Constants.map_noiseOffsetY);
+      }
+    } catch(NullPointerException e) {
+      return 0;
+    }
   }
 
   Biome getBiome(IntegerCoordinate coordinate) {
-    float noise_value = this.chunkBiomePerlinNoise(coordinate);
+    float noise_value = this.perlinNoise(coordinate, true);
     return this.area_location.getBiome(noise_value);
   }
 
@@ -662,6 +679,9 @@ class GameMapArea extends AbstractGameMap {
   }
 
   synchronized void startTerrainDimgThread() {
+    if (this.waiting_for_noise_initialization) {
+      return;
+    }
     this.refreshChunks();
     this.terrain_dimg_thread = new TerrainDimgThread();
     this.terrain_dimg_thread.start();
@@ -727,6 +747,60 @@ class GameMapArea extends AbstractGameMap {
           feature_iterator.remove();
         }
       }
+    }
+  }
+
+
+  @Override
+  void displayNerdStats() {
+    fill(255);
+    textSize(14);
+    textAlign(LEFT, TOP);
+    float y_stats = this.yi + 31;
+    float line_height = textAscent() + textDescent() + 2;
+    text("Map Location: " + this.code.display_name(), this.xi + 1, y_stats);
+    y_stats += line_height;
+    text("FPS: " + int(global.lastFPS), this.xi + 1, y_stats);
+    y_stats += line_height;
+    try {
+      text("Biome: " + this.chunk_reference.get(this.current_chunk).biome.displayName(), this.xi + 1, y_stats);
+      y_stats += line_height;
+    } catch(NullPointerException e) {}
+    Map<Thread, StackTraceElement[]> all_threads = Thread.getAllStackTraces();
+    text("Active Threads: " + all_threads.size(), this.xi + 1, y_stats);
+    y_stats += line_height;
+    int gamemap_threads = 0;
+    int unit_threads = 0;
+    for (Thread thread : all_threads.keySet()) {
+      String thread_name = thread.getName();
+      if (thread_name.equals("TerrainDimgThread") || thread_name.equals("MouseMoveThread") ||
+        thread_name.equals("LoadChunkThread") || thread_name.equals("FogDImgThread")) {
+        gamemap_threads++;
+      }
+      else if (thread_name.equals("PathFindingThread")) {
+        unit_threads++;
+      }
+    }
+    text("GameMap Threads: " + gamemap_threads, this.xi + 1, y_stats);
+    y_stats += line_height;
+    text("Unit Threads: " + unit_threads, this.xi + 1, y_stats);
+    y_stats += line_height;
+    text("Current View: " + this.viewX + ", " + this.viewY, this.xi + 1, y_stats);
+    if (this.units.containsKey(0)) {
+      y_stats += line_height;
+      text("Location: (" + this.units.get(0).x + ", " + this.units.get(0).y +
+        ", " + this.units.get(0).curr_height + ")", this.xi + 1, y_stats);
+      y_stats += line_height;
+      text("Facing: (" + this.units.get(0).facingX + ", " + this.units.get(0).facingY +
+        ", " + this.units.get(0).facingA + ")", this.xi + 1, y_stats);
+      y_stats += line_height;
+      text("Height: (" + this.units.get(0).curr_height + ", " + this.units.get(0).floor_height +
+        ", " + this.units.get(0).unit_height + ")", this.xi + 1, y_stats);
+      try {
+        GameMapSquare square = this.mapSquare(int(this.units.get(0).x), int(this.units.get(0).y));
+        y_stats += line_height;
+        text("Terrain: (" + square.terrainName() + ", " + int(10.0 * square.light_level)/10.0 + ")", this.xi + 1, y_stats);
+      } catch(NullPointerException e) {}
     }
   }
 
