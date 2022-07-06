@@ -5,7 +5,7 @@ class GameMapArea extends AbstractGameMap {
     }
     void updateTerrainDisplay() {
       DImg new_terrain_display = new DImg(round(this.xf_map - this.xi_map), round(this.yf_map - this.yi_map));
-      if (visSquareX == 0 || visSquareY == 0) {
+      if (this.visSquareX == 0 || this.visSquareY == 0) {
         return;
       }
       int xi_chunk = int(Math.floorDiv((long)this.startSquareX, (long)Constants.map_chunkWidth));
@@ -51,16 +51,44 @@ class GameMapArea extends AbstractGameMap {
   }
 
 
-  class FogDisplayThread extends Thread {
-    FogDisplayThread() {
-      super("FogDisplayThread");
+  class FogDImgThread extends Thread {
+    private int fog_xi = 0;
+    private int fog_yi = 0;
+    private int fog_w = 0;
+    private int fog_h = 0;
+    private boolean replay = false;
+    FogDImgThread(int fog_xi, int fog_yi, int fog_w, int fog_h) {
+      super("FogDImgThread");
+      this.fog_xi = fog_xi;
+      this.fog_yi = fog_yi;
+      this.fog_w = fog_w * Constants.map_fogResolution;
+      this.fog_h = fog_h * Constants.map_fogResolution;
     }
     @Override
     void run() {
-      int map_squares_max_view_width = (GameMapArea.this.chunk_view_radius * 2 + 1) * Constants.map_chunkWidth;
-      DImg new_fog_display = new DImg(map_squares_max_view_width * Constants.
-        map_fogResolution, map_squares_max_view_width * Constants.map_fogResolution);
-      new_fog_display.setGrid(map_squares_max_view_width, map_squares_max_view_width);
+      while(true) {
+        IntegerCoordinate current = GameMapArea.this.current_chunk.copy();
+        for (int i = current.x - GameMapArea.this.chunk_view_radius; i <= current.x + GameMapArea.this.chunk_view_radius; i++) {
+          for (int j = current.y - GameMapArea.this.chunk_view_radius; j <= current.y + GameMapArea.this.chunk_view_radius; j++) {
+            Chunk chunk = GameMapArea.this.chunk_reference.get(new IntegerCoordinate(i, j));
+            if (chunk == null) {
+              continue;
+            }
+            GameMapArea.this.fog_dimg.addImageGrid(chunk.fog_dimg.img,
+              i - current.x + GameMapArea.this.chunk_view_radius,
+              j - current.y + GameMapArea.this.chunk_view_radius);
+          }
+        }
+        this.fog_xi = this.fog_xi - (current.x - GameMapArea.this.chunk_view_radius) * Constants.map_chunkWidth * Constants.map_fogResolution;
+        this.fog_yi = this.fog_yi - (current.y - GameMapArea.this.chunk_view_radius) * Constants.map_chunkWidth * Constants.map_fogResolution;
+        GameMapArea.this.fog_display = GameMapArea.this.fog_dimg.getImagePiece(this.fog_xi, this.fog_yi, this.fog_w, this.fog_h);
+        if (this.replay) {
+          this.replay = false;
+        }
+        else {
+          return;
+        }
+      }
     }
   }
 
@@ -484,7 +512,8 @@ class GameMapArea extends AbstractGameMap {
 
   protected ConcurrentHashMap<IntegerCoordinate, Chunk> chunk_reference = new ConcurrentHashMap<IntegerCoordinate, Chunk>();
   protected IntegerCoordinate current_chunk = new IntegerCoordinate(0, 0);
-  protected FogDisplayThread fog_display_thread = null;
+  protected DImg fog_dimg;
+  protected FogDImgThread fog_dimg_thread = null;
 
   protected String map_folder;
   protected int max_chunks_from_zero = 4;
@@ -558,9 +587,7 @@ class GameMapArea extends AbstractGameMap {
       Math.floorDiv(j, Constants.map_chunkWidth));
   }
 
-  void initializeSquares() {
-    //this.refreshChunks(); // wait until noiseDetails run
-  }
+  void initializeSquares() {}
   void refreshChunks() {
     // remove unnecessary chunks from memory
     Iterator it = this.chunk_reference.entrySet().iterator();
@@ -600,7 +627,12 @@ class GameMapArea extends AbstractGameMap {
     return false;
   }
 
-  void initializeBackgroundImage() {}
+  void initializeBackgroundImage() {
+    int chunk_view_width = (this.chunk_view_radius * 2 + 1);
+    this.fog_dimg = new DImg(chunk_view_width * Constants.map_chunkWidth * Constants.map_fogResolution,
+      chunk_view_width * Constants.map_chunkWidth * Constants.map_fogResolution);
+    this.fog_dimg.setGrid(chunk_view_width, chunk_view_width);
+  }
 
   void colorFogGrid(color c, int i, int j) {
     Chunk chunk = this.chunk_reference.get(this.coordinateOf(i, j));
@@ -637,9 +669,14 @@ class GameMapArea extends AbstractGameMap {
 
   PImage getFogImagePiece(int fog_xi, int fog_yi, int fog_w, int fog_h) {
     // set fog display in terrain dimg thread
-    this.fog_display_thread = new FogDisplayThread();
-    this.fog_display_thread.start();
-    return this.fog_display;
+    if (this.fog_dimg_thread != null && this.fog_dimg_thread.isAlive()) {
+      this.fog_dimg_thread.replay = true;
+    }
+    else {
+      this.fog_dimg_thread = new FogDImgThread(fog_xi, fog_yi, fog_w, fog_h);
+      this.fog_dimg_thread.start();
+    }
+    return this.fog_dimg.getImagePiece(fog_xi, fog_yi, fog_w, fog_h);
   }
 
   void actuallyAddFeature(int code, Feature f) {

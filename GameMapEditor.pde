@@ -815,6 +815,11 @@ class GameMapAreaEditor extends GameMapArea {
     }
     else {
       switch(key) {
+        case 'p':
+          this.fog_dimg.img.save("data/areas/fog.png");
+          this.terrain_display.save("data/areas/terrain_display.png");
+          this.fog_display.save("data/areas/fog_display.png");
+          break;
         case 'z':
           this.draw_grid = !this.draw_grid;
           if (this.draw_grid) {

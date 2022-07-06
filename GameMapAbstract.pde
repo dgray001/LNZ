@@ -1275,7 +1275,8 @@ abstract class AbstractGameMap {
     int unit_threads = 0;
     for (Thread thread : all_threads.keySet()) {
       String thread_name = thread.getName();
-      if (thread_name.equals("TerrainDimgThread") || thread_name.equals("MouseMoveThread") || thread_name.equals("LoadChunkThread")) {
+      if (thread_name.equals("TerrainDimgThread") || thread_name.equals("MouseMoveThread") ||
+        thread_name.equals("LoadChunkThread") || thread_name.equals("FogDImgThread")) {
         gamemap_threads++;
       }
       else if (thread_name.equals("PathFindingThread")) {

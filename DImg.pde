@@ -146,8 +146,13 @@ class DImg {
 
   // image piece
   PImage getImagePiece(int xi, int yi, int w, int h) {
-    if (xi < 0 || yi < 0 || w <= 0 || h <= 0) {
-      return createImage(1, 1, ARGB);
+    if (xi < 0) {
+      w += xi;
+      xi = 0;
+    }
+    if (yi < 0) {
+      h += yi;
+      yi = 0;
     }
     if (xi + w > this.img.width) {
       w = this.img.width - xi;
