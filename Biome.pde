@@ -217,25 +217,55 @@ private BiomeReturn mapleForestProcessPerlinNoise(int forest_density, float nois
   float feature_spawn_chance = 0;
   switch(biome_return.terrain_code) {
     case 153: // Grass, dark
-      feature_spawn_chance = 0.1;
+      feature_spawn_chance = 0.04;
       break;
     case 154: // Grass, dead
-      feature_spawn_chance = 0.2;
+      feature_spawn_chance = 0.08;
       break;
     case 161: // Dirt, light
-      feature_spawn_chance = 0.3;
+      feature_spawn_chance = 0.12;
       break;
     case 162: // Dirt, gray
-      feature_spawn_chance = 0.45;
+      feature_spawn_chance = 0.16;
       break;
     case 163: // Dirt, dark
-      feature_spawn_chance = 0.4;
+      feature_spawn_chance = 0.2;
       break;
   }
   if (randomChance(feature_spawn_chance)) {
     biome_return.spawn_feature = true;
-    // random feature
-    biome_return.feature_id = 441;
+    float random_num = random(1.0);
+    // random tree / bush
+    if (random_num > 0.8) {
+      biome_return.feature_id = 441;
+    }
+    else if (random_num > 0.75) {
+      biome_return.feature_id = 442;
+    }
+    else if (random_num > 0.5) {
+      biome_return.feature_id = 421;
+    }
+    else if (random_num > 0.2) {
+      biome_return.feature_id = 444;
+    }
+    else if (random_num > 0.13) {
+      biome_return.feature_id = 447;
+    }
+    else if (random_num > 0.1) {
+      biome_return.feature_id = 424;
+    }
+    else if (random_num > 0.08) {
+      biome_return.feature_id = 422;
+    }
+    else if (random_num > 0.06) {
+      biome_return.feature_id = 423;
+    }
+    else if (random_num > 0.03) {
+      biome_return.feature_id = 445;
+    }
+    else {
+      biome_return.feature_id = 446;
+    }
   }
   return biome_return;
 }

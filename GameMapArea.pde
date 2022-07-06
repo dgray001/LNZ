@@ -237,6 +237,11 @@ class GameMapArea extends AbstractGameMap {
         for (int j = 0; j < this.squares[i].length; j++) {
           this.squares[i][j].setTerrain(biome_return[i][j].terrain_code);
           this.terrain_dimg.addImageGrid(this.squares[i][j].terrainImage(), i, j);
+        }
+      }
+      // Base features from perlin noise and biome
+      for (int i = 0; i < this.squares.length; i++) {
+        for (int j = 0; j < this.squares[i].length; j++) {
           if (biome_return[i][j].spawn_feature) {
             GameMapArea.this.addFeature(biome_return[i][j].feature_id, this.chunkXI() + i, this.chunkYI() + j);
           }

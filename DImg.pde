@@ -51,8 +51,38 @@ class DImg {
 
   // Add image to part of this using width / height
   void addImage(PImage newImg, int x, int y, int w, int h) {
-    this.img.blend(newImg, 0, 0, newImg.width, newImg.height, x, y, w, h, BLEND);
-    //this.copyImage(newImg, x, y, w, h);
+    int newImgX = 0;
+    int newImgY = 0;
+    int newImgW = newImg.width;
+    int newImgH = newImg.height;
+    if (x < 0) {
+      w += x;
+      int scaled_dif = round(-x * float(newImg.width) / this.img.width);
+      newImgX += scaled_dif;
+      newImgW -= scaled_dif;
+      x = 0;
+    }
+    if (y < 0) {
+      h += y;
+      int scaled_dif = round(-y * float(newImg.height) / this.img.height);
+      newImgY += scaled_dif;
+      newImgH -= scaled_dif;
+      y = 0;
+    }
+    if (x + w > this.img.width) {
+      int scaled_dif = round((x + w - this.img.width) * float(newImg.width) / w);
+      w = this.img.width - x;
+      newImgW -= scaled_dif;
+    }
+    if (y + h > this.img.height) {
+      int scaled_dif = round((y + h - this.img.height) * float(newImg.height) / h);
+      h = this.img.height - y;
+      newImgH -= scaled_dif;
+    }
+    if (w < 1 || h < 1 || newImgW < 1 || newImgH < 1) {
+      return;
+    }
+    this.img.blend(newImg, newImgX, newImgY, newImgW, newImgH, x, y, w, h, BLEND);
   }
   // Add image to part of this using percent of width / height
   void addImagePercent(PImage newImg, float xP, float yP, float wP, float hP) {
@@ -63,31 +93,14 @@ class DImg {
     this.img.blend(newImg, 0, 0, newImg.width, newImg.height,
       round(this.img.width * xP), round(this.img.height * yP),
       round(this.img.width * wP), round(this.img.height * hP), BLEND);
-    /*this.copyImage(newImg,
-      round(this.img.width * xP), round(this.img.height * yP),
-      round(this.img.width * wP), round(this.img.height * hP));*/
   }
-  // Add image to grid square
+  // Add image to grid squares
   void addImageGrid(PImage newImg, int x, int y) {
     this.addImageGrid(newImg, x, y, 1, 1);
   }
   void addImageGrid(PImage newImg, int x, int y, int w, int h) {
-    if (x < 0 || y < 0 || x >= this.gridX || y >= this.gridY) {
-      global.log("DImg: addImageGrid coordinate out of range");
-      return;
-    }
-    if (w < 1 || h < 1 || x + w > this.gridX || y + h > this.gridY) {
-      global.log("DImg: addImageGrid coordinate out of range");
-      return;
-    }
-    this.img.blend(newImg, 0, 0, newImg.width, newImg.height,
-      round(this.img.width * (float(x) / this.gridX)),
-      round(this.img.height * (float(y) / this.gridY)),
-      round(w * (float(this.img.width) / this.gridX)), round(h * (float(this.img.height) / this.gridY)), BLEND);
-    /*this.copyImage(newImg,
-      this.img.width * (float(x) / this.gridX),
-      this.img.height * (float(y) / this.gridY),
-      w * (float(this.img.width) / this.gridX), h * (float(this.img.height) / this.gridY));*/
+    this.addImage(newImg, round(this.img.width * (float(x) / this.gridX)), round(this.img.height * (float(y) / this.gridY)),
+      round(w * (float(this.img.width) / this.gridX)), round(h * (float(this.img.height) / this.gridY)));
   }
 
   // make grid a specific color
