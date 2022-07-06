@@ -114,7 +114,7 @@ class GameMapArea extends AbstractGameMap {
 
 
     private GameMapSquare[][] squares;
-    private HashMap<Integer, Feature> features = new HashMap<Integer, Feature>();
+    private ConcurrentHashMap<Integer, Feature> features = new ConcurrentHashMap<Integer, Feature>();
     private DImg terrain_dimg;
     private DImg fog_dimg;
     private IntegerCoordinate coordinate;
@@ -449,6 +449,9 @@ class GameMapArea extends AbstractGameMap {
         }
         else {
           switch(datakey) {
+            case "biome":
+              this.biome = Biome.biome(data);
+              break;
             case "nextFeatureKey":
               next_feature_key = toInt(data);
               break;
@@ -494,6 +497,7 @@ class GameMapArea extends AbstractGameMap {
 
     void save() {
       PrintWriter file = createWriter(this.fileName());
+      file.println("biome: " + this.biome.fileName());
       for (int i = 0; i < this.squares.length; i++) {
         for (int j = 0; j < this.squares[i].length; j++) {
           file.println("terrain: " + i + ", " + j + ": " + this.squares[i][j].terrain_id +
@@ -524,7 +528,7 @@ class GameMapArea extends AbstractGameMap {
   protected int seed = 0;
 
   protected boolean waiting_for_noise_initialization = true;
-  // prevents nullptr on perlinNoise() since noise/noiseDetail/noiseSeed not thread-safe
+  // prevents nullptr on perlinNoise() since noise/noiseDetail/noiseSeed not thread-safe (maybe??)
 
 
   GameMapArea(String map_folder) {

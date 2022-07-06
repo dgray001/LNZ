@@ -28,6 +28,7 @@ enum AreaLocation {
   }
 }
 
+
 static class BiomeReturn {
   int terrain_code = 0;
   boolean spawn_feature = false;
@@ -36,10 +37,17 @@ static class BiomeReturn {
   BiomeReturn() {}
 }
 
+
 enum Biome {
   NONE, MAPLE_FOREST1, MAPLE_FOREST2, MAPLE_FOREST3, CLEARING, GRASS;
+
+  private static final List<Biome> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+
   public String displayName() {
-    switch(this) {
+    return Biome.displayName(this);
+  }
+  public static String displayName(Biome biome) {
+    switch(biome) {
       case MAPLE_FOREST1:
         return "Maple Forest, open";
       case MAPLE_FOREST2:
@@ -54,7 +62,41 @@ enum Biome {
         return "Error";
     }
   }
+
+  public String fileName() {
+    return Biome.fileName(this);
+  }
+  public static String fileName(Biome biome) {
+    switch(biome) {
+      case MAPLE_FOREST1:
+        return "MAPLE_FOREST1";
+      case MAPLE_FOREST2:
+        return "MAPLE_FOREST2";
+      case MAPLE_FOREST3:
+        return "MAPLE_FOREST3";
+      case CLEARING:
+        return "CLEARING";
+      case GRASS:
+        return "GRASS";
+      default:
+        return "";
+    }
+  }
+
+  public static Biome biome(String biome_name) {
+    for (Biome biome : Biome.VALUES) {
+      if (biome == Biome.NONE) {
+        continue;
+      }
+      if (Biome.displayName(biome).equals(biome_name) ||
+        Biome.fileName(biome).equals(biome_name)) {
+        return biome;
+      }
+    }
+    return Biome.NONE;
+  }
 }
+
 
 BiomeReturn processPerlinNoise(Biome biome, float noise_value) {
   switch(biome) {
@@ -76,7 +118,7 @@ private BiomeReturn mapleForestProcessPerlinNoise(int forest_density, float nois
   BiomeReturn biome_return = new BiomeReturn();
   switch(forest_density) {
     case 1: // low density forest
-      if (noise_value > 0.78) { // dark dirt
+      if (noise_value > 0.85) { // dark dirt
         if (randomChance(noise_value)) {
           biome_return.terrain_code = 163; // dark dirt
         }
@@ -84,7 +126,7 @@ private BiomeReturn mapleForestProcessPerlinNoise(int forest_density, float nois
           biome_return.terrain_code = 162; // gray dirt
         }
       }
-      else if (noise_value > 0.45) { // dirty
+      else if (noise_value > 0.55) { // dirty
         if (randomChance(noise_value)) {
           biome_return.terrain_code = 162; // gray dirt
         }
@@ -140,7 +182,7 @@ private BiomeReturn mapleForestProcessPerlinNoise(int forest_density, float nois
       }
       break;
     case 3: // high density forest
-      if (noise_value > 0.78) { // dark dirt
+      if (noise_value > 0.66) { // dark dirt
         if (randomChance(noise_value)) {
           biome_return.terrain_code = 163; // dark dirt
         }
@@ -148,7 +190,7 @@ private BiomeReturn mapleForestProcessPerlinNoise(int forest_density, float nois
           biome_return.terrain_code = 162; // gray dirt
         }
       }
-      else if (noise_value > 0.45) { // dirty
+      else if (noise_value > 0.35) { // dirty
         if (randomChance(noise_value)) {
           biome_return.terrain_code = 162; // gray dirt
         }
@@ -172,17 +214,28 @@ private BiomeReturn mapleForestProcessPerlinNoise(int forest_density, float nois
       }
       break;
   }
+  float feature_spawn_chance = 0;
   switch(biome_return.terrain_code) {
     case 153: // Grass, dark
+      feature_spawn_chance = 0.1;
       break;
     case 154: // Grass, dead
+      feature_spawn_chance = 0.2;
       break;
     case 161: // Dirt, light
+      feature_spawn_chance = 0.3;
       break;
     case 162: // Dirt, gray
+      feature_spawn_chance = 0.45;
       break;
     case 163: // Dirt, dark
+      feature_spawn_chance = 0.4;
       break;
+  }
+  if (randomChance(feature_spawn_chance)) {
+    biome_return.spawn_feature = true;
+    // random feature
+    biome_return.feature_id = 441;
   }
   return biome_return;
 }
