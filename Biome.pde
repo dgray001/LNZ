@@ -107,7 +107,7 @@ BiomeReturn processPerlinNoise(Biome biome, float noise_value) {
     case MAPLE_FOREST3:
       return mapleForestProcessPerlinNoise(3, noise_value);
     case CLEARING:
-      return clearingPerlinNoise(noise_value);
+      return clearingProcessPerlinNoise(noise_value);
     case GRASS:
       return grassProcessPerlinNoise(noise_value);
   }
@@ -235,7 +235,7 @@ private BiomeReturn mapleForestProcessPerlinNoise(int forest_density, float nois
   if (randomChance(feature_spawn_chance)) {
     biome_return.spawn_feature = true;
     float random_num = random(1.0);
-    // random tree / bush
+    // random tree / bush (favoring maple trees, light bushes)
     if (random_num > 0.8) {
       biome_return.feature_id = 441;
     }
@@ -270,11 +270,123 @@ private BiomeReturn mapleForestProcessPerlinNoise(int forest_density, float nois
   return biome_return;
 }
 
-private BiomeReturn clearingPerlinNoise(float noise_value) {
+
+private BiomeReturn clearingProcessPerlinNoise(float noise_value) {
   BiomeReturn biome_return = new BiomeReturn();
-  biome_return.terrain_code = 151;
+  if (noise_value > 0.8) { // dirty
+    if (randomChance(1 - noise_value)) {
+      biome_return.terrain_code = 162; // gray dirt
+    }
+    else {
+      biome_return.terrain_code = 161; // light dirt
+    }
+  }
+  else if (noise_value > 0.5) { // dirt to grass
+    if (randomChance(noise_value - 0.5)) {
+      biome_return.terrain_code = 161; // light dirt
+    }
+    else if (randomChance(noise_value - 0.35)) {
+      biome_return.terrain_code = 153; // dark grass
+      if (randomChance(0.25)) {
+        biome_return.terrain_code = 154; // dead grass
+      }
+    }
+    else {
+      biome_return.terrain_code = 151; // light grass
+      if (randomChance(0.25)) {
+        biome_return.terrain_code = 154; // dead grass
+      }
+    }
+  }
+  else { // grassy
+    if (randomChance(noise_value - 0.35)) {
+      biome_return.terrain_code = 153; // dark grass
+      if (randomChance(0.25)) {
+        biome_return.terrain_code = 154; // dead grass
+      }
+    }
+    else if (randomChance(noise_value - 0.15)) {
+      biome_return.terrain_code = 151; // light grass
+      if (randomChance(0.25)) {
+        biome_return.terrain_code = 154; // dead grass
+      }
+    }
+    else {
+      biome_return.terrain_code = 152; // green grass
+      if (randomChance(0.25)) {
+        biome_return.terrain_code = 154; // dead grass
+      }
+    }
+  }
+  float tree_bush_spawn_chance = 0;
+  switch(biome_return.terrain_code) {
+    case 153: // Grass, dark
+      tree_bush_spawn_chance = 0.02;
+      break;
+    case 154: // Grass, dead
+      tree_bush_spawn_chance = 0.04;
+      break;
+    case 161: // Dirt, light
+      tree_bush_spawn_chance = 0.06;
+      break;
+    case 162: // Dirt, gray
+      tree_bush_spawn_chance = 0.08;
+      break;
+  }
+  if (randomChance(tree_bush_spawn_chance)) {
+    biome_return.spawn_feature = true;
+    float random_num = random(1.0);
+    // random tree / bush (favoring maple trees, light bushes)
+    if (random_num > 0.7) {
+      biome_return.feature_id = 441;
+    }
+    else if (random_num > 0.6) {
+      biome_return.feature_id = 442;
+    }
+    else if (random_num > 0.4) {
+      biome_return.feature_id = 421;
+    }
+    else if (random_num > 0.15) {
+      biome_return.feature_id = 444;
+    }
+    else if (random_num > 0.11) {
+      biome_return.feature_id = 447;
+    }
+    else if (random_num > 0.08) {
+      biome_return.feature_id = 424;
+    }
+    else if (random_num > 0.06) {
+      biome_return.feature_id = 422;
+    }
+    else if (random_num > 0.04) {
+      biome_return.feature_id = 423;
+    }
+    else if (random_num > 0.02) {
+      biome_return.feature_id = 445;
+    }
+    else {
+      biome_return.feature_id = 446;
+    }
+    return biome_return;
+  }
+  switch(biome_return.terrain_code) {
+    case 151: // Grass, light
+    case 153: // Grass, dark
+      if (randomChance(0.57 - noise_value)) { // dandelions
+        biome_return.spawn_feature = true;
+        biome_return.feature_id = 401;
+      }
+      break;
+    case 152: // Grass, green
+      if (randomChance(0.63 - noise_value)) { // dandelions
+        biome_return.spawn_feature = true;
+        biome_return.feature_id = 401;
+      }
+      break;
+  }
   return biome_return;
 }
+
 
 private BiomeReturn grassProcessPerlinNoise(float noise_value) {
   BiomeReturn biome_return = new BiomeReturn();

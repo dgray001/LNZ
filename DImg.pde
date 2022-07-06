@@ -99,8 +99,22 @@ class DImg {
     this.addImageGrid(newImg, x, y, 1, 1);
   }
   void addImageGrid(PImage newImg, int x, int y, int w, int h) {
-    this.addImage(newImg, round(this.img.width * (float(x) / this.gridX)), round(this.img.height * (float(y) / this.gridY)),
-      round(w * (float(this.img.width) / this.gridX)), round(h * (float(this.img.height) / this.gridY)));
+    /*if (x < 0 || y < 0 || x >= this.gridX || y >= this.gridY) {
+      global.log("DImg: addImageGrid coordinate out of range");
+      return;
+    }
+    if (w < 1 || h < 1 || x + w > this.gridX || y + h > this.gridY) {
+      global.log("DImg: addImageGrid coordinate out of range");
+      return;
+    }
+    this.img.blend(newImg, 0, 0, newImg.width, newImg.height,
+      round(this.img.width * (float(x) / this.gridX)),
+      round(this.img.height * (float(y) / this.gridY)),
+      round(w * (float(this.img.width) / this.gridX)), round(h * (float(this.img.height) / this.gridY)), BLEND);*/
+    this.addImage(newImg, round(this.img.width * (float(x) / this.gridX)),
+      round(this.img.height * (float(y) / this.gridY)),
+      round(w * (float(this.img.width) / this.gridX)),
+      round(h * (float(this.img.height) / this.gridY)));
   }
 
   // make grid a specific color
