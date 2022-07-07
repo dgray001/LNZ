@@ -715,11 +715,27 @@ class GameMapArea extends AbstractGameMap {
       y_hanging = true;
     }
     if (x_hanging && y_hanging) {
+      int remaining_width = relative_x + w - Constants.map_chunkWidth;
+      int img_width = round(img.width * float(remaining_width) / w);
+      int remaining_height = relative_y + h - Constants.map_chunkWidth;
+      int img_height = round(img.height * float(remaining_height) / h);
+      IntegerCoordinate x_edge = this.coordinateOf(x + w, y);
+      Chunk x_chunk = this.chunk_reference.get(x_edge);
+      if (x_chunk != null) {
+        x_chunk.terrain_dimg.addImageGrid(img, img.width - img_width, 0, img_width,
+          img.height - img_height, 0, relative_y, remaining_width, Constants.map_chunkWidth - relative_y);
+      }
+      IntegerCoordinate y_edge = this.coordinateOf(x, y + h);
+      Chunk y_chunk = this.chunk_reference.get(y_edge);
+      if (y_chunk != null) {
+        y_chunk.terrain_dimg.addImageGrid(img, 0, img.height - img_height, img.width
+          - img_width, img_height, relative_x, 0, Constants.map_chunkWidth - relative_x, remaining_height);
+      }
       IntegerCoordinate xy_edge = this.coordinateOf(x + w, y + h);
       Chunk xy_chunk = this.chunk_reference.get(xy_edge);
       if (xy_chunk != null) {
-        //xy_chunk.terrain_dimg.addImageGrid(img, 0, 0, relative_x + w - Constants.
-          //map_chunkWidth, relative_y + h - Constants.map_chunkWidth);
+        xy_chunk.terrain_dimg.addImageGrid(img, img.width - img_width, img.height - img_height,
+          img_width, img_height, 0, 0, remaining_width, remaining_height);
       }
     }
     else if (x_hanging) {
