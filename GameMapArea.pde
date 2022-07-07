@@ -831,6 +831,10 @@ class GameMapArea extends AbstractGameMap {
     while(hanging_features_iterator.hasNext()) {
       Map.Entry<IntegerCoordinate, ConcurrentHashMap<Integer, Feature>> entry =
         (Map.Entry<IntegerCoordinate, ConcurrentHashMap<Integer, Feature>>)hanging_features_iterator.next();
+      GameMapSquare square = this.mapSquare(entry.getKey().x, entry.getKey().y);
+      if (square == null) {
+        continue;
+      }
       Iterator coordinate_iterator = entry.getValue().entrySet().iterator();
       while(coordinate_iterator.hasNext()) {
         Map.Entry<Integer, Feature> feature_entry = (Map.Entry<Integer, Feature>)coordinate_iterator.next();
@@ -838,11 +842,9 @@ class GameMapArea extends AbstractGameMap {
           coordinate_iterator.remove();
           continue;
         }
-        if (this.featureHanging(feature_entry.getValue())) {
-          continue;
+        if (this.resolveHangingFeature(feature_entry.getValue(), entry.getKey())) {
+          coordinate_iterator.remove();
         }
-        this.resolveHangingFeature(feature_entry.getValue());
-        coordinate_iterator.remove();
       }
       if (entry.getValue().isEmpty()) {
         hanging_features_iterator.remove();
@@ -863,31 +865,19 @@ class GameMapArea extends AbstractGameMap {
     return (x_chunk == null || y_chunk == null || xy_chunk == null);
   }
 
-  void resolveHangingFeature(Feature f) {
+  boolean resolveHangingFeature(Feature f, IntegerCoordinate coordinate) {
     if (f == null || f.remove) {
-      return;
+      return true;
     }
-    IntegerCoordinate coordinate = this.coordinateOf(round(f.x), round(f.y));
-    IntegerCoordinate x_edge = this.coordinateOf(round(f.x + f.sizeX), round(f.y));
-    IntegerCoordinate y_edge = this.coordinateOf(round(f.x), round(f.y + f.sizeY));
-    IntegerCoordinate xy_edge = this.coordinateOf(round(f.x + f.sizeX), round(f.y + f.sizeY));
-    Chunk x_chunk = this.chunk_reference.get(x_edge);
-    Chunk y_chunk = this.chunk_reference.get(y_edge);
-    Chunk xy_chunk = this.chunk_reference.get(xy_edge);
-    if (x_chunk == null || y_chunk == null || xy_chunk == null) {
-      this.featureAddedMapSquareNotFound(coordinate, f);
-      return;
+    GameMapSquare square = this.mapSquare(coordinate.x, coordinate.y);
+    Chunk chunk = this.chunk_reference.get(this.coordinateOf(coordinate.x, coordinate.y));
+    if (square == null || chunk == null) { // still hanging
+      return false;
     }
-    println("3");
-    if (!coordinate.equals(x_edge)) {
-      println("x_edge");
-    }
-    if (!coordinate.equals(y_edge)) {
-      println("y_edge");
-    }
-    if (!coordinate.equals(xy_edge)) {
-      println("xy_edge");
-    }
+    square.addedFeature(f);
+    // update image
+    println("update image");
+    return true;
   }
 
   Feature getFeature(int code) {
