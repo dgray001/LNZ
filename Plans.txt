@@ -6,6 +6,9 @@ v0.7.7: Ben Nelson Campaign (07/09)
 
  - Need to somehow deal with features overlapping chunks
  - Fix GameMapArea terrain image having lines on chunk borders (could be resize, but more likely can be fixed at GameMapArea DImg thread)
+ - Weird fog bug when at negative numbers (maybe stay at mostly positive numbers ??)
+ - Have xi, yi, xf, yf instead of 'max_chunks_from_zero'
+ - Can 'test' gamemapareas
 
  - Finish frontdoor forcing you to get access to a car
    => Finish map outlines

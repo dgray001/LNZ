@@ -59,6 +59,7 @@ class GameMapArea extends AbstractGameMap {
     private boolean replay = false;
     FogDImgThread(int fog_xi, int fog_yi, int fog_w, int fog_h) {
       super("FogDImgThread");
+      this.setDaemon(true);
       this.fog_xi = fog_xi;
       this.fog_yi = fog_yi;
       this.fog_w = fog_w * Constants.map_fogResolution;
@@ -88,6 +89,24 @@ class GameMapArea extends AbstractGameMap {
         else {
           return;
         }
+      }
+    }
+  }
+
+
+  class HangingFeaturesThread extends Thread {
+    HangingFeaturesThread() {
+      super("HangingFeaturesThread");
+      this.setDaemon(true);
+    }
+    @Override
+    void run() {
+      while(true) {
+        delay(200);
+        if (GameMapArea.this == null || GameMapArea.this.nullify) {
+          return;
+        }
+        GameMapArea.this.checkHangingFeatures();
       }
     }
   }
@@ -532,8 +551,13 @@ class GameMapArea extends AbstractGameMap {
   protected int chunk_view_radius = 2;
   protected int seed = 0;
 
-  protected boolean waiting_for_noise_initialization = true;
   // prevents nullptr on perlinNoise() since noise/noiseDetail/noiseSeed not thread-safe (maybe??)
+  protected boolean waiting_for_noise_initialization = true;
+
+  // keeps track of features that are hanging over unloaded chunks when added / removed
+  protected ConcurrentHashMap<IntegerCoordinate, ConcurrentHashMap<Integer, Feature>> hanging_features =
+    new ConcurrentHashMap<IntegerCoordinate, ConcurrentHashMap<Integer, Feature>>();
+  protected HangingFeaturesThread hanging_features_thread;
 
 
   GameMapArea(String map_folder) {
@@ -543,6 +567,8 @@ class GameMapArea extends AbstractGameMap {
     noiseDetail(Constants.map_noiseOctaves, 0.55);
     this.waiting_for_noise_initialization = false;
     this.startTerrainDimgThread();
+    this.hanging_features_thread = new HangingFeaturesThread();
+    this.hanging_features_thread.start(); // runs continuously
   }
 
 
@@ -670,12 +696,52 @@ class GameMapArea extends AbstractGameMap {
   }
 
   void terrainImageGrid(PImage img, int x, int y, int w, int h) {
+    IntegerCoordinate coordinate = this.coordinateOf(x, y);
     Chunk chunk = this.chunk_reference.get(this.coordinateOf(x, y));
-    if (chunk == null) {
+    if (chunk == null || w < 1 || h < 1) {
+      // data corruption
       return;
     }
-    chunk.terrain_dimg.addImageGrid(img, Math.floorMod(x, Constants.map_chunkWidth),
-      Math.floorMod(y, Constants.map_chunkWidth), w, h);
+    int relative_x = Math.floorMod(x, Constants.map_chunkWidth);
+    int relative_y = Math.floorMod(y, Constants.map_chunkWidth);
+    chunk.terrain_dimg.addImageGrid(img, relative_x, relative_y, w, h);
+    // now check for hanging
+    boolean x_hanging = false;
+    boolean y_hanging = false;
+    if (relative_x + w > Constants.map_chunkWidth) {
+      x_hanging = true;
+    }
+    if (relative_y + h > Constants.map_chunkWidth) {
+      y_hanging = true;
+    }
+    if (x_hanging && y_hanging) {
+      IntegerCoordinate xy_edge = this.coordinateOf(x + w, y + h);
+      Chunk xy_chunk = this.chunk_reference.get(xy_edge);
+      if (xy_chunk != null) {
+        //xy_chunk.terrain_dimg.addImageGrid(img, 0, 0, relative_x + w - Constants.
+          //map_chunkWidth, relative_y + h - Constants.map_chunkWidth);
+      }
+    }
+    else if (x_hanging) {
+      IntegerCoordinate x_edge = this.coordinateOf(x + w, y);
+      Chunk x_chunk = this.chunk_reference.get(x_edge);
+      if (x_chunk != null) {
+        int remaining_width = relative_x + w - Constants.map_chunkWidth;
+        int img_width = round(img.width * float(remaining_width) / w);
+        x_chunk.terrain_dimg.addImageGrid(img, img.width - img_width, 0, img_width,
+          img.height, 0, relative_y, remaining_width, h);
+      }
+    }
+    else if (y_hanging) {
+      IntegerCoordinate y_edge = this.coordinateOf(x, y + h);
+      Chunk y_chunk = this.chunk_reference.get(y_edge);
+      if (y_chunk != null) {
+        int remaining_height = relative_y + h - Constants.map_chunkWidth;
+        int img_height = round(img.height * float(remaining_height) / h);
+        y_chunk.terrain_dimg.addImageGrid(img, 0, img.height - img_height, img.width,
+          img_height, relative_x, 0, w, remaining_height);
+      }
+    }
   }
 
   void colorTerrainGrid(color c, int x, int y, int w, int h) {
@@ -717,6 +783,95 @@ class GameMapArea extends AbstractGameMap {
       return;
     }
     chunk.features.put(code, f);
+  }
+
+  void featureAddedMapSquareNotFound(IntegerCoordinate coordinate, Feature f) {
+    // feature hanging over edge of unloaded chunk when added
+    if (f == null || f.remove) {
+      return;
+    }
+    if (!this.hanging_features.containsKey(coordinate)) {
+      this.hanging_features.put(coordinate, new ConcurrentHashMap<Integer, Feature>());
+    }
+    this.hanging_features.get(coordinate).putIfAbsent(f.map_key, f);
+  }
+
+  void featureRemovedMapSquareNotFound(IntegerCoordinate coordinate, Feature f) {
+    // feature hanging over edge of unloaded chunk when removed
+    if (f == null || f.remove) {
+      return;
+    }
+    if (!this.hanging_features.containsKey(coordinate)) {
+      return;
+    }
+    this.hanging_features.get(coordinate).remove(f.map_key);
+    if (this.hanging_features.get(coordinate).isEmpty()) {
+      this.hanging_features.remove(coordinate);
+    }
+  }
+
+  synchronized void checkHangingFeatures() {
+    Iterator hanging_features_iterator = this.hanging_features.entrySet().iterator();
+    while(hanging_features_iterator.hasNext()) {
+      Map.Entry<IntegerCoordinate, ConcurrentHashMap<Integer, Feature>> entry =
+        (Map.Entry<IntegerCoordinate, ConcurrentHashMap<Integer, Feature>>)hanging_features_iterator.next();
+      Iterator coordinate_iterator = entry.getValue().entrySet().iterator();
+      while(coordinate_iterator.hasNext()) {
+        Map.Entry<Integer, Feature> feature_entry = (Map.Entry<Integer, Feature>)coordinate_iterator.next();
+        if (feature_entry.getValue() == null || feature_entry.getValue().remove) {
+          coordinate_iterator.remove();
+          continue;
+        }
+        if (this.featureHanging(feature_entry.getValue())) {
+          continue;
+        }
+        this.resolveHangingFeature(feature_entry.getValue());
+        coordinate_iterator.remove();
+      }
+      if (entry.getValue().isEmpty()) {
+        hanging_features_iterator.remove();
+      }
+    }
+  }
+
+  boolean featureHanging(Feature f) {
+    if (f == null || f.remove) {
+      return false;
+    }
+    IntegerCoordinate x_edge = this.coordinateOf(round(f.x + f.sizeX), round(f.y));
+    IntegerCoordinate y_edge = this.coordinateOf(round(f.x), round(f.y + f.sizeY));
+    IntegerCoordinate xy_edge = this.coordinateOf(round(f.x + f.sizeX), round(f.y + f.sizeY));
+    Chunk x_chunk = this.chunk_reference.get(x_edge);
+    Chunk y_chunk = this.chunk_reference.get(y_edge);
+    Chunk xy_chunk = this.chunk_reference.get(xy_edge);
+    return (x_chunk == null || y_chunk == null || xy_chunk == null);
+  }
+
+  void resolveHangingFeature(Feature f) {
+    if (f == null || f.remove) {
+      return;
+    }
+    IntegerCoordinate coordinate = this.coordinateOf(round(f.x), round(f.y));
+    IntegerCoordinate x_edge = this.coordinateOf(round(f.x + f.sizeX), round(f.y));
+    IntegerCoordinate y_edge = this.coordinateOf(round(f.x), round(f.y + f.sizeY));
+    IntegerCoordinate xy_edge = this.coordinateOf(round(f.x + f.sizeX), round(f.y + f.sizeY));
+    Chunk x_chunk = this.chunk_reference.get(x_edge);
+    Chunk y_chunk = this.chunk_reference.get(y_edge);
+    Chunk xy_chunk = this.chunk_reference.get(xy_edge);
+    if (x_chunk == null || y_chunk == null || xy_chunk == null) {
+      this.featureAddedMapSquareNotFound(coordinate, f);
+      return;
+    }
+    println("3");
+    if (!coordinate.equals(x_edge)) {
+      println("x_edge");
+    }
+    if (!coordinate.equals(y_edge)) {
+      println("y_edge");
+    }
+    if (!coordinate.equals(xy_edge)) {
+      println("xy_edge");
+    }
   }
 
   Feature getFeature(int code) {

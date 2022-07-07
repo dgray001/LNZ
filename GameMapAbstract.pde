@@ -969,21 +969,7 @@ abstract class AbstractGameMap {
     if (!f.inMap(this.mapXI(), this.mapYI(), this.mapXF(), this.mapYF())) {
       return;
     }
-    for (int i = round(f.x); i < round(f.x + f.sizeX); i++) {
-      for (int j = round(f.y); j < round(f.y + f.sizeY); j++) {
-        if (f.ignoreSquare(i - round(f.x), j - round(f.y))) {
-          continue;
-        }
-        GameMapSquare square = this.mapSquare(i, j);
-        if (square != null) {
-          square.addedFeature(f);
-        }
-        else {
-          global.log("WARNING: Couldn't find square with coordinates " + i + ", " +
-            j + " where feature with code " + code + " was added.");
-        }
-      }
-    }
+    this.addFeatureToTerrain(f);
     if (f.displaysImage()) {
       this.terrainImageGrid(f.getImage(), round(floor(f.x)), round(floor(f.y)), f.sizeX, f.sizeY);
     }
@@ -1006,25 +992,20 @@ abstract class AbstractGameMap {
     this.actuallyAddFeature(code, f);
   }
   abstract void actuallyAddFeature(int code, Feature f);
+  abstract void featureAddedMapSquareNotFound(IntegerCoordinate coordinate, Feature f);
+  abstract void featureRemovedMapSquareNotFound(IntegerCoordinate coordinate, Feature f);
 
   // remove feature
   void removeFeature(int code) {
     Feature f = this.getFeature(code);
-    if (f == null) {
+    if (f == null || f.remove) {
       return;
     }
     f.remove = true;
     if (!f.inMap(this.mapXI(), this.mapYI(), this.mapXF(), this.mapYF())) {
       return;
     }
-    for (int i = round(f.x); i < round(f.x + f.sizeX); i++) {
-      for (int j = round(f.y); j < round(f.y + f.sizeY); j++) {
-        if (f.ignoreSquare(i - round(f.x), j - round(f.y))) {
-          continue;
-        }
-        this.mapSquare(i, j).removedFeature(f);
-      }
-    }
+    this.removeFeatureFromTerrain(f);
     if (!f.displaysImage()) {
       return;
     }
@@ -1034,10 +1015,52 @@ abstract class AbstractGameMap {
   abstract Feature getFeature(int code);
   abstract Collection<Feature> features();
 
-  // refresh feature image (remove then add)
+  void addFeatureToTerrain(Feature f) {
+    if (f == null || f.remove) {
+      return;
+    }
+    for (int i = round(f.x); i < round(f.x + f.sizeX); i++) {
+      for (int j = round(f.y); j < round(f.y + f.sizeY); j++) {
+        if (f.ignoreSquare(i - round(f.x), j - round(f.y))) {
+          continue;
+        }
+        GameMapSquare square = this.mapSquare(i, j);
+        if (square != null) {
+          square.addedFeature(f);
+        }
+        else {
+          this.featureAddedMapSquareNotFound(new IntegerCoordinate(i, j), f);
+        }
+      }
+    }
+  }
+
+  void removeFeatureFromTerrain(Feature f) {
+    if (f == null || f.remove) {
+      return;
+    }
+    for (int i = round(f.x); i < round(f.x + f.sizeX); i++) {
+      for (int j = round(f.y); j < round(f.y + f.sizeY); j++) {
+        if (f.ignoreSquare(i - round(f.x), j - round(f.y))) {
+          continue;
+        }
+        GameMapSquare square = this.mapSquare(i, j);
+        if (square != null) {
+          square.removedFeature(f);
+        }
+        else {
+          this.featureRemovedMapSquareNotFound(new IntegerCoordinate(i, j), f);
+        }
+      }
+    }
+  }
+
+  // refresh feature image and terrain addition/removal (remove then add)
   void refreshFeature(int code) {
-    Feature f = this.getFeature(code);
-    if (f == null) {
+    this.refreshFeature(this.getFeature(code));
+  }
+  void refreshFeature(Feature f) {
+    if (f == null || f.remove) {
       return;
     }
     f.refresh_map_image = false;
@@ -1050,6 +1073,8 @@ abstract class AbstractGameMap {
     this.removeFeatureImage(f);
     this.terrainImageGrid(f.getImage(), round(floor(f.x)), round(floor(f.y)), f.sizeX, f.sizeY);
     this.refreshTerrainImage();
+    this.removeFeatureFromTerrain(f);
+    this.addFeatureToTerrain(f);
   }
 
   void removeFeatureImage(Feature f) {
@@ -1276,7 +1301,8 @@ abstract class AbstractGameMap {
     for (Thread thread : all_threads.keySet()) {
       String thread_name = thread.getName();
       if (thread_name.equals("TerrainDimgThread") || thread_name.equals("MouseMoveThread") ||
-        thread_name.equals("LoadChunkThread") || thread_name.equals("FogDImgThread")) {
+        thread_name.equals("LoadChunkThread") || thread_name.equals("FogDImgThread") ||
+        thread_name.equals("HangingFeaturesThread")) {
         gamemap_threads++;
       }
       else if (thread_name.equals("PathFindingThread")) {

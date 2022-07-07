@@ -34,6 +34,13 @@ class DImg {
     this.gridY = y;
   }
 
+  int gridWidth() { // pixels / grid unit
+    return round(this.img.width / this.gridX);
+  }
+  int gridHeight() {
+    return round(this.img.height / this.gridY);
+  }
+
   // Display functions
   void display(float x, float y) {
     imageMode(this.imgMode);
@@ -50,11 +57,10 @@ class DImg {
   }
 
   // Add image to part of this using width / height
-  void addImage(PImage newImg, int x, int y, int w, int h) {
-    int newImgX = 0;
-    int newImgY = 0;
-    int newImgW = newImg.width;
-    int newImgH = newImg.height;
+  synchronized void addImage(PImage newImg, int x, int y, int w, int h) {
+    this.addImage(newImg, 0, 0, newImg.width, newImg.height, x, y, w, h);
+  }
+  synchronized void addImage(PImage newImg, int newImgX, int newImgY, int newImgW, int newImgH, int x, int y, int w, int h) {
     if (x < 0) {
       w += x;
       int scaled_dif = round(-x * float(newImg.width) / this.img.width);
@@ -82,6 +88,9 @@ class DImg {
     if (w < 1 || h < 1 || newImgW < 1 || newImgH < 1) {
       return;
     }
+    // sometimes throws ArrayIndexOutOfBoundsException when passed bad data
+    // shouldn't ever throw error though, could be rounding error or ??
+    //println(newImg.width, newImg.height, newImgX, newImgY, newImgW, newImgH, this.img.width, this.img.height, x, y, w, h);
     this.img.blend(newImg, newImgX, newImgY, newImgW, newImgH, x, y, w, h, BLEND);
   }
   // Add image to part of this using percent of width / height
@@ -99,19 +108,11 @@ class DImg {
     this.addImageGrid(newImg, x, y, 1, 1);
   }
   void addImageGrid(PImage newImg, int x, int y, int w, int h) {
-    /*if (x < 0 || y < 0 || x >= this.gridX || y >= this.gridY) {
-      global.log("DImg: addImageGrid coordinate out of range");
-      return;
-    }
-    if (w < 1 || h < 1 || x + w > this.gridX || y + h > this.gridY) {
-      global.log("DImg: addImageGrid coordinate out of range");
-      return;
-    }
-    this.img.blend(newImg, 0, 0, newImg.width, newImg.height,
+    this.addImageGrid(newImg, 0, 0, newImg.width, newImg.height, x, y, w, h);
+  }
+  void addImageGrid(PImage newImg, int newImgX, int newImgY, int newImgW, int newImgH, int x, int y, int w, int h) {
+    this.addImage(newImg, newImgX, newImgY, newImgW, newImgH,
       round(this.img.width * (float(x) / this.gridX)),
-      round(this.img.height * (float(y) / this.gridY)),
-      round(w * (float(this.img.width) / this.gridX)), round(h * (float(this.img.height) / this.gridY)), BLEND);*/
-    this.addImage(newImg, round(this.img.width * (float(x) / this.gridX)),
       round(this.img.height * (float(y) / this.gridY)),
       round(w * (float(this.img.width) / this.gridX)),
       round(h * (float(this.img.height) / this.gridY)));

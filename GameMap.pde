@@ -137,6 +137,16 @@ class GameMap extends AbstractGameMap {
     this.features.put(code, f);
   }
 
+  void featureAddedMapSquareNotFound(IntegerCoordinate coordinate, Feature f) {
+    global.errorMessage("ERROR: Couldn't find square with coordinates " +
+      coordinate.x + ", " + coordinate.y + " where feature with code " + f.map_key + " was added.");
+  }
+
+  void featureRemovedMapSquareNotFound(IntegerCoordinate coordinate, Feature f) {
+    global.errorMessage("ERROR: Couldn't find square with coordinates " +
+      coordinate.x + ", " + coordinate.y + " where feature with code " + f.map_key + " was removed.");
+  }
+
   Feature getFeature(int code) {
     return this.features.get(code);
   }
