@@ -5,7 +5,7 @@ enum Location {
   FRANCISCAN_FRANCIS, FRANCISCAN_LEV2_FRONTDOOR, FRANCISCAN_LEV2_AHIMDOOR,
   FRANCISCAN_LEV2_CHAPELDOOR, FRANCISCAN_LEV2_BROTHERSDOOR, FRANCISCAN_LEV2_CUSTODIALDOOR,
   FRANCISCAN_LEV3_KILLEDHECK, FRANCISCAN_LEV3_AROUNDCODA,
-  AREA_GOLFCOURSE;
+  AREA_FERNWOOD;
 
   private static final List<Location> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 
@@ -26,8 +26,8 @@ enum Location {
       case FRANCISCAN_LEV3_KILLEDHECK:
       case FRANCISCAN_LEV3_AROUNDCODA:
         return "Franciscan Campus";
-      case AREA_GOLFCOURSE:
-        return "Golf Course";
+      case AREA_FERNWOOD:
+        return "Fernwood State Forest";
       default:
         return "-- Error --";
     }
@@ -56,8 +56,8 @@ enum Location {
         return "franciscan_lev3_killedheck";
       case FRANCISCAN_LEV3_AROUNDCODA:
         return "franciscan_lev3_aroundcoda";
-      case AREA_GOLFCOURSE:
-        return "golf_course";
+      case AREA_FERNWOOD:
+        return "area_fernwood";
       default:
         return "ERROR";
     }
@@ -113,10 +113,10 @@ enum Location {
             return_location = Location.FRANCISCAN_LEV3_KILLEDHECK;
             break;
           case 1: // ahimdoor car
-            return_location = Location.AREA_GOLFCOURSE;
+            return_location = Location.AREA_FERNWOOD;
             break;
           case 2: // lot boss car
-            return_location = Location.AREA_GOLFCOURSE;
+            return_location = Location.AREA_FERNWOOD;
             break;
           case 3: // killed heck
             return_location = Location.FRANCISCAN_LEV3_KILLEDHECK;
@@ -132,13 +132,13 @@ enum Location {
       case FRANCISCAN_LEV3_KILLEDHECK:
         switch(completion_code) {
           case 0:
-            return_location = Location.AREA_GOLFCOURSE;
+            return_location = Location.AREA_FERNWOOD;
             break;
           case 1: // down hill boss
-            return_location = Location.AREA_GOLFCOURSE;
+            return_location = Location.AREA_FERNWOOD;
             break;
           case 2: // starvaggi car
-            return_location = Location.AREA_GOLFCOURSE;
+            return_location = Location.AREA_FERNWOOD;
             break;
           default:
             return_location = Location.ERROR;
@@ -148,10 +148,10 @@ enum Location {
       case FRANCISCAN_LEV3_AROUNDCODA:
         switch(completion_code) {
           case 0:
-            return_location = Location.AREA_GOLFCOURSE;
+            return_location = Location.AREA_FERNWOOD;
             break;
           case 1: // down hill boss
-            return_location = Location.AREA_GOLFCOURSE;
+            return_location = Location.AREA_FERNWOOD;
             break;
           default:
             return_location = Location.ERROR;
@@ -164,7 +164,7 @@ enum Location {
       case FRANCISCAN_LEV2_CUSTODIALDOOR:
         switch(completion_code) {
           case 0:
-            return_location = Location.AREA_GOLFCOURSE;
+            return_location = Location.AREA_FERNWOOD;
             break;
           default:
             return_location = Location.ERROR;
@@ -214,7 +214,7 @@ enum Location {
   }
   public static boolean isArea(Location a) {
     switch(a) {
-      case AREA_GOLFCOURSE:
+      case AREA_FERNWOOD:
         return true;
       default:
         return false;
@@ -234,7 +234,7 @@ enum Location {
       case FRANCISCAN_LEV2_CUSTODIALDOOR:
       case FRANCISCAN_LEV3_KILLEDHECK:
       case FRANCISCAN_LEV3_AROUNDCODA:
-        return Location.AREA_GOLFCOURSE;
+        return Location.AREA_FERNWOOD;
       default:
         return Location.ERROR;
     }
@@ -246,7 +246,7 @@ enum Location {
   public static ArrayList<Location> locationsFromArea(Location a) {
     ArrayList<Location> locations = new ArrayList<Location>();
     switch(a) {
-      case AREA_GOLFCOURSE:
+      case AREA_FERNWOOD:
         locations.add(Location.FRANCISCAN_FRANCIS);
         break;
       default:

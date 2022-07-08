@@ -317,6 +317,8 @@ enum StatusEffectCode {
           status_running_multiplier - 1.0)) + "% faster.";
       case FERTILIZED:
         return "This unit is fertilized.";
+      case SNEAKING:
+        return "This unit is sneaking and will move slowly and not make walking sound.";
       case RELAXED:
         return "This unit is relaxed and has " + round(100.0 * Constants.
           status_relaxed_multiplier) + "% combat stats (attack, defense, etc.), " +

@@ -576,7 +576,7 @@ class GameMapArea extends AbstractGameMap {
   }
 
 
-  protected AreaLocation area_location = AreaLocation.FERNWOOD_FOREST;
+  protected AreaLocation area_location = AreaLocation.NONE;
 
   protected ConcurrentHashMap<IntegerCoordinate, Chunk> chunk_reference = new ConcurrentHashMap<IntegerCoordinate, Chunk>();
   protected IntegerCoordinate current_chunk = new IntegerCoordinate(0, 0);
@@ -588,6 +588,7 @@ class GameMapArea extends AbstractGameMap {
   protected int mapEdgeYi = 0;
   protected int mapEdgeXf = 1;
   protected int mapEdgeYf = 1;
+  protected IntegerCoordinate default_spawn_chunk = new IntegerCoordinate(0, 0);
   protected int chunk_view_radius = 1;
   protected int seed = 0;
 
@@ -604,6 +605,9 @@ class GameMapArea extends AbstractGameMap {
   GameMapArea(String map_folder) {
     super();
     this.map_folder = map_folder;
+  }
+
+  void initializeArea() {
     noiseSeed(this.seed);
     noiseDetail(Constants.map_noiseOctaves, 0.55);
     this.waiting_for_noise_initialization = false;
@@ -638,10 +642,10 @@ class GameMapArea extends AbstractGameMap {
 
 
   int mapXI() {
-    return -Constants.map_chunkWidth * this.mapEdgeXi;
+    return Constants.map_chunkWidth * this.mapEdgeXi;
   }
   int mapYI() {
-    return -Constants.map_chunkWidth * this.mapEdgeYi;
+    return Constants.map_chunkWidth * this.mapEdgeYi;
   }
   int mapXF() {
     return Constants.map_chunkWidth * this.mapEdgeXf;
@@ -650,16 +654,24 @@ class GameMapArea extends AbstractGameMap {
     return Constants.map_chunkWidth * this.mapEdgeYf;
   }
   int currMapXI() {
-    return Constants.map_chunkWidth * (this.current_chunk.x - this.chunk_view_radius);
+    return Constants.map_chunkWidth * max(this.current_chunk.x - this.chunk_view_radius, this.mapEdgeXi);
   }
   int currMapYI() {
-    return Constants.map_chunkWidth * (this.current_chunk.y - this.chunk_view_radius);
+    return Constants.map_chunkWidth * max(this.current_chunk.y - this.chunk_view_radius, this.mapEdgeYi);
   }
   int currMapXF() {
-    return Constants.map_chunkWidth * (this.current_chunk.x + this.chunk_view_radius + 1);
+    return Constants.map_chunkWidth * min(this.current_chunk.x + this.chunk_view_radius + 1, this.mapEdgeXf);
   }
   int currMapYF() {
-    return Constants.map_chunkWidth * (this.current_chunk.y + this.chunk_view_radius + 1);
+    return Constants.map_chunkWidth * min(this.current_chunk.y + this.chunk_view_radius + 1, this.mapEdgeYf);
+  }
+
+
+  void viewDefaultChunk() {
+    this.setViewLocation(constrain(this.default_spawn_chunk.x * Constants.map_chunkWidth,
+      this.mapXI(), this.mapXF()) + 0.5 * Constants.map_chunkWidth,
+      constrain(this.default_spawn_chunk.y * Constants.map_chunkWidth,
+      this.mapYI(), this.mapYF()) + 0.5 * Constants.map_chunkWidth);
   }
 
 
@@ -999,6 +1011,8 @@ class GameMapArea extends AbstractGameMap {
     text("FPS: " + int(global.lastFPS), this.xi + 1, y_stats);
     y_stats += line_height;
     try {
+      text("Area Location: " + this.area_location.displayName(), this.xi + 1, y_stats);
+      y_stats += line_height;
       text("Biome: " + this.chunk_reference.get(this.current_chunk).biome.displayName(), this.xi + 1, y_stats);
       y_stats += line_height;
     } catch(NullPointerException e) {}
@@ -1042,12 +1056,14 @@ class GameMapArea extends AbstractGameMap {
 
 
   void saveTerrain(PrintWriter file) {
+    file.println("area_location: " + this.area_location.fileName());
     file.println("mapEdgeXi: " + this.mapEdgeXi);
     file.println("mapEdgeYi: " + this.mapEdgeYi);
     file.println("mapEdgeXf: " + this.mapEdgeXf);
     file.println("mapEdgeYf: " + this.mapEdgeYf);
     file.println("seed: " + this.seed);
     file.println("nextFeatureKey: " + this.nextFeatureKey);
+    file.println("default_spawn_chunk: " + this.default_spawn_chunk.x + ", " + this.default_spawn_chunk.y);
     Iterator it = this.chunk_reference.entrySet().iterator();
     while(it.hasNext()) {
       Map.Entry<IntegerCoordinate, Chunk> entry = (Map.Entry<IntegerCoordinate, Chunk>)it.next();
@@ -1061,6 +1077,9 @@ class GameMapArea extends AbstractGameMap {
 
   void addImplementationSpecificData(String datakey, String data) {
     switch(datakey) {
+      case "area_location":
+        this.area_location = AreaLocation.areaLocation(data);
+        break;
       case "mapEdgeXi":
         this.mapEdgeXi = toInt(data);
         break;
@@ -1072,6 +1091,15 @@ class GameMapArea extends AbstractGameMap {
         break;
       case "mapEdgeYf":
         this.mapEdgeYf = toInt(data);
+        break;
+      case "default_spawn_chunk":
+        String[] data_split = split(data, ',');
+        if (data_split.length < 2) {
+          global.errorMessage("ERROR: default_spawn_chunk data corrupted.");
+          break;
+        }
+        this.default_spawn_chunk = new IntegerCoordinate(
+          toInt(trim(data_split[0])), toInt(trim(data_split[1])));
         break;
       case "seed":
         this.seed = toInt(data);

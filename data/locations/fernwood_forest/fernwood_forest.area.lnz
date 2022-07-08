@@ -1,0 +1,16 @@
+new: Map
+code: AREA_FERNWOOD
+mapName: test
+maxHeight: 10
+outside_map: true
+color_tint: 65793
+show_tint: false
+area_location: FERNWOOD_FOREST
+mapEdgeXi: 90
+mapEdgeYi: 45
+mapEdgeXf: 100
+mapEdgeYf: 55
+seed: 590657152
+nextFeatureKey: 0
+default_spawn_chunk: 100, 50
+end: Map

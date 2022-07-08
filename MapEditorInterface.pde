@@ -1415,10 +1415,12 @@ class MapEditorInterface extends InterfaceLNZ {
       this.setTitleText("Area Editor");
       this.area = area;
 
-      IntegerFormField area_edge_xi = new IntegerFormField("Map Edge XI", "Enter an integer", -1000000, 1000000);
-      IntegerFormField area_edge_yi = new IntegerFormField("Map Edge YI", "Enter an integer", -1000000, 1000000);
-      IntegerFormField area_edge_xf = new IntegerFormField("Map Edge XF", "Enter an integer", -1000000, 1000000);
-      IntegerFormField area_edge_yf = new IntegerFormField("Map Edge YF", "Enter an integer", -1000000, 1000000);
+      IntegerFormField area_edge_xi = new IntegerFormField("Edge XI: ", "Enter integer", -1000000, 1000000);
+      IntegerFormField area_edge_yi = new IntegerFormField("Edge YI: ", "Enter integer", -1000000, 1000000);
+      IntegerFormField area_edge_xf = new IntegerFormField("Edge XF: ", "Enter integer", -1000000, 1000000);
+      IntegerFormField area_edge_yf = new IntegerFormField("Edge YF: ", "Enter integer", -1000000, 1000000);
+      IntegerFormField spawn_chunk_x = new IntegerFormField("Spawn Chunk X: ", "Enter integer", -1000000, 1000000);
+      IntegerFormField spawn_chunk_y = new IntegerFormField("Spawn Chunk Y: ", "Enter integer", -1000000, 1000000);
       SubmitFormField button = new SubmitFormField(" Reload\nMap");
       button.setButtonHeight(45);
       button.button.setColors(color(220), color(240, 190, 150), color(190, 140, 115),
@@ -1429,7 +1431,22 @@ class MapEditorInterface extends InterfaceLNZ {
       this.addField(area_edge_yi);
       this.addField(area_edge_xf);
       this.addField(area_edge_yf);
+      this.addField(new SpacerFormField(0));
+      this.addField(spawn_chunk_x);
+      this.addField(spawn_chunk_y);
+      this.addField(new SpacerFormField(0));
       this.addField(button);
+
+      this.setValues();
+    }
+
+    void setValues() {
+      this.fields.get(1).setValue(this.area.mapEdgeXi);
+      this.fields.get(2).setValue(this.area.mapEdgeYi);
+      this.fields.get(3).setValue(this.area.mapEdgeXf);
+      this.fields.get(4).setValue(this.area.mapEdgeYf);
+      this.fields.get(6).setValue(this.area.default_spawn_chunk.x);
+      this.fields.get(7).setValue(this.area.default_spawn_chunk.y);
     }
 
     void cancel() {}
@@ -1446,12 +1463,27 @@ class MapEditorInterface extends InterfaceLNZ {
       if (area_edge_yf <= area_edge_yi) {
         area_edge_yf = area_edge_yi + 1;
       }
-      area.mapEdgeXi = area_edge_xi;
-      area.mapEdgeYi = area_edge_yi;
-      area.mapEdgeXf = area_edge_xf;
-      area.mapEdgeYf = area_edge_yf;
-      area.save("data/areas");
-      deleteFolder(
+      int spawn_chunk_x = toInt(this.fields.get(6).getValue());
+      if (spawn_chunk_x < area_edge_xi) {
+        spawn_chunk_x = area_edge_xi;
+      }
+      else if (spawn_chunk_x > area_edge_xf) {
+        spawn_chunk_x = area_edge_xf;
+      }
+      int spawn_chunk_y = toInt(this.fields.get(7).getValue());
+      if (spawn_chunk_y < area_edge_yi) {
+        spawn_chunk_y = area_edge_yi;
+      }
+      else if (spawn_chunk_y > area_edge_yf) {
+        spawn_chunk_y = area_edge_yf;
+      }
+      this.area.mapEdgeXi = area_edge_xi;
+      this.area.mapEdgeYi = area_edge_yi;
+      this.area.mapEdgeXf = area_edge_xf;
+      this.area.mapEdgeYf = area_edge_yf;
+      this.area.default_spawn_chunk = new IntegerCoordinate(spawn_chunk_x, spawn_chunk_y);
+      this.setValues();
+      this.area.save("data/areas");
       MapEditorInterface.this.reloadArea();
     }
   }
@@ -2041,6 +2073,10 @@ class MapEditorInterface extends InterfaceLNZ {
       this.levelForm.setXLocation(width - this.rightPanel.size_curr + Constants.mapEditor_listBoxGap,
         width - Constants.mapEditor_listBoxGap);
     }
+  if (this.areaForm != null) {
+    this.areaForm.setXLocation(width - this.rightPanel.size_curr + Constants.mapEditor_listBoxGap,
+      width - Constants.mapEditor_listBoxGap);
+  }
   }
 
   void buttonClick1() {
@@ -2375,6 +2411,7 @@ class MapEditorInterface extends InterfaceLNZ {
     this.curr_area = new GameMapAreaEditor("data/areas/temp");
     this.curr_area.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
     this.curr_area.mapName = area_name;
+    this.curr_area.initializeArea();
     this.curr_area.save(sketchPath("data/areas/"));
     this.navigate(MapEditorPage.EDITING_AREA);
   }
@@ -2400,6 +2437,7 @@ class MapEditorInterface extends InterfaceLNZ {
     this.curr_area.draw_grid = old_draw_grid;
     this.curr_area.draw_fog = old_draw_fog;
     this.curr_area.setZoom(old_zoom);
+    this.curr_area.viewDefaultChunk();
     this.curr_area.addHeaderMessage("Now using seed: " + this.curr_area.seed);
   }
 
@@ -2436,6 +2474,8 @@ class MapEditorInterface extends InterfaceLNZ {
     this.curr_area = new GameMapAreaEditor("data/areas/temp");
     this.curr_area.mapName = area_name;
     this.curr_area.open("data/areas");
+    this.curr_area.initializeArea();
+    this.curr_area.viewDefaultChunk();
     this.curr_area.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
     this.navigate(MapEditorPage.EDITING_AREA);
   }
@@ -2451,6 +2491,8 @@ class MapEditorInterface extends InterfaceLNZ {
     GameMapArea area = new GameMapArea("data/areas/temp");
     area.mapName = area_name;
     area.open("data/areas");
+    area.initializeArea();
+    area.viewDefaultChunk();
     this.curr_level = new Level(area);
     this.curr_level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
     this.form = new LevelHeroSelectorForm(this.curr_level);

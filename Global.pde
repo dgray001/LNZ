@@ -123,7 +123,7 @@ class Global {
     this.viewing_ender_chest = false;
   }
 
-  void log(String message) {
+  synchronized void log(String message) {
     this.log.println(message);
     println("LNZ log: " + message);
   }
@@ -135,7 +135,7 @@ class Global {
     return this.error_messages.peek();
   }
 
-  void errorMessage(String message) {
+  synchronized void errorMessage(String message) {
     this.error_messages.push(message);
     this.log(message);
   }

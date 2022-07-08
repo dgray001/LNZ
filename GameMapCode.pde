@@ -1,5 +1,5 @@
 enum GameMapCode {
-  ERROR, AREA_GOLFCOURSE, FRANCIS_FLOOR2, FRANCIS_FLOOR1, FRANCIS_GROUND,
+  ERROR, AREA_FERNWOOD, FRANCIS_FLOOR2, FRANCIS_FLOOR1, FRANCIS_GROUND,
   FRONTDOOR_FRONTDOOR, FRONTDOOR_AHIMDOOR, FRONTDOOR_CIRCLE, FRONTDOOR_ABANDONED,
     FRONTDOOR_CHAPEL, FRONTDOOR_CODA, FRONTDOOR_OUTSIDEFF, FRONTDOOR_INSIDEFF,
     FRONTDOOR_HILL, FRONTDOOR_LOT,
@@ -13,8 +13,8 @@ enum GameMapCode {
   }
   public static String display_name(GameMapCode a) {
     switch(a) {
-      case AREA_GOLFCOURSE:
-        return "Golf Course";
+      case AREA_FERNWOOD:
+        return "Fernwood Forest";
       case FRANCIS_FLOOR2:
         return "Francis Hall, 2nd floor";
       case FRANCIS_FLOOR1:
@@ -60,8 +60,8 @@ enum GameMapCode {
   }
   public static String file_name(GameMapCode a) {
     switch(a) {
-      case AREA_GOLFCOURSE:
-        return "AREA_GOLFCOURSE";
+      case AREA_FERNWOOD:
+        return "AREA_FERNWOOD";
 
       case FRANCIS_FLOOR2:
         return "FRANCIS_FLOOR2";

@@ -1,6 +1,45 @@
 enum AreaLocation {
   NONE, FERNWOOD_FOREST;
 
+  private static final List<AreaLocation> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+
+  public String displayName() {
+    return AreaLocation.displayName(this);
+  }
+  public static String displayName(AreaLocation area_location) {
+    switch(area_location) {
+      case FERNWOOD_FOREST:
+        return "Fernwood State Forest";
+      default:
+        return "Error";
+    }
+  }
+
+  public String fileName() {
+    return AreaLocation.fileName(this);
+  }
+  public static String fileName(AreaLocation area_location) {
+    switch(area_location) {
+      case FERNWOOD_FOREST:
+        return "FERNWOOD_FOREST";
+      default:
+        return "NONE";
+    }
+  }
+
+  public static AreaLocation areaLocation(String area_location_name) {
+    for (AreaLocation area_location : AreaLocation.VALUES) {
+      if (area_location == AreaLocation.NONE) {
+        continue;
+      }
+      if (AreaLocation.displayName(area_location).equals(area_location_name) ||
+        AreaLocation.fileName(area_location).equals(area_location_name)) {
+        return area_location;
+      }
+    }
+    return AreaLocation.NONE;
+  }
+
   public Biome getBiome(float noise_value) {
     return AreaLocation.getBiome(this, noise_value);
   }
