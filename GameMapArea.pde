@@ -584,7 +584,10 @@ class GameMapArea extends AbstractGameMap {
   protected FogDImgThread fog_dimg_thread = null;
 
   protected String map_folder;
-  protected int max_chunks_from_zero = 4;
+  protected int mapEdgeXi = 0;
+  protected int mapEdgeYi = 0;
+  protected int mapEdgeXf = 1;
+  protected int mapEdgeYf = 1;
   protected int chunk_view_radius = 1;
   protected int seed = 0;
 
@@ -635,16 +638,16 @@ class GameMapArea extends AbstractGameMap {
 
 
   int mapXI() {
-    return -Constants.map_chunkWidth * this.max_chunks_from_zero;
+    return -Constants.map_chunkWidth * this.mapEdgeXi;
   }
   int mapYI() {
-    return -Constants.map_chunkWidth * this.max_chunks_from_zero;
+    return -Constants.map_chunkWidth * this.mapEdgeYi;
   }
   int mapXF() {
-    return Constants.map_chunkWidth * this.max_chunks_from_zero;
+    return Constants.map_chunkWidth * this.mapEdgeXf;
   }
   int mapYF() {
-    return Constants.map_chunkWidth * this.max_chunks_from_zero;
+    return Constants.map_chunkWidth * this.mapEdgeYf;
   }
   int currMapXI() {
     return Constants.map_chunkWidth * (this.current_chunk.x - this.chunk_view_radius);
@@ -711,10 +714,11 @@ class GameMapArea extends AbstractGameMap {
     }
   }
   boolean coordinateInMap(IntegerCoordinate coordinate) {
-    if (abs(coordinate.x) <= this.max_chunks_from_zero && abs(coordinate.y) <= this.max_chunks_from_zero) {
-      return true;
+    if (coordinate.x < this.mapEdgeXi || coordinate.x > this.mapEdgeXf ||
+      coordinate.y < this.mapEdgeYi || coordinate.y > this.mapEdgeYf) {
+      return false;
     }
-    return false;
+    return true;
   }
 
   void initializeBackgroundImage() {
@@ -1038,7 +1042,10 @@ class GameMapArea extends AbstractGameMap {
 
 
   void saveTerrain(PrintWriter file) {
-    file.println("max_chunks_from_zero: " + this.max_chunks_from_zero);
+    file.println("mapEdgeXi: " + this.mapEdgeXi);
+    file.println("mapEdgeYi: " + this.mapEdgeYi);
+    file.println("mapEdgeXf: " + this.mapEdgeXf);
+    file.println("mapEdgeYf: " + this.mapEdgeYf);
     file.println("seed: " + this.seed);
     file.println("nextFeatureKey: " + this.nextFeatureKey);
     Iterator it = this.chunk_reference.entrySet().iterator();
@@ -1054,8 +1061,17 @@ class GameMapArea extends AbstractGameMap {
 
   void addImplementationSpecificData(String datakey, String data) {
     switch(datakey) {
-      case "max_chunks_from_zero":
-        this.max_chunks_from_zero = toInt(data);
+      case "mapEdgeXi":
+        this.mapEdgeXi = toInt(data);
+        break;
+      case "mapEdgeYi":
+        this.mapEdgeYi = toInt(data);
+        break;
+      case "mapEdgeXf":
+        this.mapEdgeXf = toInt(data);
+        break;
+      case "mapEdgeYf":
+        this.mapEdgeYf = toInt(data);
         break;
       case "seed":
         this.seed = toInt(data);

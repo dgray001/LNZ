@@ -865,7 +865,8 @@ abstract class InterfaceLNZ {
       SubmitFormField perk_tree = new SubmitFormField("");
       perk_tree.button = new OpenPerkTreeButton(0, 0, 0, 30);
       perk_tree.align_left = true;
-      perk_tree.make_button_extra_tall = true;
+      textSize(perk_tree.button.text_size);
+      perk_tree.setButtonHeight((textAscent() + textDescent() + 4) * 1.2);
       this.addField(perk_tree);
       this.addField(new SpacerFormField(30));
       ArrayList<MessageFormField> achievements_complete = new ArrayList<MessageFormField>();

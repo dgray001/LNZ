@@ -1398,6 +1398,65 @@ class MapEditorInterface extends InterfaceLNZ {
   }
 
 
+  class AreaEditorForm extends Form {
+    protected GameMapArea area;
+
+    AreaEditorForm(GameMapArea area, float xi, float xf) {
+      super(xi, Constants.mapEditor_listBoxGap, xf, 0.9 * height - Constants.mapEditor_listBoxGap);
+      this.color_background = color(250, 190, 140);
+      this.color_header = color(220, 180, 130);
+      this.scrollbar.setButtonColors(color(220), color(220, 160, 110), color(
+        240, 180, 130), color(200, 140, 90), color(0));
+      this.scrollbar.button_upspace.setColors(color(170), color(255, 200, 150),
+        color(255, 200, 150), color(60, 30, 0), color(0));
+      this.scrollbar.button_downspace.setColors(color(170), color(255, 200, 150),
+        color(255, 200, 150), color(60, 30, 0), color(0));
+      this.setFieldCushion(10);
+      this.setTitleText("Area Editor");
+      this.area = area;
+
+      IntegerFormField area_edge_xi = new IntegerFormField("Map Edge XI", "Enter an integer", -1000000, 1000000);
+      IntegerFormField area_edge_yi = new IntegerFormField("Map Edge YI", "Enter an integer", -1000000, 1000000);
+      IntegerFormField area_edge_xf = new IntegerFormField("Map Edge XF", "Enter an integer", -1000000, 1000000);
+      IntegerFormField area_edge_yf = new IntegerFormField("Map Edge YF", "Enter an integer", -1000000, 1000000);
+      SubmitFormField button = new SubmitFormField(" Reload\nMap");
+      button.setButtonHeight(45);
+      button.button.setColors(color(220), color(240, 190, 150), color(190, 140, 115),
+        color(140, 90, 50), color(0));
+
+      this.addField(new SpacerFormField(30));
+      this.addField(area_edge_xi);
+      this.addField(area_edge_yi);
+      this.addField(area_edge_xf);
+      this.addField(area_edge_yf);
+      this.addField(button);
+    }
+
+    void cancel() {}
+    void buttonPress(int i) {}
+
+    void submit() {
+      int area_edge_xi = toInt(this.fields.get(1).getValue());
+      int area_edge_yi = toInt(this.fields.get(2).getValue());
+      int area_edge_xf = toInt(this.fields.get(3).getValue());
+      if (area_edge_xf <= area_edge_xi) {
+        area_edge_xf = area_edge_xi + 1;
+      }
+      int area_edge_yf = toInt(this.fields.get(4).getValue());
+      if (area_edge_yf <= area_edge_yi) {
+        area_edge_yf = area_edge_yi + 1;
+      }
+      area.mapEdgeXi = area_edge_xi;
+      area.mapEdgeYi = area_edge_yi;
+      area.mapEdgeXf = area_edge_xf;
+      area.mapEdgeYf = area_edge_yf;
+      area.save("data/areas");
+      deleteFolder(
+      MapEditorInterface.this.reloadArea();
+    }
+  }
+
+
   abstract class LevelEditorForm extends Form {
     LevelEditorForm(float xi, float xf) {
       super(xi, Constants.mapEditor_listBoxGap, xf, 0.45 * height - Constants.mapEditor_listBoxGap);
@@ -1815,6 +1874,7 @@ class MapEditorInterface extends InterfaceLNZ {
   private MapEditorListTextBox listBox1 = new MapEditorListTextBox();
   private LevelEditorListTextBox listBox2 = new LevelEditorListTextBox();
   private LevelEditorForm levelForm;
+  private AreaEditorForm areaForm;
 
   private GameMapEditor curr_map;
   private GameMapAreaEditor curr_area;
@@ -1847,6 +1907,7 @@ class MapEditorInterface extends InterfaceLNZ {
     this.page = page;
     this.listBox1.setList(this.page);
     this.listBox2.setList(this.page);
+    boolean nullifyAreaForm = true;
     boolean nullifyLevelForm = true;
     boolean nullifyCurrTrigger = true;
     switch(this.page) {
@@ -1937,6 +1998,9 @@ class MapEditorInterface extends InterfaceLNZ {
         this.buttons[0].message = "Random\nSeed";
         this.buttons[1].message = "Input\nSeed";
         this.buttons[2].message = "Cancel\nArea";
+        nullifyAreaForm = false;
+        this.areaForm = new AreaEditorForm(this.curr_area, width - this.rightPanel.size_curr +
+          Constants.mapEditor_listBoxGap, width - Constants.mapEditor_listBoxGap);
         break;
       case TESTING_AREA:
         this.buttons[0].message = "";
@@ -1946,6 +2010,9 @@ class MapEditorInterface extends InterfaceLNZ {
       default:
         global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
         break;
+    }
+    if (nullifyAreaForm) {
+      this.areaForm = null;
     }
     if (nullifyLevelForm) {
       this.levelForm = null;
@@ -2326,6 +2393,7 @@ class MapEditorInterface extends InterfaceLNZ {
     boolean old_draw_fog = this.curr_area.draw_fog;
     float old_zoom = this.curr_area.zoom;
     this.curr_area.seed = new_seed;
+    this.curr_area.nextFeatureKey = 0;
     String area_name = this.curr_area.mapName;
     this.saveAreaTester();
     this.openAreaEditor(area_name);
@@ -2333,6 +2401,13 @@ class MapEditorInterface extends InterfaceLNZ {
     this.curr_area.draw_fog = old_draw_fog;
     this.curr_area.setZoom(old_zoom);
     this.curr_area.addHeaderMessage("Now using seed: " + this.curr_area.seed);
+  }
+
+  void reloadArea() {
+    if (this.curr_area == null || this.page != MapEditorPage.EDITING_AREA) {
+      return;
+    }
+    this.specificAreaSeed(this.curr_area.seed);
   }
 
   void saveAreaTester() {
@@ -3009,6 +3084,9 @@ class MapEditorInterface extends InterfaceLNZ {
       if (this.listBox2.active) {
         this.listBox2.update(millis);
       }
+      if (this.areaForm != null) {
+        this.areaForm.update(millis);
+      }
       if (this.levelForm != null) {
         this.levelForm.update(millis);
       }
@@ -3115,6 +3193,9 @@ class MapEditorInterface extends InterfaceLNZ {
       if (this.listBox2.active) {
         this.listBox2.mouseMove(mX, mY);
       }
+      if (this.areaForm != null) {
+        this.areaForm.mouseMove(mX, mY);
+      }
       if (this.levelForm != null) {
         this.levelForm.mouseMove(mX, mY);
       }
@@ -3172,6 +3253,9 @@ class MapEditorInterface extends InterfaceLNZ {
       if (this.listBox2.active) {
         this.listBox2.mousePress();
       }
+      if (this.areaForm != null) {
+        this.areaForm.mousePress();
+      }
       if (this.levelForm != null) {
         this.levelForm.mousePress();
       }
@@ -3209,6 +3293,9 @@ class MapEditorInterface extends InterfaceLNZ {
       if (this.levelForm != null) {
         this.levelForm.mouseRelease(mX, mY);
       }
+      if (this.areaForm != null) {
+        this.areaForm.mouseRelease(mX, mY);
+      }
     }
   }
 
@@ -3231,6 +3318,9 @@ class MapEditorInterface extends InterfaceLNZ {
       }
       if (this.levelForm != null) {
         this.levelForm.scroll(amount);
+      }
+      if (this.areaForm != null) {
+        this.areaForm.scroll(amount);
       }
     }
   }
@@ -3263,6 +3353,9 @@ class MapEditorInterface extends InterfaceLNZ {
       if (this.levelForm != null) {
         this.levelForm.keyPress();
       }
+      if (this.areaForm != null) {
+        this.areaForm.keyPress();
+      }
     }
   }
 
@@ -3289,6 +3382,9 @@ class MapEditorInterface extends InterfaceLNZ {
       }
       if (this.levelForm != null) {
         this.levelForm.keyRelease();
+      }
+      if (this.areaForm != null) {
+        this.areaForm.keyRelease();
       }
     }
   }

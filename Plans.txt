@@ -1,5 +1,4 @@
 v0.7.7: Ben Nelson Campaign (07/09)
- r-s: qa to ensure image processing works
  t: add chunk_xi, etc. instead of 'max_chunks_from_zero'
  v: campaign names in PlayingInterface
  w: Add Fernwood to end of Ben Nelson campaign
@@ -15,6 +14,7 @@ v0.7.7: Ben Nelson Campaign (07/09)
  - WARNING: Can't find chunk with coordinates to add feature to (actuallyAddFeature) => put in another hanging list I guess ?
  - Bug when removing then readding chunk features hanging onto that chunk not loaded again
   => when removing chunk check chunks left and up (all 3 possibilities) and add to hanging lists
+ - Bug where there's race condition between thread saving to temp folder and deleting temp folder
 
  - Finish frontdoor forcing you to get access to a car
    => Finish map outlines

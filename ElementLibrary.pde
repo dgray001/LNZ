@@ -3323,7 +3323,7 @@ class IntegerFormField extends StringFormField {
     this(message, "");
   }
   IntegerFormField(String message, String hint) {
-    this(message, hint, 0, 0);
+    this(message, hint, Integer.MIN_VALUE + 1, Integer.MAX_VALUE - 1);
   }
   IntegerFormField(String message, int min, int max) {
     this(message, "", min, max);
@@ -3947,7 +3947,6 @@ class SubmitFormField extends FormField {
   protected boolean submit_button = true;
   protected boolean extend_width = false;
   protected boolean align_left = false;
-  protected boolean make_button_extra_tall = false;
 
   SubmitFormField(String message) {
     this(message, true);
@@ -3957,6 +3956,13 @@ class SubmitFormField extends FormField {
     this.button.message = message;
     this.button.show_message = true;
     this.submit_button = submit_button;
+  }
+
+  void setButtonHeight(float new_height) {
+    if (new_height < 0) {
+      new_height = 0;
+    }
+    this.button.setYLocation(0, new_height);
   }
 
   void disable() {
@@ -3984,20 +3990,16 @@ class SubmitFormField extends FormField {
 
   void updateWidthDependencies() {
     textSize(this.button.text_size);
-    float desiredWidth = textWidth(this.button.message + "  ");
-    float button_height = textDescent() + textAscent() + 4;
-    if (this.make_button_extra_tall) {
-      button_height *= 1.2;
-    }
+    float desiredWidth = textWidth(this.button.message) + textWidth("  ");
     if (desiredWidth > this.field_width || this.extend_width) {
-      this.button.setLocation(0, 0, this.field_width, button_height);
+      this.button.setXLocation(0, this.field_width);
     }
     else if (this.align_left) {
-      this.button.setLocation(4, 0, desiredWidth + 4, button_height);
+      this.button.setXLocation(4, desiredWidth + 4);
     }
     else {
-      this.button.setLocation(0.5 * (this.field_width - desiredWidth), 0,
-        0.5 * (this.field_width + desiredWidth), button_height);
+      this.button.setXLocation(0.5 * (this.field_width - desiredWidth),
+        0.5 * (this.field_width + desiredWidth));
     }
   }
 
@@ -4159,9 +4161,9 @@ class SubmitCancelFormField extends FormField {
 
   void updateWidthDependencies() {
     textSize(this.button1.text_size);
-    float desiredWidth1 = textWidth(this.button1.message + "  ");
+    float desiredWidth1 = textWidth(this.button1.message) + textWidth("  ");
     textSize(this.button2.text_size);
-    float desiredWidth2 = textWidth(this.button2.message + "  ");
+    float desiredWidth2 = textWidth(this.button2.message) + textWidth("  ");
     if (this.gapSize > this.field_width) {
       this.button1.setXLocation(0, 0);
       this.button2.setXLocation(0, 0);
