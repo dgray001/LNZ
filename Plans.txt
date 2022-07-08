@@ -1,7 +1,6 @@
 v0.7.7: Ben Nelson Campaign (07/09)
  r-s: qa to ensure image processing works
  t: add chunk_xi, etc. instead of 'max_chunks_from_zero'
- u: can 'test' GameMapArea (investigate fog bug)
  v: campaign names in PlayingInterface
  w: Add Fernwood to end of Ben Nelson campaign
  x: Update PlayingInterface display
@@ -12,6 +11,10 @@ v0.7.7: Ben Nelson Campaign (07/09)
 
  - Fix GameMapArea terrain image having lines on chunk borders (could be resize, but more likely can be fixed at GameMapArea DImg thread)
  - Weird fog bug when at negative numbers (maybe stay at mostly positive numbers ??)
+ - Fog flickers when testing GameMapArea
+ - WARNING: Can't find chunk with coordinates to add feature to (actuallyAddFeature) => put in another hanging list I guess ?
+ - Bug when removing then readding chunk features hanging onto that chunk not loaded again
+  => when removing chunk check chunks left and up (all 3 possibilities) and add to hanging lists
 
  - Finish frontdoor forcing you to get access to a car
    => Finish map outlines
@@ -78,21 +81,7 @@ v0.7.9: Beta prep => if have time maybe start making more heroes (or outlines of
 
 
  Fatal Bugs:
-  -> java.lang.InternalError: Unrecognized PGCanvas token: 68
-    => Also many other ClassCastExceptions
-    => Happens often (~30%) in TutorialInterface
-      -> remove something from a constructor somewhere ===> color() ??
-      -> mostly just in reloading saved game
-    => Going to perk tree then back to level fixes it???
-    => Now happens much more rarely (~5%) so maybe now a replicate of below but related to TutorialInterface
-  -> java.lang.ClassCastException: class com.sun.javafx.font.PrismFont cannot be cast to class com.sun.prism.paint.Paint (com.sun.javafx.font.PrismFont and com.sun.prism.paint.Paint are in module javafx.graphics of loader 'app')
-    => Happens at 'opening file' step of testlevel
-    => Also java.lang.InternalError: Unrecognized PGCanvas token: 68
-    => Also many other ClassCastExceptions
-    => Happens rarely (<5%) in MapEditorInterface no idea how to replicate
-  MAYBE_FIX = remove textbox constructor from GameMap constructor (has color() and textSize() and textWidth() in it)
-    => hasn't happened since (v0.6.9n)
-  MAYBE_FIX = removed all uses of color(), etc and replaced with my ccolor()
+  - Memory leak in GameMapArea (probably with images) causes crash eventually
 
 
 Parking Lot:

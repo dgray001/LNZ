@@ -111,7 +111,7 @@ class ZombieSpawnParams {
     return level;
   }
 
-  boolean badSpawnSpace(float x, float y, GameMap map) {
+  boolean badSpawnSpace(float x, float y, AbstractGameMap map) {
     if (int(x) < map.mapXI() || int(x) >= map.mapXF() || int(y) < map.mapYI() || int(y) >= map.mapYF()) {
       return true;
     }
@@ -206,7 +206,7 @@ class Level {
   protected LevelForm level_form = null;
   protected LevelQuestBox level_questbox = null;
   protected LevelChatBox level_chatbox = null;
-  protected GameMap currMap;
+  protected AbstractGameMap currMap;
   protected String currMapName = null;
   protected ArrayList<String> mapNames = new ArrayList<String>();
   protected String album_name = null;
@@ -249,7 +249,7 @@ class Level {
     this.open();
   }
   // test map
-  Level(GameMap testMap) {
+  Level(AbstractGameMap testMap) {
     this.folderPath = "";
     this.levelName = testMap.mapName;
     this.currMap = testMap;

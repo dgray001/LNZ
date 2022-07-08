@@ -2,7 +2,7 @@ enum MapEditorPage {
   MAPS, AREAS, LEVELS, TERRAIN, FEATURES, UNITS, ITEMS, TESTMAP, OPENING_MAPEDITOR,
   CREATING_MAP, OPENING_TESTMAP, OPENING_TESTLEVEL, LEVEL_INFO, LEVEL_MAPS,
   LINKERS, TRIGGERS, TRIGGER_EDITOR, CONDITION_EDITOR, EFFECT_EDITOR, TESTLEVEL,
-  EDITING_AREA;
+  EDITING_AREA, TESTING_AREA;
 }
 
 
@@ -103,6 +103,7 @@ class MapEditorInterface extends InterfaceLNZ {
           case AREAS:
             this.setText("Open Area");
             this.addLine("Rename Area");
+            this.addLine("Test Area");
             this.addLine("Delete Area");
             break;
           case LEVELS:
@@ -328,6 +329,9 @@ class MapEditorInterface extends InterfaceLNZ {
               this.renameInputBox = new RenameInputBox(this.line_clicked);
               break;
             case 2:
+              MapEditorInterface.this.testArea(this.highlightedLine());
+              break;
+            case 3:
               MapEditorInterface.this.deleteArea();
               break;
             default:
@@ -1934,6 +1938,11 @@ class MapEditorInterface extends InterfaceLNZ {
         this.buttons[1].message = "Input\nSeed";
         this.buttons[2].message = "Cancel\nArea";
         break;
+      case TESTING_AREA:
+        this.buttons[0].message = "";
+        this.buttons[1].message = "";
+        this.buttons[2].message = "Cancel\nLevel";
+        break;
       default:
         global.errorMessage("ERROR: MapEditorPage " + this.page + " not found.");
         break;
@@ -2021,6 +2030,7 @@ class MapEditorInterface extends InterfaceLNZ {
         this.navigate(MapEditorPage.TRIGGER_EDITOR);
         break;
       case TESTLEVEL:
+      case TESTING_AREA:
         break;
       case EDITING_AREA:
         this.randomAreaSeed();
@@ -2056,6 +2066,7 @@ class MapEditorInterface extends InterfaceLNZ {
         break;
       case OPENING_TESTMAP:
       case OPENING_TESTLEVEL:
+      case TESTING_AREA:
         break;
       case LEVEL_INFO:
       case LEVEL_MAPS:
@@ -2117,6 +2128,7 @@ class MapEditorInterface extends InterfaceLNZ {
         this.closeLevelTester();
         break;
       case EDITING_AREA:
+      case TESTING_AREA:
         this.closeAreaTester();
         break;
       default:
@@ -2170,6 +2182,7 @@ class MapEditorInterface extends InterfaceLNZ {
       case OPENING_TESTLEVEL:
       case TESTLEVEL:
       case EDITING_AREA:
+      case TESTING_AREA:
         break;
       case LEVEL_INFO:
         this.form = new HelpForm(Constants.help_mapEditor_levelInfo);
@@ -2333,6 +2346,7 @@ class MapEditorInterface extends InterfaceLNZ {
   void closeAreaTester() {
     deleteFolder("data/areas/temp");
     this.curr_area = null;
+    this.curr_level = null;
     this.navigate(MapEditorPage.AREAS);
   }
 
@@ -2349,6 +2363,24 @@ class MapEditorInterface extends InterfaceLNZ {
     this.curr_area.open("data/areas");
     this.curr_area.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
     this.navigate(MapEditorPage.EDITING_AREA);
+  }
+
+  void testArea(String area_name) {
+    if (area_name == null || area_name.equals("")) {
+      return;
+    }
+    if (!fileExists("data/areas/" + area_name + ".area.lnz")) {
+      return;
+    }
+    deleteFolder("data/areas/temp");
+    GameMapArea area = new GameMapArea("data/areas/temp");
+    area.mapName = area_name;
+    area.open("data/areas");
+    this.curr_level = new Level(area);
+    this.curr_level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+    this.form = new LevelHeroSelectorForm(this.curr_level);
+    this.curr_level.restartTimers();
+    this.navigate(MapEditorPage.TESTING_AREA);
   }
 
   void deleteArea() {

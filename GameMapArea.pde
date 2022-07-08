@@ -585,7 +585,7 @@ class GameMapArea extends AbstractGameMap {
 
   protected String map_folder;
   protected int max_chunks_from_zero = 4;
-  protected int chunk_view_radius = 2;
+  protected int chunk_view_radius = 1;
   protected int seed = 0;
 
   // prevents nullptr on perlinNoise() since noise/noiseDetail/noiseSeed not thread-safe (maybe??)

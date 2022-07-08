@@ -1239,7 +1239,7 @@ class Effect {
         break;
       case 51: // remove features in rectangle
         if (level.currMap != null) {
-          for (Feature f : level.currMap.features.values()) {
+          for (Feature f : level.currMap.features()) {
             if (this.rectangle.contains(f)) {
               f.remove = true;
             }

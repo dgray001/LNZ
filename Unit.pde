@@ -2229,7 +2229,10 @@ class Unit extends MapObject {
     this.timer_walk -= time_elapsed;
     if (this.timer_walk < 0) {
       this.timer_walk += Constants.unit_timer_walk;
-      this.walkSound(map.mapSquare(int(this.x), int(this.y)).terrain_id);
+      GameMapSquare square = map.mapSquare(int(this.x), int(this.y));
+      if (square != null) {
+        this.walkSound(square.terrain_id);
+      }
     }
   }
 
@@ -2872,7 +2875,7 @@ class Unit extends MapObject {
             default:
               break;
           }
-        } catch(ArrayIndexOutOfBoundsException e) {}
+        } catch(NullPointerException e) {}
       }
       if (this.timer_resolve_floor_height < 0) {
         this.timer_resolve_floor_height += Constants.unit_timer_resolve_floor_height_cooldown;

@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\nAlpha v0.7.7q: 20220707" +
+  "\nAlpha v0.7.7r: 20220707" +
   "\n\nLines: 52847 (v0.7.7)" +
   "\nImages: 1264 (v0.7.7)" +
   "\nSounds: 341 (v0.7.7)" +
@@ -191,7 +191,7 @@ static class Constants {
   static final int map_maxHeight = 10;
   static final float map_lightDecay = 0.8; // per square
   static final int map_lightUpdateIterations = 4; // per refresh
-  static final int map_chunkWidth = 5;
+  static final int map_chunkWidth = 30;
   static final int map_noiseOffsetX = 123456;
   static final int map_noiseOffsetY = 654321;
   static final int map_noiseOctaves = 8;
