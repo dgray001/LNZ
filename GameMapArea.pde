@@ -94,6 +94,42 @@ class GameMapArea extends AbstractGameMap {
   }
 
 
+  class HangingImage {
+    private IntegerCoordinate chunk_coordinate;
+    private PImage newImg;
+    private int newImgX;
+    private int newImgY;
+    private int newImgW;
+    private int newImgH;
+    private int x;
+    private int y;
+    private int w;
+    private int h;
+    HangingImage(IntegerCoordinate chunk_coordinate, PImage newImg, int newImgX,
+      int newImgY, int newImgW, int newImgH, int x, int y, int w, int h) {
+      this.chunk_coordinate = chunk_coordinate;
+      this.newImg = newImg;
+      this.newImgX = newImgX;
+      this.newImgY = newImgY;
+      this.newImgW = newImgW;
+      this.newImgH = newImgH;
+      this.x = x;
+      this.y = y;
+      this.w = w;
+      this.h = h;
+    }
+    boolean resolve() {
+      Chunk chunk = GameMapArea.this.chunk_reference.get(this.chunk_coordinate);
+      if (chunk == null) {
+        return false;
+      }
+      chunk.terrain_dimg.addImageGrid(this.newImg, this.newImgX, this.newImgY,
+        this.newImgW, this.newImgH, this.x, this.y, this.w, this.h);
+      return true;
+    }
+  }
+
+
   class HangingFeaturesThread extends Thread {
     HangingFeaturesThread() {
       super("HangingFeaturesThread");
@@ -107,6 +143,7 @@ class GameMapArea extends AbstractGameMap {
           return;
         }
         GameMapArea.this.checkHangingFeatures();
+        GameMapArea.this.checkHangingImages();
       }
     }
   }
@@ -557,6 +594,7 @@ class GameMapArea extends AbstractGameMap {
   // keeps track of features that are hanging over unloaded chunks when added / removed
   protected ConcurrentHashMap<IntegerCoordinate, ConcurrentHashMap<Integer, Feature>> hanging_features =
     new ConcurrentHashMap<IntegerCoordinate, ConcurrentHashMap<Integer, Feature>>();
+  protected Queue<HangingImage> hanging_images = new ConcurrentLinkedQueue<HangingImage>();
   protected HangingFeaturesThread hanging_features_thread;
 
 
@@ -721,19 +759,25 @@ class GameMapArea extends AbstractGameMap {
       int img_height = round(img.height * float(remaining_height) / h);
       IntegerCoordinate x_edge = this.coordinateOf(x + w, y);
       Chunk x_chunk = this.chunk_reference.get(x_edge);
-      if (x_chunk != null) {
+      if (x_chunk == null) {
+      }
+      else {
         x_chunk.terrain_dimg.addImageGrid(img, img.width - img_width, 0, img_width,
           img.height - img_height, 0, relative_y, remaining_width, Constants.map_chunkWidth - relative_y);
       }
       IntegerCoordinate y_edge = this.coordinateOf(x, y + h);
       Chunk y_chunk = this.chunk_reference.get(y_edge);
-      if (y_chunk != null) {
+      if (y_chunk == null) {
+      }
+      else {
         y_chunk.terrain_dimg.addImageGrid(img, 0, img.height - img_height, img.width
           - img_width, img_height, relative_x, 0, Constants.map_chunkWidth - relative_x, remaining_height);
       }
       IntegerCoordinate xy_edge = this.coordinateOf(x + w, y + h);
       Chunk xy_chunk = this.chunk_reference.get(xy_edge);
-      if (xy_chunk != null) {
+      if (xy_chunk == null) {
+      }
+      else {
         xy_chunk.terrain_dimg.addImageGrid(img, img.width - img_width, img.height - img_height,
           img_width, img_height, 0, 0, remaining_width, remaining_height);
       }
@@ -741,9 +785,11 @@ class GameMapArea extends AbstractGameMap {
     else if (x_hanging) {
       IntegerCoordinate x_edge = this.coordinateOf(x + w, y);
       Chunk x_chunk = this.chunk_reference.get(x_edge);
-      if (x_chunk != null) {
-        int remaining_width = relative_x + w - Constants.map_chunkWidth;
-        int img_width = round(img.width * float(remaining_width) / w);
+      int remaining_width = relative_x + w - Constants.map_chunkWidth;
+      int img_width = round(img.width * float(remaining_width) / w);
+      if (x_chunk == null) {
+      }
+      else {
         x_chunk.terrain_dimg.addImageGrid(img, img.width - img_width, 0, img_width,
           img.height, 0, relative_y, remaining_width, h);
       }
@@ -751,9 +797,11 @@ class GameMapArea extends AbstractGameMap {
     else if (y_hanging) {
       IntegerCoordinate y_edge = this.coordinateOf(x, y + h);
       Chunk y_chunk = this.chunk_reference.get(y_edge);
-      if (y_chunk != null) {
-        int remaining_height = relative_y + h - Constants.map_chunkWidth;
-        int img_height = round(img.height * float(remaining_height) / h);
+      int remaining_height = relative_y + h - Constants.map_chunkWidth;
+      int img_height = round(img.height * float(remaining_height) / h);
+      if (y_chunk == null) {
+      }
+      else {
         y_chunk.terrain_dimg.addImageGrid(img, 0, img.height - img_height, img.width,
           img_height, relative_x, 0, w, remaining_height);
       }
@@ -852,6 +900,16 @@ class GameMapArea extends AbstractGameMap {
     }
   }
 
+  synchronized void checkHangingImages() {
+    Iterator<HangingImage> hanging_image_iterator = this.hanging_images.iterator();
+    while(hanging_image_iterator.hasNext()) {
+      HangingImage hanging_image = hanging_image_iterator.next();
+      if (hanging_image.resolve()) {
+        hanging_image_iterator.remove();
+      }
+    }
+  }
+
   boolean featureHanging(Feature f) {
     if (f == null || f.remove) {
       return false;
@@ -875,8 +933,12 @@ class GameMapArea extends AbstractGameMap {
       return false;
     }
     square.addedFeature(f);
-    // update image
-    println("update image");
+    int x_chunk = Math.floorMod(coordinate.x, Constants.map_chunkWidth);
+    int y_chunk = Math.floorMod(coordinate.y, Constants.map_chunkWidth);
+    DImg dimg = new DImg(f.getImage());
+    dimg.setGrid(f.sizeX, f.sizeY);
+    PImage image_piece = dimg.getImageGridPiece(coordinate.x - round(f.x), coordinate.y - round(f.y));
+    chunk.terrain_dimg.addImageGrid(image_piece, x_chunk, y_chunk);
     return true;
   }
 

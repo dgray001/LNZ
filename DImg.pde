@@ -206,6 +206,9 @@ class DImg {
     return_image.updatePixels();
     return return_image;
   }
+  PImage getImageGridPiece(int x, int y) {
+    return this.getImageGridPiece(x, y, 1, 1);
+  }
   PImage getImageGridPiece(int x, int y, int w, int h) {
     if (x < 0 || y < 0 || x >= this.gridX || y >= this.gridY) {
       global.log("DImg: getImageGridPiece coordinate out of range");
