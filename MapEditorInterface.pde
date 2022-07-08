@@ -2408,9 +2408,8 @@ class MapEditorInterface extends InterfaceLNZ {
       return;
     }
     deleteFolder("data/areas/temp");
-    this.curr_area = new GameMapAreaEditor("data/areas/temp");
+    this.curr_area = new GameMapAreaEditor(area_name, "data/areas/temp");
     this.curr_area.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
-    this.curr_area.mapName = area_name;
     this.curr_area.initializeArea();
     this.curr_area.save(sketchPath("data/areas/"));
     this.navigate(MapEditorPage.EDITING_AREA);
@@ -2471,8 +2470,7 @@ class MapEditorInterface extends InterfaceLNZ {
       return;
     }
     deleteFolder("data/areas/temp");
-    this.curr_area = new GameMapAreaEditor("data/areas/temp");
-    this.curr_area.mapName = area_name;
+    this.curr_area = new GameMapAreaEditor(area_name, "data/areas/temp");
     this.curr_area.open("data/areas");
     this.curr_area.initializeArea();
     this.curr_area.viewDefaultChunk();
@@ -2488,8 +2486,7 @@ class MapEditorInterface extends InterfaceLNZ {
       return;
     }
     deleteFolder("data/areas/temp");
-    GameMapArea area = new GameMapArea("data/areas/temp");
-    area.mapName = area_name;
+    GameMapArea area = new GameMapArea(area_name, "data/areas/temp");
     area.open("data/areas");
     area.initializeArea();
     area.viewDefaultChunk();
@@ -2518,7 +2515,7 @@ class MapEditorInterface extends InterfaceLNZ {
     if (entryExists("data/areas/" + target_name + ".area.lnz")) {
       return;
     }
-    GameMapAreaEditor map = new GameMapAreaEditor("data/areas/temp");
+    GameMapAreaEditor map = new GameMapAreaEditor(area_name, "data/areas/temp");
     map.mapName = area_name;
     String[] lines = map.open1File("data/areas/");
     PrintWriter mapFile = createWriter("data/areas/" + target_name + ".area.lnz");

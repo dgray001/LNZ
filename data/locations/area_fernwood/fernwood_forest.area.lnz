@@ -1,6 +1,6 @@
 new: Map
 code: AREA_FERNWOOD
-mapName: test
+mapName: fernwood_forest
 maxHeight: 10
 outside_map: true
 color_tint: 65793

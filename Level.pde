@@ -396,7 +396,14 @@ class Level {
     }
     else {
       this.openMap(this.player_start_location.mapName);
-      player.setLocation(this.player_start_location.centerX(), this.player_start_location.centerY());
+      if (this.currMap != null && GameMapArea.class.isInstance(this.currMap)) {
+        GameMapArea area_map = (GameMapArea)this.currMap;
+        println(area_map.defaultSpawnX(), area_map.defaultSpawnY(), area_map.default_spawn_chunk.x);
+        player.setLocation(area_map.defaultSpawnX(), area_map.defaultSpawnY());
+      }
+      else {
+        player.setLocation(this.player_start_location.centerX(), this.player_start_location.centerY());
+      }
     }
     if (this.currMap == null || this.currMap.nullify) {
       this.nullify = true;
@@ -423,7 +430,13 @@ class Level {
     this.player.experience *= int(floor(Constants.hero_experienceRespawnMultiplier));
     if (this.player_spawn_location != null && this.hasMap(this.player_spawn_location.mapName)) {
       this.openMap(this.player_spawn_location.mapName);
-      player.setLocation(this.player_spawn_location.centerX(), this.player_spawn_location.centerY());
+      if (this.currMap != null && GameMapArea.class.isInstance(this.currMap)) {
+        GameMapArea area_map = (GameMapArea)this.currMap;
+        player.setLocation(area_map.defaultSpawnX(), area_map.defaultSpawnY());
+      }
+      else {
+        player.setLocation(this.player_spawn_location.centerX(), this.player_spawn_location.centerY());
+      }
     }
     else if (this.player_start_location != null && this.hasMap(this.player_start_location.mapName)) {
       this.openMap(this.player_start_location.mapName);
@@ -486,15 +499,22 @@ class Level {
     this.openMap(this.currMapName);
     if (this.currMap == null || this.currMap.nullify) {
       this.nullify = true;
-      global.errorMessage("ERROR: Can't open curr map.");
+      global.errorMessage("ERROR: Can't open curr map: " + this.currMapName + ".");
     }
+  }
+
+  String mapSuffix() {
+    if (this.location.isArea()) {
+      return "area";
+    }
+    return "map";
   }
 
   void openMap(String mapName) {
     if (mapName == null) {
       return;
     }
-    if (!fileExists(this.finalFolderPath() + "/" + mapName + ".map.lnz")) {
+    if (!fileExists(this.finalFolderPath() + "/" + mapName + "." + this.mapSuffix() + ".lnz")) {
       global.errorMessage("ERROR: Level " + this.levelName + " has no map " +
         "with name " + mapName + " at location " + this.finalFolderPath() + ".");
       this.nullify = true;
@@ -507,7 +527,14 @@ class Level {
     if (this.currMap != null) {
       this.currMap.save(this.finalFolderPath());
     }
-    this.currMap = new GameMap(mapName, this.finalFolderPath());
+    if (this.location.isArea()) {
+      this.currMap = new GameMapArea(mapName, this.finalFolderPath());
+      this.currMap.open(this.finalFolderPath());
+      ((GameMapArea)this.currMap).initializeArea();
+    }
+    else {
+      this.currMap = new GameMap(mapName, this.finalFolderPath());
+    }
     this.currMap.setLocation(this.xi, this.yi, this.xf, this.yf);
     this.currMap.in_control = this.in_control;
   }
@@ -3694,7 +3721,7 @@ class LevelEditor extends Level {
     if (mapName == null) {
       return;
     }
-    if (!fileExists(this.finalFolderPath() + "/" + mapName + ".map.lnz")) {
+    if (!fileExists(this.finalFolderPath() + "/" + mapName + "." + this.mapSuffix() + ".lnz")) {
       global.errorMessage("ERROR: Level " + this.levelName + " has no map " +
         "with name " + mapName + " at location " + this.finalFolderPath() + ".");
       return;
@@ -3703,7 +3730,12 @@ class LevelEditor extends Level {
       return;
     }
     this.currMapName = mapName;
-    this.currMap = new GameMapLevelEditor(mapName, this.finalFolderPath());
+    if (this.location.isArea()) {
+      this.currMap = new GameMapAreaEditor(mapName, this.finalFolderPath());
+    }
+    else {
+      this.currMap = new GameMapLevelEditor(mapName, this.finalFolderPath());
+    }
     this.currMap.setLocation(this.xi, this.yi, this.xf, this.yf);
   }
 

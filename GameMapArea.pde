@@ -602,8 +602,9 @@ class GameMapArea extends AbstractGameMap {
   protected HangingFeaturesThread hanging_features_thread;
 
 
-  GameMapArea(String map_folder) {
+  GameMapArea(String mapName, String map_folder) {
     super();
+    this.mapName = mapName;
     this.map_folder = map_folder;
   }
 
@@ -667,11 +668,16 @@ class GameMapArea extends AbstractGameMap {
   }
 
 
+  float defaultSpawnX() {
+    return constrain(this.default_spawn_chunk.x * Constants.map_chunkWidth,
+      this.mapXI(), this.mapXF()) + 0.5 * Constants.map_chunkWidth;
+  }
+  float defaultSpawnY() {
+    return constrain(this.default_spawn_chunk.y * Constants.map_chunkWidth,
+    this.mapYI(), this.mapYF()) + 0.5 * Constants.map_chunkWidth;
+  }
   void viewDefaultChunk() {
-    this.setViewLocation(constrain(this.default_spawn_chunk.x * Constants.map_chunkWidth,
-      this.mapXI(), this.mapXF()) + 0.5 * Constants.map_chunkWidth,
-      constrain(this.default_spawn_chunk.y * Constants.map_chunkWidth,
-      this.mapYI(), this.mapYF()) + 0.5 * Constants.map_chunkWidth);
+    this.setViewLocation(this.defaultSpawnX(), this.defaultSpawnY());
   }
 
 
@@ -850,6 +856,9 @@ class GameMapArea extends AbstractGameMap {
     else {
       this.fog_dimg_thread = new FogDImgThread(fog_xi, fog_yi, fog_w, fog_h);
       this.fog_dimg_thread.start();
+    }
+    if (this.fog_dimg == null) {
+      return global.images.getBlackPixel();
     }
     return this.fog_dimg.getImagePiece(fog_xi, fog_yi, fog_w, fog_h);
   }

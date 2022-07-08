@@ -16,6 +16,8 @@ v0.7.7: Ben Nelson Campaign (07/09)
  - Bug where there's race condition between thread saving to temp folder and deleting temp folder
  - Make trees spawn a little more spread out
  - When removing features the image is still there (being written over and over?)
+ - Make errorForm scrollbar red
+ - Can't hover features in area until moving near them ???
 
  - Finish frontdoor forcing you to get access to a car
    => Finish map outlines

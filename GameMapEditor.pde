@@ -748,8 +748,8 @@ class GameMapLevelEditor extends GameMapEditor {
 class GameMapAreaEditor extends GameMapArea {
   protected boolean draw_grid = true;
 
-  GameMapAreaEditor(String map_folder) {
-    super(map_folder);
+  GameMapAreaEditor(String map_name, String map_folder) {
+    super(map_name, map_folder);
     this.draw_fog = false;
   }
 

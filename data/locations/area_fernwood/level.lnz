@@ -1,0 +1,15 @@
+new: Level
+levelName: Fernwood Forest
+location: area_fernwood
+completed: false
+completion_code: 0
+time: 6.5
+respawning: false
+respawn_timer: 0
+sleeping: false
+sleep_timer: 0
+in_control: true
+mapNames: fernwood_forest
+currMapName: fernwood_forest
+player_start_location: fernwood_forest, 0.0, 0.0, 1.0, 1.0
+end: Level
