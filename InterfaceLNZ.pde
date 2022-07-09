@@ -2,7 +2,7 @@ abstract class FormLNZ extends Form {
   protected boolean canceled = false;
   protected float shadow_distance = 10;
   protected PImage img;
-  protected color color_shadow = color(0, 150);
+  protected color color_shadow = ccolor(0, 150);
   protected boolean need_to_reset_cursor = true;
 
   FormLNZ(float xi, float yi, float xf, float yf) {
@@ -59,14 +59,14 @@ abstract class InterfaceLNZ {
         0.5 * (width + formWidth), 0.5 * (height + formHeight));
       this.setTitleText(title);
       this.setTitleSize(18);
-      this.color_background = color(180, 250, 180);
-      this.color_header = color(30, 170, 30);
+      this.color_background = ccolor(180, 250, 180);
+      this.color_header = ccolor(30, 170, 30);
 
       SubmitCancelFormField submit = new SubmitCancelFormField("  Ok  ", "Cancel");
-      submit.button1.setColors(color(220), color(190, 240, 190),
-        color(140, 190, 140), color(90, 140, 90), color(0));
-      submit.button2.setColors(color(220), color(190, 240, 190),
-        color(140, 190, 140), color(90, 140, 90), color(0));
+      submit.button1.setColors(ccolor(220), ccolor(190, 240, 190),
+        ccolor(140, 190, 140), ccolor(90, 140, 90), ccolor(0));
+      submit.button2.setColors(ccolor(220), ccolor(190, 240, 190),
+        ccolor(140, 190, 140), ccolor(90, 140, 90), ccolor(0));
       this.addField(new SpacerFormField(0));
       this.addField(new TextBoxFormField(message, formHeight - 130));
       this.addField(submit);
@@ -78,7 +78,7 @@ abstract class InterfaceLNZ {
     class EscButtonFormField extends ButtonFormField {
       EscButtonFormField(String message) {
         super(message);
-        this.button.setColors(color(170, 200), color(1, 0), color(40, 150), color(20, 180), color(255));
+        this.button.setColors(ccolor(170, 200), ccolor(1, 0), ccolor(40, 150), ccolor(20, 180), ccolor(255));
         this.button.raised_border = false;
         this.button.raised_body = false;
         this.button.noStroke();
@@ -93,14 +93,14 @@ abstract class InterfaceLNZ {
       this.cancel = null;
       this.scrollbar_width_multiplier = 0;
       this.draggable = false;
-      this.color_shadow = color(1, 0);
+      this.color_shadow = ccolor(1, 0);
       this.setFieldCushion(20);
       this.setTitleText("Paused");
       this.setTitleSize(22);
-      this.color_background = color(60, 120);
-      this.color_header = color(1, 0);
-      this.color_stroke = color(1, 0);
-      this.color_title = color(255);
+      this.color_background = ccolor(60, 120);
+      this.color_header = ccolor(1, 0);
+      this.color_stroke = ccolor(1, 0);
+      this.color_title = ccolor(255);
 
       this.addField(new SpacerFormField(0));
       this.addField(new EscButtonFormField("Continue"));
@@ -170,18 +170,18 @@ abstract class InterfaceLNZ {
           this.adjust_for_text_descent = true;
           this.code = code;
           Element e = code.element();
-          this.background_color = color(170, 170);
+          this.background_color = ccolor(170, 170);
           this.setColors(elementalColorLocked(e), elementalColorDark(e), elementalColor(e),
             elementalColorLight(e), elementalColorText(e));
           this.show_message = true;
           this.message = code.display_name();
           this.text_size = 24;
           this.rippleTimer = 450;
-          this.setStroke(color(0), 1);
+          this.setStroke(ccolor(0), 1);
           if (global.profile.heroes.containsKey(this.code)) {
             this.hero = global.profile.heroes.get(this.code);
             if (global.profile.curr_hero == this.code) {
-              this.setStroke(color(255), 6);
+              this.setStroke(ccolor(255), 6);
             }
           }
         }
@@ -384,11 +384,11 @@ abstract class InterfaceLNZ {
         0.5 * (width + Constants.profile_heroesFormWidth), 0.5 * (height + Constants.profile_heroesFormHeight));
       this.setTitleText("Heroes");
       this.setTitleSize(22);
-      this.color_shadow = color(0, 180);
-      this.color_background = color(60);
-      this.color_header = color(90);
-      this.color_stroke = color(0);
-      this.color_title = color(255);
+      this.color_shadow = ccolor(0, 180);
+      this.color_background = ccolor(60);
+      this.color_header = ccolor(90);
+      this.color_stroke = ccolor(0);
+      this.color_title = ccolor(255);
       this.setFieldCushion(15);
 
       this.addField(new SpacerFormField(0));
@@ -488,24 +488,39 @@ abstract class InterfaceLNZ {
       this.setTitleText("Error Detected");
       this.setTitleSize(20);
       this.setFieldCushion(0);
-      this.color_background = color(250, 150, 150);
-      this.color_header = color(180, 50, 50);
+      this.color_background = ccolor(250, 150, 150);
+      this.color_header = ccolor(180, 50, 50);
+      this.scrollbar.setButtonColors(ccolor(220), ccolor(240, 130, 130), ccolor(
+        255, 155, 155), ccolor(200, 100, 100), ccolor(0));
+      this.scrollbar.button_upspace.setColors(ccolor(170), ccolor(1, 0),
+        ccolor(255, 80, 80, 75), ccolor(255, 80, 80, 150), ccolor(0));
+      this.scrollbar.button_downspace.setColors(ccolor(170), ccolor(1, 0),
+        ccolor(255, 80, 80, 75), ccolor(255, 80, 80, 150), ccolor(0));
+      
+      TextBoxFormField textbox = new TextBoxFormField("Error message:\n" + errorMessage, 100);
+      textbox.textbox.scrollbar.setButtonColors(ccolor(220), ccolor(240, 130, 130), ccolor(
+        255, 155, 155), ccolor(200, 100, 100), ccolor(0));
+      textbox.textbox.scrollbar.button_upspace.setColors(ccolor(170), ccolor(1, 0),
+        ccolor(255, 80, 80, 75), ccolor(255, 80, 80, 150), ccolor(0));
+      textbox.textbox.scrollbar.button_downspace.setColors(ccolor(170), ccolor(1, 0),
+        ccolor(255, 80, 80, 75), ccolor(255, 80, 80, 150), ccolor(0));
+      SubmitCancelFormField buttons = new SubmitCancelFormField("Continue\n(may crash)", "Exit");
+      textSize(buttons.button1.text_size);
+      buttons.button1.setColors(ccolor(180), ccolor(240, 160, 160),
+        ccolor(190, 110, 110), ccolor(140, 70, 70), ccolor(0));
+      buttons.button2.setColors(ccolor(180), ccolor(240, 160, 160),
+        ccolor(190, 110, 110), ccolor(140, 70, 70), ccolor(0));
+      buttons.setButtonHeight(2 * (textAscent() + textDescent() + 2));
+
       this.addField(new SpacerFormField(20));
       this.addField(new MessageFormField("Error detected on this frame."));
       this.addField(new SpacerFormField(10));
-      this.addField(new TextBoxFormField("Error message:\n" + errorMessage, 100));
+      this.addField(textbox);
       this.addField(new SpacerFormField(20));
       this.addField(new MessageFormField("Check the data/error folder for logs and image."));
       this.addField(new SpacerFormField(20));
       this.addField(new CheckboxFormField("Send error report  "));
       this.addField(new SpacerFormField(20));
-      SubmitCancelFormField buttons = new SubmitCancelFormField("Continue\n(may crash)", "Exit");
-      textSize(buttons.button1.text_size);
-      buttons.button1.setColors(color(180), color(240, 160, 160),
-        color(190, 110, 110), color(140, 70, 70), color(0));
-      buttons.button2.setColors(color(180), color(240, 160, 160),
-        color(190, 110, 110), color(140, 70, 70), color(0));
-      buttons.setButtonHeight(2 * (textAscent() + textDescent() + 2));
       this.addField(buttons);
       this.img.save("data/logs/screenshot.jpg");
     }
@@ -542,8 +557,8 @@ abstract class InterfaceLNZ {
       this.setTitleText("Options");
       this.setTitleSize(20);
       this.setFieldCushion(5);
-      this.color_background = color(250, 250, 180);
-      this.color_header = color(180, 180, 50);
+      this.color_background = ccolor(250, 250, 180);
+      this.color_header = ccolor(180, 180, 50);
       if (global.profile == null) {
         this.canceled = true;
         return;
@@ -593,17 +608,17 @@ abstract class InterfaceLNZ {
       fog_update_time.addLabel(" ms", true, true);
       CheckboxFormField lock_screen = new CheckboxFormField("Lock Screen:  ");
       SubmitFormField apply = new ButtonFormField("Apply");
-      apply.button.setColors(color(220), color(240, 240, 190),
-        color(190, 190, 140), color(140, 140, 90), color(0));
+      apply.button.setColors(ccolor(220), ccolor(240, 240, 190),
+        ccolor(190, 190, 140), ccolor(140, 140, 90), ccolor(0));
       SubmitFormField submit = new SubmitFormField("Save Options");
-      submit.button.setColors(color(220), color(240, 240, 190),
-        color(190, 190, 140), color(140, 140, 90), color(0));
+      submit.button.setColors(ccolor(220), ccolor(240, 240, 190),
+        ccolor(190, 190, 140), ccolor(140, 140, 90), ccolor(0));
       SubmitFormField defaults = new ButtonFormField("Defaults");
-      defaults.button.setColors(color(220), color(240, 240, 190),
-        color(190, 190, 140), color(140, 140, 90), color(0));
+      defaults.button.setColors(ccolor(220), ccolor(240, 240, 190),
+        ccolor(190, 190, 140), ccolor(140, 140, 90), ccolor(0));
       SubmitFormField cancel = new SubmitFormField("Cancel", false);
-      cancel.button.setColors(color(220), color(240, 240, 190),
-        color(190, 190, 140), color(140, 140, 90), color(0));
+      cancel.button.setColors(ccolor(220), ccolor(240, 240, 190),
+        ccolor(190, 190, 140), ccolor(140, 140, 90), ccolor(0));
 
       this.addField(new SpacerFormField(15));
       this.addField(new MessageFormField("Volume", CENTER));
@@ -814,7 +829,7 @@ abstract class InterfaceLNZ {
         this.show_message = true;
         this.noStroke();
         this.message = "Open Perk Tree";
-        this.setColors(color(170, 170), color(1, 0), color(1, 0), color(150, 150), color(0));
+        this.setColors(ccolor(170, 170), ccolor(1, 0), ccolor(1, 0), ccolor(150, 150), ccolor(0));
         this.rippleTime = 700;
         this.text_size = 22;
       }
@@ -832,12 +847,12 @@ abstract class InterfaceLNZ {
       @Override
       void hover() {
         super.hover();
-        this.color_text = color(150, 40, 40);
+        this.color_text = ccolor(150, 40, 40);
       }
       @Override
       void dehover() {
         super.dehover();
-        this.color_text = color(0);
+        this.color_text = ccolor(0);
       }
       @Override
       void release() {
@@ -853,9 +868,9 @@ abstract class InterfaceLNZ {
         width - Constants.achievementsForm_widthOffset, height - Constants.achievementsForm_heightOffset);
       this.setTitleText("Achievements");
       this.setTitleSize(20);
-      //this.color_background = color(180, 250, 250);
-      this.color_background = color(150, 220, 220);
-      this.color_header = color(50, 180, 180);
+      //this.color_background = ccolor(180, 250, 250);
+      this.color_background = ccolor(150, 220, 220);
+      this.color_header = ccolor(50, 180, 180);
       if (global.profile == null) {
         this.canceled = true;
         return;
@@ -880,11 +895,11 @@ abstract class InterfaceLNZ {
         }
       }
       for (MessageFormField field : achievements_complete) {
-        field.text_color = color(0);
+        field.text_color = ccolor(0);
         this.addField(field);
       }
       for (MessageFormField field : achievements_incomplete) {
-        field.text_color = color(170, 150);
+        field.text_color = ccolor(170, 150);
         this.addField(field);
       }
     }

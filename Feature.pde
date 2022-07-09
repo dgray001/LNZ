@@ -480,6 +480,14 @@ class Feature extends MapObject {
         this.setStrings("Gazebo", "Outdoors", "");
         this.setSize(4, 4, 7);
         break;
+      case 254:
+        this.setStrings("Parking Bumper", "Outdoors", "");
+        this.setSize(3, 1, 1);
+        break;
+      case 255:
+        this.setStrings("Parking Bumper", "Outdoors", "");
+        this.setSize(1, 3, 1);
+        break;
 
       // Walls
       case 301:
@@ -1136,6 +1144,12 @@ class Feature extends MapObject {
       case 253:
         path += "gazebo.png";
         break;
+      case 254:
+        path += "parking_bumper_down.png";
+        break;
+      case 255:
+        path += "parking_bumper_right.png";
+        break;
       case 301:
         path = "terrain/brickWall_blue.jpg";
         break;
@@ -1348,6 +1362,18 @@ class Feature extends MapObject {
 
   boolean ignoreSquare(int i, int j) {
     switch(this.ID) {
+      case 251: // Parking Bumper, up
+      case 254: // Parking Bumper, down
+        if (i == 0 || i == 2) {
+          return true;
+        }
+        break;
+      case 252: // Parking Bumper, left
+      case 255: // Parking Bumper, right
+        if (j == 0 || j == 2) {
+          return true;
+        }
+        break;
       case 448: // Tree large, large
         if (i == 0 || i == 3) {
           if (j == 0 || j == 3) {

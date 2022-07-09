@@ -18,7 +18,7 @@ class MapEditorInterface extends InterfaceLNZ {
       super(0, 0.94 * height, 0, height - Constants.mapEditor_buttonGapSize);
       this.raised_border = true;
       this.roundness = 0;
-      this.setColors(color(170), color(222, 184, 135), color(244, 164, 96), color(205, 133, 63), color(0));
+      this.setColors(ccolor(170), ccolor(222, 184, 135), ccolor(244, 164, 96), ccolor(205, 133, 63), ccolor(0));
       this.show_message = true;
     }
     void hover() {
@@ -113,8 +113,8 @@ class MapEditorInterface extends InterfaceLNZ {
             this.addLine("Delete Level");
             break;
         }
-        this.highlight_color = color(1, 0);
-        this.hover_color = color(200, 150, 140, 100);
+        this.highlight_color = ccolor(1, 0);
+        this.hover_color = ccolor(200, 150, 140, 100);
       }
 
       void click() {
@@ -168,14 +168,14 @@ class MapEditorInterface extends InterfaceLNZ {
 
     MapEditorListTextBox() {
       super(width, Constants.mapEditor_listBoxGap, width, 0.9 * height - Constants.mapEditor_listBoxGap);
-      this.color_background = color(250, 190, 140);
-      this.color_header = color(220, 180, 130);
-      this.scrollbar.setButtonColors(color(220), color(220, 160, 110), color(
-        240, 180, 130), color(200, 140, 90), color(0));
-      this.scrollbar.button_upspace.setColors(color(170), color(255, 200, 150),
-        color(255, 200, 150), color(60, 30, 0), color(0));
-      this.scrollbar.button_downspace.setColors(color(170), color(255, 200, 150),
-        color(255, 200, 150), color(60, 30, 0), color(0));
+      this.color_background = ccolor(250, 190, 140);
+      this.color_header = ccolor(220, 180, 130);
+      this.scrollbar.setButtonColors(ccolor(220), ccolor(220, 160, 110), ccolor(
+        240, 180, 130), ccolor(200, 140, 90), ccolor(0));
+      this.scrollbar.button_upspace.setColors(ccolor(170), ccolor(255, 200, 150),
+        ccolor(255, 200, 150), ccolor(60, 30, 0), ccolor(0));
+      this.scrollbar.button_downspace.setColors(ccolor(170), ccolor(255, 200, 150),
+        ccolor(255, 200, 150), ccolor(60, 30, 0), ccolor(0));
     }
 
     @Override
@@ -768,14 +768,14 @@ class MapEditorInterface extends InterfaceLNZ {
 
     LevelEditorListTextBox() {
       super(width, Constants.mapEditor_listBoxGap, width, 0.9 * height - Constants.mapEditor_listBoxGap);
-      this.color_background = color(250, 190, 140);
-      this.color_header = color(220, 180, 130);
-      this.scrollbar.setButtonColors(color(220), color(220, 160, 110), color(
-        240, 180, 130), color(200, 140, 90), color(0));
-      this.scrollbar.button_upspace.setColors(color(170), color(255, 200, 150),
-        color(255, 200, 150), color(60, 30, 0), color(0));
-      this.scrollbar.button_downspace.setColors(color(170), color(255, 200, 150),
-        color(255, 200, 150), color(60, 30, 0), color(0));
+      this.color_background = ccolor(250, 190, 140);
+      this.color_header = ccolor(220, 180, 130);
+      this.scrollbar.setButtonColors(ccolor(220), ccolor(220, 160, 110), ccolor(
+        240, 180, 130), ccolor(200, 140, 90), ccolor(0));
+      this.scrollbar.button_upspace.setColors(ccolor(170), ccolor(255, 200, 150),
+        ccolor(255, 200, 150), ccolor(60, 30, 0), ccolor(0));
+      this.scrollbar.button_downspace.setColors(ccolor(170), ccolor(255, 200, 150),
+        ccolor(255, 200, 150), ccolor(60, 30, 0), ccolor(0));
     }
 
     void setPosition(RightPanelElementLocation position) {
@@ -1071,8 +1071,8 @@ class MapEditorInterface extends InterfaceLNZ {
         0.5 * (width + Constants.mapEditor_formWidth), 0.5 * (height + Constants.mapEditor_formHeight));
         this.setTitleText("Hero Selector");
         this.setTitleSize(18);
-        this.color_background = color(180, 250, 180);
-        this.color_header = color(30, 170, 30);
+        this.color_background = ccolor(180, 250, 180);
+        this.color_header = ccolor(30, 170, 30);
         this.setFieldCushion(10);
         this.level = level;
         if (this.level == null) {
@@ -1081,8 +1081,8 @@ class MapEditorInterface extends InterfaceLNZ {
         }
 
         SubmitFormField submit = new SubmitFormField(" Ok ");
-        submit.button.setColors(color(220), color(190, 240, 190),
-          color(140, 190, 140), color(90, 140, 90), color(0));
+        submit.button.setColors(ccolor(220), ccolor(190, 240, 190),
+          ccolor(140, 190, 140), ccolor(90, 140, 90), ccolor(0));
 
         this.addField(new SpacerFormField(10));
         this.addField(new IntegerFormField("Hero ID: ", 1101, 1102));
@@ -1122,8 +1122,8 @@ class MapEditorInterface extends InterfaceLNZ {
         0.5 * (width + Constants.mapEditor_formWidth), 0.5 * (height + Constants.mapEditor_formHeight));
         this.setTitleText("Hero Selector");
         this.setTitleSize(18);
-        this.color_background = color(180, 250, 180);
-        this.color_header = color(30, 170, 30);
+        this.color_background = ccolor(180, 250, 180);
+        this.color_header = ccolor(30, 170, 30);
         this.setFieldCushion(10);
         this.level = level;
         if (this.level == null) {
@@ -1132,8 +1132,8 @@ class MapEditorInterface extends InterfaceLNZ {
         }
 
         SubmitFormField submit = new SubmitFormField(" Ok ");
-        submit.button.setColors(color(220), color(190, 240, 190),
-          color(140, 190, 140), color(90, 140, 90), color(0));
+        submit.button.setColors(ccolor(220), ccolor(190, 240, 190),
+          ccolor(140, 190, 140), ccolor(90, 140, 90), ccolor(0));
 
         this.addField(new SpacerFormField(10));
         this.addField(new IntegerFormField("Hero ID: ", 1101, 1102));
@@ -1173,18 +1173,18 @@ class MapEditorInterface extends InterfaceLNZ {
         0.5 * (width + Constants.mapEditor_formWidth), 0.5 * (height + Constants.mapEditor_formHeight));
       this.setTitleText("New Map");
       this.setTitleSize(18);
-      this.color_background = color(180, 250, 180);
-      this.color_header = color(30, 170, 30);
+      this.color_background = ccolor(180, 250, 180);
+      this.color_header = ccolor(30, 170, 30);
       this.setFieldCushion(0);
 
       MessageFormField error = new MessageFormField("");
-      error.text_color = color(150, 20, 20);
+      error.text_color = ccolor(150, 20, 20);
       error.setTextSize(16);
       SubmitCancelFormField submit = new SubmitCancelFormField("  Ok  ", "Cancel");
-      submit.button1.setColors(color(220), color(190, 240, 190),
-        color(140, 190, 140), color(90, 140, 90), color(0));
-      submit.button2.setColors(color(220), color(190, 240, 190),
-        color(140, 190, 140), color(90, 140, 90), color(0));
+      submit.button1.setColors(ccolor(220), ccolor(190, 240, 190),
+        ccolor(140, 190, 140), ccolor(90, 140, 90), ccolor(0));
+      submit.button2.setColors(ccolor(220), ccolor(190, 240, 190),
+        ccolor(140, 190, 140), ccolor(90, 140, 90), ccolor(0));
 
       this.addField(new SpacerFormField(20));
       this.addField(new StringFormField("", "Map Name"));
@@ -1217,18 +1217,18 @@ class MapEditorInterface extends InterfaceLNZ {
         0.5 * (width + Constants.mapEditor_formWidth), 0.5 * (height + Constants.mapEditor_formHeight));
       this.setTitleText("New Area");
       this.setTitleSize(18);
-      this.color_background = color(180, 250, 180);
-      this.color_header = color(30, 170, 30);
+      this.color_background = ccolor(180, 250, 180);
+      this.color_header = ccolor(30, 170, 30);
       this.setFieldCushion(0);
 
       MessageFormField error = new MessageFormField("");
-      error.text_color = color(150, 20, 20);
+      error.text_color = ccolor(150, 20, 20);
       error.setTextSize(16);
       SubmitCancelFormField submit = new SubmitCancelFormField("  Ok  ", "Cancel");
-      submit.button1.setColors(color(220), color(190, 240, 190),
-        color(140, 190, 140), color(90, 140, 90), color(0));
-      submit.button2.setColors(color(220), color(190, 240, 190),
-        color(140, 190, 140), color(90, 140, 90), color(0));
+      submit.button1.setColors(ccolor(220), ccolor(190, 240, 190),
+        ccolor(140, 190, 140), ccolor(90, 140, 90), ccolor(0));
+      submit.button2.setColors(ccolor(220), ccolor(190, 240, 190),
+        ccolor(140, 190, 140), ccolor(90, 140, 90), ccolor(0));
 
       this.addField(new SpacerFormField(20));
       this.addField(new StringFormField("", "Area Name"));
@@ -1256,18 +1256,18 @@ class MapEditorInterface extends InterfaceLNZ {
         0.5 * (width + Constants.mapEditor_formWidth), 0.5 * (height + Constants.mapEditor_formHeight));
       this.setTitleText("New Level");
       this.setTitleSize(18);
-      this.color_background = color(180, 250, 180);
-      this.color_header = color(30, 170, 30);
+      this.color_background = ccolor(180, 250, 180);
+      this.color_header = ccolor(30, 170, 30);
       this.setFieldCushion(0);
 
       MessageFormField error = new MessageFormField("");
-      error.text_color = color(150, 20, 20);
+      error.text_color = ccolor(150, 20, 20);
       error.setTextSize(16);
       SubmitCancelFormField submit = new SubmitCancelFormField("  Ok  ", "Cancel");
-      submit.button1.setColors(color(220), color(190, 240, 190),
-        color(140, 190, 140), color(90, 140, 90), color(0));
-      submit.button2.setColors(color(220), color(190, 240, 190),
-        color(140, 190, 140), color(90, 140, 90), color(0));
+      submit.button1.setColors(ccolor(220), ccolor(190, 240, 190),
+        ccolor(140, 190, 140), ccolor(90, 140, 90), ccolor(0));
+      submit.button2.setColors(ccolor(220), ccolor(190, 240, 190),
+        ccolor(140, 190, 140), ccolor(90, 140, 90), ccolor(0));
 
       this.addField(new SpacerFormField(20));
       this.addField(new StringFormField("", "Level Name"));
@@ -1293,12 +1293,12 @@ class MapEditorInterface extends InterfaceLNZ {
         0.5 * (width + Constants.mapEditor_formWidth_small), 0.5 * (height + Constants.mapEditor_formHeight_small));
       this.setTitleText(title);
       this.setTitleSize(18);
-      this.color_background = color(180, 250, 180);
-      this.color_header = color(30, 170, 30);
+      this.color_background = ccolor(180, 250, 180);
+      this.color_header = ccolor(30, 170, 30);
 
       SubmitFormField submit = new SubmitFormField("  Ok  ");
-      submit.button.setColors(color(220), color(190, 240, 190),
-        color(140, 190, 140), color(90, 140, 90), color(0));
+      submit.button.setColors(ccolor(220), ccolor(190, 240, 190),
+        ccolor(140, 190, 140), ccolor(90, 140, 90), ccolor(0));
       this.addField(new SpacerFormField(0));
       this.addField(new TextBoxFormField(message, 120));
       this.addField(submit);
@@ -1378,12 +1378,12 @@ class MapEditorInterface extends InterfaceLNZ {
         0.5 * (width + Constants.mapEditor_formWidth_small), 0.5 * (height + Constants.mapEditor_formHeight_small));
       this.setTitleText("Choose Seed");
       this.setTitleSize(18);
-      this.color_background = color(180, 250, 180);
-      this.color_header = color(30, 170, 30);
+      this.color_background = ccolor(180, 250, 180);
+      this.color_header = ccolor(30, 170, 30);
 
       SubmitFormField submit = new SubmitFormField(" Load ");
-      submit.button.setColors(color(220), color(190, 240, 190),
-        color(140, 190, 140), color(90, 140, 90), color(0));
+      submit.button.setColors(ccolor(220), ccolor(190, 240, 190),
+        ccolor(140, 190, 140), ccolor(90, 140, 90), ccolor(0));
       this.addField(new SpacerFormField(0));
       this.addField(new MessageFormField("Choose new seed to reload area."));
       this.addField(new IntegerFormField("   ", "Enter an integer"));
@@ -1403,14 +1403,14 @@ class MapEditorInterface extends InterfaceLNZ {
 
     AreaEditorForm(GameMapArea area, float xi, float xf) {
       super(xi, Constants.mapEditor_listBoxGap, xf, 0.9 * height - Constants.mapEditor_listBoxGap);
-      this.color_background = color(250, 190, 140);
-      this.color_header = color(220, 180, 130);
-      this.scrollbar.setButtonColors(color(220), color(220, 160, 110), color(
-        240, 180, 130), color(200, 140, 90), color(0));
-      this.scrollbar.button_upspace.setColors(color(170), color(255, 200, 150),
-        color(255, 200, 150), color(60, 30, 0), color(0));
-      this.scrollbar.button_downspace.setColors(color(170), color(255, 200, 150),
-        color(255, 200, 150), color(60, 30, 0), color(0));
+      this.color_background = ccolor(250, 190, 140);
+      this.color_header = ccolor(220, 180, 130);
+      this.scrollbar.setButtonColors(ccolor(220), ccolor(220, 160, 110), ccolor(
+        240, 180, 130), ccolor(200, 140, 90), ccolor(0));
+      this.scrollbar.button_upspace.setColors(ccolor(170), ccolor(255, 200, 150),
+        ccolor(255, 200, 150), ccolor(60, 30, 0), ccolor(0));
+      this.scrollbar.button_downspace.setColors(ccolor(170), ccolor(255, 200, 150),
+        ccolor(255, 200, 150), ccolor(60, 30, 0), ccolor(0));
       this.setFieldCushion(10);
       this.setTitleText("Area Editor");
       this.area = area;
@@ -1423,8 +1423,8 @@ class MapEditorInterface extends InterfaceLNZ {
       IntegerFormField spawn_chunk_y = new IntegerFormField("Spawn Chunk Y: ", "Enter integer", -1000000, 1000000);
       SubmitFormField button = new SubmitFormField(" Reload\nMap");
       button.setButtonHeight(45);
-      button.button.setColors(color(220), color(240, 190, 150), color(190, 140, 115),
-        color(140, 90, 50), color(0));
+      button.button.setColors(ccolor(220), ccolor(240, 190, 150), ccolor(190, 140, 115),
+        ccolor(140, 90, 50), ccolor(0));
 
       this.addField(new SpacerFormField(30));
       this.addField(area_edge_xi);
@@ -1492,14 +1492,14 @@ class MapEditorInterface extends InterfaceLNZ {
   abstract class LevelEditorForm extends Form {
     LevelEditorForm(float xi, float xf) {
       super(xi, Constants.mapEditor_listBoxGap, xf, 0.45 * height - Constants.mapEditor_listBoxGap);
-      this.color_background = color(250, 190, 140);
-      this.color_header = color(220, 180, 130);
-      this.scrollbar.setButtonColors(color(220), color(220, 160, 110), color(
-        240, 180, 130), color(200, 140, 90), color(0));
-      this.scrollbar.button_upspace.setColors(color(170), color(255, 200, 150),
-        color(255, 200, 150), color(60, 30, 0), color(0));
-      this.scrollbar.button_downspace.setColors(color(170), color(255, 200, 150),
-        color(255, 200, 150), color(60, 30, 0), color(0));
+      this.color_background = ccolor(250, 190, 140);
+      this.color_header = ccolor(220, 180, 130);
+      this.scrollbar.setButtonColors(ccolor(220), ccolor(220, 160, 110), ccolor(
+        240, 180, 130), ccolor(200, 140, 90), ccolor(0));
+      this.scrollbar.button_upspace.setColors(ccolor(170), ccolor(255, 200, 150),
+        ccolor(255, 200, 150), ccolor(60, 30, 0), ccolor(0));
+      this.scrollbar.button_downspace.setColors(ccolor(170), ccolor(255, 200, 150),
+        ccolor(255, 200, 150), ccolor(60, 30, 0), ccolor(0));
       this.setFieldCushion(0);
     }
 
@@ -1566,10 +1566,10 @@ class MapEditorInterface extends InterfaceLNZ {
       this.addField(new SpacerFormField(45));
       ButtonsFormField buttons = new ButtonsFormField("Add\nCondition", "Add\nEffect");
       buttons.setButtonHeight(45);
-      buttons.button1.setColors(color(220), color(240, 190, 150), color(190, 140, 115),
-        color(140, 90, 50), color(0));
-      buttons.button2.setColors(color(220), color(240, 190, 150), color(190, 140, 115),
-        color(140, 90, 50), color(0));
+      buttons.button1.setColors(ccolor(220), ccolor(240, 190, 150), ccolor(190, 140, 115),
+        ccolor(140, 90, 50), ccolor(0));
+      buttons.button2.setColors(ccolor(220), ccolor(240, 190, 150), ccolor(190, 140, 115),
+        ccolor(140, 90, 50), ccolor(0));
       this.addField(buttons);
       this.updateFields();
     }
@@ -3106,7 +3106,7 @@ class MapEditorInterface extends InterfaceLNZ {
         else {
           rectMode(CORNERS);
           noStroke();
-          fill(color(60));
+          fill(ccolor(60));
           rect(this.leftPanel.size, 0, width - this.rightPanel.size, height);
         }
         break;
@@ -3173,7 +3173,7 @@ class MapEditorInterface extends InterfaceLNZ {
       this.curr_area.displayNerdStats();
     }
     else {
-      this.showDefaultNerdStats(color(255));
+      this.showDefaultNerdStats(ccolor(255));
     }
   }
 

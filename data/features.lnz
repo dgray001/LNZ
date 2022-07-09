@@ -121,6 +121,8 @@ Barbed Wire Fence, right_leftbottom: 246
 Parking Bumper, up: 251
 Parking Bumper, left: 252
 Gazebo: 253
+Parking Bumper, down: 254
+Parking Bumper, right: 255
 
 Movable Brick Wall, blue: 301
 Movable Brick Wall, gray: 302

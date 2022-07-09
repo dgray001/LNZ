@@ -998,13 +998,13 @@ abstract class AbstractGameMap {
   // remove feature
   void removeFeature(int code) {
     Feature f = this.getFeature(code);
-    if (f == null || f.remove) {
+    if (f == null) {
       return;
     }
-    f.remove = true;
     if (!f.inMap(this.mapXI(), this.mapYI(), this.mapXF(), this.mapYF())) {
       return;
     }
+    f.remove = true;
     this.removeFeatureFromTerrain(f);
     if (!f.displaysImage()) {
       return;

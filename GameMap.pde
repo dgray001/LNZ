@@ -137,6 +137,11 @@ class GameMap extends AbstractGameMap {
     this.features.put(code, f);
   }
 
+  void addItem(Item i, int code, boolean auto_disappear) { // items don't disappear on prebuilt maps
+    super.addItem(i, code, auto_disappear);
+    i.disappearing = false;
+  }
+
   void featureAddedMapSquareNotFound(IntegerCoordinate coordinate, Feature f) {
     global.errorMessage("ERROR: Couldn't find square with coordinates " +
       coordinate.x + ", " + coordinate.y + " where feature with code " + f.map_key + " was added.");
