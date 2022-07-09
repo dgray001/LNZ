@@ -1954,35 +1954,101 @@ Inventory getKhalilInventory(int khalil_code) {
       break;
     case 1: // Francis Hall
       inv = new Inventory(1, 10, true);
-      i = new Item(2118);
+      i = new Item(2118); // chicken egg
       i.stack = 4;
       inv.stash(i);
-      i = new Item(2203);
+      i = new Item(2203); // knife
       i.stack = 1;
       inv.stash(i);
-      i = new Item(2301);
+      i = new Item(2301); // slingshot
       i.stack = 1;
       inv.stash(i);
-      i = new Item(2401);
+      i = new Item(2401); // talc helmet
       i.stack = 1;
       inv.stash(i);
-      i = new Item(2501);
+      i = new Item(2501); // talc chestplate
       i.stack = 1;
       inv.stash(i);
-      i = new Item(2601);
+      i = new Item(2601); // talc greaves
       i.stack = 1;
       inv.stash(i);
-      i = new Item(2701);
+      i = new Item(2701); // talc boots
       i.stack = 1;
       inv.stash(i);
-      i = new Item(2802);
+      i = new Item(2802); // talc crystal
       i.stack = 12;
       inv.stash(i);
-      i = new Item(2809);
+      i = new Item(2809); // string
       i.stack = 3;
       inv.stash(i);
-      i = new Item(2925);
+      i = new Item(2925); // water bottle
       i.stack = 1;
+      inv.stash(i);
+      break;
+    case 2: // Frontdoor
+      inv = new Inventory(1, 10, true);
+      i = new Item(2124); // hot pocket box
+      i.stack = 1;
+      inv.stash(i);
+      i = new Item(2205); // wooden sword
+      i.stack = 1;
+      inv.stash(i);
+      i = new Item(2311); // recurve bow
+      i.stack = 1;
+      inv.stash(i);
+      i = new Item(2411); // gypsum helmet
+      i.stack = 1;
+      inv.stash(i);
+      i = new Item(2511); // gypsum chestplate
+      i.stack = 1;
+      inv.stash(i);
+      i = new Item(2611); // gypsum greaves
+      i.stack = 1;
+      inv.stash(i);
+      i = new Item(2711); // gypsum boots
+      i.stack = 1;
+      inv.stash(i);
+      i = new Item(2812); // gypsum crystal
+      i.stack = 12;
+      inv.stash(i);
+      i = new Item(2904); // small keyring
+      i.stack = 1;
+      inv.stash(i);
+      i = new Item(2923); // purse
+      i.stack = 1;
+      inv.stash(i);
+      break;
+    case 3: // Ahimdoor
+      inv = new Inventory(1, 10, true);
+      i = new Item(2141); // holy water
+      i.stack = 1;
+      inv.stash(i);
+      i = new Item(2207); // wooden spear
+      i.stack = 1;
+      inv.stash(i);
+      i = new Item(2212); // gypsum sword
+      i.stack = 1;
+      inv.stash(i);
+      i = new Item(2411); // gypsum helmet
+      i.stack = 1;
+      inv.stash(i);
+      i = new Item(2511); // gypsum chestplate
+      i.stack = 1;
+      inv.stash(i);
+      i = new Item(2611); // gypsum greaves
+      i.stack = 1;
+      inv.stash(i);
+      i = new Item(2711); // gypsum boots
+      i.stack = 1;
+      inv.stash(i);
+      i = new Item(2812); // gypsum crystal
+      i.stack = 12;
+      inv.stash(i);
+      i = new Item(2918); // scissors
+      i.stack = 1;
+      inv.stash(i);
+      i = new Item(2923); // purse
+      i.stack = 2;
       inv.stash(i);
       break;
     default:
@@ -1998,16 +2064,40 @@ ArrayList<Float> getKhalilInventoryCosts(int khalil_code) {
     case 0:
       break;
     case 1: // Francis Hall
-      costs.add(1.0);
-      costs.add(2.12);
-      costs.add(2.12);
-      costs.add(2.12);
-      costs.add(2.12);
-      costs.add(2.12);
-      costs.add(2.12);
-      costs.add(2.12);
-      costs.add(2.12);
-      costs.add(2.12);
+      costs.add(2.6);
+      costs.add(65.0);
+      costs.add(55.0);
+      costs.add(12.5);
+      costs.add(20.0);
+      costs.add(17.5);
+      costs.add(10.0);
+      costs.add(2.8);
+      costs.add(2.2);
+      costs.add(45.0);
+      break;
+    case 2: // Frontdoor
+      costs.add(13.0);
+      costs.add(50.0);
+      costs.add(95.0);
+      costs.add(20.0);
+      costs.add(32.0);
+      costs.add(28.0);
+      costs.add(16.0);
+      costs.add(5.0);
+      costs.add(25.0);
+      costs.add(18.0);
+      break;
+    case 3: // Ahimdoor
+      costs.add(22.0);
+      costs.add(50.0);
+      costs.add(95.0);
+      costs.add(20.0);
+      costs.add(32.0);
+      costs.add(28.0);
+      costs.add(16.0);
+      costs.add(5.0);
+      costs.add(8.0);
+      costs.add(18.0);
       break;
     default:
       global.errorMessage("ERROR: Khalil code " + khalil_code + " not found.");

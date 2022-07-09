@@ -3642,6 +3642,13 @@ class Level {
               break;
           }
           break;
+        case FRANCISCAN_LEV2_AHIMDOOR:
+          switch(this.car.ID) {
+            case 501: // ahimdoor
+              return "Drive off-campus to find a more remote area?";
+            default:
+              break;
+          }
         default:
           break;
       }

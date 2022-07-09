@@ -1108,10 +1108,18 @@ abstract class AbstractGameMap {
     this.addUnit(u);
   }
   void addUnit(Unit u) {
-    this.addUnit(u, this.nextUnitKey);
-    this.nextUnitKey++;
+    this.addUnit(u, this.nextUnitKey());
+  }
+  synchronized int nextUnitKey() {
+    return this.nextUnitKey++;
   }
   void addUnit(Unit u, int code) {
+    if (this.units.containsKey(code) && u != this.units.get(code)) {
+      global.log("WARNING: nextUnitKey corrupted at " + code + " since unit " +
+        "with that code already exists.");
+      this.addUnit(u);
+      return;
+    }
     this.units.put(code, u);
     u.map_key = code;
     if (u.x - u.size - Constants.small_number < this.mapXI()) {
@@ -1168,8 +1176,10 @@ abstract class AbstractGameMap {
   }
   void addItem(Item i, float x, float y, boolean auto_disappear) {
     i.setLocation(x, y);
-    this.addItem(i, this.nextItemKey, auto_disappear);
-    this.nextItemKey++;
+    this.addItem(i, this.nextItemKey(), auto_disappear);
+  }
+  synchronized int nextItemKey() {
+    return this.nextItemKey++;
   }
   void addItem(Item i, int code) {
     this.addItem(i, code, true);

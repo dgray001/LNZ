@@ -829,8 +829,23 @@ class Unit extends MapObject {
         this.alliance = Alliance.ZOMBIE;
         this.base_attackRange = 1.2 * Constants.unit_defaultBaseAttackRange;
         break;
-      case 1311:
-        this.setStrings("Cathy Heck", "Zombie", "");
+      case 1309:
+        this.setStrings("Alex Spieldenner", "Zombie", "");
+        this.baseStats(18, 10, 0.9, 0.25, 1.6);
+        this.setLevel(9);
+        this.alliance = Alliance.ZOMBIE;
+        this.base_attackCooldown = 0.8 * Constants.unit_defaultBaseAttackCooldown;
+        this.base_attackTime = 0.8 * Constants.unit_defaultBaseAttackTime;
+        break;
+      case 1310:
+        this.setStrings("Kyle Aubert", "Zombie", "");
+        this.baseStats(28, 13, 1, 0.1, 1.1);
+        this.setLevel(10);
+        this.base_lifesteal = 0.05;
+        this.alliance = Alliance.ZOMBIE;
+        break;
+      case 1351:
+        this.setStrings("Cathy Heck", "Boss Zombie", "");
         this.baseStats(50, 7.5, 1.6, 0.1, 0.6);
         this.magicStats(10, 1.2, 0.05);
         this.base_lifesteal = 0.08;
@@ -842,6 +857,20 @@ class Unit extends MapObject {
         this.timer_ai_action1 = round(3000 + random(3000));
         this.timer_ai_action2 = round(9000 + random(9000));
         this.timer_ai_action3 = round(15000 + random(15000));
+        break;
+      case 1352:
+        this.setStrings("Matt Schaefer", "Boss Zombie", "");
+        this.baseStats(50, 7.5, 1.6, 0.1, 0.6);
+        this.magicStats(10, 1.2, 0.05);
+        this.setLevel(11);
+        this.alliance = Alliance.ZOMBIE;
+        break;
+      case 1353:
+        this.setStrings("Ben Kohring", "Boss Zombie", "");
+        this.baseStats(50, 7.5, 1.6, 0.1, 0.6);
+        this.magicStats(10, 1.2, 0.05);
+        this.setLevel(11);
+        this.alliance = Alliance.ZOMBIE;
         break;
 
       default:
@@ -1061,8 +1090,20 @@ class Unit extends MapObject {
       case 1308:
         path += "nick_belt_zombie.png";
         break;
-      case 1311:
+      case 1309:
+        path += "alex_spieldenner_zombie.png";
+        break;
+      case 1310:
+        path += "kyle_aubert_zombie.png";
+        break;
+      case 1351:
         path += "cathy_heck_zombie.png";
+        break;
+      case 1352:
+        path += "matt_schaefer_zombie.png";
+        break;
+      case 1353:
+        path += "ben_kohring_zombie.png";
         break;
       default:
         global.errorMessage("ERROR: Unit ID " + ID + " not found.");
@@ -3612,7 +3653,7 @@ class Unit extends MapObject {
           drops.add(new Item(ore_id));
         }
         break;
-      case 1311: // Cathy Heck
+      case 1351: // Cathy Heck
         i = new Item(2904);
         i.inventory.stash(new Item(2903));
         drops.add(i);
@@ -4024,7 +4065,7 @@ class Unit extends MapObject {
       case 1308:
         sound_name += "zombie" + randomInt(0, 15);
         break;
-      case 1311:
+      case 1351:
         sound_name += "heck" + randomInt(1, 5);
         break;
       default:
@@ -4849,7 +4890,7 @@ class Unit extends MapObject {
           }
         }
         break;
-      case 1311: // Cathy Heck
+      case 1351: // Cathy Heck
         if (!this.ai_toggle) {
           break;
         }
