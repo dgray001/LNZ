@@ -2023,7 +2023,8 @@ Inventory getKhalilInventory(int khalil_code) {
       i = new Item(2141); // holy water
       i.stack = 1;
       inv.stash(i);
-      i = new Item(2207); // wooden spear
+      i = new Item(2901); // key (42)
+      i.ammo = 42;
       i.stack = 1;
       inv.stash(i);
       i = new Item(2212); // gypsum sword

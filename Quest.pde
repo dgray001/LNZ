@@ -104,7 +104,9 @@ class Quest {
       case 31: // get off campus
         break;
       // Ahimdoor
-      case 41:
+      case 41: // get off campus
+        break;
+      case 42: // start dans car
         break;
       // Brothersdoor
       case 51:
@@ -164,7 +166,9 @@ class Quest {
         return "Get off campus";
       // Ahimdoor
       case 41:
-        return "";
+        return "Get off campus";
+      case 42:
+        return "Get Dan's car started";
       // Brothersdoor
       case 51:
         return "";
@@ -216,13 +220,15 @@ class Quest {
       case 24: // find bens backpack
         return "Find Ben's Backpack; he remembers putting it in storage somewhere.";
       case 25: // go to room
-        return "Somehow the door is locked again";
+        return "Somehow the door is locked again.";
       // Frontdoor
       case 31: // get off campus
-        return "Find a place more remote, preferrably before night-fall";
+        return "Find a place more remote, preferrably before night-fall.";
       // Ahimdoor
       case 41:
-        return "";
+        return "Find a place more remote, preferrably before night-fall.";
+      case 42:
+        return "You need the car key and to make sure it has gas.";
       // Brothersdoor
       case 51:
         return "";

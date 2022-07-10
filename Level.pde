@@ -341,6 +341,7 @@ class Level {
     }
   }
 
+
   String getPlayerStartLocationDisplay() {
     if (this.player_start_location == null) {
       return "No player start location";
@@ -398,7 +399,6 @@ class Level {
       this.openMap(this.player_start_location.mapName);
       if (this.currMap != null && GameMapArea.class.isInstance(this.currMap)) {
         GameMapArea area_map = (GameMapArea)this.currMap;
-        println(area_map.defaultSpawnX(), area_map.defaultSpawnY(), area_map.default_spawn_chunk.x);
         player.setLocation(area_map.defaultSpawnX(), area_map.defaultSpawnY());
       }
       else {
@@ -2566,14 +2566,15 @@ class Level {
 
 
   String finalFolderPath() {
-    String finalFolderPath = this.folderPath;
+    return this.folderPath + "/" + this.folderName();
+  }
+  String folderName() {
     if (this.location == Location.ERROR) {
-      finalFolderPath += "/" + this.levelName;
+      return this.levelName;
     }
     else {
-      finalFolderPath += "/" + this.location.file_name();
+      return this.location.file_name();
     }
-    return finalFolderPath;
   }
 
 
@@ -3729,7 +3730,7 @@ class LevelEditor extends Level {
       return;
     }
     if (!fileExists(this.finalFolderPath() + "/" + mapName + "." + this.mapSuffix() + ".lnz")) {
-      global.errorMessage("ERROR: Level " + this.levelName + " has no map " +
+      global.errorMessage("ERROR: Level " + this.folderName() + " has no map " +
         "with name " + mapName + " at location " + this.finalFolderPath() + ".");
       return;
     }
@@ -3842,10 +3843,5 @@ class LevelEditor extends Level {
           break;
       }
     }
-  }
-
-  @Override
-  String finalFolderPath() {
-    return this.folderPath + "/" + this.levelName;
   }
 }

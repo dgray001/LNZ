@@ -1524,7 +1524,7 @@ class MapEditorInterface extends InterfaceLNZ {
         this.addField(new SpacerFormField(20));
         this.addField(new MessageFormField(MapEditorInterface.this.curr_level.getCurrMapNameDisplay()));
         this.addField(new SpacerFormField(20));
-        this.addField(new MessageFormField("Location: " + MapEditorInterface.this.curr_level.location.display_name()));
+        this.addField(new MessageFormField("Location: " + MapEditorInterface.this.curr_level.location.toString()));
         this.addField(new SpacerFormField(20));
         this.addField(new MessageFormField(MapEditorInterface.this.curr_level.getPlayerStartLocationDisplay()));
         this.addField(new SpacerFormField(10));
@@ -1544,7 +1544,7 @@ class MapEditorInterface extends InterfaceLNZ {
         return;
       }
       this.fields.get(1).setValue(MapEditorInterface.this.curr_level.getCurrMapNameDisplay());
-      this.fields.get(3).setValue("Location: " + MapEditorInterface.this.curr_level.location.display_name());
+      this.fields.get(3).setValue("Location: " + MapEditorInterface.this.curr_level.location.toString());
       this.fields.get(5).setValue(MapEditorInterface.this.curr_level.getPlayerStartLocationDisplay());
       this.fields.get(7).setValue(MapEditorInterface.this.curr_level.getPlayerSpawnLocationDisplay());
     }
@@ -2616,7 +2616,7 @@ class MapEditorInterface extends InterfaceLNZ {
       return;
     }
     copyFile("data/maps/" + mapName + ".map.lnz", "data/levels/" +
-      this.curr_level.levelName + "/" + mapName + ".map.lnz");
+      this.curr_level.folderName() + "/" + mapName + ".map.lnz");
     this.curr_level.mapNames.add(mapName);
     this.curr_level.save(false);
     this.listBox2.refresh();
@@ -2627,7 +2627,7 @@ class MapEditorInterface extends InterfaceLNZ {
       this.form = new MessageForm("Remove Map", "No map selected to remove from level.");
       return;
     }
-    if (!fileExists("data/levels/" + this.curr_level.levelName + "/" + mapName + ".map.lnz")) {
+    if (!fileExists("data/levels/" + this.curr_level.folderName() + "/" + mapName + ".map.lnz")) {
       this.form = new MessageForm("Remove Map", "Map is missing from level folder:\n" + mapName);
       return;
     }
@@ -2638,7 +2638,7 @@ class MapEditorInterface extends InterfaceLNZ {
     if (!this.curr_level.hasMap(mapName)) {
       return;
     }
-    deleteFile("data/levels/" + this.curr_level.levelName + "/" + mapName + ".map.lnz");
+    deleteFile("data/levels/" + this.curr_level.folderName() + "/" + mapName + ".map.lnz");
     this.curr_level.removeMap(mapName);
     this.curr_level.save(false);
     this.listBox2.refresh();

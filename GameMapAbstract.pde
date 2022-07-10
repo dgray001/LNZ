@@ -1036,7 +1036,7 @@ abstract class AbstractGameMap {
   }
 
   void removeFeatureFromTerrain(Feature f) {
-    if (f == null || f.remove) {
+    if (f == null) {
       return;
     }
     for (int i = round(f.x); i < round(f.x + f.sizeX); i++) {

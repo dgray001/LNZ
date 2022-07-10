@@ -867,9 +867,9 @@ class Unit extends MapObject {
         break;
       case 1353:
         this.setStrings("Ben Kohring", "Boss Zombie", "");
-        this.baseStats(50, 7.5, 1.6, 0.1, 0.6);
+        this.baseStats(3, 7.5, 1.6, 0.1, 0.6);
         this.magicStats(10, 1.2, 0.05);
-        this.setLevel(11);
+        this.setLevel(8);
         this.alliance = Alliance.ZOMBIE;
         break;
 
@@ -3653,9 +3653,24 @@ class Unit extends MapObject {
           drops.add(new Item(ore_id));
         }
         break;
+      case 1309: // Alex Spieldenner
+        if (this.ai_toggle) {
+          i = new Item(2901);
+          i.ammo = 41;
+          drops.add(i);
+        }
+        else {
+          drops.add(new Item(2925));
+        }
+        break;
       case 1351: // Cathy Heck
         i = new Item(2904);
         i.inventory.stash(new Item(2903));
+        drops.add(i);
+        break;
+      case 1353: // Ben Kohring
+        i = new Item(2906);
+        i.ammo = 501;
         drops.add(i);
         break;
       default:
