@@ -1349,6 +1349,7 @@ class Effect {
           break;
         }
         Item i = new Item(round(this.decimal1));
+        i.ammo = round(this.decimal2);
         if (i == null || i.remove) {
           break;
         }

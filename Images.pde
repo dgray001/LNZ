@@ -106,7 +106,7 @@ class Images {
   PImage getBlackPixel() {
     PImage img = new PImage(1, 1, RGB);
     img.loadPixels();
-    img.pixels[0] = color(0);
+    img.pixels[0] = ccolor(0);
     img.updatePixels();
     return img;
   }
@@ -114,7 +114,7 @@ class Images {
   PImage getTransparentPixel() {
     PImage img = new PImage(1, 1, ARGB);
     img.loadPixels();
-    img.pixels[0] = color(255, 0);
+    img.pixels[0] = ccolor(255, 0);
     img.updatePixels();
     return img;
   }
@@ -122,7 +122,7 @@ class Images {
   PImage getRandomPixel() {
     PImage img = new PImage(1, 1, ARGB);
     img.loadPixels();
-    img.pixels[0] = color(round(random(255)), round(random(255)), round(random(255)));
+    img.pixels[0] = ccolor(round(random(255)), round(random(255)), round(random(255)));
     img.updatePixels();
     return img;
   }

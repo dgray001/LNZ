@@ -1,6 +1,6 @@
 new: Level
-levelName: franciscan_lev2_ahimdoor
-location: ERROR
+levelName: Franciscan Campus
+location: franciscan_lev2_ahimdoor
 completed: false
 completing: false
 completion_code: 0
@@ -10,12 +10,336 @@ respawn_timer: 0
 sleeping: false
 sleep_timer: 0
 in_control: true
-currMapName: mock
+currMapName: ahimdoor_ahimdoor
 mapNames: ahimdoor_ahimdoor
-nextTriggerKey: 1
+nextTriggerKey: 2
 
 new: Trigger
-triggerName: Trigger 1
+triggerName: ### Basics
+active: false
+looping: false
+amalgam: true
+end: Trigger
+
+nextTriggerKey: 3
+
+new: Trigger
+triggerName: ben talks
+active: true
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: I need to get off campus.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 4
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 4
+
+new: Trigger
+triggerName: activate quest
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 9
+message: 
+number: 41
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 5
+
+new: Trigger
+triggerName: see car
+active: true
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: ahimdoor_ahimdoor, 0.0, 12.0, 10.0, 20.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: Hey look it's Dan's car! If I can get it started I can leave campus pretty easily.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: ahimdoor_ahimdoor, 0.0, 12.0, 10.0, 20.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 6
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 6
+
+new: Trigger
+triggerName: quest 2
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2000
+number2: 2000
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 9
+message: 
+number: 42
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 7
+
+new: Trigger
+triggerName: ben enters ahimdoor
+active: true
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: ahimdoor_ahimdoor, 10.0, 2.0, 13.0, 7.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: Strange this is not how I remember this...
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: ahimdoor_ahimdoor, 10.0, 2.0, 13.0, 7.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 8
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 8
+
+new: Trigger
+triggerName: initiate boss fight
+active: true
+looping: false
+amalgam: true
+new: Condition
+ID: 6
+number1: 0
+number2: 0
+rectangle: ahimdoor_ahimdoor, 9.0, 8.0, 14.0, 20.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 22
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 14
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 49
+message: 
+number: 201
+decimal1: 0.0
+decimal2: 0.0
+rectangle: ahimdoor_ahimdoor, 8.0, 8.0, 9.0, 20.0
+end: Effect
+
+new: Effect
+ID: 49
+message: 
+number: 201
+decimal1: 0.0
+decimal2: 0.0
+rectangle: ahimdoor_ahimdoor, 14.0, 8.0, 15.0, 20.0
+end: Effect
+
+new: Effect
+ID: 54
+message: Untargetable
+number: 0
+decimal1: 4700.0
+decimal2: 0.0
+rectangle: ahimdoor_ahimdoor, 8.0, 8.0, 15.0, 20.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 9
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 30
+message: 
+number: 15
+decimal1: 0.0
+decimal2: 0.0
+rectangle: ahimdoor_ahimdoor, 9.0, 12.0, 10.0, 13.0
+end: Effect
+
+new: Effect
+ID: 58
+message: none
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 9
+
+new: Trigger
+triggerName: walks to each other
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1200
+number2: 1200
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 24
+message: 
+number: 15
+decimal1: 10.5
+decimal2: 12.5
+rectangle: ahimdoor_ahimdoor, 10.0, 12.0, 11.0, 13.0
+end: Effect
+
+new: Effect
+ID: 25
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: ahimdoor_ahimdoor, 12.0, 12.0, 13.0, 13.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 10
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 12
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 10
+
+new: Trigger
+triggerName: ben face
 active: false
 looping: false
 amalgam: true
@@ -23,13 +347,22 @@ new: Condition
 ID: 6
 number1: 0
 number2: 0
-rectangle: mock, 3.0, 0.0, 4.0, 2.0
+rectangle: ahimdoor_ahimdoor, 12.0, 12.0, 13.0, 13.0
 met: false
 not_condition: false
 end: Condition
 
 new: Effect
-ID: 6
+ID: 28
+message: 
+number: 0
+decimal1: 180.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 22
 message: 
 number: 0
 decimal1: 0.0
@@ -39,5 +372,545 @@ end: Effect
 
 end: Trigger
 
-player_start_location: mock, 0.0, 0.0, 1.0, 2.0
+nextTriggerKey: 12
+
+new: Trigger
+triggerName: ben talks
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 2200
+number2: 2200
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: Greetings, Ben.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 13
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 13
+
+new: Trigger
+triggerName: ben responds
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1200
+number2: 1200
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: Rar
+number: 15
+decimal1: 0.0
+decimal2: 0.0
+rectangle: ahimdoor_ahimdoor, 14.0, 17.0, 15.0, 21.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 14
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 14
+
+new: Trigger
+triggerName: start fight
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1200
+number2: 1200
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 12
+message: 
+number: -1
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 15
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 58
+message: boss_classical
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 65
+message: 
+number: 15
+decimal1: 1.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 15
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 18
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 15
+
+new: Trigger
+triggerName: player dies
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 16
+number1: 0
+number2: 0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 66
+message: 
+number: 15
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 65
+message: 
+number: 15
+decimal1: -1.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 16
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 20
+message: GahGarGah
+number: 15
+decimal1: 0.0
+decimal2: 0.0
+rectangle: ahimdoor_ahimdoor, 14.0, 17.0, 15.0, 21.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 16
+
+new: Trigger
+triggerName: player respawns
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 16
+number1: 0
+number2: 0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: true
+end: Condition
+
+new: Effect
+ID: 30
+message: 
+number: 15
+decimal1: 0.0
+decimal2: 0.0
+rectangle: ahimdoor_ahimdoor, 0.0, 0.0, 1.0, 1.0
+end: Effect
+
+new: Effect
+ID: 66
+message: 
+number: 15
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 8
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 17
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 21
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 17
+
+new: Trigger
+triggerName: ben talks after respawn
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1500
+number2: 1500
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: Well I got thwomped.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 18
+
+new: Trigger
+triggerName: ben wins fight
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 7
+number1: 15
+number2: 0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: true
+end: Condition
+
+new: Effect
+ID: 11
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 14
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 22
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 19
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 19
+
+new: Trigger
+triggerName: ben talks
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1200
+number2: 1200
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 20
+message: Now we know which Ben is greater.
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 20
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 20
+
+new: Trigger
+triggerName: gain control
+active: false
+looping: false
+amalgam: true
+new: Condition
+ID: 1
+number1: 1200
+number2: 1200
+rectangle: , 0.0, 0.0, 0.0, 0.0
+met: false
+not_condition: false
+end: Condition
+
+new: Effect
+ID: 12
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 15
+message: 
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 7
+message: 
+number: 21
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+end: Trigger
+
+nextTriggerKey: 21
+
+new: Trigger
+triggerName: remove temp walls
+active: false
+looping: false
+amalgam: true
+new: Effect
+ID: 49
+message: 
+number: 162
+decimal1: 0.0
+decimal2: 0.0
+rectangle: ahimdoor_ahimdoor, 8.0, 8.0, 9.0, 9.0
+end: Effect
+
+new: Effect
+ID: 49
+message: 
+number: 134
+decimal1: 0.0
+decimal2: 0.0
+rectangle: ahimdoor_ahimdoor, 8.0, 10.0, 9.0, 13.0
+end: Effect
+
+new: Effect
+ID: 49
+message: 
+number: 132
+decimal1: 0.0
+decimal2: 0.0
+rectangle: ahimdoor_ahimdoor, 8.0, 13.0, 9.0, 15.0
+end: Effect
+
+new: Effect
+ID: 49
+message: 
+number: 161
+decimal1: 0.0
+decimal2: 0.0
+rectangle: ahimdoor_ahimdoor, 8.0, 13.0, 9.0, 15.0
+end: Effect
+
+new: Effect
+ID: 49
+message: 
+number: 152
+decimal1: 0.0
+decimal2: 0.0
+rectangle: ahimdoor_ahimdoor, 8.0, 15.0, 9.0, 17.0
+end: Effect
+
+new: Effect
+ID: 49
+message: 
+number: 172
+decimal1: 0.0
+decimal2: 0.0
+rectangle: ahimdoor_ahimdoor, 8.0, 17.0, 9.0, 20.0
+end: Effect
+
+new: Effect
+ID: 49
+message: 
+number: 152
+decimal1: 0.0
+decimal2: 0.0
+rectangle: ahimdoor_ahimdoor, 14.0, 8.0, 15.0, 10.0
+end: Effect
+
+new: Effect
+ID: 49
+message: 
+number: 132
+decimal1: 0.0
+decimal2: 0.0
+rectangle: ahimdoor_ahimdoor, 14.0, 10.0, 15.0, 13.0
+end: Effect
+
+new: Effect
+ID: 49
+message: 
+number: 152
+decimal1: 0.0
+decimal2: 0.0
+rectangle: ahimdoor_ahimdoor, 14.0, 13.0, 15.0, 15.0
+end: Effect
+
+new: Effect
+ID: 49
+message: 
+number: 161
+decimal1: 0.0
+decimal2: 0.0
+rectangle: ahimdoor_ahimdoor, 14.0, 15.0, 15.0, 16.0
+end: Effect
+
+new: Effect
+ID: 49
+message: 
+number: 152
+decimal1: 0.0
+decimal2: 0.0
+rectangle: ahimdoor_ahimdoor, 14.0, 16.0, 15.0, 17.0
+end: Effect
+
+new: Effect
+ID: 49
+message: 
+number: 172
+decimal1: 0.0
+decimal2: 0.0
+rectangle: ahimdoor_ahimdoor, 14.0, 17.0, 15.0, 21.0
+end: Effect
+
+end: Trigger
+
+player_start_location: ahimdoor_ahimdoor, 14.0, 2.0, 15.0, 3.0
 end: Level

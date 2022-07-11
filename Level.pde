@@ -3844,4 +3844,10 @@ class LevelEditor extends Level {
       }
     }
   }
+
+  @Override
+  void open() {
+    super.open();
+    this.currMapName = null;
+  }
 }

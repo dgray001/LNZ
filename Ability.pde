@@ -44,6 +44,12 @@ class Ability {
       case 1002:
       case 1003:
         break;
+      // Matt Schaefer, zombie
+      case 1011:
+        break;
+      // Ben Kohring, zombie
+      case 1021:
+        break;
       default:
         global.errorMessage("ERROR: Ability ID " + this.ID + " not found.");
         break;
@@ -101,6 +107,12 @@ class Ability {
         return "Condom Throw";
       case 1003:
         return "Title IX Charge";
+      // Matt Schaefer, zombie
+      case 1011:
+        return "";
+      // Ben Kohring, zombie
+      case 1021:
+        return "";
       default:
         return "ERROR";
     }
@@ -322,6 +334,12 @@ class Ability {
           "Enemies hit also are wilted, woozy, and slowed for " + (Constants.
           ability_1003_statusTime/1000.0) + "s and stunned for " + (Constants.
           ability_1003_statusTime*0.3/1000.0) + "s.";
+      // Matt Schaefer, zombie
+      case 1011:
+        return "";
+      // Ben Kohring, zombie
+      case 1021:
+        return "";
       default:
         return "-- error -- ";
     }

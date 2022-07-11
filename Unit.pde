@@ -3017,7 +3017,7 @@ class Unit extends MapObject {
       return;
     }
     this.object_targeting = object;
-    if (Feature.class.isInstance(this.object_targeting)) {
+    if (Feature.class.isInstance(object)) {
       if (this.weapon() != null && use_item) {
         this.curr_action = UnitAction.TARGETING_FEATURE_WITH_ITEM;
       }
@@ -3025,15 +3025,16 @@ class Unit extends MapObject {
         this.curr_action = UnitAction.TARGETING_FEATURE;
       }
     }
-    else if (Unit.class.isInstance(this.object_targeting)) {
+    else if (Unit.class.isInstance(object) && !((Unit)object).untargetable()) {
       this.curr_action = UnitAction.TARGETING_UNIT;
       this.targetSound();
     }
-    else if (Item.class.isInstance(this.object_targeting)) {
+    else if (Item.class.isInstance(object)) {
       this.curr_action = UnitAction.TARGETING_ITEM;
     }
     else {
       this.curr_action = UnitAction.NONE;
+      this.object_targeting = null;
       return;
     }
     if (map != null) {
@@ -4874,6 +4875,8 @@ class Unit extends MapObject {
       case 1306:
       case 1307:
       case 1308:
+      case 1309:
+      case 1310:
         if (this.curr_action == UnitAction.NONE || this.last_move_collision) {
           this.timer_ai_action1 -= timeElapsed;
           if (this.timer_ai_action1 < 0) {
@@ -4937,6 +4940,30 @@ class Unit extends MapObject {
               this.timer_ai_action1 = round(9000 + random(9000));
               this.cast(0, map);
             }
+            break;
+        }
+        break;
+      case 1353: // Ben Kohring
+        if (!this.ai_toggle) {
+          break;
+        }
+        this.timer_ai_action1 -= timeElapsed;
+        this.timer_ai_action2 -= timeElapsed;
+        switch(this.curr_action) {
+          case NONE:
+            if (map.units.containsKey(0)) {
+              this.target(map.units.get(0), map);
+            }
+            break;
+          case TARGETING_UNIT:
+            /*if (this.timer_ai_action2 < 0) {
+              this.timer_ai_action2 = round(9000 + random(9000));
+              this.cast(1, map);
+            }
+            else if (this.timer_ai_action1 < 0) {
+              this.timer_ai_action1 = round(9000 + random(9000));
+              this.cast(0, map);
+            }*/
             break;
         }
         break;

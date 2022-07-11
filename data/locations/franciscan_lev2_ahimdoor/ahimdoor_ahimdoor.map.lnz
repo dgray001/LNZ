@@ -1,12 +1,12 @@
 new: Map
 code: ERROR
 mapName: ahimdoor_ahimdoor
-dimensions: 25, 20
 maxHeight: 10
 outside_map: true
 color_tint: 65793
 show_tint: false
-terrain: 0, 0: 1, 100, false
+dimensions: 25, 20
+terrain: 0, 0: 141, 0, false
 terrain: 0, 1: 1, 100, false
 terrain: 0, 2: 1, 100, false
 terrain: 0, 3: 1, 100, false
@@ -16,12 +16,12 @@ terrain: 0, 6: 1, 100, false
 terrain: 0, 7: 151, 0, false
 terrain: 0, 8: 151, 0, false
 terrain: 0, 9: 132, 0, false
-terrain: 0, 10: 132, 0, false
+terrain: 0, 10: 133, 0, false
 terrain: 0, 11: 132, 0, false
 terrain: 0, 12: 151, 0, false
-terrain: 0, 13: 172, 0, false
-terrain: 0, 14: 172, 0, false
-terrain: 0, 15: 172, 0, false
+terrain: 0, 13: 173, 0, false
+terrain: 0, 14: 173, 0, false
+terrain: 0, 15: 173, 0, false
 terrain: 0, 16: 172, 0, false
 terrain: 0, 17: 172, 0, false
 terrain: 0, 18: 172, 0, false
@@ -36,12 +36,12 @@ terrain: 1, 6: 151, 0, false
 terrain: 1, 7: 151, 0, false
 terrain: 1, 8: 154, 0, false
 terrain: 1, 9: 154, 0, false
-terrain: 1, 10: 132, 0, false
+terrain: 1, 10: 133, 0, false
 terrain: 1, 11: 132, 0, false
 terrain: 1, 12: 132, 0, false
-terrain: 1, 13: 172, 0, false
-terrain: 1, 14: 172, 0, false
-terrain: 1, 15: 172, 0, false
+terrain: 1, 13: 173, 0, false
+terrain: 1, 14: 173, 0, false
+terrain: 1, 15: 173, 0, false
 terrain: 1, 16: 172, 0, false
 terrain: 1, 17: 172, 0, false
 terrain: 1, 18: 172, 0, false
@@ -59,9 +59,9 @@ terrain: 2, 9: 151, 0, false
 terrain: 2, 10: 132, 0, false
 terrain: 2, 11: 132, 0, false
 terrain: 2, 12: 132, 0, false
-terrain: 2, 13: 172, 0, false
-terrain: 2, 14: 172, 0, false
-terrain: 2, 15: 172, 0, false
+terrain: 2, 13: 173, 0, false
+terrain: 2, 14: 173, 0, false
+terrain: 2, 15: 173, 0, false
 terrain: 2, 16: 172, 0, false
 terrain: 2, 17: 172, 0, false
 terrain: 2, 18: 172, 0, false
@@ -80,8 +80,8 @@ terrain: 3, 10: 132, 0, false
 terrain: 3, 11: 132, 0, false
 terrain: 3, 12: 132, 0, false
 terrain: 3, 13: 161, 0, false
-terrain: 3, 14: 172, 0, false
-terrain: 3, 15: 172, 0, false
+terrain: 3, 14: 173, 0, false
+terrain: 3, 15: 173, 0, false
 terrain: 3, 16: 172, 0, false
 terrain: 3, 17: 172, 0, false
 terrain: 3, 18: 172, 0, false
@@ -145,7 +145,7 @@ terrain: 6, 15: 151, 0, false
 terrain: 6, 16: 151, 0, false
 terrain: 6, 17: 172, 0, false
 terrain: 6, 18: 172, 0, false
-terrain: 6, 19: 172, 0, false
+terrain: 6, 19: 173, 0, false
 terrain: 7, 0: 207, 100, false
 terrain: 7, 1: 151, 0, false
 terrain: 7, 2: 161, 0, false
@@ -164,7 +164,7 @@ terrain: 7, 14: 151, 0, false
 terrain: 7, 15: 154, 0, false
 terrain: 7, 16: 154, 0, false
 terrain: 7, 17: 172, 0, false
-terrain: 7, 18: 172, 0, false
+terrain: 7, 18: 173, 0, false
 terrain: 7, 19: 172, 0, false
 terrain: 8, 0: 207, 100, false
 terrain: 8, 1: 162, 0, false
@@ -210,14 +210,14 @@ terrain: 10, 0: 102, 0, false
 terrain: 10, 1: 121, 0, false
 terrain: 10, 2: 121, 0, false
 terrain: 10, 3: 121, 0, false
-terrain: 10, 4: 205, 100, false
-terrain: 10, 5: 310, 3, false
+terrain: 10, 4: 121, 0, false
+terrain: 10, 5: 121, 0, false
 terrain: 10, 6: 121, 0, false
 terrain: 10, 7: 201, 100, false
 terrain: 10, 8: 163, 0, false
 terrain: 10, 9: 151, 0, false
-terrain: 10, 10: 132, 0, false
-terrain: 10, 11: 132, 0, false
+terrain: 10, 10: 133, 0, false
+terrain: 10, 11: 133, 0, false
 terrain: 10, 12: 132, 0, false
 terrain: 10, 13: 151, 0, false
 terrain: 10, 14: 154, 0, false
@@ -237,7 +237,7 @@ terrain: 11, 7: 201, 100, false
 terrain: 11, 8: 161, 0, false
 terrain: 11, 9: 151, 0, false
 terrain: 11, 10: 132, 0, false
-terrain: 11, 11: 132, 0, false
+terrain: 11, 11: 133, 0, false
 terrain: 11, 12: 132, 0, false
 terrain: 11, 13: 151, 0, false
 terrain: 11, 14: 151, 0, false
@@ -249,9 +249,9 @@ terrain: 11, 19: 172, 0, false
 terrain: 12, 0: 207, 100, false
 terrain: 12, 1: 205, 100, false
 terrain: 12, 2: 121, 0, false
-terrain: 12, 3: 309, 3, false
-terrain: 12, 4: 309, 3, false
-terrain: 12, 5: 309, 3, false
+terrain: 12, 3: 121, 0, false
+terrain: 12, 4: 121, 0, false
+terrain: 12, 5: 121, 0, false
 terrain: 12, 6: 121, 0, false
 terrain: 12, 7: 201, 100, false
 terrain: 12, 8: 154, 0, false
@@ -266,7 +266,7 @@ terrain: 12, 16: 151, 0, false
 terrain: 12, 17: 172, 0, false
 terrain: 12, 18: 172, 0, false
 terrain: 12, 19: 172, 0, false
-terrain: 13, 0: 207, 100, false
+terrain: 13, 0: 1, 100, false
 terrain: 13, 1: 205, 100, false
 terrain: 13, 2: 121, 0, false
 terrain: 13, 3: 205, 100, false
@@ -327,7 +327,7 @@ terrain: 15, 17: 172, 0, false
 terrain: 15, 18: 172, 0, false
 terrain: 15, 19: 172, 0, false
 terrain: 16, 0: 207, 100, false
-terrain: 16, 1: 132, 0, false
+terrain: 16, 1: 133, 0, false
 terrain: 16, 2: 132, 0, false
 terrain: 16, 3: 132, 0, false
 terrain: 16, 4: 161, 0, false
@@ -349,14 +349,14 @@ terrain: 16, 19: 172, 0, false
 terrain: 17, 0: 207, 100, false
 terrain: 17, 1: 134, 0, false
 terrain: 17, 2: 132, 0, false
-terrain: 17, 3: 132, 0, false
+terrain: 17, 3: 133, 0, false
 terrain: 17, 4: 151, 0, false
 terrain: 17, 5: 151, 0, false
 terrain: 17, 6: 161, 0, false
 terrain: 17, 7: 151, 0, false
 terrain: 17, 8: 161, 0, false
-terrain: 17, 9: 132, 0, false
-terrain: 17, 10: 132, 0, false
+terrain: 17, 9: 133, 0, false
+terrain: 17, 10: 133, 0, false
 terrain: 17, 11: 132, 0, false
 terrain: 17, 12: 132, 0, false
 terrain: 17, 13: 161, 0, false
@@ -364,18 +364,18 @@ terrain: 17, 14: 151, 0, false
 terrain: 17, 15: 161, 0, false
 terrain: 17, 16: 151, 0, false
 terrain: 17, 17: 172, 0, false
-terrain: 17, 18: 172, 0, false
-terrain: 17, 19: 172, 0, false
+terrain: 17, 18: 173, 0, false
+terrain: 17, 19: 173, 0, false
 terrain: 18, 0: 207, 100, false
 terrain: 18, 1: 134, 0, false
 terrain: 18, 2: 132, 0, false
-terrain: 18, 3: 132, 0, false
+terrain: 18, 3: 133, 0, false
 terrain: 18, 4: 151, 0, false
 terrain: 18, 5: 151, 0, false
 terrain: 18, 6: 151, 0, false
 terrain: 18, 7: 132, 0, false
 terrain: 18, 8: 132, 0, false
-terrain: 18, 9: 132, 0, false
+terrain: 18, 9: 133, 0, false
 terrain: 18, 10: 132, 0, false
 terrain: 18, 11: 132, 0, false
 terrain: 18, 12: 132, 0, false
@@ -404,16 +404,16 @@ terrain: 19, 14: 132, 0, false
 terrain: 19, 15: 132, 0, false
 terrain: 19, 16: 151, 0, false
 terrain: 19, 17: 172, 0, false
-terrain: 19, 18: 172, 0, false
-terrain: 19, 19: 172, 0, false
+terrain: 19, 18: 173, 0, false
+terrain: 19, 19: 173, 0, false
 terrain: 20, 0: 207, 100, false
 terrain: 20, 1: 132, 0, false
 terrain: 20, 2: 132, 0, false
 terrain: 20, 3: 132, 0, false
 terrain: 20, 4: 132, 0, false
 terrain: 20, 5: 132, 0, false
-terrain: 20, 6: 132, 0, false
-terrain: 20, 7: 132, 0, false
+terrain: 20, 6: 133, 0, false
+terrain: 20, 7: 133, 0, false
 terrain: 20, 8: 132, 0, false
 terrain: 20, 9: 132, 0, false
 terrain: 20, 10: 132, 0, false
@@ -424,27 +424,27 @@ terrain: 20, 14: 132, 0, false
 terrain: 20, 15: 132, 0, false
 terrain: 20, 16: 132, 0, false
 terrain: 20, 17: 172, 0, false
-terrain: 20, 18: 172, 0, false
+terrain: 20, 18: 173, 0, false
 terrain: 20, 19: 172, 0, false
 terrain: 21, 0: 134, 0, false
 terrain: 21, 1: 134, 0, false
 terrain: 21, 2: 132, 0, false
 terrain: 21, 3: 132, 0, false
-terrain: 21, 4: 132, 0, false
-terrain: 21, 5: 132, 0, false
-terrain: 21, 6: 132, 0, false
+terrain: 21, 4: 133, 0, false
+terrain: 21, 5: 133, 0, false
+terrain: 21, 6: 133, 0, false
 terrain: 21, 7: 132, 0, false
 terrain: 21, 8: 151, 0, false
 terrain: 21, 9: 151, 0, false
 terrain: 21, 10: 161, 0, false
 terrain: 21, 11: 151, 0, false
 terrain: 21, 12: 151, 0, false
-terrain: 21, 13: 132, 0, false
-terrain: 21, 14: 132, 0, false
+terrain: 21, 13: 133, 0, false
+terrain: 21, 14: 133, 0, false
 terrain: 21, 15: 132, 0, false
 terrain: 21, 16: 172, 0, false
-terrain: 21, 17: 172, 0, false
-terrain: 21, 18: 172, 0, false
+terrain: 21, 17: 173, 0, false
+terrain: 21, 18: 173, 0, false
 terrain: 21, 19: 172, 0, false
 terrain: 22, 0: 132, 0, false
 terrain: 22, 1: 132, 0, false
@@ -460,13 +460,13 @@ terrain: 22, 10: 162, 0, false
 terrain: 22, 11: 151, 0, false
 terrain: 22, 12: 151, 0, false
 terrain: 22, 13: 161, 0, false
-terrain: 22, 14: 132, 0, false
+terrain: 22, 14: 133, 0, false
 terrain: 22, 15: 172, 0, false
-terrain: 22, 16: 172, 0, false
+terrain: 22, 16: 173, 0, false
 terrain: 22, 17: 172, 0, false
 terrain: 22, 18: 172, 0, false
 terrain: 22, 19: 172, 0, false
-terrain: 23, 0: 132, 0, false
+terrain: 23, 0: 133, 0, false
 terrain: 23, 1: 132, 0, false
 terrain: 23, 2: 132, 0, false
 terrain: 23, 3: 132, 0, false
@@ -498,9 +498,9 @@ terrain: 24, 8: 151, 0, false
 terrain: 24, 9: 151, 0, false
 terrain: 24, 10: 151, 0, false
 terrain: 24, 11: 154, 0, false
-terrain: 24, 12: 172, 0, false
-terrain: 24, 13: 172, 0, false
-terrain: 24, 14: 172, 0, false
+terrain: 24, 12: 173, 0, false
+terrain: 24, 13: 173, 0, false
+terrain: 24, 14: 173, 0, false
 terrain: 24, 15: 172, 0, false
 terrain: 24, 16: 172, 0, false
 terrain: 24, 17: 172, 0, false
@@ -642,7 +642,7 @@ new: Feature: 364
 location: 13.0, 2.0, 0
 curr_height: 0
 remove: false
-number: 0
+number: 41
 toggle: false
 end: Feature
 
@@ -652,38 +652,409 @@ new: Feature: 363
 location: 10.0, 1.0, 0
 curr_height: 0
 remove: false
-number: 0
+number: 42
 toggle: false
 end: Feature
 
-nextFeatureKey: 16
+nextFeatureKey: 19
 
-new: Feature: 193
+new: Feature: 187
 location: 11.0, 3.0, 0
 curr_height: 0
 remove: false
 number: 0
-toggle: false
+toggle: true
 end: Feature
 
-nextFeatureKey: 17
+nextFeatureKey: 20
 
-new: Feature: 193
-location: 11.0, 4.0, 0
-curr_height: 0
-remove: false
-number: 0
-toggle: false
-end: Feature
-
-nextFeatureKey: 18
-
-new: Feature: 193
+new: Feature: 187
 location: 11.0, 5.0, 0
 curr_height: 0
 remove: false
 number: 0
+toggle: true
+end: Feature
+
+nextFeatureKey: 21
+
+new: Feature: 181
+location: 19.0, 4.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+new: Item: 2152
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+durability: 1
+ammo: 0
+toggled: false
+end: Item: 0
+new: Item: 2131
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+durability: 1
+ammo: 0
+toggled: false
+end: Item: 1
+new: Item: 2122
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+durability: 1
+ammo: 0
+toggled: false
+end: Item: 2
+new: Item: 2205
+location: 0.0, 0.0, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+durability: 30
+ammo: 0
+toggled: false
+end: Item: 3
+end: Feature
+
+nextFeatureKey: 23
+
+new: Feature: 11
+location: 14.0, 1.0, 0
+curr_height: 0
+remove: false
+number: 2
 toggle: false
 end: Feature
 
+nextFeatureKey: 26
+
+new: Feature: 411
+location: 9.0, 8.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 27
+
+new: Feature: 411
+location: 15.0, 5.0, 0
+curr_height: 0
+remove: false
+number: 2
+toggle: false
+end: Feature
+
+nextFeatureKey: 28
+
+new: Feature: 412
+location: 14.0, 5.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 29
+
+new: Feature: 412
+location: 14.0, 4.0, 0
+curr_height: 0
+remove: false
+number: 4
+toggle: false
+end: Feature
+
+nextFeatureKey: 30
+
+new: Feature: 412
+location: 21.0, 0.0, 0
+curr_height: 0
+remove: false
+number: 1
+toggle: false
+end: Feature
+
+nextFeatureKey: 31
+
+new: Feature: 411
+location: 21.0, 1.0, 0
+curr_height: 0
+remove: false
+number: 1
+toggle: false
+end: Feature
+
+nextFeatureKey: 32
+
+new: Feature: 411
+location: 20.0, 1.0, 0
+curr_height: 0
+remove: false
+number: 3
+toggle: false
+end: Feature
+
+nextFeatureKey: 33
+
+new: Feature: 411
+location: 19.0, 1.0, 0
+curr_height: 0
+remove: false
+number: 4
+toggle: false
+end: Feature
+
+nextFeatureKey: 34
+
+new: Feature: 411
+location: 15.0, 4.0, 0
+curr_height: 0
+remove: false
+number: 2
+toggle: false
+end: Feature
+
+nextFeatureKey: 35
+
+new: Feature: 12
+location: 11.0, 0.0, 0
+curr_height: 0
+remove: false
+number: 0
+toggle: false
+end: Feature
+
+nextUnitKey: 16
+
+new: Unit: 1207
+location: 24.5829, 0.4997545, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 7
+alliance: Zombie
+element: Gray
+gearSlot: WEAPON
+gearSlot: ERROR
+next_status_code: Confused
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 6032.772
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+ai_toggle: false
+end: Unit
+
+nextUnitKey: 17
+
+new: Unit: 1309
+location: 24.41872, 7.3803515, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 9
+alliance: Zombie
+element: Gray
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+ai_toggle: true
+end: Unit
+
+nextUnitKey: 18
+
+new: Unit: 1208
+location: 15.702303, 11.001583, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 8
+alliance: Zombie
+element: Gray
+gearSlot: WEAPON
+gearSlot: ERROR
+next_status_code: Confused
+new: StatusEffect
+permanent: true
+timer_gone_start: 0.0
+timer_gone: 0.0
+number: 5065.7964
+end: StatusEffect
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+ai_toggle: false
+end: Unit
+
+nextUnitKey: 20
+
+new: Unit: 1210
+location: 0.63027424, 15.192694, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 10
+alliance: Zombie
+element: Gray
+gearSlot: WEAPON
+gearSlot: ERROR
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+ai_toggle: false
+end: Unit
+
+nextUnitKey: 5
+
+new: Unit: 1210
+location: 12.237224, 18.774971, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 10
+alliance: Zombie
+element: Gray
+gearSlot: WEAPON
+gearSlot: ERROR
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+ai_toggle: false
+end: Unit
+
+nextUnitKey: 7
+
+new: Unit: 1210
+location: 6.0210075, 8.342539, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 10
+alliance: Zombie
+element: Gray
+gearSlot: WEAPON
+gearSlot: ERROR
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+ai_toggle: false
+end: Unit
+
+nextUnitKey: 14
+
+new: Unit: 1209
+location: 23.777765, 14.937134, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 9
+alliance: Zombie
+element: Gray
+gearSlot: WEAPON
+gearSlot: ERROR
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+ai_toggle: false
+end: Unit
+
+nextUnitKey: 15
+
+new: Unit: 1353
+location: 0.5343359, 0.49116576, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 8
+alliance: Zombie
+element: Gray
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+ai_toggle: false
+end: Unit
+
+nextItemKey: 3
+
+new: Item: 2931
+location: 14.51918, 4.864303, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+durability: 1
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 4
+
+new: Item: 2963
+location: 2.9072402, 5.610572, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+durability: 8
+ammo: 0
+toggled: false
+end: Item
+nextItemKey: 5
+
+new: Item: 2929
+location: 11.472517, 6.469878, 0
+curr_height: 0
+remove: false
+disappearing: false
+disappear_timer: 0
+stack: 1
+durability: 1
+ammo: 22
+toggled: false
+end: Item
 end: Map

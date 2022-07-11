@@ -1,11 +1,7 @@
-v0.7.7: Ben Nelson Campaign (07/09)
- x: ahimdoor triggers (boss fight ben kohring at ahimdoor who drops car key)
-   Alex spieldenner at frontdoor in frontdoor level
-   fight ben kohring after entering then exiting room (gas can there)
-   extra hidden room no exist in frontdoor
- y: qa ahimdoor / add to locations folder
- z: qa frontdoor into its level 3 (Matt Schaefer boss fight) at bottom of hill
-    kyle aubert at circle map
+
+   ben kohring ability (only 1 or 2)
+   add ahimdoor to locations folder
+   add ben kohring boss fight to frontdoor as well
 
  - Make World map with all 6 initial heroes (Ben, Dan, Mattus, Patrick, JF, Spinny)
  - Finish all Lev2s/Lev3s for at least frontdoor/ahimdoor/brothersdoor, maybe chapeldoor (not custodialdoor)
@@ -20,6 +16,7 @@ v0.7.7: Ben Nelson Campaign (07/09)
  - Make trees spawn a little more spread out
  - Can't hover features in area until moving near them ???
  - Need road / parking lot chunk in initial Fernwood map
+ - kyle aubert at circle map
 
  - Finish frontdoor forcing you to get access to a car
    => Finish map outlines
