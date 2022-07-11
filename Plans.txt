@@ -1,9 +1,28 @@
+v0.7.8: World Map (07/23)
+ a: Add other heroes to HeroesForm
+ b: Small descriptions for each hero
+ c: Ben Kohring ability 1 (runs faster, attacks much faster with piercing)
+ d: Ben Kohring ability 2 (always does this right after 1, throws rock)
+ e: Add ben kohring boss fight to frontdoor as well
+ f: Initial world map with 6 initial heroes (Ben, Dan, Mattus, Patrick, JF, Spinny)
+ g: PlayingInterface starts with world map and popup asking to continue with current hero
+ h: Can view map and press location to see heroes at that location
+ i: Can see what to do to unlock
+ j: Add achievement for completing Ben Nelson campaign, and perk to unlock Dan Gray campaign
+ k: Perks to view healthbars, magnetic wallet option, magnetic hands option, others
+ l: Make a custom AchievementFormField
+ m: TabbedForm class
+ n: Apply TabbedForm class to OptionsForm
+ o: Add additional options into OptionsForm
+ p: Apply tabbed form to Achievements (completion, continuous, hidden)
+ q: Add continuous achievements (walk x distance, gain x xp, kill x units)
+ r: Make mock car break down minigame
+ s: Can unlock minigame in PlayingInterface
+ t: Campaign enum, display name, description
+ u: Can't finish campaign without finishing a minigame (or getting to certain point in minigame)
+ v: Ben Nelson campaign name, description
+ w: Can't finish Ben Nelson campaign without car break down minigame
 
-   ben kohring ability (only 1 or 2)
-   add ahimdoor to locations folder
-   add ben kohring boss fight to frontdoor as well
-
- - Make World map with all 6 initial heroes (Ben, Dan, Mattus, Patrick, JF, Spinny)
  - Finish all Lev2s/Lev3s for at least frontdoor/ahimdoor/brothersdoor, maybe chapeldoor (not custodialdoor)
 
  - Fix GameMapArea terrain image having lines on chunk borders (could be resize, but more likely can be fixed at GameMapArea DImg thread)
@@ -44,6 +63,7 @@
   - Items/Units despawn in Areas and with time/distance, respectively
   - Can access unlocked minigames, create mock minigame (use zambos)
   - Campaigns can unlock minigames (completion code or in future trigger), "force" you to play if you haven't previously unlocked it
+  - Finish custodialdoor
 
   Pathfinding issues:
    - targeted features above the walk height ignore pathfinding because is treated like you want to move to a wall
@@ -55,11 +75,6 @@
    - separate into sections on same form
    - make a TabbedForm extends Form element which is a form that displays a form based on tab selected
    - PlayingTrack option
-
-v0.7.8: Campaign (07/23)
- - Finish custodialdoor
- - QA all content so far
- - Make descriptions for all heroes, add others into heroesform
 
 v0.7.9: Beta prep => if have time maybe start making more heroes (or outlines of) (08/06)
  - Finish all parking lot items, fatal bugs
