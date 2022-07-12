@@ -4526,6 +4526,10 @@ abstract class Form {
       this.cancel.update(millis);
     }
     float currY = this.yStart;
+    boolean submit_this_frame = false;
+    boolean cancel_this_frame = false;
+    boolean buttonpress_this_frame = false;
+    int buttonpress_index = -1;
     translate(this.xi + 1, 0);
     for (int i = int(floor(this.scrollbar.value)); i < this.fields.size(); i++) {
       if (currY + this.fields.get(i).getHeight() > this.yf) {
@@ -4534,13 +4538,14 @@ abstract class Form {
       translate(0, currY);
       FormFieldSubmit submit = this.fields.get(i).update(millis);
       if (submit == FormFieldSubmit.SUBMIT) {
-        this.submitForm();
+        submit_this_frame = true;
       }
       else if (submit == FormFieldSubmit.CANCEL) {
-        this.cancelForm();
+        cancel_this_frame = true;
       }
       else if (submit == FormFieldSubmit.BUTTON) { // alternate button
-        this.buttonPress(i);
+        buttonpress_this_frame = true;
+        buttonpress_index = i;
       }
       translate(0, -currY);
       currY += this.fields.get(i).getHeight() + this.fieldCushion;
@@ -4548,6 +4553,15 @@ abstract class Form {
     translate(-this.xi - 1, 0);
     if (this.scrollbar.maxValue != this.scrollbar.minValue) {
       this.scrollbar.update(millis);
+    }
+    if (submit_this_frame) {
+      this.submitForm();
+    }
+    if (cancel_this_frame) {
+      this.cancelForm();
+    }
+    if (buttonpress_this_frame) {
+      this.buttonPress(buttonpress_index);
     }
   }
 

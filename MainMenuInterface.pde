@@ -311,6 +311,8 @@ class MainMenuInterface extends InterfaceLNZ {
     protected float grow_speed = 0.9; // pixels / ms
     protected PImage icon = global.images.getImage("units/ben.png");
     protected boolean collapsing = false;
+    protected boolean update_icon = true;
+    protected int update_icon_timer = 100;
 
     ProfileButton() {
       super(width - Constants.profileButton_offset, height - Constants.profileButton_offset, 2 * Constants.profileButton_offset);
@@ -322,10 +324,24 @@ class MainMenuInterface extends InterfaceLNZ {
       this.refreshColor();
     }
 
+    String getImageString() {
+      if (global.profile != null && global.profile.curr_hero != null) {
+        return global.profile.curr_hero.imagePathHeader();
+      }
+      return "ben";
+    }
+
     @Override
     void update(int millis) {
-      int timeElapsed = millis - this.lastUpdateTime;
-      float pixelsMoved = timeElapsed * this.grow_speed;
+      int time_elapsed = millis - this.lastUpdateTime;
+      if (this.update_icon) {
+        this.update_icon_timer -= time_elapsed;
+        if (this.update_icon_timer < 0) {
+          this.update_icon = false;
+          this.icon = global.images.getImage("units/" + this.getImageString() + ".png");
+        }
+      }
+      float pixelsMoved = time_elapsed * this.grow_speed;
       super.update(millis);
       float pixelsLeft = 0;
       if (this.collapsing) {
@@ -372,7 +388,7 @@ class MainMenuInterface extends InterfaceLNZ {
     }
 
     void reset() {
-      this.icon = global.images.getImage("units/ben.png");
+      this.icon = global.images.getImage("units/" + this.getImageString() + ".png");
       this.color_text = color(255);
       this.stretchButton(4 * Constants.profileButton_offset - (this.xf - this.xi), LEFT);
       this.stretchButton(4 * Constants.profileButton_offset - (this.yf - this.yi), UP);
@@ -398,14 +414,14 @@ class MainMenuInterface extends InterfaceLNZ {
 
     void hover() {
       global.sounds.trigger_interface("interfaces/buttonOn3");
-      this.icon = global.images.getImage("units/ben_whiteborder.png");
+      this.icon = global.images.getImage("units/" + this.getImageString() + "_whiteborder.png");
       this.collapsing = true;
       super.hover();
       this.show_message = true;
     }
 
     void dehover() {
-      this.icon = global.images.getImage("units/ben.png");
+      this.icon = global.images.getImage("units/" + this.getImageString() + ".png");
       this.color_text = color(255);
       this.collapsing = true;
       super.dehover();
@@ -415,13 +431,13 @@ class MainMenuInterface extends InterfaceLNZ {
 
     void click() {
       global.sounds.trigger_interface("interfaces/buttonClick5");
-      this.icon = global.images.getImage("units/ben_blueborder.png");
+      this.icon = global.images.getImage("units/" + this.getImageString() + "_blueborder.png");
       this.color_text = color(0, 0, 255);
       super.click();
     }
 
     void release() {
-      this.icon = global.images.getImage("units/ben.png");
+      this.icon = global.images.getImage("units/" + this.getImageString() + ".png");
       this.color_text = color(255);
       super.release();
       if (this.hovered) {

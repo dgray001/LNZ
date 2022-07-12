@@ -216,6 +216,14 @@ abstract class InterfaceLNZ {
             this.heroes[0] = new HeroButton(0, 0, 0, 100, HeroCode.BEN);
             this.heroes[1] = new HeroButton(0, 0, 0, 100, HeroCode.DAN);
             break;
+          case 1:
+            this.heroes[0] = new HeroButton(0, 0, 0, 100, HeroCode.JF);
+            this.heroes[1] = new HeroButton(0, 0, 0, 100, HeroCode.SPINNY);
+            break;
+          case 2:
+            this.heroes[0] = new HeroButton(0, 0, 0, 100, HeroCode.MATTUS);
+            this.heroes[1] = new HeroButton(0, 0, 0, 100, HeroCode.PATRICK);
+            break;
         }
         this.enable();
       }
@@ -393,6 +401,8 @@ abstract class InterfaceLNZ {
 
       this.addField(new SpacerFormField(0));
       this.addField(new HeroesFormField(0));
+      this.addField(new HeroesFormField(1));
+      this.addField(new HeroesFormField(2));
     }
 
     void submit() {}
@@ -496,7 +506,7 @@ abstract class InterfaceLNZ {
         ccolor(255, 80, 80, 75), ccolor(255, 80, 80, 150), ccolor(0));
       this.scrollbar.button_downspace.setColors(ccolor(170), ccolor(1, 0),
         ccolor(255, 80, 80, 75), ccolor(255, 80, 80, 150), ccolor(0));
-      
+
       TextBoxFormField textbox = new TextBoxFormField("Error message:\n" + errorMessage, 100);
       textbox.textbox.scrollbar.setButtonColors(ccolor(220), ccolor(240, 130, 130), ccolor(
         255, 155, 155), ccolor(200, 100, 100), ccolor(0));
@@ -1138,7 +1148,6 @@ abstract class InterfaceLNZ {
     text("FPS: " + int(global.lastFPS), 1, y_stats);
     y_stats += line_height;
     text("Active Threads: " + Thread.getAllStackTraces().size(), 1, y_stats);
-    println("");
   }
   abstract void mouseMove(float mX, float mY);
   abstract void mousePress();
