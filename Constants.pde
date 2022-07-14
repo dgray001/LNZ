@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\nAlpha v0.7.8a: 20220711" +
+  "\nAlpha v0.7.8b: 20220713" +
   "\n\nLines: 54730 (v0.7.8)" +
   "\nImages: 1275 (v0.7.8)" +
   "\nSounds: 341 (v0.7.8)" +
@@ -634,6 +634,15 @@ static class Constants {
   static final float ability_1003_castTime = 500;
   static final float ability_1003_size_w = 1.7;
   static final float ability_1003_size_h = 1.24;
+  // Ben Kohring
+  static final float ability_1021_time = 3600;
+  static final float ability_1021_speed = 1.6;
+  static final float ability_1021_lifesteal = 0.08;
+  static final float ability_1021_piercing = 0.22;
+  static final float ability_1021_attackspeed = 0.5;
+  static final float ability_1022_powerBase = 4;
+  static final float ability_1022_powerRatio = 0.55;
+  static final float ability_1022_distance = 5;
 
   // Level
   static final float level_questBoxHeightRatio = 0.25;

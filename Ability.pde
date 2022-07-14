@@ -112,7 +112,9 @@ class Ability {
         return "";
       // Ben Kohring, zombie
       case 1021:
-        return "";
+        return "Rage Run";
+      case 1022:
+        return "Rock Throw";
       default:
         return "ERROR";
     }
@@ -339,7 +341,19 @@ class Ability {
         return "";
       // Ben Kohring, zombie
       case 1021:
-        return "";
+        return "If any dare mess with Ben Kohring's luscious locks he will " +
+          "fly into a fit of rage.\nFor " + (Constants.ability_1021_time/
+          1000.0) + "s you will have " + round(100.0 * (Constants.
+          ability_1021_speed-1)) + "% increased speed, " + round(100.0 * Constants.
+          ability_1021_lifesteal) + "% more lifesteal, " + round(100.0 * Constants.
+          ability_1021_piercing) + "% higher piercing, and " + round(100.0 * (1-
+          Constants.ability_1021_speed)) + "% decreased attack cooldown and time.";
+      case 1022:
+        return "Ben Kohring may not be privy to standard weaponry, but can " +
+          "certainly throw rocks.\nThrow a rock with " + round(Constants.
+          ability_1022_powerBase) + " + (" + round(100*Constants.
+          ability_1022_powerRatio) + "% attack power + 0% magic power) physical " +
+          "power.";
       default:
         return "-- error -- ";
     }

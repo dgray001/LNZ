@@ -1,5 +1,4 @@
 v0.7.8: World Map (07/23)
- b: Small descriptions for each hero
  c: Ben Kohring ability 1 (runs faster, attacks much faster with piercing)
  d: Ben Kohring ability 2 (always does this right after 1, throws rock)
  e: Add ben kohring boss fight to frontdoor as well

@@ -68,6 +68,9 @@ class Projectile extends MapObject {
           this.power = Constants.ability_1002_basePower + u.power(0, Constants.ability_1002_magicRatio);
           this.damageType = DamageType.MAGICAL;
           break;
+        case 3004: // Rock Throw
+          this.power = Constants.ability_1022_powerBase + u.power(Constants.ability_1022_powerRatio, 0);
+          break;
         case 3118: // Chicken Egg (thrown)
           if (u.holding(2118)) {
             this.toggled = u.weapon().toggled;
