@@ -974,7 +974,11 @@ class MapEditorInterface extends InterfaceLNZ {
                 if (MapEditorInterface.this.curr_trigger == null) {
                   break;
                 }
-                if (this.line_clicked > MapEditorInterface.this.curr_trigger.conditions.size()) {
+                if (MapEditorInterface.this.curr_trigger.conditions.size() == 0 &&
+                  this.line_clicked != -1) {
+                  MapEditorInterface.this.removeEffectFromTrigger(this.line_clicked);
+                }
+                else if (this.line_clicked > MapEditorInterface.this.curr_trigger.conditions.size()) {
                   MapEditorInterface.this.removeEffectFromTrigger(this.line_clicked -
                     MapEditorInterface.this.curr_trigger.conditions.size() - 1);
                 }
@@ -1046,7 +1050,11 @@ class MapEditorInterface extends InterfaceLNZ {
           if (MapEditorInterface.this.curr_trigger == null) {
             break;
           }
-          if (this.line_clicked > MapEditorInterface.this.curr_trigger.conditions.size()) {
+          if (MapEditorInterface.this.curr_trigger.conditions.size() == 0 &&
+            this.line_clicked != -1) {
+            MapEditorInterface.this.openEffectEditor(this.line_clicked);
+          }
+          else if (this.line_clicked > MapEditorInterface.this.curr_trigger.conditions.size()) {
             MapEditorInterface.this.openEffectEditor(this.line_clicked -
               MapEditorInterface.this.curr_trigger.conditions.size() - 1);
           }
@@ -1103,7 +1111,7 @@ class MapEditorInterface extends InterfaceLNZ {
 
     void submit() {
       Hero h = new Hero(toInt(this.fields.get(1).getValue()));
-      h.level = toInt(this.fields.get(2).getValue());
+      h.setLevel(toInt(this.fields.get(2).getValue()));
       h.level_tokens = toInt(this.fields.get(3).getValue());
       h.curr_mana = toFloat(this.fields.get(4).getValue());
       this.level.setPlayer(h);
@@ -1156,7 +1164,7 @@ class MapEditorInterface extends InterfaceLNZ {
 
     void submit() {
       Hero h = new Hero(toInt(this.fields.get(1).getValue()));
-      h.level = toInt(this.fields.get(2).getValue());
+      h.setLevel(toInt(this.fields.get(2).getValue()));
       h.level_tokens = toInt(this.fields.get(3).getValue());
       h.curr_mana = toFloat(this.fields.get(4).getValue());
       h.setLocation(toFloat(this.fields.get(5).getValue()), toFloat(this.fields.get(6).getValue()));

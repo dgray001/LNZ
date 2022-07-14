@@ -49,6 +49,7 @@ class Ability {
         break;
       // Ben Kohring, zombie
       case 1021:
+      case 1022:
         break;
       default:
         global.errorMessage("ERROR: Ability ID " + this.ID + " not found.");
@@ -456,6 +457,7 @@ class Ability {
       case 117:
       case 118:
       case 1001:
+      case 1022:
         return true;
       case 115:
       case 120:
@@ -777,6 +779,14 @@ class Ability {
         u.curr_action = UnitAction.CASTING;
         u.curr_action_id = ability_index;
         //global.sounds.trigger_units("units/ability/1003_cast", u.x - map.viewX, u.y - map.viewY);
+        break;
+      case 1021: // Rage Run
+        u.addStatusEffect(StatusEffectCode.RAGE_RUN, Constants.ability_1021_time);
+        //global.sounds.trigger_units("units/ability/1021", u.x - map.viewX, u.y - map.viewY);
+        break;
+      case 1022: // Rock Throw
+        map.addProjectile(new Projectile(3004, u));
+        global.sounds.trigger_units("items/throw", u.x - map.viewX, u.y - map.viewY);
         break;
       default:
         global.errorMessage("ERROR: Can't activate ability with ID " + this.ID + ".");

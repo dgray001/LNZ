@@ -19,6 +19,8 @@ enum StatusEffectCode {
   APOSEMATIC_CAMOUFLAGE("Camouflaged"), APOSEMATIC_CAMOUFLAGEII("Camouflaged"),
   TONGUE_LASH("Slowed"), ALKALOID_SECRETION("Secreting Alkaloids"), ALKALOID_SECRETIONII(
   "Secreting Alkaloids"),
+
+  RAGE_RUN("Rage Run"),
   ;
 
   private static final List<StatusEffectCode> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
@@ -69,6 +71,7 @@ enum StatusEffectCode {
       case APOSEMATIC_CAMOUFLAGEII:
       case ALKALOID_SECRETION:
       case ALKALOID_SECRETIONII:
+      case RAGE_RUN:
         return false;
       default:
         return true;

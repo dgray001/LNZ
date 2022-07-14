@@ -10,7 +10,6 @@ respawn_timer: 0
 sleeping: false
 sleep_timer: 0
 in_control: true
-currMapName: ahimdoor_ahimdoor
 mapNames: ahimdoor_ahimdoor
 nextTriggerKey: 2
 
@@ -50,6 +49,15 @@ new: Effect
 ID: 7
 message: 
 number: 4
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
+new: Effect
+ID: 58
+message: planets
+number: 0
 decimal1: 0.0
 decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
@@ -187,7 +195,7 @@ nextTriggerKey: 8
 
 new: Trigger
 triggerName: initiate boss fight
-active: true
+active: false
 looping: false
 amalgam: true
 new: Condition
@@ -631,6 +639,15 @@ decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
+new: Effect
+ID: 58
+message: planets
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
 end: Trigger
 
 nextTriggerKey: 17
@@ -793,6 +810,15 @@ decimal2: 0.0
 rectangle: , 0.0, 0.0, 0.0, 0.0
 end: Effect
 
+new: Effect
+ID: 58
+message: planets
+number: 0
+decimal1: 0.0
+decimal2: 0.0
+rectangle: , 0.0, 0.0, 0.0, 0.0
+end: Effect
+
 end: Trigger
 
 nextTriggerKey: 21
@@ -817,7 +843,7 @@ message:
 number: 134
 decimal1: 0.0
 decimal2: 0.0
-rectangle: ahimdoor_ahimdoor, 8.0, 10.0, 9.0, 13.0
+rectangle: ahimdoor_ahimdoor, 8.0, 9.0, 9.0, 10.0
 end: Effect
 
 new: Effect
@@ -826,7 +852,7 @@ message:
 number: 132
 decimal1: 0.0
 decimal2: 0.0
-rectangle: ahimdoor_ahimdoor, 8.0, 13.0, 9.0, 15.0
+rectangle: ahimdoor_ahimdoor, 8.0, 10.0, 9.0, 13.0
 end: Effect
 
 new: Effect
@@ -907,7 +933,7 @@ message:
 number: 172
 decimal1: 0.0
 decimal2: 0.0
-rectangle: ahimdoor_ahimdoor, 14.0, 17.0, 15.0, 21.0
+rectangle: ahimdoor_ahimdoor, 14.0, 17.0, 15.0, 20.0
 end: Effect
 
 end: Trigger

@@ -870,6 +870,10 @@ class Unit extends MapObject {
         this.baseStats(3, 7.5, 1.6, 0.1, 0.6);
         this.magicStats(10, 1.2, 0.05);
         this.setLevel(8);
+        this.abilities.add(new Ability(1021));
+        this.abilities.add(new Ability(1022));
+        this.timer_ai_action1 = round(4000 + random(4000));
+        this.timer_ai_action2 = this.timer_ai_action1 + 4000;
         this.alliance = Alliance.ZOMBIE;
         break;
 
@@ -1474,6 +1478,9 @@ class Unit extends MapObject {
     if (this.relaxed()) {
       piercing *= Constants.status_relaxed_multiplier;
     }
+    if (this.rageRun()) {
+      piercing *= Constants.ability_1021_piercing;
+    }
     if (piercing > 1) {
       piercing = 1;
     }
@@ -1582,6 +1589,9 @@ class Unit extends MapObject {
         attackCooldown += this.weapon().attackCooldown;
       }
     }
+    if (this.rageRun()) {
+      attackCooldown *= Constants.ability_1021_attackspeed;
+    }
     for (Ability a : this.abilities) {
       if (a == null) {
         continue;
@@ -1637,6 +1647,9 @@ class Unit extends MapObject {
       else {
         attackTime += this.weapon().attackTime;
       }
+    }
+    if (this.rageRun()) {
+      attackTime *= Constants.ability_1021_attackspeed;
     }
     for (Ability a : this.abilities) {
       if (a == null) {
@@ -1750,6 +1763,9 @@ class Unit extends MapObject {
     }
     if (this.relaxed()) {
       speed *= Constants.status_relaxed_multiplier;
+    }
+    if (this.rageRun()) {
+      speed *= Constants.ability_1021_speed;
     }
     for (Ability a : this.abilities) {
       if (a == null) {
@@ -1886,6 +1902,9 @@ class Unit extends MapObject {
     }
     if (this.withered()) {
       lifesteal *= Constants.status_withered_multiplier;
+    }
+    if (this.rageRun()) {
+      lifesteal *= Constants.ability_1021_lifesteal;
     }
     for (Ability a : this.abilities) {
       if (a == null) {
@@ -2156,6 +2175,9 @@ class Unit extends MapObject {
   }
   boolean alkaloidSecretionII() {
     return this.hasStatusEffect(StatusEffectCode.ALKALOID_SECRETIONII);
+  }
+  boolean rageRun() {
+    return this.hasStatusEffect(StatusEffectCode.RAGE_RUN);
   }
 
   StatusEffectCode priorityStatusEffect() {
@@ -3671,7 +3693,7 @@ class Unit extends MapObject {
         break;
       case 1353: // Ben Kohring
         i = new Item(2906);
-        i.ammo = 501;
+        i.ammo = 1;
         drops.add(i);
         break;
       default:
@@ -4947,24 +4969,24 @@ class Unit extends MapObject {
         if (!this.ai_toggle) {
           break;
         }
-        this.timer_ai_action1 -= timeElapsed;
-        this.timer_ai_action2 -= timeElapsed;
         switch(this.curr_action) {
           case NONE:
             if (map.units.containsKey(0)) {
               this.target(map.units.get(0), map);
             }
             break;
-          case TARGETING_UNIT:
-            /*if (this.timer_ai_action2 < 0) {
-              this.timer_ai_action2 = round(9000 + random(9000));
-              this.cast(1, map);
-            }
-            else if (this.timer_ai_action1 < 0) {
-              this.timer_ai_action1 = round(9000 + random(9000));
-              this.cast(0, map);
-            }*/
-            break;
+        }
+        this.timer_ai_action1 -= timeElapsed;
+        this.timer_ai_action2 -= timeElapsed;
+        if (this.timer_ai_action1 < 0) {
+          this.timer_ai_action1 = round(6000 + random(3000));
+          this.cast(0, map);
+        }
+        else if (this.timer_ai_action2 < 0) {
+          this.timer_ai_action2 = this.timer_ai_action1 + 4000;
+          if (this.object_targeting != null) {
+            this.cast(1, map);
+          }
         }
         break;
       default:

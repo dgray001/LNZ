@@ -108,6 +108,9 @@ class Projectile extends MapObject {
         case 3003: // Condom Throw
           this.range_left = Constants.ability_1002_range;
           break;
+        case 3004: // Rock Throw
+          this.range_left = Constants.ability_1022_distance;
+          break;
         default:
           this.range_left = 1.1 * u.attackRange();
           break;
@@ -128,6 +131,10 @@ class Projectile extends MapObject {
         break;
       case 3003: // Condom Throw
         this.speed = 5;
+        this.decay = 0;
+        break;
+      case 3004: // Rock Throw
+        this.speed = 6;
         this.decay = 0;
         break;
       // Items
@@ -389,6 +396,9 @@ class Projectile extends MapObject {
         break;
       case 3003:
         path += "condom.png";
+        break;
+      case 3004:
+        path += "rock.png";
         break;
       case 3118:
         path += "chicken_egg.png";
@@ -708,6 +718,7 @@ class Projectile extends MapObject {
       case 3002: // Mighty Pen II
         droppedItems.add(new Item(2911));
         break;
+      case 3004: // Rock Throw
       case 3301: // Slingshot
       case 3931: // Rock
         droppedItems.add(new Item(2931));

@@ -1,11 +1,11 @@
 new: Map
 code: ERROR
 mapName: frontdoor_frontdoor
-dimensions: 30, 50
 maxHeight: 10
 outside_map: true
 color_tint: 65793
 show_tint: false
+dimensions: 30, 50
 terrain: 0, 0: 1, 100, false
 terrain: 0, 1: 1, 100, false
 terrain: 0, 2: 152, 0, false
@@ -2072,6 +2072,7 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
+gearSlot: ERROR
 gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
@@ -2079,6 +2080,7 @@ facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextUnitKey: 2
@@ -2091,6 +2093,7 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
+gearSlot: ERROR
 gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
@@ -2098,6 +2101,7 @@ facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextUnitKey: 3
@@ -2110,6 +2114,7 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
+gearSlot: ERROR
 gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
@@ -2117,6 +2122,7 @@ facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextUnitKey: 4
@@ -2129,6 +2135,7 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
+gearSlot: ERROR
 gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
@@ -2136,6 +2143,7 @@ facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextUnitKey: 5
@@ -2148,6 +2156,7 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
+gearSlot: ERROR
 gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
@@ -2155,6 +2164,7 @@ facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextUnitKey: 6
@@ -2167,6 +2177,7 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
+gearSlot: ERROR
 gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
@@ -2174,6 +2185,7 @@ facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextUnitKey: 7
@@ -2186,6 +2198,7 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
+gearSlot: ERROR
 gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
@@ -2193,6 +2206,7 @@ facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextUnitKey: 8
@@ -2205,6 +2219,7 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
+gearSlot: ERROR
 gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
@@ -2212,6 +2227,7 @@ facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextUnitKey: 9
@@ -2224,6 +2240,7 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
+gearSlot: ERROR
 gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
@@ -2231,6 +2248,7 @@ facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextUnitKey: 10
@@ -2243,6 +2261,7 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
+gearSlot: ERROR
 gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
@@ -2250,6 +2269,7 @@ facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextUnitKey: 11
@@ -2262,6 +2282,7 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
+gearSlot: ERROR
 gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
@@ -2269,6 +2290,7 @@ facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextUnitKey: 12
@@ -2281,6 +2303,7 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
+gearSlot: ERROR
 gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
@@ -2288,6 +2311,7 @@ facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextUnitKey: 13
@@ -2300,6 +2324,7 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
+gearSlot: ERROR
 gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
@@ -2307,6 +2332,7 @@ facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextUnitKey: 14
@@ -2319,6 +2345,7 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
+gearSlot: ERROR
 gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
@@ -2326,6 +2353,7 @@ facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextUnitKey: 15
@@ -2338,6 +2366,7 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
+gearSlot: ERROR
 gearSlot: WEAPON
 facingX: 1.0
 facingY: 0.0
@@ -2345,6 +2374,7 @@ facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextItemKey: 1

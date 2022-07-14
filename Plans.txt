@@ -1,7 +1,4 @@
 v0.7.8: World Map (07/23)
- c: Ben Kohring ability 1 (runs faster, attacks much faster with piercing)
- d: Ben Kohring ability 2 (always does this right after 1, throws rock)
- e: Add ben kohring boss fight to frontdoor as well
  f: Initial world map with 6 initial heroes (Ben, Dan, Mattus, Patrick, JF, Spinny)
  g: PlayingInterface starts with world map and popup asking to continue with current hero
  h: Can view map and press location to see heroes at that location

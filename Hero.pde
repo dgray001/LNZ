@@ -4361,6 +4361,10 @@ class Hero extends Unit {
 
   @Override
   void setLevel(int level) {
+    if (level == this.level) {
+      return;
+    }
+    float missing_health = this.health() - this.curr_health;
     super.setLevel(level);
     this.base_health = 4 + 0.5 * Constants.hero_scaling_health * level * (level + 1.0);
     this.base_attack = 1 + 0.5 * Constants.hero_scaling_attack * level * (level + 1.0);
@@ -4376,6 +4380,7 @@ class Hero extends Unit {
       default:
         break;
     }
+    this.curr_health = max(1, this.health() - missing_health);
   }
 
 
