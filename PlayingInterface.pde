@@ -1,5 +1,5 @@
 enum PlayingStatus {
-  INITIAL, STARTING_NEW, LOADING_SAVED, PLAYING; // **** TURN INIITAL INTO WORLD MAP
+  WORLD_MAP, STARTING_NEW, LOADING_SAVED, PLAYING;
 }
 
 
@@ -523,6 +523,7 @@ class PlayingInterface extends InterfaceLNZ {
 
     OpenNewLevelThread(Hero hero) {
       super("OpenNewLevelThread");
+      this.setDaemon(true);
       this.hero = hero;
     }
 
@@ -594,6 +595,7 @@ class PlayingInterface extends InterfaceLNZ {
 
     OpenSavedLevelThread(Hero hero) {
       super("OpenSavedLevelThread");
+      this.setDaemon(true);
       this.hero = hero;
     }
 
@@ -640,6 +642,19 @@ class PlayingInterface extends InterfaceLNZ {
   }
 
 
+  class LoadWorldMapThread extends Thread {
+    LoadWorldMapThread() {
+      super("LoadWorldMapThread");
+      this.setDaemon(true);
+    }
+    @Override
+    void run() {
+      WorldMap map = new WorldMap();
+      PlayingInterface.this.world_map = map;
+    }
+  }
+
+
   private PlayingButton[] buttons = new PlayingButton[4];
   private Panel leftPanel = new Panel(LEFT, Constants.mapEditor_panelMinWidth,
     Constants.mapEditor_panelMaxWidth, Constants.mapEditor_panelStartWidth);
@@ -647,11 +662,14 @@ class PlayingInterface extends InterfaceLNZ {
     Constants.mapEditor_panelMaxWidth, Constants.mapEditor_panelStartWidth);
 
   private String savePath = "data/profiles/" + global.profile.display_name.toLowerCase() + "/locations/";
+  private WorldMap world_map = null;
   private Level level = null;
-  private PlayingStatus status = PlayingStatus.INITIAL;
+  private PlayingStatus status = PlayingStatus.WORLD_MAP;
+  private boolean check_level_save = false;
 
   private OpenNewLevelThread newLevelThread = null;
   private OpenSavedLevelThread savedLevelThread = null;
+  private LoadWorldMapThread worldMapThread = null;
 
   private boolean return_to_confirmStartLevelForm = false;
   private boolean return_to_confirmContinueLevelForm = false;
@@ -668,6 +686,8 @@ class PlayingInterface extends InterfaceLNZ {
     this.leftPanel.color_background = global.color_panelBackground;
     this.rightPanel.color_background = global.color_panelBackground;
     this.resizeButtons();
+    this.worldMapThread = new LoadWorldMapThread();
+    this.worldMapThread.start();
   }
 
 
@@ -711,7 +731,7 @@ class PlayingInterface extends InterfaceLNZ {
       global.errorMessage("ERROR: Trying to open level save when current level not null.");
       return;
     }
-    if (this.status != PlayingStatus.INITIAL) {
+    if (this.status != PlayingStatus.WORLD_MAP) {
       global.errorMessage("ERROR: Trying to open level save when current status is " + this.status + ".");
       return;
     }
@@ -738,7 +758,7 @@ class PlayingInterface extends InterfaceLNZ {
       global.errorMessage("ERROR: Trying to open level save when current level not null.");
       return;
     }
-    if (this.status != PlayingStatus.INITIAL) {
+    if (this.status != PlayingStatus.WORLD_MAP) {
       global.errorMessage("ERROR: Trying to open level save when current status is " + this.status + ".");
       return;
     }
@@ -769,7 +789,7 @@ class PlayingInterface extends InterfaceLNZ {
       global.errorMessage("ERROR: Trying to restart level when current level not null.");
       return;
     }
-    if (this.status != PlayingStatus.INITIAL) {
+    if (this.status != PlayingStatus.WORLD_MAP) {
       global.errorMessage("ERROR: Trying to restart level save when current status is " + this.status + ".");
       return;
     }
@@ -811,7 +831,7 @@ class PlayingInterface extends InterfaceLNZ {
       global.errorMessage("ERROR: Trying to restart level when current level not null.");
       return;
     }
-    if (this.status != PlayingStatus.INITIAL) {
+    if (this.status != PlayingStatus.WORLD_MAP) {
       global.errorMessage("ERROR: Trying to restart level save when current status is " + this.status + ".");
       return;
     }
@@ -863,7 +883,7 @@ class PlayingInterface extends InterfaceLNZ {
       global.errorMessage("ERROR: Trying to launch new campaign when current level not null.");
       return;
     }
-    if (this.status != PlayingStatus.INITIAL) {
+    if (this.status != PlayingStatus.WORLD_MAP) {
       global.errorMessage("ERROR: Trying to launch new campaign save when current status is " + this.status + ".");
       return;
     }
@@ -927,14 +947,14 @@ class PlayingInterface extends InterfaceLNZ {
       return;
     }
     if (!global.profile.heroes.containsKey(hero.code)) {
-      global.errorMessage("ERROR: Can't switch to a hero that hasn't been unlocked.");
+      global.errorMessage("ERROR: Can't switch to a hero that hasn't beens unlocked.");
       return;
     }
     if (global.profile.curr_hero == hero.code) {
       return;
     }
     switch(this.status) {
-      case INITIAL:
+      case WORLD_MAP:
         break;
       case STARTING_NEW:
         if (this.newLevelThread == null) {
@@ -964,9 +984,9 @@ class PlayingInterface extends InterfaceLNZ {
         global.errorMessage("ERROR: Playing status " + this.status + " not recognized.");
         break;
     }
-    global.profile.saveHeroesFile();
     global.profile.curr_hero = hero.code;
-    this.status = PlayingStatus.INITIAL;
+    global.profile.saveHeroesFile();
+    this.status = PlayingStatus.WORLD_MAP;
   }
 
 
@@ -994,7 +1014,7 @@ class PlayingInterface extends InterfaceLNZ {
     if (next_location.isArea()) {
       global.profile.unlockArea(next_location);
     }
-    this.status = PlayingStatus.INITIAL;
+    this.status = PlayingStatus.WORLD_MAP;
     this.level = null;
   }
 
@@ -1015,15 +1035,13 @@ class PlayingInterface extends InterfaceLNZ {
   }
 
   void saveAndExitToMainMenu() {
-    this.saveLevel();
-    this.level = null;
-    this.status = PlayingStatus.INITIAL;
+    this.saveAndReturnToInitialState();
     global.state = ProgramState.ENTERING_MAINMENU;
   }
 
   void saveAndReturnToInitialState() {
     this.saveLevel();
-    this.status = PlayingStatus.INITIAL;
+    this.status = PlayingStatus.WORLD_MAP;
     this.level = null;
   }
 
@@ -1048,11 +1066,16 @@ class PlayingInterface extends InterfaceLNZ {
   void update(int millis) {
     boolean refreshLevelLocation = false;
     switch(this.status) {
-      case INITIAL:
-        rectMode(CORNERS);
-        noStroke();
-        fill(60);
-        rect(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+      case WORLD_MAP:
+        if (this.world_map != null) {
+          this.world_map.update(millis);
+        }
+        else {
+          rectMode(CORNERS);
+          noStroke();
+          fill(ccolor(60));
+          rect(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+        }
         break;
       case STARTING_NEW:
         if (this.newLevelThread.isAlive()) {
@@ -1063,7 +1086,7 @@ class PlayingInterface extends InterfaceLNZ {
           fill(global.color_loadingScreenBackground);
           rect(this.leftPanel.size + Constants.map_borderSize, Constants.map_borderSize,
               width - this.rightPanel.size - Constants.map_borderSize, height - Constants.map_borderSize);
-          fill(0);
+          fill(ccolor(0));
           textSize(24);
           textAlign(LEFT, TOP);
           text(this.newLevelThread.curr_status + " ...", this.leftPanel.size +
@@ -1076,7 +1099,7 @@ class PlayingInterface extends InterfaceLNZ {
         else {
           if (this.newLevelThread.level == null || this.newLevelThread.level.nullify) {
             this.level = null;
-            this.status = PlayingStatus.INITIAL;
+            this.status = PlayingStatus.WORLD_MAP;
           }
           else {
             this.level = this.newLevelThread.level;
@@ -1106,7 +1129,7 @@ class PlayingInterface extends InterfaceLNZ {
           fill(global.color_loadingScreenBackground);
           rect(this.leftPanel.size + Constants.map_borderSize, Constants.map_borderSize,
               width - this.rightPanel.size - Constants.map_borderSize, height - Constants.map_borderSize);
-          fill(0);
+          fill(ccolor(0));
           textSize(24);
           textAlign(LEFT, TOP);
           text(this.savedLevelThread.curr_status + " ...", this.leftPanel.size +
@@ -1120,7 +1143,7 @@ class PlayingInterface extends InterfaceLNZ {
           if (this.savedLevelThread.level == null || this.savedLevelThread.level.nullify ||
             this.savedLevelThread.level.currMap == null || this.savedLevelThread.level.currMap.nullify) {
             this.level = null;
-            this.status = PlayingStatus.INITIAL;
+            this.status = PlayingStatus.WORLD_MAP;
           }
           else {
             this.level = this.savedLevelThread.level;
@@ -1154,7 +1177,7 @@ class PlayingInterface extends InterfaceLNZ {
         }
         else {
           global.errorMessage("ERROR: In playing status but no level to update.");
-          this.status = PlayingStatus.INITIAL;
+          this.status = PlayingStatus.WORLD_MAP;
         }
         break;
       default:
@@ -1181,8 +1204,9 @@ class PlayingInterface extends InterfaceLNZ {
         this.level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
       }
     }
-    if (this.status == PlayingStatus.INITIAL) {
+    if (this.check_level_save && this.status == PlayingStatus.WORLD_MAP) {
       this.checkLevelSave();
+      this.check_level_save = false;
     }
   }
 
@@ -1191,7 +1215,7 @@ class PlayingInterface extends InterfaceLNZ {
       this.level.displayNerdStats();
     }
     else {
-      fill(255);
+      fill(ccolor(255));
       textSize(14);
       textAlign(LEFT, TOP);
       float y_stats = 1;
@@ -1202,6 +1226,9 @@ class PlayingInterface extends InterfaceLNZ {
 
   void mouseMove(float mX, float mY) {
     boolean refreshMapLocation = false;
+    if (this.status == PlayingStatus.WORLD_MAP && this.world_map != null) {
+      this.world_map.mouseMove(mX, mY);
+    }
     // level mouse move
     if (this.level != null) {
       this.level.mouseMove(mX, mY);
@@ -1245,6 +1272,9 @@ class PlayingInterface extends InterfaceLNZ {
   }
 
   void mousePress() {
+    if (this.status == PlayingStatus.WORLD_MAP && this.world_map != null) {
+      this.world_map.mousePress();
+    }
     if (this.level != null) {
       this.level.mousePress();
     }
@@ -1264,6 +1294,9 @@ class PlayingInterface extends InterfaceLNZ {
   }
 
   void mouseRelease(float mX, float mY) {
+    if (this.status == PlayingStatus.WORLD_MAP && this.world_map != null) {
+      this.world_map.mouseRelease(mX, mY);
+    }
     if (this.level != null) {
       this.level.mouseRelease(mX, mY);
     }
@@ -1283,6 +1316,9 @@ class PlayingInterface extends InterfaceLNZ {
   }
 
   void scroll(int amount) {
+    if (this.status == PlayingStatus.WORLD_MAP && this.world_map != null) {
+      this.world_map.scroll(amount);
+    }
     if (this.level != null) {
       this.level.scroll(amount);
     }

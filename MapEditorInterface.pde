@@ -1728,6 +1728,8 @@ class MapEditorInterface extends InterfaceLNZ {
     private int mapHeight = 1;
 
     NewMapThread(String mapName, int mapWidth, int mapHeight) {
+      super("NewMapThread");
+      this.setDaemon(true);
       this.mapName = mapName;
       this.mapWidth = mapWidth;
       this.mapHeight = mapHeight;
@@ -1776,6 +1778,7 @@ class MapEditorInterface extends InterfaceLNZ {
 
     OpenMapEditorThread(String mapName, String folderPath) {
       super("OpenMapEditorThread");
+      this.setDaemon(true);
       this.mapName = mapName;
       this.folderPath = folderPath;
     }
@@ -1820,6 +1823,7 @@ class MapEditorInterface extends InterfaceLNZ {
 
     OpenTestMapThread(String mapName) {
       super("OpenTestMapThread");
+      this.setDaemon(true);
       this.mapName = mapName;
     }
 
@@ -1866,6 +1870,7 @@ class MapEditorInterface extends InterfaceLNZ {
 
     OpenTestLevelThread(String levelName) {
       super("OpenTestLevelThread");
+      this.setDaemon(true);
       this.levelName = levelName;
     }
 

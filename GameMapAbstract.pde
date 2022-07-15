@@ -1294,7 +1294,7 @@ abstract class AbstractGameMap {
 
 
   void displayNerdStats() {
-    fill(255);
+    fill(ccolor(255));
     textSize(14);
     textAlign(LEFT, TOP);
     float y_stats = this.yi + 31;
@@ -1570,13 +1570,13 @@ abstract class AbstractGameMap {
     }
     if (u.alkaloidSecretion()) {
       ellipseMode(CENTER);
-      fill(128, 82, 48, 100);
+      fill(ccolor(128, 82, 48, 100));
       noStroke();
       ellipse(0, 0, 2 * Constants.ability_114_range * this.zoom_old, 2 * Constants.ability_114_range * this.zoom_old);
     }
     if (u.alkaloidSecretionII()) {
       ellipseMode(CENTER);
-      fill(128, 82, 48, 100);
+      fill(ccolor(128, 82, 48, 100));
       noStroke();
       ellipse(0, 0, 2 * Constants.ability_119_range * this.zoom_old, 2 * Constants.ability_119_range * this.zoom_old);
     }
@@ -1589,7 +1589,7 @@ abstract class AbstractGameMap {
     if (player_unit && global.player_blinking) {
       ellipseMode(CENTER);
       noFill();
-      stroke(255);
+      stroke(ccolor(255));
       strokeWeight(0.5);
       ellipse(0, 0, u.width() * this.zoom_old, u.height() * this.zoom_old);
     }
@@ -1601,7 +1601,7 @@ abstract class AbstractGameMap {
       float weapon_adjust_y = Constants.unit_weaponDisplayScaleFactor * u.weapon().height() * this.zoom_old;
       image(u.weapon().getImage(), 0, 0, weapon_adjust_x, weapon_adjust_y);
       if (u.weapon().stack > 1) {
-        fill(255);
+        fill(ccolor(255));
         textSize(12);
         textAlign(RIGHT, BOTTOM);
         text(u.weapon().stack, 0.5 * weapon_adjust_x - 1, 0.5 * weapon_adjust_y - 1);
