@@ -1,5 +1,5 @@
 new: Map
-code: ERROR
+code: FRONTDOOR_ABANDONED
 mapName: frontdoor_abandoned
 dimensions: 40, 40
 maxHeight: 10

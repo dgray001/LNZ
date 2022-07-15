@@ -1,5 +1,5 @@
 new: Map
-code: ERROR
+code: FRONTDOOR_OUTSIDEFF
 mapName: frontdoor_outsideffh
 dimensions: 30, 80
 maxHeight: 10

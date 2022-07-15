@@ -10,7 +10,7 @@ respawn_timer: 0
 sleeping: false
 sleep_timer: 0
 in_control: true
-mapNames: frontdoor_abandoned, frontdoor_chapel, frontdoor_circle, frontdoor_coda, frontdoor_frontdoor, frontdoor_hill, frontdoor_lot, frontdoor_outsideffh, frontdoor_ahimdoor
+mapNames: frontdoor_abandoned, frontdoor_ahimdoor, frontdoor_chapel, frontdoor_circle, frontdoor_coda, frontdoor_frontdoor, frontdoor_hill, frontdoor_lot, frontdoor_outsideffh
 
 new: Linker
 rect1: frontdoor_frontdoor, 0.0, 49.0, 1.0, 50.0

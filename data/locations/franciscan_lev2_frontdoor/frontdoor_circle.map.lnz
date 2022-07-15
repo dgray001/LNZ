@@ -1,5 +1,5 @@
 new: Map
-code: ERROR
+code: FRONTDOOR_CIRCLE
 mapName: frontdoor_circle
 dimensions: 81, 21
 maxHeight: 10

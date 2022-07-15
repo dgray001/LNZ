@@ -1,5 +1,5 @@
 new: Map
-code: ERROR
+code: FRONTDOOR_FRONTDOOR
 mapName: frontdoor_frontdoor
 maxHeight: 10
 outside_map: true
@@ -2072,8 +2072,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -2093,8 +2093,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -2114,8 +2114,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -2135,8 +2135,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -2156,8 +2156,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -2177,8 +2177,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -2198,8 +2198,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -2219,8 +2219,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -2240,8 +2240,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -2261,8 +2261,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -2282,8 +2282,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -2303,8 +2303,8 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -2324,8 +2324,8 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -2345,8 +2345,8 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
@@ -2366,8 +2366,27 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+ai_toggle: false
+end: Unit
+
+nextUnitKey: 16
+
+new: Unit: 1309
+location: 13.299196, 37.055214, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 9
+alliance: Zombie
+element: Gray
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0

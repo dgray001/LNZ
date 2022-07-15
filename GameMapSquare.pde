@@ -124,6 +124,7 @@ class GameMapSquare {
 
   boolean passesLight() {
     switch(this.terrain_id) {
+      case 1:
       case 201:
       case 202:
       case 203:

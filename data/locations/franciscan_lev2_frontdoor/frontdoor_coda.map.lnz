@@ -1,5 +1,5 @@
 new: Map
-code: ERROR
+code: FRONTDOOR_CODA
 mapName: frontdoor_coda
 dimensions: 41, 41
 maxHeight: 10
@@ -2599,7 +2599,7 @@ end: Feature
 
 nextUnitKey: 1
 
-new: Unit: 1311
+new: Unit: 1351
 location: 40.57094, 35.508636, 0
 curr_height: 0
 remove: false

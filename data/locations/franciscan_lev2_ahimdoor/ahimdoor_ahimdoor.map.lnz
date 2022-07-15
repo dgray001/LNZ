@@ -6,7 +6,7 @@ outside_map: true
 color_tint: 65793
 show_tint: false
 dimensions: 25, 20
-terrain: 0, 0: 141, 0, false
+terrain: 0, 0: 2, 0, false
 terrain: 0, 1: 1, 100, false
 terrain: 0, 2: 1, 100, false
 terrain: 0, 3: 1, 100, false

@@ -1,5 +1,5 @@
 new: Map
-code: ERROR
+code: FRONTDOOR_CHAPEL
 mapName: frontdoor_chapel
 dimensions: 90, 30
 maxHeight: 10

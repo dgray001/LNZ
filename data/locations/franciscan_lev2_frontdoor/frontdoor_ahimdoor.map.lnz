@@ -1,12 +1,12 @@
 new: Map
-code: ERROR
+code: FRONTDOOR_AHIMDOOR
 mapName: frontdoor_ahimdoor
-dimensions: 25, 20
 maxHeight: 10
 outside_map: true
 color_tint: 65793
 show_tint: false
-terrain: 0, 0: 1, 100, false
+dimensions: 25, 20
+terrain: 0, 0: 2, 0, false
 terrain: 0, 1: 1, 100, false
 terrain: 0, 2: 1, 100, false
 terrain: 0, 3: 1, 100, false
@@ -186,7 +186,7 @@ terrain: 8, 16: 151, 0, false
 terrain: 8, 17: 172, 0, false
 terrain: 8, 18: 172, 0, false
 terrain: 8, 19: 173, 0, false
-terrain: 9, 0: 207, 100, false
+terrain: 9, 0: 1, 100, false
 terrain: 9, 1: 205, 100, false
 terrain: 9, 2: 205, 100, false
 terrain: 9, 3: 205, 100, false
@@ -206,8 +206,8 @@ terrain: 9, 16: 151, 0, false
 terrain: 9, 17: 173, 0, false
 terrain: 9, 18: 173, 0, false
 terrain: 9, 19: 173, 0, false
-terrain: 10, 0: 102, 0, false
-terrain: 10, 1: 121, 0, false
+terrain: 10, 0: 1, 100, false
+terrain: 10, 1: 205, 100, false
 terrain: 10, 2: 121, 0, false
 terrain: 10, 3: 121, 0, false
 terrain: 10, 4: 121, 0, false
@@ -226,7 +226,7 @@ terrain: 10, 16: 151, 0, false
 terrain: 10, 17: 173, 0, false
 terrain: 10, 18: 173, 0, false
 terrain: 10, 19: 172, 0, false
-terrain: 11, 0: 102, 0, false
+terrain: 11, 0: 1, 100, false
 terrain: 11, 1: 205, 100, false
 terrain: 11, 2: 121, 0, false
 terrain: 11, 3: 121, 0, false
@@ -246,7 +246,7 @@ terrain: 11, 16: 154, 0, false
 terrain: 11, 17: 172, 0, false
 terrain: 11, 18: 172, 0, false
 terrain: 11, 19: 172, 0, false
-terrain: 12, 0: 207, 100, false
+terrain: 12, 0: 1, 100, false
 terrain: 12, 1: 205, 100, false
 terrain: 12, 2: 121, 0, false
 terrain: 12, 3: 121, 0, false
@@ -266,7 +266,7 @@ terrain: 12, 16: 151, 0, false
 terrain: 12, 17: 172, 0, false
 terrain: 12, 18: 172, 0, false
 terrain: 12, 19: 172, 0, false
-terrain: 13, 0: 207, 100, false
+terrain: 13, 0: 1, 100, false
 terrain: 13, 1: 205, 100, false
 terrain: 13, 2: 121, 0, false
 terrain: 13, 3: 205, 100, false
@@ -622,7 +622,7 @@ new: Feature: 501
 location: 0.0, 16.0, 0
 curr_height: 0
 remove: false
-number: 10
+number: 0
 toggle: false
 end: Feature
 
@@ -642,17 +642,7 @@ new: Feature: 364
 location: 13.0, 2.0, 0
 curr_height: 0
 remove: false
-number: -1
-toggle: false
-end: Feature
-
-nextFeatureKey: 15
-
-new: Feature: 363
-location: 10.0, 1.0, 0
-curr_height: 0
-remove: false
-number: -1
+number: 41
 toggle: false
 end: Feature
 
@@ -706,14 +696,15 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextUnitKey: 2
@@ -726,14 +717,15 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextUnitKey: 3
@@ -746,14 +738,15 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextUnitKey: 4
@@ -766,14 +759,15 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextUnitKey: 5
@@ -786,14 +780,15 @@ size: 0.35
 level: 9
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextUnitKey: 6
@@ -806,14 +801,15 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextUnitKey: 7
@@ -826,14 +822,15 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextUnitKey: 8
@@ -846,14 +843,15 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
 nextUnitKey: 9
@@ -866,27 +864,47 @@ size: 0.35
 level: 10
 alliance: Zombie
 element: Gray
-gearSlot: ERROR
 gearSlot: WEAPON
+gearSlot: ERROR
 facingX: 1.0
 facingY: 0.0
 facingA: 0.0
 footgear_durability_distance: 100.0
 timer_attackCooldown: 0.0
 timer_actionTime: 0.0
+ai_toggle: false
 end: Unit
 
-nextItemKey: 1
+nextUnitKey: 15
 
-new: Item: 2906
-location: 2.1370177, 19.29895, 0
+new: Unit: 1353
+location: 0.4573401, 0.41345397, 0
+curr_height: 0
+remove: false
+size: 0.35
+level: 8
+alliance: Zombie
+element: Gray
+facingX: 1.0
+facingY: 0.0
+facingA: 0.0
+footgear_durability_distance: 100.0
+timer_attackCooldown: 0.0
+timer_actionTime: 0.0
+ai_toggle: false
+end: Unit
+
+nextItemKey: 2
+
+new: Item: 2929
+location: 11.508793, 6.5270348, 0
 curr_height: 0
 remove: false
 disappearing: false
 disappear_timer: 0
 stack: 1
 durability: 1
-ammo: 1
+ammo: 22
 toggled: false
 end: Item
 end: Map

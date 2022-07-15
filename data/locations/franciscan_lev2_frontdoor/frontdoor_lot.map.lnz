@@ -1,5 +1,5 @@
 new: Map
-code: ERROR
+code: FRONTDOOR_LOT
 mapName: frontdoor_lot
 dimensions: 25, 35
 maxHeight: 10

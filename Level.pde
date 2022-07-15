@@ -3699,6 +3699,15 @@ class Level {
               break;
           }
           break;
+        case FRANCISCAN_LEV2_AHIMDOOR:
+          switch(this.car.ID) {
+            case 501: // ahimdoor
+              found_action = true;
+              Level.this.complete(1);
+            default:
+              break;
+          }
+          break;
         default:
           break;
       }
