@@ -1076,6 +1076,10 @@ class PlayingInterface extends InterfaceLNZ {
           noStroke();
           fill(ccolor(60));
           rect(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+          imageMode(CENTER);
+          int frame = int(floor(Constants.gif_loading_frames * (float(millis %
+            Constants.gif_loading_time) / (1 + Constants.gif_loading_time))));
+          image(global.images.getImage("gifs/loading/" + frame + ".png"), 0.5 * width, 0.5 * height, 250, 250);
         }
         break;
       case STARTING_NEW:
@@ -1169,9 +1173,6 @@ class PlayingInterface extends InterfaceLNZ {
       case PLAYING:
         if (this.level != null) {
           this.level.update(millis);
-          if (this.leftPanel.collapsing || this.rightPanel.collapsing) {
-            refreshLevelLocation = true;
-          }
           if (this.level.completed) {
             this.completedLevel(this.level.completion_code);
           }
@@ -1184,6 +1185,9 @@ class PlayingInterface extends InterfaceLNZ {
       default:
         global.errorMessage("ERROR: Playing status " + this.status + " not recognized.");
         break;
+    }
+    if (this.leftPanel.collapsing || this.rightPanel.collapsing) {
+      refreshLevelLocation = true;
     }
     this.leftPanel.update(millis);
     this.rightPanel.update(millis);
@@ -1303,6 +1307,9 @@ class PlayingInterface extends InterfaceLNZ {
   void mouseRelease(float mX, float mY) {
     if (this.status == PlayingStatus.WORLD_MAP && this.world_map != null) {
       this.world_map.mouseRelease(mX, mY);
+      if (this.world_map.location_clicked != null) {
+        println("clicked", this.world_map.location_clicked.display_name());
+      }
     }
     if (this.level != null) {
       this.level.mouseRelease(mX, mY);

@@ -65,6 +65,7 @@ class WorldMap {
     private float x_percent = 0;
     private float y_percent = 0;
 
+    private float distance_from_cursor = 0;
     private boolean hovered = false;
     private boolean clicked = false;
 
@@ -132,7 +133,12 @@ class WorldMap {
   private float map_mX = 0;
   private float map_mY = 0;
 
-  private ArrayList<LocationCircle> location_circles = new ArrayList<LocationCircle>();
+  private boolean hovered = false;
+  private boolean dragging = false;
+  private LocationCircle location_hovered = null;
+  private Location location_clicked = null;
+
+  private HashMap<Location, LocationCircle> location_circles = new HashMap<Location, LocationCircle>();
 
   private int last_update_time = 0;
 
@@ -140,8 +146,19 @@ class WorldMap {
     this.map_dimg = new DImg(global.images.getImage("world_map.jpg"));
     for (Location location : Location.VALUES) {
       if (location.isArea() || location.isCampaignStart()) {
-        this.location_circles.add(new LocationCircle(location));
+        this.location_circles.put(location, new LocationCircle(location));
       }
+    }
+    Hero curr_hero = global.profile.heroes.get(global.profile.curr_hero);
+    if (curr_hero == null) {
+      return;
+    }
+    Location curr_location = curr_hero.location;
+    if (curr_location != null && curr_location != Location.ERROR) {
+      if (!curr_location.isArea()) {
+        curr_location = Location.getCampaignStart(curr_location);
+      }
+      this.setViewLocation(curr_location.worldMapLocationX(), curr_location.worldMapLocationY(), false);
     }
   }
 
@@ -269,7 +286,7 @@ class WorldMap {
         this.yi_map_dif, this.xf_map_old + this.xf_map_dif, this.yf_map_old + this.yf_map_dif);
     }
     // display location circles
-    for (LocationCircle location : this.location_circles) {
+    for (LocationCircle location : this.location_circles.values()) {
       if (location.outsideView(this.start_percent_x_old, this.start_percent_y_old,
         this.vis_percent_x_old, this.vis_percent_y_old, this.zoom_old)) {
         continue;
@@ -279,7 +296,12 @@ class WorldMap {
       float translate_y = this.yi_map_old + this.yi_map_dif + (location.y_percent -
         this.start_percent_y_old) * this.map_dimg.img.height / this.zoom_old;
       translate(translate_x, translate_y);
-      noFill();
+      if (location.hovered) {
+        fill(ccolor(255, 255, 0));
+      }
+      else {
+        noFill();
+      }
       stroke(ccolor(255, 255, 0));
       strokeWeight(2);
       circle(0, 0, this.circleRadius);
@@ -289,8 +311,6 @@ class WorldMap {
   }
 
   void mouseMove(float mX, float mY) {
-    this.last_x = mX;
-    this.last_y = mY;
     if (mX < Constants.small_number) {
       WorldMap.this.view_moving_left = true;
       if (!global.holding_right) {
@@ -331,6 +351,47 @@ class WorldMap {
         WorldMap.this.view_moving_up = false;
       }
     }
+    if (this.dragging) {
+      this.moveView((this.last_x - mX) * this.zoom_old / this.map_dimg.img.width,
+        (this.last_y - mY) * this.zoom_old / this.map_dimg.img.height);
+    }
+    this.last_x = mX;
+    this.last_y = mY;
+    if (mX < this.xi || mY < this.yi || mX > this.xf || mY > this.yf) {
+      this.hovered = false;
+    }
+    else {
+      this.hovered = true;
+    }
+    this.location_hovered = null;
+    for (LocationCircle location : this.location_circles.values()) {
+      location.hovered = false;
+      if (!this.hovered) {
+        continue;
+      }
+      float translate_x = this.xi_map_old + this.xi_map_dif + (location.x_percent -
+        this.start_percent_x_old) * this.map_dimg.img.width / this.zoom_old;
+      float translate_y = this.yi_map_old + this.yi_map_dif + (location.y_percent -
+        this.start_percent_y_old) * this.map_dimg.img.height / this.zoom_old;
+      float x_dist = mX - translate_x;
+      float y_dist = mY - translate_y;
+      float dist = sqrt(x_dist * x_dist + y_dist * y_dist);
+      location.distance_from_cursor = dist;
+      if (dist > this.circleRadius) {
+        continue;
+      }
+      if (this.location_hovered == null) {
+        this.location_hovered = location;
+        location.hovered = true;
+        continue;
+      }
+      if (dist >= this.location_hovered.distance_from_cursor) {
+        continue;
+      }
+      this.location_hovered.hovered = false;
+      this.location_hovered = location;
+      location.hovered = true;
+    }
   }
 
   void updateCursorPosition() {
@@ -342,15 +403,40 @@ class WorldMap {
   }
 
   void mousePress() {
+    if (!this.hovered) {
+      return;
+    }
+    if (this.location_hovered == null) {
+      if (mouseButton == LEFT) {
+        this.dragging = true;
+      }
+    }
+    else {
+      this.location_hovered.clicked = true;
+    }
   }
 
   void mouseRelease(float mX, float mY) {
+    if (mouseButton == LEFT) {
+      this.dragging = false;
+    }
+    this.location_clicked = null;
+    for (LocationCircle location : this.location_circles.values()) {
+      if (!this.hovered || !location.hovered) {
+        location.clicked = false;
+        continue;
+      }
+      if (location.clicked) {
+        location.clicked = false;
+        this.location_clicked = location.location;
+      }
+    }
   }
 
   void scroll(int amount) {
-    //if (this.hovered_area && global.holding_ctrl) {
+    if (this.hovered) {
       float x = log(this.zoom) + Constants.playing_scrollZoomFactor * amount;
       this.setZoom(exp(x));
-    //}
+    }
   }
 }
