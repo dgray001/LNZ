@@ -5,6 +5,9 @@ enum Location {
   FRANCISCAN_FRANCIS, FRANCISCAN_LEV2_FRONTDOOR, FRANCISCAN_LEV2_AHIMDOOR,
   FRANCISCAN_LEV2_CHAPELDOOR, FRANCISCAN_LEV2_BROTHERSDOOR, FRANCISCAN_LEV2_CUSTODIALDOOR,
   FRANCISCAN_LEV3_KILLEDHECK, FRANCISCAN_LEV3_AROUNDCODA,
+
+  DANS_HOUSE,
+
   AREA_FERNWOOD;
 
   private static final List<Location> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
@@ -26,6 +29,8 @@ enum Location {
       case FRANCISCAN_LEV3_KILLEDHECK:
       case FRANCISCAN_LEV3_AROUNDCODA:
         return "Franciscan Campus";
+      case DANS_HOUSE:
+        return "Dan's House";
       case AREA_FERNWOOD:
         return "Fernwood State Forest";
       default:
@@ -56,6 +61,8 @@ enum Location {
         return "franciscan_lev3_killedheck";
       case FRANCISCAN_LEV3_AROUNDCODA:
         return "franciscan_lev3_aroundcoda";
+      case DANS_HOUSE:
+        return "dans_house";
       case AREA_FERNWOOD:
         return "area_fernwood";
       default:
@@ -124,6 +131,9 @@ enum Location {
           case 4: // around coda
             return_location = Location.FRANCISCAN_LEV3_AROUNDCODA;
             break;
+          case 5: // behindcaf car
+            return_location = Location.AREA_FERNWOOD;
+            break;
           default:
             return_location = Location.ERROR;
             break;
@@ -131,7 +141,7 @@ enum Location {
         break;
       case FRANCISCAN_LEV3_KILLEDHECK:
         switch(completion_code) {
-          case 0:
+          case 0: // ctrl-c
             return_location = Location.AREA_FERNWOOD;
             break;
           case 1: // down hill boss
@@ -147,7 +157,7 @@ enum Location {
         break;
       case FRANCISCAN_LEV3_AROUNDCODA:
         switch(completion_code) {
-          case 0:
+          case 0: // ctrl-c
             return_location = Location.AREA_FERNWOOD;
             break;
           case 1: // down hill boss
@@ -159,11 +169,24 @@ enum Location {
         }
         break;
       case FRANCISCAN_LEV2_AHIMDOOR:
+        switch(completion_code) {
+          case 0: // ctrl-c
+            return_location = Location.AREA_FERNWOOD;
+            break;
+          case 1: // dans car
+            return_location = Location.AREA_FERNWOOD;
+            break;
+          default:
+            return_location = Location.ERROR;
+            break;
+        }
+        break;
       case FRANCISCAN_LEV2_CHAPELDOOR:
       case FRANCISCAN_LEV2_BROTHERSDOOR:
       case FRANCISCAN_LEV2_CUSTODIALDOOR:
+      case DANS_HOUSE:
         switch(completion_code) {
-          case 0:
+          case 0: // ctrl-c
             return_location = Location.AREA_FERNWOOD;
             break;
           default:
@@ -184,6 +207,7 @@ enum Location {
   public static boolean isCampaignStart(Location a) {
     switch(a) {
       case FRANCISCAN_FRANCIS:
+      case DANS_HOUSE:
         return true;
       default:
         return false;
@@ -204,8 +228,33 @@ enum Location {
       case FRANCISCAN_LEV3_KILLEDHECK:
       case FRANCISCAN_LEV3_AROUNDCODA:
         return Location.FRANCISCAN_FRANCIS;
+      case DANS_HOUSE:
+        return Location.DANS_HOUSE;
       default:
         return Location.ERROR;
+    }
+  }
+
+  public String getCampaignName() {
+    return Location.getCampaignName(this);
+  }
+  public static String getCampaignName(Location a) {
+    switch(a) {
+      case FRANCISCAN_FRANCIS:
+      case FRANCISCAN_LEV2_FRONTDOOR:
+      case FRANCISCAN_LEV2_AHIMDOOR:
+      case FRANCISCAN_LEV2_CHAPELDOOR:
+      case FRANCISCAN_LEV2_BROTHERSDOOR:
+      case FRANCISCAN_LEV2_CUSTODIALDOOR:
+      case FRANCISCAN_LEV3_KILLEDHECK:
+      case FRANCISCAN_LEV3_AROUNDCODA:
+        return "Franciscan University";
+      case DANS_HOUSE:
+        return "Water Works Rd";
+      case AREA_FERNWOOD:
+        return "Fernwood Forest";
+      default:
+        return "-- Error --";
     }
   }
 
@@ -234,6 +283,7 @@ enum Location {
       case FRANCISCAN_LEV2_CUSTODIALDOOR:
       case FRANCISCAN_LEV3_KILLEDHECK:
       case FRANCISCAN_LEV3_AROUNDCODA:
+      case DANS_HOUSE:
         return Location.AREA_FERNWOOD;
       default:
         return Location.ERROR;
@@ -248,10 +298,43 @@ enum Location {
     switch(a) {
       case AREA_FERNWOOD:
         locations.add(Location.FRANCISCAN_FRANCIS);
+        locations.add(Location.DANS_HOUSE);
         break;
       default:
         break;
     }
     return locations;
+  }
+
+  public float worldMapLocationX() {
+    return Location.worldMapLocationX(this);
+  }
+  public static float worldMapLocationX(Location a) {
+    switch(a) {
+      case FRANCISCAN_FRANCIS:
+        return 0.2758333;
+      case DANS_HOUSE:
+        return 0.2736666;
+      case AREA_FERNWOOD:
+        return 0.275;
+      default:
+        return -1;
+    }
+  }
+
+  public float worldMapLocationY() {
+    return Location.worldMapLocationY(this);
+  }
+  public static float worldMapLocationY(Location a) {
+    switch(a) {
+      case FRANCISCAN_FRANCIS:
+        return 0.2763333;
+      case DANS_HOUSE:
+        return 0.2756666;
+      case AREA_FERNWOOD:
+        return 0.2783333;
+      default:
+        return -1;
+    }
   }
 }

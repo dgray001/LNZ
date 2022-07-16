@@ -58,6 +58,34 @@ class WorldMap {
   }
 
 
+  public static final float circleRadius = 10;
+
+  class LocationCircle {
+    private Location location;
+    private float x_percent = 0;
+    private float y_percent = 0;
+
+    private boolean hovered = false;
+    private boolean clicked = false;
+
+    LocationCircle(Location a) {
+      this.location = a;
+      this.x_percent = a.worldMapLocationX();
+      this.y_percent = a.worldMapLocationY();
+    }
+
+    boolean outsideView(float start_x, float start_y, float vis_x, float vis_y, float zoom) {
+      float circleRadiusX = zoom * WorldMap.this.circleRadius / WorldMap.this.map_dimg.img.width;
+      float circleRadiusY = zoom * WorldMap.this.circleRadius / WorldMap.this.map_dimg.img.height;
+      if (this.x_percent - circleRadiusX < start_x || this.y_percent - circleRadiusY < start_y ||
+        this.x_percent + circleRadiusX < start_x || this.y_percent + circleRadiusY < start_y) {
+        return true;
+      }
+      return false;
+    }
+  }
+
+
   private DImg map_dimg = null;
   private PImage display_img = null;
   private MapDimgThread map_dimg_thread = null;
@@ -104,10 +132,17 @@ class WorldMap {
   private float map_mX = 0;
   private float map_mY = 0;
 
+  private ArrayList<LocationCircle> location_circles = new ArrayList<LocationCircle>();
+
   private int last_update_time = 0;
 
   WorldMap() {
     this.map_dimg = new DImg(global.images.getImage("world_map.jpg"));
+    for (Location location : Location.VALUES) {
+      if (location.isArea() || location.isCampaignStart()) {
+        this.location_circles.add(new LocationCircle(location));
+      }
+    }
   }
 
 
@@ -233,6 +268,23 @@ class WorldMap {
       image(this.display_img, this.xi_map_old + this.xi_map_dif, this.yi_map_old +
         this.yi_map_dif, this.xf_map_old + this.xf_map_dif, this.yf_map_old + this.yf_map_dif);
     }
+    // display location circles
+    for (LocationCircle location : this.location_circles) {
+      if (location.outsideView(this.start_percent_x_old, this.start_percent_y_old,
+        this.vis_percent_x_old, this.vis_percent_y_old, this.zoom_old)) {
+        continue;
+      }
+      float translate_x = this.xi_map_old + this.xi_map_dif + (location.x_percent -
+        this.start_percent_x_old) * this.map_dimg.img.width / this.zoom_old;
+      float translate_y = this.yi_map_old + this.yi_map_dif + (location.y_percent -
+        this.start_percent_y_old) * this.map_dimg.img.height / this.zoom_old;
+      translate(translate_x, translate_y);
+      noFill();
+      stroke(ccolor(255, 255, 0));
+      strokeWeight(2);
+      circle(0, 0, this.circleRadius);
+      translate(-translate_x, -translate_y);
+    }
     this.last_update_time = millis;
   }
 
@@ -298,9 +350,6 @@ class WorldMap {
   void scroll(int amount) {
     //if (this.hovered_area && global.holding_ctrl) {
       float x = log(this.zoom) + Constants.playing_scrollZoomFactor * amount;
-      if (x < 0) {
-        x = 0;
-      }
       this.setZoom(exp(x));
     //}
   }

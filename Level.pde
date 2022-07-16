@@ -3690,12 +3690,26 @@ class Level {
         case FRANCISCAN_LEV2_FRONTDOOR:
           switch(this.car.ID) {
             case 501: // ahimdoor
-            case 502: // outside egan
-            case 503: // behindcaf
-            case 504: // lower lot
               found_action = true;
               Level.this.complete(1);
+              break;
+            case 503: // behindcaf
+              found_action = true;
+              Level.this.complete(5);
+              break;
+            case 504: // lower lot
+              found_action = true;
+              Level.this.complete(2);
+              break;
             default:
+              break;
+          }
+          break;
+        case FRANCISCAN_LEV3_KILLEDHECK:
+          switch(completion_code) {
+            case 502: // starvaggi car
+              found_action = true;
+              Level.this.complete(2);
               break;
           }
           break;
