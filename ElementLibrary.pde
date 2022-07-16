@@ -525,8 +525,11 @@ abstract class RippleRectangleButton extends ImageButton {
   protected float last_mY = 0;
   protected float clickX = 0;
   protected float clickY = 0;
-  protected float maxRippleDistance;
+  protected float maxRippleDistance = 0;
 
+  RippleRectangleButton() {
+    super(createImage(1, 1, ARGB), 0, 0, 0, 0);
+  }
   RippleRectangleButton(float xi, float yi, float xf, float yf) {
     super(createImage(int(xf - xi), int(yf - yi), ARGB), xi, yi, xf, yf);
     this.refreshColor();
@@ -4461,6 +4464,11 @@ abstract class Form {
       this.yStart = this.yi + 2 + textAscent() + textDescent();
       this.scrollbar.setLocation(xf - scrollbar_width, this.yStart, this.xf, this.yf);
     }
+    this.refreshScrollbar();
+  }
+
+  float yStart() {
+    return this.yStart;
   }
 
   void setFieldCushion(float fieldCushion) {
@@ -4505,6 +4513,11 @@ abstract class Form {
 
 
   void update(int millis) {
+    this.drawHeader(millis);
+    this.drawContent(this.yStart, millis);
+  }
+
+  void drawHeader(int millis) {
     rectMode(CORNERS);
     fill(this.color_background);
     stroke(this.color_stroke);
@@ -4525,7 +4538,9 @@ abstract class Form {
     if (this.cancel != null) {
       this.cancel.update(millis);
     }
-    float currY = this.yStart;
+  }
+
+  void drawContent(float currY, int millis) {
     boolean submit_this_frame = false;
     boolean cancel_this_frame = false;
     boolean buttonpress_this_frame = false;
@@ -4591,7 +4606,7 @@ abstract class Form {
     }
     mX -= this.xi + 1;
     mY -= this.yStart;
-    float currY = this.yStart;
+    float currY = this.yStart();
     for (int i = int(floor(this.scrollbar.value)); i < this.fields.size(); i++) {
       if (currY + this.fields.get(i).getHeight() > this.yf) {
         break;
@@ -4610,7 +4625,7 @@ abstract class Form {
     for (int i = 0; i < int(floor(this.scrollbar.value)); i++) {
       this.fields.get(i).defocus();
     }
-    float currY = this.yStart;
+    float currY = this.yStart();
     for (int i = int(floor(this.scrollbar.value)); i < this.fields.size(); i++) {
       if (currY + this.fields.get(i).getHeight() > this.yf) {
         this.fields.get(i).defocus();
@@ -4632,8 +4647,8 @@ abstract class Form {
       this.cancel.mouseRelease(mX, mY);
     }
     mX -= this.xi + 1;
-    mY -= this.yStart;
-    float currY = this.yStart;
+    mY -= this.yStart();
+    float currY = this.yStart();
     for (int i = int(floor(this.scrollbar.value)); i < this.fields.size(); i++) {
       if (currY + this.fields.get(i).getHeight() > this.yf) {
         break;
@@ -4704,6 +4719,221 @@ abstract class Form {
   abstract void submit();
   abstract void cancel();
   abstract void buttonPress(int i);
+}
+
+
+
+abstract class TabbedForm extends Form {
+  class FormTab {
+    class TabButton extends RippleRectangleButton {
+      TabButton(String header) {
+        super();
+        this.message = header;
+        this.show_message = true;
+        this.setColors(ccolor(180), ccolor(1, 0), ccolor(140, 80), ccolor(100, 160), ccolor(0));
+      }
+
+      @Override
+      void release() {
+        super.release();
+        if (this.hovered) {
+          FormTab.this.switchToTab();
+        }
+      }
+    }
+
+    private int index;
+    private Form form;
+    private String header;
+    private TabButton button;
+
+    FormTab(int index, Form form, String header) {
+      this.index = index;
+      this.form = form;
+      this.header = header;
+      this.button = new TabButton(header);
+    }
+
+    void switchToTab() {
+      TabbedForm.this.switchToTab(this.index);
+    }
+
+    void applyConfig(TabConfig config) {
+    }
+  }
+
+
+  class TabConfig {
+    private float tab_text_size = 16;
+    private color color_background = ccolor(210);
+    private color color_header = ccolor(170);
+    private color color_stroke = ccolor(0);
+    private color color_title = ccolor(0);
+
+    TabConfig() {
+    }
+  }
+
+
+  protected ArrayList<FormTab> tabs = new ArrayList<FormTab>();
+  protected TabConfig tab_config = new TabConfig();
+  protected int current_tab = 0;
+  protected float footer_space = 0;
+  protected float tab_button_height = 0;
+  protected boolean tab_button_fill_space = false;
+  protected float tab_button_max_width = 100;
+
+  TabbedForm() {
+    super();
+  }
+  TabbedForm(float xi, float yi, float xf, float yf) {
+    super(xi, yi, xf, yf);
+  }
+
+
+  void setTabConfig(TabConfig config) {
+    this.tab_config = config;
+    for (FormTab tab : this.tabs) {
+      tab.applyConfig(config);
+    }
+  }
+
+  @Override
+  float yStart() {
+    return yf - this.footer_space;
+  }
+
+  @Override
+  void setLocation(float xi, float yi, float xf, float yf) {
+    super.setLocation(xi, yi, xf, yf);
+    try {
+      for (FormTab tab : this.tabs) {
+        tab.form.setLocation(xi, this.yStart + this.tab_button_height, xf, yf - this.footer_space);
+      }
+      this.resizeTabs();
+    } catch (NullPointerException e) {} // called in super constructor
+  }
+
+  @Override
+  void moveForm(float xMove, float yMove) {
+    super.moveForm(xMove, yMove);
+    for (FormTab tab : this.tabs) {
+      tab.form.moveForm(xMove, yMove);
+      tab.button.moveButton(xMove, yMove);
+    }
+  }
+
+  void addTab(Form form, String message) {
+    form.setLocation(xi, this.yStart + this.tab_button_height + 1, xf, yf - this.footer_space - 1);
+    FormTab tab = new FormTab(this.tabs.size(), form, message);
+    tab.applyConfig(this.tab_config);
+    this.tabs.add(tab);
+    this.resizeTabs();
+  }
+
+  void resizeTabs() {
+    if (this.tabs.size() == 0) {
+      return;
+    }
+    float tab_button_width = 0;
+    if (this.tab_button_fill_space || this.tabs.size() * (this.tab_button_max_width + 1) - 1 > this.form_width()) {
+      tab_button_width = (this.form_width() - this.tabs.size() + 1) / this.tabs.size();
+    }
+    else {
+      tab_button_width = this.tab_button_max_width;
+    }
+    float x_curr = this.xi;
+    for (FormTab tab : this.tabs) {
+      tab.button.setLocation(x_curr, this.yStart, x_curr + tab_button_width, this.yStart + this.tab_button_height);
+      x_curr += tab_button_width + 1;
+    }
+  }
+
+  void switchToTab(int index) {
+    if (index < 0 || index >= this.tabs.size() || index == this.current_tab) {
+      return;
+    }
+    this.current_tab = index;
+  }
+
+  @Override
+  void update(int millis) {
+    this.drawHeader(millis);
+    for (int i = 0; i < this.tabs.size(); i++) {
+      this.tabs.get(i).button.update(millis);
+      if (i == this.current_tab) {
+        this.tabs.get(i).form.update(millis);
+      }
+    }
+    this.drawContent(this.yf - this.footer_space, millis);
+  }
+
+  @Override
+  void mouseMove(float mX, float mY) {
+    super.mouseMove(mX, mY);
+    for (int i = 0; i < this.tabs.size(); i++) {
+      this.tabs.get(i).button.mouseMove(mX, mY);
+      if (i == this.current_tab) {
+        this.tabs.get(i).form.mouseMove(mX, mY);
+      }
+    }
+  }
+
+  @Override
+  void mousePress() {
+    super.mousePress();
+    for (int i = 0; i < this.tabs.size(); i++) {
+      this.tabs.get(i).button.mousePress();
+      if (i == this.current_tab) {
+        this.tabs.get(i).form.mousePress();
+      }
+    }
+  }
+
+  @Override
+  void mouseRelease(float mX, float mY) {
+    super.mouseRelease(mX, mY);
+    for (int i = 0; i < this.tabs.size(); i++) {
+      this.tabs.get(i).button.mouseRelease(mX, mY);
+      if (i == this.current_tab) {
+        this.tabs.get(i).form.mouseRelease(mX, mY);
+      }
+    }
+  }
+
+  @Override
+  void scroll(int amount) {
+    boolean scroll_super = true;
+    for (int i = 0; i < this.tabs.size(); i++) {
+      if (i == this.current_tab) {
+        this.tabs.get(i).form.scroll(amount);
+        scroll_super = false;
+      }
+    }
+    if (scroll_super) {
+      super.scroll(amount);
+    }
+  }
+
+  @Override
+  void keyPress() {
+    super.keyPress();
+    for (int i = 0; i < this.tabs.size(); i++) {
+      if (i == this.current_tab) {
+        this.tabs.get(i).form.keyPress();
+      }
+    }
+  }
+
+  @Override
+  void keyRelease() {
+    super.keyRelease();
+    for (int i = 0; i < this.tabs.size(); i++) {
+      if (i == this.current_tab) {
+        this.tabs.get(i).form.keyRelease();
+      }
+    }
+  }
 }
 
 

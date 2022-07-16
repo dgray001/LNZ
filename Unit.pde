@@ -655,6 +655,7 @@ class Unit extends MapObject {
         this.setLevel(0);
         this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
         this.alliance = Alliance.BEN;
+        this.element = Element.CYAN;
         break;
       case 1104:
         this.setStrings(HeroCode.display_name(HeroCode.SPINNY), "Hero", "");
@@ -662,6 +663,7 @@ class Unit extends MapObject {
         this.setLevel(0);
         this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
         this.alliance = Alliance.BEN;
+        this.element = Element.RED;
         break;
       case 1105:
         this.setStrings(HeroCode.display_name(HeroCode.MATTUS), "Hero", "");
@@ -669,6 +671,7 @@ class Unit extends MapObject {
         this.setLevel(0);
         this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
         this.alliance = Alliance.BEN;
+        this.element = Element.PURPLE;
         break;
       case 1106:
         this.setStrings(HeroCode.display_name(HeroCode.PATRICK), "Hero", "");

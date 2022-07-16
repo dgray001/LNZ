@@ -9,21 +9,21 @@ color elementalColor(Element e) {
     case GRAY:
       return ccolor(170);
     case BLUE:
-      return ccolor(0, 0, 255);
+      return ccolor(0, 0, 230);
     case RED:
-      return ccolor(255, 0, 0);
+      return ccolor(230, 0, 0);
     case CYAN:
-      return ccolor(0, 255, 255);
+      return ccolor(0, 230, 230);
     case ORANGE:
-      return ccolor(255, 165, 0);
+      return ccolor(240, 160, 0);
     case BROWN:
       return ccolor(51, 45, 26);
     case PURPLE:
-      return ccolor(125, 0, 125);
+      return ccolor(115, 0, 115);
     case YELLOW:
-      return ccolor(255, 255, 0);
+      return ccolor(230, 230, 0);
     case MAGENTA:
-      return ccolor(255, 0, 255);
+      return ccolor(230, 0, 230);
     default:
       global.errorMessage("ERROR: Element " + e.element_name() + " doesn't have a color.");
       return ccolor(0);
@@ -34,21 +34,21 @@ color elementalColorDark(Element e) {
     case GRAY:
       return ccolor(145);
     case BLUE:
-      return ccolor(0, 0, 200);
+      return ccolor(0, 0, 175);
     case RED:
-      return ccolor(200, 0, 0);
+      return ccolor(175, 0, 0);
     case CYAN:
-      return ccolor(0, 200, 200);
+      return ccolor(0, 175, 175);
     case ORANGE:
-      return ccolor(200, 140, 0);
+      return ccolor(180, 135, 0);
     case BROWN:
       return ccolor(20, 15, 10);
     case PURPLE:
-      return ccolor(100, 0, 100);
+      return ccolor(85, 0, 85);
     case YELLOW:
-      return ccolor(200, 200, 0);
+      return ccolor(175, 175, 0);
     case MAGENTA:
-      return ccolor(200, 0, 200);
+      return ccolor(175, 0, 175);
     default:
       global.errorMessage("ERROR: Element " + e.element_name() + " doesn't have a color.");
       return ccolor(0);
@@ -59,17 +59,17 @@ color elementalColorLight(Element e) {
     case GRAY:
       return ccolor(195);
     case BLUE:
-      return ccolor(25, 25, 255);
+      return ccolor(40, 40, 255);
     case RED:
-      return ccolor(255, 25, 25);
+      return ccolor(255, 40, 40);
     case CYAN:
-      return ccolor(25, 255, 255);
+      return ccolor(40, 255, 255);
     case ORANGE:
       return ccolor(255, 190, 25);
     case BROWN:
       return ccolor(70, 65, 45);
     case PURPLE:
-      return ccolor(150, 0, 150);
+      return ccolor(140, 0, 140);
     case YELLOW:
       return ccolor(255, 255, 40);
     case MAGENTA:

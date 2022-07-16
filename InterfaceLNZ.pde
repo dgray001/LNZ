@@ -44,6 +44,93 @@ abstract class FormLNZ extends Form {
 }
 
 
+abstract class TabbedFormLNZ extends TabbedForm {
+  protected boolean canceled = false;
+  protected float shadow_distance = 10;
+  protected PImage img;
+  protected color color_shadow = ccolor(0, 150);
+  protected boolean need_to_reset_cursor = true;
+
+  TabbedFormLNZ(float xi, float yi, float xf, float yf) {
+    super(xi, yi, xf, yf);
+    this.img = getCurrImage();
+    this.cancelButton();
+    this.draggable = true;
+  }
+
+  @Override
+  void update(int millis) {
+    if (this.need_to_reset_cursor) {
+      global.defaultCursor();
+    }
+    rectMode(CORNERS);
+    fill(0);
+    imageMode(CORNER);
+    image(this.img, 0, 0);
+    fill(color_shadow);
+    stroke(0, 1);
+    translate(shadow_distance, shadow_distance);
+    rect(this.xi, this.yi, this.xf, this.yf);
+    translate(-shadow_distance, -shadow_distance);
+    super.update(millis);
+  }
+
+  void cancel() {
+    this.canceled = true;
+  }
+
+  void buttonPress(int i) {}
+
+  void keyPress() {
+    super.keyPress();
+    if (key == ESC) {
+      this.cancel();
+    }
+  }
+}
+
+
+PImage getFormLNZImage(Form form) {
+  Class cls = form.getClass();
+  if (FormLNZ.class.isAssignableFrom(cls)) {
+    return ((FormLNZ)form).img;
+  }
+  else if (TabbedFormLNZ.class.isAssignableFrom(cls)) {
+    return ((TabbedFormLNZ)form).img;
+  }
+  global.errorMessage("ERROR: Interface Forms must be extended from FormLNZ " +
+    "or TabbedFormLNZ. This form is of type " + cls.getName() + ".");
+  return null;
+}
+
+void setFormLNZImage(Form form, PImage img) {
+  Class cls = form.getClass();
+  if (FormLNZ.class.isAssignableFrom(cls)) {
+    ((FormLNZ)form).img = img;
+  }
+  else if (TabbedFormLNZ.class.isAssignableFrom(cls)) {
+    ((TabbedFormLNZ)form).img = img;
+  }
+  else {
+    global.errorMessage("ERROR: Interface Forms must be extended from FormLNZ " +
+      "or TabbedFormLNZ. This form is of type " + cls.getName() + ".");
+  }
+}
+
+boolean formCanceled(Form form) {
+  Class cls = form.getClass();
+  if (FormLNZ.class.isAssignableFrom(cls)) {
+    return ((FormLNZ)form).canceled;
+  }
+  else if (TabbedFormLNZ.class.isAssignableFrom(cls)) {
+    return ((TabbedFormLNZ)form).canceled;
+  }
+  global.errorMessage("ERROR: Interface Forms must be extended from FormLNZ " +
+    "or TabbedFormLNZ. This form is of type " + cls.getName() + ".");
+  return true;
+}
+
+
 
 abstract class InterfaceLNZ {
 
@@ -441,13 +528,19 @@ abstract class InterfaceLNZ {
       this.color_stroke = elementalColorDark(e);
       this.color_title = elementalColorText(e);
       this.setFieldCushion(15);
+      this.scrollbar.setButtonColors(elementalColorLocked(e),
+        elementalColor(e), elementalColorLight(e), elementalColorDark(e), elementalColorText(e));
 
       MessageFormField message1 = new MessageFormField("Location: " + hero.location.display_name());
-      message1.text_color = elementalColorText(hero.element);
+      message1.text_color = elementalColorText(e);
       MessageFormField message2 = new MessageFormField(hero.code.title());
-      message2.text_color = elementalColorText(hero.element);
-      TextBoxFormField textbox = new TextBoxFormField(hero.code.description(), 100);
-      textbox.textbox.color_text = elementalColorText(hero.element);
+      message2.text_color = elementalColorText(e);
+      TextBoxFormField textbox = new TextBoxFormField(hero.code.description(), 150);
+      textbox.textbox.color_text = elementalColorText(e);
+      textbox.textbox.scrollbar.setButtonColors(elementalColorLocked(e),
+        elementalColor(e), elementalColorLight(e), elementalColorDark(e), elementalColorText(e));
+      textbox.textbox.scrollbar.button_upspace.color_default = elementalColorLight(e);
+      textbox.textbox.scrollbar.button_downspace.color_default = elementalColorLight(e);
 
       this.addField(new SpacerFormField(80));
       this.addField(message1);
@@ -461,9 +554,9 @@ abstract class InterfaceLNZ {
           submit = new SubmitFormField("Play Hero");
         }
         submit.button.text_size = 18;
-        submit.button.setColors(elementalColorLocked(hero.element), elementalColor(
-          hero.element), elementalColorLight(hero.element), elementalColorDark(
-          hero.element), elementalColorText(hero.element));
+        submit.button.setColors(elementalColorLocked(e), elementalColor(
+          hero.element), elementalColorLight(e), elementalColorDark(
+          hero.element), elementalColorText(e));
         this.addField(submit);
       }
       this.addField(new SpacerFormField(10));
@@ -831,7 +924,7 @@ abstract class InterfaceLNZ {
   }
 
 
-  class AchievementsForm extends FormLNZ {
+  class AchievementsForm extends TabbedFormLNZ {
     class OpenPerkTreeButton extends RippleRectangleButton {
       OpenPerkTreeButton(float xi, float yi, float xf, float yf) {
         super(xi, yi, xf, yf);
@@ -873,19 +966,57 @@ abstract class InterfaceLNZ {
       }
     }
 
+    abstract class AchievementTabForm extends Form {
+      AchievementTabForm() {
+        super();
+      }
+
+      void submit() {}
+      void cancel() {}
+      void buttonPress(int i) {}
+    }
+
+    class CompletionTab extends AchievementTabForm {
+      CompletionTab() {
+        this.addField(new MessageFormField("CompletionTab"));
+      }
+    }
+
+    class ContinuousTab extends AchievementTabForm {
+      ContinuousTab() {
+        this.addField(new MessageFormField("ContinuousTab"));
+      }
+    }
+
+    class HiddenTab extends AchievementTabForm {
+      HiddenTab() {
+        this.addField(new MessageFormField("HiddenTab"));
+      }
+    }
+
     AchievementsForm() {
       super(Constants.achievementsForm_widthOffset, Constants.achievementsForm_heightOffset,
         width - Constants.achievementsForm_widthOffset, height - Constants.achievementsForm_heightOffset);
       this.setTitleText("Achievements");
       this.setTitleSize(20);
-      //this.color_background = ccolor(180, 250, 250);
-      this.color_background = ccolor(150, 220, 220);
+      this.color_background = ccolor(100, 200, 200);
       this.color_header = ccolor(50, 180, 180);
       if (global.profile == null) {
         this.canceled = true;
         return;
       }
-      this.addField(new SpacerFormField(10));
+      this.footer_space = 60;
+      this.tab_button_height = 55;
+      this.tab_button_max_width = 140;
+      this.addTab(new CompletionTab(), "Completion");
+      this.addTab(new ContinuousTab(), "Continuous");
+      this.addTab(new HiddenTab(), "Hidden");
+      TabConfig tab_config = new TabConfig();
+      tab_config.tab_text_size = 18;
+      tab_config.color_background = ccolor(150, 220, 220);
+      tab_config.color_stroke = ccolor(150, 220, 220);
+      this.setTabConfig(tab_config);
+      /*this.addField(new SpacerFormField(10));
       this.addField(new MessageFormField("Achievement Tokens: " + global.profile.achievement_tokens + " 〶"));
       SubmitFormField perk_tree = new SubmitFormField("");
       perk_tree.button = new OpenPerkTreeButton(0, 0, 0, 30);
@@ -911,7 +1042,7 @@ abstract class InterfaceLNZ {
       for (MessageFormField field : achievements_incomplete) {
         field.text_color = ccolor(170, 150);
         this.addField(field);
-      }
+      }*/
     }
 
     void submit() {
@@ -927,7 +1058,7 @@ abstract class InterfaceLNZ {
   }
 
 
-  protected FormLNZ form = null;
+  protected Form form = null;
   protected boolean return_to_esc_menu = false;
   protected boolean return_to_heroes_menu = false;
   protected PImage esc_menu_img = null;
@@ -969,7 +1100,7 @@ abstract class InterfaceLNZ {
       return;
     }
     this.return_to_heroes_menu = true;
-    this.heroes_menu_img = this.form.img;
+    this.heroes_menu_img = getFormLNZImage(this.form);
     this.form = new HeroForm(global.profile.heroes.get(code));
   }
 
@@ -997,18 +1128,17 @@ abstract class InterfaceLNZ {
     else {
       global.defaultCursor("icons/cursor_white.png");
       this.form.update(millis);
-      if (this.form.canceled) {
+      if (formCanceled(this.form)) {
         this.form = null;
         if (this.return_to_heroes_menu) {
           this.return_to_heroes_menu = false;
           this.form = new HeroesForm();
-          this.form.img = this.heroes_menu_img;
+          setFormLNZImage(this.form, this.heroes_menu_img);
           this.heroes_menu_img = null;
         }
         else if (this.return_to_esc_menu) {
           this.return_to_esc_menu = false;
-          this.form = new EscForm();
-          this.form.img = this.esc_menu_img;
+          setFormLNZImage(this.form, this.esc_menu_img);
           this.esc_menu_img = null;
         }
         else {
