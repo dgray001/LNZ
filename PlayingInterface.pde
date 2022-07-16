@@ -650,6 +650,7 @@ class PlayingInterface extends InterfaceLNZ {
     @Override
     void run() {
       WorldMap map = new WorldMap();
+      map.setLocation(PlayingInterface.this.leftPanel.size, 0, width - PlayingInterface.this.rightPanel.size, height);
       PlayingInterface.this.world_map = map;
     }
   }
@@ -1203,6 +1204,9 @@ class PlayingInterface extends InterfaceLNZ {
       if (this.level != null) {
         this.level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
       }
+      else if (this.world_map != null) {
+        this.world_map.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+      }
     }
     if (this.check_level_save && this.status == PlayingStatus.WORLD_MAP) {
       this.checkLevelSave();
@@ -1256,6 +1260,9 @@ class PlayingInterface extends InterfaceLNZ {
     if (refreshMapLocation) {
       if (this.level != null) {
         this.level.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
+      }
+      else if (this.world_map != null) {
+        this.world_map.setLocation(this.leftPanel.size, 0, width - this.rightPanel.size, height);
       }
     }
     // cursor icon resolution

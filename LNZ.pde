@@ -3,6 +3,7 @@ import java.util.concurrent.*;
 import java.io.*;
 import java.nio.file.*;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import processing.javafx.*;
 import ddf.minim.*;
 import ddf.minim.ugens.*;

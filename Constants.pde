@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\nAlpha v0.7.8e: 20220715" +
+  "\nAlpha v0.7.8f: 20220715" +
   "\n\nLines: 54899 (v0.7.8c)" +
   "\nImages: 1275 (v0.7.8)" +
   "\nSounds: 341 (v0.7.8)" +
@@ -101,9 +101,11 @@ static class Constants {
   static final float minigames_chessPanelsSize = 400;
 
   // Playing Interface
-  static final float playing_worldMapDefaultZoom = 30;
+  static final float playing_worldMapDefaultZoom = 1;
   static final float playing_worldMapMinZoom = 1;
   static final float playing_worldMapMaxZoom = 100;
+  static final float playing_scrollZoomFactor = 0.12;
+  static final float playing_viewMoveSpeedFactor = 0.0001; // 10s to scroll
 
   // Help strings
   static final String help_mapEditor_maps = "Maps\n\nThis view displays the " +
