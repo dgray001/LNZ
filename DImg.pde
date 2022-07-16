@@ -206,6 +206,10 @@ class DImg {
     return_image.updatePixels();
     return return_image;
   }
+  PImage getImagePercent(float xp, float yp, float wp, float hp) {
+    return this.getImagePiece(round(xp * this.img.width), round(yp * this.img.height),
+      round(wp * this.img.width), round(hp * this.img.height));
+  }
   PImage getImageGridPiece(int x, int y) {
     return this.getImageGridPiece(x, y, 1, 1);
   }

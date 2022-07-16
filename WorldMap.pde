@@ -8,7 +8,7 @@ PImage bufferedImageToPImage(BufferedImage bimg) {
 
 
 class WorldMap {
-  class MapBimgThread extends Thread {
+  class MapDimgThread extends Thread {
     protected float start_percent_x = 0;
     protected float start_percent_y = 0;
     protected float vis_percent_x = 0;
@@ -18,13 +18,13 @@ class WorldMap {
     protected float xf_map = 0;
     protected float yf_map = 0;
     protected float zoom = 0;
-    MapBimgThread() {
-      super("MapBimgThread");
+    MapDimgThread() {
+      super("MapDimgThread");
       this.setDaemon(true);
     }
     @Override
     void run() {
-      if (WorldMap.this.map_bimg == null) {
+      if (WorldMap.this.map_dimg == null) {
         return;
       }
       this.start_percent_x = WorldMap.this.start_percent_x;
@@ -36,11 +36,8 @@ class WorldMap {
       this.xf_map = WorldMap.this.xf_map;
       this.yf_map = WorldMap.this.yf_map;
       this.zoom = WorldMap.this.zoom;
-      PImage next_image = bufferedImageToPImage(WorldMap.this.map_bimg.getSubimage(
-        round(this.start_percent_x * WorldMap.this.map_bimg.getWidth()),
-        round(this.start_percent_y * WorldMap.this.map_bimg.getHeight()),
-        round(this.vis_percent_x * WorldMap.this.map_bimg.getWidth()),
-        round(this.vis_percent_y * WorldMap.this.map_bimg.getHeight())));
+      PImage next_image = WorldMap.this.map_dimg.getImagePercent(
+        this.start_percent_x, this.start_percent_y, this.vis_percent_x, this.vis_percent_y);
       next_image = resizeImage(next_image,
         round(this.xf_map - this.xi_map), round(this.yf_map - this.yi_map));
       WorldMap.this.display_img = next_image;
@@ -61,9 +58,9 @@ class WorldMap {
   }
 
 
-  private BufferedImage map_bimg = null;
+  private DImg map_dimg = null;
   private PImage display_img = null;
-  private MapBimgThread map_bimg_thread = null;
+  private MapDimgThread map_dimg_thread = null;
   private boolean update_display = false;
 
   private float xi = 0;
@@ -110,9 +107,7 @@ class WorldMap {
   private int last_update_time = 0;
 
   WorldMap() {
-    try {
-      this.map_bimg = BigBufferedImage.create(new File(sketchPath("data/images/logo.png")), BufferedImage.TYPE_INT_ARGB);
-    } catch(IOException e) {}
+    this.map_dimg = new DImg(global.images.getImage("world_map.jpg"));
   }
 
 
@@ -172,14 +167,14 @@ class WorldMap {
   }
 
   void refreshDisplayMapParameters() {
-    this.start_percent_x = max(0, this.viewX - (0.5 * width - this.xi) * this.zoom / this.map_bimg.getWidth());
-    this.start_percent_y = max(0, this.viewY - (0.5 * height - this.yi) * this.zoom / this.map_bimg.getHeight());
-    this.xi_map = 0.5 * width - (this.viewX - this.start_percent_x) * this.map_bimg.getWidth() / this.zoom;
-    this.yi_map = 0.5 * height - (this.viewY - this.start_percent_y) * this.map_bimg.getHeight() / this.zoom;
-    this.vis_percent_x = min(1.0 - this.start_percent_x, (this.xf - this.xi_map) * this.zoom / this.map_bimg.getWidth());
-    this.vis_percent_y = min(1.0 - this.start_percent_y, (this.yf - this.yi_map) * this.zoom / this.map_bimg.getHeight());
-    this.xf_map = this.xi_map + this.vis_percent_x * this.map_bimg.getWidth() / this.zoom;
-    this.yf_map = this.yi_map + this.vis_percent_y * this.map_bimg.getHeight() / this.zoom;
+    this.start_percent_x = max(0, this.viewX - (0.5 * width - this.xi) * this.zoom / this.map_dimg.img.width);
+    this.start_percent_y = max(0, this.viewY - (0.5 * height - this.yi) * this.zoom / this.map_dimg.img.height);
+    this.xi_map = 0.5 * width - (this.viewX - this.start_percent_x) * this.map_dimg.img.width / this.zoom;
+    this.yi_map = 0.5 * height - (this.viewY - this.start_percent_y) * this.map_dimg.img.height / this.zoom;
+    this.vis_percent_x = min(1.0 - this.start_percent_x, (this.xf - this.xi_map) * this.zoom / this.map_dimg.img.width);
+    this.vis_percent_y = min(1.0 - this.start_percent_y, (this.yf - this.yi_map) * this.zoom / this.map_dimg.img.height);
+    this.xf_map = this.xi_map + this.vis_percent_x * this.map_dimg.img.width / this.zoom;
+    this.yf_map = this.yi_map + this.vis_percent_y * this.map_dimg.img.height / this.zoom;
     this.xi_map_dif = this.start_percent_x - this.start_percent_x_old;
     this.yi_map_dif = this.start_percent_y - this.start_percent_y_old;
     this.xf_map_dif = xi_map_dif + this.vis_percent_x - this.vis_percent_x_old;
@@ -188,7 +183,7 @@ class WorldMap {
   }
 
   void refreshDisplayImage() {
-    if (this.map_bimg_thread != null && this.map_bimg_thread.isAlive()) {
+    if (this.map_dimg_thread != null && this.map_dimg_thread.isAlive()) {
       this.update_display = true;
     }
     else {
@@ -197,8 +192,8 @@ class WorldMap {
     }
   }
   void startMapThread() {
-    this.map_bimg_thread = new MapBimgThread();
-    this.map_bimg_thread.start();
+    this.map_dimg_thread = new MapDimgThread();
+    this.map_dimg_thread.start();
   }
 
 
@@ -216,12 +211,12 @@ class WorldMap {
     }
     if (this.view_moving_up) {
       this.moveView(0, -time_elapsed * Constants.playing_viewMoveSpeedFactor *
-        this.map_bimg.getHeight() / this.map_bimg.getWidth(), false);
+        this.map_dimg.img.width / this.map_dimg.img.height, false);
       refreshView = true;
     }
     if (this.view_moving_down) {
       this.moveView(0, time_elapsed * Constants.playing_viewMoveSpeedFactor *
-        this.map_bimg.getHeight() / this.map_bimg.getWidth(), false);
+        this.map_dimg.img.width / this.map_dimg.img.height, false);
       refreshView = true;
     }
     if (refreshView) {
