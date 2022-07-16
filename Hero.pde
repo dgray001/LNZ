@@ -2815,7 +2815,7 @@ class Hero extends Unit {
       @Override
       void drawButton() {
         super.drawButton();
-        fill(1, 0);
+        fill(Constants.color_transparent);
         stroke(this.color_stroke);
         strokeWeight(this.stroke_weight);
         ellipseMode(CORNERS);

@@ -13,7 +13,7 @@ enum HeroCode {
       case DAN:
         return "Dan Gray";
       case JF:
-        return "John-Francis";
+        return "JIF";
       case SPINNY:
         return "Mark Spinny";
       case MATTUS:
@@ -96,10 +96,10 @@ enum HeroCode {
       case JF:
         return "Hide your husbands; hide your wives, because the one and only " +
           "heart breaking, love taking, tool making lean and mean country boy " +
-          "is here. The epitome of modern American nationalism, JF doesn't " +
+          "is here. The epitome of modern American nationalism, JIF doesn't " +
           "need a mandate, minute, or man barking orders to defend his country " +
           "from danger. Soon after zombies overran continental United States, " +
-          "JF became head of the nation's finest paramilitary force. If he's " +
+          "JIF became head of the nation's finest paramilitary force. If he's " +
           "not chopping off the head of a normie zombie with an ax he hand-" +
           "crafted in his backyard, you can find him cracking a cold one with " +
           "the BOIZ while smokin' these meats.";
@@ -114,7 +114,7 @@ enum HeroCode {
       case MATTUS:
         return "Some say he is the rebirth of General Lee, others realize Lee " +
           "was less on the loud stuff and more on the proud stuff. Regardless, " +
-          "Mattus became the overall commander of the New People's Freedon " +
+          "Mad Dog Mattus became the overall commander of the New People's Freedon " +
           "Confederacy of American Workers and also States, which Mattus " +
           "believes is exactly like the Confederacy Lee once commanded. " +
           "Mattus obtained this position after falling into Georgia's largest " +
@@ -128,7 +128,7 @@ enum HeroCode {
           "fun of him for any of it he'll mop the floor with your ass (since " +
           "he doesn't have one) without breaking a sweat. Although if you make " +
           "fun of him in a normal voice he probably won't hear you since " +
-          "he has to keep pretending he's deaf.";
+          "he has to keep pretending he's deaf as part of his identity.";
       default:
         return "-- Error --";
     }

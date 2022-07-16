@@ -1,11 +1,24 @@
 enum PlayerTreeCode {
-  CAN_PLAY;
+  CAN_PLAY,
+  UNLOCK_DAN, UNLOCK_JF, UNLOCK_SPINNY, UNLOCK_MATTUS, UNLOCK_PATRICK,
+
+  ;
   private static final List<PlayerTreeCode> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 
   public String message() {
     switch(this) {
       case CAN_PLAY:
         return "Can launch game";
+      case UNLOCK_DAN:
+        return "Can play " + HeroCode.display_name(HeroCode.DAN);
+      case UNLOCK_JF:
+        return "Can play " + HeroCode.display_name(HeroCode.JF);
+      case UNLOCK_SPINNY:
+        return "Can play " + HeroCode.display_name(HeroCode.SPINNY);
+      case UNLOCK_MATTUS:
+        return "Can play " + HeroCode.display_name(HeroCode.MATTUS);
+      case UNLOCK_PATRICK:
+        return "Can play " + HeroCode.display_name(HeroCode.PATRICK);
       default:
         return "";
     }
@@ -15,6 +28,16 @@ enum PlayerTreeCode {
     switch(this) {
       case CAN_PLAY:
         return "Launch Game";
+      case UNLOCK_DAN:
+        return "Unlock Dan";
+      case UNLOCK_JF:
+        return "Unlock JIF";
+      case UNLOCK_SPINNY:
+        return "Unlock Spinny";
+      case UNLOCK_MATTUS:
+        return "Unlock Mattus";
+      case UNLOCK_PATRICK:
+        return "Unlock Jeremiah";
       default:
         return "";
     }
@@ -24,6 +47,16 @@ enum PlayerTreeCode {
     switch(this) {
       case CAN_PLAY:
         return "Launch_Game";
+      case UNLOCK_DAN:
+        return "UNLOCK_DAN";
+      case UNLOCK_JF:
+        return "UNLOCK_JF";
+      case UNLOCK_SPINNY:
+        return "UNLOCK_SPINNY";
+      case UNLOCK_MATTUS:
+        return "UNLOCK_MATTUS";
+      case UNLOCK_PATRICK:
+        return "UNLOCK_PATRICK";
       default:
         return "";
     }
@@ -32,7 +65,18 @@ enum PlayerTreeCode {
   public String description() {
     switch(this) {
       case CAN_PLAY:
-        return "Unlocking this perk allows you to start the storyline.";
+        return "Unlocking this perk allows you to start the storyline and " +
+          "unlocks Ben Nelson.";
+      case UNLOCK_DAN:
+        return "Unlocks Dan Gray and the accompanying campaign.";
+      case UNLOCK_JF:
+        return "Will be available in future update.";//"Unlocks JIF and the accompanying campaign.";
+      case UNLOCK_SPINNY:
+        return "Will be available in future update.";//"Unlocks Spinny and the accompanying campaign.";
+      case UNLOCK_MATTUS:
+        return "Will be available in future update.";//"Unlocks Mad Dog Mattus and the accompanying campaign.";
+      case UNLOCK_PATRICK:
+        return "Will be available in future update.";//"Unlocks Jeremiah and the accompanying campaign.";
       default:
         return "";
     }
@@ -42,6 +86,13 @@ enum PlayerTreeCode {
     switch(this) {
       case CAN_PLAY:
         return 1;
+      case UNLOCK_DAN:
+        return 3;
+      case UNLOCK_JF:
+      case UNLOCK_SPINNY:
+      case UNLOCK_MATTUS:
+      case UNLOCK_PATRICK:
+        return 30;
       default:
         return 0;
     }
@@ -284,17 +335,43 @@ class Profile {
           this.show_message = false;
           this.text_size = 18;
           this.message = PlayerTreeNode.this.code.display_name();
+          this.color_disabled = ccolor(220);
+        }
+
+        @Override
+        color fillColor() {
+          if (!this.show_message) {
+            return this.color_disabled;
+          }
+          return super.fillColor();
+        }
+
+        @Override
+        void writeText() {
+          if (!this.show_message) {
+            return;
+          }
+          fill(this.color_text);
+          textSize(this.text_size);
+          if (this.hovered) {
+            textAlign(LEFT, CENTER);
+            text(this.message, this.xi + this.button_height() + 3, this.yCenter());
+          }
+          else {
+            textAlign(CENTER, CENTER);
+            text(this.message, this.xCenter(), this.yCenter());
+          }
         }
 
         @Override
         void drawButton() {
           super.drawButton();
-          if (this.hovered && millis() - this.start_time > 1000) {
+          if (this.show_message && this.hovered && millis() - this.start_time > 1000) {
             fill(global.color_nameDisplayed_background);
             noStroke();
             rectMode(CORNER);
             textSize(16);
-            String hover_message = "Press for details";
+            String hover_message = "Click for details";
             float message_width = textWidth(hover_message);
             float message_height = textAscent() + textDescent() + 2;
             textAlign(LEFT, BOTTOM);
@@ -340,6 +417,8 @@ class Profile {
       }
 
       class PlayerTreeNodeButton2 extends CircleButton {
+        protected boolean hovered_cant_buy = false;
+
         PlayerTreeNodeButton2(float xi, float yi, float button_height) {
           super(xi + 0.5 * button_height, yi + 0.5 * button_height, 0.5 * button_height);
           this.show_message = false;
@@ -347,12 +426,24 @@ class Profile {
           this.message = PlayerTreeNode.this.code.cost() + " 〶";
         }
 
+        @Override
+        color fillColor() {
+          if (!this.show_message || this.hovered_cant_buy) {
+            return this.color_disabled;
+          }
+          return super.fillColor();
+        }
+
         void hover() {
           if (PlayerTreeNode.this.visible && !PlayerTreeNode.this.unlocked) {
+            if (PlayerTree.this.achievementTokens() < PlayerTreeNode.this.code.cost()) {
+              this.hovered_cant_buy = true;
+            }
             this.message = PlayerTreeNode.this.code.cost() + " 〶\nBuy";
           }
         }
         void dehover() {
+          this.hovered_cant_buy = false;
           if (PlayerTreeNode.this.visible && !PlayerTreeNode.this.unlocked) {
             this.message = PlayerTreeNode.this.code.cost() + " 〶";
           }
@@ -383,6 +474,7 @@ class Profile {
         this.code = code;
         this.button1 = new PlayerTreeNodeButton1(xi, yi, button_height);
         this.button2 = new PlayerTreeNodeButton2(xi, yi, button_height);
+        this.setDependencies();
       }
 
       void showDetails() {
@@ -392,6 +484,13 @@ class Profile {
       void setDependencies() {
         switch(this.code) {
           case CAN_PLAY:
+            break;
+          case UNLOCK_DAN:
+          case UNLOCK_JF:
+          case UNLOCK_SPINNY:
+          case UNLOCK_MATTUS:
+          case UNLOCK_PATRICK:
+            this.dependencies.add(PlayerTreeCode.CAN_PLAY);
             break;
           default:
             global.errorMessage("ERROR: PlayerTreeCode " + this.code + " not recognized.");
@@ -609,6 +708,10 @@ class Profile {
       this.node_details = new NodeDetailsForm(this.nodes.get(code));
     }
 
+    int achievementTokens() {
+      return Profile.this.achievement_tokens;
+    }
+
     void unlockNode(PlayerTreeCode code) {
       this.unlockNode(code, false);
     }
@@ -619,7 +722,7 @@ class Profile {
       if (this.nodes.get(code).unlocked || (!this.nodes.get(code).visible && !from_save)) {
         return;
       }
-      if (!from_save && Profile.this.achievement_tokens < code.cost()) {
+      if (!from_save && this.achievementTokens() < code.cost()) {
         return;
       }
       if (!from_save) {
@@ -648,6 +751,27 @@ class Profile {
         float h = Constants.profile_tree_nodeHeight;
         switch(code) {
           case CAN_PLAY:
+            h *= 1.2;
+            break;
+          case UNLOCK_DAN:
+            xi = Constants.profile_tree_nodeGap + 2 * 1.2 * Constants.profile_tree_nodeHeight;
+            yi = 0.1 * Constants.profile_tree_nodeHeight - 2 * (Constants.profile_tree_nodeGap + 1.5 * Constants.profile_tree_nodeHeight);
+            break;
+          case UNLOCK_JF:
+            xi = Constants.profile_tree_nodeGap + 3 * 1.2 * Constants.profile_tree_nodeHeight;
+            yi = 0.1 * Constants.profile_tree_nodeHeight - (Constants.profile_tree_nodeGap + 1.5 * Constants.profile_tree_nodeHeight);
+            break;
+          case UNLOCK_SPINNY:
+            xi = Constants.profile_tree_nodeGap + 4 * 1.2 * Constants.profile_tree_nodeHeight;
+            yi = 0.1 * Constants.profile_tree_nodeHeight;
+            break;
+          case UNLOCK_MATTUS:
+            xi = Constants.profile_tree_nodeGap + 3 * 1.2 * Constants.profile_tree_nodeHeight;
+            yi = 0.1 * Constants.profile_tree_nodeHeight + Constants.profile_tree_nodeGap + 1.5 * Constants.profile_tree_nodeHeight;
+            break;
+          case UNLOCK_PATRICK:
+            xi = Constants.profile_tree_nodeGap + 2 * 1.2 * Constants.profile_tree_nodeHeight;
+            yi = 0.1 * Constants.profile_tree_nodeHeight + 2 * (Constants.profile_tree_nodeGap + 1.5 * Constants.profile_tree_nodeHeight);
             break;
           default:
             global.errorMessage("ERROR: PlayerTreeCode " + code + " not recognized.");
@@ -858,6 +982,8 @@ class Profile {
       }
       mX -= this.translateX;
       mY -= this.translateY;
+      mX *= this.inverse_zoom;
+      mY *= this.inverse_zoom;
       for (Map.Entry<PlayerTreeCode, PlayerTreeNode> entry : this.nodes.entrySet()) {
         if (entry.getValue().in_view) {
           entry.getValue().mouseRelease(mX, mY);
@@ -870,7 +996,7 @@ class Profile {
         this.node_details.scroll(amount);
         return;
       }
-      this.zoom -= amount * 0.01;
+      this.zoom -= amount * 0.025;
       if (this.zoom < 0.5) {
         this.zoom = 0.5;
       }
@@ -964,6 +1090,20 @@ class Profile {
         h.location = Location.FRANCISCAN_FRANCIS;
         break;
       case DAN:
+        h.location = Location.DANS_HOUSE;
+        break;
+      case JF:
+        h.location = Location.ERROR;
+        break;
+      case SPINNY:
+        h.location = Location.ERROR;
+        break;
+      case MATTUS:
+        h.location = Location.ERROR;
+        break;
+      case PATRICK:
+        h.location = Location.ERROR;
+        break;
       default:
         global.errorMessage("ERROR: HeroCode " + code.display_name() + " not " +
           "recognized when being added to profile.");
@@ -1017,6 +1157,31 @@ class Profile {
       case CAN_PLAY:
         if (!from_save) {
           this.addInitialHero();
+        }
+        break;
+      case UNLOCK_DAN:
+        if (!from_save) {
+          this.addHero(HeroCode.DAN);
+        }
+        break;
+      case UNLOCK_JF:
+        if (!from_save) {
+          this.addHero(HeroCode.JF);
+        }
+        break;
+      case UNLOCK_SPINNY:
+        if (!from_save) {
+          this.addHero(HeroCode.SPINNY);
+        }
+        break;
+      case UNLOCK_MATTUS:
+        if (!from_save) {
+          this.addHero(HeroCode.MATTUS);
+        }
+        break;
+      case UNLOCK_PATRICK:
+        if (!from_save) {
+          this.addHero(HeroCode.PATRICK);
         }
         break;
       default:

@@ -689,6 +689,7 @@ class PlayingInterface extends InterfaceLNZ {
     this.resizeButtons();
     this.worldMapThread = new LoadWorldMapThread();
     this.worldMapThread.start();
+    this.checkLevelSave();
   }
 
 
@@ -1014,6 +1015,14 @@ class PlayingInterface extends InterfaceLNZ {
     global.profile.saveHeroesFile();
     if (next_location.isArea()) {
       global.profile.unlockArea(next_location);
+      switch(this.level.location.getCampaignStart()) {
+        case FRANCISCAN_FRANCIS:
+          global.profile.achievement(AchievementCode.COMPLETED_FRANCISCAN);
+          break;
+        case DANS_HOUSE:
+          global.profile.achievement(AchievementCode.COMPLETED_DANSHOUSE);
+          break;
+      }
     }
     this.status = PlayingStatus.WORLD_MAP;
     this.level = null;

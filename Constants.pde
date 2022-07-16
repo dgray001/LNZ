@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\nAlpha v0.7.8i: 20220716" +
+  "\nAlpha v0.7.8j: 20220716" +
   "\n\nLines: 55249 (v0.7.8g)" +
   "\nImages: 1275 (v0.7.8)" +
   "\nSounds: 341 (v0.7.8)" +
@@ -48,10 +48,43 @@ static class Constants {
   static final float profile_treeForm_width = 300;
   static final float profile_treeForm_height = 340;
   static final float profile_tree_nodeHeight = 80;
+  static final float profile_tree_nodeGap = 50;
   static final float profile_heroesFormWidth = 850;
   static final float profile_heroesFormHeight = 600;
   static final float profile_heroFormWidth = 400;
   static final float profile_heroFormHeight = 500;
+
+  // Achievements
+  static final int achievement_kills_I = 30;
+  static final int achievement_kills_II = 3000;
+  static final int achievement_kills_III = 300000;
+  static final int achievement_kills_IV = 300000;
+  static final int achievement_kills_V = 300000;
+  static final int achievement_kills_VI = 300000;
+  static final int achievement_kills_VII = 300000;
+  static final int achievement_kills_VIII = 300000;
+  static final int achievement_kills_IX = 300000;
+  static final int achievement_kills_X = 300000;
+  static final int achievement_deaths_I = 10;
+  static final int achievement_deaths_II = 50;
+  static final int achievement_deaths_III = 300000;
+  static final int achievement_deaths_IV = 300000;
+  static final int achievement_deaths_V = 300000;
+  static final int achievement_deaths_VI = 300000;
+  static final int achievement_deaths_VII = 300000;
+  static final int achievement_deaths_VIII = 300000;
+  static final int achievement_deaths_IX = 300000;
+  static final int achievement_deaths_X = 300000;
+  static final int achievement_walk_I = 100;
+  static final int achievement_walk_II = 500;
+  static final int achievement_walk_III = 300000;
+  static final int achievement_walk_IV = 300000;
+  static final int achievement_walk_V = 300000;
+  static final int achievement_walk_VI = 300000;
+  static final int achievement_walk_VII = 300000;
+  static final int achievement_walk_VIII = 300000;
+  static final int achievement_walk_IX = 300000;
+  static final int achievement_walk_X = 300000;
 
   // MainMenu Interface
   static final float profileForm_width = 400;

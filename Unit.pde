@@ -632,7 +632,7 @@ class Unit extends MapObject {
 
       // Heroes
       case 1101:
-        this.setStrings("Ben Nelson", "Hero", "");
+        this.setStrings(HeroCode.display_name(HeroCode.BEN), "Hero", "");
         this.baseStats(4, 1, 0, 0, 1.7);
         this.setLevel(0);
         this.base_agility = 1;
@@ -641,7 +641,7 @@ class Unit extends MapObject {
         this.element = Element.GRAY;
         break;
       case 1102:
-        this.setStrings("Dan Gray", "Hero", "");
+        this.setStrings(HeroCode.display_name(HeroCode.DAN), "Hero", "");
         this.baseStats(4, 1, 0, 0, 1.8);
         this.setLevel(0);
         this.base_agility = 2;
@@ -650,28 +650,28 @@ class Unit extends MapObject {
         this.element = Element.BROWN;
         break;
       case 1103:
-        this.setStrings("JIF", "Hero", "");
+        this.setStrings(HeroCode.display_name(HeroCode.JF), "Hero", "");
         this.baseStats(4, 1, 0, 0, 2);
         this.setLevel(0);
         this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
         this.alliance = Alliance.BEN;
         break;
       case 1104:
-        this.setStrings("Mark Spinny", "Hero", "");
+        this.setStrings(HeroCode.display_name(HeroCode.SPINNY), "Hero", "");
         this.baseStats(4, 1, 0, 0, 2);
         this.setLevel(0);
         this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
         this.alliance = Alliance.BEN;
         break;
       case 1105:
-        this.setStrings("Mad Dog Mattus", "Hero", "");
+        this.setStrings(HeroCode.display_name(HeroCode.MATTUS), "Hero", "");
         this.baseStats(4, 1, 0, 0, 2);
         this.setLevel(0);
         this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
         this.alliance = Alliance.BEN;
         break;
       case 1106:
-        this.setStrings("Jeremiah", "Hero", "");
+        this.setStrings(HeroCode.display_name(HeroCode.PATRICK), "Hero", "");
         this.baseStats(4, 1, 0, 0, 2);
         this.setLevel(0);
         this.gearSlots("Weapon", "Head", "Chest", "Legs", "Feet");
