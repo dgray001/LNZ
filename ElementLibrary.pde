@@ -3052,6 +3052,68 @@ class SpacerFormField extends FormField {
 }
 
 
+// Image
+class ImageFormField extends FormField {
+  protected PImage img;
+  protected float image_height;
+  protected float image_w = 0;
+  protected float image_h = 0;
+
+  ImageFormField(PImage img, float image_height) {
+    super("");
+    this.img = img;
+    this.image_height = image_height;
+  }
+
+  void enable() {}
+  void disable() {}
+  void updateWidthDependencies() {
+    float desired_width = this.img.width * this.image_height / this.img.height;
+    if (this.field_width < desired_width) {
+      this.image_w = this.field_width;
+      this.image_h = this.img.height * this.image_w / this.img.width;
+    }
+    else {
+      this.image_w = desired_width;
+      this.image_h = this.image_height;
+    }
+  }
+
+  boolean focusable() {
+    return false;
+  }
+  void focus() {}
+  void defocus() {}
+  boolean focused() {
+    return false;
+  }
+
+  float getHeight() {
+    return this.image_height;
+  }
+
+  String getValue() {
+    return this.message;
+  }
+  void setValue(String newValue) {
+    this.message = newValue;
+  }
+
+  FormFieldSubmit update(int millis) {
+    imageMode(CENTER);
+    image(this.img, 0.5 * this.field_width, 0.5 * this.image_height, this.image_w, this.image_h);
+    return FormFieldSubmit.NONE;
+  }
+  void mouseMove(float mX, float mY) {}
+  void mousePress() {}
+  void mouseRelease(float mX, float mY) {}
+  void scroll(int amount) {}
+  void keyPress() {}
+  void keyRelease() {}
+  void submit() {}
+}
+
+
 // One line message
 class MessageFormField extends FormField {
   protected String display_message; // can be different if truncated
@@ -4747,7 +4809,7 @@ abstract class TabbedForm extends Form {
           rectMode(CORNERS);
           rect(this.xi, this.yi, this.xf, this.yf);
           fill(darken(this.color_click));
-          rect(this.xi, this.yf - 6, this.xf, this.yf);
+          rect(this.xi, this.yf - 4, this.xf, this.yf);
         }
         super.drawButton();
       }

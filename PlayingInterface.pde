@@ -689,7 +689,6 @@ class PlayingInterface extends InterfaceLNZ {
     this.resizeButtons();
     this.worldMapThread = new LoadWorldMapThread();
     this.worldMapThread.start();
-    this.checkLevelSave();
   }
 
 
@@ -1212,6 +1211,9 @@ class PlayingInterface extends InterfaceLNZ {
       if (this.level != null) {
         this.level.drawLeftPanel(millis);
       }
+      else if (this.world_map != null) {
+        this.world_map.drawLeftPanel(millis);
+      }
     }
     if (refreshLevelLocation) {
       if (this.level != null) {
@@ -1316,9 +1318,6 @@ class PlayingInterface extends InterfaceLNZ {
   void mouseRelease(float mX, float mY) {
     if (this.status == PlayingStatus.WORLD_MAP && this.world_map != null) {
       this.world_map.mouseRelease(mX, mY);
-      if (this.world_map.location_clicked != null) {
-        println("clicked", this.world_map.location_clicked.display_name());
-      }
     }
     if (this.level != null) {
       this.level.mouseRelease(mX, mY);

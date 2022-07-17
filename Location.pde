@@ -258,6 +258,29 @@ enum Location {
     }
   }
 
+  public String campaignImagePath() {
+    return Location.campaignImagePath(this);
+  }
+  public static String campaignImagePath(Location a) {
+    switch(a) {
+      case FRANCISCAN_FRANCIS:
+      case FRANCISCAN_LEV2_FRONTDOOR:
+      case FRANCISCAN_LEV2_AHIMDOOR:
+      case FRANCISCAN_LEV2_CHAPELDOOR:
+      case FRANCISCAN_LEV2_BROTHERSDOOR:
+      case FRANCISCAN_LEV2_CUSTODIALDOOR:
+      case FRANCISCAN_LEV3_KILLEDHECK:
+      case FRANCISCAN_LEV3_AROUNDCODA:
+        return "icons/franciscan.png";
+      case DANS_HOUSE:
+        return "icons/water_works.png";
+      case AREA_FERNWOOD:
+        return "icons/fernwood.jpg";
+      default:
+        return "transparent.png";
+    }
+  }
+
   public boolean isArea() {
     return Location.isArea(this);
   }

@@ -1,19 +1,17 @@
 v0.7.8: World Map (07/23)
- k: Clicking location circle brings up form on left top with info about campaign / area
-  - name / picture
+ m/n: Clicking location circle brings up form on left top with info about campaign / area
   - description
   - which heroes are there
   - can see what to do to unlock
   - for each hero there can click on it to play that hero (brings up original 'start or load' form)
- n: Apply TabbedForm class to OptionsForm
- o: Add additional options into OptionsForm
+ o: Apply TabbedForm class to OptionsForm
+ p: Add additional options into OptionsForm
  q: Add continuous achievements (walk x distance, gain x xp, kill x units)
  r: Make mock car break down minigame
  s: Can unlock minigame in PlayingInterface
- t: Campaign enum, display name, description
- u: Can't finish campaign without finishing a minigame (or getting to certain point in minigame)
- v: Ben Nelson campaign name, description
- w: Can't finish Ben Nelson campaign without car break down minigame
+ t: Can't finish campaign without finishing a minigame (or getting to certain point in minigame)
+ u: Ben Nelson campaign name, description
+ v: Can't finish Ben Nelson campaign without car break down minigame
 
  - Finish all Lev2s/Lev3s for at least frontdoor/ahimdoor/brothersdoor, maybe chapeldoor (not custodialdoor)
 

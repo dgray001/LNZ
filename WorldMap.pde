@@ -87,6 +87,35 @@ class WorldMap {
   }
 
 
+  class LeftPanelForm extends Form {
+    protected Location location;
+
+    LeftPanelForm(Location location, float xi, float yi, float xf, float yf) {
+      super(xi, yi, xf, yf);
+      this.location = location;
+      this.color_background = ccolor(250, 190, 140);
+      this.scrollbar.setButtonColors(ccolor(220), ccolor(220, 160, 110), ccolor(
+        240, 180, 130), ccolor(200, 140, 90), ccolor(0));
+      this.scrollbar.button_upspace.setColors(ccolor(170), ccolor(255, 200, 150),
+        ccolor(255, 200, 150), ccolor(60, 30, 0), ccolor(0));
+      this.scrollbar.button_downspace.setColors(ccolor(170), ccolor(255, 200, 150),
+        ccolor(255, 200, 150), ccolor(60, 30, 0), ccolor(0));
+
+      MessageFormField title = new MessageFormField(location.getCampaignName());
+      title.text_align = CENTER;
+
+      this.addField(title);
+      this.addField(new ImageFormField(global.images.getImage(location.campaignImagePath()), 90));
+      // description, difficulty (campaign or area)
+      //
+    }
+
+    void submit() {}
+    void cancel() {}
+    void buttonPress(int i) {}
+  }
+
+
   private DImg map_dimg = null;
   private PImage display_img = null;
   private MapDimgThread map_dimg_thread = null;
@@ -137,6 +166,7 @@ class WorldMap {
   private boolean dragging = false;
   private LocationCircle location_hovered = null;
   private Location location_clicked = null;
+  private LeftPanelForm left_panel_form = null;
 
   private HashMap<Location, LocationCircle> location_circles = new HashMap<Location, LocationCircle>();
 
@@ -168,6 +198,9 @@ class WorldMap {
     this.yi = yi;
     this.xf = xf;
     this.yf = yf;
+    if (this.left_panel_form != null) {
+      this.left_panel_form.setLocation(1, yi + 1, xi - 1, yf - 1);
+    }
     this.refreshDisplayMapParameters();
   }
 
@@ -249,6 +282,13 @@ class WorldMap {
   }
 
 
+  void drawLeftPanel(int millis) {
+    if (this.left_panel_form != null) {
+      this.left_panel_form.update(millis);
+    }
+  }
+
+
   void update(int millis) {
     int time_elapsed = millis - this.last_update_time;
     boolean refreshView = false;
@@ -305,6 +345,26 @@ class WorldMap {
       stroke(ccolor(255, 255, 0));
       strokeWeight(2);
       circle(0, 0, this.circleRadius);
+      if (location.hovered) { // hovered info
+        fill(global.color_nameDisplayed_background);
+        stroke(global.color_nameDisplayed_background);
+        strokeWeight(0.01);
+        triangle(0, -0.5 * this.circleRadius, -1.1 * this.circleRadius, -1.6 *
+          this.circleRadius, 1.1 * this.circleRadius, -1.6 * this.circleRadius);
+        String location_name = location.location.getCampaignName();
+        textSize(18);
+        float name_width = textWidth(location_name) + 2;
+        float name_height = textAscent() + textDescent() + 2;
+        float name_xi = -1.1 * this.circleRadius;
+        float name_yi = -1.6 * this.circleRadius - name_height + 1;
+        fill(global.color_nameDisplayed_background);
+        rectMode(CORNER);
+        noStroke();
+        rect(name_xi, name_yi, name_width, name_height);
+        fill(global.color_nameDisplayed_text);
+        textAlign(LEFT, TOP);
+        text(location_name, name_xi + 1, name_yi + 1);
+      }
       translate(-translate_x, -translate_y);
     }
     this.last_update_time = millis;
@@ -363,6 +423,9 @@ class WorldMap {
     else {
       this.hovered = true;
     }
+    if (this.left_panel_form != null) {
+      this.left_panel_form.mouseMove(mX, mY);
+    }
     this.location_hovered = null;
     for (LocationCircle location : this.location_circles.values()) {
       location.hovered = false;
@@ -414,13 +477,18 @@ class WorldMap {
     else {
       this.location_hovered.clicked = true;
     }
+    if (this.left_panel_form != null) {
+      this.left_panel_form.mousePress();
+    }
   }
 
   void mouseRelease(float mX, float mY) {
     if (mouseButton == LEFT) {
       this.dragging = false;
     }
-    this.location_clicked = null;
+    if (this.hovered) {
+      this.location_clicked = null;
+    }
     for (LocationCircle location : this.location_circles.values()) {
       if (!this.hovered || !location.hovered) {
         location.clicked = false;
@@ -430,6 +498,17 @@ class WorldMap {
         location.clicked = false;
         this.location_clicked = location.location;
       }
+    }
+    if (this.left_panel_form != null) {
+      this.left_panel_form.mouseRelease(mX, mY);
+    }
+    if (this.location_clicked == null) {
+      this.left_panel_form = null;
+    }
+    else if (this.left_panel_form == null || this.left_panel_form.location != this.location_clicked) {
+      this.left_panel_form = new LeftPanelForm(this.location_clicked, Constants.mapEditor_listBoxGap,
+        this.yi + Constants.mapEditor_listBoxGap, this.xi - Constants.mapEditor_listBoxGap,
+        this.yi + 0.5 * (this.yf - this.yi) - 1);
     }
   }
 
