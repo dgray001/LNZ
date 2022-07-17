@@ -978,19 +978,61 @@ abstract class InterfaceLNZ {
 
     class CompletionTab extends AchievementTabForm {
       CompletionTab() {
-        this.addField(new MessageFormField("CompletionTab"));
+        super();
+        ArrayList<MessageFormField> achievements_complete = new ArrayList<MessageFormField>();
+        ArrayList<MessageFormField> achievements_incomplete = new ArrayList<MessageFormField>();
+        for (AchievementCode code : AchievementCode.VALUES_COMPLETED()) {
+          if (global.profile.achievements.get(code).equals(Boolean.TRUE)) {
+            achievements_complete.add(new MessageFormField(code.display_name()));
+          }
+          else {
+            achievements_incomplete.add(new MessageFormField(code.display_name()));
+          }
+        }
+        this.addField(new MessageFormField("Completion Achievements: " +
+          achievements_complete.size() + "/" + (achievements_complete.size() +
+          achievements_incomplete.size()) + " completed"));
+        this.addField(new SpacerFormField(10));
+        for (MessageFormField field : achievements_complete) {
+          field.text_color = ccolor(0);
+          this.addField(field);
+        }
+        for (MessageFormField field : achievements_incomplete) {
+          field.text_color = ccolor(170, 200);
+          this.addField(field);
+        }
       }
     }
 
     class ContinuousTab extends AchievementTabForm {
       ContinuousTab() {
+        super();
         this.addField(new MessageFormField("ContinuousTab"));
+        this.addField(new SpacerFormField(10));
       }
     }
 
     class HiddenTab extends AchievementTabForm {
       HiddenTab() {
-        this.addField(new MessageFormField("HiddenTab"));
+        super();
+        ArrayList<MessageFormField> achievements_complete = new ArrayList<MessageFormField>();
+        ArrayList<MessageFormField> achievements_incomplete = new ArrayList<MessageFormField>();
+        for (AchievementCode code : AchievementCode.VALUES_HIDDEN()) {
+          if (global.profile.achievements.get(code).equals(Boolean.TRUE)) {
+            achievements_complete.add(new MessageFormField(code.display_name()));
+          }
+          else {
+            achievements_incomplete.add(new MessageFormField(code.display_name()));
+          }
+        }
+        this.addField(new MessageFormField("Hidden Achievements: " +
+          achievements_complete.size() + "/" + (achievements_complete.size() +
+          achievements_incomplete.size()) + " completed"));
+        this.addField(new SpacerFormField(10));
+        for (MessageFormField field : achievements_complete) {
+          field.text_color = ccolor(0);
+          this.addField(field);
+        }
       }
     }
 
@@ -1005,44 +1047,37 @@ abstract class InterfaceLNZ {
         this.canceled = true;
         return;
       }
-      this.footer_space = 60;
+
+      this.footer_space = 150;
       this.tab_button_height = 55;
       this.tab_button_max_width = 140;
+      this.tab_button_alignment = CENTER;
       this.addTab(new CompletionTab(), "Completion");
       this.addTab(new ContinuousTab(), "Continuous");
       this.addTab(new HiddenTab(), "Hidden");
+
       TabConfig tab_config = new TabConfig();
       tab_config.tab_text_size = 18;
       tab_config.color_background = ccolor(150, 220, 220);
       tab_config.color_stroke = ccolor(150, 220, 220);
+      tab_config.scrollbar_width_multiplier = 0.015;
+      tab_config.scrollbar_min_width = 15;
+      tab_config.scrollbar_max_width = 20;
+      tab_config.scrollbar_color_default = ccolor(100, 200, 200);
+      tab_config.scrollbar_color_hovered = ccolor(150, 220, 220);
+      tab_config.scrollbar_color_clicked = ccolor(50, 180, 180);
+      tab_config.scrollbar_color_space = ccolor(150, 220, 220);
       this.setTabConfig(tab_config);
-      /*this.addField(new SpacerFormField(10));
-      this.addField(new MessageFormField("Achievement Tokens: " + global.profile.achievement_tokens + " 〶"));
+
       SubmitFormField perk_tree = new SubmitFormField("");
       perk_tree.button = new OpenPerkTreeButton(0, 0, 0, 30);
       perk_tree.align_left = true;
       textSize(perk_tree.button.text_size);
       perk_tree.setButtonHeight((textAscent() + textDescent() + 4) * 1.2);
+
+      this.addField(new SpacerFormField(10));
+      this.addField(new MessageFormField(" Achievement Tokens: " + global.profile.achievement_tokens + " 〶"));
       this.addField(perk_tree);
-      this.addField(new SpacerFormField(30));
-      ArrayList<MessageFormField> achievements_complete = new ArrayList<MessageFormField>();
-      ArrayList<MessageFormField> achievements_incomplete = new ArrayList<MessageFormField>();
-      for (AchievementCode code : AchievementCode.VALUES) {
-        if (global.profile.achievements.get(code).equals(Boolean.TRUE)) {
-          achievements_complete.add(new MessageFormField(code.display_name()));
-        }
-        else {
-          achievements_incomplete.add(new MessageFormField(code.display_name()));
-        }
-      }
-      for (MessageFormField field : achievements_complete) {
-        field.text_color = ccolor(0);
-        this.addField(field);
-      }
-      for (MessageFormField field : achievements_incomplete) {
-        field.text_color = ccolor(170, 150);
-        this.addField(field);
-      }*/
     }
 
     void submit() {

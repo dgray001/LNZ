@@ -5,11 +5,8 @@ v0.7.8: World Map (07/23)
   - which heroes are there
   - can see what to do to unlock
   - for each hero there can click on it to play that hero (brings up original 'start or load' form)
- l: Make a custom AchievementFormField
- m: TabbedForm class
  n: Apply TabbedForm class to OptionsForm
  o: Add additional options into OptionsForm
- p: Apply tabbed form to Achievements (completion, continuous, hidden)
  q: Add continuous achievements (walk x distance, gain x xp, kill x units)
  r: Make mock car break down minigame
  s: Can unlock minigame in PlayingInterface

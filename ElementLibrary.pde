@@ -4446,8 +4446,8 @@ abstract class Form {
     scrollbar_width = min(this.scrollbar_width_multiplier * (this.xf - this.xi), scrollbar_width);
     if (title == null) {
       this.text_title = null;
-      this.scrollbar.setLocation(this.xf - scrollbar_width, this.yi, this.xf, this.yf);
       this.yStart = this.yi + 1;
+      this.scrollbar.setLocation(this.xf - scrollbar_width, this.yStart(), this.xf, this.yf);
     }
     else {
       this.text_title = "";
@@ -4462,7 +4462,7 @@ abstract class Form {
         }
       }
       this.yStart = this.yi + 2 + textAscent() + textDescent();
-      this.scrollbar.setLocation(xf - scrollbar_width, this.yStart, this.xf, this.yf);
+      this.scrollbar.setLocation(xf - scrollbar_width, this.yStart(), this.xf, this.yf);
     }
     this.refreshScrollbar();
   }
@@ -4497,7 +4497,7 @@ abstract class Form {
   }
 
   void refreshScrollbar() {
-    float currY = this.yStart;
+    float currY = this.yStart();
     for (int i = 0; i < this.fields.size(); i++) {
       currY += this.fields.get(i).getHeight();
       if (i > 0) {
@@ -4605,7 +4605,7 @@ abstract class Form {
       this.hovered = false;
     }
     mX -= this.xi + 1;
-    mY -= this.yStart;
+    mY -= this.yStart();
     float currY = this.yStart();
     for (int i = int(floor(this.scrollbar.value)); i < this.fields.size(); i++) {
       if (currY + this.fields.get(i).getHeight() > this.yf) {
@@ -4726,6 +4726,11 @@ abstract class Form {
 abstract class TabbedForm extends Form {
   class FormTab {
     class TabButton extends RippleRectangleButton {
+      protected color text_default = ccolor(0);
+      protected color text_hover = ccolor(255);
+      protected color text_click = ccolor(0);
+      protected boolean current_tab = false;
+
       TabButton(String header) {
         super();
         this.message = header;
@@ -4734,8 +4739,43 @@ abstract class TabbedForm extends Form {
       }
 
       @Override
+      void drawButton() {
+        if (this.current_tab) {
+          fill(brighten(this.color_hover));
+          stroke(brighten(this.color_hover));
+          strokeWeight(0.01);
+          rectMode(CORNERS);
+          rect(this.xi, this.yi, this.xf, this.yf);
+          fill(darken(this.color_click));
+          rect(this.xi, this.yf - 6, this.xf, this.yf);
+        }
+        super.drawButton();
+      }
+
+      @Override
+      void hover() {
+        super.hover();
+        if (!this.clicked) {
+          this.color_text = this.text_hover;
+        }
+      }
+
+      @Override
+      void dehover() {
+        super.dehover();
+        this.color_text = this.text_default;
+      }
+
+      @Override
+      void click() {
+        super.click();
+        this.color_text = this.text_click;
+      }
+
+      @Override
       void release() {
         super.release();
+        this.color_text = this.text_default;
         if (this.hovered) {
           FormTab.this.switchToTab();
         }
@@ -4759,6 +4799,24 @@ abstract class TabbedForm extends Form {
     }
 
     void applyConfig(TabConfig config) {
+      this.button.text_size = config.tab_text_size;
+      this.form.color_background = config.color_background;
+      this.form.color_header = config.color_header;
+      this.form.color_stroke = config.color_stroke;
+      this.form.color_title = config.color_title;
+      this.form.scrollbar_min_width = config.scrollbar_min_width;
+      this.form.scrollbar_max_width = config.scrollbar_max_width;
+      this.form.scrollbar_width_multiplier = config.scrollbar_width_multiplier;
+      this.form.scrollbar.setButtonColors(config.scrollbar_color_disabled,
+        config.scrollbar_color_default, config.scrollbar_color_hovered,
+        config.scrollbar_color_clicked, ccolor(0));
+      this.form.scrollbar.button_upspace.setColors(config.scrollbar_color_disabled,
+        config.scrollbar_color_space, config.scrollbar_color_space,
+        config.scrollbar_color_space_clicked, ccolor(0));
+      this.form.scrollbar.button_downspace.setColors(config.scrollbar_color_disabled,
+        config.scrollbar_color_space, config.scrollbar_color_space,
+        config.scrollbar_color_space_clicked, ccolor(0));
+      this.form.refreshTitle();
     }
   }
 
@@ -4769,6 +4827,15 @@ abstract class TabbedForm extends Form {
     private color color_header = ccolor(170);
     private color color_stroke = ccolor(0);
     private color color_title = ccolor(0);
+    private float scrollbar_width_multiplier = 0.05;
+    private float scrollbar_min_width = 30;
+    private float scrollbar_max_width = 60;
+    private color scrollbar_color_disabled = ccolor(220, 180);
+    private color scrollbar_color_default = ccolor(220);
+    private color scrollbar_color_hovered = ccolor(170);
+    private color scrollbar_color_clicked = ccolor(120);
+    private color scrollbar_color_space = ccolor(235);
+    private color scrollbar_color_space_clicked = ccolor(0);
 
     TabConfig() {
     }
@@ -4781,6 +4848,7 @@ abstract class TabbedForm extends Form {
   protected float footer_space = 0;
   protected float tab_button_height = 0;
   protected boolean tab_button_fill_space = false;
+  protected int tab_button_alignment = LEFT;
   protected float tab_button_max_width = 100;
 
   TabbedForm() {
@@ -4808,7 +4876,7 @@ abstract class TabbedForm extends Form {
     super.setLocation(xi, yi, xf, yf);
     try {
       for (FormTab tab : this.tabs) {
-        tab.form.setLocation(xi, this.yStart + this.tab_button_height, xf, yf - this.footer_space);
+        tab.form.setLocation(xi + 1, this.yStart + this.tab_button_height, xf - 1, yf - this.footer_space);
       }
       this.resizeTabs();
     } catch (NullPointerException e) {} // called in super constructor
@@ -4824,7 +4892,7 @@ abstract class TabbedForm extends Form {
   }
 
   void addTab(Form form, String message) {
-    form.setLocation(xi, this.yStart + this.tab_button_height + 1, xf, yf - this.footer_space - 1);
+    form.setLocation(this.xi + 1, this.yStart + this.tab_button_height + 1, this.xf - 1, this.yf - this.footer_space - 1);
     FormTab tab = new FormTab(this.tabs.size(), form, message);
     tab.applyConfig(this.tab_config);
     this.tabs.add(tab);
@@ -4836,13 +4904,25 @@ abstract class TabbedForm extends Form {
       return;
     }
     float tab_button_width = 0;
-    if (this.tab_button_fill_space || this.tabs.size() * (this.tab_button_max_width + 1) - 1 > this.form_width()) {
+    float x_curr = this.xi;
+    float tab_width = this.tabs.size() * (this.tab_button_max_width + 1) - 1;
+    if (this.tab_button_fill_space || tab_width > this.form_width()) {
       tab_button_width = (this.form_width() - this.tabs.size() + 1) / this.tabs.size();
     }
     else {
       tab_button_width = this.tab_button_max_width;
+      switch(this.tab_button_alignment) {
+        case CENTER:
+          x_curr = this.xi + 0.5 * (this.form_width() - tab_width);
+          break;
+        case RIGHT:
+          x_curr = this.xf - tab_width;
+          break;
+        case LEFT:
+        default:
+          break;
+      }
     }
-    float x_curr = this.xi;
     for (FormTab tab : this.tabs) {
       tab.button.setLocation(x_curr, this.yStart, x_curr + tab_button_width, this.yStart + this.tab_button_height);
       x_curr += tab_button_width + 1;
@@ -4860,10 +4940,14 @@ abstract class TabbedForm extends Form {
   void update(int millis) {
     this.drawHeader(millis);
     for (int i = 0; i < this.tabs.size(); i++) {
-      this.tabs.get(i).button.update(millis);
       if (i == this.current_tab) {
         this.tabs.get(i).form.update(millis);
+        this.tabs.get(i).button.current_tab = true;
       }
+      else {
+        this.tabs.get(i).button.current_tab = false;
+      }
+      this.tabs.get(i).button.update(millis);
     }
     this.drawContent(this.yf - this.footer_space, millis);
   }

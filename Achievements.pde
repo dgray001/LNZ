@@ -1,3 +1,8 @@
+enum AchievementType {
+  COMPLETED, CONTINUOUS, HIDDEN;
+}
+
+
 enum AchievementCode {
   COMPLETED_TUTORIAL, COMPLETED_FRANCISCAN, COMPLETED_DANSHOUSE,
 
@@ -14,6 +19,36 @@ enum AchievementCode {
   ;
 
   private static final List<AchievementCode> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+
+  private static final List<AchievementCode> VALUES_COMPLETED() {
+    List<AchievementCode> array = new ArrayList<AchievementCode>();
+    for (AchievementCode code : AchievementCode.VALUES) {
+      if (AchievementCode.achievementType(code) == AchievementType.COMPLETED) {
+        array.add(code);
+      }
+    }
+    return Collections.unmodifiableList(array);
+  }
+
+  private static final List<AchievementCode> VALUES_CONTINUOUS() {
+    List<AchievementCode> array = new ArrayList<AchievementCode>();
+    for (AchievementCode code : AchievementCode.VALUES) {
+      if (AchievementCode.achievementType(code) == AchievementType.CONTINUOUS) {
+        array.add(code);
+      }
+    }
+    return Collections.unmodifiableList(array);
+  }
+
+  private static final List<AchievementCode> VALUES_HIDDEN() {
+    List<AchievementCode> array = new ArrayList<AchievementCode>();
+    for (AchievementCode code : AchievementCode.VALUES) {
+      if (AchievementCode.achievementType(code) == AchievementType.HIDDEN) {
+        array.add(code);
+      }
+    }
+    return Collections.unmodifiableList(array);
+  }
 
   public String display_name() {
     return AchievementCode.display_name(this);
@@ -174,6 +209,56 @@ enum AchievementCode {
         return "Killed_John_Rankin";
       default:
         return "ERROR";
+    }
+  }
+
+  public AchievementType achievementType() {
+    return this.achievementType(this);
+  }
+  public static AchievementType achievementType(AchievementCode code) {
+    switch(code) {
+      // completion
+      case COMPLETED_TUTORIAL:
+      case COMPLETED_FRANCISCAN:
+      case COMPLETED_DANSHOUSE:
+        return AchievementType.COMPLETED;
+      // continuous
+      case CONTINUOUS_KILLSI:
+      case CONTINUOUS_KILLSII:
+      case CONTINUOUS_KILLSIII:
+      case CONTINUOUS_KILLSIV:
+      case CONTINUOUS_KILLSV:
+      case CONTINUOUS_KILLSVI:
+      case CONTINUOUS_KILLSVII:
+      case CONTINUOUS_KILLSVIII:
+      case CONTINUOUS_KILLSIX:
+      case CONTINUOUS_KILLSX:
+      case CONTINUOUS_DEATHSI:
+      case CONTINUOUS_DEATHSII:
+      case CONTINUOUS_DEATHSIII:
+      case CONTINUOUS_DEATHSIV:
+      case CONTINUOUS_DEATHSV:
+      case CONTINUOUS_DEATHSVI:
+      case CONTINUOUS_DEATHSVII:
+      case CONTINUOUS_DEATHSVIII:
+      case CONTINUOUS_DEATHSIX:
+      case CONTINUOUS_DEATHSX:
+      case CONTINUOUS_WALKI:
+      case CONTINUOUS_WALKII:
+      case CONTINUOUS_WALKIII:
+      case CONTINUOUS_WALKIV:
+      case CONTINUOUS_WALKV:
+      case CONTINUOUS_WALKVI:
+      case CONTINUOUS_WALKVII:
+      case CONTINUOUS_WALKVIII:
+      case CONTINUOUS_WALKIX:
+      case CONTINUOUS_WALKX:
+        return AchievementType.CONTINUOUS;
+      // hidden
+      case KILLED_JOHN_RANKIN:
+        return AchievementType.HIDDEN;
+      default:
+        return null;
     }
   }
 
