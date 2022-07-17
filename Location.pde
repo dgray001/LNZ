@@ -258,6 +258,29 @@ enum Location {
     }
   }
 
+  public String getCampaignSubtitle() {
+    return Location.getCampaignSubtitle(this);
+  }
+  public static String getCampaignSubtitle(Location a) {
+    switch(a) {
+      case FRANCISCAN_FRANCIS:
+      case FRANCISCAN_LEV2_FRONTDOOR:
+      case FRANCISCAN_LEV2_AHIMDOOR:
+      case FRANCISCAN_LEV2_CHAPELDOOR:
+      case FRANCISCAN_LEV2_BROTHERSDOOR:
+      case FRANCISCAN_LEV2_CUSTODIALDOOR:
+      case FRANCISCAN_LEV3_KILLEDHECK:
+      case FRANCISCAN_LEV3_AROUNDCODA:
+        return "Ben Nelson Campaign";
+      case DANS_HOUSE:
+        return "Dan Gray Campaign";
+      case AREA_FERNWOOD:
+        return "Area - Forest";
+      default:
+        return "-- Error --";
+    }
+  }
+
   public String campaignImagePath() {
     return Location.campaignImagePath(this);
   }
@@ -281,6 +304,48 @@ enum Location {
     }
   }
 
+  public String campaignDescription() {
+    return Location.campaignDescription(this);
+  }
+  public static String campaignDescription(Location a) {
+    switch(a) {
+      case FRANCISCAN_FRANCIS:
+      case FRANCISCAN_LEV2_FRONTDOOR:
+      case FRANCISCAN_LEV2_AHIMDOOR:
+      case FRANCISCAN_LEV2_CHAPELDOOR:
+      case FRANCISCAN_LEV2_BROTHERSDOOR:
+      case FRANCISCAN_LEV2_CUSTODIALDOOR:
+      case FRANCISCAN_LEV3_KILLEDHECK:
+      case FRANCISCAN_LEV3_AROUNDCODA:
+        return "Academically excellent, passionately Catholic, thoroughly " +
+          "zombified, Franciscan University is the flagship Catholic University " +
+          "of the Midwest, boasting famous names like Scott Hahn and Cathy " +
+          "Heck. This is also where Ben Nelson was at the time of the zombie " +
+          "apocalypse. Start in the Soldier's common room, where Ben was the " +
+          "coordinate and fearless leader, and venture out into the university " +
+          "campus, slaying Frannies left and right like your some kind of " +
+          "vigilante Holy Ghost.";
+      case DANS_HOUSE:
+        return "Water Works Rd was annexed by the State of Texas in 1997, by " +
+          "Dan's legendary-but-now-a-brainless-zombie the Great Redneck Philip " +
+          "of Denison. Even if you can kill Dan's zombified family, escape the " +
+          "sexy clutches of Dan's homosexual dog, and not get gored by a wild " +
+          "yak, you'll be hard-pressed to make it out of Water Works Rd with " +
+          "a working vehicle. Countless redneck zombies are down yonder by " +
+          "the fishing hole and the road is blocked by fallen trees.\nAlso, " +
+          "one last piece of advice: if the cop says to drop the rake, just " +
+          "drop the useless rake man.";
+      case AREA_FERNWOOD:
+        return "In the backdrop of rural Ohio Valley lies an ancient forest " +
+          "maintained by state park rangers. This vast woodland area might " +
+          "not be free of zombies, but still maintains a healthy wildlife " +
+          "habitat and much fertile ground for plants. If man-made supplies " +
+          "are needed, simply raid a park ranger outpost or hiker campground.";
+      default:
+        return "transparent.png";
+    }
+  }
+
   public boolean isArea() {
     return Location.isArea(this);
   }
@@ -291,6 +356,16 @@ enum Location {
       default:
         return false;
     }
+  }
+
+  public String levelVsAreaStringLabel() {
+    return Location.levelVsAreaStringLabel(this);
+  }
+  public static String levelVsAreaStringLabel(Location a) {
+    if (Location.isArea(a)) {
+      return "Area";
+    }
+    return "Level";
   }
 
   public Location areaLocation() {

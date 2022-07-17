@@ -25,13 +25,17 @@ class PlayingInterface extends InterfaceLNZ {
   class PlayingButton1 extends PlayingButton {
     PlayingButton1() {
       super();
-      this.message = "";
+      this.message = "Start\nPlaying";
     }
     void release() {
       if (!this.hovered) {
         return;
       }
       this.stayDehovered();
+      if (PlayingInterface.this.status == PlayingStatus.WORLD_MAP) {
+        PlayingInterface.this.checkLevelSave();
+        return;
+      }
       Hero h = PlayingInterface.this.getCurrentHeroIfExists();
       if (h != null) {
         if (PlayingInterface.this.form != null || PlayingInterface.this.status != PlayingStatus.PLAYING) {
@@ -132,7 +136,7 @@ class PlayingInterface extends InterfaceLNZ {
       MessageFormField message4 = new MessageFormField("");
       message4.text_color = color(150, 20, 20);
       message4.setTextSize(18);
-      SubmitCancelFormField submit = new SubmitCancelFormField("Begin Level", "Abandon Level");
+      ButtonsFormField submit = new ButtonsFormField("Begin Level", "Abandon Level");
       submit.button1.setColors(color(220), color(190, 240, 190),
         color(140, 190, 140), color(90, 140, 90), color(0));
       submit.button2.setColors(color(220), color(190, 240, 190),
@@ -157,8 +161,7 @@ class PlayingInterface extends InterfaceLNZ {
       this.addField(switch_hero);
     }
 
-    @Override
-    void cancel() {
+    void abandonLevel() {
       if (this.hero.location.isArea()) {
         this.fields.get(5).setValue("You can't abandon an area.");
         return;
@@ -181,6 +184,14 @@ class PlayingInterface extends InterfaceLNZ {
     @Override
     void buttonPress(int i) {
       switch(i) {
+        case 7: // buttons
+          if (this.fields.get(7).getValue().equals("0")) {
+            this.submit();
+          }
+          else {
+            this.abandonLevel();
+          }
+          break;
         case 8: // switch hero
           PlayingInterface.this.heroesForm();
           break;
@@ -195,7 +206,8 @@ class PlayingInterface extends InterfaceLNZ {
   class ConfirmContinueLevelForm extends PlayingForm {
     protected Hero hero = null;
     ConfirmContinueLevelForm(Hero hero) {
-      super("Continue Level: " + hero.location.display_name(), 550, 440);
+      super("Continue " + hero.location.levelVsAreaStringLabel() + ": " +
+        hero.location.display_name(), 550, 440);
       this.hero = hero;
 
       MessageFormField message1 = new MessageFormField("Continue the following level?");
@@ -211,7 +223,7 @@ class PlayingInterface extends InterfaceLNZ {
       MessageFormField message4 = new MessageFormField("");
       message4.text_color = color(150, 20, 20);
       message4.setTextSize(18);
-      SubmitCancelFormField submit = new SubmitCancelFormField("Continue Level", "Abandon Level");
+      ButtonsFormField submit = new ButtonsFormField("Continue Level", "Abandon Level");
       submit.button1.setColors(color(220), color(190, 240, 190),
         color(140, 190, 140), color(90, 140, 90), color(0));
       submit.button2.setColors(color(220), color(190, 240, 190),
@@ -242,8 +254,7 @@ class PlayingInterface extends InterfaceLNZ {
       }
     }
 
-    @Override
-    void cancel() {
+    void abandonLevel() {
       if (this.hero.location.isArea()) {
         this.fields.get(5).setValue("You can't abandon an area.");
         return;
@@ -266,6 +277,14 @@ class PlayingInterface extends InterfaceLNZ {
     @Override
     void buttonPress(int i) {
       switch(i) {
+        case 7: // buttons
+          if (this.fields.get(7).getValue().equals("0")) {
+            this.submit();
+          }
+          else {
+            this.abandonLevel();
+          }
+          break;
         case 8: // switch hero
           PlayingInterface.this.heroesForm();
           break;
@@ -288,7 +307,8 @@ class PlayingInterface extends InterfaceLNZ {
   class AbandonLevelWhilePlayingForm extends PlayingForm {
     protected Hero hero = null;
     AbandonLevelWhilePlayingForm(Hero hero) {
-      super("Abandon Level: " + hero.location.display_name(), 550, 440);
+      super("Abandon " + hero.location.levelVsAreaStringLabel() + ": " +
+        hero.location.display_name(), 550, 440);
       this.hero = hero;
       this.cancel = null;
 
@@ -305,7 +325,7 @@ class PlayingInterface extends InterfaceLNZ {
       MessageFormField message4 = new MessageFormField("");
       message4.text_color = color(150, 20, 20);
       message4.setTextSize(18);
-      SubmitCancelFormField submit = new SubmitCancelFormField("Abandon Level", "Restart Level");
+      ButtonsFormField submit = new ButtonsFormField("Abandon Level", "Restart Level");
       submit.button1.setColors(color(220), color(190, 240, 190),
         color(140, 190, 140), color(90, 140, 90), color(0));
       submit.button2.setColors(color(220), color(190, 240, 190),
@@ -334,8 +354,7 @@ class PlayingInterface extends InterfaceLNZ {
       this.addField(continue_level);
     }
 
-    @Override
-    void cancel() {
+    void restartLevel() {
       if (this.hero.location.isArea()) {
         this.fields.get(5).setValue("You can't restart an area.");
         return;
@@ -362,6 +381,14 @@ class PlayingInterface extends InterfaceLNZ {
     @Override
     void buttonPress(int i) {
       switch(i) {
+        case 7: // buttons
+          if (this.fields.get(7).getValue().equals("0")) {
+            this.submit();
+          }
+          else {
+            this.restartLevel();
+          }
+          break;
         case 8: // switch hero
           PlayingInterface.this.heroesForm();
           break;
@@ -649,7 +676,7 @@ class PlayingInterface extends InterfaceLNZ {
     }
     @Override
     void run() {
-      WorldMap map = new WorldMap();
+      WorldMap map = new WorldMap(PlayingInterface.this);
       map.setLocation(PlayingInterface.this.leftPanel.size, 0, width - PlayingInterface.this.rightPanel.size, height);
       PlayingInterface.this.world_map = map;
     }
@@ -704,6 +731,13 @@ class PlayingInterface extends InterfaceLNZ {
     this.buttons[3].setXLocation(xi, xi + buttonSize);
   }
 
+
+  void returnToWorldMap() {
+    this.status = PlayingStatus.WORLD_MAP;
+    this.buttons[0].message = "Start\nPlaying";
+    this.worldMapThread = new LoadWorldMapThread();
+    this.worldMapThread.start();
+  }
 
   void checkLevelSave() {
     if (global.profile.curr_hero == null || global.profile.curr_hero == HeroCode.ERROR) {
@@ -942,16 +976,19 @@ class PlayingInterface extends InterfaceLNZ {
     this.newLevelThread.start();
   }
 
-  void switchHero(Hero hero) {
-    if (hero == null || hero.code == null || hero.code == HeroCode.ERROR) {
+  void switchHero(HeroCode code, boolean start_playing) {
+    if (code == null || code == HeroCode.ERROR) {
       global.errorMessage("ERROR: Can't switch to a hero code that doesn't exist.");
       return;
     }
-    if (!global.profile.heroes.containsKey(hero.code)) {
+    if (!global.profile.heroes.containsKey(code)) {
       global.errorMessage("ERROR: Can't switch to a hero that hasn't beens unlocked.");
       return;
     }
-    if (global.profile.curr_hero == hero.code) {
+    if (global.profile.curr_hero == code) {
+      if (start_playing && this.status == PlayingStatus.WORLD_MAP) {
+        this.checkLevelSave();
+      }
       return;
     }
     switch(this.status) {
@@ -985,9 +1022,12 @@ class PlayingInterface extends InterfaceLNZ {
         global.errorMessage("ERROR: Playing status " + this.status + " not recognized.");
         break;
     }
-    global.profile.curr_hero = hero.code;
+    global.profile.curr_hero = code;
     global.profile.saveHeroesFile();
-    this.status = PlayingStatus.WORLD_MAP;
+    this.returnToWorldMap();
+    if (start_playing) {
+      this.checkLevelSave();
+    }
   }
 
 
@@ -1023,7 +1063,7 @@ class PlayingInterface extends InterfaceLNZ {
           break;
       }
     }
-    this.status = PlayingStatus.WORLD_MAP;
+    this.returnToWorldMap();;
     this.level = null;
   }
 
@@ -1050,7 +1090,7 @@ class PlayingInterface extends InterfaceLNZ {
 
   void saveAndReturnToInitialState() {
     this.saveLevel();
-    this.status = PlayingStatus.WORLD_MAP;
+    this.returnToWorldMap();;
     this.level = null;
   }
 
@@ -1112,7 +1152,7 @@ class PlayingInterface extends InterfaceLNZ {
         else {
           if (this.newLevelThread.level == null || this.newLevelThread.level.nullify) {
             this.level = null;
-            this.status = PlayingStatus.WORLD_MAP;
+            this.returnToWorldMap();;
           }
           else {
             this.level = this.newLevelThread.level;
@@ -1156,7 +1196,7 @@ class PlayingInterface extends InterfaceLNZ {
           if (this.savedLevelThread.level == null || this.savedLevelThread.level.nullify ||
             this.savedLevelThread.level.currMap == null || this.savedLevelThread.level.currMap.nullify) {
             this.level = null;
-            this.status = PlayingStatus.WORLD_MAP;
+            this.returnToWorldMap();;
           }
           else {
             this.level = this.savedLevelThread.level;
@@ -1187,7 +1227,7 @@ class PlayingInterface extends InterfaceLNZ {
         }
         else {
           global.errorMessage("ERROR: In playing status but no level to update.");
-          this.status = PlayingStatus.WORLD_MAP;
+          this.returnToWorldMap();;
         }
         break;
       default:

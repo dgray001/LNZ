@@ -1,9 +1,4 @@
 v0.7.8: World Map (07/23)
- m/n: Clicking location circle brings up form on left top with info about campaign / area
-  - description
-  - which heroes are there
-  - can see what to do to unlock
-  - for each hero there can click on it to play that hero (brings up original 'start or load' form)
  o: Apply TabbedForm class to OptionsForm
  p: Add additional options into OptionsForm
  q: Add continuous achievements (walk x distance, gain x xp, kill x units)
@@ -27,6 +22,7 @@ v0.7.8: World Map (07/23)
  - Need road / parking lot chunk in initial Fernwood map
  - kyle aubert at circle map
  - Perks to view healthbars, magnetic wallet option, magnetic hands option, others
+ - WorldMap circles can see which ones are unlocked / what to do to unlock in LeftPanelForm
 
  - Finish frontdoor forcing you to get access to a car
    => Finish map outlines

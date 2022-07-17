@@ -574,7 +574,7 @@ abstract class InterfaceLNZ {
 
     void submit() {
       if (this.switch_hero && PlayingInterface.class.isInstance(InterfaceLNZ.this)) {
-        ((PlayingInterface)InterfaceLNZ.this).switchHero(this.hero);
+        ((PlayingInterface)InterfaceLNZ.this).switchHero(this.hero.code, true);
       }
       this.canceled = true;
       InterfaceLNZ.this.return_to_heroes_menu = false;

@@ -88,6 +88,90 @@ class WorldMap {
 
 
   class LeftPanelForm extends Form {
+    class HeroListFormField extends MessageFormField {
+      class HeroCodeButton extends ImageButton {
+        protected HeroCode code;
+        HeroCodeButton(HeroCode code) {
+          super(global.images.getImage("units/" + code.imagePathHeader() + ".png"), 0, 0, 0, 0);
+          this.code = code;
+          this.overshadow_colors = true;
+          this.setColors(ccolor(200, 100), ccolor(1, 0), ccolor(220, 80), ccolor(180, 140), ccolor(0));
+        }
+        void hover() {}
+        void dehover() {}
+        void click() {}
+        void release() {
+          if (!this.hovered) {
+            return;
+          }
+          HeroListFormField.this.switchToHero(this.code);
+        }
+      }
+      protected ArrayList<HeroCodeButton> heroes = new ArrayList<HeroCodeButton>();
+      protected float default_hero_image_height = 70;
+      protected float hero_image_height = 0;
+      protected float button_gap = 3;
+      HeroListFormField() {
+        super("Heroes at this location:");
+        this.setTextSize(20);
+      }
+      void addHeroCode(HeroCode code) {
+        this.heroes.add(new HeroCodeButton(code));
+        this.updateWidthDependencies();
+      }
+      void switchToHero(HeroCode code) {
+        LeftPanelForm.this.switchToHero(code);
+      }
+      @Override
+      void updateWidthDependencies() {
+        super.updateWidthDependencies();
+        if (this.heroes.size() == 0) {
+          this.hero_image_height = 0;
+          return;
+        }
+        this.hero_image_height = min(this.default_hero_image_height,
+          (this.field_width - this.button_gap * this.heroes.size() + this.button_gap) / this.heroes.size());
+        float x_curr = 0;
+        float y_start = super.getHeight() + this.button_gap;
+        for (HeroCodeButton button : this.heroes) {
+          button.setLocation(x_curr, y_start, x_curr + this.hero_image_height, y_start + this.hero_image_height);
+          x_curr += this.hero_image_height + this.button_gap;
+        }
+      }
+      @Override
+      float getHeight() {
+        return super.getHeight() + this.hero_image_height + this.button_gap;
+      }
+      @Override
+      FormFieldSubmit update(int millis) {
+        for (HeroCodeButton button : this.heroes) {
+          button.update(millis);
+        }
+        if (this.heroes.size() == 0) {
+          return FormFieldSubmit.NONE;
+        }
+        return super.update(millis);
+      }
+      @Override
+      void mouseMove(float mX, float mY) {
+        for (HeroCodeButton button : this.heroes) {
+          button.mouseMove(mX, mY);
+        }
+      }
+      @Override
+      void mousePress() {
+        for (HeroCodeButton button : this.heroes) {
+          button.mousePress();
+        }
+      }
+      @Override
+      void mouseRelease(float mX, float mY) {
+        for (HeroCodeButton button : this.heroes) {
+          button.mouseRelease(mX, mY);
+        }
+      }
+    }
+
     protected Location location;
 
     LeftPanelForm(Location location, float xi, float yi, float xf, float yf) {
@@ -103,11 +187,36 @@ class WorldMap {
 
       MessageFormField title = new MessageFormField(location.getCampaignName());
       title.text_align = CENTER;
+      title.setTextSize(26);
+      MessageFormField subtitle = new MessageFormField(location.getCampaignSubtitle());
+      subtitle.text_align = CENTER;
+      subtitle.setTextSize(20);
+      TextBoxFormField description = new TextBoxFormField(location.campaignDescription(), 250);
+      description.textbox.color_background = this.color_background;
+      description.textbox.scrollbar.setButtonColors(ccolor(220), ccolor(220, 160, 110), ccolor(
+        240, 180, 130), ccolor(200, 140, 90), ccolor(0));
+      description.textbox.scrollbar.button_upspace.setColors(ccolor(170), ccolor(255, 200, 150),
+        ccolor(255, 200, 150), ccolor(60, 30, 0), ccolor(0));
+      description.textbox.scrollbar.button_downspace.setColors(ccolor(170), ccolor(255, 200, 150),
+        ccolor(255, 200, 150), ccolor(60, 30, 0), ccolor(0));
+      HeroListFormField heroes = new HeroListFormField();
+      for (Hero hero : global.profile.heroes.values()) {
+        if (hero.location != location) {
+          continue;
+        }
+        heroes.addHeroCode(hero.code);
+      }
 
       this.addField(title);
+      this.addField(subtitle);
       this.addField(new ImageFormField(global.images.getImage(location.campaignImagePath()), 90));
-      // description, difficulty (campaign or area)
-      //
+      this.addField(description);
+      this.addField(heroes);
+      // unlocked / how to unlock
+    }
+
+    void switchToHero(HeroCode code) {
+      WorldMap.this.switchToHero(code);
     }
 
     void submit() {}
@@ -172,7 +281,10 @@ class WorldMap {
 
   private int last_update_time = 0;
 
-  WorldMap() {
+  private PlayingInterface playing_interface;
+
+  WorldMap(PlayingInterface playing_interface) {
+    this.playing_interface = playing_interface;
     this.map_dimg = new DImg(global.images.getImage("world_map.jpg"));
     for (Location location : Location.VALUES) {
       if (location.isArea() || location.isCampaignStart()) {
@@ -190,6 +302,11 @@ class WorldMap {
       }
       this.setViewLocation(curr_location.worldMapLocationX(), curr_location.worldMapLocationY(), false);
     }
+  }
+
+
+  void switchToHero(HeroCode code) {
+    this.playing_interface.switchHero(code, true);
   }
 
 
@@ -349,14 +466,14 @@ class WorldMap {
         fill(global.color_nameDisplayed_background);
         stroke(global.color_nameDisplayed_background);
         strokeWeight(0.01);
-        triangle(0, -0.5 * this.circleRadius, -1.1 * this.circleRadius, -1.6 *
-          this.circleRadius, 1.1 * this.circleRadius, -1.6 * this.circleRadius);
+        triangle(0, 0, -2 * this.circleRadius, -3.5 * this.circleRadius,
+          2 * this.circleRadius, -3.5 * this.circleRadius);
         String location_name = location.location.getCampaignName();
-        textSize(18);
+        textSize(24);
         float name_width = textWidth(location_name) + 2;
         float name_height = textAscent() + textDescent() + 2;
-        float name_xi = -1.1 * this.circleRadius;
-        float name_yi = -1.6 * this.circleRadius - name_height + 1;
+        float name_xi = -2 * this.circleRadius;
+        float name_yi = -3.5 * this.circleRadius - name_height;
         fill(global.color_nameDisplayed_background);
         rectMode(CORNER);
         noStroke();
@@ -466,6 +583,9 @@ class WorldMap {
   }
 
   void mousePress() {
+    if (this.left_panel_form != null) {
+      this.left_panel_form.mousePress();
+    }
     if (!this.hovered) {
       return;
     }
@@ -477,17 +597,14 @@ class WorldMap {
     else {
       this.location_hovered.clicked = true;
     }
-    if (this.left_panel_form != null) {
-      this.left_panel_form.mousePress();
-    }
   }
 
   void mouseRelease(float mX, float mY) {
+    if (this.left_panel_form != null) {
+      this.left_panel_form.mouseRelease(mX, mY);
+    }
     if (mouseButton == LEFT) {
       this.dragging = false;
-    }
-    if (this.hovered) {
-      this.location_clicked = null;
     }
     for (LocationCircle location : this.location_circles.values()) {
       if (!this.hovered || !location.hovered) {
@@ -498,9 +615,6 @@ class WorldMap {
         location.clicked = false;
         this.location_clicked = location.location;
       }
-    }
-    if (this.left_panel_form != null) {
-      this.left_panel_form.mouseRelease(mX, mY);
     }
     if (this.location_clicked == null) {
       this.left_panel_form = null;
@@ -513,6 +627,9 @@ class WorldMap {
   }
 
   void scroll(int amount) {
+    if (this.left_panel_form != null) {
+      this.left_panel_form.scroll(amount);
+    }
     if (this.hovered) {
       float x = log(this.zoom) + Constants.playing_scrollZoomFactor * amount;
       this.setZoom(exp(x));
