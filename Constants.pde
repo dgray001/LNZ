@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\nAlpha v0.7.8o: 20220717" +
+  "\nAlpha v0.7.8p: 20220717" +
   "\n\nLines: 55249 (v0.7.8g)" +
   "\nImages: 1275 (v0.7.8)" +
   "\nSounds: 341 (v0.7.8)" +
@@ -53,6 +53,11 @@ static class Constants {
   static final float profile_heroesFormHeight = 600;
   static final float profile_heroFormWidth = 400;
   static final float profile_heroFormHeight = 500;
+  static final float profile_xpMultiplierI = 1.05;
+  static final float profile_xpMultiplierII = 1.1;
+  static final float profile_xpMultiplierIII = 1.2;
+  static final float profile_xpMultiplierIV = 1.4;
+  static final float profile_xpMultiplierV = 1.8;
 
   // Achievements
   static final int achievement_kills_I = 30;

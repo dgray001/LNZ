@@ -2780,6 +2780,9 @@ class Hero extends Unit {
       void visible() {
         this.visible = true;
         this.show_message = true;
+        if (this.unlocked) {
+          return;
+        }
         Element e = HeroTree.this.hero().element;
         this.setColors(elementalColorLocked(e), elementalColorDark(e), elementalColor(e),
           elementalColorLight(e), elementalColorText(e));
@@ -2789,6 +2792,7 @@ class Hero extends Unit {
 
       void unlock() {
         this.unlocked = true;
+        this.show_message = true;
         Element e = HeroTree.this.hero().element;
         this.setColors(elementalColorLocked(e), elementalColorLight(e), elementalColorLight(e),
           elementalColorLight(e), elementalColorText(e));

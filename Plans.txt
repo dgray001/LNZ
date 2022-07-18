@@ -1,13 +1,12 @@
 v0.7.8: World Map (07/23)
+ p: Perks to view healthbars / enemy insight / xp multipliers
+ q: In WorldMap display current hero (from profile) in left panel (bottom) and (maybe) even display inventory bar
  r: Make mock car break down minigame
  s: Can unlock minigame in PlayingInterface
  t: Can't finish campaign without finishing a minigame (or getting to certain point in minigame)
  u: Ben Nelson campaign name, description
  v: Can't finish Ben Nelson campaign without car break down minigame
-
-  - Perks to view healthbars, magnetic wallet option, magnetic hands option, others
-  - WorldMap circles can see which ones are unlocked / what to do to unlock in LeftPanelForm
-  - In WorldMap display current hero (from profile) in left panel (bottom) and (maybe) even display inventory bar
+ w: WorldMap circles can see which ones are unlocked / what to do to unlock in LeftPanelForm
 
   Minigames:
    - Campaigns can unlock minigames (completion code or in future trigger)
@@ -110,6 +109,13 @@ v0.7.9: Beta prep => if have time maybe start making more heroes (or outlines of
    - More crafting recipes (axes, tools for metalworking, hoe?, knife, bow, arrows, sling, slingshot)
    - Other generic zombies (various abilities)
    - Add magic zombie, ranged zombie (uses sight)
+   - Hero wallet (arraylist of integers where index is what kind of money):
+     => accompanying PlayerLeftPanelForm showing breakdown of what's inside
+     => can take money in and out of wallet
+     => wallet displays current (integer) money amount
+     => ATM feature to drop money from wallet to player bank account and vice versa
+     => some things return change (like Khalil), some don't (like vending machine)
+     => perks for magnetic wallet / hands
 
 
 v0.8: Campaigns II / III (09/30)

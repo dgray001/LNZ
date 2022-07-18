@@ -1,7 +1,9 @@
 enum PlayerTreeCode {
   CAN_PLAY,
   UNLOCK_DAN, UNLOCK_JF, UNLOCK_SPINNY, UNLOCK_MATTUS, UNLOCK_PATRICK,
-
+  XP_I, XP_II, XP_III, XP_IV, XP_V,
+  MAGNETIC_WALLET, MAGNETIC_HANDS,
+  HEALTHBARS, ENEMY_INSIGHTI, ENEMY_INSIGHTII,
   ;
   private static final List<PlayerTreeCode> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 
@@ -19,6 +21,22 @@ enum PlayerTreeCode {
         return "Can play " + HeroCode.display_name(HeroCode.MATTUS);
       case UNLOCK_PATRICK:
         return "Can play " + HeroCode.display_name(HeroCode.PATRICK);
+      case XP_I:
+      case XP_II:
+      case XP_III:
+      case XP_IV:
+      case XP_V:
+        return "Increase XP gained";
+      case MAGNETIC_WALLET:
+        return "Auto-deposit money";
+      case MAGNETIC_HANDS:
+        return "Auto-pickup items";
+      case HEALTHBARS:
+        return "Can toggle healthbars";
+      case ENEMY_INSIGHTI:
+        return "View enemy stats";
+      case ENEMY_INSIGHTII:
+        return "View advanced enemy stats";
       default:
         return "";
     }
@@ -38,6 +56,22 @@ enum PlayerTreeCode {
         return "Unlock Mattus";
       case UNLOCK_PATRICK:
         return "Unlock Jeremiah";
+      case XP_I:
+      case XP_II:
+      case XP_III:
+      case XP_IV:
+      case XP_V:
+        return "XP Multiplier";
+      case MAGNETIC_WALLET:
+        return "Auto Deposit";
+      case MAGNETIC_HANDS:
+        return "Auto Pickup";
+      case HEALTHBARS:
+        return "Toggle Healthbars";
+      case ENEMY_INSIGHTI:
+        return "Basic Stats";
+      case ENEMY_INSIGHTII:
+        return "Advanced Stats";
       default:
         return "";
     }
@@ -57,6 +91,26 @@ enum PlayerTreeCode {
         return "UNLOCK_MATTUS";
       case UNLOCK_PATRICK:
         return "UNLOCK_PATRICK";
+      case XP_I:
+        return "XP_I";
+      case XP_II:
+        return "XP_II";
+      case XP_III:
+        return "XP_III";
+      case XP_IV:
+        return "XP_IV";
+      case XP_V:
+        return "XP_V";
+      case MAGNETIC_WALLET:
+        return "MAGNETIC_WALLET";
+      case MAGNETIC_HANDS:
+        return "MAGNETIC_HANDS";
+      case HEALTHBARS:
+        return "HEALTHBARS";
+      case ENEMY_INSIGHTI:
+        return "ENEMY_INSIGHTI";
+      case ENEMY_INSIGHTII:
+        return "ENEMY_INSIGHTII";
       default:
         return "";
     }
@@ -77,6 +131,34 @@ enum PlayerTreeCode {
         return "Will be available in future update.";//"Unlocks Mad Dog Mattus and the accompanying campaign.";
       case UNLOCK_PATRICK:
         return "Will be available in future update.";//"Unlocks Jeremiah and the accompanying campaign.";
+      case XP_I:
+        return "This perk increase XP gained for all heroes from all sources " +
+          "by " + round((Constants.profile_xpMultiplierI-1)*100) + "%.";
+      case XP_II:
+        return "This perk increase XP gained for all heroes from all sources " +
+          "by " + round((Constants.profile_xpMultiplierII-1)*100) + "%.";
+      case XP_III:
+        return "This perk increase XP gained for all heroes from all sources " +
+          "by " + round((Constants.profile_xpMultiplierIII-1)*100) + "%.";
+      case XP_IV:
+        return "This perk increase XP gained for all heroes from all sources " +
+          "by " + round((Constants.profile_xpMultiplierIV-1)*100) + "%.";
+      case XP_V:
+        return "This perk increase XP gained for all heroes from all sources " +
+          "by " + round((Constants.profile_xpMultiplierV-1)*100) + "%.";
+      case MAGNETIC_WALLET:
+        return "Unlocking this perk allows you to auto-deposit money into " +
+          "your hero's wallet. When toggled, any money pickup up will be " +
+          "auto-deposited into your wallet.";
+      case MAGNETIC_HANDS:
+        return "Unlocking this perk allows you to auto-pickup items. When " +
+          "toggled, moving near an item will place it in your hero's inventory.";
+      case HEALTHBARS:
+        return "This perk allows you to toggle healthbars above units in-game.";
+      case ENEMY_INSIGHTI:
+        return "This perk allows you to view basic stats on other units in-game.";
+      case ENEMY_INSIGHTII:
+        return "This perk allows you to view advanced stats on other units in-game.";
       default:
         return "";
     }
@@ -86,13 +168,33 @@ enum PlayerTreeCode {
     switch(this) {
       case CAN_PLAY:
         return 1;
-      case UNLOCK_DAN:
+      case UNLOCK_DAN: // in future these costs scale from 2 - 6 based on number bought
         return 3;
       case UNLOCK_JF:
       case UNLOCK_SPINNY:
       case UNLOCK_MATTUS:
       case UNLOCK_PATRICK:
         return 30;
+      case XP_I:
+        return 2;
+      case XP_II:
+        return 4;
+      case XP_III:
+        return 8;
+      case XP_IV:
+        return 16;
+      case XP_V:
+        return 32;
+      case MAGNETIC_WALLET:
+        return 4;
+      case MAGNETIC_HANDS:
+        return 8;
+      case HEALTHBARS:
+        return 1;
+      case ENEMY_INSIGHTI:
+        return 3;
+      case ENEMY_INSIGHTII:
+        return 5;
       default:
         return 0;
     }
@@ -492,6 +594,36 @@ class Profile {
           case UNLOCK_PATRICK:
             this.dependencies.add(PlayerTreeCode.CAN_PLAY);
             break;
+          case XP_I:
+            this.dependencies.add(PlayerTreeCode.CAN_PLAY);
+            break;
+          case XP_II:
+            this.dependencies.add(PlayerTreeCode.XP_I);
+            break;
+          case XP_III:
+            this.dependencies.add(PlayerTreeCode.XP_II);
+            break;
+          case XP_IV:
+            this.dependencies.add(PlayerTreeCode.XP_III);
+            break;
+          case XP_V:
+            this.dependencies.add(PlayerTreeCode.XP_IV);
+            break;
+          case MAGNETIC_WALLET:
+            this.dependencies.add(PlayerTreeCode.CAN_PLAY);
+            break;
+          case MAGNETIC_HANDS:
+            this.dependencies.add(PlayerTreeCode.MAGNETIC_WALLET);
+            break;
+          case HEALTHBARS:
+            this.dependencies.add(PlayerTreeCode.CAN_PLAY);
+            break;
+          case ENEMY_INSIGHTI:
+            this.dependencies.add(PlayerTreeCode.HEALTHBARS);
+            break;
+          case ENEMY_INSIGHTII:
+            this.dependencies.add(PlayerTreeCode.ENEMY_INSIGHTI);
+            break;
           default:
             global.errorMessage("ERROR: PlayerTreeCode " + this.code + " not recognized.");
             break;
@@ -502,6 +634,9 @@ class Profile {
         this.visible = true;
         this.button1.show_message = true;
         this.button2.show_message = true;
+        if (this.unlocked) {
+          return;
+        }
         this.button1.setColors(global.color_perkTreeLockedColor,
           global.color_perkTreeDarkColor, global.color_perkTreeBaseColor,
           global.color_perkTreeBrightColor, color(255));
@@ -514,6 +649,8 @@ class Profile {
 
       void unlock() {
         this.unlocked = true;
+        this.button1.show_message = true;
+        this.button2.show_message = true;
         this.button2.message = "Unlocked";
         this.button1.setColors(global.color_perkTreeLockedColor,
           global.color_perkTreeBrightColor, global.color_perkTreeBrightColor,
@@ -772,6 +909,46 @@ class Profile {
           case UNLOCK_PATRICK:
             xi = Constants.profile_tree_nodeGap + 2 * 1.2 * Constants.profile_tree_nodeHeight;
             yi = 0.1 * Constants.profile_tree_nodeHeight + 2 * (Constants.profile_tree_nodeGap + 1.5 * Constants.profile_tree_nodeHeight);
+            break;
+          case XP_I:
+            xi = -Constants.profile_tree_nodeGap - 4 * 1.2 * Constants.profile_tree_nodeHeight;
+            yi = 0.1 * Constants.profile_tree_nodeHeight;
+            break;
+          case XP_II:
+            xi = -2 * Constants.profile_tree_nodeGap - 8 * 1.2 * Constants.profile_tree_nodeHeight;
+            yi = 0.1 * Constants.profile_tree_nodeHeight;
+            break;
+          case XP_III:
+            xi = -3 * Constants.profile_tree_nodeGap - 12 * 1.2 * Constants.profile_tree_nodeHeight;
+            yi = 0.1 * Constants.profile_tree_nodeHeight;
+            break;
+          case XP_IV:
+            xi = -4 * Constants.profile_tree_nodeGap - 16 * 1.2 * Constants.profile_tree_nodeHeight;
+            yi = 0.1 * Constants.profile_tree_nodeHeight;
+            break;
+          case XP_V:
+            xi = -5 * Constants.profile_tree_nodeGap - 20 * 1.2 * Constants.profile_tree_nodeHeight;
+            yi = 0.1 * Constants.profile_tree_nodeHeight;
+            break;
+          case MAGNETIC_WALLET:
+            xi = -Constants.profile_tree_nodeGap - 2 * 1.2 * Constants.profile_tree_nodeHeight;
+            yi = 0.6 * Constants.profile_tree_nodeHeight + Constants.profile_tree_nodeGap + 1.5 * Constants.profile_tree_nodeHeight;
+            break;
+          case MAGNETIC_HANDS:
+            xi = -Constants.profile_tree_nodeGap - 2 * 1.2 * Constants.profile_tree_nodeHeight;
+            yi = 0.6 * Constants.profile_tree_nodeHeight + 2 * (Constants.profile_tree_nodeGap + 1.5 * Constants.profile_tree_nodeHeight);
+            break;
+          case HEALTHBARS:
+            xi = -Constants.profile_tree_nodeGap - 2 * 1.2 * Constants.profile_tree_nodeHeight;
+            yi = -0.4 * Constants.profile_tree_nodeHeight - Constants.profile_tree_nodeGap - 1.5 * Constants.profile_tree_nodeHeight;
+            break;
+          case ENEMY_INSIGHTI:
+            xi = -Constants.profile_tree_nodeGap - 2 * 1.2 * Constants.profile_tree_nodeHeight;
+            yi = -0.4 * Constants.profile_tree_nodeHeight - 2 * (Constants.profile_tree_nodeGap + 1.5 * Constants.profile_tree_nodeHeight);
+            break;
+          case ENEMY_INSIGHTII:
+            xi = -Constants.profile_tree_nodeGap - 2 * 1.2 * Constants.profile_tree_nodeHeight;
+            yi = -0.4 * Constants.profile_tree_nodeHeight - 3 * (Constants.profile_tree_nodeGap + 1.5 * Constants.profile_tree_nodeHeight);
             break;
           default:
             global.errorMessage("ERROR: PlayerTreeCode " + code + " not recognized.");
