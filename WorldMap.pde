@@ -403,6 +403,12 @@ class WorldMap {
     if (this.left_panel_form != null) {
       this.left_panel_form.update(millis);
     }
+    stroke(0);
+    strokeWeight(1.5);
+    line(0, this.yi + 0.5 * (this.yf - this.yi), this.xi, this.yi + 0.5 * (this.yf - this.yi));
+    if (global.profile.currHero() != null) {
+      global.profile.currHero().drawLeftPanel(millis, this.xi);
+    }
   }
 
 

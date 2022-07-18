@@ -513,6 +513,8 @@ static class Constants {
   static final float hero_scaling_resistance = 0.01;
   static final float hero_scaling_piercing = 0.00001;
   static final float hero_scaling_penetration = 0.000006;
+  static final int hero_timerMagneticHands = 200;
+  static final float hero_magneticHandsDistanceMultiplier = 0.9;
 
   // Upgrade
   static final int upgrade_inventoryI = 2;

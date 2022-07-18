@@ -776,6 +776,10 @@ class Hero extends Unit {
       return super.stash(i);
     }
 
+    Item superStash(Item i) {
+      return super.stash(i);
+    }
+
 
     @Override
     void update(int timeElapsed) {
@@ -4041,6 +4045,7 @@ class Hero extends Unit {
 
   protected Queue<String> messages = new LinkedList<String>();
   protected boolean in_control = true;
+  protected int timer_magnetic_hands = Constants.hero_timerMagneticHands;
 
   Hero(int ID) {
     super(ID);
@@ -4422,6 +4427,18 @@ class Hero extends Unit {
     }
   }
 
+  Item pickupOrStash(Item i) {
+    if (i != null && !i.remove && i.money() && global.profile.upgraded(PlayerTreeCode.MAGNETIC_WALLET)) {
+      this.depositMoney(i);
+      return null;
+    }
+    if (this.canPickup()) {
+      this.pickup(i);
+      return null;
+    }
+    return this.inventory.superStash(i);
+  }
+
   void depositMoney(Item i) {
     if (i == null || i.remove || !i.money()) {
       return;
@@ -4791,21 +4808,59 @@ class Hero extends Unit {
   }
 
 
-  void update_hero(int timeElapsed) {
-    this.hunger_timer -= timeElapsed;
+  @Override
+  void update(int time_elapsed, AbstractGameMap map) {
+    super.update(time_elapsed, map);
+    if (!this.ai_controlled && global.profile.upgraded(PlayerTreeCode.MAGNETIC_HANDS) && global.profile.options.magnetic_hands) {
+      this.timer_magnetic_hands -= time_elapsed;
+      if (this.timer_magnetic_hands < 0) {
+        this.timer_magnetic_hands += Constants.hero_timerMagneticHands;
+        this.resolveMagneticHands(map);
+      }
+    }
+  }
+
+  void resolveMagneticHands(AbstractGameMap map) {
+    for (Map.Entry<Integer, Item> entry : map.items.entrySet()) {
+      Item i = entry.getValue();
+      if (i == null || i.remove || i.recently_dropped > 0) {
+        continue;
+      }
+      if (this.distance(i) > Constants.hero_magneticHandsDistanceMultiplier * i.interactionDistance()) {
+        continue;
+      }
+      Item i_copy = new Item(i);
+      if (this.map_key == 0) {
+        map.selected_object = i_copy;
+      }
+      Item j = this.pickupOrStash(i_copy);
+      if (j == null || j.remove) {
+        i.remove = true;
+        i.pickupSound();
+      }
+      else {
+        j.recently_dropped = 1200;
+        map.items.put(entry.getKey(), j);
+      }
+    }
+  }
+
+
+  void update_hero(int time_elapsed) {
+    this.hunger_timer -= time_elapsed;
     if (this.hunger_timer < 0) {
       this.hungerTick();
     }
-    this.thirst_timer -= timeElapsed;
+    this.thirst_timer -= time_elapsed;
     if (this.thirst_timer < 0) {
       this.thirstTick();
     }
-    this.inventory_bar.update(timeElapsed);
+    this.inventory_bar.update(time_elapsed);
     if (this.inventory.viewing) {
       float inventoryTranslateX = 0.5 * (width - this.inventory.display_width);
       float inventoryTranslateY = 0.5 * (height - this.inventory.display_height);
       translate(inventoryTranslateX, inventoryTranslateY);
-      this.inventory.update(timeElapsed);
+      this.inventory.update(time_elapsed);
       translate(-inventoryTranslateX, -inventoryTranslateY);
     }
     if (this.hunger < Constants.hero_hungerThreshhold) {

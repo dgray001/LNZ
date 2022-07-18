@@ -1224,7 +1224,7 @@ class Unit extends MapObject {
 
 
   boolean canEquip(GearSlot slot) {
-    if (this.gear.containsKey(slot) && this.gear.get(slot) == null) {
+    if (this.gear.containsKey(slot) && (this.gear.get(slot) == null || this.gear.get(slot).remove)) {
       return true;
     }
     return false;
@@ -3053,7 +3053,6 @@ class Unit extends MapObject {
   float frontX() {
     return this.x + this.facingX * this.xRadius() - 0.5 * this.facingY * this.xRadius();
   }
-
   float frontY() {
     return this.y + 0.5 * this.facingX * this.yRadius() + this.facingY * this.yRadius();
   }
@@ -4298,7 +4297,7 @@ class Unit extends MapObject {
     this.curr_action_id = 0;
   }
 
-  void move(float timeElapsed, AbstractGameMap map, MoveModifier modifier) {
+  void move(float time_elapsed, AbstractGameMap map, MoveModifier modifier) {
     // remove camouflage
     if (this.aposematicCamouflage()) {
       this.removeStatusEffect(StatusEffectCode.APOSEMATIC_CAMOUFLAGE);
@@ -4307,7 +4306,7 @@ class Unit extends MapObject {
       this.removeStatusEffect(StatusEffectCode.APOSEMATIC_CAMOUFLAGEII);
     }
     // calculate attempted move distances
-    float seconds = timeElapsed / 1000.0;
+    float seconds = time_elapsed / 1000.0;
     float effectiveDistance = 0;
     switch(modifier) {
       case NONE:
@@ -4317,7 +4316,7 @@ class Unit extends MapObject {
         effectiveDistance = Constants.unit_sneakSpeed * seconds;
         break;
       case RECOIL:
-        effectiveDistance = -timeElapsed; // just use timeElapsed as the distance
+        effectiveDistance = -time_elapsed; // just use timeElapsed as the distance
         break;
       case AMPHIBIOUS_LEAP:
         effectiveDistance = Constants.ability_113_jumpSpeed * seconds;

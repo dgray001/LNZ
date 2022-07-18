@@ -1285,15 +1285,15 @@ class PlayingInterface extends InterfaceLNZ {
 
   void mouseMove(float mX, float mY) {
     boolean refreshMapLocation = false;
+    if (this.leftPanel.clicked || this.rightPanel.clicked) {
+      refreshMapLocation = true;
+    }
     if (this.status == PlayingStatus.WORLD_MAP && this.world_map != null) {
       this.world_map.mouseMove(mX, mY);
     }
     // level mouse move
     if (this.level != null) {
       this.level.mouseMove(mX, mY);
-      if (this.leftPanel.clicked || this.rightPanel.clicked) {
-        refreshMapLocation = true;
-      }
     }
     // left panel mouse move
     this.leftPanel.mouseMove(mX, mY);
@@ -1334,14 +1334,17 @@ class PlayingInterface extends InterfaceLNZ {
   }
 
   void mousePress() {
-    if (this.status == PlayingStatus.WORLD_MAP && this.world_map != null) {
-      this.world_map.mousePress();
-    }
     if (this.level != null) {
       this.level.mousePress();
     }
     this.leftPanel.mousePress();
     this.rightPanel.mousePress();
+    if (this.status == PlayingStatus.WORLD_MAP && this.world_map != null) {
+      this.world_map.mousePress();
+      if (this.leftPanel.clicked || this.rightPanel.clicked) {
+        this.world_map.dragging = false;
+      }
+    }
     if (this.leftPanel.clicked || this.rightPanel.clicked) {
       global.setCursor("icons/cursor_resizeh_white.png");
     }

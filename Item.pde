@@ -119,9 +119,10 @@ class Item extends MapObject {
 
   // graphics
   protected BounceInt bounce = new BounceInt(Constants.item_bounceConstant);
+  protected int recently_dropped = 0; // prevents magnetic hands picking up item too fast
 
   Item(Item i) {
-    this(i, 0, 0);
+    this(i, i.x, i.y);
   }
   Item(Item i, float x, float y) {
     super();
@@ -163,6 +164,7 @@ class Item extends MapObject {
     this.toggled = i.toggled;
     this.durability = i.durability;
     this.inventory = i.inventory; // not a deep copy just a reference copy
+    this.bounce = i.bounce;
   }
   Item(int ID) {
     super(ID);
@@ -4295,10 +4297,13 @@ class Item extends MapObject {
   }
 
 
-  void update(int timeElapsed) {
-    this.bounce.add(timeElapsed);
+  void update(int time_elapsed) {
+    this.bounce.add(time_elapsed);
+    if (this.recently_dropped >= 0) {
+      this.recently_dropped -= time_elapsed;
+    }
     if (this.disappearing) {
-      this.disappear_timer -= timeElapsed;
+      this.disappear_timer -= time_elapsed;
       if (disappear_timer < 0) {
         this.remove = true;
       }
@@ -4306,7 +4311,7 @@ class Item extends MapObject {
     switch(this.ID) {
       case 2163: // candle
         if (this.toggled) { // lit
-          this.ammo -= timeElapsed;
+          this.ammo -= time_elapsed;
           if (this.ammo < 0) {
             this.toggled = false;
             //this.remove = true;
@@ -4315,7 +4320,7 @@ class Item extends MapObject {
         break;
       case 2164: // lords day candle
         if (this.toggled) { // lit
-          this.ammo -= timeElapsed;
+          this.ammo -= time_elapsed;
           if (this.ammo < 0) {
             this.toggled = false;
             //this.remove = true;
@@ -4324,7 +4329,7 @@ class Item extends MapObject {
         break;
       case 2928: // cigar
         if (this.toggled) { // lit
-          this.ammo -= timeElapsed;
+          this.ammo -= time_elapsed;
           if (this.ammo < 0) {
             this.remove = true;
           }

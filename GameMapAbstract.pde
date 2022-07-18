@@ -1192,6 +1192,7 @@ abstract class AbstractGameMap {
     else {
       i.disappearing = false;
     }
+    i.recently_dropped = 1500;
     this.items.put(code, i);
     if (i.x - i.size - Constants.small_number < this.mapXI()) {
       i.x = this.mapXI() + i.size + Constants.small_number;

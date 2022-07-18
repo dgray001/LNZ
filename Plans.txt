@@ -1,12 +1,10 @@
 v0.7.8: World Map (07/23)
- r: In WorldMap display current hero (from profile) in left panel (bottom) and (maybe) even display inventory bar
  s: Make mock car break down minigame
  t: Can unlock minigame in PlayingInterface
  u: Can't finish campaign without finishing a minigame (or getting to certain point in minigame)
  v: Ben Nelson campaign name, description
  w: Can't finish Ben Nelson campaign without car break down minigame
  x: WorldMap circles can see which ones are unlocked / what to do to unlock in LeftPanelForm
- y: Apply magnetic_hands logic
 
   Minigames:
    - Campaigns can unlock minigames (completion code or in future trigger)

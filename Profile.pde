@@ -1311,6 +1311,13 @@ class Profile {
     global.log("Added Hero: " + code.display_name());
   }
 
+  Hero currHero() {
+    if (this.curr_hero == null || this.curr_hero == HeroCode.ERROR) {
+      return null;
+    }
+    return this.heroes.get(this.curr_hero);
+  }
+
   void achievement(AchievementCode code) {
     if (code == null) {
       return;
