@@ -1922,6 +1922,12 @@ class Hero extends Unit {
         }
       }
 
+      @Override
+      void release() {
+        super.release();
+        // open wallet
+      }
+
       void updateHoverMessage() {
         this.hover_message = "$" + round(PlayerLeftPanelMenu.this.hero().money * 100.0) / 100.0 + " deposited";
       }
@@ -2469,7 +2475,7 @@ class Hero extends Unit {
       imageMode(CORNER);
       image(Hero.this.getImage(), 1, this.image_yi, this.image_size, this.image_size);
       // money
-      this.money.message = "Money: $" + round(100.0 * Hero.this.money) / 100.0;
+      this.money.message = "Wallet: $" + round(100.0 * Hero.this.money) / 100.0;
       this.money.setXLocation(half_panel_width + 2, panel_width - 2);
       this.money.update(millis);
       // level tokens
@@ -4343,10 +4349,10 @@ class Hero extends Unit {
 
 
   void addExperience(float amount) {
+    this.experience += amount * this.experienceMultiplier();
     if (this.level == Constants.hero_maxLevel) {
       return;
     }
-    this.experience += amount;
     while(this.experience > this.experience_next_level) {
       this.experience -= this.experience_next_level;
       this.levelup();
@@ -4354,6 +4360,26 @@ class Hero extends Unit {
         break;
       }
     }
+  }
+
+  float experienceMultiplier() {
+    float multiplier = 1.0;
+    if (global.profile.upgraded(PlayerTreeCode.XP_V)) {
+      multiplier *= Constants.profile_xpMultiplierV;
+    }
+    else if (global.profile.upgraded(PlayerTreeCode.XP_IV)) {
+      multiplier *= Constants.profile_xpMultiplierIV;
+    }
+    else if (global.profile.upgraded(PlayerTreeCode.XP_III)) {
+      multiplier *= Constants.profile_xpMultiplierIII;
+    }
+    else if (global.profile.upgraded(PlayerTreeCode.XP_II)) {
+      multiplier *= Constants.profile_xpMultiplierII;
+    }
+    else if (global.profile.upgraded(PlayerTreeCode.XP_I)) {
+      multiplier *= Constants.profile_xpMultiplierI;
+    }
+    return multiplier;
   }
 
   void levelup() {
@@ -4385,6 +4411,25 @@ class Hero extends Unit {
         break;
     }
     this.curr_health = max(1, this.health() - missing_health);
+  }
+
+
+  @Override
+  void pickup(Item i) {
+    super.pickup(i);
+    if (i != null && !i.remove && i.money() && global.profile.upgraded(PlayerTreeCode.MAGNETIC_WALLET)) {
+      this.depositMoney(i);
+    }
+  }
+
+  void depositMoney(Item i) {
+    if (i == null || i.remove || !i.money()) {
+      return;
+    }
+    this.money += i.money;
+    i.remove = true;
+    global.sounds.trigger_player("player/money");
+    this.left_panel_menu.deposited(i.money);
   }
 
 
@@ -4603,10 +4648,7 @@ class Hero extends Unit {
       return;
     }
     if (i.money()) {
-      this.money += i.money;
-      i.remove = true;
-      global.sounds.trigger_player("player/money");
-      this.left_panel_menu.deposited(i.money);
+      this.depositMoney(i);
       return;
     }
     if (i.utility()) {
@@ -4887,7 +4929,7 @@ class Hero extends Unit {
             break;
           }
           if (this.weapon() != null) {
-            this.gear.put(GearSlot.WEAPON, this.inventory.stash(this.weapon()));
+            this.pickup(this.inventory.stash(this.weapon()));
           }
           break;
         case 'e':

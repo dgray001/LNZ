@@ -234,6 +234,10 @@ class Profile {
     private int terrain_resolution;
     private float fog_update_time;
     private boolean lock_screen;
+    private boolean show_healthbars;
+
+    private boolean player_pathfinding;
+    private boolean magnetic_hands;
 
     Options() {
       this.profileUpdated();
@@ -264,6 +268,9 @@ class Profile {
       this.terrain_resolution = Constants.map_terrainResolutionDefault;
       this.fog_update_time = Constants.map_timer_refresh_fog_default;
       this.lock_screen = true;
+      this.show_healthbars = false;
+      this.player_pathfinding = true;
+      this.magnetic_hands = false;
     }
 
     void setVolumes() {
@@ -391,6 +398,15 @@ class Profile {
           case "lock_screen":
             this.lock_screen = toBoolean(trim(data[1]));
             break;
+          case "show_healthbars":
+            this.show_healthbars = toBoolean(trim(data[1]));
+            break;
+          case "player_pathfinding":
+            this.player_pathfinding = toBoolean(trim(data[1]));
+            break;
+          case "magnetic_hands":
+            this.magnetic_hands = toBoolean(trim(data[1]));
+            break;
           default:
             break;
         }
@@ -418,6 +434,9 @@ class Profile {
       file.println("inventory_bar_size: " + this.inventory_bar_size);
       file.println("inventory_bar_hidden: " + this.inventory_bar_hidden);
       file.println("lock_screen: " + this.lock_screen);
+      file.println("show_healthbars: " + this.show_healthbars);
+      file.println("player_pathfinding: " + this.player_pathfinding);
+      file.println("magnetic_hands: " + this.magnetic_hands);
       file.flush();
       file.close();
     }

@@ -1717,75 +1717,77 @@ abstract class AbstractGameMap {
       scale(-1, 1);
     }
     // healthbar
-    float healthbarWidth = Constants.unit_healthbarWidth * this.zoom_old;
-    float healthbarHeight = Constants.unit_healthbarHeight * this.zoom_old;
-    float manaBarHeight = 0;
-    if (Hero.class.isInstance(u)) {
-      manaBarHeight += Constants.hero_manabarHeight * this.zoom;
-    }
-    float totalHeight = healthbarHeight + manaBarHeight;
-    float translateHealthBarX = -0.5 * healthbarWidth;
-    float translateHealthBarY = -1.2 * u.size * this.zoom_old - totalHeight;
-    textSize(totalHeight - 0.5);
-    translate(translateHealthBarX, translateHealthBarY);
-    stroke(200);
-    strokeWeight(0.8);
-    fill(0);
-    rectMode(CORNER);
-    rect(0, 0, healthbarWidth, totalHeight);
-    rect(0, 0, totalHeight, totalHeight);
-    fill(255);
-    textSize(healthbarHeight - 1);
-    textAlign(CENTER, TOP);
-    text(u.level, 0.5 * totalHeight, 1 - textDescent());
-    if (player_unit) {
-      fill(50, 255, 50);
-    }
-    else if (u.alliance == Alliance.BEN) {
-      fill(50, 50, 255);
-    }
-    else {
-      fill(255, 50, 50);
-    }
-    noStroke();
-    float health_ratio = u.curr_health / u.health();
-    if (health_ratio >= 1) {
-      rect(totalHeight, 0, healthbarWidth - totalHeight, healthbarHeight);
-      fill(255);
-      health_ratio = min(1, health_ratio - 1);
-      rectMode(CORNERS);
-      rect(healthbarWidth - health_ratio * (healthbarWidth - totalHeight), 0, healthbarWidth, healthbarHeight);
-    }
-    else {
-      rect(totalHeight, 0, health_ratio * (healthbarWidth - totalHeight), healthbarHeight);
-      if (u.timer_last_damage > 0) {
-        fill(255, 220, 50, int(255 * u.timer_last_damage / Constants.unit_healthbarDamageAnimationTime));
-        float damage_ratio = u.last_damage_amount / u.health();
-        rect(totalHeight + health_ratio * (healthbarWidth - totalHeight),
-          0, damage_ratio * (healthbarWidth - totalHeight), healthbarHeight);
+    if (player_unit || global.profile.options.show_healthbars) {
+      float healthbarWidth = Constants.unit_healthbarWidth * this.zoom_old;
+      float healthbarHeight = Constants.unit_healthbarHeight * this.zoom_old;
+      float manaBarHeight = 0;
+      if (Hero.class.isInstance(u)) {
+        manaBarHeight += Constants.hero_manabarHeight * this.zoom;
       }
-    }
-    if (Hero.class.isInstance(u)) {
+      float totalHeight = healthbarHeight + manaBarHeight;
+      float translateHealthBarX = -0.5 * healthbarWidth;
+      float translateHealthBarY = -1.2 * u.size * this.zoom_old - totalHeight;
+      textSize(totalHeight - 0.5);
+      translate(translateHealthBarX, translateHealthBarY);
+      stroke(200);
+      strokeWeight(0.8);
+      fill(0);
       rectMode(CORNER);
-      fill(255, 255, 0);
-      float mana_ratio = u.currMana() / u.mana();
-      if (mana_ratio >= 1) {
-        rect(totalHeight, healthbarHeight, healthbarWidth - totalHeight, manaBarHeight);
-        fill(255);
-        mana_ratio = min(1, mana_ratio - 1);
-        rectMode(CORNERS);
-        rect(healthbarWidth - mana_ratio * (healthbarWidth - totalHeight),
-          healthbarHeight, healthbarWidth, totalHeight);
+      rect(0, 0, healthbarWidth, totalHeight);
+      rect(0, 0, totalHeight, totalHeight);
+      fill(255);
+      textSize(healthbarHeight - 1);
+      textAlign(CENTER, TOP);
+      text(u.level, 0.5 * totalHeight, 1 - textDescent());
+      if (player_unit) {
+        fill(50, 255, 50);
+      }
+      else if (u.alliance == Alliance.BEN) {
+        fill(50, 50, 255);
       }
       else {
-        rect(totalHeight, healthbarHeight, mana_ratio * (healthbarWidth - totalHeight), manaBarHeight);
+        fill(255, 50, 50);
       }
+      noStroke();
+      float health_ratio = u.curr_health / u.health();
+      if (health_ratio >= 1) {
+        rect(totalHeight, 0, healthbarWidth - totalHeight, healthbarHeight);
+        fill(255);
+        health_ratio = min(1, health_ratio - 1);
+        rectMode(CORNERS);
+        rect(healthbarWidth - health_ratio * (healthbarWidth - totalHeight), 0, healthbarWidth, healthbarHeight);
+      }
+      else {
+        rect(totalHeight, 0, health_ratio * (healthbarWidth - totalHeight), healthbarHeight);
+        if (u.timer_last_damage > 0) {
+          fill(255, 220, 50, int(255 * u.timer_last_damage / Constants.unit_healthbarDamageAnimationTime));
+          float damage_ratio = u.last_damage_amount / u.health();
+          rect(totalHeight + health_ratio * (healthbarWidth - totalHeight),
+            0, damage_ratio * (healthbarWidth - totalHeight), healthbarHeight);
+        }
+      }
+      if (Hero.class.isInstance(u)) {
+        rectMode(CORNER);
+        fill(255, 255, 0);
+        float mana_ratio = u.currMana() / u.mana();
+        if (mana_ratio >= 1) {
+          rect(totalHeight, healthbarHeight, healthbarWidth - totalHeight, manaBarHeight);
+          fill(255);
+          mana_ratio = min(1, mana_ratio - 1);
+          rectMode(CORNERS);
+          rect(healthbarWidth - mana_ratio * (healthbarWidth - totalHeight),
+            healthbarHeight, healthbarWidth, totalHeight);
+        }
+        else {
+          rect(totalHeight, healthbarHeight, mana_ratio * (healthbarWidth - totalHeight), manaBarHeight);
+        }
+      }
+      textSize(healthbarHeight + 1);
+      fill(255);
+      textAlign(CENTER, BOTTOM);
+      text(u.display_name(), 0.5 * healthbarWidth, - 1 - textDescent());
+      translate(-translateHealthBarX, -translateHealthBarY);
     }
-    textSize(healthbarHeight + 1);
-    fill(255);
-    textAlign(CENTER, BOTTOM);
-    text(u.display_name(), 0.5 * healthbarWidth, - 1 - textDescent());
-    translate(-translateHealthBarX, -translateHealthBarY);
     translate(-translateX, -translateY);
   }
 
@@ -1845,45 +1847,47 @@ abstract class AbstractGameMap {
         this.selected_object_textbox.setText(this.selected_object.selectedObjectTextboxText());
         this.selected_object_textbox.update(millis);
         // status effects
-        float x_status = 3;
-        float y_status = this.selected_object_textbox.yi - Constants.map_statusImageHeight - 2;
-        StatusEffectCode status_effect_hovered = null;
-        for (Map.Entry<StatusEffectCode, StatusEffect> entry : u.statuses.entrySet()) {
-          imageMode(CORNER);
-          rectMode(CORNER);
-          ellipseMode(CENTER);
-          fill(255, 150);
-          stroke(0);
-          strokeWeight(1);
-          rect(x_status, y_status, Constants.map_statusImageHeight, Constants.map_statusImageHeight);
-          image(global.images.getImage(entry.getKey().getImageString()), x_status,
-            y_status, Constants.map_statusImageHeight, Constants.map_statusImageHeight);
-          if (!entry.getValue().permanent) {
-            fill(100, 100, 255, 140);
+        if (global.profile.upgraded(PlayerTreeCode.ENEMY_INSIGHTII)) {
+          float x_status = 3;
+          float y_status = this.selected_object_textbox.yi - Constants.map_statusImageHeight - 2;
+          StatusEffectCode status_effect_hovered = null;
+          for (Map.Entry<StatusEffectCode, StatusEffect> entry : u.statuses.entrySet()) {
+            imageMode(CORNER);
+            rectMode(CORNER);
+            ellipseMode(CENTER);
+            fill(255, 150);
+            stroke(0);
+            strokeWeight(1);
+            rect(x_status, y_status, Constants.map_statusImageHeight, Constants.map_statusImageHeight);
+            image(global.images.getImage(entry.getKey().getImageString()), x_status,
+              y_status, Constants.map_statusImageHeight, Constants.map_statusImageHeight);
+            if (!entry.getValue().permanent) {
+              fill(100, 100, 255, 140);
+              noStroke();
+              try {
+                float angle = -HALF_PI + 2 * PI * entry.getValue().timer_gone / entry.getValue().timer_gone_start;
+                arc(x_status + 0.5 * Constants.map_statusImageHeight, y_status +
+                  0.5 * Constants.map_statusImageHeight, Constants.map_statusImageHeight,
+                  Constants.map_statusImageHeight, -HALF_PI, angle, PIE);
+              } catch(Exception e) {}
+            }
+            if (mouseX > x_status && mouseX < x_status + Constants.map_statusImageHeight &&
+              mouseY > y_status && mouseY < y_status + Constants.map_statusImageHeight) {
+              status_effect_hovered = entry.getKey();
+            }
+            x_status += Constants.map_statusImageHeight + 2;
+          }
+          if (status_effect_hovered != null) {
             noStroke();
-            try {
-              float angle = -HALF_PI + 2 * PI * entry.getValue().timer_gone / entry.getValue().timer_gone_start;
-              arc(x_status + 0.5 * Constants.map_statusImageHeight, y_status +
-                0.5 * Constants.map_statusImageHeight, Constants.map_statusImageHeight,
-                Constants.map_statusImageHeight, -HALF_PI, angle, PIE);
-            } catch(Exception e) {}
+            fill(global.color_nameDisplayed_background);
+            textSize(14);
+            float rect_height = textAscent() + textDescent() + 2;
+            float rect_width = textWidth(status_effect_hovered.code_name()) + 2;
+            rect(mouseX + 1, mouseY - rect_height - 1, rect_width, rect_height);
+            fill(255);
+            textAlign(LEFT, TOP);
+            text(status_effect_hovered.code_name(), mouseX + 2, mouseY - rect_height - 1);
           }
-          if (mouseX > x_status && mouseX < x_status + Constants.map_statusImageHeight &&
-            mouseY > y_status && mouseY < y_status + Constants.map_statusImageHeight) {
-            status_effect_hovered = entry.getKey();
-          }
-          x_status += Constants.map_statusImageHeight + 2;
-        }
-        if (status_effect_hovered != null) {
-          noStroke();
-          fill(global.color_nameDisplayed_background);
-          textSize(14);
-          float rect_height = textAscent() + textDescent() + 2;
-          float rect_width = textWidth(status_effect_hovered.code_name()) + 2;
-          rect(mouseX + 1, mouseY - rect_height - 1, rect_width, rect_height);
-          fill(255);
-          textAlign(LEFT, TOP);
-          text(status_effect_hovered.code_name(), mouseX + 2, mouseY - rect_height - 1);
         }
         // unit tier image
         PImage tier_image = global.images.getImage("icons/tier_" + u.tier() + ".png");

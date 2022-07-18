@@ -210,6 +210,10 @@ class Unit extends MapObject {
       float unit_current_y = Unit.this.y;
       HashMap<IntegerCoordinate, CoordinateValues> coordinates = new HashMap<IntegerCoordinate, CoordinateValues>(); // value is distance
       IntegerCoordinate goal = new IntegerCoordinate(int(this.goal_x), int(this.goal_y));
+      if (!Unit.this.ai_controlled && !global.profile.options.player_pathfinding) {
+        this.move_stack.push(new FloatCoordinate(goal.x + 0.5, goal.y + 0.5));
+        return;
+      }
       IntegerCoordinate current = new IntegerCoordinate(int(Unit.this.x), int(Unit.this.y));
       if (current.equals(goal)) {
         return;
@@ -899,47 +903,71 @@ class Unit extends MapObject {
     return this.description;
   }
   String selectedObjectTextboxText() {
-    String text = "-- " + this.type() + " (level " + this.level + ") --";
-    if (this.statuses.size() > 0) {
+    String text = "-- " + this.type();
+    if (global.profile.upgraded(PlayerTreeCode.ENEMY_INSIGHTI)) {
+      text += " (level " + this.level + ") --";
+    }
+    else {
+      text += " --";
+    }
+    if (this.statuses.size() > 0 && global.profile.upgraded(PlayerTreeCode.ENEMY_INSIGHTII)) {
       text += "\n";
     }
-    text += "\n\nHealth: " + round(ceil(this.curr_health)) + "/" + round(ceil(this.health()));
-    float attack = this.attack();
-    if (attack > 0) {
-      text += "\nAttack: " + round(attack * 10.0) / 10.0;
+    if (global.profile.upgraded(PlayerTreeCode.HEALTHBARS)) {
+      text += "\n\nHealth: " + round(ceil(this.curr_health)) + "/" + round(ceil(this.health()));
     }
-    float magic = this.magic();
-    if (magic > 0) {
-      text += "\nMagic: " + round(magic * 10.0) / 10.0;
+    if (global.profile.upgraded(PlayerTreeCode.ENEMY_INSIGHTI)) {
+      float attack = this.attack();
+      if (attack > 0) {
+        text += "\nAttack: " + round(attack * 10.0) / 10.0;
+      }
     }
-    float defense = this.defense();
-    if (defense > 0) {
-      text += "\nDefense: " + round(defense * 10.0) / 10.0;
+    if (global.profile.upgraded(PlayerTreeCode.ENEMY_INSIGHTII)) {
+      float magic = this.magic();
+      if (magic > 0) {
+        text += "\nMagic: " + round(magic * 10.0) / 10.0;
+      }
     }
-    float resistance = this.resistance();
-    if (resistance > 0) {
-      text += "\nResistance: " + round(resistance * 10.0) / 10.0;
+    if (global.profile.upgraded(PlayerTreeCode.ENEMY_INSIGHTI)) {
+      float defense = this.defense();
+      if (defense > 0) {
+        text += "\nDefense: " + round(defense * 10.0) / 10.0;
+      }
     }
-    float piercing = this.piercing();
-    if (piercing > 0) {
-      text += "\nPiercing: " + round(piercing * 100) + "%";
+    if (global.profile.upgraded(PlayerTreeCode.ENEMY_INSIGHTII)) {
+      float resistance = this.resistance();
+      if (resistance > 0) {
+        text += "\nResistance: " + round(resistance * 10.0) / 10.0;
+      }
     }
-    float penetration = this.penetration();
-    if (penetration > 0) {
-      text += "\nPenetration: " + round(penetration * 100) + "%";
+    if (global.profile.upgraded(PlayerTreeCode.ENEMY_INSIGHTI)) {
+      float piercing = this.piercing();
+      if (piercing > 0) {
+        text += "\nPiercing: " + round(piercing * 100) + "%";
+      }
     }
-    text += "\nSpeed: " + round(this.speed() * 10.0) / 10.0;
-    float tenacity = this.tenacity();
-    if (tenacity > 0) {
-      text += "\nTenacity: " + round(tenacity * 100) + "%";
+    if (global.profile.upgraded(PlayerTreeCode.ENEMY_INSIGHTII)) {
+      float penetration = this.penetration();
+      if (penetration > 0) {
+        text += "\nPenetration: " + round(penetration * 100) + "%";
+      }
     }
-    int agility = this.agility();
-    if (attack > 0) {
-      text += "\nAgility: " + agility;
+    if (global.profile.upgraded(PlayerTreeCode.ENEMY_INSIGHTI)) {
+      text += "\nSpeed: " + round(this.speed() * 10.0) / 10.0;
     }
-    float lifesteal = this.lifesteal();
-    if (lifesteal > 0) {
-      text += "\nLifesteal: " + round(lifesteal * 100) + "%";
+    if (global.profile.upgraded(PlayerTreeCode.ENEMY_INSIGHTII)) {
+      float tenacity = this.tenacity();
+      if (tenacity > 0) {
+        text += "\nTenacity: " + round(tenacity * 100) + "%";
+      }
+      int agility = this.agility();
+      if (agility > 0) {
+        text += "\nAgility: " + agility;
+      }
+      float lifesteal = this.lifesteal();
+      if (lifesteal > 0) {
+        text += "\nLifesteal: " + round(lifesteal * 100) + "%";
+      }
     }
     return text + "\n\n" + this.description();
   }
@@ -2545,7 +2573,7 @@ class Unit extends MapObject {
           this.face(i);
           if (this.gear.containsKey(GearSlot.WEAPON)) {
             if (this.weapon() == null) {
-              this.gear.put(GearSlot.WEAPON, new Item(i));
+              this.pickup(new Item(i));
               i.remove = true;
               if (!this.ai_controlled) {
                 i.pickupSound();

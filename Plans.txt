@@ -1,12 +1,12 @@
 v0.7.8: World Map (07/23)
- p: Perks to view healthbars / enemy insight / xp multipliers
- q: In WorldMap display current hero (from profile) in left panel (bottom) and (maybe) even display inventory bar
- r: Make mock car break down minigame
- s: Can unlock minigame in PlayingInterface
- t: Can't finish campaign without finishing a minigame (or getting to certain point in minigame)
- u: Ben Nelson campaign name, description
- v: Can't finish Ben Nelson campaign without car break down minigame
- w: WorldMap circles can see which ones are unlocked / what to do to unlock in LeftPanelForm
+ r: In WorldMap display current hero (from profile) in left panel (bottom) and (maybe) even display inventory bar
+ s: Make mock car break down minigame
+ t: Can unlock minigame in PlayingInterface
+ u: Can't finish campaign without finishing a minigame (or getting to certain point in minigame)
+ v: Ben Nelson campaign name, description
+ w: Can't finish Ben Nelson campaign without car break down minigame
+ x: WorldMap circles can see which ones are unlocked / what to do to unlock in LeftPanelForm
+ y: Apply magnetic_hands logic
 
   Minigames:
    - Campaigns can unlock minigames (completion code or in future trigger)
@@ -19,7 +19,7 @@ v0.7.8: World Map (07/23)
    - brothersdoor initial and boss fight triggers
    - chapeldoor initial and boss fight triggers
    - Lev2-5: Custodialdoor map outlines
-   - chapeldoor initial and boss fight triggers
+   - custodialdoor initial and boss fight triggers
    - Finish maps for Lev3s
    - Lot boss drops key for car in lot
    - Linkers for Lev3s
@@ -79,6 +79,7 @@ v0.7.8: World Map (07/23)
    - Trigger editor has dropdownlist for effect id / condition id with name mappings
       => Also only show relevant fields and name them properly
    - When closing/opening panel while form is open need to update background image
+   - Have option to toggle "minecraft-like" inventory
 
   Fatal Bugs:
    - Memory leak in GameMapArea (probably with images) causes crash eventually

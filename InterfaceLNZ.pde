@@ -724,14 +724,38 @@ abstract class InterfaceLNZ {
           Constants.map_timer_refresh_fog_min, Constants.map_timer_refresh_fog_max, 50);
         fog_update_time.threshhold = Constants.optionsForm_threshhold_other;
         fog_update_time.addLabel(" ms", true, true);
-        CheckboxFormField lock_screen = new CheckboxFormField("Lock Screen:  ");
 
         this.addField(new SpacerFormField(15));
         this.addField(map_move_speed);
         this.addField(inventory_bar_size);
         this.addField(map_resolution);
         this.addField(fog_update_time);
+        if (global.profile.upgraded(PlayerTreeCode.HEALTHBARS)) {
+          CheckboxFormField healthbars = new CheckboxFormField("Show Healthbars:  ");
+          this.addField(healthbars);
+        }
+        else {
+          this.addField(new SpacerFormField(-this.fieldCushion));
+        }
+      }
+    }
+
+    class PlayerTab extends OptionsTab {
+      PlayerTab() {
+        super();
+        CheckboxFormField lock_screen = new CheckboxFormField("Lock Screen:  ");
+        CheckboxFormField pathfinding = new CheckboxFormField("Use Pathfinding:  ");
+
+        this.addField(new SpacerFormField(15));
         this.addField(lock_screen);
+        this.addField(pathfinding);
+        if (global.profile.upgraded(PlayerTreeCode.MAGNETIC_HANDS)) {
+          CheckboxFormField magnetic_hands = new CheckboxFormField("Toggle Magnetic Hands:  ");
+          this.addField(magnetic_hands);
+        }
+        else {
+          this.addField(new SpacerFormField(-this.fieldCushion));
+        }
       }
     }
 
@@ -755,6 +779,7 @@ abstract class InterfaceLNZ {
       this.tab_button_alignment = LEFT;
       this.addTab(new VolumeTab(), "Audio");
       this.addTab(new DisplayTab(), "Display");
+      this.addTab(new PlayerTab(), "Player");
 
       TabConfig tab_config = new TabConfig();
       tab_config.tab_text_size = 18;
@@ -851,7 +876,17 @@ abstract class InterfaceLNZ {
 
       this.tabs.get(1).form.fields.get(4).setValue(global.profile.options.fog_update_time);
 
-      this.tabs.get(1).form.fields.get(5).setValue(global.profile.options.lock_screen);
+      if (global.profile.upgraded(PlayerTreeCode.HEALTHBARS)) {
+        this.tabs.get(1).form.fields.get(5).setValue(global.profile.options.show_healthbars);
+      }
+
+      this.tabs.get(2).form.fields.get(1).setValue(global.profile.options.lock_screen);
+
+      this.tabs.get(2).form.fields.get(2).setValue(global.profile.options.player_pathfinding);
+
+      if (global.profile.upgraded(PlayerTreeCode.MAGNETIC_HANDS)) {
+        this.tabs.get(2).form.fields.get(3).setValue(global.profile.options.magnetic_hands);
+      }
     }
 
     void submit() {
@@ -933,8 +968,21 @@ abstract class InterfaceLNZ {
       String fog_update_time = this.tabs.get(1).form.fields.get(4).getValue();
       global.profile.options.fog_update_time = toFloat(split(fog_update_time, ':')[0]);
 
-      String lock_screen = this.tabs.get(1).form.fields.get(5).getValue();
+      if (global.profile.upgraded(PlayerTreeCode.HEALTHBARS)) {
+        String show_healthbars = this.tabs.get(1).form.fields.get(5).getValue();
+        global.profile.options.show_healthbars = toBoolean(show_healthbars);
+      }
+
+      String lock_screen = this.tabs.get(2).form.fields.get(1).getValue();
       global.profile.options.lock_screen = toBoolean(lock_screen);
+
+      String player_pathfinding = this.tabs.get(2).form.fields.get(2).getValue();
+      global.profile.options.player_pathfinding = toBoolean(player_pathfinding);
+
+      if (global.profile.upgraded(PlayerTreeCode.MAGNETIC_HANDS)) {
+        String magnetic_hands = this.tabs.get(2).form.fields.get(3).getValue();
+        global.profile.options.magnetic_hands = toBoolean(magnetic_hands);
+      }
 
       global.profile.options.change();
     }

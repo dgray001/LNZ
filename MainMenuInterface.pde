@@ -325,7 +325,7 @@ class MainMenuInterface extends InterfaceLNZ {
     }
 
     String getImageString() {
-      if (global.profile != null && global.profile.curr_hero != null) {
+      if (global.profile != null && global.profile.curr_hero != null && global.profile.curr_hero != HeroCode.ERROR) {
         return global.profile.curr_hero.imagePathHeader();
       }
       return "ben";
