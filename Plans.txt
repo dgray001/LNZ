@@ -1,109 +1,115 @@
 v0.7.8: World Map (07/23)
- o: Apply TabbedForm class to OptionsForm
- p: Add additional options into OptionsForm
- q: Add continuous achievements (walk x distance, gain x xp, kill x units)
  r: Make mock car break down minigame
  s: Can unlock minigame in PlayingInterface
  t: Can't finish campaign without finishing a minigame (or getting to certain point in minigame)
  u: Ben Nelson campaign name, description
  v: Can't finish Ben Nelson campaign without car break down minigame
 
- - Finish all Lev2s/Lev3s for at least frontdoor/ahimdoor/brothersdoor, maybe chapeldoor (not custodialdoor)
+  - Perks to view healthbars, magnetic wallet option, magnetic hands option, others
+  - WorldMap circles can see which ones are unlocked / what to do to unlock in LeftPanelForm
+  - In WorldMap display current hero (from profile) in left panel (bottom) and (maybe) even display inventory bar
 
- - Fix GameMapArea terrain image having lines on chunk borders (could be resize, but more likely can be fixed at GameMapArea DImg thread)
- - Weird fog bug when at negative numbers (maybe stay at mostly positive numbers ??)
- - Fog flickers when testing GameMapArea
- - WARNING: Can't find chunk with coordinates to add feature to (actuallyAddFeature) => put in another hanging list I guess ?
- - Bug when removing then readding chunk features hanging onto that chunk not loaded again
-  => when removing chunk check chunks left and up (all 3 possibilities) and add to hanging lists
- - Bug where there's race condition between thread saving to temp folder and deleting temp folder
- - Make trees spawn a little more spread out
- - Can't hover features in area until moving near them ???
- - Need road / parking lot chunk in initial Fernwood map
- - kyle aubert at circle map
- - Perks to view healthbars, magnetic wallet option, magnetic hands option, others
- - WorldMap circles can see which ones are unlocked / what to do to unlock in LeftPanelForm
+  Minigames:
+   - Campaigns can unlock minigames (completion code or in future trigger)
+   - Campaigns can "force" you to play if you haven't previously unlocked minigame
+   - Shatranj minigame
+   - Zambo minigame: car broke down map
+   - Zambo minigame: farm copy map (Dan Gray campaign)
 
- - Finish frontdoor forcing you to get access to a car
-   => Finish map outlines
-   => Can get car in lev3 (field boss?)
-   => Add items to frontdoor maps
- - Make car broke down minigame
+  Ben Nelson Campaign:
+   - brothersdoor initial and boss fight triggers
+   - chapeldoor initial and boss fight triggers
+   - Lev2-5: Custodialdoor map outlines
+   - chapeldoor initial and boss fight triggers
+   - Finish maps for Lev3s
+   - Lot boss drops key for car in lot
+   - Linkers for Lev3s
+   - Ensure level progression is correct
+   - Ensure all maps have correct map codes
+   - Make car broke down minigame
+   - kyle aubert at circle map
+   - Finish frontdoor forcing you to get access to a car
+     => Finish map outlines
+     => Can get car in lev3 (field boss?)
+     => Add items to frontdoor maps
 
-  - Finish maps for Lev3s
-  - Lot boss drops key for car in lot
-  - Linkers for Lev3s
-  - More crafting recipes (axes, tools for metalworking, hoe?, knife, bow, arrows, sling, slingshot)
-  - brothersdoor initial and boss fight triggers
-  - ahimdoor initial and boss fight triggers
-  - chapeldoor initial and boss fight triggers
-  - Lev2-5: Custodialdoor map outlines
-  - Triggers for Custodialdoor level
-  - Finish all maps for all levels
-  - Finish all triggers for all levels
-  - Other generic zombies (various abilities)
-  - Add magic zombie, ranged zombie (uses sight)
-  - Ensure level progression is correct
-  - Ensure all maps have correct map codes
-  - Title IX charge sound effects
-  - Mock car broke down minigame unlocked when ahimdoor car started
-  - Items/Units despawn in Areas and with time/distance, respectively
-  - Can access unlocked minigames, create mock minigame (use zambos)
-  - Campaigns can unlock minigames (completion code or in future trigger), "force" you to play if you haven't previously unlocked it
-  - Finish custodialdoor
-  - Notifications need to automatically go to next line if string too long
+  ElementLibrary:
+   - SliderFormField should display current value
+   - Textbox that's editable
+   - Overhaul of DropDownList
+
+  GameMapArea:
+   - Fix GameMapArea terrain image having lines on chunk borders (could be resize, but more likely can be fixed at GameMapArea DImg thread)
+   - Weird fog bug when at negative numbers (maybe stay at mostly positive numbers ??)
+   - Fog flickers when testing GameMapArea
+   - WARNING: Can't find chunk with coordinates to add feature to (actuallyAddFeature) => put in another hanging list I guess ?
+   - Bug when removing then readding chunk features hanging onto that chunk not loaded again
+     => when removing chunk check chunks left and up (all 3 possibilities) and add to hanging lists
+   - Bug where there's race condition between thread saving to temp folder and deleting temp folder
+   - Make trees spawn a little more spread out
+   - Can't hover features in area until moving near them ???
+   - Need road / parking lot chunk in initial Fernwood map
+   - Items/Units despawn in Areas and with time/distance, respectively
+   - Fernwood forest has:
+      => broken down cars (can go in car inventory -> separate thingy mcjigger?)
+      => park rangers / park ranger buildings
+      => hiker campground with hiker, tent, campfire, etc.
+      => wildlife => turkey, quail, deer, bear, fish, raccoon, squirrel, bees
+
+  Sounds:
+   - Title IX charge sound effects
+   - EASY COMPANY sound in tutorial
+   - Every perk has unique sound effect
+   - Sound effects use directional information
+   - All Ben unit sounds
+   - All Dan unit sounds
+   - Interrupting action stops action sound effect
+       =>don't assign curr_action have function that assigns it silences appropriate sound(s)
 
   Pathfinding issues:
    - targeted features above the walk height ignore pathfinding because is treated like you want to move to a wall
       => need to calculate pathfinding for every possibility (all sides and maybe corners) then return shortest
    - various other issues I can see when trying basic checks in map tester
 
-   Options issues:
-   - flag to turn off pathfinding for player unit
-   - separate into sections on same form
-   - make a TabbedForm extends Form element which is a form that displays a form based on tab selected
+  Menues:
+   - Flag to turn off pathfinding for player unit
    - PlayingTrack option
+   - Stats for player class (tab in Achievement form)
+   - Add continuous achievements (walk x distance, gain x xp, kill x units)
+   - Notifications need to automatically go to next line if string too long
+   - Trigger editor has dropdownlist for effect id / condition id with name mappings
+      => Also only show relevant fields and name them properly
+   - When closing/opening panel while form is open need to update background image
 
-
-   Fatal Bugs:
-    - Memory leak in GameMapArea (probably with images) causes crash eventually
-    - DImg.pde:10:0:10:0: NegativeArraySizeException: -1900331964 (in GameMapArea when adding hero I believe)
+  Fatal Bugs:
+   - Memory leak in GameMapArea (probably with images) causes crash eventually
+   - DImg.pde:10:0:10:0: NegativeArraySizeException: -1900331964 (in GameMapArea when adding hero I believe)
 
 
 v0.7.9: Beta prep => if have time maybe start making more heroes (or outlines of) (08/06)
- - Finish all above items
+ - Finish or reorganize above items
  - Fernwood forest can have ponds and creaks
- - Maybe start some parking lot items
 
 
-Parking Lot:
- - Player Perk tree, various achievements
- - Mining mechanics => map layers are separate maps at each depth
- - Farming mechanics => can interact directly with terrain
- - Trapping mechanics => crafted
- - Fishing mechanics => not just fish that are spawned
- - Extend / QA crafting recipes and mechanics
- - Items have durability bars
- - Clean guns mechanics (or jams and have to unjam, eventually can't shoot)
- - Add ticks to healthbars (every 100? 50? depends on level of current hero? depends on level?)
- - EASY COMPANY sound in tutorial
- - Every perk has unique sound effect
- - Constants to speed up trigger times / header message times (for testing purposes, maybe for in-game options too)
- - Trigger editor has dropdownlist for effect id / condition id with name mappings
-    => Also only show relevant fields and name them properly
- - Overhaul of DropDownList
- - Future items:
-   => quiver, longbow, compound bow, crossbow, crossbow with explosives (from CoD)
-   => magic wands and magic resist armor
- - molly schmiesing kidnapped by BOIZ so can rescue her (insert when making schmielet hero)
-    => add at least one extra hero per campaign that is unlockable
- - test/QA all guns, ray gun ammo / reload
- - Shatranj minigame
- - Fernwood forest has:
-    => broken down cars (can go in car inventory -> separate thingy mcjigger?)
-    => park rangers / park ranger buildings
-    => hiker campground with hiker, tent, campfire, etc.
-    => wildlife => turkey, quail, deer, bear, fish, raccoon, squirrel, bees
+  Parking Lot:
+   - Mining mechanics => map layers are separate maps at each depth
+   - Farming mechanics => can interact directly with terrain
+   - Trapping mechanics => crafted
+   - Fishing mechanics => not just fish that are spawned
+   - Extend / QA crafting recipes and mechanics
+   - Items have durability bars
+   - Clean guns mechanics (or jams and have to unjam, eventually can't shoot)
+   - Add ticks to healthbars (every 100? 50? depends on level of current hero? depends on level?)
+   - Constants to speed up trigger times / header message times (for testing purposes, maybe for in-game options too)
+   - Future items:
+     => quiver, longbow, compound bow, crossbow, crossbow with explosives (from CoD)
+     => magic wands and magic resist armor
+   - molly schmiesing kidnapped by BOIZ so can rescue her (insert when making schmielet hero)
+      => add at least one extra hero per campaign that is unlockable
+   - test/QA all guns, ray gun ammo / reload
+   - More crafting recipes (axes, tools for metalworking, hoe?, knife, bow, arrows, sling, slingshot)
+   - Other generic zombies (various abilities)
+   - Add magic zombie, ranged zombie (uses sight)
 
 
 v0.8: Campaigns II / III (09/30)
@@ -123,41 +129,37 @@ v0.8: Campaigns II / III (09/30)
  - All parking lot items
 
 
- Chess Notes:
-  - v0.7.6y: ~2-3 nodes / s, depth = 1
+  Chess:
+   - v0.7.6y: ~2-3 nodes / s, depth = 1
      => Need to create all daughters lazily after evaluations for that depth are complete
      => Need to determine rate-limiting step (hunch is initializing board)
      => Some basic pruning once rest of what I can do is done
-  - Not sure if evaluations passed up the tree properly (need to have depth > 1 to know)
-  - Can hold next/prev buttons to go through many times
-  - Can drag-drop to move
-  - Time controls
-  - Computer think time based on time controls
-  - End games are annotated (out of time, insufficient material)
-  - Can save / load chess games (.chess.lnz file)
-  - Multiple color / piece schemes switchable in an options button (left panel?)
+   - Not sure if evaluations passed up the tree properly (need to have depth > 1 to know)
+   - Can hold next/prev buttons to go through many times
+   - Can drag-drop to move
+   - Time controls
+   - Computer think time based on time controls
+   - End games are annotated (out of time, insufficient material)
+   - Can save / load chess games (.chess.lnz file)
+   - Multiple color / piece schemes switchable in an options button (left panel?)
 
 
 
- Far Parking Lot:
-  - Add to PlayerLeftPanelForm (buttons to other forms to right of player image)
-  - Create XpLeftPanelForm / other LeftPanelForms
-  - Other TriangleButtons in InventoryBar
-  - LoseFocus can turn off expensive visual calculations (and maybe pause game in SP)
-  - Textbox that's editable
-  - Automated test for map readfile
-  - When closing/opening panel while form is open need to update background image
-  - Interrupting action stops action sound effect (don't assign curr_action have function that assigns it and in that if player silence appropriate sounds)
-  - Visual effects for remaining status effects
-  - Sound effects use directional information
-  - Fridge/freezer/minifridge makes items cold
-  - StoveInventory door image / burner images / knob functionality
-  - Stove/fire makes items hot
-  - All Ben unit sounds
-  - All Dan unit sounds
-  - Weapon attachments (use item inventory)
-  - Terrain/features have absorption/transmittance/reflectance of light
-    => reflectance relevant for lasers/ray gun
+  Far Parking Lot:
+   - Add to PlayerLeftPanelForm (buttons to other forms to right of player image)
+   - Create XpLeftPanelForm / other LeftPanelForms
+   - Other TriangleButtons in InventoryBar
+   - LoseFocus can turn off expensive visual calculations (and maybe pause game in SP)
+   - Automated test for map readfile
+   - Visual effects for remaining status effects
+   - Fridge/freezer/minifridge makes items cold
+   - StoveInventory door image / burner images / knob functionality
+   - Stove/fire makes items hot
+   - Weapon attachments (use item inventory)
+   - Terrain/features have absorption/transmittance/reflectance of light
+     => reflectance relevant for lasers/ray gun
+   - add homing projectiles (is some units' autoattack)
+   - add attachments for guns
 
 
 
@@ -243,39 +245,9 @@ Other Hero ideas (non-campaign heroes)
 
 
 
-v0.5.9: Advanced features (ETA 03-07)
-
-6. other:
- - add homing projectiles (is some units' autoattack)
- - add attachments for guns
- - core units to include a set of core units/1 hero for each alliance (Zombie/Frog/Mattus/Patrick/JF/Spinny)
-
-
-v0.6.3: Achievements (ETA 04-05)
- - As player accumulates heroes that alliance sides with player
- - Stats for player class
-healthbars above units (with name / level)
-magnetic hands
-magnetic wallet
-can switch heroes more often
-wallet capacity
-other QoL features I come up with
-
-
 v0.7: Campaign 1 (phase 1 of game) (ETA 06-30)
-v0.7.1: Level 1 : Francis Hall (ETA 05-07)
-v0.7.2: Lev2-1 (ETA 05-14)
-v0.7.3: Lev2-2 (ETA 05-21)
-v0.7.4: Lev2-3 (ETA 05-28)
-v0.7.5: Lev2-4 (ETA 06-04)
-v0.7.6: Lev2-5 (ETA 06-11)
-v0.7.7-9: Lev3/4-etc (ETA 06-30)
-
-
 
 v0.8: Home Base (ETA 07-31)
-
-
 
 v0.9: Other campaigns (one for each soldier)? (ETA 09-30)
 v0.9.1: Daniel (ETA 08-10)
@@ -285,8 +257,6 @@ v0.9.4: Patrick (ETA 09-10)
 v0.9.5: Mattus (ETA 09-20)
 v0.9.6: Zombie campaign (ETA 09-30)
  - defeat Hillary zombie as final boss of lizard people and destroy their multiverse device to save the world/complete phase 2 of game
-
-
 
 v1.0: Releasable version (ETA 10-31)
 

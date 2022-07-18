@@ -653,7 +653,88 @@ abstract class InterfaceLNZ {
   }
 
 
-  class OptionsForm extends FormLNZ {
+  class OptionsForm extends TabbedFormLNZ {
+    abstract class OptionsTab extends Form {
+      OptionsTab() {
+        super();
+        this.setFieldCushion(5);
+      }
+      void submit() {}
+      void cancel() {}
+      void buttonPress(int i) {}
+    }
+
+    class VolumeTab extends OptionsTab {
+      VolumeTab() {
+        super();
+        SliderFormField volume_master = new SliderFormField("Master Volume: ",
+          Constants.options_volumeMin, Constants.options_volumeMax);
+        volume_master.threshhold = Constants.optionsForm_threshhold_master;
+        volume_master.addCheckbox("mute: ");
+        volume_master.addLabel("%", true);
+        SliderFormField volume_music = new SliderFormField("Music: ",
+          Constants.options_volumeMin, Constants.options_volumeMax);
+        volume_music.threshhold = Constants.optionsForm_threshhold_other;
+        volume_music.addCheckbox("mute: ");
+        volume_music.addLabel("%", true);
+        SliderFormField volume_interface = new SliderFormField("Interface: ",
+          Constants.options_volumeMin, Constants.options_volumeMax);
+        volume_interface.threshhold = Constants.optionsForm_threshhold_other;
+        volume_interface.addCheckbox("mute: ");
+        volume_interface.addLabel("%", true);
+        SliderFormField volume_environment = new SliderFormField("Environment: ",
+          Constants.options_volumeMin, Constants.options_volumeMax);
+        volume_environment.threshhold = Constants.optionsForm_threshhold_other;
+        volume_environment.addCheckbox("mute: ");
+        volume_environment.addLabel("%", true);
+        SliderFormField volume_units = new SliderFormField("Units: ",
+          Constants.options_volumeMin, Constants.options_volumeMax);
+        volume_units.threshhold = Constants.optionsForm_threshhold_other;
+        volume_units.addCheckbox("mute: ");
+        volume_units.addLabel("%", true);
+        SliderFormField volume_player = new SliderFormField("Player: ",
+          Constants.options_volumeMin, Constants.options_volumeMax);
+        volume_player.threshhold = Constants.optionsForm_threshhold_other;
+        volume_player.addCheckbox("mute: ");
+        volume_player.addLabel("%", true);
+
+        this.addField(new SpacerFormField(15));
+        this.addField(volume_master);
+        this.addField(volume_music);
+        this.addField(volume_interface);
+        this.addField(volume_environment);
+        this.addField(volume_units);
+        this.addField(volume_player);
+      }
+    }
+
+    class DisplayTab extends OptionsTab {
+      DisplayTab() {
+        super();
+        SliderFormField map_move_speed = new SliderFormField("Camera Speed: ",
+          Constants.map_minCameraSpeed, Constants.map_maxCameraSpeed);
+        map_move_speed.threshhold = Constants.optionsForm_threshhold_other;
+        SliderFormField inventory_bar_size = new SliderFormField("Inventory Bar Size: ", 80, 180);
+        inventory_bar_size.threshhold = Constants.optionsForm_threshhold_other;
+        inventory_bar_size.addCheckbox("hide: ");
+        SliderFormField map_resolution = new SliderFormField("Terrain Resolution: ", 10, 110, 20);
+        map_resolution.threshhold = Constants.optionsForm_threshhold_other;
+        map_resolution.addLabel(" pixels", true, false);
+        SliderFormField fog_update_time = new SliderFormField("Fog Update Time: ",
+          Constants.map_timer_refresh_fog_min, Constants.map_timer_refresh_fog_max, 50);
+        fog_update_time.threshhold = Constants.optionsForm_threshhold_other;
+        fog_update_time.addLabel(" ms", true, true);
+        CheckboxFormField lock_screen = new CheckboxFormField("Lock Screen:  ");
+
+        this.addField(new SpacerFormField(15));
+        this.addField(map_move_speed);
+        this.addField(inventory_bar_size);
+        this.addField(map_resolution);
+        this.addField(fog_update_time);
+        this.addField(lock_screen);
+      }
+    }
+
     OptionsForm() {
       super(Constants.optionsForm_widthOffset, Constants.optionsForm_heightOffset,
         width - Constants.optionsForm_widthOffset, height - Constants.optionsForm_heightOffset);
@@ -662,158 +743,115 @@ abstract class InterfaceLNZ {
       this.setFieldCushion(5);
       this.color_background = ccolor(250, 250, 180);
       this.color_header = ccolor(180, 180, 50);
+      this.draggable = false;
       if (global.profile == null) {
         this.canceled = true;
         return;
       }
-      SliderFormField volume_master = new SliderFormField("Master Volume: ",
-        Constants.options_volumeMin, Constants.options_volumeMax);
-      volume_master.threshhold = Constants.optionsForm_threshhold_master;
-      volume_master.addCheckbox("mute: ");
-      volume_master.addLabel("%", true);
-      SliderFormField volume_music = new SliderFormField("Music: ",
-        Constants.options_volumeMin, Constants.options_volumeMax);
-      volume_music.threshhold = Constants.optionsForm_threshhold_other;
-      volume_music.addCheckbox("mute: ");
-      volume_music.addLabel("%", true);
-      SliderFormField volume_interface = new SliderFormField("Interface: ",
-        Constants.options_volumeMin, Constants.options_volumeMax);
-      volume_interface.threshhold = Constants.optionsForm_threshhold_other;
-      volume_interface.addCheckbox("mute: ");
-      volume_interface.addLabel("%", true);
-      SliderFormField volume_environment = new SliderFormField("Environment: ",
-        Constants.options_volumeMin, Constants.options_volumeMax);
-      volume_environment.threshhold = Constants.optionsForm_threshhold_other;
-      volume_environment.addCheckbox("mute: ");
-      volume_environment.addLabel("%", true);
-      SliderFormField volume_units = new SliderFormField("Units: ",
-        Constants.options_volumeMin, Constants.options_volumeMax);
-      volume_units.threshhold = Constants.optionsForm_threshhold_other;
-      volume_units.addCheckbox("mute: ");
-      volume_units.addLabel("%", true);
-      SliderFormField volume_player = new SliderFormField("Player: ",
-        Constants.options_volumeMin, Constants.options_volumeMax);
-      volume_player.threshhold = Constants.optionsForm_threshhold_other;
-      volume_player.addCheckbox("mute: ");
-      volume_player.addLabel("%", true);
-      SliderFormField map_move_speed = new SliderFormField("Camera Speed: ",
-        Constants.map_minCameraSpeed, Constants.map_maxCameraSpeed);
-      map_move_speed.threshhold = Constants.optionsForm_threshhold_other;
-      SliderFormField inventory_bar_size = new SliderFormField("Inventory Bar Size: ", 80, 180);
-      inventory_bar_size.threshhold = Constants.optionsForm_threshhold_other;
-      inventory_bar_size.addCheckbox("hide: ");
-      SliderFormField map_resolution = new SliderFormField("Terrain Resolution: ", 10, 110, 20);
-      map_resolution.threshhold = Constants.optionsForm_threshhold_other;
-      map_resolution.addLabel(" pixels", true, false);
-      SliderFormField fog_update_time = new SliderFormField("Fog Update Time: ",
-        Constants.map_timer_refresh_fog_min, Constants.map_timer_refresh_fog_max, 50);
-      fog_update_time.threshhold = Constants.optionsForm_threshhold_other;
-      fog_update_time.addLabel(" ms", true, true);
-      CheckboxFormField lock_screen = new CheckboxFormField("Lock Screen:  ");
-      SubmitFormField apply = new ButtonFormField("Apply");
-      apply.button.setColors(ccolor(220), ccolor(240, 240, 190),
+
+      this.footer_space = 150;
+      this.tab_button_height = 55;
+      this.tab_button_max_width = 140;
+      this.tab_button_alignment = LEFT;
+      this.addTab(new VolumeTab(), "Audio");
+      this.addTab(new DisplayTab(), "Display");
+
+      TabConfig tab_config = new TabConfig();
+      tab_config.tab_text_size = 18;
+      tab_config.color_background = ccolor(240, 240, 200);
+      tab_config.color_stroke = ccolor(240, 240, 200);
+      tab_config.scrollbar_width_multiplier = 0.015;
+      tab_config.scrollbar_min_width = 15;
+      tab_config.scrollbar_max_width = 20;
+      tab_config.scrollbar_color_default = ccolor(200, 200, 100);
+      tab_config.scrollbar_color_hovered = ccolor(220, 220, 150);
+      tab_config.scrollbar_color_clicked = ccolor(180, 180, 50);
+      tab_config.scrollbar_color_space = ccolor(220, 220, 150);
+      this.setTabConfig(tab_config);
+
+      ButtonsFormField buttons = new ButtonsFormField("Apply", "Defaults");
+      buttons.button1.setColors(ccolor(220), ccolor(240, 240, 190),
         ccolor(190, 190, 140), ccolor(140, 140, 90), ccolor(0));
-      SubmitFormField submit = new SubmitFormField("Save Options");
-      submit.button.setColors(ccolor(220), ccolor(240, 240, 190),
+      buttons.button2.setColors(ccolor(220), ccolor(240, 240, 190),
         ccolor(190, 190, 140), ccolor(140, 140, 90), ccolor(0));
-      SubmitFormField defaults = new ButtonFormField("Defaults");
-      defaults.button.setColors(ccolor(220), ccolor(240, 240, 190),
+      SubmitCancelFormField submit = new SubmitCancelFormField("Save", "Cancel");
+      submit.button1.setColors(ccolor(220), ccolor(240, 240, 190),
         ccolor(190, 190, 140), ccolor(140, 140, 90), ccolor(0));
-      SubmitFormField cancel = new SubmitFormField("Cancel", false);
-      cancel.button.setColors(ccolor(220), ccolor(240, 240, 190),
+      submit.button2.setColors(ccolor(220), ccolor(240, 240, 190),
         ccolor(190, 190, 140), ccolor(140, 140, 90), ccolor(0));
 
-      this.addField(new SpacerFormField(15));
-      this.addField(new MessageFormField("Volume", CENTER));
-      this.addField(volume_master);
-      this.addField(volume_music);
-      this.addField(volume_interface);
-      this.addField(volume_environment);
-      this.addField(volume_units);
-      this.addField(volume_player);
       this.addField(new SpacerFormField(10));
-      this.addField(new MessageFormField("Display", CENTER));
-      this.addField(map_move_speed);
-      this.addField(inventory_bar_size);
-      this.addField(map_resolution);
-      this.addField(fog_update_time);
-      this.addField(lock_screen);
-      this.addField(new SpacerFormField(10));
-      this.addField(apply);
+      this.addField(buttons);
       this.addField(new SpacerFormField(10));
       this.addField(submit);
-      this.addField(new SpacerFormField(10));
-      this.addField(defaults);
-      this.addField(new SpacerFormField(10));
-      this.addField(cancel);
 
       this.setFormFieldValues();
     }
 
     void setFormFieldValues() {
-      this.fields.get(2).setValue(global.profile.options.volume_master);
+      this.tabs.get(0).form.fields.get(1).setValue(global.profile.options.volume_master);
       if (global.profile.options.volume_master_muted) {
-        this.fields.get(2).disable();
+        this.tabs.get(0).form.fields.get(1).disable();
       }
       else {
-        this.fields.get(2).enable();
+        this.tabs.get(0).form.fields.get(1).enable();
       }
 
-      this.fields.get(3).setValue(global.profile.options.volume_music);
+      this.tabs.get(0).form.fields.get(2).setValue(global.profile.options.volume_music);
       if (global.profile.options.volume_music_muted) {
-        this.fields.get(3).disable();
+        this.tabs.get(0).form.fields.get(2).disable();
       }
       else {
-        this.fields.get(3).enable();
+        this.tabs.get(0).form.fields.get(2).enable();
       }
 
-      this.fields.get(4).setValue(global.profile.options.volume_interface);
+      this.tabs.get(0).form.fields.get(3).setValue(global.profile.options.volume_interface);
       if (global.profile.options.volume_interface_muted) {
-        this.fields.get(4).disable();
+        this.tabs.get(0).form.fields.get(3).disable();
       }
       else {
-        this.fields.get(4).enable();
+        this.tabs.get(0).form.fields.get(3).enable();
       }
 
-      this.fields.get(5).setValue(global.profile.options.volume_environment);
+      this.tabs.get(0).form.fields.get(4).setValue(global.profile.options.volume_environment);
       if (global.profile.options.volume_environment_muted) {
-        this.fields.get(5).disable();
+        this.tabs.get(0).form.fields.get(4).disable();
       }
       else {
-        this.fields.get(5).enable();
+        this.tabs.get(0).form.fields.get(4).enable();
       }
 
-      this.fields.get(6).setValue(global.profile.options.volume_units);
+      this.tabs.get(0).form.fields.get(5).setValue(global.profile.options.volume_units);
       if (global.profile.options.volume_units_muted) {
-        this.fields.get(6).disable();
+        this.tabs.get(0).form.fields.get(5).disable();
       }
       else {
-        this.fields.get(6).enable();
+        this.tabs.get(0).form.fields.get(5).enable();
       }
 
-      this.fields.get(7).setValue(global.profile.options.volume_player);
+      this.tabs.get(0).form.fields.get(6).setValue(global.profile.options.volume_player);
       if (global.profile.options.volume_player_muted) {
-        this.fields.get(7).disable();
+        this.tabs.get(0).form.fields.get(6).disable();
       }
       else {
-        this.fields.get(7).enable();
+        this.tabs.get(0).form.fields.get(6).enable();
       }
 
-      this.fields.get(10).setValue(global.profile.options.map_viewMoveSpeedFactor);
+      this.tabs.get(1).form.fields.get(1).setValue(global.profile.options.map_viewMoveSpeedFactor);
 
-      this.fields.get(11).setValue(global.profile.options.inventory_bar_size);
+      this.tabs.get(1).form.fields.get(2).setValue(global.profile.options.inventory_bar_size);
       if (global.profile.options.inventory_bar_hidden) {
-        this.fields.get(11).disable();
+        this.tabs.get(1).form.fields.get(2).disable();
       }
       else {
-        this.fields.get(11).enable();
+        this.tabs.get(1).form.fields.get(2).enable();
       }
 
-      this.fields.get(12).setValue(global.profile.options.terrain_resolution);
+      this.tabs.get(1).form.fields.get(3).setValue(global.profile.options.terrain_resolution);
 
-      this.fields.get(13).setValue(global.profile.options.fog_update_time);
+      this.tabs.get(1).form.fields.get(4).setValue(global.profile.options.fog_update_time);
 
-      this.fields.get(14).setValue(global.profile.options.lock_screen);
+      this.tabs.get(1).form.fields.get(5).setValue(global.profile.options.lock_screen);
     }
 
     void submit() {
@@ -823,7 +861,7 @@ abstract class InterfaceLNZ {
     }
 
     void apply() {
-      String vol_master = this.fields.get(2).getValue();
+      String vol_master = this.tabs.get(0).form.fields.get(1).getValue();
       if (vol_master.contains("disabled")) {
         global.profile.options.volume_master_muted = true;
       }
@@ -832,7 +870,7 @@ abstract class InterfaceLNZ {
       }
       global.profile.options.volume_master = toFloat(split(vol_master, ':')[0]);
 
-      String vol_music = this.fields.get(3).getValue();
+      String vol_music = this.tabs.get(0).form.fields.get(2).getValue();
       if (vol_music.contains("disabled")) {
         global.profile.options.volume_music_muted = true;
       }
@@ -841,7 +879,7 @@ abstract class InterfaceLNZ {
       }
       global.profile.options.volume_music = toFloat(split(vol_music, ':')[0]);
 
-      String vol_interface = this.fields.get(4).getValue();
+      String vol_interface = this.tabs.get(0).form.fields.get(3).getValue();
       if (vol_interface.contains("disabled")) {
         global.profile.options.volume_interface_muted = true;
       }
@@ -850,7 +888,7 @@ abstract class InterfaceLNZ {
       }
       global.profile.options.volume_interface = toFloat(split(vol_interface, ':')[0]);
 
-      String vol_environment = this.fields.get(5).getValue();
+      String vol_environment = this.tabs.get(0).form.fields.get(4).getValue();
       if (vol_environment.contains("disabled")) {
         global.profile.options.volume_environment_muted = true;
       }
@@ -859,7 +897,7 @@ abstract class InterfaceLNZ {
       }
       global.profile.options.volume_environment = toFloat(split(vol_environment, ':')[0]);
 
-      String vol_units = this.fields.get(6).getValue();
+      String vol_units = this.tabs.get(0).form.fields.get(5).getValue();
       if (vol_units.contains("disabled")) {
         global.profile.options.volume_units_muted = true;
       }
@@ -868,7 +906,7 @@ abstract class InterfaceLNZ {
       }
       global.profile.options.volume_units = toFloat(split(vol_units, ':')[0]);
 
-      String vol_player = this.fields.get(7).getValue();
+      String vol_player = this.tabs.get(0).form.fields.get(6).getValue();
       if (vol_player.contains("disabled")) {
         global.profile.options.volume_player_muted = true;
       }
@@ -877,10 +915,10 @@ abstract class InterfaceLNZ {
       }
       global.profile.options.volume_player = toFloat(split(vol_player, ':')[0]);
 
-      String camera_speed = this.fields.get(10).getValue();
+      String camera_speed = this.tabs.get(1).form.fields.get(1).getValue();
       global.profile.options.map_viewMoveSpeedFactor = toFloat(split(camera_speed, ':')[0]);
 
-      String hud_size = this.fields.get(11).getValue();
+      String hud_size = this.tabs.get(1).form.fields.get(2).getValue();
       if (hud_size.contains("disabled")) {
         global.profile.options.inventory_bar_hidden = true;
       }
@@ -889,13 +927,13 @@ abstract class InterfaceLNZ {
       }
       global.profile.options.inventory_bar_size = toFloat(split(hud_size, ':')[0]);
 
-      String terrain_resolution = this.fields.get(12).getValue();
+      String terrain_resolution = this.tabs.get(1).form.fields.get(3).getValue();
       global.profile.options.terrain_resolution = round(toFloat(split(terrain_resolution, ':')[0]));
 
-      String fog_update_time = this.fields.get(13).getValue();
+      String fog_update_time = this.tabs.get(1).form.fields.get(4).getValue();
       global.profile.options.fog_update_time = toFloat(split(fog_update_time, ':')[0]);
 
-      String lock_screen = this.fields.get(14).getValue();
+      String lock_screen = this.tabs.get(1).form.fields.get(5).getValue();
       global.profile.options.lock_screen = toBoolean(lock_screen);
 
       global.profile.options.change();
@@ -903,12 +941,14 @@ abstract class InterfaceLNZ {
 
     void buttonPress(int index) {
       switch(index) {
-        case 16: // apply
-          this.apply();
-          break;
-        case 20: // defaults
-          global.profile.options.defaults();
-          this.setFormFieldValues();
+        case 1: // buttons
+          if (this.fields.get(1).getValue().equals("0")) {
+            this.apply();
+          }
+          else {
+            global.profile.options.defaults();
+            this.setFormFieldValues();
+          }
           break;
         default:
           break;
@@ -917,7 +957,7 @@ abstract class InterfaceLNZ {
 
     void keyPress() {
       super.keyPress();
-      if (key == 'o' && global.holding_ctrl) {
+      if ((key == 'o' || key == 'O') && global.holding_ctrl) {
         this.cancel();
       }
     }
@@ -966,8 +1006,8 @@ abstract class InterfaceLNZ {
       }
     }
 
-    abstract class AchievementTabForm extends Form {
-      AchievementTabForm() {
+    abstract class AchievementTab extends Form {
+      AchievementTab() {
         super();
       }
 
@@ -976,7 +1016,7 @@ abstract class InterfaceLNZ {
       void buttonPress(int i) {}
     }
 
-    class CompletionTab extends AchievementTabForm {
+    class CompletionTab extends AchievementTab {
       CompletionTab() {
         super();
         ArrayList<MessageFormField> achievements_complete = new ArrayList<MessageFormField>();
@@ -1004,15 +1044,15 @@ abstract class InterfaceLNZ {
       }
     }
 
-    class ContinuousTab extends AchievementTabForm {
+    class ContinuousTab extends AchievementTab {
       ContinuousTab() {
         super();
-        this.addField(new MessageFormField("ContinuousTab"));
+        this.addField(new MessageFormField("Continuous Achievements"));
         this.addField(new SpacerFormField(10));
       }
     }
 
-    class HiddenTab extends AchievementTabForm {
+    class HiddenTab extends AchievementTab {
       HiddenTab() {
         super();
         ArrayList<MessageFormField> achievements_complete = new ArrayList<MessageFormField>();
@@ -1036,6 +1076,14 @@ abstract class InterfaceLNZ {
       }
     }
 
+    class StatsTab extends AchievementTab {
+      StatsTab() {
+        super();
+        this.addField(new MessageFormField("Profile Stats"));
+        this.addField(new SpacerFormField(10));
+      }
+    }
+
     AchievementsForm() {
       super(Constants.achievementsForm_widthOffset, Constants.achievementsForm_heightOffset,
         width - Constants.achievementsForm_widthOffset, height - Constants.achievementsForm_heightOffset);
@@ -1055,6 +1103,7 @@ abstract class InterfaceLNZ {
       this.addTab(new CompletionTab(), "Completion");
       this.addTab(new ContinuousTab(), "Continuous");
       this.addTab(new HiddenTab(), "Hidden");
+      this.addTab(new StatsTab(), "Stats");
 
       TabConfig tab_config = new TabConfig();
       tab_config.tab_text_size = 18;
@@ -1086,7 +1135,7 @@ abstract class InterfaceLNZ {
 
     void keyPress() {
       super.keyPress();
-      if (key == 'a' && global.holding_ctrl) {
+      if ((key == 'a' || key == 'A') && global.holding_ctrl) {
         this.cancel();
       }
     }

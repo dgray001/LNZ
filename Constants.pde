@@ -4,7 +4,7 @@ static class Constants {
   static final String credits =
   "Liberal Nazi Zombies" +
   "\nCreated by Daniel Gray" +
-  "\nAlpha v0.7.8n: 20220717" +
+  "\nAlpha v0.7.8o: 20220717" +
   "\n\nLines: 55249 (v0.7.8g)" +
   "\nImages: 1275 (v0.7.8)" +
   "\nSounds: 341 (v0.7.8)" +
@@ -91,8 +91,8 @@ static class Constants {
   static final float profileForm_height = 500;
   static final float newProfileForm_width = 400;
   static final float newProfileForm_height = 500;
-  static final float optionsForm_widthOffset = 300;
-  static final float optionsForm_heightOffset = 100;
+  static final float optionsForm_widthOffset = 30;
+  static final float optionsForm_heightOffset = 20;
   static final float optionsForm_threshhold_master = 0.12;
   static final float optionsForm_threshhold_other = 0.15;
   static final float achievementsForm_widthOffset = 300;
